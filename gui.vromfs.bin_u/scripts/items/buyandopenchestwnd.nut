@@ -1,43 +1,44 @@
+import "regexp2" as regexp2
+from "%appGlobals/timeLoc.nut" import buidPartialTimeStr
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, add_event_listener
+from "eventbus" import eventbus_send
+from "console" import register_command
+from "dagor.math" import IPoint2
+from "dagor.workcycle" import setTimeout, clearTimer, defer
+from "dagor.random" import frnd
+from "%sqstd/math.nut" import PI, cos, sin
+from "%sqstd/datablock.nut" import isDataBlock, convertBlk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { eventbus_send } = require("eventbus")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getStringWidthPx, getFontLineHeightPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
-let { addListenersWithoutEnv, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let trophyRewardListByCategory = require("%scripts/items/listPopupWnd/trophyRewardListByCategory.nut")
-let { register_command } = require("console")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { receiveRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getFullUnitRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount, getEntitlementFullTimeText
-} = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount, getEntitlementFullTimeText } = require("%scripts/onlineShop/entitlements.nut")
 let { Cost } = require("%scripts/money.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { IPoint2 } = require("dagor.math")
-let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
-let { frnd } = require("dagor.random")
-let { PI, cos, sin } = require("%sqstd/math.nut")
-let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { enableObjsByTable, activateObjsByTable } = require("%scripts/sqDagui/daguiUtil.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getPrizeText, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
-let regexp2 = require("regexp2")
 let { gerRecentItemsLogs } = require("%scripts/userLog/userLog.nut")
-let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
@@ -681,8 +682,8 @@ function addRaysInScreenCoords(props, raysArray) {
 
   let ySizePercent = pixelWidth * 100.0 / swHeight
 
-  let vx = 1
-  let vy = 0
+  const vx = 1
+  const vy = 0
   local delay = props.startDelay
 
   for (local i = 0; i < props.count; i++) {
@@ -808,13 +809,13 @@ function getStageViewData(stageData, currentProgress) {
         hasFocusBorder = false
         hasTimer = false
         showRarity = false
-        count = rewards[itemId]
+        count = itemId != null ? rewards?[itemId] : null
       })]
     stageTooltipId = itemId != null ? getTooltipType("ITEM").getTooltipId(itemId.tointeger()) : null
   }
 }
 
-let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
+class BuyAndOpenChestHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/buyAndOpenChestWnd.tpl"
 
@@ -1032,7 +1033,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuy() {
-    let itemsCost = Cost(this.chestItem.getCost().wp * this.useAmount)
+    let itemsCost = (Cost() + this.chestItem.getCost()).multiply(this.useAmount)
     if(!checkBalanceMsgBox(itemsCost))
       return
 
@@ -1391,14 +1392,14 @@ function showBuyAndOpenChestWndWhenReceive(chestItem) {
   loadHandler(BuyAndOpenChestHandler, { chestItem, styleConfig })
 }
 
-gui_handlers.BuyAndOpenChestHandler <- BuyAndOpenChestHandler
+register_gui_handler("BuyAndOpenChestHandler", BuyAndOpenChestHandler)
 
 addPromoAction("show_buy_and_open_chest_window",
   @(_handler, params, _obj) showBuyAndOpenChestWndById(params?[0]),
   @(params) isActionVisible(params?[0]))
 
 addListenersWithoutEnv({
-  InventoryUpdate = @(_) tryOpenChestWindow()
+  [INVENTORY_UPDATE] = @(_) tryOpenChestWindow()
 })
 
 function openChestOrTrophy(params) {

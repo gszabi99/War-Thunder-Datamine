@@ -1,14 +1,30 @@
 {
   "rocketGun": true,
-  "preset_cost": 25,
-  "shotFreq": 20.0,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "us_zuni_wafar_mk24_rocket",
   "mesh_deployed": "us_zuni_wafar_mk24_rocket_deployed",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
   "rocket": {
+    "dragCx": 0.0084,
     "bulletName": "us_zuni_wafar_mk24",
+    "iconType": "nar_ap_special",
+    "amountPerTier": 4.0,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 1.3,
+    "advancedSpread": 0.5,
+    "velSpread": 0.0,
+    "thrustDeviation": 0.00001,
     "caliber": 0.130175,
     "length": 2.41935,
     "WdK": [
@@ -22,12 +38,12 @@
     "massEnd": 37.30344,
     "timeFire": 1.79,
     "force": 20135.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 726.0,
-    "endSpeed": 0.0,
     "maxDistance": 20000.0,
     "minDistance": 500.0,
+    "explosiveType": "comp_b",
+    "explosiveMass": 4.127691,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -45,18 +61,6 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "comp_b",
-    "explosiveMass": 4.127691,
-    "explodeTreshold": 0.00001,
-    "dragCx": 0.0084,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "amountPerTier": 4.0,
-    "iconType": "nar_ap_special",
-    "maxDeltaAngle": 1.3,
-    "advancedSpread": 0.5,
-    "velSpread": 0.0,
-    "thrustDeviation": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -94,6 +98,9 @@
       200.0,
       1000.0
     ],
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -114,28 +121,6 @@
       0.0,
       0.0
     ],
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        20.0,
-        0.6
-      ],
-      "mod3": [
-        30.0,
-        1.0
-      ]
-    },
-    "damage": {
-      "explosive": {
-        "offset": 0.2
-      }
-    },
     "DamageParts": {
       "body": {
         "hp": 50.0,
@@ -220,6 +205,23 @@
           }
         ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
+      ]
     },
     "explosionSmoke": {
       "radius": 5.0,

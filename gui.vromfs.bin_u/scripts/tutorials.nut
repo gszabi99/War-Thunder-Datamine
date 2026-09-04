@@ -1,9 +1,9 @@
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { register_command } = require("console")
 let { needShowTutorial, reqFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 let hasRunTutorialDialog = @() needShowTutorial("unitTypeChoice", 1) || !reqFirstCountryChoice()

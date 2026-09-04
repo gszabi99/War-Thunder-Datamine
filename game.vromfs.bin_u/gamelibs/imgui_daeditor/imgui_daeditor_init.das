@@ -11,11 +11,13 @@ def load_imgui_daeditor(base_path : string) : bool
 
   if typeinfo builtin_module_exists(DagorImgui)
     ok = load_sub_folder(base_path, "imgui") && ok
+    if typeinfo builtin_module_exists(ImGuizmo)
+      ok = load_sub_folder(base_path, "imgui/camera") && ok
+    if typeinfo builtin_module_exists(DagorResources)
+      ok = load_sub_folder(base_path, "imgui/animgraph") && ok
 
   if typeinfo builtin_module_exists(DagorImgui) && typeinfo builtin_module_exists(DagorEditor)
     ok = load_sub_folder(base_path, "imgui/daEditor") && ok
-    if typeinfo builtin_module_exists(DagorResources)
-      ok = load_sub_folder(base_path, "imgui/animgraph") && ok
     if typeinfo builtin_module_exists(RendInst)
       ok = load_sub_folder(base_path, "imgui/daEditor/rendInst") && ok
     if typeinfo builtin_module_exists(DngNet)

@@ -1,25 +1,21 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt, mgSetBool
+  , mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange
+  , rndRangeInt, getAnyFighter, getDistancePerMinute, getAircraftCost, mgReplace, mgSetupAirfield, mgSetDistToAction
+  , getAircraftDescription, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
 from "math" import max, min, sqrt, clamp
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt,
-  mgSetBool, mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount,
-  mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getAnyFighter, getDistancePerMinute,
-  getAircraftCost, mgReplace, mgSetupAirfield, mgSetDistToAction, getAircraftDescription,
-  gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName,
-  mgSetMinMaxAircrafts
-} = require("dynamicMission")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc) {
-  let mission_preset_name = "bombing_preset01"
+  const mission_preset_name = "bombing_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
   let bombtargets = createGroundUnitsProc(enemySide)
 
-  let wpMax = 1000000
+  const wpMax = 1000000
   let allyFighterPlane = getAnyFighter(playerSide, 0, wpMax)
   local allyFighterPlaneCost = getAircraftCost(allyFighterPlane)
   if (allyFighterPlaneCost == 0)
@@ -145,7 +141,7 @@ function generateBombingMission(isFreeFlight, ground_type, createGroundUnitsProc
     enemy3Count = max(enemyTotalCount_temp, 4)
 
 
-  let playerSpeed = 300 * 1000 / 60.0
+  const playerSpeed = 300 * 1000 / 60.0
   let enemy1Speed = getDistancePerMinute(enemyFighterPlane)
   let enemy2Speed = getDistancePerMinute(enemyFighterPlane)
   let enemy3Speed = getDistancePerMinute(enemyFighterPlane)

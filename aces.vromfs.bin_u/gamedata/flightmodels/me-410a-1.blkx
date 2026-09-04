@@ -2759,9 +2759,25 @@
         "reqModification": "Fw-190D-12_SC250"
       },
       {
-        "name": "Me_410A-1_2xSC500",
-        "blk": "gameData/FlightModels/weaponPresets/me-410_2xsc500.blk",
+        "name": "Me_410A-1_SC500",
+        "blk": "gameData/FlightModels/weaponPresets/me-410_sc500.blk",
         "reqModification": "Fw-190D-12_SC500"
+      },
+      {
+        "name": "Me_410A-1_2xPD500",
+        "blk": "gameData/FlightModels/weaponPresets/me-410_2xpd500.blk",
+        "reqModification": "Fw-190D-12_SC500",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "Me_410A-1_PC1000",
+        "blk": "gameData/FlightModels/weaponPresets/me-410_pc1000.blk",
+        "reqModification": "ju_88_SC1000",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -2829,8 +2845,13 @@
     },
     "Fw-190D-12_SC500": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "Fw-190D-12_SC250"
+    },
+    "ju_88_SC1000": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "Fw-190D-12_SC500"
     }
   },
   "default_skin_tomoe": {

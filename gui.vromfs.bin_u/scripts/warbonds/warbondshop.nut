@@ -1,42 +1,42 @@
+import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "math" import ceil
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
-from "%scripts/mainConsts.nut" import SEEN
-import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BattleTasksWnd, guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { BattlePassWnd, openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj
-  getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
-let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
+let mkHoverHoldAction = require("%scripts/sqDagui/timer/mkHoverHoldAction.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { getWarbondsList, getCurrentWarbond, getWarbondAwardByFullId
-} = require("%scripts/warbonds/warbondsManager.nut")
+let { getWarbondsList, getCurrentWarbond, getWarbondAwardByFullId } = require("%scripts/warbonds/warbondsManager.nut")
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { getBPStageByShopLevel } = require("%scripts/battlePass/seasonState.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 
 
-gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("WarbondsShop", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 
@@ -134,9 +134,9 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   function initItemsListSize() {
     this.guiScene.applyPendingChanges(false)
 
-    let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
-    let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
-    let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-0.08@scrn_tgt-1@blockInterval"
+    const itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    const itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    const mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-0.08@scrn_tgt-1@blockInterval"
     let itemsCountX = max(to_pixels("@rw-1@shopInfoMinWidth-3@itemSpacing")
       / max(1, to_pixels(itemWidthWithSpace)), 1)
     let itemsCountY = max(to_pixels(mainBlockHeight)
@@ -212,7 +212,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getCurAward() {
     let value = this.getItemsListObj().getValue()
-    return getTblValue(value, this.curPageAwards)
+    return this.curPageAwards?[value]
   }
 
   function getCurAwardObj() {
@@ -263,7 +263,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    showObjById("btn_battlePass", !isHandlerInScene(gui_handlers.BattlePassWnd), this.scene)
+    showObjById("btn_battlePass", !isHandlerInScene(BattlePassWnd), this.scene)
 
     if (!this.updateButtonsBar()) 
       return
@@ -271,7 +271,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     let award = this.getCurAward()
     showObjById("btn_specialTasks", award != null
       && award.isRequiredSpecialTasksComplete()
-      && !isHandlerInScene(gui_handlers.BattleTasksWnd), this.scene
+      && !isHandlerInScene(BattleTasksWnd), this.scene
     )
 
     showObjById("btn_preview", (award?.canPreview() ?? false) && isInMenu.get(), this.scene)
@@ -471,11 +471,11 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventBeforeStartShowroom(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   function onEventBeforeStartTestFlight(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   function getHandlerRestoreData() {
@@ -564,4 +564,4 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     if (listObj?.isValid())
       listObj.showItemButton = this.isMouseMode ? "yes" : "no"
   }
-}
+})

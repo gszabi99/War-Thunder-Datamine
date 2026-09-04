@@ -1,10 +1,10 @@
+import "DataBlock" as DataBlock
+from "%rGui/planeState/planeToolsState.nut" import RwrBlkName, BlkFileName
+from "%rGui/hudState.nut" import unitType
+from "%rGui/hudUnitType.nut" import isAirUnitType
+from "dagor.math" import Point2
+from "blkLoad" import tryLoadBlk
 from "%rGui/globals/ui_library.nut" import *
-
-let { Point2 } = require("dagor.math")
-let DataBlock = require("DataBlock")
-let { tryLoadBlk } = require("blkLoad")
-
-let { RwrBlkName, BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
 
 let rangeDefault = Point2(5000, 50000)
 
@@ -23,6 +23,8 @@ let rwrSetting = Computed(function() {
   local rwrBlk = null
 
   if (RwrBlkName.get() == "") {
+    if (!isAirUnitType(unitType.get()))
+      return res
     let blk = DataBlock()
     let fileName = $"gameData/flightModels/{BlkFileName.get()}.blk"
     if (!tryLoadBlk(blk, fileName))

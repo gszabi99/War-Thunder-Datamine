@@ -1,9 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE
 
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
+let { getEvent, getEventDiffCode, getEventsList } = require("%scripts/events/eventsState.nut")
+let { getEventNameText } = require("%scripts/events/eventTexts.nut")
+let { getEventUiSortPriority, getEventsChapter, isEventVisibleInEventsWindow } = require("%scripts/events/eventDisplay.nut")
 
 let EventChapter = class {
   name = ""
@@ -38,9 +40,9 @@ let EventChapter = class {
   function updateSortPriority() {
     this.sortPriority = 0
     foreach (eventName in this.getEvents()) {
-      let event = events.getEvent(eventName)
+      let event = getEvent(eventName)
       if (event)
-        this.sortPriority = max(this.sortPriority, events.getEventUiSortPriority(event))
+        this.sortPriority = max(this.sortPriority, getEventUiSortPriority(event))
     }
   }
 
@@ -49,23 +51,23 @@ let EventChapter = class {
   }
 
   function update() {
-    this.eventIds = events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { 
-      return events.getEventsChapter(event) == name
-             && events.isEventVisibleInEventsWindow(event)
+    this.eventIds = getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { 
+      return getEventsChapter(event) == name
+             && isEventVisibleInEventsWindow(event)
     })(this.name))
     this.sortValid = false
     this.sortPriority = -1
   }
 
   function sortChapterEvents(eventId1, eventId2) { 
-    let event1 = events.getEvent(eventId1)
-    let event2 = events.getEvent(eventId2)
+    let event1 = getEvent(eventId1)
+    let event2 = getEvent(eventId2)
     if (event1 == null && event2 == null)
       return 0
     return (!!event1 <=> !!event2)
-        || (events.getEventUiSortPriority(event2) <=> events.getEventUiSortPriority(event1))
-        || (events.getEventDiffCode(event1) <=> events.getEventDiffCode(event2))
-        || (events.getEventNameText(event1) <=> events.getEventNameText(event2))
+        || (getEventUiSortPriority(event2) <=> getEventUiSortPriority(event1))
+        || (getEventDiffCode(event1) <=> getEventDiffCode(event2))
+        || (getEventNameText(event1) <=> getEventNameText(event2))
         || event1.name <=> event2.name
   }
 }
@@ -78,7 +80,7 @@ let EventChaptersManager = class {
     this.chapters = []
     this.chapterIndexByName = {}
 
-    add_event_listener("GameLocalizationChanged", this.onEventGameLocalizationChanged, this)
+    add_event_listener(GAME_LOCALIZATION_CHANGED, this.onEventGameLocalizationChanged, this)
   }
 
   
@@ -87,13 +89,13 @@ let EventChaptersManager = class {
 
 
   function updateChapters() {
-    let eventsList = events.getEventsList(EVENT_TYPE.ANY, events.isEventVisibleInEventsWindow)
+    let eventsList = getEventsList(EVENT_TYPE.ANY, isEventVisibleInEventsWindow)
 
     foreach (eventName in eventsList) {
-      let event = events.getEvent(eventName)
+      let event = getEvent(eventName)
       if (event == null)
         continue
-      let chapterId = events.getEventsChapter(event)
+      let chapterId = getEventsChapter(event)
       if (!this.getChapter(chapterId))
         this.addChapter(chapterId)
     }
@@ -145,6 +147,6 @@ let EventChaptersManager = class {
   }
 }
 
-return {
-  EventChaptersManager
-}
+let eventChaptersManager = EventChaptersManager()
+
+return { eventChaptersManager }

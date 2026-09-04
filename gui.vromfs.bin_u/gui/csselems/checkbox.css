@@ -228,3 +228,16 @@ CheckBox[smallFont=yes] {
   fullSizeIcons:yes;
   padding-left:h + 1@buttonIconHeight + 0.01*@sf;
 }
+
+CheckBox[rightToLeft=yes] {
+  size: pw, 35@sf/@pf;
+  position: relative;
+  margin: 0, 1@blockInterval, 0, 1@blockInterval;
+  padding-left: 0;
+  padding: 0;
+  smallFont: yes;
+}
+
+CheckBox[rightToLeft=yes] > CheckBoxImg {
+  left:pw-w;
+}

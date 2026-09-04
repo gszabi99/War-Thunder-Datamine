@@ -1,5 +1,6 @@
+import "%sqStdLibs/helpers/u.nut" as u
+
 let { wwArmyMoveStateType } = require("%scripts/worldWar/inOperation/model/wwArmyMoveState.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let WwPathTracker = class {
   status = ""

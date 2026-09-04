@@ -1,21 +1,29 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
+from "multiplayer" import is_mplayer_host
+from "replays" import is_replay_playing
+from "mission" import get_game_mode, get_game_type
+from "guiMission" import leave_mp_session, quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete, restart_mission, restart_replay, get_mission_status
+  , get_meta_mission_info_by_gm_and_name, get_mission_difficulty, MISSION_STATUS_RUNNING, MISSION_STATUS_FAIL
+from "guiOptions" import get_gui_option
+from "blkGetters" import get_current_mission_info_cached
 from "%scripts/dagui_natives.nut" import toggle_freecam, set_context_to_player
-from "gameplayBinding" import closeIngameGui, doPlayerBailout, inFlightMenu, getIsInFlightMenu,
-  isFlightMenuDisabled
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "gameplayBinding" import closeIngameGui, doPlayerBailout, inFlightMenu, getIsInFlightMenu, isFlightMenuDisabled
 from "app" import is_offline_version, isGamePaused, pauseGame
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { eventbus_subscribe } = require("eventbus")
-let DataBlock = require("DataBlock")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { Briefing, getBriefingOptions } = require("%scripts/briefing.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { is_mplayer_host } = require("multiplayer")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let flightMenuButtonTypes = require("%scripts/flightMenu/flightMenuButtonTypes.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
@@ -23,14 +31,6 @@ let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { guiStartMPStatScreen, getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { is_replay_playing } = require("replays")
-let { get_game_mode, get_game_type } = require("mission")
-let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
-  quit_mission_after_complete, restart_mission, restart_replay, get_mission_status,
-  get_meta_mission_info_by_gm_and_name, get_mission_difficulty,
-  MISSION_STATUS_RUNNING, MISSION_STATUS_FAIL
-} = require("guiMission")
-let { get_gui_option } = require("guiOptions")
 let { restartCurrentMission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -39,10 +39,8 @@ let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 let { guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { disableOrders } = require("%scripts/items/orders.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
-let { getBriefingOptions } = require("%scripts/briefing.nut")
 let ludeo = require_optional("acesludeo")
 
 function gui_start_briefing_restart(_ = {}) {
@@ -75,13 +73,13 @@ function gui_start_briefing_restart(_ = {}) {
       finalApplyFunc()
   }
 
-  handlersManager.loadHandler(gui_handlers.Briefing, params)
+  handlersManager.loadHandler(Briefing, params)
   handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_briefing_restart" })
 }
 
 eventbus_subscribe("gui_start_briefing_restart", gui_start_briefing_restart)
 
-gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
+let FlightMenu = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/flightMenu/flightMenu.blk"
   handlerLocId = "flightmenu"
   shouldBlurSceneBg = true
@@ -354,9 +352,10 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
     toggle_freecam?()
   }
 }
+register_gui_handler("FlightMenu", FlightMenu)
 
 function gui_start_flight_menu(_ = null) {
-  handlersManager.loadHandler(gui_handlers.FlightMenu)
+  handlersManager.loadHandler(FlightMenu)
 }
 
 function gui_start_flight_menu_help(_) {

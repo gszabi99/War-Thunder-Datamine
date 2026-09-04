@@ -1,15 +1,22 @@
+import "DataBlock" as DataBlock
+import "math" as math
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_natives.nut" import is_news_adver_actual, req_news, get_news_blk
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { get_current_base_gui_handler } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ShopViewWnd } = require("%scripts/shop/shopViewWnd.nut")
+let { ShopMenuHandler } = require("%scripts/shop/shop.nut")
+let { TopMenuButtonsHandler } = require("%scripts/mainmenu/topMenuButtonsHandler.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let DataBlock = require("DataBlock")
 let time = require("%scripts/time.nut")
 let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -22,16 +29,13 @@ let { isRunningOnPS5 = @() false } = require_optional("sony")
 let { switchContactsObj, getLastContactsSceneShow } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
 let { getUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
-let math = require("math")
-let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
+let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isUsedCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { lastChatSceneShow } = require("%scripts/chat/chatHandler.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { topMenuLeftSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
@@ -39,7 +43,7 @@ let { hasMarkers } = require("%scripts/markers/markerUtils.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
-class TopMenu (gui_handlers.BaseGuiHandlerWT) {
+class TopMenu (BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
   keepLoaded = true
   sceneBlkName = "%gui/mainmenu/topMenuScene.blk"
@@ -78,7 +82,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     if (!this.topMenuInited && isLoggedIn.get()) {
       this.topMenuInited = true
 
-      this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
+      this.leftSectionHandlerWeak = TopMenuButtonsHandler.create(
         this.scene.findObject("topmenu_menu_panel"),
         this,
         topMenuLeftSideSections,
@@ -126,7 +130,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   function onNewContentLoaded(handler) {
     this.checkAdvert()
 
-    let hasResearch = getTblValue("hasTopMenuResearch", handler, true)
+    let hasResearch = (handler?.hasTopMenuResearch ?? true)
     showObjById("topmenu_btn_shop_wnd", hasResearch, this.scene)
     if (!hasResearch)
       this.closeShop()
@@ -248,7 +252,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
     if (isSmallScreen) {
       topMenuShopActive.set(false)
-      gui_handlers.ShopViewWnd.open({ forceUnitType = unitType })
+      ShopViewWnd.open({ forceUnitType = unitType })
       return
     }
 
@@ -357,7 +361,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       
       if (!this.shopWeak) {
         let wndObj = this.getObj("shop_wnd_frame")
-        let shopHandler = handlersManager.loadHandler(gui_handlers.ShopMenuHandler,
+        let shopHandler = handlersManager.loadHandler(ShopMenuHandler,
           {
             scene = wndObj
             closeShop = Callback(this.shopWndSwitch, this)
@@ -423,7 +427,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -660,11 +664,6 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
 
 }
 
-return {
-  getHandler = function() {
-    if (!gui_handlers?.TopMenu)
-      gui_handlers.TopMenu <- TopMenu
+register_gui_handler("TopMenu", TopMenu)
 
-    return gui_handlers.TopMenu
-  }
-}
+return { TopMenu }

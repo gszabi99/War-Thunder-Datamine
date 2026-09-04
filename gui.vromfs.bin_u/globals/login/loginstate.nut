@@ -1,8 +1,7 @@
+import "%globalScripts/sharedWatched.nut" as sharedWatched
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu, isOfflineMenu
+from "frp" import Computed
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
-
-let { Computed } = require("frp")
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { shouldDisableMenu, isOfflineMenu } = require("%globalScripts/clientState/initialState.nut")
 
 let loginState = sharedWatched("loginState", @() LOGIN_STATE.NOT_LOGGED_IN)
 let isLoginRequired = sharedWatched("isLoginRequired", @() !shouldDisableMenu && !isOfflineMenu)

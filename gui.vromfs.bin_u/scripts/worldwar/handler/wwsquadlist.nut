@@ -1,17 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getPlayWorldwarConditionText } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 let { getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
 
-gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwSquadList = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/worldWar/wwBattleSquadList.tpl"
@@ -129,3 +129,6 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
       move_mouse_on_child_by_value(this.squadListObj)
   }
 }
+register_gui_handler("WwSquadList", WwSquadList)
+
+return { WwSquadList }

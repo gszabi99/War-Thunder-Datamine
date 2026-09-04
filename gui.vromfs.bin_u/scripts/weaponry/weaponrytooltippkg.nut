@@ -1,44 +1,33 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/econWeaponUtils.nut" import getPresetRewardMul, getWeaponDamage
+from "string" import format
+from "%sqstd/string.nut" import utf8Capitalize
+from "%sqstd/underscore.nut" import isEqual
+from "%sqstd/datablock.nut" import eachBlock, isDataBlock
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "hudActionBar" import getActionBarItems
+from "blkGetters" import get_warpoints_blk
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, calculate_mod_or_weapon_effect, wp_get_repair_cost_by_mode
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, INFO_DETAIL
 from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText, roman_numerals
 
-let { getPresetRewardMul, getWeaponDamage } = require("%appGlobals/econWeaponUtils.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes, getCurrentGameModeEdiff
-} = require("%scripts/gameModes/gameModeManagerState.nut")
-let { format } = require("string")
-let { utf8Capitalize } = require("%sqstd/string.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { eachBlock, isDataBlock } = require("%sqstd/datablock.nut")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
+let { getCurrentShopDifficulty, getCurrentGameMode, getRequiredUnitTypes, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
-let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef,
-  isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
-} = require("%scripts/weaponry/itemInfo.nut")
-let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet,
-  getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData, isPairBulletsGroup
-} = require("%scripts/weaponry/bulletsInfo.nut")
-let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets
-  checkBulletParamsBeforeRender
-} = require("%scripts/weaponry/bulletsVisual.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWeaponsList, isWeaponEnabled,
-  addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb,
-  getAdditionalWeaponMarkupTypes
-} = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData
-} = require("weaponryDescription.nut")
+let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef, isResearchableItem, countWeaponsUpgrade, getItemUpgradesList } = require("%scripts/weaponry/itemInfo.nut")
+let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet, getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData, isPairBulletsGroup } = require("%scripts/weaponry/bulletsInfo.nut")
+let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets, checkBulletParamsBeforeRender } = require("%scripts/weaponry/bulletsVisual.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES, getPrimaryWeaponsList, isWeaponEnabled, addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitArmorData, getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
-let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup,
-  calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
+let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup, calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
-let { getActionBarItems } = require("hudActionBar")
 let { getUnitWeaponsByTier, getUnitWeaponsByPreset } = require("%scripts/weaponry/weaponryPresets.nut")
-let { get_warpoints_blk } = require("blkGetters")
-let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
@@ -197,7 +186,10 @@ function addArmorPiercingDataToDescTbl(descTbl, unit, blk, tType, weaponInfoData
       cumulativeDamage = weaponInfoData?.resultWeaponBlocks[0][0].cumulativeDamage ?? 0
     }
     let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false), bulletsSet)
-    addArmorPiercingToDescForBullets(bulletsData, descTbl)
+    let resultBulletName = weaponInfoData?.resultWeaponBlocks[0][0].weaponName ?? ""
+    let bullet = resultBulletName != "" ?
+      { weaponBlkName = blk, bulletName = resultBulletName, esUnitType = unit.esUnitType } : null
+    addArmorPiercingToDescForBullets(bulletsData, descTbl, bullet)
   }
   if (descTbl?.bulletPenetrationData)
     descTbl.bulletPenetrationData.__update({
@@ -907,7 +899,7 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
         expText = "".concat(loc("shop/required_rp"), " ", "<color=@activeTextColor>",
           Cost().setRp(item.reqExp).tostring(), "</color>")
 
-      let diffExp = Cost().setRp(getTblValue("diffExp", params, 0)).tostring()
+      let diffExp = Cost().setRp((params?.diffExp ?? 0)).tostring()
       if (diffExp.len())
         expText = $"{expText} (+{diffExp})"
       descTbl.expText <- expText

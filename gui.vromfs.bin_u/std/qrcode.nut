@@ -113,10 +113,10 @@ let  gexp = [
 local  strinbuf = [], eccbuf = [], qrframe = [], framask = [], rlens = [];
 
 local  version, width, neccblk1, neccblk2, datablkw, eccblkwid;
-let  ecclevel = 2;
+const  ecclevel = 2;
 
 
-function setmask(x, y) {
+function setmask(x: number, y: number) {
   local  bt;
   if (x > y) {
     bt = x;
@@ -133,7 +133,7 @@ function setmask(x, y) {
 }
 
 
-function putalign(x, y) {
+function putalign(x: number, y: number) {
   local j;
 
   qrframe[x + width * y] = 1;
@@ -187,7 +187,7 @@ function appendrs(data, dlen, ecbuf, eclen) {
 
 
 
-function ismasked(x, y) {
+function ismasked(x: number, y: number) {
   local  bt;
   if (x > y) {
     bt = x;
@@ -316,14 +316,14 @@ function applymask(m) {
 }
 
 
-let N1 = 3
-let N2 = 3
-let N3 = 40
-let N4 = 10
+const N1 = 3
+const N2 = 3
+const N3 = 40
+const N4 = 10
 
 
 
-function badruns(length) {
+function badruns(length: number) {
   local i;
   local runsbad = 0;
   for (i = 0; i <= length; i++)
@@ -752,7 +752,7 @@ function genframe(instring) {
 }
 
 
-function generateQrArray(data) {
+function generateQrArray(data): array {
   let frame = genframe(data ? data : "")
   let res = []
   local i
@@ -762,7 +762,7 @@ function generateQrArray(data) {
   return res
 }
 
-function generateQrBlocks(data) {
+function generateQrBlocks(data): table {
   let codeArr = generateQrArray(data)
   let list = []
   foreach(rowIdx, row in codeArr) {

@@ -1,19 +1,22 @@
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getOperationById
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
 let { actionWithGlobalStatusRequest,
   setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
-gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwOperationsListModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwOperationsListModal.blk"
 
@@ -232,7 +235,7 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.descHandlerWeak)
       return this.descHandlerWeak.setDescItem(this.selOperation)
 
-    let handler = gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
+    let handler = WwMapDescription.link(this.scene.findObject("item_desc"), this.selOperation, this.map)
     this.descHandlerWeak = handler.weakref()
     this.registerSubHandler(handler)
   }
@@ -328,3 +331,6 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     setDeveloperMode(false)
   }
 }
+register_gui_handler("WwOperationsListModal", WwOperationsListModal)
+
+return { WwOperationsListModal }

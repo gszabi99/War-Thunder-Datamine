@@ -1,0 +1,412 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy"
+    }
+  },
+  "imports": {
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/tank_templates/air_spawn_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/falklands/spawnareas/template_falklands_heli_spawns.blk",
+        "rankRange": [
+          20,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/falklands/airfields/template_falklands_airfields_low_ranks.blk",
+        "rankRange": [
+          0,
+          20
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/tanks/falklands/airfields/template_falklands_airfields_mid_ranks.blk",
+        "rankRange": [
+          21,
+          50
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {},
+  "areas": {
+    "fighters_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          9272.29,
+          0.0,
+          9111.76
+        ],
+        [
+          0.0,
+          13000.0,
+          0.0
+        ],
+        [
+          -9111.76,
+          0.0,
+          9272.29
+        ],
+        [
+          2050.05,
+          1000.0,
+          2624.27
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -213.976,
+          0.0,
+          -210.274
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          210.274,
+          0.0,
+          -213.976
+        ],
+        [
+          6687.52,
+          1000.0,
+          7186.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_air_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          213.976,
+          0.0,
+          210.274
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -210.274,
+          0.0,
+          213.976
+        ],
+        [
+          -2585.2,
+          1000.0,
+          -1930.06
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "bombers_arcade_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10698.8,
+          0.0,
+          10513.6
+        ],
+        [
+          0.0,
+          15000.0,
+          0.0
+        ],
+        [
+          -10513.6,
+          0.0,
+          10698.8
+        ],
+        [
+          2050.05,
+          1500.0,
+          2624.27
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -213.976,
+          0.0,
+          -210.274
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          210.274,
+          0.0,
+          -213.976
+        ],
+        [
+          7402.37,
+          1500.0,
+          7889.04
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_bombers_spawn_arcade": {
+      "type": "Sphere",
+      "tm": [
+        [
+          213.976,
+          0.0,
+          210.274
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -210.274,
+          0.0,
+          213.976
+        ],
+        [
+          -3295.45,
+          1500.0,
+          -2627.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "airfields_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          21397.6,
+          0.0,
+          21027.4
+        ],
+        [
+          0.0,
+          30000.0,
+          0.0
+        ],
+        [
+          -21027.4,
+          0.0,
+          21397.6
+        ],
+        [
+          2050.05,
+          2000.0,
+          2624.27
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -213.976,
+          0.0,
+          -210.274
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          210.274,
+          0.0,
+          -213.976
+        ],
+        [
+          12760.9,
+          2000.0,
+          13155.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_air_spawn_hardcore": {
+      "type": "Sphere",
+      "tm": [
+        [
+          213.976,
+          0.0,
+          210.274
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -210.274,
+          0.0,
+          213.976
+        ],
+        [
+          -8648.34,
+          2000.0,
+          -7887.68
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -713.253,
+          0.0,
+          -700.908
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          700.908,
+          0.0,
+          -713.253
+        ],
+        [
+          -4440.31,
+          0.000244141,
+          2400.31
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_plane_exit_zone": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -713.253,
+          0.0,
+          -700.908
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          700.908,
+          0.0,
+          -713.253
+        ],
+        [
+          8488.83,
+          0.000244141,
+          1995.19
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {},
+  "wayPoints": {}
+}

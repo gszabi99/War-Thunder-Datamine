@@ -1,22 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "%sqstd/platform.nut" import is_gdk
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { needProceedSquadInvitesAccept,
-  isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
+let { needProceedSquadInvitesAccept, isPlayerFromXboxSquadList } = require("%scripts/social/xboxSquadManager/xboxSquadManager.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { format } = require("string")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkQueueAndStart, leaveAllQueues } = require("%scripts/queue/queueManager.nut")
 let { showExpiredInvitePopup, removeInviteToSquad } = require("%scripts/invites/invites.nut")
@@ -35,12 +32,12 @@ let Squad = class (BaseInvite) {
   roomType = g_chat_room_type.SQUAD
 
   static function getUidByParams(params) {
-    return $"SQ_{getTblValue("squadId", params, "")}"
+    return $"SQ_{(params?.squadId ?? "")}"
   }
 
   function updateCustomParams(params, initial = false) {
-    this.squadId = getTblValue("squadId", params, this.squadId)
-    this.leaderId = getTblValue("leaderId", params, this.leaderId)
+    this.squadId = (params?.squadId ?? this.squadId)
+    this.leaderId = (params?.leaderId ?? this.leaderId)
 
     this.updateInviterContact()
     if (initial) {

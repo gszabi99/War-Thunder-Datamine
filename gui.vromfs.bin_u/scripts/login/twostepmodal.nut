@@ -1,21 +1,21 @@
+import "statsd" as statsd
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "chard" import get_charserver_time_sec
+from "auth_wt" import isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync, checkLoginPass
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { set_disable_autorelogin_once } = require("loginState.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { select_editbox, getObjValue } = require("%sqDagui/daguiUtil.nut")
+let { select_editbox, getObjValue } = require("%scripts/sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
-let statsd = require("statsd")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { get_charserver_time_sec } = require("chard")
-let { Timer } = require("%sqDagui/timer/timer.nut")
-let { isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync,
-  isHasGaijinPass2StepTypeSync, checkLoginPass } = require("auth_wt")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
@@ -29,7 +29,7 @@ local authDataByTypes = {
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
 
-gui_handlers.twoStepModal <- class (BaseGuiHandler) {
+let twoStepModal = class (BaseGuiHandler) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/login/twoStepModal.tpl"
   loginScene           = null
@@ -124,7 +124,8 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
     }
   }
 }
+register_gui_handler("twoStepModal", twoStepModal)
 
 return {
-  open = @(p) handlersManager.loadHandler(gui_handlers.twoStepModal, p)
+  open = @(p) handlersManager.loadHandler(twoStepModal, p)
 }

@@ -1,12 +1,10 @@
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetZoneSideByName, wwGetOperationId, wwGetPlayerSide, wwGetOperationTimeMillisec
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import ww_get_rear_zones,
-  ww_side_val_to_name, ww_get_operation_objectives
+from "%scripts/dagui_natives.nut" import ww_get_rear_zones, ww_side_val_to_name, ww_get_operation_objectives
 
 let time = require("%scripts/time.nut")
-let DataBlock  = require("DataBlock")
-let {
-  wwGetZoneSideByName, wwGetOperationId, wwGetPlayerSide, wwGetOperationTimeMillisec
-} = require("worldwar")
 
 let curOperationCountry = mkWatched(persist, "curOperationCountry", null)
 

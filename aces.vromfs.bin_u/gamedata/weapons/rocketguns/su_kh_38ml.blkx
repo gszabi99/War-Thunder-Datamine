@@ -8,8 +8,15 @@
   "mesh": "su_kh38_ml_missile",
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "su_kh_38ml",
+    "iconType": "missile_air_to_uni_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.31,
     "length": 4.2,
     "WdK": [
@@ -31,11 +38,9 @@
     "force1": 25875.0,
     "fireDelay": 0.5,
     "timeLife": 200.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 2.2,
     "maxSpeed": 410.0,
-    "endSpeed": 0.0,
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
     "rangeMax": 70000.0,
@@ -44,6 +49,9 @@
     "guidanceType": "laser",
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
+    "explosiveType": "tgaf_5m",
+    "explosiveMass": 95.0,
+    "warheadMass": 250.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -61,18 +69,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tgaf_5m",
-    "explosiveMass": 95.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_large",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -94,10 +95,6 @@
       0.0
     ],
     "isHasLaserChannel": true,
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
       "uncageBeforeLaunch": true,
       "inertialNavigation": true,
@@ -209,7 +206,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.75
       }
     },
     "DamageParts": {

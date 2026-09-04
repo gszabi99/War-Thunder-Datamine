@@ -7,7 +7,7 @@ let calcFrameColor = @(sf) sf & S_KB_FOCUS ? colors.TextActive
   : sf & S_HOVER ? colors.TextHover
   : colors.comboboxBorderColor
 
-let opaque = Color(0,0,0,255)
+const opaque = Color(0,0,0,255)
 let calcKnobColor =  @(sf) sf & S_KB_FOCUS ? (colors.TextActive | opaque)
   : sf & S_HOVER ? (colors.TextHover | opaque)
   : (colors.TextDefault | opaque)
@@ -25,20 +25,21 @@ scales.logarithmicWithZero <- {
   to = @(value, minv, maxv) scales.logarithmic.to(value.tofloat(), minv, maxv)
   from = @(factor, minv, maxv) factor == 0 ? 0 : scales.logarithmic.from(factor, minv, maxv)
 }
-let sliderLeftLoc = "Reduce value"
-let sliderRightLoc = "Increase value"
+const sliderLeftLoc = "Reduce value"
+const sliderRightLoc = "Increase value"
 
 function slider(orient, var, options={}) {
   let minval = options?.min ?? 0
   let maxval = options?.max ?? 1
   let group = options?.group ?? ElemGroup()
-  let rangeval = maxval-minval
+  let rangeval = maxval!=minval ? (maxval-minval).tofloat() : 1.0
   let scaling = options?.scaling ?? scales.linear
   let step = options?.step
   let unit = options?.unit && options?.scaling!=scales.linear
     ? options?.unit
-    : step ? step/rangeval : 0.01
-  let pageScroll = options?.pageScroll ?? step ?? 0.05
+    : step ? step.tofloat()/rangeval : 0.01
+  let pageScroll = (options?.pageScroll ?? step ?? (0.05 * rangeval)).tofloat()
+  let pageScrollNorm = pageScroll / rangeval
   let ignoreWheel = options?.ignoreWheel ?? true
 
   let knobStateFlags = Watched(0)
@@ -47,7 +48,7 @@ function slider(orient, var, options={}) {
   function knob() {
     return {
       rendObj = ROBJ_SOLID
-      size  = [fsh(1), fsh(2)]
+      size  = const [fsh(1), fsh(2)]
       group = group
       color = calcKnobColor(knobStateFlags.get())
       watch = knobStateFlags
@@ -86,7 +87,7 @@ function slider(orient, var, options={}) {
       min = 0
       max = 1
       unit
-      pageScroll
+      pageScroll = pageScrollNorm
       ignoreWheel
 
       fValue = factor
@@ -110,7 +111,7 @@ function slider(orient, var, options={}) {
           children = {
             rendObj = ROBJ_FRAME
             color = calcFrameColor(sliderStateFlags.get())
-            borderWidth = [hdpx(1),0,hdpx(1),hdpx(1)]
+            borderWidth = const [hdpx(1),0,hdpx(1),hdpx(1)]
             size = flex()
           }
         }
@@ -124,7 +125,7 @@ function slider(orient, var, options={}) {
           children = {
             rendObj = ROBJ_FRAME
             color = calcFrameColor(sliderStateFlags.get())
-            borderWidth = [1,1,1,0]
+            borderWidth = const [1,1,1,0]
             size = flex()
           }
         }

@@ -1,30 +1,31 @@
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 
 let delayedUnlockWnd = []
 function guiStartUnlockWnd(config) {
-  let unlockType = getTblValue("type", config, -1)
+  let unlockType = (config?.type ?? -1)
   if (unlockType == UNLOCKABLE_COUNTRY) {
     if (isInArray(config.id, shopCountriesList))
       return checkRankUpWindow(config.id, -1, 1, config)
     return false
   }
   else if (unlockType == "TournamentReward")
-    return gui_handlers.TournamentRewardReceivedWnd.open(config)
+    return get_gui_handler("TournamentRewardReceivedWnd")?.open(config)
 
-  loadHandler(gui_handlers.ShowUnlockHandler, { config = config })
+  loadHandler(get_gui_handler("ShowUnlockHandler"), { config = config })
   return true
 }
 
 function showUnlockWnd(config) {
-  if (isHandlerInScene(gui_handlers.ShowUnlockHandler) ||
-      isHandlerInScene(gui_handlers.RankUpModal) ||
-      isHandlerInScene(gui_handlers.TournamentRewardReceivedWnd))
+  if (isHandlerInScene(get_gui_handler("ShowUnlockHandler")) ||
+      isHandlerInScene(get_gui_handler("RankUpModal")) ||
+      isHandlerInScene(get_gui_handler("TournamentRewardReceivedWnd")))
     return delayedUnlockWnd.append(config)
 
   guiStartUnlockWnd(config)

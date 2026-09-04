@@ -3,14 +3,11 @@ require ecs
 require math
 require math.base
 require DagorMath
-require DagorMathUtils
 require DagorRandom
 require Covers
 require Dacoll
-require %game.events
 require %appGame.infantry.ai.ai_recons_common
 require DngHuman
-require DagorSystem
 
 
 

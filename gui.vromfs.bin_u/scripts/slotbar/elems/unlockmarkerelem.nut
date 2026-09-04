@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnitsWithUnlock } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")

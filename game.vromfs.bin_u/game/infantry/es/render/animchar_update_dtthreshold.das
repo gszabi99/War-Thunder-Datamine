@@ -1,6 +1,5 @@
 require ecs
 require ecs.common
-require DngHumanAnim
 require %game.events
 require WTCamera
 require AnimV20

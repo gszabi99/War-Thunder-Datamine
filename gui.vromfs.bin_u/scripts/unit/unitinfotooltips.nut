@@ -1,15 +1,16 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "string" import format
+from "math" import abs
+from "hangar" import DM_VIEWER_XRAY
+from "blkGetters" import get_unittags_blk
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
-let { format } = require("string")
-let { abs } = require("math")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { DM_VIEWER_XRAY } = require("hangar")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_unittags_blk } = require("blkGetters")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { isInFlight } = require("gameplayBinding")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let anyAirVehicle = [ ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER ]
@@ -123,6 +124,10 @@ function fillTooltipsIds(holderObj, unit) {
 function updateDMTooltipView(obj, info) {
   info.title = info.title.replace(" ", nbsp)
   obj.findObject("dmviewer_title").setValue(info.title)
+
+  let shortDescObj = showObjById("dmviewer_short_desc", info.shortDesc != "", obj)
+  shortDescObj.setValue(info.shortDesc)
+
   let descObj = obj.findObject("dmviewer_desc")
 
   if (info.desc != null) {
@@ -269,9 +274,14 @@ addTooltipTypes({
       if (!obj?.isValid())
         return false
 
-      let { value = null, textLoc = null, text = null } = params
+      let { value = null, textLoc = null, text = null, title = null, shortDesc = null } = params
       let guiScene = obj.getScene()
       guiScene.replaceContent(obj, "%gui/unitInfo/simpleTooltip.blk", handler)
+      if (title)
+        obj.findObject("title").setValue(title)
+      let shortDescObj = showObjById("shortDesc", !!shortDesc, obj)
+      if (shortDesc)
+        shortDescObj.setValue(shortDesc)
       obj.findObject("description").setValue(text ?? loc(textLoc ?? $"info/{value}/tooltip"))
       obj.findObject("button-div").show(false)
       return true

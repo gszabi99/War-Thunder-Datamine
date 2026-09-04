@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers
 
 module assert_once shared private
@@ -17,7 +15,7 @@ require daslib/rtti
 require daslib/ast_boost
 require daslib/templates_boost
 
-[tag_function(asset_once_tag)]
+[tag_function(asset_once_tag), unused_argument(expr)]
 def public assert_once(expr : bool; message : string = "") {
     
     pass
@@ -25,11 +23,6 @@ def public assert_once(expr : bool; message : string = "") {
 
 [tag_function_macro(tag="asset_once_tag")]
 class AssertOnceMacro : AstFunctionAnnotation {
-    
-    
-    
-    
-    
     
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         let once_name = make_unique_private_name("__assert_once", call.at)

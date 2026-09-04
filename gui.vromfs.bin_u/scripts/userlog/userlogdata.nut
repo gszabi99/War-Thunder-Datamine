@@ -1,35 +1,34 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/datablock.nut" import convertBlk
+from "string" import format
+from "unlocks" import isUnlockNeedPopup, isUnlockNeedPopupInMenu
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import get_user_logs_count, warbonds_has_active_battle_task,
-  get_user_log_blk_body
+from "%globalScripts/shopItemConsts.nut" import *
+from "%scripts/dagui_natives.nut" import get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body
 from "%scripts/items/itemsConsts.nut" import itemType
+
 let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { trophyRewardWnd, guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
-let { disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog,
-  getLogNameByType
-} = require("%scripts/userLog/userlogUtils.nut")
+let { disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog, getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { removeUserstatItemRewardToShow, userstatItemsListLocId
-} = require("%scripts/userstat/userstatItemsRewards.nut")
+let { removeUserstatItemRewardToShow, userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
-let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
-} = require("%scripts/clans/clanFlushExpInfoModal.nut")
+let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo } = require("%scripts/clans/clanFlushExpInfoModal.nut")
 let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
 let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
-let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInMenu, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
@@ -37,10 +36,8 @@ let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
-let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
@@ -66,7 +63,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
     currentData[combineKey] <- {}
 
   foreach (param, value in body) {
-    let haveParam = getTblValue(param, currentData[combineKey])
+    let haveParam = currentData[combineKey]?[param]
     if (!haveParam)
       currentData[combineKey][param] <- [value]
     else if (isInArray(param, sumParamsArray))
@@ -121,7 +118,7 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       if (onStartAwards)
         continue
 
-      let title = ""
+      const title = ""
       local msg = ""
       let logTypeName = getLogNameByType(blk?.type)
       if (blk?.type == EULT_SESSION_RESULT) {
@@ -189,7 +186,7 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
           && !isUnlockNeedPopupInMenu(blk.body.unlockId))
         || !(popupMask & USERLOG_POPUP.UNLOCK)) {
         if (!onStartAwards && (!blk?.body.popupInDebriefing
-          || !isHandlerInScene(gui_handlers.DebriefingModal))) {
+          || !isHandlerInScene(get_gui_handler("DebriefingModal")))) {
           if (unlockType == UNLOCKABLE_TITLE
               || unlockType == UNLOCKABLE_DECAL
               || unlockType == UNLOCKABLE_SKIN
@@ -251,8 +248,8 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
     }
     else if (blk?.type == EULT_RENT_UNIT || blk?.type == EULT_RENT_UNIT_EXPIRED) {
       let logTypeName = getLogNameByType(blk.type)
-      let logName = getTblValue("rentContinue", blk.body, false) ? "rent_unit_extended" : logTypeName
-      let unitName = getTblValue("unit", blk.body)
+      let logName = (blk.body?.rentContinue ?? false) ? "rent_unit_extended" : logTypeName
+      let unitName = blk.body?.unit
       let unit = getAircraftByName(unitName)
       let config = {
         unitName = unitName
@@ -266,7 +263,7 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       if (blk?.type == EULT_RENT_UNIT) {
         config.desc = $"{config.desc}\n"
 
-        let rentTimeHours = time.secondsToHours(getTblValue("rentTimeLeftSec", blk.body, 0))
+        let rentTimeHours = time.secondsToHours((blk.body?.rentTimeLeftSec ?? 0))
         let timeText = colorize("userlogColoredText", time.hoursToString(rentTimeHours))
         config.desc = "".concat(config.desc, loc("mainmenu/rent/rentTimeSec", { time = timeText }))
 
@@ -283,14 +280,14 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       markDisabled = true
     }
     else if (blk?.type == EULT_OPEN_TROPHY
-             && !getTblValue("everyDayLoginAward", blk.body, false)) {
+             && !(blk.body?.everyDayLoginAward ?? false)) {
       if ("rentedUnit" in blk.body)
         ignoreRentItems.append("_".concat(blk.body.rentedUnit, getLogNameByType(EULT_RENT_UNIT)))
 
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
 
-      if(handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null)
+      if(handlersManager.findHandlerClassInScene(trophyRewardWnd) != null)
         continue
 
       let itemId = blk?.body.itemDefId ?? blk?.body.trophyItemDefId ?? blk?.body.id ?? ""
@@ -329,9 +326,9 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       }
     }
     else if (blk?.type == EULT_CHARD_AWARD
-             && getTblValue("rewardType", blk.body, "") == "EveryDayLoginAward"
+             && (blk.body?.rewardType ?? "") == "EveryDayLoginAward"
              && isNewbieInited() && !isMeNewbie()
-             && !isHandlerInScene(gui_handlers.DebriefingModal)) {
+             && !isHandlerInScene(get_gui_handler("DebriefingModal"))) {
       handler.doWhenActive(@() showEveryDayLoginAwardWnd(blk))
     }
     else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {
@@ -415,7 +412,7 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       markDisabled = true
     }
     else if (blk?.type == EULT_REMOVE_ITEM) {
-      let reason = getTblValue("reason", blk.body, "unknown")
+      let reason = (blk.body?.reason ?? "unknown")
       if (reason == "replaced") {
         let recycledId = blk.body.id.tostring()
         if (recycledItems?[recycledId] == null)
@@ -426,7 +423,7 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
       if (reason == "unknown" || reason == "consumed") {
         let logTypeName = getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}/{reason}"
-        let itemId = getTblValue("id", blk.body, "")
+        let itemId = (blk.body?.id ?? "")
         let item = findItemById(itemId)
         if (item && item.iType == itemType.TICKET)
           addPopup("",

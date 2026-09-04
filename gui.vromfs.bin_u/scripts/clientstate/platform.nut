@@ -1,18 +1,11 @@
+from "auth_wt" import get_player_tags
+from "%sqstd/platform.nut" import isXboxScarlett, isXboxOne, isXbox, isPS4, isPS5, isSony, isPC
+  , is_console, consoleRevision, is_android, platformId, is_gdk
+from "steam" import is_running_on_steam_deck
 from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement
 from "%scripts/dagui_library.nut" import *
-from "%sqstd/platform.nut" import is_android, platformId, is_gdk
-let { get_player_tags } = require("auth_wt")
-let {
-  isXboxScarlett,
-  isXboxOne,
-  isXbox,
-  isPS4,
-  isPS5,
-  isSony,
-  isPC,
-  is_console,
-  consoleRevision } = require("%sqstd/platform.nut")
-let { is_running_on_steam_deck } = require("steam")
+from "%globalScripts/sceRegionConsts.nut" import *
+
 let { isXBoxPlayerName, isPS4PlayerName } = require("%scripts/user/nickTools.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 

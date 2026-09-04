@@ -1,13 +1,15 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isTable, isEmpty, isString, appendOnce
+from "%sqstd/underscore.nut" import isArray
+from "%sqstd/datablock.nut" import convertBlk
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_user_log_time_sec, save_online_single_job, disable_user_log_entry, disable_user_log_entry_by_id, get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
+from "types" import String, Array
 
-let DataBlock = require("DataBlock")
-let { isTable, isEmpty, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { isArray } = require("%sqstd/underscore.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { hasKnowPrize } = require("%scripts/items/prizesUtils.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
@@ -103,9 +105,9 @@ function checkPopupUserLog(user_log_blk) {
         continue
       let rewardType = user_log_blk?.body.rewardType
       let rewardTypeFilter = popupItem.rewardType
-      if (type(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
+      if (rewardTypeFilter instanceof String && rewardTypeFilter == rewardType)
         return true
-      if (type(rewardTypeFilter) == "array" && isInArray(rewardType, rewardTypeFilter))
+      if (rewardTypeFilter instanceof Array && isInArray(rewardType, rewardTypeFilter))
         return true
     }
     else if (popupItem == user_log_blk?.type)
@@ -234,7 +236,7 @@ function isUserlogVisible(blk, filter, idx) {
     return false
   if (("checkFunc" in filter) && !filter.checkFunc(blk))
     return false
-  if (getTblValue("currentRoomOnly", filter, false) && !is_user_log_for_current_room(idx))
+  if ((filter?.currentRoomOnly ?? false) && !is_user_log_for_current_room(idx))
     return false
   if (haveHiddenItem(blk?.body.itemDefId ?? blk?.itemDefId))
     return false
@@ -270,8 +272,8 @@ function getUserLogsList(filter) {
 
   let grabStatickReward = function (reward, logObj) {
     if (reward.awardType == "base_win_award") {
-      logObj.baseTournamentWp <- getTblValue("wp", reward, 0)
-      logObj.baseTournamentGold <- getTblValue("gold", reward, 0)
+      logObj.baseTournamentWp <- (reward?.wp ?? 0)
+      logObj.baseTournamentGold <- (reward?.gold ?? 0)
       return true
     }
     return false
@@ -284,7 +286,7 @@ function getUserLogsList(filter) {
     if (!isUserlogVisible(blk, filter, i))
       continue
 
-    let unlock = getUnlockById(getTblValue("unlockId", blk.body))
+    let unlock = getUnlockById(blk.body?.unlockId)
 
     let logObj = {
       idx = i
@@ -357,7 +359,7 @@ function getUserLogsList(filter) {
       let curLog = logs[dubIdx]
       
       if (curLog?.item && logObj?.item)
-        curLog.item = type(curLog.item) == "array" ? curLog.item.append(logObj.item)
+        curLog.item = curLog.item instanceof Array ? curLog.item.append(logObj.item)
           : [curLog.item].append(logObj.item)
       
       if (!curLog?.item && !logObj?.item)

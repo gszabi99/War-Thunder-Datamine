@@ -1,17 +1,19 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { ShopMenuHandler } = require("%scripts/shop/shop.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
-gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
+let ShopViewWnd = class (ShopMenuHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -19,7 +21,7 @@ gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
   needHighlight = false
 
   static function open(params) {
-    handlersManager.loadHandler(gui_handlers.ShopViewWnd, params)
+    handlersManager.loadHandler(get_gui_handler("ShopViewWnd"), params)
   }
 
   function getSceneTplView() { return { hasMaxWindowSize = isSmallScreen } }
@@ -52,9 +54,10 @@ gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function goBack() {
-    gui_handlers.BaseGuiHandlerWT.goBack.call(this)
+    BaseGuiHandlerWT.goBack.call(this)
   }
 }
+register_gui_handler("ShopViewWnd", ShopViewWnd)
 
 function openShopViewWndFromPromo(params) {
   let unitName = params?[0] ?? ""
@@ -63,7 +66,7 @@ function openShopViewWndFromPromo(params) {
     return
 
   let country = unit.shopCountry
-  let showUnitInShop = @() gui_handlers.ShopViewWnd.open({
+  let showUnitInShop = @() ShopViewWnd.open({
     curAirName = unitName
     forceUnitType = unit?.unitType
     needHighlight = unitName != ""
@@ -82,3 +85,5 @@ function openShopViewWndFromPromo(params) {
 }
 
 addPromoAction("show_unit", @(_handler, params, _obj) openShopViewWndFromPromo(params))
+
+return { ShopViewWnd }

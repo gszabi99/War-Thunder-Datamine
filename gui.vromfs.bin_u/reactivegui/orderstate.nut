@@ -1,7 +1,6 @@
+from "%sqstd/underscore.nut" import isEqual
+from "eventbus" import eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
-
-let { isEqual } = require("%sqstd/underscore.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 let statusText = mkWatched(persist, "statusText", "")
 let statusTextBottom = mkWatched(persist, "statusTextBottom", "")

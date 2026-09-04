@@ -1,16 +1,15 @@
+from "%rGui/planeState/planeWeaponState.nut" import ShellFPVModeValid, ShellFPVTargetX, ShellFPVTargetY, ShellFPVHasTarget, ShellFPVMaxZoom, ShellFPVCameraLimX, ShellFPVCameraLimY
+  , ShellFPVAnglesLocked, ShellFPVTimeOfFlight
 from "%rGui/globals/ui_library.nut" import *
-let { ShellFPVModeValid, ShellFPVTargetX, ShellFPVTargetY, ShellFPVHasTarget,
-  ShellFPVMaxZoom, ShellFPVCameraLimX, ShellFPVCameraLimY, ShellFPVAnglesLocked,
-  ShellFPVTimeOfFlight } = require("%rGui/planeState/planeWeaponState.nut")
 
-let baseColor = Color(255, 255, 255, 255)
-let blackColor = Color(0, 0, 0, 255)
-let redColor = Color(255, 0, 0, 255)
-let baseLineWidth = 4
-let baseFontSize = 40
+const baseColor = Color(255, 255, 255, 255)
+const blackColor = Color(0, 0, 0, 255)
+const redColor = Color(255, 0, 0, 255)
+const baseLineWidth = 4
+const baseFontSize = 40
 
 let crosshairBlackOutline = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = 0.5 * baseLineWidth
   fillColor = 0
@@ -35,7 +34,7 @@ let crosshairBlackOutline = {
 }
 
 let crosshair = {
-  size = [ph(10), ph(10)]
+  size = const [ph(10), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   lineWidth = baseLineWidth
@@ -62,7 +61,7 @@ let crosshair = {
 
 
 let target = @() {
-  size = [ph(4), ph(4)]
+  size = const [ph(4), ph(4)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   fillColor = 0
@@ -83,7 +82,7 @@ let target = @() {
 
 
 let noSignal = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_TEXT
   color = redColor
   font = Fonts.hud
@@ -98,7 +97,7 @@ let timeOfFlight = @() {
   size = SIZE_TO_CONTENT
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
-  pos = [0, ph(7)]
+  pos = const [0, ph(7)]
   rendObj = ROBJ_TEXT
   color = baseColor
   font = Fonts.hud
@@ -129,8 +128,8 @@ let area = @() {
 
 let angleLimits = @() {
   watch = [ShellFPVCameraLimX, ShellFPVCameraLimY]
-  size = [pw(14), ph(14)]
-  pos = [pw(43), ph(73)]
+  size = const [pw(14), ph(14)]
+  pos = const [pw(43), ph(73)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   fillColor = 0
@@ -154,7 +153,7 @@ let angleLimits = @() {
 
 let page = @(){
   watch = [ShellFPVModeValid, ShellFPVHasTarget, ShellFPVAnglesLocked]
-  size = flex()
+  size = FLEX
   children = [
     ShellFPVModeValid.get() ? crosshair : noSignal,
     ShellFPVModeValid.get() ? area : null,

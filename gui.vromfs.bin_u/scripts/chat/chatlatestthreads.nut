@@ -1,17 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "string" import split_by_chars
+from "dagor.time" import get_time_msec
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { split_by_chars } = require("string")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
-let { get_game_settings_blk } = require("blkGetters")
 let { getCurLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
 let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
@@ -47,7 +47,7 @@ function forceAutoRefreshInSecond() {
   if (state == chatUpdateState.IN_PROGRESS)
     return
 
-  let diffSec = 1000
+  const diffSec = 1000
   lastUpdatetTime = get_time_msec() - autoUpdatePeriodMsec + diffSec
   
   lastRequestTime = get_time_msec() - REQUEST_TIMEOUT_MSEC + diffSec
@@ -182,7 +182,7 @@ function openChatThreadsChooseLangsMenu(align = "top", alignObj = null) {
         selected = isInArray(lang, curLangs)
       })
 
-  loadHandler(gui_handlers.MultiSelectMenu, {
+  loadHandler(MultiSelectMenu, {
     list = optionsList
     onFinalApplyCb = setSearchLangs
     align = align

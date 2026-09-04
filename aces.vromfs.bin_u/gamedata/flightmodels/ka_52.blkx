@@ -11,6 +11,7 @@
   "haveCCIPForTurret": true,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hasAimingPointsMemory": true,
   "ils28K": true,
   "mfdCamShkvalKa52": true,
   "rwrIndicator": "L-150 Ka-52",
@@ -80,11 +81,7 @@
       },
       "transmission1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 30.5
-      },
-      "apu1_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
+        "hp": 39.4
       }
     },
     "c_dural10": {
@@ -103,7 +100,8 @@
     },
     "c_dural15": {
       "fuse_dm": {
-        "hp": 125.5
+        "hp": 125.5,
+        "deadExplProb": 0.5
       }
     },
     "c_dural3": {
@@ -112,7 +110,7 @@
       },
       "rudder_dm": {
         "genericDamageMult": 0.3,
-        "hp": 30.5
+        "hp": 50.5
       },
       "stab1_dm": {
         "hp": 29.5
@@ -122,7 +120,10 @@
       }
     },
     "dural": {
-      "cover1_dm": {
+      "apu1_dm": {
+        "hp": 19.5
+      },
+      "cockpit_countrol1_dm": {
         "hp": 19.5
       },
       "cover5_dm": {
@@ -136,34 +137,31 @@
       },
       "cover8_dm": {
         "hp": 19.5
+      },
+      "electronic_block1_dm": {
+        "hp": 19.5
+      },
+      "electronic_block2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block3_dm": {
+        "hp": 19.5
+      },
+      "electronic_block4_dm": {
+        "hp": 19.5
+      },
+      "ircm1_dm": {
+        "hp": 19.5
+      },
+      "ircm2_dm": {
+        "hp": 19.5
+      },
+      "optic_block1_dm": {
+        "hp": 19.5
       }
     },
     "dural5": {
       "radar_dm": {
-        "hp": 35.0
-      },
-      "optic_block1_dm": {
-        "hp": 35.0
-      },
-      "cockpit_countrol1_dm": {
-        "hp": 60.0
-      },
-      "electronic_block1_dm": {
-        "hp": 60.0
-      },
-      "electronic_block2_dm": {
-        "hp": 60.0
-      },
-      "electronic_block3_dm": {
-        "hp": 60.0
-      },
-      "electronic_block4_dm": {
-        "hp": 60.0
-      },
-      "ircm1_dm": {
-        "hp": 35.0
-      },
-      "ircm2_dm": {
         "hp": 35.0
       }
     },
@@ -174,10 +172,10 @@
     },
     "protected_controls": {
       "propeller_shaft1_dm": {
-        "hp": 60.5
+        "hp": 80.5
       },
       "propeller_shaft2_dm": {
-        "hp": 60.5
+        "hp": 80.5
       },
       "tailcontrol_dm": {
         "hp": 80.5
@@ -213,27 +211,29 @@
         "hp": 20.0
       },
       "pilot_dm": {
-        "fireProtectionHp": 20.0,
         "hp": 20.0
       }
     },
     "steel_tank_m": {
       "tank1_dm": {
-        "hp": 80.5
+        "hp": 75.5
       },
       "tank2_dm": {
-        "hp": 80.5
+        "hp": 65.5
       },
       "tank3_dm": {
-        "hp": 80.5
+        "hp": 44.5
       },
       "tank4_dm": {
-        "hp": 80.5
+        "hp": 44.5
       }
     }
   },
   "DamageEffects": {
     "part": [
+      {
+        "name": "apu1_dm"
+      },
       {
         "name": "armor1_dm"
       },
@@ -259,7 +259,7 @@
         "name": "cannon5_dm"
       },
       {
-        "name": "cover1_dm"
+        "name": "cockpit_countrol1_dm"
       },
       {
         "name": "cover5_dm"
@@ -272,6 +272,18 @@
       },
       {
         "name": "cover8_dm"
+      },
+      {
+        "name": "electronic_block1_dm"
+      },
+      {
+        "name": "electronic_block2_dm"
+      },
+      {
+        "name": "electronic_block3_dm"
+      },
+      {
+        "name": "electronic_block4_dm"
       },
       {
         "name": "engine1_dm",
@@ -612,6 +624,12 @@
         "name": "gunner1_dm"
       },
       {
+        "name": "ircm1_dm"
+      },
+      {
+        "name": "ircm2_dm"
+      },
+      {
         "name": "oil1_dm",
         "onHit": {
           "leak_oil": 0.95
@@ -639,6 +657,9 @@
         }
       },
       {
+        "name": "optic_block1_dm"
+      },
+      {
         "name": "pilot_dm"
       },
       {
@@ -648,91 +669,25 @@
         "name": "propeller_shaft2_dm"
       },
       {
-        "name": "radar_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "optic_block1_dm"
-      },
-      {
-        "name": "cockpit_countrol1_dm"
-      },
-      {
-        "name": "electronic_block1_dm"
-      },
-      {
-        "name": "electronic_block2_dm"
-      },
-      {
-        "name": "electronic_block3_dm"
-      },
-      {
-        "name": "electronic_block4_dm"
-      },
-      {
-        "name": "apu1_dm"
-      },
-      {
-        "name": "ircm1_dm"
-      },
-      {
-        "name": "ircm2_dm"
+        "name": "radar_dm"
       },
       {
         "name": "rudder_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
+            "damage": 50.0,
             "cut": 0.7
           },
           {
-            "damage": 50.0,
+            "damage": 70.0,
             "cut": 1.0
           }
         ],
         "onKill": [
           {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
             "damage": 30.0,
             "cut": 1.0,
-            "nothing": 1.0
+            "nothing": 2.0
           },
           {
             "damage": 50.0,
@@ -858,26 +813,30 @@
         "name": "tank1_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "leak": 0.1
+            "fire": 0.005,
+            "leak": 0.3
           },
           {
-            "damage": 40.0,
-            "fire": 0.02,
-            "leak": 0.2
+            "damage": 3.0,
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
-            "expl": 0.05,
-            "fire": 0.5,
-            "leak": 0.5
+            "expl": 0.5,
+            "fire": 0.4,
+            "leak": 0.9
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "expl": 0.1,
-            "fire": 0.6,
-            "leak": 0.2,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -891,19 +850,19 @@
         ],
         "onKill": [
           {
-            "fire": 0.005,
-            "leak": 0.3,
-            "nothing": 1.0
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
           },
           {
             "damage": 50.0,
-            "fire": 0.2,
-            "leak": 1.0
+            "fire": 45.0,
+            "leak": 25.0
           },
           {
             "damage": 80.0,
-            "fire": 0.3,
-            "leak": 1.0
+            "fire": 50.0,
+            "leak": 20.0
           },
           {
             "damage": 200.0,
@@ -915,26 +874,30 @@
         "name": "tank2_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "leak": 0.1
+            "fire": 0.005,
+            "leak": 0.3
           },
           {
-            "damage": 40.0,
-            "fire": 0.02,
-            "leak": 0.2
+            "damage": 3.0,
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
-            "expl": 0.05,
-            "fire": 0.5,
-            "leak": 0.5
+            "expl": 0.5,
+            "fire": 0.4,
+            "leak": 0.9
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "expl": 0.1,
-            "fire": 0.6,
-            "leak": 0.2,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -948,19 +911,19 @@
         ],
         "onKill": [
           {
-            "fire": 0.005,
-            "leak": 0.3,
-            "nothing": 1.0
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
           },
           {
             "damage": 50.0,
-            "fire": 0.2,
-            "leak": 1.0
+            "fire": 45.0,
+            "leak": 25.0
           },
           {
             "damage": 80.0,
-            "fire": 0.3,
-            "leak": 1.0
+            "fire": 50.0,
+            "leak": 20.0
           },
           {
             "damage": 200.0,
@@ -972,26 +935,30 @@
         "name": "tank3_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "leak": 0.1
+            "fire": 0.005,
+            "leak": 0.3
           },
           {
-            "damage": 40.0,
-            "fire": 0.02,
-            "leak": 0.2
+            "damage": 3.0,
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
-            "expl": 0.05,
-            "fire": 0.5,
-            "leak": 0.5
+            "expl": 0.5,
+            "fire": 0.4,
+            "leak": 0.9
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "expl": 0.1,
-            "fire": 0.6,
-            "leak": 0.2,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1005,19 +972,19 @@
         ],
         "onKill": [
           {
-            "fire": 0.005,
-            "leak": 0.3,
-            "nothing": 1.0
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
           },
           {
             "damage": 50.0,
-            "fire": 0.2,
-            "leak": 1.0
+            "fire": 45.0,
+            "leak": 25.0
           },
           {
             "damage": 80.0,
-            "fire": 0.3,
-            "leak": 1.0
+            "fire": 50.0,
+            "leak": 20.0
           },
           {
             "damage": 200.0,
@@ -1029,26 +996,30 @@
         "name": "tank4_dm",
         "onHit": [
           {
-            "damage": 10.0,
-            "leak": 0.1
+            "fire": 0.005,
+            "leak": 0.3
           },
           {
-            "damage": 40.0,
-            "fire": 0.02,
-            "leak": 0.2
+            "damage": 3.0,
+            "fire": 0.01,
+            "leak": 0.5
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.1,
+            "leak": 0.7
           },
           {
             "damage": 80.0,
-            "expl": 0.05,
-            "fire": 0.5,
-            "leak": 0.5
+            "expl": 0.5,
+            "fire": 0.4,
+            "leak": 0.9
           },
           {
             "damage": 200.0,
             "damageType": "explosion",
-            "expl": 0.1,
-            "fire": 0.6,
-            "leak": 0.2,
+            "expl": 0.5,
+            "fire": 0.5,
             "canCut": true
           },
           {
@@ -1062,19 +1033,19 @@
         ],
         "onKill": [
           {
-            "fire": 0.005,
-            "leak": 0.3,
-            "nothing": 1.0
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
           },
           {
             "damage": 50.0,
-            "fire": 0.2,
-            "leak": 1.0
+            "fire": 45.0,
+            "leak": 25.0
           },
           {
             "damage": 80.0,
-            "fire": 0.3,
-            "leak": 1.0
+            "fire": 50.0,
+            "leak": 20.0
           },
           {
             "damage": 200.0,
@@ -1157,7 +1128,6 @@
       },
       {
         "name": "wing_l_dm",
-        "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -1165,115 +1135,60 @@
           },
           {
             "damage": 10.0,
-            "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
-            "part": {
-              "ratio": 0.1,
-              "canCut": true
-            }
+            "smoke": 0.2,
+            "flame": 0.3
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
             "smoke": 0.3,
-            "flame": 0.3,
-            "part": {
-              "ratio": 0.2,
-              "canCut": true
-            }
+            "flame": 0.4
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
             "smoke": 0.4,
-            "flame": 0.4,
-            "part": {
-              "ratio": 0.4,
-              "canCut": true
-            }
+            "flame": 0.5
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
-            "part": {
-              "ratio": 0.8,
-              "canCut": true
-            }
+            "smoke": 0.5,
+            "flame": 0.6
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
             "smoke": 0.8,
-            "flame": 0.8,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "flame": 0.8
           }
         ],
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 1.0,
-            "smoke": 1.0,
-            "flame": 1.0,
-            "nothing": 9.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 0.2,
+            "flame": 0.2
           },
           {
             "damage": 20.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "nothing": 5.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 0.2,
+            "flame": 0.2
           },
           {
             "damage": 30.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "nothing": 3.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 0.5,
+            "flame": 0.6
           },
           {
             "damage": 50.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "nothing": 1.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 1.0,
+            "flame": 1.1
           },
           {
             "damage": 70.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 1.0,
+            "flame": 1.1
           }
         ]
       },
       {
         "name": "wing_r_dm",
-        "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -1281,109 +1196,55 @@
           },
           {
             "damage": 10.0,
-            "cut": 0.0,
-            "smoke": 0.3,
-            "flame": 0.3,
-            "part": {
-              "ratio": 0.1,
-              "canCut": true
-            }
+            "smoke": 0.2,
+            "flame": 0.3
           },
           {
             "damage": 20.0,
-            "cut": 0.0,
             "smoke": 0.3,
-            "flame": 0.3,
-            "part": {
-              "ratio": 0.2,
-              "canCut": true
-            }
+            "flame": 0.4
           },
           {
             "damage": 30.0,
-            "cut": 0.0,
             "smoke": 0.4,
-            "flame": 0.4,
-            "part": {
-              "ratio": 0.4,
-              "canCut": true
-            }
+            "flame": 0.5
           },
           {
             "damage": 50.0,
-            "cut": 0.0,
-            "smoke": 0.6,
-            "flame": 0.6,
-            "part": {
-              "ratio": 0.8,
-              "canCut": true
-            }
+            "smoke": 0.5,
+            "flame": 0.6
           },
           {
             "damage": 70.0,
-            "cut": 0.0,
             "smoke": 0.8,
-            "flame": 0.8,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "flame": 0.8
           }
         ],
         "onKill": [
           {
             "damage": 10.0,
-            "cut": 1.0,
-            "smoke": 1.0,
-            "flame": 1.0,
-            "nothing": 9.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 0.2,
+            "flame": 0.2
           },
           {
             "damage": 20.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "nothing": 5.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 0.2,
+            "flame": 0.2
           },
           {
             "damage": 30.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "nothing": 3.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 0.5,
+            "flame": 0.6
           },
           {
             "damage": 50.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "nothing": 1.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 1.0,
+            "flame": 1.1
           },
           {
             "damage": 70.0,
-            "cut": 1.0,
-            "smoke": 2.0,
-            "flame": 2.0,
-            "part": {
-              "ratio": 1.0,
-              "canCut": true
-            }
+            "smoke": 1.0,
+            "flame": 1.1
           }
         ]
       },
@@ -1393,7 +1254,7 @@
     ]
   },
   "ikPilot": {
-    "model": "su_pilot_late_char",
+    "model": "su_pilot_late_heli_zsh_7ap_no_nvu_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1470,7 +1331,7 @@
     ]
   },
   "ikGunner": {
-    "model": "su_pilot_late_char",
+    "model": "su_pilot_late_heli_zsh_7ap_no_nvu_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1969,6 +1830,10 @@
           ],
           "page": [
             {
+              "type": "custom",
+              "pageName": "mfdKa52Instruments"
+            },
+            {
               "type": "target_tracking_bw",
               "turretIdx": 0
             },
@@ -1977,18 +1842,16 @@
               "turretIdx": 0
             },
             {
-              "type": "ils_duplicate"
-            },
-            {
               "type": "custom",
-              "pageName": "mi35flt"
+              "pageName": "mfdKa52Wpn"
             },
             {
               "type": "rwr"
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "customRadar": "ka52Radar",
+              "fontSize": 20
             }
           ]
         },
@@ -2005,7 +1868,7 @@
             },
             {
               "type": "custom",
-              "pageName": "mi35flt"
+              "pageName": "mfdKa52Instruments"
             },
             {
               "type": "target_tracking_bw",
@@ -2016,11 +1879,13 @@
               "turretIdx": 0
             },
             {
-              "type": "ils_duplicate"
+              "type": "radar",
+              "customRadar": "ka52Radar",
+              "fontSize": 20
             },
             {
-              "type": "radar",
-              "scale": 0.95
+              "type": "custom",
+              "pageName": "mfdKa52Wpn"
             }
           ]
         },
@@ -2033,92 +1898,17 @@
           ],
           "page": [
             {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "font": "hud",
-              "fontSize": 18,
-              "lineWidth": 2.0,
-              "lineColor": [
-                255,
-                90,
-                30,
-                255
-              ],
-              "orient": "hdgUp",
-              "centerMarkType": "cross",
-              "centerMarkFillColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "centerMarkLineColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "centerMarkScale": 0.1,
-              "centerMarkSpeed": false,
-              "spi": true,
-              "spiColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "spiInfo": true,
-              "distScale": true,
-              "distScaleBeyondAzScale": false,
-              "distScaleStepSize": 25000.0,
-              "distScaleColor": [
-                255,
-                90,
-                30,
-                255
-              ],
-              "distScaleNumbers": true,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "azScaleType": "lines",
-              "azScaleSize": 50000.0,
-              "azScaleColor": [
-                255,
-                255,
-                255,
-                255
-              ],
-              "headingIndFillColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "centerCross": false,
-              "time": false,
-              "mapBackground": false,
-              "extent": 130000.0,
-              "markers": true,
-              "metricUnits": true
+              "type": "custom",
+              "pageName": "mfdKa52Compass"
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "customRadar": "ka52Radar",
+              "fontSize": 20
             },
             {
               "type": "custom",
-              "pageName": "mi35flt"
+              "pageName": "mfdKa52Instruments"
             },
             {
               "type": "target_tracking_bw",
@@ -2127,9 +1917,6 @@
             {
               "type": "thermal",
               "turretIdx": 0
-            },
-            {
-              "type": "ils_duplicate"
             },
             {
               "type": "rwr"
@@ -2145,6 +1932,10 @@
           ],
           "page": [
             {
+              "type": "custom",
+              "pageName": "mfdKa52Wpn"
+            },
+            {
               "type": "target_tracking_bw",
               "turretIdx": 0
             },
@@ -2154,19 +1945,28 @@
             },
             {
               "type": "custom",
-              "pageName": "mi35flt"
-            },
-            {
-              "type": "ils_duplicate"
+              "pageName": "mfdKa52Instruments"
             },
             {
               "type": "rwr"
             },
             {
               "type": "radar",
-              "scale": 0.95
+              "customRadar": "ka52Radar",
+              "fontSize": 20
             }
           ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            0.25,
+            0.5
+          ],
+          "page": {
+            "type": "rwr"
+          }
         },
         {
           "textureArea": [

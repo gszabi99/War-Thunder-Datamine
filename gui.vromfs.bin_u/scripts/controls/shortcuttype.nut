@@ -1,14 +1,15 @@
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/enums.nut" import addTypes, enumsAddTypes
+from "string" import split_by_chars
+from "globalEnv" import ControlHelpersMode
+from "%sqstd/functools.nut" import KWARG_NON_STRICT
+from "%sqstd/string.nut" import endsWith
+from "controls" import isXInputDevice, getShortcutButtonName
+from "%sqstd/platform.nut" import isPC
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let regexp2 = require("regexp2")
-let { split_by_chars } = require("string")
-let { addTypes, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { ControlHelpersMode } = require("globalEnv")
-let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputItem,
-  isShortcutMapped, isAxisMappedOnMouse, getMouseAxis } = require("%scripts/controls/shortcutsUtils.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
-let { endsWith } = require("%sqstd/string.nut")
-let { isXInputDevice, getShortcutButtonName } = require("controls")
+let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputItem, isShortcutMapped, isAxisMappedOnMouse, getMouseAxis } = require("%scripts/controls/shortcutsUtils.nut")
 let { CONTROL_TYPE, AXIS_MODIFIERS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { NullInput } = require("%scripts/controls/input/nullInput.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
@@ -20,7 +21,6 @@ let { InputImage } = require("%scripts/controls/input/image.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let { isPC } = require("%sqstd/platform.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 let getNullInput = @(shortcutId, showShortcutsNameIfNotAssign)
@@ -239,7 +239,7 @@ enumsAddTypes(g_shortcut_type, {
       let shortcutConfig = getShortcutById(shortcutId)
       if (!shortcutConfig)
         return g_shortcut_type.isAxisShortcut(shortcutId)
-      return getTblValue("type", shortcutConfig) != CONTROL_TYPE.AXIS
+      return shortcutConfig?.type != CONTROL_TYPE.AXIS
     }
 
     isAssigned = function (shortcutId, preset = null) {
@@ -274,7 +274,7 @@ enumsAddTypes(g_shortcut_type, {
   AXIS = {
     isMe = function (shortcutId) {
       let shortcutConfig = getShortcutById(shortcutId)
-      return getTblValue("type", shortcutConfig) == CONTROL_TYPE.AXIS
+      return shortcutConfig?.type == CONTROL_TYPE.AXIS
     }
 
 
@@ -401,9 +401,9 @@ enumsAddTypes(g_shortcut_type, {
       return ""
     }
 
-    isAssigned = function (shortcutId, preset = null) {
+    isAssigned = function (shortcutId, _preset = null) {
       let fullAxisId = this.getAxisName(shortcutId)
-      return isAssignedToAxis(fullAxisId, preset) || isHalfAxisAssignedToShortcuts(this.transformHalfAxisToShortcuts(shortcutId))
+      return isAssignedToAxis(fullAxisId) || isHalfAxisAssignedToShortcuts(this.transformHalfAxisToShortcuts(shortcutId))
     }
 
     expand = function (shortcutId, showKeyBoardShortcutsForMouseAim) {
@@ -519,6 +519,14 @@ enumsAddTypes(g_shortcut_type, {
         input.isCompositAxis = true
         return [input]
       }
+
+      let axesTexts = []
+      foreach (axis in axes) {
+        let axisDesc = g_shortcut_type._getDeviceAxisDescription(axis)
+        if (axisDesc.axisId >= 0)
+          axesTexts.append(Axis(axisDesc, AXIS_MODIFIERS.NONE, preset).getText())
+      }
+      doubleAxis.text = " + ".join(axesTexts, true)
 
       return g_shortcut_type.AXIS.getUseAxisShortcuts(axes, doubleAxis, preset)
     })

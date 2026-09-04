@@ -1,21 +1,19 @@
+from "string" import format
+from "%sqstd/math.nut" import number_of_set_bits, is_bit_set
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import roman_numerals, locOrStrip
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { format } = require("string")
-let { number_of_set_bits, is_bit_set } = require("%sqstd/math.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
-let { isBitModeType, getMainProgressCondition, getProgressBarData
-} = require("%scripts/unlocks/unlocksConditions.nut")
+let { isBitModeType, getMainProgressCondition, getProgressBarData } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, getUnlockType, isUnlockOpened, canClaimUnlockReward,
-  isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit,
-  isUnlockVisible, hasSpecialMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, getUnlockType, isUnlockOpened, canClaimUnlockReward, isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit, isUnlockVisible, hasSpecialMultiStageLocId, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator, getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
@@ -25,8 +23,7 @@ let { hasActiveUnlock, getUnitListByUnlockId } = require("%scripts/unlocks/unloc
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { makeConfigStr } = require("%scripts/seen/bhvUnseen.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
-let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType
-} = require("%scripts/customization/decoratorBaseType.nut")
+let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
@@ -37,10 +34,7 @@ let { isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 
-let { buildConditionsConfig, getUnlockDesc, getFullUnlockDescByName, getUnlockMultDescByCfg,
-  getUnlockMultDesc, getUnlockCondsDescByCfg, getUnlockCondsDesc, getUnlockMainCondDesc,
-  getUnlockMainCondDescByCfg, getLocForBitValues, getUnlockNameText, getSubUnlockLocName,
-  getUnlockLocName } = require("%scripts/unlocks/unlocksState.nut")
+let { buildConditionsConfig, getUnlockDesc, getFullUnlockDescByName, getUnlockMultDescByCfg, getUnlockMultDesc, getUnlockCondsDescByCfg, getUnlockCondsDesc, getUnlockMainCondDesc, getUnlockMainCondDescByCfg, getLocForBitValues, getUnlockNameText, getSubUnlockLocName, getUnlockLocName } = require("%scripts/unlocks/unlocksState.nut")
 
 
 const MAX_STAGES_NUM = 10 
@@ -339,7 +333,7 @@ function getRewardText(unlockConfig, stageNum) {
   if (("stages" in unlockConfig) && (stageNum in unlockConfig.stages))
     unlockConfig = unlockConfig.stages[stageNum]
 
-  let reward = getTblValue("reward", unlockConfig, null)
+  let reward = unlockConfig?.reward
   let text = reward ? reward.tostring() : ""
   if (text != "")
     return $"{loc("challenge/reward")} <color=@activeTextColor>{text}</color>"
@@ -475,14 +469,15 @@ function fillUnlockProgressBar(unlockConfig, unlockObj) {
   if (!data.show)
     return
 
-  obj.setValue(data.value)
+  let isCompleted = isUnlockComplete(unlockConfig) || isUnlockOpened(unlockConfig.id)
+  obj.setValue(!isCompleted ? data.value : 1000)
 
   let markersNestObj = unlockObj.findObject("progress_markers_nest")
   if (!markersNestObj?.isValid())
     return
 
   let { markers, tooltip } = getProgressBarViewData(unlockConfig)
-  if (markers.len() > 0) {
+  if (markers.len() > 0 && !isCompleted) {
     markersNestObj.show(true)
     markersNestObj.tooltip = tooltip
     let markup = handyman.renderCached("%gui/unlocks/unlockProgressMarkers.tpl", { markers })
@@ -572,7 +567,7 @@ function fillUnlockPurchaseButton(unlockData, unlockObj) {
   let unlockId = unlockData.id
   purchButtonObj.unlockId = unlockId
   let isUnlocked = isUnlockOpened(unlockId)
-  let haveStages = getTblValue("stages", unlockData, []).len() > 1
+  let haveStages = (unlockData?.stages ?? []).len() > 1
   let cost = getUnlockCost(unlockId)
   let canSpendGold = cost.gold == 0 || hasFeature("SpendGold")
   let isPurchaseTime = isUnlockVisibleByTime(unlockId, false)
@@ -1006,7 +1001,7 @@ addTooltipTypes({
         text.append(viewDecoratorType.getLocDesc(name))
 
         text = locOrStrip("\n".join(text, true))
-        let textBlock = "textareaNoTab {smallFont:t='yes'; max-width:t='0.5@sf'; text:t='%s';}"
+        const textBlock = "textareaNoTab {smallFont:t='yes'; max-width:t='0.5@sf'; text:t='%s';}"
         guiScene.appendWithBlk(obj, format(textBlock, text), this)
       }
       else

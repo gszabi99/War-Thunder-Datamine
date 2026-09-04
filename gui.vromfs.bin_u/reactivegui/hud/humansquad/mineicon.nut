@@ -1,5 +1,5 @@
+from "%rGui/style/colors.nut" import commonIconColor
 from "%rGui/globals/ui_library.nut" import *
-let { commonIconColor } = require("%rGui/style/colors.nut")
 
 let mineIconNames = {
   antitank_mine = "mine_antitank.svg"

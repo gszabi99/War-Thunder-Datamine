@@ -1,20 +1,21 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
+from "string" import split_by_chars
+from "%sqstd/math.nut" import round, round_by_value
+from "worldwar" import wwGetOperationWinner, wwGetSpeedupFactor
+from "guiMission" import MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_zone_capture_time_sec, ww_side_val_to_name, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { split_by_chars } = require("string")
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { round, round_by_value } = require("%sqstd/math.nut")
-let DataBlock  = require("DataBlock")
-let { wwGetOperationWinner, wwGetSpeedupFactor } = require("worldwar")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED } = require("guiMission")
 let { getOppositeSide, getOperationTimeSec } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
@@ -146,7 +147,7 @@ let wwObjectiveType = {
     colorize = {
       holdTimeSec = "warning"
     }
-    getColorizeByParam = function(param) { return getTblValue(param, this.colorize) }
+    getColorizeByParam = function(param) { return this.colorize?[param] }
 
     getValueByParam = function(param, blk, side = null, useConverter = true) {
       local value = blk?[param]

@@ -1,10 +1,11 @@
+from "string" import split_by_chars
+from "dagor.time" import unixtime_to_utc_timetbl
+from "%sqstd/string.nut" import startsWith, slice
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
 from "%scripts/clans/clanState.nut" import is_in_clan
-let { split_by_chars } = require("string")
-let { unixtime_to_utc_timetbl } = require("dagor.time")
-let { startsWith, slice } = require("%sqstd/string.nut")
+
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
 
@@ -52,7 +53,7 @@ class ClanSeasonTitle {
   function iconParams() {}
 }
 
-let class ClanSeasonPlaceTitle (ClanSeasonTitle) {
+class ClanSeasonPlaceTitle (ClanSeasonTitle) {
   place = ""
   seasonType = ""
   seasonTag = null
@@ -130,7 +131,7 @@ let class ClanSeasonPlaceTitle (ClanSeasonTitle) {
     if (this.seasonType != "worldWar" || !this.seasonTag)
       return null
 
-    let bg_img = "clan_medal_ww_bg"
+    const bg_img = "clan_medal_ww_bg"
     let path = this.isWinner() ? this.place : "rating"
     let bin_img = $"clan_medal_ww_{this.seasonTag}_bin_{path}"
     local place_img =$"clan_medal_ww_{this.place}"

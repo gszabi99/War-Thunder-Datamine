@@ -9,7 +9,6 @@ require DagorSystem
 require SmokeOccluder
 require GridCollision
 require HumanPhys
-require DngWeapon
 require DngHuman
 require DaWeapons
 require AnimV20
@@ -20,7 +19,6 @@ require RendInst
 require %game.events
 require %game.input.input_events
 require %appGame.infantry.input.aim_assist_common
-require %appGame.infantry.es.team_common
 require %appGame.infantry.es.human_weap_common
 
 

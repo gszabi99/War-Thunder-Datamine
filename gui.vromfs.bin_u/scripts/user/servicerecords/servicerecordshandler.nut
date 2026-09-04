@@ -1,18 +1,19 @@
+from "math" import floor
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { floor } = require("math")
 let { getUnitName, reUnitLocNameSeparators } = require("%scripts/unit/unitInfo.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getStats } = require("%scripts/myStats.nut")
-let { getUnitsStatsFiltersView, applyUnitsStatsFilterChange,
-  getUnitsStatsSelectedFilters } = require("%scripts/user/serviceRecords/serviceRecordsFilter.nut")
+let { getUnitsStatsFiltersView, applyUnitsStatsFilterChange, getUnitsStatsSelectedFilters } = require("%scripts/user/serviceRecords/serviceRecordsFilter.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
@@ -53,7 +54,7 @@ function filterListFunc(item, nameFilter) {
   return true
 }
 
-local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local ServiceRecordsHandler = class (BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/profile/serviceRecordsPage.blk"
 
@@ -185,11 +186,11 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateUnitsList() {
     let data = []
-    let posWidth = "0.05@scrn_tgt"
-    let rcWidth = "0.04@scrn_tgt"
-    let nameWidth = "0.2@scrn_tgt"
-    let countryWidth = "0.08@scrn_tgt"
-    let rankWidth = "70@sf/@pf"
+    const posWidth = "0.05@scrn_tgt"
+    const rcWidth = "0.04@scrn_tgt"
+    const nameWidth = "0.2@scrn_tgt"
+    const countryWidth = "0.08@scrn_tgt"
+    const rankWidth = "70@sf/@pf"
     let headerRow = [
       { width = posWidth, text = "#", tdalign = "center"}
       { id = "country", width = countryWidth, text="#options/country", cellType = "splitLeft",
@@ -345,7 +346,7 @@ local ServiceRecordsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ServiceRecordsHandler <- ServiceRecordsHandler
+register_gui_handler("ServiceRecordsHandler", ServiceRecordsHandler)
 
 return {
   openServiceRecordsPage = @(params = {}) handlersManager.loadHandler(ServiceRecordsHandler, params)

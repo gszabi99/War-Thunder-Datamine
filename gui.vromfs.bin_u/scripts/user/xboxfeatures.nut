@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/platform.nut" import is_gdk
+from "%gdkLib/crossnetwork.nut" import multiplayerPrivilege
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { check_crossnetwork_play_privilege, check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
-let { multiplayerPrivilege } = require("%gdkLib/crossnetwork.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 local multiplayerPrivelegeCallback = null
 local crossplayPrivelegeCallback = null

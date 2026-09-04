@@ -1,18 +1,20 @@
 from "%sqstd/frp.nut" import *
 from "daRg" import *
+from "types" import Table, Array, String
 
 function dtext(val, params={}, addchildren = null) {
   if (val == null)
     return null
-  if (type(val)=="table") {
+  if (val instanceof Table) {
     params = val.__merge(params)
     val = params?.text
   }
   local children = params?.children
-  if (children && type(children) !="array")
+  if (children && !(children instanceof Array))
     children = [children]
-  if (addchildren && children) {
-    if (type(addchildren) == "array")
+  if (addchildren) {
+    children = children ?? []
+    if (addchildren instanceof Array)
       children.extend(addchildren)
     else
       children.append(addchildren)
@@ -21,11 +23,11 @@ function dtext(val, params={}, addchildren = null) {
   let watch = params?.watch
   local watchedtext = false
   local txt = ""
-  if (type(val) == "string")  {
+  if (val instanceof String)  {
     txt = val
   }
   local obsVal = null
-  if (type(val) == "instance" && isObservable(val)) {
+  if (isObservable(val)) {
     txt = val.get()
     obsVal = val
     watchedtext = true
@@ -37,7 +39,7 @@ function dtext(val, params={}, addchildren = null) {
   }.__update(params, {text = txt})
   ret.__update({children=children})
   if (watchedtext) {
-    let baseWatch = watch ? (type(watch) == "array" ? watch : [watch]) : []
+    let baseWatch = watch ? (watch instanceof Array ? watch : [watch]) : []
     return function() {
       return ret.__merge({text = obsVal.get(), watch = [].extend(baseWatch, [obsVal])})
     }

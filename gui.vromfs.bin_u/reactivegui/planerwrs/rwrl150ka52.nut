@@ -1,23 +1,22 @@
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/planeRwrs/rwrL150Components.nut" import color, settings, createCompass, rwrTargetsComponent
+from "string" import format
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
+let { styleText } = require("%rGui/planeRwrs/rwrL150Components.nut")
 
-let { FlaresCount, ChaffsCount} = require("%rGui/airState.nut")
-
-let { color, styleText, settings, createCompass, rwrTargetsComponent} = require("%rGui/planeRwrs/rwrL150Components.nut")
-
-let baseColor = Color(10, 255, 10)
-let baseLineWidth = 3
-let baseFontSize = 15
-let whiteColor = Color(255, 255, 255)
+const baseColor = Color(10, 255, 10)
+const baseLineWidth = 3
+const baseFontSize = 15
+const whiteColor = Color(255, 255, 255)
 
 function createRwrGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = color,
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
@@ -35,14 +34,14 @@ function createRwrGrid(gridStyle) {
 }
 
 function createRwrGridMarks(gridStyle, settingsIn) {
-  let gridFontSizeMult = 2.0
+  const gridFontSizeMult = 2.0
   return {
-    size = flex(),
+    size = FLEX,
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(22), ph(8)]
-        size = flex()
+        pos = const [ph(22), ph(8)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult * 0.7
@@ -50,8 +49,8 @@ function createRwrGridMarks(gridStyle, settingsIn) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(58), ph(8)]
-        size = flex()
+        pos = const [ph(58), ph(8)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult * 0.7
@@ -59,8 +58,8 @@ function createRwrGridMarks(gridStyle, settingsIn) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(92), ph(8)]
-        size = flex()
+        pos = const [ph(92), ph(8)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult * 0.7
@@ -73,7 +72,7 @@ function createRwrGridMarks(gridStyle, settingsIn) {
 function rwrGridMarksComponent(gridStyle) {
   return @() {
     watch = settings
-    size = flex()
+    size = FLEX
     children = createRwrGridMarks(gridStyle, settings.get())
   }
 }
@@ -85,11 +84,11 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(22), ph(17)],
+        pos = const [pw(22), ph(17)],
         size = const [pw(70), ph(70)],
         children = [
           {
-            size = [ph(100), ph(100)],
+            size = const [ph(100), ph(100)],
             children = [
               rwrTargetsComponent(style.object, 100.0),
               createRwrGrid(style.grid),
@@ -104,11 +103,11 @@ function scope(scale, style) {
 }
 
 let labels = {
-  size = flex()
+  size = FLEX
   children = [
     {
       rendObj = ROBJ_VECTOR_CANVAS
-      pos = [pw(-14), ph(-13)]
+      pos = const [pw(-14), ph(-13)]
       size = const [pw(100), ph(100)]
       color = whiteColor
       fillColor = Color(0, 0, 0, 0)
@@ -121,12 +120,12 @@ let labels = {
       rendObj = ROBJ_SOLID
       color = baseColor
       size = const [pw(6), ph(3)]
-      pos = [pw(100), ph(2)]
+      pos = const [pw(100), ph(2)]
     }
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(-3), ph(-20)]
+      pos = const [pw(-3), ph(-20)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -135,7 +134,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(13), ph(-20)]
+      pos = const [pw(13), ph(-20)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -144,7 +143,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(30), ph(-20)]
+      pos = const [pw(30), ph(-20)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -153,7 +152,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(46), ph(-20)]
+      pos = const [pw(46), ph(-20)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -162,7 +161,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(63), ph(-20)]
+      pos = const [pw(63), ph(-20)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -171,7 +170,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(80), ph(-20)]
+      pos = const [pw(80), ph(-20)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -181,12 +180,12 @@ let labels = {
       rendObj = ROBJ_SOLID
       color = baseColor
       size = const [pw(8), ph(3)]
-      pos = [pw(82), ph(95)]
+      pos = const [pw(82), ph(95)]
     }
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(10), ph(119)]
+      pos = const [pw(10), ph(119)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -195,7 +194,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(23), ph(119)]
+      pos = const [pw(23), ph(119)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -204,7 +203,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(88), ph(-5)]
+      pos = const [pw(88), ph(-5)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -213,7 +212,7 @@ let labels = {
     {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
-      pos = [pw(88), ph(8)]
+      pos = const [pw(88), ph(8)]
       color = whiteColor
       font = Fonts.ils31
       fontSize = baseFontSize
@@ -225,7 +224,7 @@ let labels = {
 let chaff = {
   rendObj = ROBJ_FRAME
   size = const [pw(15), ph(10)]
-  pos = [pw(55), ph(-40)]
+  pos = const [pw(55), ph(-40)]
   borderColor = color
   borderWidth = baseLineWidth
   borderRadius = hdpx(5)
@@ -253,7 +252,7 @@ let chaff = {
 let flare = {
   rendObj = ROBJ_FRAME
   size = const [pw(15), ph(10)]
-  pos = [pw(55), ph(-53)]
+  pos = const [pw(55), ph(-53)]
   borderColor = color
   borderWidth = baseLineWidth
   borderRadius = hdpx(10)
@@ -278,7 +277,7 @@ let flare = {
   ]
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

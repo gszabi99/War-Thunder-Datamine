@@ -11,7 +11,6 @@ require math.ang
 require Dacoll
 require math.base
 require %appGame.infantry.es.human_gun_common
-require %appGame.infantry.es.multiple_guns_slot_common
 require %appGame.infantry.es.human_weap_common
 require GeomNodeTree
 require DagorSystem
@@ -186,37 +185,14 @@ def launcher_add_timer_es(evt : Event;
                           var shell__explTime : float&)
   shell__explTime += explTimeAdd
 
-
-
-
 def create_shell_smoke_fx(shell__shell_id__shell_id : PropsId; pos : float3)
   proj_damage_fx_get_props(shell__shell_id__shell_id) <| $(dmgProps : ProjDamageFxProps)
-    static_if typeinfo(builtin_function_exists @@ < (arg0 : ProjDamageFxProps const implicit; arg1 : float3 const& implicit) : void > Weapon::maybe_create_explosion_smoke)
-      maybe_create_explosion_smoke(dmgProps, pos)
-      if dmgProps.smokeShell
-        if dmgProps.smokeFxId < 0
-          logerr("incorrect fx name for smoke grenade")
-          return
-        create_smoke(dmgProps, pos)
-    else
-      
-      if dmgProps.smokeShell
-        let fxName := get_name_by_type(dmgProps.smokeFxId)
-        if empty(fxName)
-          logerr("incorrect fx name for smoke grenade")
-          return
-        create_smoke(dmgProps.smokeActivateTime, dmgProps.smokeDeactivateTime,
-          dmgProps.smokeTime, pos, dmgProps.smokeShellRad,
-          49u,
-          dmgProps.smokeExplosionFxId, false, fxName);
-
-
-[unused_argument(eid)]
-def do_shell_explosion(pos : float3; shell_id : PropsId; owner : EntityId; eid : EntityId)
-  static_if typeinfo(builtin_function_exists @@ < (arg0 : float3 const& implicit; arg1 : PropsId const implicit; arg2 : EntityId; arg3 : EntityId) : void > Weapon::do_explosion)
-    do_explosion(pos, shell_id, owner, eid)
-  else
-    do_explosion(pos, shell_id, owner)
+    maybe_create_explosion_smoke(dmgProps, pos)
+    if dmgProps.smokeShell
+      if dmgProps.smokeFxId < 0
+        logerr("incorrect fx name for smoke grenade")
+        return
+      create_smoke(dmgProps, pos)
 
 
 def clear_projectile_entity_impl(eid : EntityId;
@@ -282,7 +258,7 @@ def shell_explode_server_es(info : UpdateStageInfoAct;
   let pos = *animchar.nodeTree |> geomtree_getNodeWpos(shell__explNodeIdx)
   entity_destroyer__destroyAtTime = info.curTime + shell__destroyDelay
 
-  do_shell_explosion(pos, shell__shell_id__shell_id, shell__owner, eid)
+  do_explosion(pos, shell__shell_id__shell_id, shell__owner, eid)
   create_shell_smoke_fx(shell__shell_id__shell_id, pos)
   sendEvent(eid, EventShellExplodedServer(pos = pos, vel = proj__velocity))
 
@@ -350,7 +326,7 @@ def shell_explode_client_es(info : UpdateStageInfoAct;
   if clientSide == null
     spawn_explosion_effect(shell_explosion_fx__infoTemplate, pos)
 
-  do_shell_explosion(pos, shell__shell_id__shell_id, shell__owner, eid)
+  do_explosion(pos, shell__shell_id__shell_id, shell__owner, eid)
   if is_server()
     sendEvent(eid, EventShellExplodedServer(pos = pos, vel = proj__velocity))
     create_shell_smoke_fx(shell__shell_id__shell_id, pos)
@@ -384,13 +360,13 @@ def explode_shell_on_contact(evt : EventProjectilePhysContact;
                                             shellId = props_pack_for_net(shell__shell_id__shell_id),
                                             shellOwner = shell__owner))
 
-  do_shell_explosion(evt.pos, shell__shell_id__shell_id, shell__owner, eid)
+  do_explosion(evt.pos, shell__shell_id__shell_id, shell__owner, eid)
   sendEvent(eid, EventShellExplodedServer(pos = evt.pos, vel = evt.vel))
 
 [es(tag=netClient, REQUIRE=shell__explodeOnContact)]
 def explode_shell_on_server_shell_contact(evt : EventShellExplodeNetClient;
                                           eid : EntityId)
-  do_shell_explosion(evt.pos, PropsId(evt.shellId), evt.shellOwner, eid)
+  do_explosion(evt.pos, PropsId(evt.shellId), evt.shellOwner, eid)
 
 [es(tag=gameClient, REQUIRE=shell__explodeOnContact)]
 def explode_fx_on_server_shell_contact(evt : EventShellExplodeNetClient;

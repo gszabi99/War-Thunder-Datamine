@@ -1,16 +1,17 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import search
+from "dagor.math" import Point2
+from "worldwar" import wwGetAirfieldInfo
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let DataBlock = require("DataBlock")
-let { Point2 } = require("dagor.math")
-let { wwGetAirfieldInfo } = require("worldwar")
-let { search } = require("%sqStdLibs/helpers/u.nut")
 let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
-let { WwAirfieldFormation } = require("wwAirfieldFormation.nut")
-let { WwCustomFormation } = require("wwCustomFormation.nut")
-let { WwAirfieldCooldownFormation } = require("wwAirfieldCooldownFormation.nut")
+let { WwAirfieldFormation } = require("%scripts/worldWar/inOperation/model/wwAirfieldFormation.nut")
+let { WwCustomFormation } = require("%scripts/worldWar/inOperation/model/wwCustomFormation.nut")
+let { WwAirfieldCooldownFormation } = require("%scripts/worldWar/inOperation/model/wwAirfieldCooldownFormation.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let WwAirfieldView = require("%scripts/worldWar/inOperation/view/wwAirfieldView.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")

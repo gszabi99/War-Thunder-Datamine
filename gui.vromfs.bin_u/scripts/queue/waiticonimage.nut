@@ -1,11 +1,12 @@
+from "dagor.random" import rnd
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getCurEsUnitTypesList } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let FULL_CIRCLE_GRAD = 360
+const FULL_CIRCLE_GRAD = 360
 
 function getQueueWaitIconImageMarkup() {
   let esUnitTypes = getCurEsUnitTypesList(false)

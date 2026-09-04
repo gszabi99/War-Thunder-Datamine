@@ -1,16 +1,17 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
-gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT) {
+let GampadCursorControlsSplash = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controls/gamepadCursorControlsSplash.blk"
 
@@ -84,7 +85,7 @@ gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT)
   bubblesList = [ "dirpad", "lstick", "rstick", "actionx" ]
 
   static function open() {
-    loadHandler(gui_handlers.GampadCursorControlsSplash)
+    loadHandler(get_gui_handler("GampadCursorControlsSplash"))
   }
 
   static function shouldDisplay() {
@@ -141,3 +142,6 @@ gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT)
     }
   }
 }
+register_gui_handler("GampadCursorControlsSplash", GampadCursorControlsSplash)
+
+return { GampadCursorControlsSplash }

@@ -1,10 +1,11 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
+from "worldwar" import wwGetPlayerSide
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+let { WwOperationLog } = require("%scripts/worldWar/inOperation/handler/wwOperationLog.nut")
+let { wwObjective } = require("%scripts/worldWar/inOperation/handler/wwObjective.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { wwGetPlayerSide } = require("worldwar")
 
 let g_ww_map_info_type = {
   types = []
@@ -28,7 +29,7 @@ enumsAddTypes(g_ww_map_info_type, {
   OBJECTIVE = {
     index = 0
     getMainBlockHandler = function(placeObj, side = null, handlerParams = null) {
-      return handlersManager.loadHandler(gui_handlers.wwObjective, {
+      return handlersManager.loadHandler(wwObjective, {
         scene = placeObj,
         side = side || wwGetPlayerSide()
         restrictShownObjectives = true
@@ -39,7 +40,7 @@ enumsAddTypes(g_ww_map_info_type, {
   LOG = {
     index = 1
     getMainBlockHandler = function(placeObj, side = null, handlerParams = null) {
-      return handlersManager.loadHandler(gui_handlers.WwOperationLog, {
+      return handlersManager.loadHandler(WwOperationLog, {
         scene = placeObj,
         side = side || wwGetPlayerSide()
       }.__update(handlerParams))

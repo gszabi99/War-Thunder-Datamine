@@ -18,6 +18,7 @@ def vehicle_horn_sound_toggle(evt : Event;
 
                               vehicle_horn_sound__note : int;
                               var vehicle_horn_sound__event : SoundEvent&;
+                              vehicle_horn_sound__localOffset : float3;
                               @shared_comp vehicle_horn_sound__path : Object;
                               sound_tags : Object;
                               is_watched_sound : bool;
@@ -29,7 +30,7 @@ def vehicle_horn_sound_toggle(evt : Event;
     vehicle_horn_sound__event.enabled = shouldPlay
     abandon(vehicle_horn_sound__event)
     if vehicle_horn_sound__event.enabled
-      vehicle_horn_sound__event |> reset(play_path(vehicle_horn_sound__path, sound_tags, is_watched_sound, transform[3], false))
+      vehicle_horn_sound__event |> reset(play_path(vehicle_horn_sound__path, sound_tags, is_watched_sound, transform * vehicle_horn_sound__localOffset, false))
       set_var_optional(vehicle_horn_sound__event, "note", float(vehicle_horn_sound__note))
       attach_to_blob(vehicle_horn_sound__event, vehicle_sound_occlusion__blob)
 
@@ -37,9 +38,10 @@ def vehicle_horn_sound_toggle(evt : Event;
 [es(tag=sound, after=sound_begin_update_es, before=sound_end_update_es)]
 def vehicle_horn_sound_update(info : ParallelUpdateFrameDelayed;
                               vehicle_horn_sound__event : SoundEvent&;
+                              vehicle_horn_sound__localOffset : float3;
                               transform : float3x4)
   if vehicle_horn_sound__event.enabled
-    set_pos(vehicle_horn_sound__event, transform[3])
+    set_pos(vehicle_horn_sound__event, transform * vehicle_horn_sound__localOffset)
 
 
 

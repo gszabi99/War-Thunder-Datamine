@@ -1,19 +1,20 @@
-from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import buildTableRow
 import "%scripts/time.nut" as time
 import "%sqstd/math.nut" as stdMath
+from "%sqstd/string.nut" import cutPrefix
+from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import buildTableRow
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 
-gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
+let LeaderboardTable = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/leaderboard/leaderboardTable.tpl"
@@ -35,7 +36,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   onRowRClickCb = null
 
   static function create(config) {
-    return handlersManager.loadHandler(gui_handlers.LeaderboardTable, config)
+    return handlersManager.loadHandler(get_gui_handler("LeaderboardTable"), config)
   }
 
   function getSceneTplView() {
@@ -136,6 +137,8 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let rawParam = bePromoted ? "background-color:t='#00031803'"
       : beDemoted ? "background-color:t='#00190705'"
       : ""
+    let nameText = needAddClanTag ? getPlayerFullName(playerName, clanTag)
+      : playerName
     let rowData = [
       {
         text = row.pos >= 0 ? (row.pos + 1).tostring() : loc("leaderboards/notAvailable")
@@ -144,9 +147,8 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
       {
         id = "name"
         tdalign = "left"
-        text = needAddClanTag
-          ? getPlayerFullName(playerName, clanTag)
-          : playerName
+        textType = "textareaNoTab"
+        text = colorizeWhitePsnIcon(nameText)
         rawParam
       }
     ]
@@ -265,3 +267,6 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
       this.onCategoryCb(obj)
   }
 }
+register_gui_handler("LeaderboardTable", LeaderboardTable)
+
+return { LeaderboardTable }

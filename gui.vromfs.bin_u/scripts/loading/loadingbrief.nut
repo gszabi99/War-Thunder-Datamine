@@ -1,36 +1,36 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import find_in_array
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, broadcastEvent
+from "blkGetters" import get_game_params_blk
+from "string" import format, split_by_chars
+from "dagor.random" import frnd
+from "guiOptions" import get_gui_option
+from "multiplayer" import is_mplayer_peer
+from "loading" import loading_is_finished, loading_press_apply, briefing_finish, loading_play_voice, loading_stop_voice, loading_stop_voice_but_named_events, loading_get_voice_len
+  , loading_is_voice_playing, loading_play_music, loading_stop_music
+from "mission" import get_game_mode, get_game_type, get_game_type_by_mode
+from "%sqstd/string.nut" import clearBorderSymbolsMultiline
+from "guiMission" import get_current_mission_desc
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound, set_presence_to_player, gchat_is_enabled
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 from "%scripts/utils_sa.nut" import is_multiplayer
+
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { get_game_params_blk } = require("blkGetters")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
-let { format, split_by_chars } = require("string")
-let { frnd } = require("dagor.random")
-let DataBlock = require("DataBlock")
-let { get_gui_option } = require("guiOptions")
-let { is_mplayer_peer } = require("multiplayer")
-let { loading_is_finished, loading_press_apply, briefing_finish, loading_play_voice,
-  loading_stop_voice, loading_stop_voice_but_named_events, loading_get_voice_len,
-  loading_is_voice_playing, loading_play_music, loading_stop_music
-} = require("loading")
-let { get_game_mode, get_game_type, get_game_type_by_mode } = require("mission")
-let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let changeStartMission = require("%scripts/missions/changeStartMission.nut")
 let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getTip } = require("%scripts/loading/loadingTips.nut")
-let { add_event_listener, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getMissionLocaltionAndConditionText, getLevelMapBackgroundColors
-} = require("%scripts/missions/missionsUtils.nut")
-let { get_current_mission_desc } = require("guiMission")
+let { getMissionLocaltionAndConditionText, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getCountryByAircraftName } = require("%scripts/unit/unitInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
@@ -49,7 +49,7 @@ add_event_listener("FinishLoading", function(_p) {
   loading_stop_music()
 })
 
-gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
+let LoadingBrief = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/loading/loadingCamp.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
@@ -512,3 +512,6 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
   hideSoundPlayed = false
   applyReady = true
 }
+register_gui_handler("LoadingBrief", LoadingBrief)
+
+return { LoadingBrief }

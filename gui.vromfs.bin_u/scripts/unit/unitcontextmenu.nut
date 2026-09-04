@@ -1,18 +1,19 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "string" import format
+from "%sqstd/functools.nut" import KWARG_NON_STRICT
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_get_country_excess_exp, wp_get_repair_cost, is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { Profile, guiStartProfile } = require("%scripts/user/profileHandler.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { getShopItem, canUseIngameShop, getShopItemsTable
-} = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { getShopItem, canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { repairWithMsgBox, flushSquadronExp, buyUnit, research } = require("%scripts/unit/unitActions.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
@@ -20,39 +21,31 @@ let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let crewModalByVehiclesGroups = require("%scripts/crew/crewModalByVehiclesGroups.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { openUrl } = require("%scripts/onlineShop/url.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { checkUnitWeapons, checkUnitSecondaryWeapons,
-  needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, canResearchUnit, isUnitInResearch,
-  isUnitDescriptionValid, isUnitUsable, isUnitFeatureLocked, isUnitResearched, isTestFlightAvailable
-} = require("%scripts/unit/unitStatus.nut")
+let { checkUnitWeapons, checkUnitSecondaryWeapons, needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
+let { canBuyNotResearched, canResearchUnit, isUnitInResearch, canShowUnitInfo, isUnitUsable, isUnitFeatureLocked, isUnitResearched, isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { getUnitName, getUnitCountry, getUnitReqExp,
-  getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitCountry, getUnitReqExp, getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { gui_start_decals, guiStartInfantryCamouflage
-} = require("%scripts/customization/contentPreview.nut")
+let { gui_start_decals, guiStartInfantryCamouflage } = require("%scripts/customization/contentPreview.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
-let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
-let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
+let { hasInWishlist, isWishlistFull, canAddUnitToWishlist } = require("%scripts/wishlist/wishlistManager.nut")
+let { tryAddToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { getCrewMaxDiscountByInfo, getCrewDiscountInfo } = require("%scripts/crew/crewDiscount.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 let { isCrewNeedUnseenIcon, gui_modal_crew } = require("%scripts/crew/crew.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { openUnitWikiInfo } = require("%scripts/unit/unitWikiInfo.nut")
 let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -65,7 +58,6 @@ let { openConvertExpModalWnd } = require("%scripts/convertExp/convertExp.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { hasUnitEvent, getUnitEventId, isUnitOnlyFromEvent } = require("%scripts/unit/unitEvents.nut")
-let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getSkinsSeenList } = require("%scripts/customization/infantryCamouflageStorage.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
@@ -178,7 +170,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon = "#ui/gameuiskin#sh_unlockachievement.svg"
       showAction = inMenu && !isSlaveUnit
       isObjective = true
-      actionFunc = @() loadHandler(gui_handlers.Profile, {
+      actionFunc = @() loadHandler(Profile, {
         initialSheet = "UnlockAchievement"
         initialUnlockId = getUnlockIdByUnitName(unit.name, curEdiff)
       })
@@ -187,7 +179,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("mainmenu/btnWeapons")
       icon       = "#ui/gameuiskin#btn_weapons.svg"
       haveWarning = checkUnitWeapons(unit, true) != UNIT_WEAPONS_READY
-        || needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit)
+        || needShowUnseenModTutorialForUnit(unit)
       haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name) > 0
       showAction = inMenu && !isSlaveUnit
       actionFunc = @() open_weapons_for_unit(unit, {
@@ -335,14 +327,9 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "info") {
       actionText = loc("mainmenu/btnAircraftInfo")
       icon       = "#ui/gameuiskin#btn_info.svg"
-      showAction = !isSlaveUnit && isUnitDescriptionValid(unit)
+      showAction = canShowUnitInfo(unit)
       isLink     = hasFeature("WikiUnitInfo")
-      actionFunc = function () {
-        if (hasFeature("WikiUnitInfo"))
-          openUrl(format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), unit.name), false, false, "unit_actions")
-        else
-          showInfoMsgBox("".concat(colorize("activeTextColor", getUnitName(unit, false)), "\n", loc("profile/wiki_link")))
-      }
+      actionFunc = @() openUnitWikiInfo(unit, "unit_actions")
     }
     else if (action == "find_in_market") {
       actionText = loc("msgbox/btn_find_on_marketplace")
@@ -378,13 +365,11 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       }
     }
     else if (action == "add_to_wishlist") {
-      let isListFull = isWishlistFull()
       actionText = loc("mainmenu/add_to_wishlist")
-      isWarning = isListFull
+      isWarning = isWishlistFull()
       icon       = "#ui/gameuiskin#add_to_wishlist.svg"
-      showAction = !isSlaveUnit && hasFeature("Wishlist") && !hasInWishlist(unit.name) && !unit.isBought()
-      actionFunc = @() isListFull ? showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
-        : addToWishlist(unit)
+      showAction = canAddUnitToWishlist(unit)
+      actionFunc = @() tryAddToWishlist(unit)
     }
     else if (action == "go_to_wishlist") {
       actionText = loc("mainmenu/go_to_wishlist")
@@ -437,7 +422,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
 let showMenu = function showMenu(params) {
   if (params?.needClose) {
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+    let handler = handlersManager.findHandlerClassInScene(ActionsList)
     handler?.close()
     if ((!showConsoleButtons.get() || is_mouse_last_time_used()) && params?.unitObj.isValid())
       if (showConsoleButtons.get())
@@ -459,7 +444,7 @@ let showMenu = function showMenu(params) {
     actions = actions
     cssParams = {["min-width"] = "1@mainMenuButtonWidth"}
   }
-  gui_handlers.ActionsList.open(params.unitObj, listData)
+  ActionsList.open(params.unitObj, listData)
 }
 
 unitContextMenuState.subscribe(@(val) val != null ? showMenu(val) : null)

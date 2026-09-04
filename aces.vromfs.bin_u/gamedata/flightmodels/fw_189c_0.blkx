@@ -1972,6 +1972,7 @@
       0.906,
       -0.038
     ],
+    "gunLightRadiusMul": 0.01,
     "lightPos": [
       0.883,
       0.425,
@@ -2061,8 +2062,8 @@
         277.778
       ],
       "vario": [
-        -15.0,
-        15.0
+        -10.0,
+        10.0
       ],
       "compass": [
         0.0,
@@ -2077,27 +2078,11 @@
         1000.0
       ],
       "altitude_koef": 1.0,
-      "aviahorizon_pitch": [
-        -45.0,
-        45.0
-      ],
-      "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
       "bank": [
         -8.0,
         8.0
       ],
-      "bank1": [
-        -8.0,
-        8.0
-      ],
       "turn": [
-        -0.23562,
-        0.23562
-      ],
-      "turn1": [
         -0.23562,
         0.23562
       ],
@@ -2109,14 +2094,6 @@
         0.6,
         1.8
       ],
-      "manifold_pressure2": [
-        0.6,
-        1.8
-      ],
-      "manifold_pressure3": [
-        0.6,
-        1.8
-      ],
       "rpm": [
         0.0,
         5000.0
@@ -2125,43 +2102,19 @@
         0.0,
         5000.0
       ],
-      "rpm2": [
-        0.0,
-        5000.0
-      ],
-      "rpm3": [
-        0.0,
-        5000.0
-      ],
       "oil_pressure": [
         0.0,
-        150.0
+        200.0
       ],
       "oil_pressure1": [
         0.0,
-        150.0
-      ],
-      "oil_pressure2": [
-        0.0,
-        150.0
-      ],
-      "oil_pressure3": [
-        0.0,
-        150.0
+        200.0
       ],
       "oil_temperature": [
         30.0,
         120.0
       ],
       "oil_temperature1": [
-        30.0,
-        120.0
-      ],
-      "oil_temperature2": [
-        30.0,
-        120.0
-      ],
-      "oil_temperature3": [
         30.0,
         120.0
       ],
@@ -2173,14 +2126,6 @@
         30.0,
         120.0
       ],
-      "water_temperature2": [
-        30.0,
-        120.0
-      ],
-      "water_temperature3": [
-        30.0,
-        120.0
-      ],
       "head_temperature": [
         0.0,
         500.0
@@ -2189,29 +2134,13 @@
         0.0,
         500.0
       ],
-      "head_temperature2": [
-        0.0,
-        500.0
-      ],
-      "head_temperature3": [
-        0.0,
-        500.0
-      ],
       "fuel_pressure": [
         0.0,
-        15.0
+        20.0
       ],
       "fuel_pressure1": [
         0.0,
-        15.0
-      ],
-      "fuel_pressure2": [
-        0.0,
-        15.0
-      ],
-      "fuel_pressure3": [
-        0.0,
-        15.0
+        20.0
       ],
       "fuel": [
         0.0,
@@ -2234,7 +2163,31 @@
         1.0
       ],
       "flaps_fixed": true,
-      "pitch_fixed": false
+      "pitch_fixed": false,
+      "ammo_counter1": [
+        500.0,
+        0.0
+      ],
+      "ammo_counter2": [
+        500.0,
+        0.0
+      ],
+      "ammo_counter3": [
+        500.0,
+        0.0
+      ],
+      "ammo_counter4": [
+        500.0,
+        0.0
+      ],
+      "ammo_counter5": [
+        500.0,
+        0.0
+      ],
+      "ammo_counter6": [
+        500.0,
+        0.0
+      ]
     },
     "parts_holes_dmg": {
       "part": "fuse"
@@ -2287,7 +2240,7 @@
         "dm": "mgun1_dm",
         "bullets": 250,
         "spread": 1.0,
-        "counterIndex": 1
+        "counterIndex": 2
       },
       {
         "trigger": "machine gun",
@@ -2298,7 +2251,7 @@
         "bullets": 250,
         "spread": 1.0,
         "traceOffset": 1,
-        "counterIndex": 2
+        "counterIndex": 5
       },
       {
         "trigger": "machine gun",
@@ -2308,7 +2261,7 @@
         "dm": "mgun3_dm",
         "bullets": 250,
         "spread": 1.0,
-        "counterIndex": 5
+        "counterIndex": 1
       },
       {
         "trigger": "machine gun",
@@ -2743,6 +2696,7 @@
     "mg15115_universal": {},
     "mg15115_air_targets": {},
     "mg15115_armor_targets": {},
+    "mg15115_stealth": {},
     "mg15115_belt_pack": {
       "tier": 3,
       "prevModification": "mg17_new_gun"

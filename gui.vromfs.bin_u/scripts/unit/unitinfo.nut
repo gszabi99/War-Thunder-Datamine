@@ -1,21 +1,23 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+import "regexp2" as regexp2
+from "scriptRespondent" import registerRespondent
+from "blkGetters" import get_ranks_blk
+from "hangar" import hangar_get_loaded_unit_name, hangar_is_high_quality
 from "%scripts/dagui_natives.nut" import shop_get_unit_exp, wp_get_cost, wp_get_cost_gold
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "types" import String
 
-let regexp2 = require("regexp2")
-let { registerRespondent } = require("scriptRespondent")
-let u = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { get_ranks_blk } = require("blkGetters")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { Cost } = require("%scripts/money.nut")
 let { findUnitNoCase, getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { hangar_get_loaded_unit_name, hangar_is_high_quality } = require("hangar")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
-let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
 
 let { havePackage } = require("%scripts/clientState/contentPacks.nut")
@@ -78,7 +80,7 @@ function get_unit_icon_by_unit(unit, iconName) {
 }
 
 function image_for_air(air) {
-  if (type(air) == "string")
+  if (air instanceof String)
     air = getAircraftByName(air)
   if (!air)
     return ""
@@ -110,7 +112,7 @@ function getUnitCountryFromTags(unit) {
 }
 
 function getUnitName(unit, shopName = true) {
-  let unitId = u.isUnit(unit) ? unit.name
+  let unitId = u.isOfClass(unit, "Unit") ? unit.name
     : u.isString(unit) ? unit
     : ""
   let localized = loc($"{unitId}{shopName ? "_shop" : "_0"}", unitId)

@@ -1,20 +1,22 @@
+from "%sqStdLibs/helpers/u.nut" import find_in_array
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_charserver_time_sec } = require("chard")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { move_mouse_on_child, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getChatThreadsList, canChooseThreadsLang } = require("%scripts/chat/chatLatestThreads.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
-gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("modifyThreadWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/modifyThreadWnd.blk"
 
@@ -238,7 +240,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
           selected = isInArray(lang.chatId, this.curLangs)
         })
 
-    loadHandler(gui_handlers.MultiSelectMenu, {
+    loadHandler(MultiSelectMenu, {
       list = optionsList
       align = "right"
       alignObj = obj
@@ -251,4 +253,4 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
                        }, this)
     })
   }
-}
+})

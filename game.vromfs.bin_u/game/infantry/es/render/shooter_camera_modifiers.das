@@ -1,7 +1,6 @@
 require ecs
 require math
 require math.base
-require DagorSystem
 
 
 [es(before=before_camera_sync)]

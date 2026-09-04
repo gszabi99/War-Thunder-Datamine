@@ -18,9 +18,16 @@
       "bloom__halation_brightness": 2.0,
       "bloom__halation_mip_factor": 2.0,
       "bloom__halation_end_mip": 1,
-      "bloom__max_mips": 7
+      "bloom__max_mips": 7,
+      "render_override_volume__lerp:list<t>": {
+        "item": [
+          "bloom__threshold",
+          "bloom__radius",
+          "bloom__mul"
+        ]
+      }
     },
-    "bloom__downsample_node:dafg::NodeHandle": {},
+    "bloom__downsample_node:resource_slot::NodeHandleWithSlotsAccess": {},
     "bloom__downsample_chain:dag::Vector<dafg::NodeHandle>": {},
     "bloom__upsample_chain:dag::Vector<dafg::NodeHandle>": {}
   },

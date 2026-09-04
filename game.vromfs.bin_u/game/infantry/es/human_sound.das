@@ -2,9 +2,7 @@
 require ecs
 require soundEvent
 require soundSystem
-require DagorSystem
 require %game.events
-require DagorConsole
 require DagorRandom
 require WTDamageModel
 

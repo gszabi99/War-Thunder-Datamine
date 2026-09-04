@@ -1,18 +1,19 @@
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, BombingMode, RocketMode, AirCannonMode
+  , GunfireSolutionPointNum, AAMRocketMode, CannonMode, BombCCIPMode, RadarTargetPosValid, RadarTargetDist, RadarTargetDistRate
+  , RadarTargetHeight, RadarTargetAngle, RadarTargetBearing
+from "%rGui/planeState/planeFlyState.nut" import Speed, BarAltitude, Roll, Aoa, Gear, ClimbSpeed, Overload, Tangage
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, mpsToFpm, baseLineWidth, metrToFeet, meterToYard, metrToNavMile
+from "%rGui/planeState/planeWeaponState.nut" import CurWeaponName, BulletImpactPoints, BulletImpactLineEnable, HasPrimaryGun
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkSUM
+from "%rGui/planeIlses/commonElements.nut" import yawIndicator, SUMAltitude
+from "%rGui/radarState.nut" import AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal
+from "%rGui/rocketAamAimState.nut" import IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState
+from "dagor.math" import cvt
+from "guidanceConstants" import GuidanceLockResult
+from "math" import sin, cos, PI, abs, log10, round
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, BombingMode, RocketMode, AirCannonMode, GunfireSolutionPointNum,
-       AAMRocketMode, CannonMode, BombCCIPMode,RadarTargetPos, RadarTargetPosValid, RadarTargetDist, RadarTargetDistRate,
-       IlsPosSize, RadarTargetHeight, RadarTargetAngle, RadarTargetBearing } = require("%rGui/planeState/planeToolsState.nut")
-let { Speed, BarAltitude, Roll, Aoa, Gear, ClimbSpeed, Overload, Tangage } = require("%rGui/planeState/planeFlyState.nut");
-let { mpsToKnots, mpsToFpm, baseLineWidth, metrToFeet, meterToYard, metrToNavMile } = require("%rGui/planeIlses/ilsConstants.nut")
-let { CurWeaponName, BulletImpactPoints, BulletImpactLineEnable, HasPrimaryGun } = require("%rGui/planeState/planeWeaponState.nut")
-let { cvt } = require("dagor.math")
-let { compassWrap, generateCompassMarkSUM } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { yawIndicator, SUMAltitude } = require("%rGui/planeIlses/commonElements.nut")
-let { AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal } = require("%rGui/radarState.nut")
-let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { sin, cos, PI, abs, log10, round } = require("math")
+let { RadarTargetPos, IlsPosSize } = require("%rGui/planeState/planeToolsState.nut")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT_STANDBY)
@@ -24,7 +25,7 @@ let HarrierAoa = @() {
   watch = [HarrierAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(3), ph(30)]
-  pos = [pw(15), ph(40)]
+  pos = const [pw(15), ph(40)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
   commands = [
@@ -43,7 +44,7 @@ let HarrierAoa = @() {
 
 let HarrierVSMarkH = Computed(function() {
     local sign = 1
-    let logCoef = 3.322
+    const logCoef = 3.322
     if (ClimbSpeed.get() < 0)
         sign = -1
 
@@ -58,7 +59,7 @@ let HarrierVerticalSpeed = @() {
   watch = [HarrierVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(3), ph(30)]
-  pos = [pw(85), ph(40)]
+  pos = const [pw(85), ph(40)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 1 * IlsLineScale.get()
   commands = [
@@ -82,7 +83,7 @@ let HarrierVerticalSpeed = @() {
 let AircraftSymbol = @() {
   watch = IlsColor
   size = const [pw(10), ph(10)]
-  pos = [pw(50), ph(40)]
+  pos = const [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -98,7 +99,7 @@ let AircraftSymbol = @() {
 let VSTOLAircraftSymbol = @() {
   watch = IlsColor
   size = const [pw(10), ph(10)]
-  pos = [pw(50), ph(40)]
+  pos = const [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -116,7 +117,7 @@ let isClimb = Computed(@() ClimbSpeed.get() > 0.0)
 let HarrierClimbAngle = @() {
   watch = [IlsColor, isClimb]
   size = const [pw(10), ph(10)]
-  pos = [pw(50), ph(30)]
+  pos = const [pw(50), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -137,7 +138,7 @@ let HarrierSpeed = @() {
   watch = [HarrierSpeedValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(14), ph(72)]
+  pos = const [pw(14), ph(72)]
   color = IlsColor.get()
   fontSize = 45
   font = Fonts.hud
@@ -149,7 +150,7 @@ let OverloadValue = @() {
   watch = [HarrierOverloadValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(14), ph(78)]
+  pos = const [pw(14), ph(78)]
   color = IlsColor.get()
   fontSize = 45
   font = Fonts.hud
@@ -165,7 +166,7 @@ let HarrierHeight = Computed(@() (BarAltitude.get() * metrToFeet).tointeger())
 function CircleHeightIndicator() {
 
   let commands = []
-  let PointsNum = 10
+  const PointsNum = 10
 
   for (local i = 0; i < PointsNum; i++) {
     let curAngle = 2 * PI * i / PointsNum
@@ -195,7 +196,7 @@ let BarometricHeightText = @() {
   rendObj = ROBJ_TEXT
   color = IlsColor.get()
   hplace = ALIGN_CENTER
-  pos = [pw(-50), ph(-8)]
+  pos = const [pw(-50), ph(-8)]
   fontSize = 45
   font = Fonts.hud
   text = $"{HarrierHeight.get().tointeger() - HarrierHeight.get().tointeger() % 20}"
@@ -205,7 +206,7 @@ let RadarHeightText = @() SUMAltitude(40, [pw(-30), ph(-8)])()
 
 let HeightIndicator = @() {
   watch = [HarrierHeight, IlsColor]
-  pos = [pw(83), ph(83)]
+  pos = const [pw(83), ph(83)]
   size = const [pw(20), ph(20)]
   children = [
     HarrierHeight.get() < 8000 ? CircleHeightIndicator : null,
@@ -216,7 +217,7 @@ let HeightIndicator = @() {
 
 function HarrierCompass(w, h) {
   return @() {
-    pos = [pw(0), ph(0)]
+    pos = const [pw(0), ph(0)]
     size = const [pw(100), ph(100)]
     watch = [IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -248,11 +249,11 @@ function generatePitchLine(num) {
   let newNum = num >= 0 ? num : (num - 5)
   return {
     size = const [pw(80), ph(50)]
-    pos = [pw(10), 0]
+    pos = const [pw(10), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -268,7 +269,7 @@ function generatePitchLine(num) {
       }
     ] : (num == 90 || num == -85 ? [
         @() {
-          size = flex()
+          size = FLEX
           watch = IlsColor
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth = baseLineWidth * IlsLineScale.get()
@@ -282,7 +283,7 @@ function generatePitchLine(num) {
       ] :
     [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -306,11 +307,11 @@ function generatePitchLine(num) {
 function LaunchLine(width, height) {
   return {
     size = [width * 0.4, height * 0.5]
-    pos = [pw(30), ph(40)]
+    pos = const [pw(30), ph(40)]
     flow = FLOW_VERTICAL
     children = [
        @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -353,7 +354,7 @@ function HorizonLines(width, height) {
 
   return {
     size = [width * 0.4, height * 0.5]
-    pos = [pw(30), ph(40)]
+    pos = const [pw(30), ph(40)]
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
@@ -368,14 +369,14 @@ function HorizonLines(width, height) {
 }
 
 let HarrierYawIndicator = @() {
-  pos = [pw(0), ph(15)]
-  size = flex()
+  pos = const [pw(0), ph(15)]
+  size = FLEX
   children = [yawIndicator]
 }
 
 let AimMark = @() {
   watch = [TargetPosValid, CCIPMode]
-  size = flex()
+  size = FLEX
   children = TargetPosValid.get() ?
     @() {
       watch = IlsColor
@@ -413,7 +414,7 @@ let AimMark = @() {
 
 let CCIPLine = @(){
   watch = [TargetPosValid]
-  size = flex()
+  size = FLEX
   children = TargetPosValid.get() ? {
     size = [baseLineWidth * IlsLineScale.get(), ph(98)]
     rendObj = ROBJ_SOLID
@@ -429,10 +430,10 @@ let CCIPLine = @(){
 
 let DepressionCarret = @(){
   watch = [TargetPosValid]
-  size = flex()
+  size = FLEX
   children = TargetPosValid.get() ? {
     size = const [pw(50), ph(50)]
-    pos = [ph(0), ph(50)]
+    pos = const [ph(0), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * IlsLineScale.get()
     color = IlsColor.get()
@@ -468,11 +469,11 @@ function getBulletImpactLineCommand() {
 
 let BulletsImpactLine = @() {
   watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
-  size = flex()
+  size = FLEX
   children = BulletImpactLineEnable.get() && !CCIPMode.get() && !isAAMMode.get() ? @() {
     watch = [BulletImpactPoints, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = getBulletImpactLineCommand()
@@ -487,7 +488,7 @@ function rangingCircleCanvas() {
     return res
   return res.__update({
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     fillColor = 0
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -497,7 +498,7 @@ function rangingCircleCanvas() {
 
 let RangingCircle = @() {
   watch = BulletImpactLineEnable
-  size = flex()
+  size = FLEX
   children = BulletImpactLineEnable.get() ? rangingCircleCanvas : null
 }
 
@@ -526,7 +527,7 @@ function rangeOctagonCanvas() {
   if (point == null)
     return res
   return res.__update({
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -536,7 +537,7 @@ function rangeOctagonCanvas() {
 
 let RangeOctagon = @() {
   watch = [RadarTargetPosValid, BulletImpactLineEnable]
-  size = flex()
+  size = FLEX
   children = BulletImpactLineEnable.get() && RadarTargetPosValid.get()
     ? rangeOctagonCanvas : null
 }
@@ -544,7 +545,7 @@ let RangeOctagon = @() {
 let WeaponHudCode = @() {
   rendObj = ROBJ_TEXT
   watch = [CurWeaponName]
-  pos = [pw(83), ph(24)]
+  pos = const [pw(83), ph(24)]
   size = SIZE_TO_CONTENT
   hplace = ALIGN_LEFT
   color = IlsColor.get()
@@ -572,7 +573,7 @@ let TargetCross = @() {
 let RadarTargetCross = @()
 {
   watch = RadarTargetPosValid
-  size = flex()
+  size = FLEX
   children = [(RadarTargetPosValid.get() ? TargetCross : null)]
   behavior = Behaviors.RtPropUpdate
   update = @() {
@@ -584,8 +585,8 @@ let RadarTargetCross = @()
 
 let HarrierRadarTargetBearing = @() {
   rendObj = ROBJ_TEXT
-  watch = [RadarTargetPosValid, RadarTargetBearing]
-  pos = [pw(13), ph(34)]
+  watch = [RadarTargetBearing, IlsColor]
+  pos = const [pw(13), ph(34)]
   size = SIZE_TO_CONTENT
   hplace = ALIGN_LEFT
   color = IlsColor.get()
@@ -596,8 +597,8 @@ let HarrierRadarTargetBearing = @() {
 
 let RadarTartgetRelHeight = @() {
   rendObj = ROBJ_TEXT
-  watch = [RadarTargetPosValid, RadarTargetHeight]
-  pos = [pw(83), ph(30)]
+  watch = [RadarTargetHeight, IlsColor, BarAltitude]
+  pos = const [pw(83), ph(30)]
   size = SIZE_TO_CONTENT
   hplace = ALIGN_LEFT
   color = IlsColor.get()
@@ -608,8 +609,8 @@ let RadarTartgetRelHeight = @() {
 
 let RadarTartgetRelVel = @() {
   rendObj = ROBJ_TEXT
-  watch = [RadarTargetPosValid, RadarTargetHeight]
-  pos = [pw(83), ph(34)]
+  watch = [RadarTargetDistRate, IlsColor]
+  pos = const [pw(83), ph(34)]
   size = SIZE_TO_CONTENT
   hplace = ALIGN_LEFT
   color = IlsColor.get()
@@ -642,7 +643,7 @@ let RadarTargetMarkerCirle = @() {
   watch = [IlsColor, RadarTargetPosValid, RadarTargetAngle]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(2.5), ph(2.5)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   color = IlsColor.get()
   fillColor = Color(0,0,0,0)
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -656,7 +657,7 @@ let RadarTargetMarkerCirle = @() {
 
 let RocketLockTargetDiamond = @() {
   watch = IlsTrackerVisible
-  size = flex()
+  size = FLEX
   children = IlsTrackerVisible.get() ?
   [
     @() {
@@ -705,10 +706,10 @@ function RadarRangeDecagon() {
 
   return {
     watch = [RadarTargetPosValid, RadarTargetDist, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal]
-    size = flex()
+    size = FLEX
     children = RadarTargetPosValid.get() ? @() {
-      watch = [IlsColor, RadarTargetDist]
-      pos = [pw(50), ph(50)]
+      watch = IlsColor
+      pos = const [pw(50), ph(50)]
       size = const [pw(150), ph(150)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
@@ -730,7 +731,7 @@ let RocketLaunchPromptText = @() {
   rendObj = ROBJ_TEXT
   watch = [IlsColor, RadarTargetDist, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal]
   size = SIZE_TO_CONTENT
-  pos = [-100, -16]
+  pos = const [-100, -16]
   hplace = ALIGN_CENTER
   color = IlsColor.get()
   fontSize = 34
@@ -739,8 +740,8 @@ let RocketLaunchPromptText = @() {
 }
 
 let RocketLaunchPrompt = @() {
-  watch = [IlsColor, RadarTargetDist, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal]
-  pos = [pw(50), ph(35)]
+  watch = IlsColor
+  pos = const [pw(50), ph(35)]
   size = const [pw(20), ph(20)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
@@ -754,7 +755,7 @@ let RocketLaunchPrompt = @() {
 
 let HarrierRadarData = @() {
   watch = [CCIPMode, RadarTargetPosValid]
-  size = flex()
+  size = FLEX
   children = RadarTargetPosValid.get() ? [
     RadarTargetCross,
     RadarTartgetRelHeight,

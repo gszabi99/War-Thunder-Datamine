@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let {WwFormation} = require("wwArmy.nut")
+let {WwFormation} = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 let WwCustomFormation = class (WwFormation) {
   constructor(blk, airfield) {

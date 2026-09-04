@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "statsd" import send_counter
+from "dagor.time" import get_time_msec
+from "mission" import get_current_mission_name, get_game_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
-
-let { send_counter } = require("statsd")
-let { get_time_msec } = require("dagor.time")
-let { get_current_mission_name, get_game_mode } = require("mission")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const SEND_DELAY_SEC = 30
 

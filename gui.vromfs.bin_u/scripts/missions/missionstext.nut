@@ -1,12 +1,14 @@
+import "DataBlock" as DataBlock
+from "guiMission" import get_current_mission_desc, get_player_army_for_hud
+from "mission" import get_game_mode, get_game_type
+from "%sqstd/string.nut" import isStringInteger, isStringFloat, capitalize
+from "string" import format
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let DataBlock = require("DataBlock")
-let { get_current_mission_desc, get_player_army_for_hud } = require("guiMission")
 let { g_team } = require("%scripts/teams.nut")
-let { get_game_mode, get_game_type } = require("mission")
-let { isStringInteger, isStringFloat, capitalize } = require("%sqstd/string.nut")
-let { format } = require("string")
 
 let customWeatherLocIds = {
   thin_clouds = "options/weatherthinclouds"

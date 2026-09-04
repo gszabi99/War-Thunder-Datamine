@@ -1,10 +1,11 @@
+import "%rGui/tankSight.nut" as mkTankSight
+import "%rGui/globals/extWatched.nut" as extWatched
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/gameRendObjs.nut" import *
 from "string" import format
-let mkTankSight = require("%rGui/tankSight.nut")
-let extWatched = require("%rGui/globals/extWatched.nut")
 
-let PREVIEW_IMAGE_WIDTH = hdpx(192)
-let PREVIEW_IMAGE_HEIGHT = hdpx(108)
+const PREVIEW_IMAGE_WIDTH = hdpx(192)
+const PREVIEW_IMAGE_HEIGHT = hdpx(108)
 
 const BG_IMAGES_COUNT = 4
 const BG_IMAGE_SRC_TEMPLATE = "ui/images/sight_menu_bg/tank_sight_preview_%d_%s.avif:0:P"
@@ -28,7 +29,7 @@ function mkPreviewImg(imgIdx) {
 
   return @() {
     watch = [isCurImgBg, stateFlags]
-    size = [PREVIEW_IMAGE_WIDTH, PREVIEW_IMAGE_HEIGHT]
+    size = const [PREVIEW_IMAGE_WIDTH, PREVIEW_IMAGE_HEIGHT]
     rendObj = ROBJ_BOX
     borderWidth = hdpx(1)
     padding = hdpx(1)
@@ -42,7 +43,7 @@ function mkPreviewImg(imgIdx) {
 
     children = @() {
       watch = [stateFlags, isCurImgBg, bgImagePostfix]
-      size = flex()
+      size = FLEX
       opacity = isCurImgBg.get() ? 1
         : stateFlags.get() & S_HOVER ? 0.8
         : 0.5
@@ -55,7 +56,7 @@ function mkPreviewImg(imgIdx) {
 
 let previewBgImagesComp = @() {
   watch = isPreviewMode
-  pos = [0, hdpx(880)]
+  pos = const [0, hdpx(880)]
   rendObj = ROBJ_BOX
   flow = FLOW_HORIZONTAL
   gap = hdpx(12)
@@ -66,13 +67,13 @@ let previewBgImagesComp = @() {
 
 let backgroundImgComp = @() {
   watch = bgImageSrc
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture(bgImageSrc.get())
 }
 
 let tankSightPreview = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_BOX
   fillColor = 0xff000000
   halign = ALIGN_CENTER
@@ -80,7 +81,7 @@ let tankSightPreview = {
     backgroundImgComp
     {
       rendObj = ROBJ_CROSSHAIR_PREVIEW
-      size = flex()
+      size = FLEX
     }
     previewBgImagesComp
     mkTankSight(true)

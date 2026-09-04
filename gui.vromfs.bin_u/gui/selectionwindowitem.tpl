@@ -14,14 +14,10 @@ img {
   <</tooltipText>>
 
   <<^enabled>>
-  tdiv {
+  imgGradient {
     pos:t='0, ph-h'
-    position:t='absolute'
     size:t='pw, ph/2'
-    background-svg-size:t='pw, ph/2'
-    background-image:t='!ui/images/profile/wnd_gradient.svg'
     background-color:t='@black'
-    background-repeat:t='expand-svg'
   }
   <</enabled>>
 

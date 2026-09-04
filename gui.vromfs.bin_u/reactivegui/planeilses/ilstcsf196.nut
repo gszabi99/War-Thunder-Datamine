@@ -1,16 +1,16 @@
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, RocketMode, CannonMode, BombCCIPMode, RadarTargetPosValid
+from "%rGui/planeState/planeFlyState.nut" import Roll, Tangage, BarAltitude
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassTCSFMark
+from "math" import fabs
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale,
-       RocketMode, CannonMode, BombCCIPMode, RadarTargetPos, RadarTargetPosValid } = require("%rGui/planeState/planeToolsState.nut")
-let { Roll, Tangage, BarAltitude } = require("%rGui/planeState/planeFlyState.nut");
-let { baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { compassWrap, generateCompassTCSFMark } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { fabs } = require("math")
+let { RadarTargetPos } = require("%rGui/planeState/planeToolsState.nut")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let tcsfAimMark = @() {
   watch = [TargetPosValid, CCIPMode]
-  size = flex()
+  size = FLEX
   children = TargetPosValid.get() ? (
     !CCIPMode.get() ?
     {
@@ -54,7 +54,7 @@ let tcsfAimMark = @() {
 
 let tcsfRadarAimMark = @() {
   watch = RadarTargetPosValid
-  size = flex()
+  size = FLEX
   children = RadarTargetPosValid.get() ? (
     {
       size = const [pw(8), ph(8)]
@@ -96,7 +96,7 @@ let tcsfRadarAimMark = @() {
 
 
 let tcsfAirSymbol = {
-  size = flex()
+  size = FLEX
   color = Color(255, 70, 10)
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
@@ -144,7 +144,7 @@ function altWrap(width, height, generateFunc) {
 let generateAltMark = function(num) {
   return {
     size = const [pw(100), ph(10)]
-    pos = [pw(15), 0]
+    pos = const [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
       @() {
@@ -158,7 +158,7 @@ let generateAltMark = function(num) {
       (num % 10 > 0 ? null :
         @() {
           watch = IlsColor
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXT
           color = IlsColor.get()
           vplace = ALIGN_CENTER
@@ -202,7 +202,7 @@ function generatePitchLine(num) {
     size = const [pw(100), ph(15)]
     flow = FLOW_VERTICAL
     children = (num == 0) ? @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -219,7 +219,7 @@ function generatePitchLine(num) {
         ]
       }
       : (num % 10 == 0) ? @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -244,8 +244,8 @@ function generatePitchLine(num) {
         ]
         children = {
           rendObj = ROBJ_TEXT
-          pos = [pw(47), pw(-2.5)]
-          size = flex()
+          pos = const [pw(47), pw(-2.5)]
+          size = FLEX
           color = IlsColor.get()
           fontSize = 30
           font = Fonts.hud
@@ -255,7 +255,7 @@ function generatePitchLine(num) {
       : @() {
         watch = IlsColor
         size = [pw(3), baseLineWidth * IlsLineScale.get()]
-        pos = [pw(48.5), 0]
+        pos = const [pw(48.5), 0]
         rendObj = ROBJ_SOLID
         color = IlsColor.get()
       }

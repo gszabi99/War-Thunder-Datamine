@@ -1,18 +1,19 @@
+from "math" import abs
+from "dagor.math" import Point2
+from "%sqstd/functools.nut" import KWARG_NON_STRICT
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { abs } = require("math")
-let { Point2 } = require("dagor.math")
-let { move_mouse_on_child_by_value, findChild, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, findChild, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getRecipesComponents } = require("%scripts/items/exchangeRecipes.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
@@ -20,9 +21,9 @@ let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 dagui_propid_add_name_id("itemId")
 
-let branchIdPrefix = "branch_"
+const branchIdPrefix = "branch_"
 let getBranchId = @(idx) "".concat(branchIdPrefix, idx)
-let posFormatString = "{0}, {1}"
+const posFormatString = "{0}, {1}"
 
 let sizeAndPosViewConfig = {
   verticalArrow = kwarg(
@@ -633,7 +634,7 @@ function getBodyBackground(bodiesConfig, itemSizes, fullBodiesHeight) {
   return backgroundView
 }
 
-local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
+local handlerClass = class (BaseGuiHandlerWT) {
   wndType          = handlerType.MODAL
   sceneBlkName     = null
   sceneTplName     = "%gui/items/craftTreeWnd.tpl"
@@ -1191,9 +1192,9 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.craftTreeWnd <- handlerClass
+register_gui_handler("craftTreeWnd", handlerClass)
 
-class CustomCraftTree(gui_handlers.craftTreeWnd) {
+class CustomCraftTree(handlerClass) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/items/craftTreeContent.tpl"
 
@@ -1207,7 +1208,7 @@ class CustomCraftTree(gui_handlers.craftTreeWnd) {
   }
 }
 
-gui_handlers.CustomCraftTree <- CustomCraftTree
+register_gui_handler("CustomCraftTree", CustomCraftTree)
 
 return {
   open = @(craftTreeParams) handlersManager.loadHandler(handlerClass, craftTreeParams)

@@ -1,6 +1,6 @@
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
 
-let HudCutscene = class (gui_handlers.BaseUnitHud) {
+let HudCutscene = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudCutscene.blk"
 }
 

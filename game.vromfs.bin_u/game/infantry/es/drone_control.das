@@ -1,7 +1,9 @@
 require ecs
 require %game.player_events
+require %game.unit.unit_events
 require %game.events
 require app
+require Unit
 
 [es(tag=server)]
 def drone_handle_switch_request_server(evt : CmdRequestSwitchControlledUnit; eid : EntityId)
@@ -64,17 +66,21 @@ def drone_release_controls_client(evt : Event; drone__launcherEid : EntityId)
 
 
 
+[es(tag=server, REQUIRE=isDrone)]
+def on_undelay_drone_es(evt : EventUnitDelayedStatusChanged;
+                        eid : EntityId;
+                        ownedByPlr : EntityId)
+  if !evt.isDelayed
+    sendEvent(ownedByPlr, CmdRequestSwitchControlledUnit(toEid = eid))
+
+
 [es(on_event=CmdDroneAcquireControls, REQUIRE=isDrone)]
 def drone_acquire_controls(evt : Event;
                            eid : EntityId;
-                           ownedByPlr : EntityId)
-  sendEvent(ownedByPlr, CmdRequestSwitchControlledUnit(toEid = eid))
-
-[es(tag=server, on_appear, REQUIRE=isDrone)]
-def drone_acquire_controls_on_drone_creation_es(evt : Event;
-                                                eid : EntityId;
-                                                ownedByPlr : EntityId)
-  sendEvent(ownedByPlr, CmdRequestSwitchControlledUnit(toEid = eid))
+                           ownedByPlr : EntityId;
+                           unit__ref : UnitRef)
+  if !unit__ref.unit.isDelayed
+    sendEvent(ownedByPlr, CmdRequestSwitchControlledUnit(toEid = eid))
 
 [es(on_event=CmdDroneReleaseControls, REQUIRE=isDrone)]
 def drone_release_controls(evt : Event;

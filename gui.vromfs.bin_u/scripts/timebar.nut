@@ -1,11 +1,10 @@
+from "math" import fabs
 from "%scripts/dagui_library.nut" import *
 
 
 
 
 
-
-let { fabs } = require("math")
 
 let _direction = {
   backward = {

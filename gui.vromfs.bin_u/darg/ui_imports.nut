@@ -1,15 +1,16 @@
 import "%sqstd/log.nut" as logLib
 from "%sqstd/string.nut" import tostring_r
-from "%sqstd/frp.nut" import Watched, Computed, ComputedImmediate, FRP_INITIAL, make_all_observables_immutable, isObservable, isComputed
+from "%sqstd/frp.nut" import Watched, Computed, ComputedImmediate, FRP_INITIAL,
+  make_all_observables_immutable, isObservable, isComputed
 
 let log = logLib([
   {
-    compare = @(val) isObservable(val)
-    tostring = @(val) "Watched: {0}".subst(tostring_r(val.get(),{maxdeeplevel = 3, splitlines=false}))
-  }
-  {
     compare = @(val) isComputed(val)
     tostring = @(val) "Computed: {0}".subst(tostring_r(val.get(),{maxdeeplevel = 3, splitlines=false}))
+  }
+  {
+    compare = @(val) isObservable(val)
+    tostring = @(val) "Watched: {0}".subst(tostring_r(val.get(),{maxdeeplevel = 3, splitlines=false}))
   }
   {
     compare = @(val) type(val)=="instance" && "formatAsString" in val

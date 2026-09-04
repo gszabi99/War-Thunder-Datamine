@@ -1,17 +1,17 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRewardDescText,
   getConditionText } = require("%scripts/events/eventRewards.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
 let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 
-gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let TournamentRewardReceivedWnd = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 
@@ -31,7 +31,7 @@ gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT
       rewardBlk = config
       eventEconomicName = config.eventId
     }
-    return handlersManager.loadHandler(gui_handlers.TournamentRewardReceivedWnd, params)
+    return handlersManager.loadHandler(get_gui_handler("TournamentRewardReceivedWnd"), params)
   }
 
   function initScreen() {
@@ -69,3 +69,4 @@ gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT
     this.goBack()
   }
 }
+register_gui_handler("TournamentRewardReceivedWnd", TournamentRewardReceivedWnd)

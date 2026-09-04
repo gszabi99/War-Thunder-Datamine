@@ -1,12 +1,9 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
-
-let { Projection } = require("wt.behaviors")
-
-let { hitMarks, hitMarkEid, useHitMark } = require("%rGui/hud/state/hit_marks_es.nut")
-let { mkColoredGradientX } = require("%rGui/style/gradients.nut")
-let { register_command } = require("console")
-
+from "%rGui/hud/state/hit_marks_es.nut" import hitMarks, hitMarkEid, useHitMark
+from "%rGui/style/gradients.nut" import mkColoredGradientX
+from "wt.behaviors" import Projection
+from "console" import register_command
+from "%rGui/globals/ui_library.nut" import *
 
 const ANIM_TRIGGER_HIT      = "hero_make_hit_anim"
 const ANIM_TRIGGER_KILL     = "hero_make_kill_anim"
@@ -14,9 +11,9 @@ const ANIM_TRIGGER_HEADSHOT = "hero_make_headshot_anim"
 const ANIM_TRIGGER_ARMOR    = "hero_make_armor_hit_anim"
 
 
-let hitColor = 0xFFFFFFFF
-let killColor = 0xFFED0905
-let armorColor = 0xCC95B3D7
+const hitColor = 0xFFFFFFFF
+const killColor = 0xFFED0905
+const armorColor = 0xCC95B3D7
 
 
 let blockWidth = evenPx(108)
@@ -33,10 +30,10 @@ let gradientLineKill = mkColoredGradientX(0x00000000, killColor, killmarkLineWid
 let gradientLineArmor = mkColoredGradientX(armorColor, armorColor, armorLineWidth)
 
 
-let animFadeOutSec = 0.01
-let animFadeInSec = 0.1
-let animHitShiftDuration = 0.075
-let opacityOnShift = 0.7
+const animFadeOutSec = 0.01
+const animFadeInSec = 0.1
+const animHitShiftDuration = 0.075
+const opacityOnShift = 0.7
 
 
 let currentHitMark = Watched(null)
@@ -133,7 +130,7 @@ let hitMarkNormal = {
     lineLeft
     lineRight
     {
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -154,7 +151,7 @@ let hitMarKill = {
     lineKillLeft
     lineKillRight
     {
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -192,7 +189,7 @@ let hitMarkHeadshot = {
     lineHeadshotLeftBlock
     lineHeadshotRightBlock
     {
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -212,7 +209,7 @@ let hitMarkArmor = {
     lineArmorLeft
     lineArmorRight
     {
-      size = flex()
+      size = FLEX
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       children = [
@@ -250,7 +247,7 @@ function mkHitMarks() {
 function mkScreenHitMark() {
   return {
     watch = victimHitEid
-    size = flex()
+    size = FLEX
     behavior = victimHitEid.get() == ecs.INVALID_ENTITY_ID ? null : Projection
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

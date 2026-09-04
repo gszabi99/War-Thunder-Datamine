@@ -23,11 +23,11 @@ row {
         <<#isDelayedTooltip>>
           tooltipId:t='<<skillTooltipId>>'
           behavior:t='button'
-          on_pushed:t='::gcb.delayedTooltipPush'
-          on_hold_start:t='::gcb.delayedTooltipHoldStart'
-          on_hold_stop:t='::gcb.delayedTooltipHoldStop'
-          on_hover:t='::gcb.delayedTooltipHover'
-          on_unhover:t='::gcb.delayedTooltipHover'
+          on_pushed:t='gcb.delayedTooltipPush'
+          on_hold_start:t='gcb.delayedTooltipHoldStart'
+          on_hold_stop:t='gcb.delayedTooltipHoldStop'
+          on_hover:t='gcb.delayedTooltipHover'
+          on_unhover:t='gcb.delayedTooltipHover'
           focusBtnName:t='A'
         <</isDelayedTooltip>>
 

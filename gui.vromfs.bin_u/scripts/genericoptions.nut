@@ -1,3 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "chat" import set_option_ptt
+from "guiOptions" import set_gui_option
+from "radarOptions" import set_option_radar_name, set_option_radar_scan_pattern_name
+from "crosshair" import add_tank_alt_crosshair_template
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import update_volume_for_music, set_option_gamma, set_option_console_preset
 from "%scripts/dagui_library.nut" import *
 from "soundOptions" import *
@@ -5,39 +14,25 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/options/optionsConsts.nut" import misCountries, TANK_ALT_CROSSHAIR_ADD_NEW
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_obj, select_editbox } = require("%sqDagui/daguiUtil.nut")
-let { format } = require("string")
+let { move_mouse_on_obj, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { set_gui_option } = require("guiOptions")
-let { set_option_radar_name, set_option_radar_scan_pattern_name } = require("radarOptions")
 let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR,
-  USEROPT_TANK_ALT_CROSSHAIR, USEROPT_PS4_ONLY_LEADERBOARD, USEROPT_DISPLAY_MY_REAL_NICK,
-  USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A,
-  USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
-  USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
-  USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN,
-  USEROPT_HANGAR_SCENE, USEROPT_VSYNC_MODE
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR, USEROPT_TANK_ALT_CROSSHAIR, USEROPT_PS4_ONLY_LEADERBOARD, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_MP_TEAM_COUNTRY, USEROPT_YEAR, USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES, USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS, USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT, USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_HANGAR_SCENE, USEROPT_VSYNC_MODE } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
-let { add_tank_alt_crosshair_template } = require("crosshair")
 let { get_current_campaign, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getMissionAllowedUnittypesMask, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
@@ -53,7 +48,7 @@ function get_country_by_team(team_index) {
   return countries?[team_index] ?? ""
 }
 
-gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
+let GenericOptions = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/genericOptions.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -656,7 +651,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkMissionCountries() {
-    if (getTblValue("isEventRoom", this.optionsConfig, false))
+    if ((this.optionsConfig?.isEventRoom ?? false))
       return
 
     let optList = this.find_options_in_containers([USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B])
@@ -751,8 +746,9 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   function onGroupSelect(_obj) {}
   function onDifficultyChange(_obj) {}
 }
+register_gui_handler("GenericOptions", GenericOptions)
 
-gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
+let GenericOptionsModal = class (GenericOptions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -789,7 +785,7 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
 
   function initNavigation() {
     let handler = handlersManager.loadHandler(
-      gui_handlers.navigationPanel,
+      navigationPanel,
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.4@sf, ph"
@@ -894,7 +890,7 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
   function getCurrentOptionsList() {
     let containerName = this.currentContainerName
     let container = u.search(this.optionsContainers, @(c) c.name == containerName)
-    return getTblValue("data", container, [])
+    return (container?.data ?? [])
   }
 
   function setNavigationItems() {
@@ -932,3 +928,6 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
     base.applyReturn()
   }
 }
+register_gui_handler("GenericOptionsModal", GenericOptionsModal)
+
+return { GenericOptions, GenericOptionsModal }

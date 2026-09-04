@@ -20,6 +20,7 @@ cell {
       ComboBox {
         id:t='<<id>>'
         width:t='pw'
+        class:t='invertIconsOnHover'
         on_select:t='<<cb>>'
       }
     <<#tooltipName>>

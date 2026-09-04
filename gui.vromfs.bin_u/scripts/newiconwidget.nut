@@ -40,9 +40,9 @@ let NewIconWidget = class {
 
   static function createLayout(params = {}) {
     let view = {
-      needContainer = getTblValue("needContainer", params, true)
-      icon = getTblValue("icon", params, this.defaultIcon)
-      tooltip = getTblValue("tooltip", params, "")
+      needContainer = (params?.needContainer ?? true)
+      icon = (params?.icon ?? this.defaultIcon)
+      tooltip = (params?.tooltip ?? "")
     }
     return handyman.renderCached("%gui/newIconWidget.tpl", view)
   }

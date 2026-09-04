@@ -2,7 +2,6 @@ options no_aot
 
 require ecs
 require DagorConsole
-require DagorSystem
 require DagorTime
 require DagorDataBlock
 require DagorFiles

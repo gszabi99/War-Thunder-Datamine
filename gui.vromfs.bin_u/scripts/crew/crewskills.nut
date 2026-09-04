@@ -1,10 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "blkGetters" import get_skills_blk
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { get_skills_blk } = require("blkGetters")
+
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { getCrewSkillValue, getCrewSkillItem, getSkillCrewLevel,
-  getSkillMaxCrewLevel, loadCrewSkillsOnce
-} = require("%scripts/crew/crew.nut")
+let { getCrewSkillValue, getCrewSkillItem, getSkillCrewLevel, getSkillMaxCrewLevel, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
 
 const DEFAULT_MAX_SKILL_LEVEL = 50
 

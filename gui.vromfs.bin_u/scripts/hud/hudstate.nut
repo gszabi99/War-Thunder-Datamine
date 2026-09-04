@@ -1,8 +1,8 @@
+from "unit" import is_player_unit_alive
+from "eventbus" import eventbus_subscribe
+from "hudState" import getHudGuiState, HudGuiState
 from "%scripts/dagui_library.nut" import *
 
-let { is_player_unit_alive } = require("unit")
-let { eventbus_subscribe } = require("eventbus")
-let { getHudGuiState, HudGuiState } = require("hudState")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 let isInKillerCam = @() getHudGuiState() == HudGuiState.GUI_STATE_KILLER_CAMERA

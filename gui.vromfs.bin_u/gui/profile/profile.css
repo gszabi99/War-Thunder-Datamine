@@ -264,8 +264,7 @@ profilePage .lbTable td:hover cardImg {
   color:#908f8f;
 }
 
-[isBigSizeList=yes] mission_item_unlocked,
-[isBigSizeList=yes] campaign_item {
+[isBigSizeList=yes] mission_item {
   height:40@sf/@pf;
   margin-top:0;
   margin-right:0;
@@ -273,36 +272,29 @@ profilePage .lbTable td:hover cardImg {
   margin-bottom:8@sf/@pf;
 }
 
-[isBigSizeList=yes] campaign_item > missionDiv,
-[isBigSizeList=yes] mission_item_unlocked > missionDiv {
+[isBigSizeList=yes] mission_item > missionDiv {
   padding-left:0.02@scrn_tgt;
 }
 
-[isBigSizeList=yes] campaign_item > fullSizeCollapseBtn[square=yes] {
+[isBigSizeList=yes] mission_item[missionItemType=campaign] > fullSizeCollapseBtn[square=yes] {
   width:2%@sf;
 }
 
-[isBigSizeList=yes] campaign_item > fullSizeCollapseBtn[square=yes] > activeText {
+[isBigSizeList=yes] mission_item[missionItemType=campaign] > fullSizeCollapseBtn[square=yes] > activeText {
   pos:0, ph/2-h/2;
 }
 
-[isBigSizeList=yes] campaign_item > missionDiv > mission_item_text,
-[isBigSizeList=yes] mission_item_unlocked > missionDiv > mission_item_text,
-[isBigSizeList=yes] campaign_item > missionDiv > mission_item_text,
-[isBigSizeList=yes] mission_item_unlocked > missionDiv > mission_item_text,
-[isBigSizeList=yes] campaign_item > missionDiv > mission_item_text {
+[isBigSizeList=yes] mission_item > missionDiv > mission_item_text {
   padding:0,0,0,0;
 }
 
-[isBigSizeList=yes] mission_item_unlocked > missionDiv > mission_item_text {
+[isBigSizeList=yes] mission_item[missionItemType=""] > missionDiv > mission_item_text {
   margin-left:10@sf/@pf;
 }
 
-[isBigSizeList=yes] campaign_item[collapsed=no] > missionDiv > mission_item_text,
-[isBigSizeList=yes] mission_item_unlocked:hover  > missionDiv > mission_item_text,
-[isBigSizeList=yes] campaign_item:hover  > missionDiv > mission_item_text,
-[isBigSizeList=yes] mission_item_unlocked[selected=yes] > missionDiv > mission_item_text,
-[isBigSizeList=yes] campaign_item[selected=yes] > missionDiv > mission_item_text {
+[isBigSizeList=yes] mission_item[missionItemType=campaign][collapsed=no] > missionDiv > mission_item_text,
+[isBigSizeList=yes] mission_item:hover > missionDiv > mission_item_text,
+[isBigSizeList=yes] mission_item[selected=yes] > missionDiv > mission_item_text {
   color:#FFFFFF;
 }
 
@@ -312,8 +304,7 @@ listbox[beyondScrollbar=yes] {
 }
 
 listbox[beyondScrollbar=yes] > shopFilter,
-listbox[beyondScrollbar=yes] > campaign_item,
-listbox[beyondScrollbar=yes] > mission_item_unlocked {
+listbox[beyondScrollbar=yes] > mission_item {
   size:p.p.w, 40@sf/@pf;
   width:p.p.w;
 }
@@ -354,6 +345,14 @@ listbox[isSpecEventsList=yes] > expandable {
   foreground-position: 8;
   foreground-repeat: expand;
   foreground-color: #22222222;
+}
+
+listbox[isSpecEventsList=yes] > expandable[isSpecEventSlot=yes] {
+  margin-top: 2@blockInterval;
+}
+
+listbox[isSpecEventsList=yes] > expandable[isLastRow=yes] {
+  margin-bottom: 0;
 }
 
 hiddenDiv[isProfilePageUnlock=yes] {

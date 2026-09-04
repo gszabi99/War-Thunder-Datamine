@@ -1,36 +1,35 @@
+import "%sqstd/string.nut" as string
+from "%sqStdLibs/helpers/u.nut" import find_in_array, isDataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "chard" import save_profile
+from "%sqstd/datablock.nut" import blkFromPath
+from "unitCustomization" import get_last_skin, set_last_skin
+from "guiMission" import get_meta_mission_info_by_name
+from "blkGetters" import get_current_mission_info_cached, get_user_skins_blk
+from "gameplayBinding" import isInFlight
+from "%sqstd/math.nut" import floor, round, abs
 from "%scripts/dagui_natives.nut" import save_online_single_job
+from "%globalScripts/unitTypeConsts.nut" import *
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
-let { save_profile } = require("chard")
 let { zero_money } = require("%scripts/money.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { blkFromPath } = require("%sqstd/datablock.nut")
-let { find_in_array, isDataBlock } = require("%sqStdLibs/helpers/u.nut")
-let string = require("%sqstd/string.nut")
-let { get_last_skin, set_last_skin } = require("unitCustomization")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { isGuid } = require("%scripts/guidParser.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { get_current_mission_info_cached, get_user_skins_blk } = require("blkGetters")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { Decorator } = require("%scripts/customization/decorator.nut")
-let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId, approversUnitToPreviewLiveResource
-} = require("%scripts/customization/skinUtils.nut")
-let { isInFlight } = require("gameplayBinding")
+let { getSkinId, DEFAULT_SKIN_NAME, getSkinNameBySkinId, approversUnitToPreviewLiveResource } = require("%scripts/customization/skinUtils.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let { USEROPT_USER_SKIN } = require("%scripts/options/optionsExtNames.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { TANK_CAMO_ROTATION_SLIDER_FACTOR } = require("%scripts/customization/customizationConsts.nut")
-let { floor, round, abs } = require("%sqstd/math.nut")
-let { unitNameForWeapons  } = require("%scripts/weaponry/unitForWeapons.nut")
+let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { getSessionLobbyRoomId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getPrioritySkin } = require("%scripts/customization/prioritySkins.nut")
@@ -357,9 +356,9 @@ function getUserSkinRotation() {
 }
 
 function getSkinScaleByRawPercent(val) {
-  let minTankCamoScale = 0.2
-  let maxTankCamoScale = 2
-  let scaleRange = 10
+  const minTankCamoScale = 0.2
+  const maxTankCamoScale = 2
+  const scaleRange = 10
 
   if (val < minTankCamoScale || val > maxTankCamoScale)
     return 0

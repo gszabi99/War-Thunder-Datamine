@@ -1,6 +1,7 @@
 
+
+from "%sqStdLibs/helpers/toString.nut" import debugTableData, toString
 from "ecs" import INVALID_ENTITY_ID
-let { debugTableData, toString } = require("%sqStdLibs/helpers/toString.nut")
 let darg_library = require("%rGui/globals/darg_library.nut")
 let { hdpx } = darg_library
 require("%sqstd/regScriptDebugger.nut")(debugTableData)

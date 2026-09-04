@@ -1,15 +1,15 @@
 
 
-let DataBlock = require("DataBlock")
-let { file_exists } = require("dagor.fs")
-let math = require("math")
-let { blkFromPath } = require("%sqstd/datablock.nut")
-let { interpolateArray, round_by_value } = require("%sqstd/math.nut")
-let { get_selected_mission, get_mission_type,
-  get_unit_spawn_type, get_user_custom_state } = require("mission")
-let { get_current_mission_info_cached, get_wpcost_blk,
-  get_warpoints_blk, get_unittags_blk  } = require("blkGetters")
-
+import "DataBlock" as DataBlock
+import "math" as math
+from "dagor.fs" import file_exists
+from "%sqstd/datablock.nut" import blkFromPath
+from "%sqstd/math.nut" import interpolateArray, round_by_value
+from "mission" import get_selected_mission, get_mission_type, get_unit_spawn_type, get_user_custom_state
+from "blkGetters" import get_current_mission_info_cached, get_wpcost_blk, get_warpoints_blk, get_unittags_blk
+from "%globalScripts/mpTeamConsts.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+from "types" import String
 let log = @(...) print(" ".join(vargv))
 
 const DS_UT_AIRCRAFT = "Air"
@@ -623,7 +623,7 @@ function get_pve_trophy_name(sessionTime, success) {
   let ws = get_warpoints_blk()
   local pveTrophyName = mis.pveTrophyName
 
-  if (pveTrophyName == null || type(pveTrophyName) != "string") {
+  if (pveTrophyName == null || !(pveTrophyName instanceof String)) {
     log("get_pve_trophy_name. PVE Trophy for this mission is missing or not a string.")
     return null
   }
@@ -657,7 +657,7 @@ function getMaxEconomicRank() {
 
 let calcBattleRatingFromRank = @(economicRank) round_by_value(economicRank / 3.0 + 1, 0.1)
 
-return {
+return freeze({
   get_unit_blk_battle_rating_by_mode = @(unitBlk, ediff) calcBattleRatingFromRank(get_unit_blk_economic_rank_by_mode(unitBlk, ediff))
   getMaxEconomicRank
   EDifficulties
@@ -695,4 +695,4 @@ return {
   DS_UT_SHIP
   DS_UT_TRANSPORT
   DS_UT_INVALID
-}
+})

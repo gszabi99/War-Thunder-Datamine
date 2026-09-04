@@ -1,6 +1,7 @@
+from "%globalScripts/chatState.nut" import ReputationType
 from "%scripts/dagui_library.nut" import *
+
 let { isChatReputationFilterEnabled } = require("%scripts/options/optionsExt.nut")
-let { ReputationType } = require("%globalScripts/chatState.nut")
 
 let claimsForBadReputation = {
   [1] = 20,

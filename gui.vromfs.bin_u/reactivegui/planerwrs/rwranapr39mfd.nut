@@ -1,9 +1,7 @@
+import "math" as math
+from "%rGui/planeRwrs/rwrAnApr39Components.nut" import color, baseLineWidth, rwrTargetsComponent
+from "%sqstd/math_ex.nut" import degToRad
 from "%rGui/globals/ui_library.nut" import *
-
-let math = require("math")
-let { degToRad } = require("%sqstd/math_ex.nut")
-
-let { color, baseLineWidth, rwrTargetsComponent } = require("%rGui/planeRwrs/rwrAnApr39Components.nut")
 
 function makeGridCommands() {
   let commands = [
@@ -12,7 +10,7 @@ function makeGridCommands() {
     [VECTOR_LINE, -5, 0, 5, 0],
     [VECTOR_LINE, 0, -5, 0, 5]  ]
   local azimuthMarkIndex =  0
-  let middleMarkLen = 0.05
+  const middleMarkLen = 0.05
   for (local az = 0.0; az < 360.0; az += 30) {
     let sinAz = math.sin(degToRad(az))
     let cosAz = math.cos(degToRad(az))
@@ -36,8 +34,8 @@ let gridCommands = makeGridCommands()
 
 function createGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -58,7 +56,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

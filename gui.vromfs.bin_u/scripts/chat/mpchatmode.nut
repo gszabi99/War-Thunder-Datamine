@@ -1,15 +1,13 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
+from "%sqstd/platform.nut" import is_android
+from "chat" import CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
 from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { is_android } = require("%sqstd/platform.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
+let { isInSquad } = require("%scripts/squads/squadState.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
-} = require("%scripts/user/matchingFeature.nut")
-let { CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE } = require("chat")
+let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad } = require("%scripts/user/matchingFeature.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 enum mpChatModeSort {
@@ -63,7 +61,7 @@ enumsAddTypes(g_mp_chat_mode, {
     sortOrder = mpChatModeSort.SQUAD
     textColor = "@chatTextSquadColor"
 
-    isEnabled = @() hasBattleChatModeSquad.get() && g_squad_manager.isInSquad(true)
+    isEnabled = @() hasBattleChatModeSquad.get() && isInSquad(true)
       && !isPlayerDedicatedSpectator()
   }
 
@@ -129,5 +127,4 @@ g_mp_chat_mode.getChatHint <- function getChatHint() {
   return loc("ui/comma").join([availableModeText, chatHelpText], true)
 }
 
-::cross_call_api.mp_chat_mode <- g_mp_chat_mode
 return {g_mp_chat_mode}

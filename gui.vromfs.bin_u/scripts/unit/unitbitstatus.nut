@@ -1,10 +1,10 @@
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import clan_get_exp
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { bit_unit_status, getUnitReqExp } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { isInFlight } = require("gameplayBinding")
 let { canResearchUnit, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")

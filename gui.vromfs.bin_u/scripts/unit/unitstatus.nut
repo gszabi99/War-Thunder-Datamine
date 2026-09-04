@@ -1,15 +1,18 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_unit_elite_status, is_default_aircraft, shop_unit_research_status, is_era_available, wp_get_repair_cost
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
+from "%globalScripts/shopItemConsts.nut" import *
 
 let { getUnitReqExp, getUnitExp, getUnitCountry, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitBought, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { approversUnitToPreviewLiveResource } = require("%scripts/customization/skinUtils.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { isInFlight } = require("gameplayBinding")
 
 function isUnitDefault(unit) {
   if (!("name" in unit))
@@ -97,6 +100,8 @@ function isUnitDescriptionValid(unit) {
   return desc != "" && desc != loc("encyclopedia/no_unit_description")
 }
 
+let canShowUnitInfo = @(unit) unit != null && !unit.isSlave() && isUnitDescriptionValid(unit)
+
 
 
 
@@ -171,7 +176,6 @@ return {
   isGroupPart
   isRequireUnlockForUnit
   isUnitBroken
-  isUnitDescriptionValid
   isUnitUsable
   isUnitFeatureLocked
   isUnitResearched
@@ -180,4 +184,5 @@ return {
   isTestFlightAvailable
   isUnitRandomUnit
   isClanUnitResearched
+  canShowUnitInfo
 }

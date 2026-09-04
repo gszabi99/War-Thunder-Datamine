@@ -7,11 +7,8 @@ require %appGame.infantry.es.door_operations_common
 require %appGame.infantry.es.inventory_common
 require %appGame.infantry.es.team_common
 require %appGame.infantry.es.vehicle.vehicle_seats_common
-require %appGame.infantry.es.vehicle.vehicle_events
 require net
 require Unit
-require CollRes
-require GeomNodeTree
 require HumanPhys
 require DngHuman
 require inventory

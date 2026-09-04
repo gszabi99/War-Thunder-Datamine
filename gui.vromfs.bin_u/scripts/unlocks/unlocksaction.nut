@@ -1,15 +1,15 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isString
+from "chard" import charSendBlk
+from "hangar" import hangar_get_current_unit_name
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { charSendBlk } = require("chard")
-let { isString } = require("%sqStdLibs/helpers/u.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { receiveRewards } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { hangar_get_current_unit_name } = require("hangar")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getErrorText } = require("%scripts/hud/serverMessages.nut")
 

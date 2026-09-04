@@ -1,16 +1,16 @@
+from "%rGui/fcsState.nut" import ShotState, ShotDiscrepancy, ShotDirection
+from "dagor.workcycle" import deferOnce
+from "%sqstd/math.nut" import round_by_value
 from "%rGui/globals/ui_library.nut" import *
-let { deferOnce } = require("dagor.workcycle")
-let { round_by_value } = require("%sqstd/math.nut")
-let { ShotState, ShotDiscrepancy, ShotDirection } = require("%rGui/fcsState.nut")
 
 let fcsShotState = Watched({shotState = FCSShotState.SHOT_NONE shotDiscrepancy = 0 shotDirection = 0})
 
 let statesQueue = []
-let maxStatesQueueLength = 5
-let maxShownDiscrepancyValue = 1000
-let maxShownDiscrepancy = 2000
+const maxStatesQueueLength = 5
+const maxShownDiscrepancyValue = 1000
+const maxShownDiscrepancy = 2000
 
-let function addToQueue(shotState, shotDiscrepancy, shotDirection) {
+function addToQueue(shotState, shotDiscrepancy, shotDirection) {
   let discrepancy = round_by_value(shotDiscrepancy, 10)
   let direction = shotDirection
   let state = {shotState shotDiscrepancy = discrepancy shotDirection = direction}

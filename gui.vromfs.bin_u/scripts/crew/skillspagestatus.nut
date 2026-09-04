@@ -7,7 +7,7 @@ let { getCrewTotalSteps, getCrewSkillNewValue, crewSkillValueToStep,
 function getPageStatus(crew, unit, page, crewUnitType, skillPoints) {
   local needShowAdvice = false
   local avalibleSkills = []
-  let items = getTblValue("items", page)
+  let items = page?.items
   if (!items || !items.len())
     return { needShowAdvice, avalibleSkills }
 

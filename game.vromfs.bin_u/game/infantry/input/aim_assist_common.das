@@ -1,7 +1,6 @@
 module aim_assist_common shared
 require ecs
 require math
-require math.ang
 require math.base
 require DagorMath
 require Grid

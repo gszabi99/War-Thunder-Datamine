@@ -1,28 +1,29 @@
+from "math" import ceil
+from "string" import format, split_by_chars
+from "unlocks" import getUnlockProgress
+from "%sqstd/string.nut" import cutPrefix
+from "chard" import get_charserver_time_sec
+from "%sqstd/math.nut" import number_of_set_bits, round_by_value
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
+from "types" import Array
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
 let getShipFlags = require("%scripts/customization/shipFlags.nut")
-let events = getGlobalModule("events")
-let { ceil } = require("math")
-let { format, split_by_chars } = require("string")
-let { getUnlockProgress } = require("unlocks")
+let { getNameByEconomicName } = require("%scripts/events/eventTexts.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { createSeasonRewardFromUnlockBlk } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { maxCountryRank, getRankByExp } = require("%scripts/ranks.nut")
 let { isBattleTask, getBattleTaskNameById } = require("%scripts/unlocks/battleTasksState.nut")
 let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { get_charserver_time_sec } = require("chard")
 let { zero_money } = require("%scripts/money.nut")
-let { number_of_set_bits, round_by_value } = require("%sqstd/math.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { buildDateStrShort } = require("%scripts/time.nut")
@@ -31,21 +32,13 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { getMissionTimeText } = require("%scripts/missions/missionsText.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
-let { isLoadingBgUnlock, getLoadingBgName, getLoadingBgIdByUnlockId
-} = require("%scripts/loading/loadingBgData.nut")
-let { getRawInventoryItemAmount, getItemOrRecipeBundleById
-} = require("%scripts/items/itemsManager.nut")
-let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType
-} = require("%scripts/customization/decoratorBaseType.nut")
+let { isLoadingBgUnlock, getLoadingBgName, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
+let { getRawInventoryItemAmount, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
+let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getDecorator, getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
-let { isUnlockOpened, getUnlockType, isUnlockExist, getUnlockRewardCost, isUnlockComplete
-} = require("%scripts/unlocks/unlocksModule.nut")
-let { loadMainProgressCondition, loadConditionsFromBlk, getMainProgressCondition,
-  isNestedUnlockMode, isStreak, isBitModeType, getMultipliersTable, isTimeRangeCondition,
-  getProgressBarData, loadCondition, getUnlockConditions, getRangeString,
-  getDiffNameByInt
-} = require("%scripts/unlocks/unlocksConditions.nut")
+let { isUnlockOpened, getUnlockType, isUnlockExist, getUnlockRewardCost, isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
+let { loadMainProgressCondition, loadConditionsFromBlk, getMainProgressCondition, isNestedUnlockMode, isStreak, isBitModeType, getMultipliersTable, isTimeRangeCondition, getProgressBarData, loadCondition, getUnlockConditions, getRangeString, getDiffNameByInt } = require("%scripts/unlocks/unlocksConditions.nut")
 
 
 function getUnlockableMedalImage(id, big = false) {
@@ -214,9 +207,9 @@ function getIconByUnlockBlk(unlockBlk) {
 }
 
 function setImageByUnlockType(config, unlockBlk) {
-  let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
+  let unlockType = get_unlock_type((unlockBlk?.type ?? ""))
   if (unlockType == UNLOCKABLE_MEDAL) {
-    if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
+    if (unlockBlk?.subType == "clan_season_reward") {
       let unlock = createSeasonRewardFromUnlockBlk(unlockBlk)
       config.iconStyle <- unlock.iconStyle()
       config.iconParams <- unlock.iconParams()
@@ -323,7 +316,7 @@ function buildConditionsConfig(blk, showStage = -1) {
       config.conditions = loadConditionsFromBlk(mode, blk) 
 
     let mainCond = getMainProgressCondition(config.conditions)
-    config.hasCustomUnlockableList = getTblValue("hasCustomUnlockableList", mainCond, false)
+    config.hasCustomUnlockableList = (mainCond?.hasCustomUnlockableList ?? false)
 
     if (mainCond && mainCond.values
         && (mainCond.values.len() > 1 || config.hasCustomUnlockableList
@@ -429,7 +422,8 @@ function buildConditionsConfig(blk, showStage = -1) {
     let item = getItemOrRecipeBundleById(config.userLogId.tointeger())
     config.locId = item?.getName(false) ?? ""
     config.locDescId = item?.getBaseDescription() ?? ""
-    config.image = item?.getIconName() ?? ""
+    if (config.image == "")
+      config.image = item?.getIconName() ?? ""
   }
 
   return config
@@ -641,7 +635,7 @@ let unlockTypeToGetNameFunc = {
   [UNLOCKABLE_YEAR] = @(id) (id.len() > 4) ? id.slice(id.len() - 4, id.len()) : "",
   [UNLOCKABLE_MEDAL] = function(id) {
     let unlockBlk = getUnlockById(id)
-    if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
+    if (unlockBlk?.subType == "clan_season_reward") {
       let unlock = createSeasonRewardFromUnlockBlk(unlockBlk)
       return unlock.name()
     }
@@ -691,7 +685,7 @@ function getLocForBitValues(modeType, values, hasCustomUnlockableList = false) {
 
 
 function getSingleAttachmentConditionText(condition, curValue, maxValue) {
-  let modeType = getTblValue("modeType", condition)
+  let modeType = condition?.modeType
   let locNames = getLocForBitValues(modeType, condition.values)
   let valueText = colorize("unlockActiveColor", $"\"{loc("ui/comma").join(locNames, true)}\"")
   let progress = colorize("unlockActiveColor", curValue != null
@@ -710,7 +704,7 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
   if (!modeType)
     return ""
 
-  let typeLocIDWithoutValue = getTblValue("typeLocIDWithoutValue", condition)
+  let typeLocIDWithoutValue = condition?.typeLocIDWithoutValue
   if (typeLocIDWithoutValue)
     return loc(typeLocIDWithoutValue)
 
@@ -718,7 +712,7 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
   let haveModeTypeLocID = "modeTypeLocID" in condition
 
   if (maxValue == null)
-    maxValue = getTblValue("rewardNum", condition) || getTblValue("num", condition)
+    maxValue = condition?.rewardNum || condition?.num
 
   if (is_numeric(curValue)) {
     if (bitMode)
@@ -772,23 +766,23 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
     textId = condition.modeTypeLocID
 
   else if (modeType == "rank" || modeType == "char_country_rank") {
-    let country = getTblValue("country", condition)
+    let country = condition?.country
     textId = country ? $"mainmenu/rank/{country}" : "mainmenu/rank"
   }
   else if (modeType == "unlockCount")
-    textId = $"conditions/{getTblValue("unlockType", condition, "")}"
+    textId = $"conditions/{(condition?.unlockType ?? "")}"
   else if (modeType == "char_static_progress")
-    textParams.level <- loc($"crew/qualification/{getTblValue("level", condition, 0)}")
-  else if (modeType == "landings" && getTblValue("carrierOnly", condition))
+    textParams.level <- loc($"crew/qualification/{(condition?.level ?? 0)}")
+  else if (modeType == "landings" && condition?.carrierOnly)
     textId = "conditions/carrierOnly"
-  else if (getTblValue("isShip", condition)) 
+  else if (condition?.isShip) 
     textId = "conditions/isShip"
   else if (modeType == "killedAirScore")
     textId = "conditions/statKillsAir"
   else if (modeType == "sessionsStarted")
     textId = "conditions/missionsPlayed"
   else if (modeType == "char_resources_count")
-    textId = $"conditions/char_resources_count/{getTblValue("resourceType", condition, "")}"
+    textId = $"conditions/char_resources_count/{(condition?.resourceType ?? "")}"
   else if (modeType == "amountDamagesZone")
     textId = "debriefing/Damage"
   else if (modeType == "totalMissionScore")
@@ -818,17 +812,29 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
 
 
 function getUnlockMainCondDescByCfg(cfg, params = null) {
-  if (!cfg?.conditions)
+  if (cfg == null)
     return ""
 
+  let { id, maxVal, conditions = null, useLastStageAsUnlockOpening = false } = cfg
+  if (!conditions)
+    return ""
+
+  local { curVal } = cfg
   let mainCond = getMainProgressCondition(cfg.conditions)
   if (!mainCond)
     return ""
 
-  let hideCurVal = isUnlockComplete(cfg) && !cfg.useLastStageAsUnlockOpening
-  let curVal = params?.curVal ?? (hideCurVal ? null : cfg.curVal)
+  if ("curVal" in params)
+    return getUnlockMainCondDesc(mainCond, params.curVal, maxVal, params)
 
-  return getUnlockMainCondDesc(mainCond, curVal, cfg.maxVal, params)
+  let isCompleted = isUnlockComplete(cfg)
+  let hideCurVal = isCompleted && !useLastStageAsUnlockOpening
+  let isFinished = isCompleted || isUnlockOpened(id)
+  curVal = hideCurVal ? null
+    : isFinished ? maxVal
+    : curVal
+
+  return getUnlockMainCondDesc(mainCond, curVal, maxVal, params)
 }
 
 
@@ -964,7 +970,7 @@ function getUsualCondValueText(condType, v, condition) {
   if (condType in unitCondType)
     return getUnitName(v)
   if (condType in playerCondType)
-    return loc($"unlockTag/{getTblValue(v, mapConditionUnitType, v)}")
+    return loc($"unlockTag/{(mapConditionUnitType?[v] ?? v)}")
   if (condType in playerClassCondType)
     return getRoleText(cutPrefix(v, "exp_", v))
   if (condType in playerTagCondType)
@@ -982,14 +988,14 @@ function getUsualCondValueText(condType, v, condition) {
   if (condType in eraAndRnakCondType)
     return get_roman_numeral(v)
   if (condType == "events")
-    return events.getNameByEconomicName(v)
+    return getNameByEconomicName(v)
   if (["offenderIsSupportGun", "offenderIsStealthBelt"].contains(condType))
     return loc(v)
   if (condType == "operationMap")
     return loc($"worldWar/map/{v}")
   if (condType == "difficulty") {
     local text = getDifficultyLocalizationText(v)
-    if (!getTblValue("exact", condition, false) && v != "hardcore")
+    if (!(condition?.exact ?? false) && v != "hardcore")
       text = $"{text} {loc("conditions/moreComplex")}"
     return text
   }
@@ -1019,14 +1025,14 @@ function getUsualCondValueText(condType, v, condition) {
 
 function addUsualConditionsText(groupsList, condition) {
   let condType = condition.type
-  let group = getTblValue("locGroup", condition, condType)
+  let group = (condition?.locGroup ?? condType)
   local values = condition.values
   local text = ""
 
   if (values == null)
     return addValueToGroup(groupsList, group, text)
 
-  if (type(values) != "array")
+  if (!(values instanceof Array))
     values = [values]
 
   values = processUnitTypeArray(values)
@@ -1041,8 +1047,8 @@ function addDataToCustomGroup(groupsList, condType, data) {
 
   let customData = groupsList[condType]
   foreach (conditionData in customData)
-    if (data.groupText == getTblValue("groupText", conditionData)) {
-      conditionData.descText.append(getTblValue("descText", data)[0])
+    if (data.groupText == conditionData?.groupText) {
+      conditionData.descText.append(data?.descText[0])
       return
     }
 
@@ -1055,7 +1061,7 @@ function addCustomConditionsTextData(groupsList, condition) {
   if (values == null)
     return
 
-  if (type(values) != "array")
+  if (!(values instanceof Array))
     values = [values]
 
   let condType = condition.type
@@ -1104,14 +1110,14 @@ function getUnlockCondsDesc(conditions, params = {}, excludeTypes = []) {
   let condTextsList = []
   foreach (group in conditionsOrder) {
     if (!isInArray(group, customLocTypes)) {
-      let data = getTblValue(group, descByLocGroups)
+      let data = descByLocGroups?[group]
       if (data == null || data.len() == 0)
         continue
 
       addTextToCondTextList(condTextsList, group, data, params)
     }
     else {
-      let customData = getTblValue(group, customDataByLocGroups)
+      let customData = customDataByLocGroups?[group]
       if (customData == null || customData.len() == 0)
         continue
 

@@ -1,6 +1,5 @@
 require ecs
 require app
-require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.human_weap_common
 require %appGame.infantry.es.human_reload_common
 require %appGame.wt_events

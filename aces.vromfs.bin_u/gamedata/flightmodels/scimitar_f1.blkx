@@ -1,7 +1,7 @@
 {
   "model": "scimitar_f1",
   "fmFile": "fm/scimitar_f1.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.24,
   "gearSinkRangeC": 0.174,
   "gyroSight": true,
@@ -2737,6 +2737,10 @@
         "blk": "gameData/FlightModels/weaponPresets/scimitar_rp3_24x25lb_rockets.blk"
       },
       {
+        "name": "scimitar_rp3_16x60lb_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/scimitar_rp3_16x60lb_rockets.blk"
+      },
+      {
         "name": "scimitar_agm12x4_rockets",
         "blk": "gameData/FlightModels/weaponPresets/scimitar_agm12x4_rockets.blk"
       },
@@ -2747,9 +2751,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1920.0,
-    "maxloadMassLeftConsoles": 960.0,
-    "maxloadMassRightConsoles": 960.0,
+    "maxloadMass": 2000.0,
+    "maxloadMassLeftConsoles": 1000.0,
+    "maxloadMassRightConsoles": 1000.0,
     "maxDisbalance": 850.0,
     "HideNodes": {
       "node": [
@@ -2854,6 +2858,20 @@
             }
           },
           {
+            "iconType": "rockets_he_middle_group_x4",
+            "name": "4x_rp_3_slot1",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": "bomb_pylon_l_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "rp3_pylon_l_2",
+              "external": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm12",
             "reqModification": "fj_4b_agm_12b",
@@ -2882,7 +2900,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb1000_mc_1",
+              "emitter": "1000_lb_uk_gp_bomb_001",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -2929,6 +2947,20 @@
             }
           },
           {
+            "iconType": "rockets_he_middle_group_x4",
+            "name": "4x_rp_3_slot2",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": "bomb_pylon_l_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "rp3_pylon_l_1",
+              "external": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm12",
             "reqModification": "fj_4b_agm_12b",
@@ -2957,7 +2989,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb1000_mc_3",
+              "emitter": "1000_lb_uk_gp_bomb_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3004,6 +3036,20 @@
             }
           },
           {
+            "iconType": "rockets_he_middle_group_x4",
+            "name": "4x_rp_3_slot3",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": "bomb_pylon_r_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "rp3_pylon_r_1",
+              "external": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm12",
             "reqModification": "fj_4b_agm_12b",
@@ -3032,7 +3078,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb1000_mc_4",
+              "emitter": "1000_lb_uk_gp_bomb_003",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3078,6 +3124,20 @@
             }
           },
           {
+            "iconType": "rockets_he_middle_group_x4",
+            "name": "4x_rp_3_slot4",
+            "reqModification": "uk_rp3_mk12",
+            "ShowNodes": {
+              "node": "bomb_pylon_r_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/uk_rp3_late.blk",
+              "emitter": "rp3_pylon_r_2",
+              "external": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm12",
             "reqModification": "fj_4b_agm_12b",
@@ -3106,7 +3166,7 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb1000_mc_2",
+              "emitter": "1000_lb_uk_gp_bomb_004",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3209,8 +3269,13 @@
       "modClass": "weapon",
       "tier": 1
     },
+    "uk_rp3_mk12": {
+      "reqModification": "sea_hawk_25lb_rocket_ap_mk2",
+      "modClass": "weapon",
+      "tier": 2
+    },
     "us_aim_9b": {
-      "prevModification": "sea_hawk_25lb_rocket_ap_mk2",
+      "prevModification": "uk_rp3_mk12",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -3219,7 +3284,7 @@
       "tier": 3
     },
     "fj_4b_agm_12b": {
-      "reqModification": "swift_2x1000lb_mc",
+      "prevModification": "swift_2x1000lb_mc",
       "tier": 4,
       "modClass": "weapon"
     }

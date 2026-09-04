@@ -1,19 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "chard" as chard
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "dagor.time" import get_time_msec
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
-let chard = require("chard")
 let { setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isUnitBroken } = require("%scripts/unit/unitStatus.nut")
-let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -21,8 +21,7 @@ let { selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%script
 let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isCanModifyCrew, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
@@ -269,7 +268,7 @@ let CrewTakeUnitProcess = class {
   }
 
   function isValid() {
-    return getTblValue(0, this.activeProcesses) == this
+    return this.activeProcesses?[0] == this
   }
 
   function isEqual(process) {
@@ -323,7 +322,7 @@ let CrewTakeUnitProcess = class {
     this.curProgress++
     this.refreshTimer()
 
-    let curStepFunc = getTblValue(this.curProgress, this.stepsList)
+    let curStepFunc = this.stepsList?[this.curProgress]
     if (!curStepFunc) {
       script_net_assert_once("missing take unit step", $"Missing take unit step = {this.curProgress}")
       return this.remove()

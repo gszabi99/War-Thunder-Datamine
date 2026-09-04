@@ -1,6 +1,5 @@
 module camera_shaker_common shared
 require ecs
-require %game.events
 
 [event(broadcast)]
 struct CameraShakeOnShot

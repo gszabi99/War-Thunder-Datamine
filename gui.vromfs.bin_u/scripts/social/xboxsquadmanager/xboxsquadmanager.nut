@@ -1,20 +1,20 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%gdkLib/mpa.nut" import set_activity, clear_activity, send_invitations, JoinRestriction
+from "%gdkLib/impl/user.nut" import is_any_user_active
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { getLeaderUid, getMaxSquadSize, getSquadSize, getState, isInSquad, isSquadLeader } = require("%scripts/squads/squadState.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%gdkLib/mpa.nut")
-let { is_any_user_active } = require("%gdkLib/impl/user.nut")
+let { SQUAD_JOIN_REQUESTED } = require("%scripts/crossModuleEvents.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { isInFlight } = require("gameplayBinding")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
+let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
 let { findInviteByUid } = require("%scripts/invites/invites.nut")
 let { check_multiplayer_sessions_privilege } = require("%scripts/gdk/permissions.nut")
@@ -23,7 +23,7 @@ let { getContact } = require("%scripts/contacts/contacts.nut")
 local needCheckSquadInvites = false 
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
 
-let getCurSquadId = @() g_squad_manager.isInSquad() ? g_squad_manager.getLeaderUid().tostring() : userIdStr.get()
+let getCurSquadId = @() isInSquad() ? getLeaderUid().tostring() : userIdStr.get()
 
 function sendInvitation(xuid) {
   if (xuid == "") {
@@ -41,12 +41,12 @@ function updateActivity() {
   local maxPlayers = 4
   local curPlayers = 1
   let squadId = getCurSquadId()
-  if (g_squad_manager.isInSquad()) {
-    maxPlayers = g_squad_manager.getMaxSquadSize()
-    curPlayers = g_squad_manager.getSquadSize()
+  if (isInSquad()) {
+    maxPlayers = getMaxSquadSize()
+    curPlayers = getSquadSize()
   }
   let haveUser = is_any_user_active()
-  let shouldSetActivity = g_squad_manager.isSquadLeader() || !g_squad_manager.isInSquad()
+  let shouldSetActivity = isSquadLeader() || !isInSquad()
   if (shouldSetActivity && haveUser) {
     set_activity(squadId, JoinRestriction.InviteOnly, maxPlayers, curPlayers, squadId, true, function(success) {
       logX($"Set activity succeeded: {success}",
@@ -89,7 +89,7 @@ function onSquadLeave() {
 
 function onSquadStatusChanged() {
   logX("onSquadStatusChanged")
-  let state = g_squad_manager.getState()
+  let state = getState()
   if (state == squadState.IN_SQUAD)
     onSquadJoin()
   else if (squadState.LEAVING == state)
@@ -116,7 +116,7 @@ function acceptExistingIngameInvite(uid) {
       logX($"Accept ingame invite: uid {uid}, invite {invite}")
       if (!invite) {
         logX($"invite not found. Try join squad.")
-        g_squad_manager.joinToSquad(uid)
+        broadcastEvent(SQUAD_JOIN_REQUESTED, { uid })
         return
       }
 

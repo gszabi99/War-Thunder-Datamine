@@ -1,16 +1,17 @@
+import "DataBlock" as DataBlock
+from "%sqstd/platform.nut" import platformId
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { platformId } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { format } = require("string")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { viewFullscreenImage } = require("%scripts/showImage.nut")
 
@@ -68,10 +69,10 @@ let open = function() {
   if (persistent.encyclopediaData.len() == 0)
     return
 
-  loadHandler(gui_handlers.Encyclopedia)
+  loadHandler(get_gui_handler("Encyclopedia"))
 }
 
-gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
+let Encyclopedia = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   menuConfig = null
@@ -177,6 +178,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onViewImage = @(obj) viewFullscreenImage(obj)
 }
+register_gui_handler("Encyclopedia", Encyclopedia)
 
 return {
   open = open

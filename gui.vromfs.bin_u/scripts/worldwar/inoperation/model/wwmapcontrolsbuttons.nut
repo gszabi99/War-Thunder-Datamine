@@ -1,12 +1,13 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { getArmyByName, getSelectedArmies } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 enum ORDER {

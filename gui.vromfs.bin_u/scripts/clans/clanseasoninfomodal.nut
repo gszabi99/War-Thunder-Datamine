@@ -1,29 +1,28 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_MEDAL_TYPE
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { getSelectedChild, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { getSelectedChild, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { format } = require("string")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
-let { isClanSeasonsEnabled, getClanCurrentSeasonName, getClanSeasonRegaliaPrizes,
-  getClanSeasonUniquePrizesCounts, getClanSeasonRewardsList
-} = require("%scripts/clans/clanSeasons.nut")
+let { isClanSeasonsEnabled, getClanCurrentSeasonName, getClanSeasonRegaliaPrizes, getClanSeasonUniquePrizesCounts, getClanSeasonRewardsList } = require("%scripts/clans/clanSeasons.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
-gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanSeasonInfoModal = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
@@ -128,7 +127,7 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
           }
         }
 
-        let uniqueCount = getTblValue(prizeType, limits, 0) || collection.len()
+        let uniqueCount = (limits?[prizeType] ?? 0) || collection.len()
         let splitList = {
           unique = []
           bonus  = []
@@ -204,9 +203,10 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBtnMoreInfo(_obj) {
   }
 }
+register_gui_handler("clanSeasonInfoModal", clanSeasonInfoModal)
 
 let openClanSeasonInfoWnd = @(difficulty) loadHandler(
-  gui_handlers.clanSeasonInfoModal, { difficulty })
+  clanSeasonInfoModal, { difficulty })
 
 return {
   openClanSeasonInfoWnd

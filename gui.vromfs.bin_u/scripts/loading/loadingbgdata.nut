@@ -1,9 +1,11 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%sqstd/platform.nut" import platformId
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
-let { platformId } = require("%sqstd/platform.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
+
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 
 
@@ -68,9 +70,9 @@ let bgDataAfterLogin = createBgData()
 local inited = false
 local bgUnlocks = null
 
-let RESERVE_BG_KEY = "reserveBg"
-let DEFAULT_VALUE_KEY = "default_chance"
-let BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
+const RESERVE_BG_KEY = "reserveBg"
+const DEFAULT_VALUE_KEY = "default_chance"
+const BLOCK_BEFORE_LOGIN_KEY = "beforeLogin"
 local LOADING_BG_PATH = "loading_bg"
 
 function applyBlkToBgData(bgData, blk) {
@@ -222,7 +224,7 @@ let reset = @() inited = false
 let setLoadingBgPath = @(path) LOADING_BG_PATH = path
 
 subscriptions.addListenersWithoutEnv({
-  GameLocalizationChanged = @(_p) reset()
+  [GAME_LOCALIZATION_CHANGED] = @(_p) reset()
 })
 
 return {

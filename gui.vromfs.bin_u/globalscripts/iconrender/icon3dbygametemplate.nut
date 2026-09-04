@@ -1,5 +1,6 @@
+from "language" import getLocalLanguage
+
 let mkIcon3d = require("%globalScripts/iconRender/icon3d.nut")
-let { getLocalLanguage } = require("language")
 let { getTemplate, getTemplateCompValue } = require("%globalScripts/templates.nut")
 let sharedWatched = require("%globalScripts/sharedWatched.nut")
 let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")

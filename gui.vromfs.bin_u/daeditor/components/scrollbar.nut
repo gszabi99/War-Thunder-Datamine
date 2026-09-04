@@ -1,5 +1,6 @@
 from "%darg/ui_imports.nut" import *
 from "%sqstd/frp.nut" import *
+from "types" import Array
 
 function Bar(has_scroll) {
   if (has_scroll) {
@@ -22,9 +23,9 @@ let Knob = freeze({
     : Color(110, 120, 140, 160)
 })
 
-let ContentRoot = freeze({
+const ContentRoot = {
   size = flex()
-})
+}
 
 
 function calcBarSize(bar_style, axis) {
@@ -73,7 +74,7 @@ function scrollbar(scroll_handler, options={}) {
     }
 
 
-    let minV = 0
+    const minV = 0
     let maxV = contentSize - elemSize
     let fValue = scrollPos
 
@@ -130,6 +131,15 @@ let DEF_SIDE_SCROLL_OPTIONS = {
   needReservePlace = true 
   clipChildren  = true
   joystickScroll = true
+  
+  
+  
+  virtualItems = null
+  virtualItemHeight = null
+  virtualItemHeights = null
+  virtualOverscan = null
+  virtualInitialCount = null
+  virtualTail = null
 }
 
 function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
@@ -141,13 +151,16 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
   function contentRoot() {
     local bhv = rootBase?.behavior ?? []
-    if (type(bhv) != "array")
+    if (!(bhv instanceof Array))
       bhv = [bhv]
     else
       bhv = clone bhv
     bhv.append(Behaviors.WheelScroll, Behaviors.ScrollEvent)
+    let virtual = options.virtualItems != null
+    if (virtual)
+      bhv.append(Behaviors.VirtualList)
 
-    return rootBase.__merge({
+    let rootDesc = rootBase.__merge({
       size = options.size
       behavior = bhv
       scrollHandler = scrollHandler
@@ -156,8 +169,23 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
       joystickScroll = options.joystickScroll
       maxHeight = options.maxHeight
       maxWidth = options.maxWidth
-      children = content
     })
+    
+    
+    return virtual
+      ? rootDesc.__merge({
+          
+          
+          
+          flow = options.orientation == O_VERTICAL ? FLOW_VERTICAL : FLOW_HORIZONTAL
+          virtualItems = options.virtualItems
+          virtualItemHeight = options.virtualItemHeight
+          virtualItemHeights = options.virtualItemHeights
+          virtualOverscan = options.virtualOverscan
+          virtualInitialCount = options.virtualInitialCount
+          virtualTail = options.virtualTail
+        })
+      : rootDesc.__merge({ children = content })
   }
 
   let childrenContent = scrollAlign == ALIGN_LEFT || scrollAlign == ALIGN_TOP
@@ -182,7 +210,7 @@ function makeHVScrolls(content, options={}) {
 
   function contentRoot() {
     local bhv = rootBase?.behavior ?? []
-    if (type(bhv) != "array")
+    if (!(bhv instanceof Array))
       bhv = [bhv]
     else
       bhv = clone bhv

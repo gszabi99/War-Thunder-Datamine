@@ -1,8 +1,6 @@
+from "%sqstd/string.nut" import startsWith
+from "guiRespawn" import getRespawnBaseNameById, isDefaultRespawnBase, isGroundRespawnBaseById, isRandomRespawnBaseById
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { getRespawnBaseNameById, isDefaultRespawnBase, isGroundRespawnBaseById,
-  isRandomRespawnBaseById } = require("guiRespawn")
 
 local RespawnBase = class {
   id = -1
@@ -40,14 +38,6 @@ local RespawnBase = class {
     return res
   }
 
-  function isEqual(respBase) {
-    return respBase != null
-      && this.isAutoSelected == respBase.isAutoSelected
-      && this.isZoneRespawnBase == respBase.isZoneRespawnBase
-      && this.id == respBase.id
-      && this.isAvailable == respBase.isAvailable
-  }
-
   function isSpawnIsAirfiled() {
     let spawnLocSubName = this.name.split("/")?[1] ?? ""
     if (spawnLocSubName == "")
@@ -60,8 +50,16 @@ local RespawnBase = class {
       if (key in this)
         this[key] = value
   }
+  isEmpty = @() false
+  _typeof = @() "RespawnBase"
 }
 
-u.registerClass("RespawnBase", RespawnBase, @(b1, b2) b1.isEqual(b2))
+RespawnBase.isEqual <- function(other) {
+  return other instanceof RespawnBase
+    && this.isAutoSelected == other.isAutoSelected
+    && this.isZoneRespawnBase == other.isZoneRespawnBase
+    && this.id == other.id
+    && this.isAvailable == other.isAvailable
+}
 
 return RespawnBase

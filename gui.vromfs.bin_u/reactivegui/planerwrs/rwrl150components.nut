@@ -1,20 +1,21 @@
+from "%rGui/twsState.nut" import rwrTargetsTriggers, CurrentTime
+from "%rGui/planeState/planeFlyState.nut" import CompassValue
+from "%rGui/planeRwrs/rwrL150ThreatsLibrary.nut" import settings
+from "%rGui/planeIlses/ilsConstants.nut" import degToRad
+from "math" import sin, cos, PI
 from "%rGui/globals/ui_library.nut" import *
 
-let { sin, cos, PI } = require("math")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("%rGui/twsState.nut")
 
-let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
+let { ThreatType } = require("%rGui/planeRwrs/rwrL150ThreatsLibrary.nut")
 
-let {ThreatType, settings} = require("%rGui/planeRwrs/rwrL150ThreatsLibrary.nut")
 
-let { degToRad } = require("%rGui/planeIlses/ilsConstants.nut")
-
-let backGroundColor = Color(0, 0, 0, 255)
-let color = Color(10, 202, 10, 255)
-let iconColorSearch = Color(250, 250, 0, 255)
-let iconColorTrack = Color(220, 120, 60, 255)
-let iconColorLaunch = Color(230, 0, 0, 255)
+const backGroundColor = Color(0, 0, 0, 255)
+const color = Color(10, 202, 10, 255)
+const iconColorSearch = Color(250, 250, 0, 255)
+const iconColorTrack = Color(220, 120, 60, 255)
+const iconColorLaunch = Color(230, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -27,16 +28,16 @@ let styleText = {
 }
 
 function createCompass(gridStyle, radius, useFlexSize = false) {
-  let compassFontSizeMult = 2.0
+  const compassFontSizeMult = 2.0
 
-  let markAngleStep = 10.0
-  let markAngle = PI * markAngleStep / 180.0
+  const markAngleStep = 10.0
+  const markAngle = PI * markAngleStep / 180.0
   let markDashCount = (360.0 / markAngleStep).tointeger()
-  let azimuthMarkLength = 4
+  const azimuthMarkLength = 4
 
-  let textAngleStep = 30.0
-  let textMarkAngle = PI * textAngleStep / 180.0
-  let textDashCount = 360.0 / textAngleStep
+  const textAngleStep = 30.0
+  const textMarkAngle = PI * textAngleStep / 180.0
+  const textDashCount = 360.0 / textAngleStep
 
   return function() {
     let compassOffsetRad = -CompassValue.get() * degToRad
@@ -54,7 +55,7 @@ function createCompass(gridStyle, radius, useFlexSize = false) {
       azimuthMarks.append({
         rendObj = ROBJ_TEXT
         pos = [pw(sin(i * textMarkAngle + compassOffsetRad) * (radius + 10)), ph(-cos(i * textMarkAngle + compassOffsetRad) * (radius + 10))],
-        size = flex(),
+        size = FLEX,
         color = color,
         font = styleText.font,
         fontSize = gridStyle.fontScale * styleText.fontSize * compassFontSizeMult,
@@ -68,7 +69,7 @@ function createCompass(gridStyle, radius, useFlexSize = false) {
     return {
       watch = CompassValue
       rendObj = ROBJ_VECTOR_CANVAS,
-      size = useFlexSize ? flex() : [ph(100), ph(100)]
+      size = useFlexSize ? FLEX : [ph(100), ph(100)]
       color = color,
       lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
       fillColor = backGroundColor,
@@ -137,7 +138,7 @@ function createRwrTarget(index, settingsIn, objectStyle, radius) {
   let targetSizeMult = target.priority ? 1.5 : 1.0
   let iconSizeMult = 0.15 * objectStyle.scale * targetSizeMult
 
-  let targetTypeFontSizeMult = 2.0
+  const targetTypeFontSizeMult = 2.0
 
   local iconColor = iconColorSearch
   if (target.track)
@@ -167,7 +168,7 @@ function createRwrTarget(index, settingsIn, objectStyle, radius) {
   let background = @() {
     watch = launchOpacityRwr
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = backGroundColor
     opacity = launchOpacityRwr.get()
     fillColor = backGroundColor
@@ -177,7 +178,7 @@ function createRwrTarget(index, settingsIn, objectStyle, radius) {
   let icon = @() {
     watch = launchOpacityRwr
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = iconColor
     opacity = launchOpacityRwr.get()
     fillColor = 0
@@ -186,8 +187,8 @@ function createRwrTarget(index, settingsIn, objectStyle, radius) {
   }
 
   return @() {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       background,
       targetType,
@@ -199,7 +200,7 @@ function createRwrTarget(index, settingsIn, objectStyle, radius) {
 function rwrTargetsComponent(objectStyle, radius) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle, radius))
   }
 }

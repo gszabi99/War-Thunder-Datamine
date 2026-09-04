@@ -1,15 +1,15 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { getUnitsWithNationBonuses, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_ranks_blk } = require("blkGetters")
 let { createMoreText, maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()

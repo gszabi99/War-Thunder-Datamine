@@ -1,7 +1,7 @@
 {
   "model": "f_105d",
   "fmFile": "fm/f_105d.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
@@ -2345,23 +2345,6 @@
     "maxSpeed": 240.27,
     "turnTime": 28.1492
   },
-  "user_skin": {
-    "name": "f_105d",
-    "replace_tex": [
-      {
-        "from": "f_105d_c*"
-      },
-      {
-        "from": "f_105d_n*"
-      }
-    ]
-  },
-  "default_skin_tomoe": {
-    "replace_tex": {
-      "from": "f_105d_c*",
-      "to": "f_105d_c_tomoe*"
-    }
-  },
   "parachutes": {
     "emitterRange": [
       1,
@@ -2746,6 +2729,25 @@
     },
     "us_2000lb_mk84": {
       "tier": 1
+    }
+  },
+  "default_skin": {
+    "name": "f_105d_japan_killstreak",
+    "replace_tex": {
+      "from": "f_105d_c*",
+      "to": "f_105d_killstreak_c*"
+    }
+  },
+  "user_skin": {
+    "name": "f_105d_killstreak",
+    "replace_tex": {
+      "from": "f_105d_killstreak_c*"
+    }
+  },
+  "default_skin_tomoe": {
+    "replace_tex": {
+      "from": "f_105d_c*",
+      "to": "f_105d_killstreak_c*"
     }
   }
 }

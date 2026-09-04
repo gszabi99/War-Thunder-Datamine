@@ -1,3 +1,10 @@
+import "%appGlobals/timeLoc.nut" as timeBase
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "string" import format, split_by_chars
+from "math" import round
+from "chardResearch" import shopIsModificationEnabled
+from "blkGetters" import get_ranks_blk
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import clan_get_exp, is_era_available, wp_shop_get_aircraft_xp_rate, rented_units_get_last_max_full_rent_time, wp_shop_get_aircraft_wp_rate
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
@@ -5,30 +12,21 @@ from "%scripts/utils_sa.nut" import get_tomoe_unit_icon
 from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
-let { format, split_by_chars } = require("string")
-let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { canBuyNotResearched, isUnitElite, canResearchUnit, isUnitUsable,
-  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken
-} = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, isUnitElite, canResearchUnit, isUnitUsable, isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
-let { getUnitItemStatusText, getUnitRarity
-} = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitItemStatusText, getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getUnitShopPriceText } = require("unitCardPkg.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { hasMarkerByUnitName, getUnlockIdByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { getUnitName,
-  bit_unit_status, getUnitReqExp, getUnitExp, image_for_air
-} = require("%scripts/unit/unitInfo.nut")
+let { getShopDevMode, getUnitDebugRankText, getUnitDebugCostText } = require("%scripts/debugTools/dbgShop.nut")
+let { getUnitName, bit_unit_status, getUnitReqExp, getUnitExp, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
@@ -37,10 +35,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_ranks_blk } = require("blkGetters")
-let { get_charserver_time_sec } = require("chard")
 let { getUtcMidnight, secondsToString, buildDateStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let timeBase = require("%appGlobals/timeLoc.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
@@ -205,6 +200,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     hasActionsMenu            = false,
     shopStatus                = "",
     unitRankText              = "",
+    debugCostText             = "",
     isInactive                = false,
     isViewDisabled            = false,
     isBroken                  = false,
@@ -328,6 +324,10 @@ function updateCardStatus(obj, _id, statusTbl) {
   setBool(rankObj, "tinyFont", isLongPriceText)
   setBool(rankObj, "locked", isLocked)
 
+  let debugCostObj = showInObj(obj, "debugCostText", debugCostText != "")
+  if (debugCostText != "")
+    debugCostObj.findObject("debugCostValue").setValue(debugCostText)
+
   let classPlace = showInObj(obj, "classIconPlace", unitClassIcon != "")
   if (unitClassIcon != "") {
     let classObj = classPlace.findObject("classIcon")
@@ -430,6 +430,7 @@ let getUnitStatusTbl = function(unit, params) {
   let res = {
     shopStatus          = getUnitItemStatusText(bitStatus, false)
     unitRankText        = getUnitRankText(unit, showBR, getEdiffFunc())
+    debugCostText       = getUnitDebugCostText(unit)
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = isUnitBroken(unit)

@@ -1,20 +1,21 @@
+from "string" import format
+from "%sqstd/string.nut" import clearBorderSymbols, slice
+from "dagor.debug" import debug
 from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { clearBorderSymbols, slice } = require("%sqstd/string.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
+let { setFocusToNextObj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { checkClanTagForDirtyWords, stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
-let { debug } = require("dagor.debug")
 
-gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let ModifyClanModalHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanModifyWindow.blk"
 
@@ -305,3 +306,6 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   onKbdWrapUp   = @() setFocusToNextObj(this.scene, this.tabFocusArray, -1)
   onKbdWrapDown = @() setFocusToNextObj(this.scene, this.tabFocusArray, 1)
 }
+register_gui_handler("ModifyClanModalHandler", ModifyClanModalHandler)
+
+return { ModifyClanModalHandler }

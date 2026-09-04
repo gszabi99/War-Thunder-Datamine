@@ -17,6 +17,19 @@ spectatorFrame {
   border-offset:@dp;
 }
 
+spectatorFrame[stickTo=right] {
+  left: pw - w + 4@dp;
+}
+spectatorFrame[stickTo=left] {
+  left: 0-4@dp;
+}
+
+toggleButton[stickTo=right] {
+  left: pw - w + 4@dp;
+}
+toggleButton[stickTo=left] {
+  left: 0-4@dp;
+}
 table.spectatorTeamTable {
   width:pw;
   css-hier-invalidate:yes;
@@ -242,6 +255,10 @@ hoverButton[withSeparation=yes] {
   margin:1@spectatorToolbarBtnSize, 0;
 }
 
+hoverButton[noMargin=yes] {
+  margin: 0;
+}
+
 hoverButton, toggleButton
 {
   behaviour:button;
@@ -291,7 +308,7 @@ hoverButton:hover > icon {
   background-color:@buttonFontColorHover;
 }
 hoverButton[hasTransparentBG=yes]:hover > icon {
-  background-color:@buttonFontColorPurchase;
+  background-color:@white;
 }
 
 hoverButton:disabled

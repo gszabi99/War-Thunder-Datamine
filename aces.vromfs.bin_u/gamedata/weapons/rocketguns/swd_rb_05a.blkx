@@ -8,8 +8,18 @@
   "mesh": "rb_05a",
   "tags": {},
   "rocket": {
+    "dragCx": 0.02,
     "bulletName": "swd_rb_05a",
-    "statType": "hydra",
+    "statType": [
+      "hydra",
+      "hydra"
+    ],
+    "iconType": "missile_air_to_uni",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.3,
     "length": 3.636,
     "WdK": [
@@ -33,10 +43,8 @@
     "force1": 7535.0,
     "fireDelay": 0.1,
     "timeLife": 24.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 415.0,
-    "endSpeed": 0.0,
     "maxDistance": 11000.0,
     "minDistance": 30.0,
     "operatedDist": 8000.0,
@@ -58,9 +66,9 @@
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
@@ -71,52 +79,12 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "maxDeltaAngle": 3.5,
-    "dragCx": 0.02,
-    "distanceFuse": false,
+    "hitPowerMult": 400.0,
+    "shellCollision": true,
     "hasProximityFuse": true,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_medium",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -143,10 +111,8 @@
       0.0,
       0.0
     ],
-    "damage": {
-      "explosive": {
-        "offset": 1.0
-      }
+    "pressureDamage": {
+      "damageType": "pressure"
     },
     "stabilityRicochetModifier": {
       "mod1": [
@@ -154,16 +120,18 @@
         0.5
       ],
       "mod2": [
-        15.0,
-        0.7
+        20.0,
+        0.6
       ],
       "mod3": [
         30.0,
-        0.99
+        1.0
       ]
     },
-    "pressureDamage": {
-      "damageType": "pressure"
+    "damage": {
+      "explosive": {
+        "offset": 0.75
+      }
     },
     "DamageParts": {
       "body": {

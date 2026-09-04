@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let PaymentHandler = class (BaseGuiHandlerWT) {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/payment.blk"
 
@@ -21,9 +22,9 @@ gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, item in this.items) {
       let payItem = this.guiScene.createElementByObject(paymentsObj, "%gui/paymentItem.blk", "paymentItem", this)
       payItem.id = $"payment_{idx}"
-      payItem.tooltip = loc(getTblValue("name", item, ""))
-      payItem.findObject("payIcon")["background-image"] = getTblValue("icon", item, "")
-      payItem.findObject("payText").setValue(getTblValue("icon", item, "") == "" ? loc(getTblValue("name", item, "")) : "")
+      payItem.tooltip = loc((item?.name ?? ""))
+      payItem.findObject("payIcon")["background-image"] = (item?.icon ?? "")
+      payItem.findObject("payText").setValue((item?.icon ?? "") == "" ? loc((item?.name ?? "")) : "")
     }
     move_mouse_on_child(paymentsObj)
   }
@@ -39,8 +40,9 @@ gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.goBack()
   }
 }
+register_gui_handler("PaymentHandler", PaymentHandler)
 
-let openPaymentWnd = @(params) loadHandler(gui_handlers.PaymentHandler, params)
+let openPaymentWnd = @(params) loadHandler(PaymentHandler, params)
 
 return {
   openPaymentWnd

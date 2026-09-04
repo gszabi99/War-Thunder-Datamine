@@ -1,10 +1,10 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetSpeedupFactor, wwGetOperationId
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
-let { wwGetSpeedupFactor, wwGetOperationId } = require("worldwar")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 
@@ -30,10 +30,10 @@ function loadUnitsFromBlk(blk, aiUnitsBlk = null) {
     }
 
     if (aiUnitsBlk) {
-      let aiUnitData = getTblValue(unitBlk.getBlockName(), aiUnitsBlk)
+      let aiUnitData = aiUnitsBlk?[unitBlk.getBlockName()]
       if (aiUnitData) {
         let aiUnit = WwUnit(unitBlk)
-        aiUnit.setCount(getTblValue("count", aiUnitData, -1))
+        aiUnit.setCount((aiUnitData?.count ?? -1))
         aiUnit.setForceControlledByAI(true)
         units.append(aiUnit)
       }

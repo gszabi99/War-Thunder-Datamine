@@ -1,20 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/datablock.nut" import getBlkValueByPath
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_price_blk
 from "%scripts/dagui_natives.nut" import get_warbond_balance, get_warbond_curr_stage_name, warbond_get_shop_levels
 from "%scripts/dagui_library.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { GUI, PRICE } = require("%scripts/utils/configs.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
-let { get_charserver_time_sec } = require("chard")
-let { get_price_blk } = require("blkGetters")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { FULL_ID_SEPARATOR, DEFAULT_WB_FONT_ICON, maxAllowedWarbondsBalance
-} = require("%scripts/warbonds/warbondsState.nut")
+let { FULL_ID_SEPARATOR, DEFAULT_WB_FONT_ICON, maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 
 let Warbond = class {
   id = ""
@@ -54,9 +52,9 @@ let Warbond = class {
     this.fontIcon = DEFAULT_WB_FONT_ICON
 
     let guiWarbondsBlock = GUI.get()?.warbonds
-    this.medalIcon = getTblValue(this.listId, getTblValue("medalIcons", guiWarbondsBlock), this.medalIcon)
-    this.levelIcon = getTblValue(this.listId, getTblValue("levelIcons", guiWarbondsBlock), this.levelIcon)
-    this.medalForSpecialTasks = getTblValue("specialTasksByMedal", guiWarbondsBlock, 1)
+    this.medalIcon = (guiWarbondsBlock?.medalIcons?[this.listId] ?? this.medalIcon)
+    this.levelIcon = (guiWarbondsBlock?.levelIcons?[this.listId] ?? this.levelIcon)
+    this.medalForSpecialTasks = (guiWarbondsBlock?.specialTasksByMedal ?? 1)
 
     
     this.needShowSpecialTasksProgress = this.medalForSpecialTasks > 1
@@ -102,7 +100,7 @@ let Warbond = class {
 
   function getAwardByIdx(awardIdx) {
     let idx = to_integer_safe(awardIdx, -1)
-    return getTblValue(idx, this.getAwardsList())
+    return this.getAwardsList()?[idx]
   }
 
   function getAwardById(awardId) {
@@ -191,7 +189,7 @@ let Warbond = class {
   }
 
   function getShopLevelTasks(level) {
-    return getTblValue(level, this.levelsArray, this.levelsArray.len() ? this.levelsArray.top() : 0)
+    return (this.levelsArray?[level] ?? (this.levelsArray.len() ? this.levelsArray.top() : 0))
   }
 
   function isMaxLevelReached() {

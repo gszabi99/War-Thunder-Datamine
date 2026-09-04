@@ -1,19 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+import "mapPreferences" as mapPreferences
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank, calcBattleRatingFromRank
+from "dagor.debug" import debug_dump_stack
+from "string" import split_by_chars, format
+from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_natives.nut" import get_level_texture, map_to_location
+from "%scripts/matching/matchingGameModes.nut" import getGameModesByEconomicName, isSubGameMode
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { debug_dump_stack } = require("dagor.debug")
-let { split_by_chars, format } = require("string")
-let regexp2 = require("regexp2")
-let mapPreferences = require("mapPreferences")
+let { getEventUnitTypesMask } = require("%scripts/events/eventTeamsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { EVENTS_DATA_UPDATED, GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { getGameModesByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
-let { getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 
@@ -147,7 +147,7 @@ function getMapsListImpl(curEvent) {
   let dislikeList = banData.disliked
   let likeList = banData.liked
   local list = []
-  let hasTankOrShip =  (events.getEventUnitTypesMask(curEvent)
+  let hasTankOrShip =  (getEventUnitTypesMask(curEvent)
     & (unitTypes.TANK.bit | unitTypes.SHIP.bit)) != 0
   let missionToLevelTable = {}
   if (isLevelBanMode)
@@ -159,8 +159,11 @@ function getMapsListImpl(curEvent) {
         }
 
   let missionList = {}
-  foreach (gm in getGameModesByEconomicName(getEventEconomicName(curEvent)))
+  foreach (gm in getGameModesByEconomicName(getEventEconomicName(curEvent))) {
+    if (isSubGameMode(gm))
+      continue
     missionList.__update(gm?.mission_decl.missions_list ?? {})
+  }
 
   let assertMisNames = []
   foreach (name, val in missionList) {
@@ -301,8 +304,8 @@ function getPrefTitle(curEvent) {
 }
 
 addListenersWithoutEnv({
-  EventsDataUpdated = @(_) mapsListByEvent.clear()
-  GameLocalizationChanged = @(_) mapsListByEvent.clear()
+  [EVENTS_DATA_UPDATED] = @(_) mapsListByEvent.clear(),
+  [GAME_LOCALIZATION_CHANGED] = @(_) mapsListByEvent.clear()
 })
 
 return {

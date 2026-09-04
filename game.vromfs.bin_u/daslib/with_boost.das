@@ -1,0 +1,192 @@
+options gen2
+options indenting = 4
+
+options strict_smart_pointers
+
+module with_boost shared private
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+require daslib/ast
+require daslib/ast_boost
+require daslib/templates_boost
+require daslib/macro_boost
+
+
+
+
+
+def private container_kind(atNode : ExprAt?) : string {
+    
+    let subT = atNode.subexpr._type
+    return "" if (subT == null)
+    return "array" if (subT.baseType == Type.tArray)
+    return "table" if (subT.baseType == Type.tTable)
+    return ""
+}
+
+def private is_lvalue_chain(e : ExpressionPtr) : bool {
+    
+    return false if (e == null)
+    return true if (e is ExprVar)
+    return is_lvalue_chain((e as ExprField).value) if (e is ExprField)
+    return is_lvalue_chain((e as ExprSafeField).value) if (e is ExprSafeField)
+    return false
+}
+
+[call_macro(name="with_")]
+class private WithMacro : AstCallMacro {
+    
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : ExpressionPtr {
+        macro_verify(length(call.arguments) >= 2, prog, call.at,
+            "with_ needs at least one container arg plus a block")
+        let totalArgs = length(call.arguments)
+        let containerCount = totalArgs - 1
+        let blockArg = call.arguments[totalArgs - 1]
+        macro_verify(blockArg is ExprMakeBlock, prog, call.at,
+            "with_ last argument must be a block, got {describe(blockArg)}")
+        
+        var tableCount = 0
+        for (i in range(containerCount)) {
+            let ai = call.arguments[i]
+            macro_verify(ai is ExprAt, prog, call.at,
+                "with_ arg #{i} must be `arr[i]` or `tab[k]` — use built-in `with` for locals; got {describe(ai)}")
+            let aiNode = ai as ExprAt
+            macro_verify(aiNode.subexpr._type != null, prog, call.at,
+                "with_ arg #{i} container type not inferred yet — got null _type on {describe(aiNode.subexpr)}")
+            macro_verify(ai._type != null, prog, call.at,
+                "with_ arg #{i} element type not inferred yet — got null _type on the ExprAt itself")
+            let ki = container_kind(aiNode)
+            macro_verify(ki != "", prog, call.at,
+                "with_ arg #{i} container must be array or table, got {describe(aiNode.subexpr._type)}")
+            macro_verify(is_lvalue_chain(aiNode.subexpr), prog, call.at,
+                "with_ arg #{i} container must be a named variable (or field/index chain rooted in one); array literals and function-call results have temp lifetime and can't be safely ref-bound. Got {describe(aiNode.subexpr)}")
+            if (ki == "table") {
+                tableCount ++
+            }
+        }
+        macro_verify(tableCount <= 1, prog, call.at,
+            "with_ allows at most one table-keyed arg per call (got {tableCount}); a 2nd table lookup could rehash and invalidate the first pinned entry")
+        
+        let mblk = blockArg as ExprMakeBlock
+        let userBlock = mblk._block as ExprBlock
+        let userArgCount = length(userBlock.arguments)
+        var rewrittenBlock : ExprMakeBlock?
+        var rewrittenInner : ExprBlock?
+        
+        if (userArgCount == 0) {
+            macro_verify(containerCount == 1, prog, call.at,
+                "with_ multi-arg form requires explicit block params: $(a, b, ...)")
+            var pT = clone_type(call.arguments[0]._type)
+            pT.flags.ref = true
+            pT.flags.constant = false
+            pT.flags.removeConstant = true
+            var injected = new Variable(at = call.at, name := "_", _type = pT)
+            var newBlock = new ExprBlock(at = userBlock.at,
+                returnType = new TypeDecl(at = userBlock.at, baseType = Type.tVoid),
+                blockFlags = userBlock.blockFlags | ExprBlockFlags.isClosure)
+            newBlock.arguments |> emplace_new(injected)
+            for (st in userBlock.list) {
+                newBlock.list |> emplace_new(clone_expression(st))
+            }
+            
+            for (st in userBlock.finalList) {
+                newBlock.finalList |> emplace_new(clone_expression(st))
+            }
+            rewrittenBlock = new ExprMakeBlock(at = call.at, _block = newBlock)
+            rewrittenInner = newBlock
+        } else {
+            macro_verify(userArgCount == containerCount, prog, call.at,
+                "with_ block-param count must match container-arg count: {containerCount} containers, {userArgCount} block params")
+            rewrittenBlock = clone_expression(mblk) as ExprMakeBlock
+            rewrittenInner = rewrittenBlock._block as ExprBlock
+            
+            rewrittenInner.returnType = new TypeDecl(at = userBlock.at, baseType = Type.tVoid)
+            for (i in range(containerCount)) {
+                var arg = rewrittenInner.arguments[i]
+                arg._type = clone_type(call.arguments[i]._type)
+                arg._type.flags.ref = true
+                arg._type.flags.constant = false
+                arg._type.flags.removeConstant = true
+            }
+        }
+        
+        var preStmts : array<ExpressionPtr>
+        var lockStmts : array<ExpressionPtr>
+        var unlockStmts : array<ExpressionPtr>
+        var argRefs : array<ExpressionPtr>
+        preStmts |> reserve(containerCount * 2)
+        lockStmts |> reserve(containerCount)
+        unlockStmts |> reserve(containerCount)
+        argRefs |> reserve(containerCount)
+        for (i in range(containerCount)) {
+            let ai = call.arguments[i] as ExprAt
+            let ki = container_kind(ai)
+            
+            let cName = make_unique_private_name("__with_c_{i}", call.at)
+            preStmts |> push <| qmacro_expr() {
+                var $i(cName) & = unsafe($e(ai.subexpr))
+            }
+            if (ki == "array") {
+                lockStmts |> push <| qmacro_expr() {
+                    __builtin_array_lock_mutable($i(cName))
+                }
+                unlockStmts |> push <| qmacro_expr() {
+                    __builtin_array_unlock_mutable($i(cName))
+                }
+                argRefs |> push <| qmacro($i(cName)[$e(ai.index)])
+            } else {  
+                let trefName = make_unique_private_name("__with_tref_{i}", call.at)
+                preStmts |> push <| qmacro_expr() {
+                    var $i(trefName) & = unsafe($i(cName)[$e(ai.index)])
+                }
+                lockStmts |> push <| qmacro_expr() {
+                    __builtin_table_lock_mutable($i(cName))
+                }
+                unlockStmts |> push <| qmacro_expr() {
+                    __builtin_table_unlock_mutable($i(cName))
+                }
+                argRefs |> push <| qmacro($i(trefName))
+            }
+        }
+        
+        let unlockN = length(unlockStmts)
+        var unlocksReversed <- [for (i in range(unlockN)); unlockStmts[unlockN - 1 - i]]
+        
+        var invokeCall = new ExprInvoke(at = call.at, name := "invoke")
+        invokeCall.arguments |> emplace_new(rewrittenBlock)
+        for (r in argRefs) {
+            invokeCall.arguments |> emplace_new(r)
+        }
+        
+        var blk = new ExprBlock(at = call.at,
+            returnType = new TypeDecl(at = call.at, baseType = Type.tVoid))
+        for (s in preStmts) {
+            blk.list |> emplace_new(s)
+        }
+        for (s in lockStmts) {
+            blk.list |> emplace_new(s)
+        }
+        blk.list |> emplace_new(invokeCall)
+        for (s in unlocksReversed) {
+            blk.list |> emplace_new(s)
+        }
+        return <- blk
+    }
+}

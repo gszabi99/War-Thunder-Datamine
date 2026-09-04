@@ -1,13 +1,14 @@
+import "%globalScripts/mkWatched.nut" as mkWatched
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "frp" import Watched
+from "%sqstd/underscore.nut" import isDataBlock
+from "%sqstd/platform.nut" import is_windows
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import local_player_has_feature, has_ray_query
 
-let { Watched } = require("frp")
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { is_windows } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_game_settings_blk } = require("blkGetters")
-let mkWatched = require("%globalScripts/mkWatched.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 
 let defaults = Watched({  
              
@@ -231,6 +232,8 @@ let defaults = Watched({
   DebriefingBattleTasks = false
   PromoBattleTasksRadioButtons = false
 
+  CommandersHandbook = false
+
   XboxIngameShop = false
   XboxCrossConsoleInteraction = false
   Ps4XboxOneInteraction = false
@@ -300,6 +303,11 @@ override.subscribe(@(...) cache.clear())
 let setOverrideFeature = @(value, name) override.mutate(@(t) t[name] <- value)
 override.whiteListMutatorClosure(setOverrideFeature)
 
+function clearFeatureCache(name) {
+  cache.$rawdelete(name)
+  cache.$rawdelete($"!{name}")
+}
+
 function hasFeatureBasic(name) {
   local res = override.get()?[name] ?? cache?[name]
   if (res != null)
@@ -357,15 +365,31 @@ function hasAnyFeature(arr) {
   return false
 }
 
+
+
+
+let dargFeaturesList = ["AllowExternalLink"]
+let pushDargFeatures = @() updateExtWatched(
+  dargFeaturesList.reduce(@(acc, name) acc.__update({ [$"feature{name}"] = hasFeature(name) }), {}))
+
 addListenersWithoutEnv({
-  ProfileUpdated = @(_) cache.clear()
+  ProfileUpdated = function(_) {
+    cache.clear()
+    pushDargFeatures()
+  }
 }, g_listener_priority.CONFIG_VALIDATION)
+
+
+defaults.subscribe(@(...) pushDargFeatures())
+override.subscribe(@(...) pushDargFeatures())
+pushDargFeatures()
 
 return {
   defaults
   override
 
   setOverrideFeature
+  clearFeatureCache
   getFeaturePack
   hasFeature
   hasAllFeatures

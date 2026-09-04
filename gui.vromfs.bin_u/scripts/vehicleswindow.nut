@@ -1,15 +1,15 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getSessionLobbyPublicData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 
-gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+let VehiclesWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
 
   
@@ -29,7 +29,7 @@ gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       let teamObj = this.scene.findObject(teamName)
       if (!checkObj(teamObj))
         continue
-      let teamData = getTblValue(teamName, this.teamDataByTeamName, null)
+      let teamData = this.teamDataByTeamName?[teamName]
       if (!events.isTeamDataPlayable(teamData))
         continue
 
@@ -38,6 +38,7 @@ gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("VehiclesWindow", VehiclesWindow)
 
 function updateVehicleInfoButton(scene, room) {
   showObjById("vehicles_info_button_block",
@@ -48,5 +49,6 @@ function updateVehicleInfoButton(scene, room) {
 }
 
 return {
+  VehiclesWindow
   updateVehicleInfoButton
 }

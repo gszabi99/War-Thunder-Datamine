@@ -1,38 +1,52 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqstd/datablock.nut" import convertBlk
+from "console" import register_command
+from "dagor.random" import rnd_int
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
+from "chard" import getLoginGuardState, LOGIN_STREAK_GUARD_PERIOD_DEFAULT
 
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock  = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let { disableSeenUserlogs, shownUserlogNotifications } = require("%scripts/userLog/userlogUtils.nut")
 let { getUserlogImageItem } = require("%scripts/userLog/userlogViewData.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak } = require("%scripts/battlePass/seasonState.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { rnd_int } = require("dagor.random")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem,
-  getRestRewardsNumLayer
-} = require("%scripts/items/trophyReward.nut")
+let { MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem, getRestRewardsNumLayer } = require("%scripts/items/trophyReward.nut")
 let { getPrizeImageByConfig, getTrophyReward } = require("%scripts/items/prizesView.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 
-let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
-  wndType = handlerType.MODAL
+let getStreakGuardPeriod = @() getUnlockById("every_day_award")?.mode.streakGuardPeriod
+  ?? LOGIN_STREAK_GUARD_PERIOD_DEFAULT
+
+let sizeTimerPid = dagui_propid_add_name_id("_size-timer")
+let sizeDelayPid = dagui_propid_add_name_id("_size_delay")
+
+const ARROWS_ANIM_TIME = 0.4
+const ARROWS_STOP_BEFORE_END_TIME = 0.1
+
+class EveryDayLoginAward (BaseGuiHandlerWT) {
+  wndType = handlerType.BASE
+  shouldBlurSceneBgFn = needUseHangarDof
   sceneBlkName = "%gui/items/everyDayLoginAward.blk"
   needVoiceChat = false
 
@@ -52,7 +66,9 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   periodUnit = null
 
   function initScreen() {
-    this.updateHeader()
+    let loginGuardState = getLoginGuardState()
+    log($"Every Day Login Award: loginGuardState loginStreak={loginGuardState.loginStreak} loginGuard={loginGuardState.loginGuard} period={getStreakGuardPeriod()}")
+    debugTableData(loginGuardState)
     this.updateGuiBlkData()
 
     this.rewardsArray = this.getRewardsArray(this.getAwardName())
@@ -64,35 +80,12 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     this.fillOpenedChest()
     this.initExpTexts()
 
-    move_mouse_on_obj(this.getObj("btn_nav_open"))
+    move_mouse_on_obj(this.getObj("btn_open"))
     let sendShortcuts = showConsoleButtons.get() ? "{{INPUT_BUTTON GAMEPAD_R1}}" : ""
     let tipHint = loc("dailyAward/playWTM", {sendShortcuts})
     let textObjName = showConsoleButtons.get() ? "wtm_text_console" : "wtm_text"
 
     showObjById(textObjName, true, this.scene).setValue(tipHint)
-  }
-
-  function updateHeader() {
-    let titleObj = this.scene.findObject("award_type_title")
-
-    if (!checkObj(titleObj))
-      return
-
-    local text = loc($"{this.userlog.body.rewardType}/name")
-
-    let itemId = this.getTrophyIdName(this.getAwardName())
-    let item = findItemById(itemId)
-    if (item)
-      text = loc("ui/colon").concat(text, item.getName(false))
-
-    let periodAward = this.getPeriodAwardConfig()
-    if (periodAward) {
-      let period = getTblValue("periodicDays", periodAward)
-      if (periodAward)
-        text = " ".concat(text, loc("keysPlus"), loc("EveryDayLoginAward/periodAward", { period = period }))
-    }
-
-    titleObj.setValue(text)
   }
 
   function updateGuiBlkData() {
@@ -108,8 +101,8 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
                                objId = "filled_reward_progress",
                                param = "background-color",
                                tooltipFunc = function(paramsTable) {
-                                 let obj = getTblValue("obj", paramsTable)
-                                 let weeks = getTblValue("week", paramsTable, 0)
+                                 let obj = paramsTable?.obj
+                                 let weeks = (paramsTable?.week ?? 0)
                                  if (!checkObj(obj) || weeks <= 0)
                                   return
 
@@ -133,36 +126,36 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateObjectByData(data, params = {}) {
-    let objId = getTblValue("objId", params, "")
+    let objId = (params?.objId ?? "")
     let obj = this.scene.findObject(objId)
     if (!checkObj(obj))
       return
 
-    let name = getTblValue("name", params, "")
+    let name = (params?.name ?? "")
     let block = data[name]
     let blockLen = block ? block.paramCount() : 0
     if (blockLen <= 0)
       return
 
-    let loopLen = to_integer_safe(getTblValue("loopLenght", this.userlog.body, 1))
-    let progress = to_integer_safe(getTblValue("progress", this.userlog.body, 1)) - 1
+    let loopLen = to_integer_safe((this.userlog.body?.loopLenght ?? 1))
+    let progress = to_integer_safe((this.userlog.body?.progress ?? 1)) - 1
     let weeksInARow = progress / loopLen
 
     let week = weeksInARow % blockLen
 
     let value = block[week.tostring()]
-    let checkFunc = getTblValue("checkFunc", params)
+    let checkFunc = params?.checkFunc
     if (checkFunc && !checkFunc(value)) {
       log($"Every Day Login Award: wrong name {name}")
       debugTableData(data)
       return
     }
 
-    let tooltipFunc = getTblValue("tooltipFunc", params)
+    let tooltipFunc = params?.tooltipFunc
     if (tooltipFunc)
       tooltipFunc({ obj = obj, week = weeksInARow })
 
-    let param = getTblValue("param", params, "")
+    let param = (params?.param ?? "")
     obj[param] = value
   }
 
@@ -175,7 +168,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (!(obj?.isValid() ?? false))
       return
 
-    obj["background-image"] = images[rnd_int(0, imagesCount - 1).tostring()]
+    obj["background-image"] = images?[rnd_int(0, imagesCount - 1).tostring()]
   }
 
   function callItemsRoulette() {
@@ -191,7 +184,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateRewardImage() {
-    let awObj = this.scene.findObject("award_received")
+    let awObj = this.scene.findObject("trophy_image_wrapper")
     if (!checkObj(awObj))
       return
 
@@ -241,8 +234,8 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
         break
 
       if (blk.type != EULT_OPEN_TROPHY
-        || this.getTrophyIdName(awardName) != getTblValue("id", blk.body, "")
-        || !getTblValue("everyDayLoginAward", blk.body, false))
+        || this.getTrophyIdName(awardName) != (blk.body?.id ?? "")
+        || !(blk.body?.everyDayLoginAward ?? false))
         continue
 
       userlogConfig.append(convertBlk(blk.body))
@@ -286,7 +279,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   function updatePeriodRewardImage() {
     let pawObj = this.scene.findObject("periodic_reward_received")
     let cfg = this.getPeriodAwardConfig()
-    let period = getTblValue("periodicDays", cfg, 0)
+    let period = (cfg?.periodicDays ?? 0)
 
     local isDefault = false
     local curentRewardData = this.curPeriodicAwardData.getBlockByName(period.tostring())
@@ -305,11 +298,15 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let imgObj = pawObj.findObject("periodic_image")
-    if (!checkObj(imgObj))
+    let imgObj = this.useSingleAnimation
+      ? this.scene.findObject("periodic_image_chest")
+      : this.scene.findObject("periodic_image")
+
+    if (!imgObj?.isValid())
       return
 
     imgObj["background-image"] =$"@!{bgImage}"
+    imgObj.show(true)
     pawObj.show(true)
 
     let animObj = pawObj.findObject("periodic_reward_animation")
@@ -320,7 +317,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getTrophyIdName(name = "") {
-    let prefix = "trophy/"
+    const prefix = "trophy/"
     let pLen = prefix.len()
     return (name.len() > pLen && name.slice(0, pLen) == prefix) ? name.slice(pLen) : name
   }
@@ -330,11 +327,11 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getPeriodAwardConfig() {
-    return getTblValue("chardReward1", this.userlog.body)
+    return this.userlog.body?.chardReward1
   }
 
   function getPeriodicAwardName() {
-    return getTblValue("name", this.getPeriodAwardConfig(), "")
+    return (this.getPeriodAwardConfig()?.name ?? "")
   }
 
   function stopRouletteSpinning() {
@@ -343,8 +340,16 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     let obj = this.scene.findObject("rewards_list")
     skipItemsRouletteAnimation(obj)
+    this.startRouletteArrowsAnim(0, 0, ARROWS_ANIM_TIME)
     this.onOpenAnimFinish()
     this.fillOpenedChest()
+  }
+
+  function startRouletteArrowsAnim(delay, sizeTimer, totalTime) {
+    let arrowsObj = this.scene.findObject("arrows_anim")
+    arrowsObj.setFloatProp(sizeDelayPid, delay)
+    arrowsObj.setFloatProp(sizeTimerPid, sizeTimer)
+    arrowsObj["size-time"] = $"{totalTime * 1000}"
   }
 
   function onViewRewards() {
@@ -374,6 +379,16 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
         let delay = to_integer_safe(animObj?.chestReplaceDelay, 0)
         Timer(animObj, 0.001 * delay, this.fillOpenedChest, this)
       }
+      else {
+        let roulletteObj = this.scene.findObject("rewards_list")
+        let config = roulletteObj.getUserData()
+        let arrowsTimeShift = config?.anim.FINAL_ANIM_TIME
+          ?? config?.anim.TIME_TO_FINALIZE
+          ?? (ARROWS_ANIM_TIME + ARROWS_STOP_BEFORE_END_TIME)
+        this.startRouletteArrowsAnim(config ? (config.totalTime - arrowsTimeShift) : 0, 0,
+          arrowsTimeShift - ARROWS_STOP_BEFORE_END_TIME
+        )
+      }
     }
     else
       this.fillOpenedChest()
@@ -388,13 +403,15 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtons() {
     showObjById("btn_open", !this.isOpened, this.scene)
+    showObjById("btn_nav_open", this.isOpened, this.scene)
     showObjById("open_chest_animation", !this.rouletteAnimationFinished, this.scene)
     showObjById("btn_rewards_list", this.isOpened && this.rouletteAnimationFinished && (this.rewardsArray.len() > 1 || this.haveItems), this.scene)
 
-    if (this.isOpened)
+    if (this.isOpened) {
       this.scene.findObject("btn_nav_open").setValue(this.rouletteAnimationFinished || this.useSingleAnimation
         ? loc("mainmenu/btnClose")
         : loc("msgbox/btn_skip"))
+    }
 
     this.updateExpTexts()
   }
@@ -412,7 +429,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     else if (!this.rouletteAnimationFinished)
       this.stopRouletteSpinning()
     else
-      base.goBack()
+      this.guiScene.performDelayed(this, base.goBack)
   }
 
   function updateUnitItem(curUnit = null, obj = null) {
@@ -456,9 +473,8 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(placeObj))
       return
 
-    let gotTextObj = this.scene.findObject("got_text")
-    if (checkObj(gotTextObj))
-      gotTextObj.setValue("".concat(loc("reward"), loc("ui/colon")))
+    let gotTextObj = this.scene.findObject("chest_award_label")
+    gotTextObj.setValue("".concat(loc("reward"), loc("ui/colon")))
 
     let reward = this.unit ? this.getRentUnitText(this.unit) : getTrophyReward(this.rewardsArray)
     let rewardTextObj = placeObj.findObject("reward_text")
@@ -487,12 +503,12 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
   function updateAwards() {
     let view = { items = [] }
-    let loopLen = getTblValue("loopLenght", this.userlog.body, 0)
-    let dayInLoop = getTblValue("dayInLoop", this.userlog.body)
-    let progress = getTblValue("progress", this.userlog.body, 0)
+    let loopLen = (this.userlog.body?.loopLenght ?? 0)
+    let dayInLoop = this.userlog.body?.dayInLoop ?? 1
+    let progress = (this.userlog.body?.progress ?? 0)
 
     for (local i = 0; i < loopLen; i++) {
-      let offset = getTblValue($"daysForStat{i}", this.userlog.body)
+      let offset = this.userlog.body?[$"daysForStat{i}"]
       if (offset == null) 
         break
 
@@ -505,11 +521,11 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       let today = offset == 0
       let tomorrow = offset == 1
       let previousAwards = offset < 0
-      let periodRewardDays = getTblValue($"awardPeriodStat{i}", this.userlog.body, -1)
+      let periodRewardDays = (this.userlog.body?[$"awardPeriodStat{i}"] ?? -1)
 
       let item = this.prepairViewItem({
         type = this.userlog.type,
-        itemId = getTblValue($"awardTrophyStat{i}", this.userlog.body),
+        itemId = this.userlog.body?[$"awardTrophyStat{i}"],
         today = today,
         tomorrow = tomorrow,
         dayNum = progress + offset,
@@ -537,22 +553,22 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function prepairViewItem(viewItemConfig) {
-    let today = getTblValue("today", viewItemConfig, false)
+    let today = (viewItemConfig?.today ?? false)
 
     local weekDayText = ""
     if (today)
       weekDayText = loc("ui/parentheses", { text = loc("day/today") })
-    else if (getTblValue("tomorrow", viewItemConfig, false))
+    else if ((viewItemConfig?.tomorrow ?? false))
       weekDayText = loc("ui/parentheses", { text = loc("day/tomorrow") })
 
     let period = viewItemConfig.periodRewardDays
     let recentRewardData = this.curPeriodicAwardData.getBlockByName(period.tostring())
-    let periodicRewImage = recentRewardData ? getTblValue("trophy", recentRewardData) : null
+    let periodicRewImage = recentRewardData ? recentRewardData?.trophy : null
 
     return {
-      award_day_text = loc("enumerated_day", { number = getTblValue("dayNum", viewItemConfig) })
+      award_day_text = loc("enumerated_day", { number = viewItemConfig?.dayNum })
       week_day_text = weekDayText
-      openedPicture = getTblValue("openedPicture", viewItemConfig, false)
+      openedPicture = (viewItemConfig?.openedPicture ?? false)
       current = today
       havePeriodReward = recentRewardData != null
       periodicRewardImage = periodicRewImage
@@ -582,12 +598,12 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateDaysProgressBar() {
-    local value = getTblValue("dayInLoop", this.userlog.body, -1)
-    local maxVal = getTblValue("loopLenght", this.userlog.body, -1)
-    let progress = getTblValue("progress", this.userlog.body, -1)
+    local value = (this.userlog.body?.dayInLoop ?? -1)
+    local maxVal = (this.userlog.body?.loopLenght ?? -1)
+    let progress = (this.userlog.body?.progress ?? -1)
     if (value < 0 || maxVal < 0) {
       value = progress
-      maxVal = getTblValue("daysForLast", this.userlog.body, 0) + value
+      maxVal = (this.userlog.body?.daysForLast ?? 0) + value
     }
 
     let blockObj = this.scene.findObject("reward_progress_box")
@@ -665,41 +681,35 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initExpTexts() {
-    this.scene.findObject("today_login_exp").setValue(stashBhvValueConfig([{
+    this.scene.findObject("today_login_exp_watch").setValue(stashBhvValueConfig([{
       watch = todayLoginExp
-      updateFunc = Callback(@(obj, value) this.updateTodayLoginExp(obj, value), this)
-    }]))
-    this.scene.findObject("login_streak_exp").setValue(stashBhvValueConfig([{
+      updateFunc = Callback(@(_obj, _value) this.updateExpTexts(), this)
+    },
+    {
       watch = loginStreak
-      updateFunc = Callback(@(obj, value) this.updateLoginStreakExp(obj, value), this)
+      updateFunc = Callback(@(_obj, _value) this.updateExpTexts(), this)
     }]))
   }
 
   function updateExpTexts() {
-    this.updateTodayLoginExp(this.scene.findObject("today_login_exp"), todayLoginExp.get())
-    this.updateLoginStreakExp(this.scene.findObject("login_streak_exp"), loginStreak.get())
+    let obj = this.scene.findObject("today_login_exp_text")
+    if (loginStreak.get() > 0
+        && (this.rouletteAnimationFinished || (this.isOpened && this.useSingleAnimation))) {
+      this.updateLoginStreakExp(obj, loginStreak.get())
+    }
+    else {
+      this.updateTodayLoginExp(obj, todayLoginExp.get())
+    }
   }
 
   function updateTodayLoginExp(obj, value) {
-    let isVisible = value > 0 && !this.isOpened
-    obj.show(isVisible)
-    if (!isVisible)
-      return
-
-    obj.findObject("today_login_exp_text").setValue(
-      loc("updStats/battlepass_exp", { amount = value }))
+    obj.setValue(value <= 0 ? "" : loc("updStats/battlepass_exp", { amount = value }))
   }
 
   function updateLoginStreakExp(obj, value) {
-    let isVisible = value > 0
-      && (this.rouletteAnimationFinished || (this.isOpened && this.useSingleAnimation))
-    obj.show(isVisible)
-    if (!isVisible)
-      return
-
     let rangeExpText = loc("ui/parentheses/space", {
       text = getExpRangeTextOfLoginStreak() })
-    obj.findObject("text").setValue("".concat(loc("battlePass/seasonLoginStreak",
+    obj.setValue("".concat(loc("battlePass/seasonLoginStreak",
       { amount = value }), rangeExpText))
   }
 
@@ -718,13 +728,16 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
 }
 
-gui_handlers.EveryDayLoginAward <- EveryDayLoginAward
+register_gui_handler("EveryDayLoginAward", EveryDayLoginAward)
 
 function showEveryDayLoginAwardWnd(blk) {
   if (!blk || isInArray(blk.id, shownUserlogNotifications.get()))
     return
 
   if (!hasFeature("everyDayLoginAward"))
+    return
+
+  if (isHandlerInScene(EveryDayLoginAward))
     return
 
   loadHandler(EveryDayLoginAward, { userlog = blk })
@@ -775,6 +788,7 @@ function debugEveryDayLoginAward(numAwardsToSkip = 0, launchWindow = true) {
 register_command(debugEveryDayLoginAward, "debug.everyDayLoginAward")
 
 return {
+  EveryDayLoginAward
   showEveryDayLoginAwardWnd
   hasEveryDayLoginAward
 }

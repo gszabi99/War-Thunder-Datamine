@@ -1,12 +1,12 @@
 import "%sqstd/ecs.nut" as ecs
+from "%appGlobals/controlledHeroEid.nut" import controlledHeroEid
+from "%appGlobals/currentGunEid.nut" import currentGunEid
+from "%appGlobals/hudSquadMembers.nut" import watchedHeroSquadMembersAliveCount
+from "eventbus" import eventbus_send
+from "dasevents" import CmdWeapSetSightPreset
 from "%scripts/dagui_library.nut" import *
 
-let { controlledHeroEid } = require("%appGlobals/controlledHeroEid.nut")
-let { currentGunEid } = require("%appGlobals/currentGunEid.nut")
-let { eventbus_send } = require("eventbus")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { watchedHeroSquadMembersAliveCount } = require("%appGlobals/hudSquadMembers.nut")
-let { CmdWeapSetSightPreset } = require("dasevents")
 
 let canSwitchFireMods = Watched(false)
 let switchFireModOn = Watched("")
@@ -20,7 +20,7 @@ let sightPresetsInfo = Watched([])
 let nextSoldierSpawnTime = Watched(-1.0)
 let needShowWeaponMenu = Computed(@() canSwitchFireMods.get() || canSwithchOnUnbarrelLauncher.get() || hasLaserMod.get() || hasFlashlightMod.get() || sightPresetsInfo.get().len() > 1)
 
-let NO_FIRE_MODS = "no_fire_mods"
+const NO_FIRE_MODS = "no_fire_mods"
 
 let currentGunQuery = ecs.SqQuery("currentGunQuery", {
   comps_ro=[["gun__firingModeIndex", ecs.TYPE_INT, -1],
@@ -28,7 +28,8 @@ let currentGunQuery = ecs.SqQuery("currentGunQuery", {
 })
 
 let unbarrelModQuery = ecs.SqQuery("unbarrelModQuery", {
-  comps_ro=[["weapon_mod__active", ecs.TYPE_BOOL]]
+  comps_ro=[["weapon_mod__active", ecs.TYPE_BOOL]],
+  comps_rq=["weapon_mod__wantActiveState"]
 })
 
 let gunOwnerQuery = ecs.SqQuery("gunOwnerQuery", {
@@ -183,7 +184,7 @@ ecs.register_es("on_weapon_mode_changed_es", {
 },
 {
   comps_track=[["weapon_mod__active", ecs.TYPE_BOOL], ["gun__owner", ecs.TYPE_EID]],
-  comps_rq=["watchedPlayerItem"]
+  comps_rq=["watchedPlayerItem", "weapon_mod__wantActiveState"]
 })
 
 ecs.register_es("on_laser_mode_changed_es", {

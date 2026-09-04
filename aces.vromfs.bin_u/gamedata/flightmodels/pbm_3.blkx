@@ -1,6 +1,6 @@
 {
   "model": "pbm_3",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_radial_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": [
@@ -18,7 +18,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "300kph",
+  "fireParamsPreset": "300kph_nb",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "DamageParts": {
@@ -2607,200 +2607,10 @@
     "gunnersCount": 5
   },
   "commonWeapons": {
-    "hideDmParts": {
-      "node": [
-        "gunner7_dm",
-        "gunner8_dm"
-      ]
-    },
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare1",
-        "dm": "gunner6_dm",
-        "gunnerDm": "gunner6_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 400,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1",
-          "gunner": "gunner6"
-        },
-        "limits": {
-          "yaw": [
-            -84.0,
-            84.0
-          ],
-          "pitch": [
-            -35.0,
-            68.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun2",
-        "flash": "flare2",
-        "dm": "gunner2_dm",
-        "gunnerDm": "gunner2_dm",
-        "gunDm": "gun2_dm",
-        "partsDP": "gun2_dm",
-        "bullets": 600,
-        "traceOffset": 2,
-        "turret": {
-          "head": "turret2",
-          "gun": "gun2",
-          "gunner": "gunner2"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            0.0,
-            80.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -110.0,
-            0.0,
-            90.0
-          ],
-          "lim2": [
-            -110.0,
-            -70.0,
-            -10.0,
-            90.0
-          ],
-          "lim3": [
-            -70.0,
-            -28.0,
-            0.0,
-            90.0
-          ],
-          "lim4": [
-            -28.0,
-            -25.0,
-            30.0,
-            90.0
-          ],
-          "lim5": [
-            -25.0,
-            25.0,
-            0.0,
-            90.0
-          ],
-          "lim6": [
-            25.0,
-            28.0,
-            30.0,
-            90.0
-          ],
-          "lim7": [
-            28.0,
-            110.0,
-            -10.0,
-            90.0
-          ],
-          "lim8": [
-            110.0,
-            180.0,
-            0.0,
-            90.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner2",
-        "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun3",
-        "flash": "flare3",
-        "dm": "gunner3_dm",
-        "gunnerDm": "gunner3_dm",
-        "gunDm": "gun3_dm",
-        "partsDP": "gun3_dm",
-        "bullets": 350,
-        "traceOffset": 1,
-        "turret": {
-          "head": "turret3",
-          "gun": "gun3",
-          "gunner": "gunner3"
-        },
-        "limits": {
-          "yaw": [
-            -40.0,
-            40.0
-          ],
-          "pitch": [
-            -40.0,
-            40.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner3",
-        "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun4",
-        "flash": "flare4",
-        "dm": "gunner4_dm",
-        "gunnerDm": "gunner4_dm",
-        "gunDm": "gun4_dm",
-        "partsDP": "gun4_dm",
-        "bullets": 375,
-        "turret": {
-          "head": "turret4",
-          "gun": "gun4"
-        },
-        "limits": {
-          "yaw": [
-            -45.0,
-            30.0
-          ],
-          "pitch": [
-            -45.0,
-            45.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner4",
-        "blk": "gameData/Weapons/gunBrowning50_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun5",
-        "flash": "flare5",
-        "dm": "gunner5_dm",
-        "gunnerDm": "gunner5_dm",
-        "gunDm": "gun5_dm",
-        "partsDP": "gun5_dm",
-        "bullets": 375,
-        "traceOffset": 1,
-        "turret": {
-          "head": "turret5",
-          "gun": "gun5"
-        },
-        "limits": {
-          "yaw": [
-            -40.0,
-            45.0
-          ],
-          "pitch": [
-            -45.0,
-            45.0
-          ]
-        }
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -2810,61 +2620,887 @@
       },
       {
         "name": "PBM-3_8x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/pbm_8x500lbs.blk",
-        "reqModification": "b-25_mbc"
+        "blk": "gameData/FlightModels/weaponPresets/pbm_8x500lbs.blk"
       },
       {
         "name": "PBM-3_8x1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/pbm_8x1000lbs.blk",
-        "reqModification": "b-25_lbc"
+        "blk": "gameData/FlightModels/weaponPresets/pbm_8x1000lbs.blk"
       },
       {
         "name": "pbm_8x1600lbs",
         "blk": "gameData/FlightModels/weaponPresets/pbm_8x1600lbs.blk",
-        "reqModification": "an_mk1",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
       },
       {
+        "name": "pbm_3_2x1600lbs",
+        "blk": "gameData/FlightModels/weaponPresets/pbm_3_2x1600lbs.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "pbm_3_torpedoes",
+        "blk": "gameData/FlightModels/weaponPresets/pbm_3_torpedoes.blk"
+      },
+      {
         "name": "PBM-3_8x_mine_mk13_mod0",
         "blk": "gameData/FlightModels/weaponPresets/pbm_8x_mine_mk13_mod0.blk",
-        "reqModification": "us_mine_mk13_mod0",
-        "weaponConfig": [
-          {
-            "presetType": "AIR_TO_SEA"
-          },
-          {
-            "Weapon": {
-              "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
-              "amountPerTier": 1.0,
-              "iconType": "air_mines",
-              "tier": [
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 5800.0,
+    "maxloadMassLeftConsoles": 2000.0,
+    "maxloadMassRightConsoles": 2000.0,
+    "maxDisbalance": 1500.0,
+    "HideNodes": {
+      "node": [
+        "pylon1",
+        "pylon2"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "gunner7_dm",
+        "gunner8_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "gunner0",
+              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun1",
+              "flash": "flare1",
+              "dm": "gunner6_dm",
+              "gunnerDm": "gunner6_dm",
+              "gunDm": "gun1_dm",
+              "partsDP": "gun1_dm",
+              "bullets": 400,
+              "turret": {
+                "head": "turret1",
+                "gun": "gun1",
+                "gunner": "gunner6"
+              },
+              "limits": {
+                "yaw": [
+                  -84.0,
+                  84.0
+                ],
+                "pitch": [
+                  -35.0,
+                  68.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner1",
+              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun2",
+              "flash": "flare2",
+              "dm": "gunner2_dm",
+              "gunnerDm": "gunner2_dm",
+              "gunDm": "gun2_dm",
+              "partsDP": "gun2_dm",
+              "bullets": 600,
+              "traceOffset": 2,
+              "turret": {
+                "head": "turret2",
+                "gun": "gun2",
+                "gunner": "gunner2"
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  0.0,
+                  80.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -180.0,
+                  -165.0,
+                  4.0,
+                  80.0
+                ],
+                "lim2": [
+                  -165.0,
+                  -100.0,
+                  9.0,
+                  80.0
+                ],
+                "lim3": [
+                  -100.0,
+                  -40.0,
+                  0.0,
+                  80.0
+                ],
+                "lim4": [
+                  -40.0,
+                  -15.0,
+                  0.0,
+                  80.0
+                ],
+                "lim5": [
+                  -15.0,
+                  15.0,
+                  12.0,
+                  80.0
+                ],
+                "lim6": [
+                  15.0,
+                  40.0,
+                  0.0,
+                  80.0
+                ],
+                "lim7": [
+                  40.0,
+                  100.0,
+                  0.0,
+                  80.0
+                ],
+                "lim8": [
+                  100.0,
+                  165.0,
+                  9.0,
+                  80.0
+                ],
+                "lim9": [
+                  165.0,
+                  180.0,
+                  4.0,
+                  80.0
+                ]
+              },
+              "limitsDeadzone": [
                 {
-                  "idx": 2
+                  "yaw": [
+                    -40.0,
+                    -27.0
+                  ],
+                  "pitch": [
+                    0.0,
+                    35.0
+                  ]
                 },
                 {
-                  "idx": 3
+                  "yaw": [
+                    -24.0,
+                    24.0
+                  ],
+                  "pitch": [
+                    5.0,
+                    10.0
+                  ]
                 },
                 {
-                  "idx": 4
-                },
-                {
-                  "idx": 5
-                },
-                {
-                  "idx": 7
-                },
-                {
-                  "idx": 8
-                },
-                {
-                  "idx": 9
-                },
-                {
-                  "idx": 10
+                  "yaw": [
+                    27.0,
+                    40.0
+                  ],
+                  "pitch": [
+                    0.0,
+                    35.0
+                  ]
                 }
               ]
+            },
+            {
+              "trigger": "gunner2",
+              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun3",
+              "flash": "flare3",
+              "dm": "gunner3_dm",
+              "gunnerDm": "gunner3_dm",
+              "gunDm": "gun3_dm",
+              "partsDP": "gun3_dm",
+              "bullets": 350,
+              "traceOffset": 1,
+              "turret": {
+                "head": "turret3",
+                "gun": "gun3",
+                "gunner": "gunner3"
+              },
+              "limits": {
+                "yaw": [
+                  -40.0,
+                  40.0
+                ],
+                "pitch": [
+                  -40.0,
+                  40.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner3",
+              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun4",
+              "flash": "flare4",
+              "dm": "gunner4_dm",
+              "gunnerDm": "gunner4_dm",
+              "gunDm": "gun4_dm",
+              "partsDP": "gun4_dm",
+              "bullets": 375,
+              "turret": {
+                "head": "turret4",
+                "gun": "gun4"
+              },
+              "limits": {
+                "yaw": [
+                  -45.0,
+                  30.0
+                ],
+                "pitch": [
+                  -45.0,
+                  45.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner4",
+              "blk": "gameData/Weapons/gunBrowning50_turret.blk",
+              "breechInCockpit": true,
+              "emitter": "gun5",
+              "flash": "flare5",
+              "dm": "gunner5_dm",
+              "gunnerDm": "gunner5_dm",
+              "gunDm": "gun5_dm",
+              "partsDP": "gun5_dm",
+              "bullets": 375,
+              "traceOffset": 1,
+              "turret": {
+                "head": "turret5",
+                "gun": "gun5"
+              },
+              "limits": {
+                "yaw": [
+                  -40.0,
+                  45.0
+                ],
+                "pitch": [
+                  -45.0,
+                  45.0
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 8,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "1600lb_fuse_left",
+            "reqModification": "an_mk1",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "separate": true,
+              "external": true,
+              "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+              "emitter": "torpedo1",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "1600lb_fuse_right"
+            }
+          },
+          {
+            "iconType": "air_torpedo",
+            "name": "mk13_torpedo_left",
+            "reqModification": "btd_tc",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "torpedoes",
+              "separate": true,
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_mk13_torpedo_no_case.blk",
+              "emitter": "torpedo1",
+              "bullets": 1,
+              "gearRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 4,
+              "preset": "mk13_torpedo_right"
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "100lb_left",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb9",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb11",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb13",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb15",
+                "bullets": 1,
+                "order": 9
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb17",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb19",
+                "bullets": 1,
+                "order": 13
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group_x4",
+            "name": "500lbs_left",
+            "reqModification": "b-25_mbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb7",
+                "bullets": 1,
+                "order": 9
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group_x4",
+            "name": "1000lbs_left",
+            "reqModification": "b-25_lbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb7",
+                "bullets": 1,
+                "order": 9
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1600lb_fuse_left"
+              },
+              {
+                "slot": 4,
+                "preset": "1600lb_fuse_right"
+              },
+              {
+                "slot": 1,
+                "preset": "mk13_torpedo_left"
+              },
+              {
+                "slot": 4,
+                "preset": "mk13_torpedo_right"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "1600lbs_left",
+            "reqModification": "an_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb7",
+                "bullets": 1,
+                "order": 9
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1600lb_fuse_left"
+              },
+              {
+                "slot": 4,
+                "preset": "1600lb_fuse_right"
+              },
+              {
+                "slot": 1,
+                "preset": "mk13_torpedo_left"
+              },
+              {
+                "slot": 4,
+                "preset": "mk13_torpedo_right"
+              }
+            ]
+          },
+          {
+            "iconType": "air_mines_group_x4",
+            "name": "mine_mk13_left",
+            "reqModification": "us_mine_mk13_mod0",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb7",
+                "bullets": 1,
+                "order": 9
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1600lb_fuse_left"
+              },
+              {
+                "slot": 4,
+                "preset": "1600lb_fuse_right"
+              },
+              {
+                "slot": 1,
+                "preset": "mk13_torpedo_left"
+              },
+              {
+                "slot": 4,
+                "preset": "mk13_torpedo_right"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 4,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small_group_x6",
+            "name": "100lb_right",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb10",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb12",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb14",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb16",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb18",
+                "bullets": 1,
+                "order": 12
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_100lb_anm30.blk",
+                "emitter": "bomb20",
+                "bullets": 1,
+                "order": 14
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group_x4",
+            "name": "500lbs_right",
+            "reqModification": "b-25_mbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+                "emitter": "bomb8",
+                "bullets": 1,
+                "order": 10
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group_x4",
+            "name": "1000lbs_right",
+            "reqModification": "b-25_lbc",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1000lb_anm65a1.blk",
+                "emitter": "bomb8",
+                "bullets": 1,
+                "order": 10
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1600lb_fuse_left"
+              },
+              {
+                "slot": 4,
+                "preset": "1600lb_fuse_right"
+              },
+              {
+                "slot": 1,
+                "preset": "mk13_torpedo_left"
+              },
+              {
+                "slot": 4,
+                "preset": "mk13_torpedo_right"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "1600lbs_right",
+            "reqModification": "an_mk1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+                "emitter": "bomb8",
+                "bullets": 1,
+                "order": 10
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1600lb_fuse_left"
+              },
+              {
+                "slot": 4,
+                "preset": "1600lb_fuse_right"
+              },
+              {
+                "slot": 1,
+                "preset": "mk13_torpedo_left"
+              },
+              {
+                "slot": 4,
+                "preset": "mk13_torpedo_right"
+              }
+            ]
+          },
+          {
+            "iconType": "air_mines_group_x4",
+            "name": "mine_mk13_right",
+            "reqModification": "us_mine_mk13_mod0",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 8
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/mines/us_mine_mk13_mod0.blk",
+                "emitter": "bomb8",
+                "bullets": 1,
+                "order": 10
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1600lb_fuse_left"
+              },
+              {
+                "slot": 4,
+                "preset": "1600lb_fuse_right"
+              },
+              {
+                "slot": 1,
+                "preset": "mk13_torpedo_left"
+              },
+              {
+                "slot": 4,
+                "preset": "mk13_torpedo_right"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 4,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "1600lb_fuse_right",
+            "reqModification": "an_mk1",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "separate": true,
+              "external": true,
+              "blk": "gameData/Weapons/BombGuns/us_1600lb_ap_an_mk1.blk",
+              "emitter": "torpedo2",
+              "bullets": 1
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "1600lb_fuse_left"
+            }
+          },
+          {
+            "iconType": "air_torpedo",
+            "name": "mk13_torpedo_right",
+            "reqModification": "btd_tc",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "torpedoes",
+              "separate": true,
+              "external": true,
+              "blk": "gameData/Weapons/torpedoes/us_mk13_torpedo_no_case.blk",
+              "emitter": "torpedo2",
+              "bullets": 1,
+              "gearRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "mk13_torpedo_left"
             }
           }
         ]
@@ -2990,15 +3626,15 @@
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
-      28.0,
+      82.0,
       110.0
     ],
     "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
+      0.02,
+      0.8
     ],
-    "fireDamagePowerRel": 0.05,
-    "nonExtinguishFireTime": 5.0
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "user_skin": {
     "name": "pbm_3",
@@ -3065,25 +3701,29 @@
     },
     "50cal_turret_ap": {},
     "50cal_turret_api": {},
-    "us_mine_mk13_mod0": {
-      "tier": 2,
-      "modClass": "weapon"
+    "btd_tc": {
+      "modClass": "weapon",
+      "tier": 1
     },
     "b-25_mbc": {
       "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "us_mine_mk13_mod0"
+      "tier": 2,
+      "reqModification": "btd_tc"
     },
     "b-25_lbc": {
       "modClass": "weapon",
-      "tier": 4,
+      "tier": 3,
       "reqModification": "b-25_mbc"
     },
     "an_mk1": {
       "modClass": "weapon",
       "tier": 4,
-      "reqModification": "b-25_lbc",
-      "prevModification": "bmg50_turret_new_gun"
+      "reqModification": "b-25_lbc"
+    },
+    "us_mine_mk13_mod0": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "b-25_lbc"
     }
   },
   "cutting": {

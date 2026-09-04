@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqstd/platform.nut" import is_gdk, isSony, isPS5
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import COLOR_TAG
+from "%scripts/utils/systemMsg.nut" import COLOR_TAG
 from "ecs" import start_es_loading, end_es_loading
 from "auth_wt" import getCountryCode
-let { is_gdk, isSony, isPS5 } = require("%sqstd/platform.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 let colorTagToColors = {
   [COLOR_TAG.ACTIVE] = "activeTextColor",
@@ -30,7 +30,7 @@ function loadScriptsAfterLoginOnce() {
   require("%scripts/squads/elems/voiceChatElem.nut")
   require("%scripts/matching/serviceNotifications/showInfo.nut")
   require("%scripts/unit/unitContextMenu.nut")
-  require("%sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(script_net_assert_once)
+  require("%scripts/sqDagui/guiBhv/bhvUpdateByWatched.nut").setAssertFunction(script_net_assert_once)
   require("%scripts/social/activityFeed/activityFeedModule.nut")
   require("%scripts/controls/controlsPseudoAxes.nut")
   require("%scripts/utils/delayedTooltip.nut")

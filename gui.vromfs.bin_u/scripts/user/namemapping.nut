@@ -1,6 +1,5 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
-
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
 

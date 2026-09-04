@@ -1,13 +1,15 @@
+import "DataBlock" as DataBlock
+from "%rGui/hudState.nut" import playerUnitName, isUnitAlive
+from "%rGui/globalState.nut" import isInFlight
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "eventbus" import eventbus_subscribe
+from "guiRadar" import getAAComplexMenuConfigPath, canEnterAAComplexMenu
+from "controls" import showAAComplexMenu
+from "blkLoad" import tryLoadBlk
 from "%rGui/globals/ui_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { playerUnitName, isUnitAlive } = require("%rGui/hudState.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
-let { getAAComplexMenuConfigPath, canEnterAAComplexMenu } = require("guiRadar")
-let { showAAComplexMenu } = require("controls")
+from "types" import Bool
+
 let { defaultFilters } = require("%rGui/radarFiltersConfig.nut")
-let DataBlock = require("DataBlock")
-let { tryLoadBlk } = require("blkLoad")
 
 let hideAAComplexMenu = @() showAAComplexMenu(false)
 
@@ -44,7 +46,7 @@ function updateCfg(){
       let targetListCfg = cfgBlk.getBlockByNameEx("targetList")
       for (local i = 0; i < targetListCfg.paramCount(); i++) {
         let val = targetListCfg.getParamValue(i)
-        if (type(val) != "bool")
+        if (!(val instanceof Bool))
           continue
         let name = targetListCfg.getParamName(i)
         targetList[name] <- val

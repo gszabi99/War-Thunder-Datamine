@@ -1,7 +1,7 @@
 {
   "model": "pby_5a_late",
   "fmFile": "fm/pby-5a_late_france.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_radial_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.187,
   "gearSinkRangeC": 0.89,
@@ -13,7 +13,7 @@
   "paratrooper": "france_para",
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "300kph",
+  "fireParamsPreset": "300kph_nb",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -3042,15 +3042,15 @@
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
-      28.0,
+      82.0,
       110.0
     ],
     "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
+      0.02,
+      0.8
     ],
-    "fireDamagePowerRel": 0.05,
-    "nonExtinguishFireTime": 5.0
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "damagePartsDependencyMap": {
     "dp": [

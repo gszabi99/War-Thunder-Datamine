@@ -1,13 +1,7 @@
 require ecs
 require AnimV20
-require GeomNodeTree
-require EffectorData
-require DngHumanAnim
 require DngHuman
-require PhysVars
-require math.base
 require DagorMath
-require DagorMathUtils
 require %appGame.infantry.es.human_common
 require %game.events
 

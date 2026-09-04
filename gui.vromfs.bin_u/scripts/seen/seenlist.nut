@@ -1,16 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
-let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
-let { register_command } = require("console")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 let activeSeenLists = {}
 

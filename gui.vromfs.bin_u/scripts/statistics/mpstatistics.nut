@@ -1,47 +1,45 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "math" import ceil
+from "dagor.time" import get_time_msec
+from "string" import format
+from "replays" import is_replay_playing
+from "mission" import get_game_mode, get_game_type, GET_MPLAYERS_LIST
+from "guiMission" import get_mission_difficulty_int, get_mp_tbl_teams, get_player_army_for_hud
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, is_race_started, get_race_winners_count, get_mp_ffa_score_limit, mpstat_get_sort_func, get_multiplayer_time_left
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "types" import Table, String
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { ceil } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let { setMousePointerInitialPosOnChildByValue } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { updateListLabelsSquad, isShowSquad } = require("%scripts/statistics/squadIcon.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { is_replay_playing } = require("replays")
-let { get_game_mode, get_game_type, GET_MPLAYERS_LIST } = require("mission")
-let { get_mission_difficulty_int, get_mp_tbl_teams, get_player_army_for_hud } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_ORDER_AUTO_ACTIVATE } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle, getMpKickCountdown,
-  setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable
-} = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { get_time_to_kick_show_timer, get_time_to_kick_show_alert, getCurMpTitle, getMpKickCountdown, setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { setMissionEnviroment, getBadWeatherTooltipText } = require("%scripts/missions/missionsUtils.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { openOrdersInventory, updateActiveOrder, orderCanBeActivated,
-  getActivateButtonLabel, activateSoonExpiredOrder
-} = require("%scripts/items/orders.nut")
+let { openOrdersInventory, updateActiveOrder, orderCanBeActivated, getActivateButtonLabel, activateSoonExpiredOrder } = require("%scripts/items/orders.nut")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
@@ -49,11 +47,9 @@ let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.n
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
-let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { needToShowBadWeatherWarning, hasAirfieldRespawn
-} = require("%scripts/respawn/respawnState.nut")
-let { getUseOperatorFlagsInBattle, getCountryFlagSubstitute,
-  getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
+let { InContainersNavigator } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
+let { needToShowBadWeatherWarning, hasAirfieldRespawn } = require("%scripts/respawn/respawnState.nut")
+let { getUseOperatorFlagsInBattle, getCountryFlagSubstitute, getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
@@ -63,7 +59,7 @@ function getCompoundedText(firstPart, secondPart, color) {
 }
 
 
-let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
+let MPStatistics = class (BaseGuiHandlerWT) {
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_MP_STATISTICS
                          | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY
 
@@ -293,9 +289,9 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createKillsTbl(objTbl, tbl, tblConfig) {
-    let team = getTblValue("team", tblConfig, -1)
+    let team = (tblConfig?.team ?? -1)
     let showUnits = tblConfig?.showAircrafts ?? false
-    let invert = getTblValue("invert", tblConfig, false)
+    let invert = (tblConfig?.invert ?? false)
 
     local tblData = [] 
 
@@ -667,7 +663,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   function createHeaderRow(tableObj, hdr, markupData, teamNum) {
     if (!markupData
-        || type(markupData) != "table"
+        || !(markupData instanceof Table)
         || !("columns" in markupData)
         || !markupData.columns.len()
         || !checkObj(tableObj))
@@ -675,26 +671,26 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
     let tblData = clone hdr
 
-    if (getTblValue("invert", markupData, false))
+    if ((markupData?.invert ?? false))
       tblData.reverse()
 
     let view = { cells = [] }
     foreach (name in tblData) {
       let value = markupData.columns?[name]
-      if (!value || type(value) != "table")
+      if (!value || !(value instanceof Table))
         continue
 
       view.cells.append({
-        id = getTblValue("id", value, name)
-        fontIcon = getTblValue("fontIcon", value, null)
-        tooltip = getTblValue("tooltip", value, null)
-        width = getTblValue("width", value, "")
+        id = (value?.id ?? name)
+        fontIcon = value?.fontIcon
+        tooltip = value?.tooltip
+        width = (value?.width ?? "")
       })
     }
 
     let tdData = handyman.renderCached(("%gui/statistics/statTableHeaderCell.tpl"), view)
     let trId =$"team-header{teamNum}"
-    let trSize = getTblValue("tr_size", markupData, "0,0")
+    let trSize = (markupData?.tr_size ?? "0,0")
     let trData = format("tr{id:t='%s'; size:t='%s'; %s}", trId, trSize, tdData)
     return trData
   }
@@ -855,7 +851,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     foreach (tblIdx, tbl in [ this.tblSave1, this.tblSave2 ])
       if (tbl)
         foreach (playerIdx, player in tbl)
-          if (getTblValue("isLocal", player, false))
+          if ((player?.isLocal ?? false))
             return this.selectPlayerByIndexes(tblIdx, playerIdx)
     return false
   }
@@ -881,7 +877,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return
 
-    let blockSample = "textareaNoTab{id:t='%s'; %s overlayTextColor:t='premiumNotEarned'; textShade:t='yes'; text:t='';}"
+    const blockSample = "textareaNoTab{id:t='%s'; %s overlayTextColor:t='premiumNotEarned'; textShade:t='yes'; text:t='';}"
     let leftBlockObj = this.scene.findObject("mission_texts_block_left")
     if (checkObj(leftBlockObj)) {
       let data = []
@@ -1011,7 +1007,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         return
 
       let val = gameEndsObj.getValue()
-      if (type(val) == "string" && val.len() > 0)
+      if (val instanceof String && val.len() > 0)
         gameEndsObj.setValue("")
     }
     else {
@@ -1082,4 +1078,6 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.MPStatistics <- MPStatistics
+register_gui_handler("MPStatistics", MPStatistics)
+
+return { MPStatistics }

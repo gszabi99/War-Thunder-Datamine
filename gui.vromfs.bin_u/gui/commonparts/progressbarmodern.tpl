@@ -1,4 +1,4 @@
-everyDayRewardProgress {
+rewardProgress {
   id:t='<<id>>'
   size:t='pw, ph'
   foreground-color:t='<<#color>><<color>><</color>><<^color>>@progressBarBlueColor<</color>>'

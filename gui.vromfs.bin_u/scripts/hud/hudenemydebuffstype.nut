@@ -1,10 +1,10 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/enums.nut" import enumsGetCachedType, enumsAddTypes
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { enumsGetCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { format } =  require("string")
 
 enum PART_STATE {
   OFF      = "off"

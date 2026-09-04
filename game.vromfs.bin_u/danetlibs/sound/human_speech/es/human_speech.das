@@ -91,7 +91,7 @@ def start_speech(eid : EntityId;
   release(human_speech__event)
   human_speech__curPhraseIdx = -1
 
-  let isWatchedSound = is_watched_sound || (desc?.treatAsWatched ?? false)
+  let isWatchedSound = (is_watched_sound || (desc?.treatAsWatched ?? false)) && !(desc?.treatAsOther ?? false)
   let pos = get_human_voice_3d_pos(is_watched_sound, transform, head_node_id, animchar)
 
   if length(human_speech__voices) > 0 && human_speech__voiceIdx >= 0 && human_speech__voiceIdx < length(human_speech__voices)
@@ -100,13 +100,20 @@ def start_speech(eid : EntityId;
       var path = ""
       if get_option_path(*voiceObj, sound_tags, isWatchedSound, path)
 
-        var effectiveLocale = ""
-        if !empty(preferred_language)
-          effectiveLocale = language_to_speech_locale(preferred_language, human_speech__localeMap)
-        if empty(effectiveLocale)
-          effectiveLocale = resolve_speech_locale(human_speech__locale, human_speech__localeMap)
-        let locPath = empty(effectiveLocale) ? path : "{path}/{effectiveLocale}"
+        var locale = ""
+        var localeOption : Object const? = null
+        if has(*voiceObj, "locales")
+          let opts = *((*voiceObj)["locales"]) as Array
+          localeOption = opts != null ? get_option_object(*opts, sound_tags) : null
+        if localeOption != null
+          locale = (*localeOption).locale ?? ""
+        else
+          if !empty(preferred_language)
+            locale = language_to_speech_locale(preferred_language, human_speech__localeMap)
+          if empty(locale)
+            locale = resolve_speech_locale(human_speech__locale, human_speech__localeMap)
 
+        let locPath = empty(locale) ? path : "{path}/{locale}"
         human_speech__event |> reset(play_desc_path(*desc, locPath, is_watched_sound, pos, false))
         human_speech__curPhraseIdx = phrase_idx
 

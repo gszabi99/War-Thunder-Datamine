@@ -1,13 +1,15 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers
+from "%rGui/planeRwrs/rwrAr830Components.nut" import baseLineWidth, createCompass, createRwrGrid, createRwrGridMarks, createRwrTarget
 from "%rGui/globals/ui_library.nut" import *
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
-let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
+let { rwrTargets } = require("%rGui/twsState.nut")
 
-let { ThreatType, baseLineWidth, createCompass, createRwrGrid, createRwrGridMarks, createRwrTarget } = require("%rGui/planeRwrs/rwrAr830Components.nut")
+let { ThreatType } = require("%rGui/planeRwrs/rwrAr830Components.nut")
 
-let backGroundColor = Color(0, 0, 0, 255)
-let color = Color(255, 255, 255, 255)
-let iconColor = Color(200, 0, 0, 255)
+const backGroundColor = Color(0, 0, 0, 255)
+const color = Color(255, 255, 255, 255)
+const iconColor = Color(200, 0, 0, 255)
 
 let styleText = {
   color = color
@@ -318,7 +320,7 @@ let settings = Computed(function() {
 function rwrGridMarksComponent(gridStyle) {
   return @() {
     watch = settings
-    size = flex()
+    size = FLEX
     children = createRwrGridMarks(gridStyle, styleText, settings.get())
   }
 }
@@ -326,7 +328,7 @@ function rwrGridMarksComponent(gridStyle) {
 function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle, iconColor, backGroundColor, styleText))
   }
 }
@@ -338,11 +340,11 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(-20), ph(-25)],
+        pos = const [pw(-20), ph(-25)],
         size = [pw(150 * style.grid.scale), ph(150 * style.grid.scale)],
         children = [
           {
-            pos = [pw(10), ph(10)],
+            pos = const [pw(10), ph(10)],
             size = const [pw(80), ph(80)],
             clipChildren = true,
             children = [
@@ -358,7 +360,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

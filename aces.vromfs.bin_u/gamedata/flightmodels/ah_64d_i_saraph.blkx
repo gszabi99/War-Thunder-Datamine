@@ -10,10 +10,11 @@
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hasAimingPointsMemory": true,
   "hasHmdGunControl": true,
   "laserDesignator": true,
   "mfdCamTadsApache": true,
-  "hmdAH64": true,
+  "hmdIhadss": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -1484,6 +1485,7 @@
       0.0
     ],
     "hmdEnabledByDefault": true,
+    "hmdScreenBlockRad": 0.026,
     "lightPos": [
       1.882572,
       0.389432,
@@ -1500,6 +1502,21 @@
     "sightFov": 0.01,
     "sightInFov": 1.15998,
     "sightOutFov": 24.74,
+    "hmdBlock": {
+      "full_devices": {
+        "pos": [
+          1.906,
+          0.265,
+          0.0
+        ],
+        "norm": [
+          1.0,
+          -0.24,
+          0.0
+        ],
+        "rad": 0.48
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -3.0,
@@ -1850,7 +1867,7 @@
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/us_an_avr-2.blk"
+        "blk": "gameData/sensors/us_an_avr-2a_v1.blk"
       },
       {
         "blk": "gameData/sensors/us_an_aar_47.blk"
@@ -1920,6 +1937,10 @@
       {
         "name": "ah_64d_i_saraph_16_hellfire",
         "blk": "gameData/flightModels/weaponPresets/ah_64d_i_saraph_16_hellfire.blk"
+      },
+      {
+        "name": "ah_64d_i_saraph_spike_nlos",
+        "blk": "gameData/flightModels/weaponPresets/ah_64d_i_saraph_spike_nlos.blk"
       },
       {
         "name": "ah_64d_i_saraph_aim92",
@@ -2167,6 +2188,40 @@
               "emitter": "pylon_m272_001",
               "dragCx": 0.01
             }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
           }
         ]
       },
@@ -2209,6 +2264,40 @@
               "blk": "gameData/Weapons/containers/m272_hellfire_x4.blk",
               "emitter": "pylon_m272_002",
               "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
             }
           }
         ]
@@ -2253,6 +2342,40 @@
               "emitter": "pylon_m272_003",
               "dragCx": 0.01
             }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
           }
         ]
       },
@@ -2295,6 +2418,40 @@
               "emitter": "pylon_m272_004",
               "dragCx": 0.01
             }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "spike_nlos_targeting_pod"
+            }
           }
         ]
       },
@@ -2302,18 +2459,30 @@
         "index": 6,
         "tier": 3,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_group_heli_vertical",
-          "name": "atas_right",
-          "reqModification": "stinger_aam",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/containers/atas_2x_stinger_right.blk",
-            "emitter": "aim92_stinger_pod_002"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_air_to_air_group_heli_vertical",
+            "name": "atas_right",
+            "reqModification": "stinger_aam",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger_right.blk",
+              "emitter": "aim92_stinger_pod_002"
+            }
+          },
+          {
+            "iconType": "rls",
+            "name": "spike_nlos_targeting_pod",
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/spike_nlos_saraph_targeting_pod.blk",
+              "emitter": "pylon_m272_004",
+              "bullets": 1
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -3567,11 +3736,17 @@
     "ah_1_AGM_114_8": {
       "deactivationIsAllowed": false,
       "modClass": "weapon",
-      "tier": 2
+      "tier": 1
     },
     "ah_1_AGM_114_16": {
       "deactivationIsAllowed": false,
       "reqModification": "ah_1_AGM_114_8",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "atgm_spike_nlos": {
+      "deactivationIsAllowed": false,
+      "reqModification": "ah_1_AGM_114_16",
       "modClass": "weapon",
       "tier": 4
     },

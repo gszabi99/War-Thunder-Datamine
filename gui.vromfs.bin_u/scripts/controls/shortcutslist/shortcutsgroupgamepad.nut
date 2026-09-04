@@ -1,7 +1,7 @@
+from "controls" import ActionGroup, hasXInputDevice
 from "%scripts/dagui_library.nut" import *
 
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
-let { ActionGroup, hasXInputDevice } = require("controls")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [

@@ -1,15 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "dagor.http" import HTTP_SUCCESS
 from "json" import parse_json
 from "dagor.workcycle" import resetTimeout, clearTimer
+
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
 let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 
 let logE = log_with_prefix("[ENTITLEMENTS INFO] ")

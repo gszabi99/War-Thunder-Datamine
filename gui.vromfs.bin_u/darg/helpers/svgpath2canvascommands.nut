@@ -1,6 +1,7 @@
 from "dagor.system" import get_arg_value_by_name
 from "daRg" import *
 from "std/underscore.nut" import chunk
+from "types" import Array
 
 const MOVE_ABS = "MOVE_ABS"
 const MOVE_REL = "MOVE_REL"
@@ -52,7 +53,7 @@ foreach(i in COMMANDS_KEYS){
 let NUMBERS = [0,1,2,3,4,5,6,7,8,9, "."].map(@(v) v.tostring())
 const MINUS = "-"
 
-function prP(str, start=0){
+function prP(str, start=0): table {
   for (local i=start; i<str.len(); i++){
     let chr = str[i].tochar()
     if ((i == start && chr == MINUS) || NUMBERS.contains(chr))
@@ -61,7 +62,7 @@ function prP(str, start=0){
   }
   return {substr = str.slice(start), end=str.len()}
 }
-function parsePoints(str){
+function parsePoints(str): array {
   let res = []
   local start = 0
   while (start<str.len()){
@@ -76,7 +77,7 @@ function parsePoints(str){
   return res.map(@(v) v.tofloat())
 }
 
-function parsePath(pathstr){
+function parsePath(pathstr): array {
   let res = []
   local last = -1
   local lastcommand = null
@@ -99,11 +100,15 @@ function parsePath(pathstr){
     }
     else if (char in COMMANDS_KEYS) {
       if (last>=0) {
-        let substr = pathstr.slice(last+1, i)
-        let points = parsePoints(substr)
-        assert((points.len() % COMMANDS[lastcommand].points_req)==0,
-          $"incorrect points for command {COMMANDS[lastcommand].command}: should be times of {COMMANDS[lastcommand].points_req}, got = {points.len()}, points = {", ".join(points)}, index={i}, str:{pathstr}")
-        res.append({command = lastcommand, points})
+        if (COMMANDS[lastcommand].points_req == 0)
+          res.append({command = lastcommand})
+        else {
+          let substr = pathstr.slice(last+1, i)
+          let points = parsePoints(substr)
+          assert((points.len() % COMMANDS[lastcommand].points_req)==0,
+            $"incorrect points for command {COMMANDS[lastcommand].command}: should be times of {COMMANDS[lastcommand].points_req}, got = {points.len()}, points = {", ".join(points)}, index={i}, str:{pathstr}")
+          res.append({command = lastcommand, points})
+        }
         lastcommand = COMMANDS_KEYS[char].command
       }
       else if (last<0){
@@ -115,15 +120,15 @@ function parsePath(pathstr){
   return res
 }
 
-function transformP(point, offset, scale, curpos, command=null){
+function transformP(point, offset, scale, curpos, command=null): array {
   if (command?.abs)
     curpos = [0,0]
-  return [(point[0]+offset[0]+curpos[0])*scale[0], (point[1]+offset[1]+curpos[1])*scale[1]]
+  return [(point[0]+curpos[0]-offset[0])*scale[0], (point[1]+curpos[1]-offset[1])*scale[1]]
 }
 
 let DRAWLINE_CMDS = COMMANDS.filter(@(v) !v?.draw)
 
-function curPos(curCursorPos, point, command=null){
+function curPos(curCursorPos, point, command=null): array {
   let abs = command?.abs
   if (abs) {
     return [point[0], point[1]]
@@ -131,10 +136,10 @@ function curPos(curCursorPos, point, command=null){
   return [curCursorPos[0]+point[0], curCursorPos[1]+point[1]]
 }
 
-function pathToCanvas(path, viewBox=null, fill=false){
+function pathToCanvas(path, viewBox=null, fill=false): array {
   viewBox = viewBox ?? [0,0,100,100]
   let offset = [viewBox[0], viewBox[1]]
-  let scale = [100.0/(viewBox[2]-offset[0]),100.0/(viewBox[3]-offset[1])]
+  let scale = [100.0/viewBox[2], 100.0/viewBox[3]]
   local curCursorPos = [0,0]
   local lastInitialPoint = null
   local lastCmd = null
@@ -159,9 +164,9 @@ function pathToCanvas(path, viewBox=null, fill=false){
     }
     else if (commandName in DRAWLINE_CMDS){
       if (commandName.contains("_HOR"))
-        points = points.map(@(v) [v[0], curCursorPos[1]])
+        points = points.map(@(v) [v[0], command.abs ? curCursorPos[1] : 0])
       if (commandName.contains("_VER"))
-        points = points.map(@(v) [curCursorPos[0], v[0]])
+        points = points.map(@(v) [command.abs ? curCursorPos[0] : 0, v[0]])
       if (commandName.contains("BEZIER_CORNER"))
         points = points.map(@(v) [v[4], v[5]])
       if (commandName.contains("BEZIER_SMOOTH"))
@@ -178,10 +183,16 @@ function pathToCanvas(path, viewBox=null, fill=false){
   return res
 }
 
-let log = @(...) " ".join(vargv)
+function stringify(v): string {
+  if (v instanceof Array)
+    return "".concat("[", ", ".join(v.map(stringify)), "]")
+  return v == null ? "null" : v.tostring()
+}
+let log = @(...) println(" ".join(vargv.map(stringify)))
 
 if (__name__=="__main__") {
-  let viewBox = get_arg_value_by_name("viewBox")
+  let viewBoxArg = get_arg_value_by_name("viewBox")
+  let viewBox = viewBoxArg != null ? viewBoxArg.split(",").map(@(v) v.tofloat()) : null
   let path = get_arg_value_by_name("path") ?? ""
   let fill = get_arg_value_by_name("fill") ?? "no"
   log("viewBox:", viewBox, "doFill:", fill, "path:", path)

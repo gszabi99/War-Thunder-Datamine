@@ -1,5 +1,5 @@
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
 from "%rGui/globals/ui_library.nut" import *
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 function createScriptComponent(scriptPath, props = {}) {
   return @(width, height) {

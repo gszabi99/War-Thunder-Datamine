@@ -1,37 +1,34 @@
+from "eventbus" import eventbus_subscribe
+from "guiMission" import get_mission_difficulty, do_start_flight
+from "guiOptions" import get_gui_option, set_cd_preset
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import d3d_get_vsync_enabled, d3d_enable_vsync, get_game_mode_name, play_movie, set_context_to_player
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import USEROPT_DIFFICULTY
 from "mission" import get_game_mode, get_game_type
-
-let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+from "%scripts/webRPC.nut" import webRpcRegister
+let { g_mislist_type } = require("%scripts/missions/misListType.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { OptionsCustomDifficultyModal } = require("%scripts/options/optionsCustomDifficulty.nut")
+let { Briefing } = require("%scripts/briefing.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlersManager, loadHandler, get_cur_base_gui_handler
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isPlatformSony, isPs4VsyncEnabled } = require("%scripts/clientState/platform.nut")
-let { get_mission_difficulty, do_start_flight } = require("guiMission")
-let { get_gui_option, set_cd_preset } = require("guiOptions")
-let { isInSessionRoom, getSessionLobbyMissionParam
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyMissionParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { isRanksAllowed } = require("%scripts/ranksAllowed.nut")
 let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 let { get_mission_settings, set_mission_settings, isRemoteMissionVar, matchSearchGm, currentCampaignId } = require("%scripts/missions/missionsStates.nut")
 let { UrlMission } = require("%scripts/missions/urlMission.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad
-} = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { createSessionLobbyRoom, startCoopBySquad
-} = require("%scripts/matchingRooms/sessionLobbyActions.nut")
+let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { createSessionLobbyRoom, startCoopBySquad } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
-let { checkGamemodePkg, checkPackageAndAskDownloadByTimes
-} = require("%scripts/clientState/contentPacks.nut")
+let { checkGamemodePkg, checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 const DYNAMIC_REQ_COUNTRY_RANK = 1
@@ -40,7 +37,7 @@ let needCheckForVictory = Watched(false)
 let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { eventbusName = "gui_start_mainmenu"})
 
 function guiStartSessionList() {
-  loadHandler(gui_handlers.SessionsList,
+  loadHandler(get_gui_handler("SessionsList"),
                   {
                     wndOptionsMode = getOptionsMode(get_game_mode())
                     backSceneParams = { eventbusName = "gui_start_mainmenu" }
@@ -60,7 +57,7 @@ function fastStartSkirmishMission(mission) {
 
   prepareStartSkirmish()
   isRemoteMissionVar.set(true)
-  handlersManager.loadHandler(gui_handlers.RemoteMissionModalHandler, params)
+  handlersManager.loadHandler(get_gui_handler("RemoteMissionModalHandler"), params)
 }
 
 function startRemoteMission(params) {
@@ -98,7 +95,7 @@ function startRemoteMission(params) {
                 )
 }
 
-web_rpc.register_handler("start_remote_mission", @(params) startRemoteMission(params))
+webRpcRegister("start_remote_mission", @(params) startRemoteMission(params))
 
 function guiStartSkirmish(_ = null) {
   prepareStartSkirmish()
@@ -106,7 +103,7 @@ function guiStartSkirmish(_ = null) {
 }
 
 function guiStartMislist(isModal = false, setGameMode = null, addParams = {}) {
-  let hClass = isModal ? gui_handlers.SingleMissionsModal : gui_handlers.SingleMissions
+  let hClass = isModal ? get_gui_handler("SingleMissionsModal") : get_gui_handler("SingleMissions")
   let params = clone addParams
   local gm = get_game_mode()
   if (setGameMode != null) {
@@ -132,11 +129,11 @@ function guiStartMislist(isModal = false, setGameMode = null, addParams = {}) {
 }
 
 function guiStartDynamicSummary(_ = null) {
-  loadHandler(gui_handlers.CampaignPreview, { isFinal = false })
+  loadHandler(get_gui_handler("CampaignPreview"), { isFinal = false })
 }
 
 function guiStartDynamicSummaryF() {
-  loadHandler(gui_handlers.CampaignPreview, { isFinal = true })
+  loadHandler(get_gui_handler("CampaignPreview"), { isFinal = true })
 }
 
 function guiStartFlight() {
@@ -201,7 +198,7 @@ function guiStartCdOptions(afterApplyFunc, owner = null) {
       set_cd_preset(curDiff)
   }
 
-  loadHandler(gui_handlers.OptionsCustomDifficultyModal, {
+  loadHandler(OptionsCustomDifficultyModal, {
     owner = owner
     afterApplyFunc = Callback(afterApplyFunc, owner)
   })
@@ -224,7 +221,7 @@ function guiStartBriefing() {
     else
       briefingOptionsApply.call(this)
   }
-  handlersManager.loadHandler(gui_handlers.Briefing)
+  handlersManager.loadHandler(Briefing)
 }
 
 eventbus_subscribe("guiStartSkirmish", guiStartSkirmish)
@@ -285,11 +282,11 @@ function guiStartTutorial() {
 }
 
 function guiStartDynamicLayouts() {
-  loadHandler(gui_handlers.DynamicLayouts)
+  loadHandler(get_gui_handler("DynamicLayouts"))
 }
 
 function guiStartBuilder(params = {}) {
-  loadHandler(gui_handlers.MissionBuilder, params)
+  loadHandler(get_gui_handler("MissionBuilder"), params)
 }
 
 function startCreateWndByGamemode(_handler, _obj) {

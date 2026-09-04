@@ -1,10 +1,9 @@
+import "%rGui/style/teamColors.nut" as teamColors
+from "%rGui/missionState.nut" import localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, deathPenaltyMul, ctaDeathTicketPenalty, isZoneALocal
+from "%rGui/hud/capZones/capZonesState.nut" import capZones
+from "%sqstd/math.nut" import ceil, floor
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
-let teamColors = require("%rGui/style/teamColors.nut")
-let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
-  deathPenaltyMul, ctaDeathTicketPenalty, isZoneALocal } = require("%rGui/missionState.nut")
-let { ceil, floor } = require("%sqstd/math.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let { capZones } = require("%rGui/hud/capZones/capZonesState.nut")
 
 let getScoresForOneKillW = @() Computed(@() deathPenaltyMul.get() * ctaDeathTicketPenalty.get())
 

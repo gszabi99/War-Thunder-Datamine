@@ -1,5 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqstd/datablock.nut" import isDataBlock
+from "%sqstd/string.nut" import startsWith, slice
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 
 
@@ -19,9 +22,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 
 
-let { isDataBlock } = require("%sqstd/datablock.nut")
-let DataBlock = require("DataBlock")
-let { startsWith, slice } = require("%sqstd/string.nut")
 
 let keyToStr = function(key) {
   let t = type(key)

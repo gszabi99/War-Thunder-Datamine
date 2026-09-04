@@ -1,8 +1,8 @@
+import "DataBlock" as DataBlock
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 
-let { register_command } = require("console")
-let DataBlock  = require("DataBlock")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { getClanPlaceRewardLogData } = require("%scripts/clans/clanInfo.nut")

@@ -1,6 +1,6 @@
+from "%rGui/style/screenState.nut" import isInVr
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
 from "%rGui/globals/ui_library.nut" import *
-let { isInVr } = require("%rGui/style/screenState.nut")
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 function hmd(width, height) {
   return {

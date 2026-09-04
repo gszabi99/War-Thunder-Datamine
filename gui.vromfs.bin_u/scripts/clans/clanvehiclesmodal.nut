@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, clan_get_researching_unit
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { Cost, Balance } = require("%scripts/money.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
@@ -182,8 +182,9 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
 }
 
-gui_handlers.clanVehiclesModal <- handlerClass
+register_gui_handler("clanVehiclesModal", handlerClass)
 
 return {
+  clanVehiclesModal = handlerClass
   open = @() loadHandler(handlerClass)
 }

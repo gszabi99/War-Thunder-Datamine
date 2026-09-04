@@ -1,50 +1,45 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "%sqstd/string.nut" import clearBorderSymbols, utf8ToLower
+from "json" import parse_json
+from "chat" import is_chat_message_empty
+from "%sqstd/platform.nut" import is_console
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
-from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, contactsGroupWithoutMaxCount,
-  getMaxContactsByGroup
+from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, contactsGroupWithoutMaxCount, getMaxContactsByGroup
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { format } = require("string")
-let { clearBorderSymbols, utf8ToLower } = require("%sqstd/string.nut")
-let { parse_json } = require("json")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
-let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { contactsWndSizes, contactsGroups, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
-let { searchContactsResults, searchContacts, addContact, removeContact
-} = require("%scripts/contacts/contactsState.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { searchContactsResults, searchContacts, addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByScreenSize, saveLocalByScreenSize
-} = require("%scripts/clientState/localProfile.nut")
-let { setContactsHandlerClass, getLastContactsSceneShow, setLastContactsSceneShow
-} = require("%scripts/contacts/contactsHandlerState.nut")
+let { loadLocalByScreenSize, saveLocalByScreenSize } = require("%scripts/clientState/localProfile.nut")
+let { setContactsHandlerClass, getLastContactsSceneShow, setLastContactsSceneShow } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
-let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { canSquad } = require("%scripts/squads/squadUtils.nut")
 let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
@@ -57,7 +52,7 @@ let sortContacts = @(a, b)
   b.presence.sortOrder <=> a.presence.sortOrder
     || (getCustomNick(a) ?? a.lowerName) <=> (getCustomNick(b) ?? b.lowerName)
 
-let searchListInfoTextBlk = @"
+const searchListInfoTextBlk = @"
 groupBottom {
   size:t='pw, ph'
   padding:t='0, @blockInterval'
@@ -78,7 +73,7 @@ groupBottom {
   }
 }"
 
-let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
+let ContactsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   searchText = ""
 
@@ -395,7 +390,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         continue
       }
       obj.contact_buttons_contact_uid = f.uid
-      let contactName = getCustomNick(f) ?? f.getName()
+      let contactName = getCustomNick(f) ?? colorizeWhitePsnIcon(f.getName())
       let fullName = getPlayerFullName(contactName, f.clanTag)
       obj.findObject("contactName").setValue(fullName)
       let contactPresenceObj = obj.findObject("contactPresence")

@@ -1,72 +1,63 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "controllerState" as controllerState
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/platform.nut" import is_windows, isPC
+from "string" import format
+from "globalEnv" import ControlHelpersMode, setControlHelpersMode
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "mission" import get_game_mode
+from "%sqstd/string.nut" import utf8ToLower
+from "controlsOptions" import set_option_mouse_joystick_square, set_option_mouse_joystick_square_helicopter
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import set_current_controls, import_current_layout_by_path,
-  import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path,
-  get_axis_index, export_current_layout, export_current_layout_by_path
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import set_current_controls, import_current_layout_by_path, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index
+  , export_current_layout, export_current_layout_by_path
 from "gameOptions" import *
-from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
-let { is_windows, isPC } = require("%sqstd/platform.nut")
+from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, HELP_CONTENT_SET
+from "types" import Function
+
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
+let { FileDialog } = require("%scripts/fileDialog/fileDialog.nut")
+let { ControlsBackupManager } = require("%scripts/controls/controlsBackupManager.nut")
+let { GenericOptions } = require("%scripts/genericOptions.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { AXIS_MODIFIERS, MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { format } = require("string")
-let { ControlHelpersMode, setControlHelpersMode } = require("globalEnv")
-let controllerState = require("controllerState")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXbox, isPlatformPC, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformPC, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
-  isAxisMappedOnMouse, refillControlsDupes, buildHotkeyItem
-} = require("%scripts/controls/shortcutsUtils.nut")
-let { get_game_mode } = require("mission")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { recommendedControlPresets, getControlsPresetBySelectedType,
-  canChangeHelpersMode, gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
-let { joystickSetCurSettings, setShortcutsAndSaveControls,
-  joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped, isAxisMappedOnMouse, refillControlsDupes, buildHotkeyItem } = require("%scripts/controls/shortcutsUtils.nut")
+let { recommendedControlPresets, getControlsPresetBySelectedType, canChangeHelpersMode, gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
+let { joystickSetCurSettings, setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
-  USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx } = require("%scripts/options/optionsExtNames.nut")
 let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
-let { switchControlsMode, gui_start_controls_type_choice
-} = require("%scripts/controls/startControls.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { switchControlsMode, gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
 let { Axis } = require("%scripts/controls/input/axis.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
-let { getAircraftHelpersOptionValue, setAircraftHelpersOptionValue, controlHelpersOptions,
-  getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
+let { getAircraftHelpersOptionValue, setAircraftHelpersOptionValue, controlHelpersOptions, getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
-let { parseControlsPresetName, getHighestVersionControlsPreset
-} = require("%scripts/controls/controlsPresets.nut")
-let { getCurControlsPreset, isPresetChanged, clearControlsPresetGuiOptions
-} = require("%scripts/controls/controlsState.nut")
+let { parseControlsPresetName, getHighestVersionControlsPreset } = require("%scripts/controls/controlsPresets.nut")
+let { getCurControlsPreset, isPresetChanged, clearControlsPresetGuiOptions } = require("%scripts/controls/controlsState.nut")
 let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
-let { restoreHardcodedKeys, isLastLoadControlsSucceeded
-} = require("%scripts/controls/controlsManager.nut")
+let { restoreHardcodedKeys, isLastLoadControlsSucceeded } = require("%scripts/controls/controlsManager.nut")
 
-let { set_option_mouse_joystick_square,
-  set_option_mouse_joystick_square_helicopter
-} = require("controlsOptions")
 let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 
@@ -140,7 +131,7 @@ function resetDefaultControlSettings() {
   set_option_gain(1); 
 }
 
-gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
+let Hotkeys = class (GenericOptions) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/controls.blk"
   sceneNavBlkName = null
@@ -241,7 +232,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function initNavigation() {
     let handler = loadHandler(
-      gui_handlers.navigationPanel,
+      navigationPanel,
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.35@sf, ph"
@@ -347,7 +338,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     showObjById("btn_exportToFile", isImportExportAllowed, this.scene)
     showObjById("btn_importFromFile", isImportExportAllowed, this.scene)
     showObjById("btn_switchMode", isPlatformSony || isPlatformXbox || isPlatformShieldTv(), this.scene)
-    showObjById("btn_backupManager", gui_handlers.ControlsBackupManager.isAvailable(), this.scene)
+    showObjById("btn_backupManager", ControlsBackupManager.isAvailable(), this.scene)
     showObjById("btn_controlsWizard", hasFeature("ControlsPresets"), this.scene)
     showObjById("btn_clearAll", !isTutorial, this.scene)
     showObjById("btn_controlsHelp", hasFeature("ControlsHelp"), this.scene)
@@ -368,7 +359,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (this.curGroupId == "" && currentUnit) {
       unitType = currentUnit.unitType
       classType = currentUnit.expClass
-      unitTags = getTblValue("tags", currentUnit, [])
+      unitTags = (currentUnit?.tags ?? [])
     }
 
     for (local i = 0; i < shortcutsList.len(); i++)
@@ -454,7 +445,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       if (shortcutsList[n].id != groupId)
         continue
 
-      isHelpersVisible = getTblValue("isHelpersVisible", shortcutsList[n])
+      isHelpersVisible = shortcutsList[n]?.isHelpersVisible
       for (local i = n + 1; i < shortcutsList.len(); i++) {
         let entry = shortcutsList[i]
         if (entry.type == CONTROL_TYPE.HEADER)
@@ -730,8 +721,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         }
     }
 
-    this.curJoyParams.mouseJoystick = getTblValue("mouseJoystick",
-      getCurControlsPreset().params, false)
+    this.curJoyParams.mouseJoystick = (getCurControlsPreset().params?.mouseJoystick ?? false)
 
     this.isAircraftHelpersChangePerformed = false
   }
@@ -1058,7 +1048,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
     foreach (index, event in this.shortcuts)
       if ((this.shortcutItems[index].checkGroup & this.shortcutItems[shortcutId].checkGroup) &&
-        getTblValue(this.shortcutNames[index], visibilityMap) &&
+        visibilityMap?[this.shortcutNames[index]] &&
         (this.shortcutItems[index]?.conflictGroup == null ||
           this.shortcutItems[index]?.conflictGroup != this.shortcutItems[shortcutId]?.conflictGroup ||
           index == shortcutId))
@@ -1087,7 +1077,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (!this.curJoyParams || !axisItem || axisItem.axisIndex < 0)
       return
 
-    let handler = loadHandler(gui_handlers.AxisControls,
+    let handler = loadHandler(get_gui_handler("AxisControls"),
       this.getAxisHandlerParams().__update({ axisItem = axisItem }))
     this.axisControlsHandlerWeak = handler.weakref()
   }
@@ -1152,7 +1142,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         else
           currentHeader = null
       }
-      let isRequired = type(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
+      let isRequired = item.checkAssign instanceof Function ? item.checkAssign() : item.checkAssign
       if (!currentHeader || item.isHidden || !isRequired)
         continue
       if (this.filter == ControlHelpersMode.EM_MOUSE_AIM && !item.reqInMouseAim)
@@ -1418,8 +1408,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (!item || !("values" in item) || !obj)
       return this.updateMouseAxis(value, obj.id)
 
-    let axisName = getTblValue(value, item.values)
-    let zoomPostfix = "zoom"
+    let axisName = item.values?[value]
+    const zoomPostfix = "zoom"
     if (axisName && axisName.len() >= zoomPostfix.len() && axisName.slice(-4) == zoomPostfix) {
       let zoomAxisIndex = get_axis_index(axisName)
       if (zoomAxisIndex < 0)
@@ -1519,7 +1509,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (!this.isValid()) 
       return
     this.updateCurPresetForExport()
-    gui_handlers.ControlsBackupManager.open()
+    ControlsBackupManager.open()
   }
 
   function onExportToFile() {
@@ -1528,7 +1518,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     this.updateCurPresetForExport()
 
     if (this.isScriptOpenFileDialogAllowed()) {
-      loadHandler(gui_handlers.FileDialog, {
+      loadHandler(FileDialog, {
         isSaveFile = true
         dirPath = get_save_load_path()
         pathTag = "controls"
@@ -1549,7 +1539,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function onImportFromFile() {
     if (this.isScriptOpenFileDialogAllowed()) {
-      loadHandler(gui_handlers.FileDialog, {
+      loadHandler(FileDialog, {
         isSaveFile = false
         dirPath = get_save_load_path()
         pathTag = "controls"
@@ -1600,3 +1590,6 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     return visibilityMap
   }
 }
+register_gui_handler("Hotkeys", Hotkeys)
+
+return { Hotkeys }

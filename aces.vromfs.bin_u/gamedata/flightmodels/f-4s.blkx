@@ -1,7 +1,7 @@
 {
   "model": "f_4s",
   "fmFile": "fm/f-4s.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.42,
   "gearSinkRangeC": 0.57,
@@ -48,6 +48,7 @@
   ],
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "tpsCameraOffset": [
     -2.0,
     0.0,
@@ -5381,8 +5382,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

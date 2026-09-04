@@ -1,16 +1,17 @@
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockValid, AirTargetMode
+from "%rGui/planeState/planeWeaponState.nut" import SelectedTrigger
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth, weaponTriggerName
+from "%rGui/planeState/planeFlyState.nut" import Roll
+from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, DistToTarget, AimLockPos, AimLockValid, AirTargetMode } = require("%rGui/planeState/planeToolsState.nut")
-let { SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
-let { baseLineWidth, weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
-let { cvt } = require("dagor.math")
-let { Roll } = require("%rGui/planeState/planeFlyState.nut");
+let { AimLockPos } = require("%rGui/planeState/planeToolsState.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let ASP17crosshair = @() {
   watch = IlsColor
   size = const [pw(20), ph(20)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -26,7 +27,7 @@ let ASP17crosshair = @() {
 let ASP17Roll = @() {
   watch = IlsColor
   size = const [pw(20), ph(20)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -47,7 +48,7 @@ let DistToTargetWatch = Computed(@() cvt(DistToTarget.get(), 450, 3000, -90, 15)
 let ASP17Distances = @() {
   watch = [IlsColor, DistToTargetWatch]
   size = const [pw(20), ph(20)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -74,7 +75,7 @@ let ASP17Distances = @() {
 
 let lockedReticle = {
   size = const [pw(50), ph(50)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = Color(20, 10, 1, 0)
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
@@ -118,7 +119,7 @@ let lockedReticle = {
 let NeedShowAimLock = Computed(@() SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER || SelectedTrigger.get() == -1)
 function mainReticle(width, height) {
 return {
-    size = flex()
+    size = FLEX
     children = [
       ASP17Distances,
       ASP17crosshair,

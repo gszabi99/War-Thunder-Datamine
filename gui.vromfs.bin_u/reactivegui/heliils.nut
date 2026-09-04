@@ -1,9 +1,10 @@
+import "%rGui/compass.nut" as compass
+from "%rGui/airState.nut" import IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, TertiaryMask, HudColor
+from "%rGui/airHudElems.nut" import paramsTable, horSpeed, vertSpeed, rocketAim, taTarget
+from "%rGui/style/airHudStyle.nut" import hudFontHgt, fontOutlineColor, fontOutlineFxFactor
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsPosSize, IlsMask, IsIlsEnabled, IndicatorsVisible, IsMfdEnabled, SecondaryMask, TertiaryMask, HudColor } = require("%rGui/airState.nut")
-let { paramsTable, horSpeed, vertSpeed, rocketAim, taTarget } = require("%rGui/airHudElems.nut")
-let compass = require("%rGui/compass.nut")
-let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
+let { IlsPosSize } = require("%rGui/airState.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)

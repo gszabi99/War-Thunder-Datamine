@@ -1,5 +1,5 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")

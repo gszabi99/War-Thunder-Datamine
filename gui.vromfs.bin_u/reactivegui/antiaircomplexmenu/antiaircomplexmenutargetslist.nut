@@ -1,21 +1,21 @@
+from "%rGui/hints/shortcuts.nut" import antiAirMenuShortcutHeight
+from "%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut" import mkShortcutButton, mkShortcutText
+from "%rGui/components/checkbox.nut" import mkCheckbox
+from "%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut" import aaMenuCfg
+from "%rGui/style/screenState.nut" import safeAreaSizeHud
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
 from "%rGui/globals/ui_library.nut" import *
-let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
-let { mkShortcutButton, mkShortcutText
-} = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
+
 let modalPopupWnd = require("%rGui/components/modalPopupWnd.nut")
-let { mkCheckbox } = require("%rGui/components/checkbox.nut")
-let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
-let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 let { filterPresets } = require("%rGui/radarFilters.nut")
 
 const WND_UID = "airComplexMenuTargetsFilter"
 let close = @() modalPopupWnd.remove(WND_UID)
 
-let blockInterval = hdpx(6)
-let minLabelWidth = hdpx(80)
+const blockInterval = hdpx(6)
+const minLabelWidth = hdpx(80)
 let labelFont = Fonts.tiny_text_hud
-let imageSize = hdpx(20)
+const imageSize = hdpx(20)
 
 let getFilterPresets = @(config) filterPresets.filter(@(preset) config?[preset.filter.filterId] ?? true)
 
@@ -52,10 +52,10 @@ function mkFilterList(filterConfig) {
 }
 
 let separatorLine = {
-  size = [dp(1), flex()]
+  size = [dp(1), FLEX]
   rendObj = ROBJ_SOLID
   color = 0x22222222
-  margin = [0, blockInterval]
+  margin = const [0, blockInterval]
 }
 
 let filtersList = @() {

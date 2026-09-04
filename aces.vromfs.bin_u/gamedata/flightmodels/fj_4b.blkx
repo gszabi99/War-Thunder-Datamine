@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/fj_4b.blk",
   "model": "fj_4b",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.377,
   "gearSinkRangeC": 0.25,
@@ -2112,6 +2112,18 @@
         -90.0,
         90.0
       ],
+      "aoa_indexer1": [
+        12.0,
+        60.0
+      ],
+      "aoa_indexer2": [
+        10.0,
+        13.0
+      ],
+      "aoa_indexer3": [
+        7.0,
+        11.0
+      ],
       "compass": [
         0.0,
         360.0
@@ -2178,8 +2190,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },
@@ -2232,6 +2250,10 @@
       {
         "name": "fj_4b_2000lb_mk_84",
         "blk": "gameData/flightModels/weaponPresets/fj_4b_2000lb_mk_84.blk"
+      },
+      {
+        "name": "fj_4b_mk77",
+        "blk": "gameData/flightModels/weaponPresets/fj_4b_mk77.blk"
       }
     ]
   },
@@ -2424,6 +2446,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk77",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_l",
+                "pylon_mk_81_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod2.blk",
+              "emitter": "500lb_mk_82_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2560,6 +2601,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk77",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_l1",
+                "pylon_mk_84_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod2.blk",
+              "emitter": "500lb_mk_82_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2639,6 +2699,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk77",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_mk_81_008",
+                "pylon_mk_81_005"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod2.blk",
+              "emitter": "500lb_mk_82_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2713,6 +2792,25 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk77",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_mk_81_006",
+                "pylon_mk_81_007"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod2.blk",
               "emitter": "500lb_mk_82_006",
               "bullets": 1,
               "external": true,
@@ -2854,6 +2952,25 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk77",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_r1",
+                "pylon_mk_84_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod2.blk",
+              "emitter": "500lb_mk_82_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -2946,6 +3063,25 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "500lb_mk_82_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "mk77",
+            "reqModification": "us_mk_77",
+            "ShowNodes": {
+              "node": [
+                "pylon_r",
+                "pylon_mk_81_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk77_mod2.blk",
               "emitter": "500lb_mk_82_002",
               "bullets": 1,
               "external": true,
@@ -3266,7 +3402,7 @@
     },
     "g_suit": {
       "tier": 4,
-      "modClass": "armor"
+      "modClass": "lth"
     },
     "mk_12_mod3_universal": {},
     "mk_12_mod3_ground_targets": {},
@@ -3277,7 +3413,12 @@
     },
     "mk_12_mod3_new_gun": {
       "reqModification": "mk_12_mod3_belt_pack",
-      "tier": 3
+      "tier": 2
+    },
+    "us_aim_9b": {
+      "prevModification": "mk_12_mod3_new_gun",
+      "tier": 4,
+      "modClass": "weapon"
     },
     "fsbc_mk5": {
       "tier": 1,
@@ -3298,17 +3439,18 @@
       "tier": 4,
       "reqModification": "btd_mbc"
     },
+    "us_mk_77": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "us_2_75_in_ffar_aero_7d": {
+      "prevModification": "us_mk_77",
       "tier": 2,
       "modClass": "weapon"
     },
     "f4c_zuni": {
       "reqModification": "us_2_75_in_ffar_aero_7d",
       "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_aim_9b": {
-      "tier": 4,
       "modClass": "weapon"
     }
   },

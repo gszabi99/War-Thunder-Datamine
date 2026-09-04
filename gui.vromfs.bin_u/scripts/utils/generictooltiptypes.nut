@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/enums.nut" import addTypes
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
-
-let { format } = require("string")
-let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
+from "types" import Table
 
 let tooltipTypes = {
   types = []
@@ -59,7 +59,7 @@ addTooltipTypes({
 
 function getTooltipType(typeName) {
   let res = tooltipTypes?[typeName]
-  return type(res) == "table" ? res : this.EMPTY
+  return res instanceof Table ? res : this.EMPTY
 }
 
 return {

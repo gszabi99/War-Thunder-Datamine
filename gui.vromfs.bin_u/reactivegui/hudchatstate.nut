@@ -1,9 +1,8 @@
+import "%rGui/interopGen.nut" as interopGet
+from "mission" import get_mission_time
+from "eventbus" import eventbus_subscribe
+from "chat" import CHAT_MODE_ALL
 from "%rGui/globals/ui_library.nut" import *
-
-let { get_mission_time } = require("mission")
-let interopGet = require("%rGui/interopGen.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { CHAT_MODE_ALL } = require("chat")
 
 let hudChatState = {
   inputEnable = false
@@ -60,4 +59,3 @@ interopGet({
 })
 
 return hudChatState.__merge({pushSystemMessage})
-

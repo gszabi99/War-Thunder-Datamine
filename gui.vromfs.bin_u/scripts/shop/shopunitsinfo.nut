@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "blkGetters" import get_shop_blk
+from "chard" import getUnitPurchasePeriod
 from "%scripts/dagui_library.nut" import *
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_shop_blk } = require("blkGetters")
 let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
-let { getUnitPurchasePeriod } = require("chard")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null

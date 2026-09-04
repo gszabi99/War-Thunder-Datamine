@@ -1,16 +1,15 @@
+from "%rGui/style/airHudStyle.nut" import hudFontHgt
+from "%rGui/radarState.nut" import MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScopeVisible, IsEsm, ViewMode
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
+from "%rGui/radarButtons.nut" import isRadarButtonsVisible, isRadarFiltersButtonsVisible, filtersButtons
+from "%rGui/hudState.nut" import unitType
+from "dagor.math" import IPoint3
+from "dagor.localize" import getLangId
+from "wt.behaviors" import ButtonExtendUpdatePress
 from "%rGui/globals/ui_library.nut" import *
+
 require("%rGui/radarZoom.nut")
-let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
-let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, IsCScopeVisible, IsBScopeVisible, IsEsm,
-  ViewMode } = require("%rGui/radarState.nut")
-let { IPoint3 } = require("dagor.math")
-let { getLangId } = require("dagor.localize")
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-let { radarButtonsAir, radarButtonsAirMinimized, radarButtonsHeliMinimized, radarButtonsHeli,
-  isRadarButtonsVisible, isRadarFiltersButtonsVisible, filtersButtons
-} = require("%rGui/radarButtons.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { ButtonExtendUpdatePress } = require("wt.behaviors")
+let { radarButtonsAir, radarButtonsAirMinimized, radarButtonsHeliMinimized, radarButtonsHeli } = require("%rGui/radarButtons.nut")
 
 let radarButtonsComps = {
   aircraft = radarButtonsAir
@@ -47,7 +46,7 @@ let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
   let radarHandleMouseWheel = DasFunction(radarScriptDas, "handle_mouse_wheel")
   return {
     watch = [color_watched, radarOffsets]
-    size = flex()
+    size = FLEX
     pos = radarOffsets.get()
     rendObj = ROBJ_DAS_CANVAS
     script = radarScriptDas
@@ -85,7 +84,7 @@ let radarCanvas = @(color_watched, ovr = {}, handle_clicks = false) function() {
 
     function onJoystickScroll(evt) {
       let elem = evt.target
-      let joystickSensetivity = 0.01
+      const joystickSensetivity = 0.01
       let delta = -evt.delta.y * joystickSensetivity
       radarHandleMouseWheel(elem, evt.screenX, evt.screenY, delta)
     }
@@ -122,16 +121,18 @@ let beamShapes = {
 }
 
 let customPages = {
-  su27tactic = "%rGui/planeCockpit/su27tactic.das"
-  jas39radar = "%rGui/planeCockpit/mfdJas39radar.das"
-  jas39Eradar = "%rGui/planeCockpit/mfdJas39Eradar.das"
-  rafaelRadar = "%rGui/planeCockpit/mfdRafaelRadar.das"
-  typhoonRadar = "%rGui/planeCockpit/mfdTyphoonRadar.das"
-  su30Radar = "%rGui/planeCockpit/mfdSu30Radar.das"
-  fa18cRadarATTK = "%rGui/planeCockpit/mfdfa18cRadarATTK.das"
-  f106Radar = "%rGui/planeCockpit/F106Radar.das"
-  f4Radar = "%rGui/planeCockpit/mfdF4Radar.das"
-  mig25Radar = "%rGui/planeCockpit/mfdMig25Radar.das"
+  su27tactic = "%rGui/planeCockpit/radarPage/su27tactic.das"
+  jas39radar = "%rGui/planeCockpit/radarPage/mfdJas39radar.das"
+  jas39Eradar = "%rGui/planeCockpit/radarPage/mfdJas39Eradar.das"
+  rafaelRadar = "%rGui/planeCockpit/radarPage/mfdRafaelRadar.das"
+  typhoonRadar = "%rGui/planeCockpit/radarPage/mfdTyphoonRadar.das"
+  su30Radar = "%rGui/planeCockpit/radarPage/mfdSu30Radar.das"
+  fa18cRadarATTK = "%rGui/planeCockpit/radarPage/mfdfa18cRadarATTK.das"
+  f106Radar = "%rGui/planeCockpit/radarPage/F106Radar.das"
+  f4Radar = "%rGui/planeCockpit/radarPage/mfdF4Radar.das"
+  mig25Radar = "%rGui/planeCockpit/radarPage/mfdMig25Radar.das"
+  ka52Radar = "%rGui/planeCockpit/radarPage/mfdKa52Radar.das"
+  mfdF102Radar = "%rGui/planeCockpit/radarPage/mfdF102Radar.das"
 }
 
 let radarSettings = Watched({
@@ -171,9 +172,10 @@ let radarSettings = Watched({
     stretchFull = false
     cScopeIndicatorHeightMult = 1.0
     vignettePath = ""
+    chinaLang = false
   })
 
-function radarSettingsUpd(page_blk) {
+function radarSettingsUpd(page_blk, chinaLangFromBlk = false) {
   let targetType = page_blk.getStr("targetForm", "")
   let beamType = page_blk.getStr("beamShape", "beam")
   let scriptType = page_blk.getStr("customRadar", "")
@@ -214,6 +216,7 @@ function radarSettingsUpd(page_blk) {
     stretchFull = page_blk.getBool("stretchFull", false)
     cScopeIndicatorHeightMult = page_blk.getReal("cScopeIndicatorHeightMult", 1.0)
     vignettePath = page_blk.getStr("vignettePath", "")
+    chinaLang = chinaLangFromBlk
   })
 }
 
@@ -222,7 +225,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
     backgroundColor, textColor, radarBackgroundColor, radarScanColor, beamShape, netRowCnt, netColor, hideWeaponIndication,
     cueHeights, fontSize, showScanAzimuth, scriptPath, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
-    radarModeNameLangId, stretchFull, cScopeIndicatorHeightMult, vignettePath } = radarSettings.get()
+    radarModeNameLangId, stretchFull, cScopeIndicatorHeightMult, vignettePath, chinaLang } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.get().w, pos_and_size.get().h]
@@ -269,14 +272,15 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     radarModeNameLangId
     stretchFull
     cScopeIndicatorHeightMult
+    chinaLang
     vignette = vignettePath != "" ? Picture(vignettePath) : null
   }
 }
 
-let function radarIndication(color_watched, handle_clicks = false) {
+function radarIndication(color_watched, handle_clicks = false) {
   return @(){
     watch = color_watched
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_DAS_CANVAS
     script = getDasScriptByPath("%rGui/radarIndication.das")
     drawFunc = "draw_radar_indication"

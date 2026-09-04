@@ -1,25 +1,27 @@
+import "userstat" as userstat
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
+from "dagor.time" import get_time_msec
+from "app" import APP_ID
+from "json" import object_to_json_string
+from "gameplayBinding" import isInFlight
+from "chard" import get_charserver_time_sec
+from "dagor.workcycle" import deferOnce, setTimeout, clearTimer, resetTimeout
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_natives.nut" import char_send_custom_action, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import APP_ID_CUSTOM_LEADERBOARD
+from "types" import Table
+
 let logU = log_with_prefix("[userstat] ")
-let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let userstat = require("userstat")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
-let { APP_ID } = require("app")
-let DataBlock = require("DataBlock")
-let { object_to_json_string } = require("json")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
-let { isInFlight } = require("gameplayBinding")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { get_charserver_time_sec } = require("chard")
-let { deferOnce, setTimeout, clearTimer, resetTimeout
-} = require("dagor.workcycle")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
 const STATS_UPDATE_INTERVAL = 60000 
@@ -38,7 +40,7 @@ function updateGetUnlocksValue(watchValue, response) {
       watchValue[key] <- value
       continue
     }
-    if (type(value) == "table")
+    if (value instanceof Table)
       watchValue[key].__update(value)
     else
       watchValue[key] = value

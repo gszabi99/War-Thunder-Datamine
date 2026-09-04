@@ -1,16 +1,18 @@
+from "dagor.random" import rnd
+from "console" import register_command
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/underscore.nut" import deep_clone
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_name_to_val, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let { rnd } = require("dagor.random")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getClansInfoByClanIds } = require("%scripts/clans/clanInfo.nut")
-let { register_command } = require("console")
-let { round_by_value } = require("%sqstd/math.nut")
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { disableSeenUserlogs, getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
@@ -33,7 +35,7 @@ let MANAGER_STATS_FIELDS = [
   lbCategoryTypes.ACTIVITY
 ]
 
-local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
+local WwOperationRewardPopup = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/worldWar/wwOperationRewardPopup.tpl"
   logObj       = null
@@ -123,7 +125,7 @@ local WwOperationRewardPopup = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.WwOperationRewardPopup <- WwOperationRewardPopup
+register_gui_handler("WwOperationRewardPopup", WwOperationRewardPopup)
 let openWwOperationRewardPopup = @(p)
   handlersManager.loadHandler(WwOperationRewardPopup, { logObj = p.body, logId = p.id })
 

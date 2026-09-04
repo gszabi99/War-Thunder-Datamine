@@ -1,19 +1,15 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt, mgSetBool
+  , mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange
+  , rndRangeInt, getAnyFighter, getDistancePerMinute, getAircraftCost, mgReplace, mgSetupAirfield, mgSetDistToAction
+  , getAircraftDescription, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
 from "math" import min, sqrt, clamp
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt,
-  mgSetBool, mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount,
-  mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getAnyFighter, getDistancePerMinute,
-  getAircraftCost, mgReplace, mgSetupAirfield, mgSetDistToAction, getAircraftDescription,
-  gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName,
-  mgSetMinMaxAircrafts
-} = require("dynamicMission")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
-  let mission_preset_name = "ground_attack_preset01"
+  const mission_preset_name = "ground_attack_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
@@ -32,7 +28,7 @@ function generateGAttackMission(isFreeFlight, createGroundUnitsProc) {
   let ships_count = mgGetUnitsCount("#bomb_targets_ships")
 
 
-  let wpMax = 1000000
+  const wpMax = 1000000
   let allyFighterPlane = getAnyFighter(playerSide, 0, wpMax)
   local playerPlaneCost = getAircraftCost(allyFighterPlane)
   if (playerPlaneCost == 0)

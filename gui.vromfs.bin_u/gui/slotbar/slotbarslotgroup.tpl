@@ -22,8 +22,8 @@ shopItem {
   refuseOpenHoverMenu:t='yes'
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
+  on_hover:t='gcb.delayedTooltipHover'
+  on_unhover:t='gcb.delayedTooltipHover'
   <</isTooltipByHold>>
 
   <<#showInService>>
@@ -79,6 +79,8 @@ shopItem {
   <<#isRecentlyReleased>>
   recentlyReleasedIcon {}
   <</isRecentlyReleased>>
+
+  focus_border {}
 
   <<#hasTalismanIcon>>
   talismanIcon {
@@ -166,8 +168,6 @@ shopItem {
   tooltip-float:t='horizontal'
   title:t='$tooltipObj'
   <</isTooltipByHold>>
-
-  focus_border {}
 
   <<@bottomButton>>
 

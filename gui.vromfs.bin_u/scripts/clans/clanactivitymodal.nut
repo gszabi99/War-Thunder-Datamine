@@ -1,13 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "math" import round
+from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { round } = require("math")
-let { format } = require("string")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -20,10 +21,10 @@ function guiStartClanActivityWnd(uid = null, clanData = null) {
   if (!memberData)
     return
 
-  loadHandler(gui_handlers.clanActivityModal, { clanData, memberData })
+  loadHandler(get_gui_handler("clanActivityModal"), { clanData, memberData })
 }
 
-gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanActivityModal = class (BaseGuiHandlerWT) {
   wndType           = handlerType.MODAL
   sceneBlkName      = "%gui/clans/clanActivityModal.blk"
   clanData          = null
@@ -126,6 +127,7 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(tableObj, rowBlock, rowBlock.len(), this)
   }
 }
+register_gui_handler("clanActivityModal", clanActivityModal)
 
 return {
   guiStartClanActivityWnd

@@ -4,7 +4,6 @@ require %game.events
 require net
 require HumanPhys
 require WeapHelpers
-require inventory
 
 def anim_attach(var slot_attach__slotId : int&;
                 eid : EntityId;
@@ -58,29 +57,39 @@ def obtain_grenade_thrower_projectile_entity(var grenade_thrower__projectileEnti
 
 def grenade_thrower_select_current_grenade(human_eid : EntityId;
                                            grenade_thrower_eid : EntityId)
+  var result = false
   query(human_eid) <| $ [es] (itemContainer : EidList)
     query(grenade_thrower_eid) <| $ [es(REQUIRE=grenade_thrower)] (gun__ammoHolderIds : IntList&;
                                                                    gun__shell_prop_ids : PropsIdList&;
                                                                    grenade_thrower__currentGrenadeTypeIndex : int)
-      grenade_thrower_select_grenade(human_eid, itemContainer, gun__ammoHolderIds, gun__shell_prop_ids, grenade_thrower__currentGrenadeTypeIndex)
+      result = grenade_thrower_select_grenade(human_eid, itemContainer, gun__ammoHolderIds, gun__shell_prop_ids, grenade_thrower__currentGrenadeTypeIndex)
+  return result
 
 def grenade_thrower_select_next_grenade(human_eid : EntityId;
                                         grenade_thrower_eid : EntityId)
+  var result = false
   query(human_eid) <| $ [es] (itemContainer : EidList)
     query(grenade_thrower_eid) <| $ [es(REQUIRE=grenade_thrower)] (gun__ammoHolderIds : IntList&;
                                                                    gun__shell_prop_ids : PropsIdList&;
                                                                    grenade_thrower__grenadeTypesCount : int;
                                                                    grenade_thrower__currentGrenadeTypeIndex : int)
+      if grenade_thrower__grenadeTypesCount <= 0
+        return
       let grenadeIndexToSelect = (grenade_thrower__currentGrenadeTypeIndex + 1) % grenade_thrower__grenadeTypesCount
-      grenade_thrower_select_grenade(human_eid, itemContainer, gun__ammoHolderIds, gun__shell_prop_ids, grenadeIndexToSelect)
+      result = grenade_thrower_select_grenade(human_eid, itemContainer, gun__ammoHolderIds, gun__shell_prop_ids, grenadeIndexToSelect)
+  return result
 
 def grenade_thrower_select_grenade(human_eid : EntityId;
                                    itemContainer : EidList;
                                    gun__ammoHolderIds : IntList;
                                    gun__shell_prop_ids : PropsIdList;
                                    grenade_index_to_select : int)
+  var result = false
   gather_ammo_for_gun(gun__ammoHolderIds, gun__shell_prop_ids, itemContainer) <| $(ammoItems)
     let ammoItemsCount = length(ammoItems)
-    let wishItemIndex = grenade_index_to_select % ammoItemsCount
-    let wishItemId = (ammoItemsCount == 0) ? INVALID_ITEM_ID : ammoItems[wishItemIndex]
+    if ammoItemsCount <= 0
+      return
+    let wishItemId = ammoItems[grenade_index_to_select % ammoItemsCount]
     send_net_event(human_eid, HumanRequestSetWishAmmoItemType(slot_id = int(HUWeaponSlots.EWS_GRENADE), item_id = wishItemId))
+    result = true
+  return result

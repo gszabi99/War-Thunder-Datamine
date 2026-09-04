@@ -1,5 +1,5 @@
 {
-  "model": "m24_chaffee",
+  "model": "m24_chaffee_jp",
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
@@ -43,8 +43,6 @@
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
   "fireFx": "ground_model_fire",
-  "rearmSmokeTimeOnField": 60.0,
-  "canReloadNonGuns": true,
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1668,17 +1666,29 @@
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
-        "loader_dm",
         "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
         "commander_dm",
         "machine_gunner_dm",
         "machine_gunner_01_dm",
         "machine_gunner_02_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
         "radio_station_dm",
+        "driver_controls_dm",
+        "fire_control_system_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
@@ -1742,6 +1752,32 @@
         "ammo_turret_53_dm",
         "ammo_turret_54_dm",
         "ammo_turret_55_dm",
+        "ammo_turret_56_dm",
+        "ammo_turret_57_dm",
+        "ammo_turret_58_dm",
+        "ammo_turret_59_dm",
+        "ammo_turret_60_dm",
+        "ammo_turret_61_dm",
+        "ammo_turret_62_dm",
+        "ammo_turret_63_dm",
+        "ammo_turret_64_dm",
+        "ammo_turret_65_dm",
+        "ammo_turret_66_dm",
+        "ammo_turret_67_dm",
+        "ammo_turret_68_dm",
+        "ammo_turret_69_dm",
+        "ammo_turret_70_dm",
+        "ammo_turret_71_dm",
+        "ammo_turret_72_dm",
+        "ammo_turret_73_dm",
+        "ammo_turret_74_dm",
+        "ammo_turret_75_dm",
+        "ammo_turret_76_dm",
+        "ammo_turret_77_dm",
+        "ammo_turret_78_dm",
+        "ammo_turret_79_dm",
+        "ammo_turret_80_dm",
+        "ammo_body_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
@@ -1797,6 +1833,31 @@
         "ammo_body_53_dm",
         "ammo_body_54_dm",
         "ammo_body_55_dm",
+        "ammo_body_56_dm",
+        "ammo_body_57_dm",
+        "ammo_body_58_dm",
+        "ammo_body_59_dm",
+        "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
+        "ammo_body_71_dm",
+        "ammo_body_72_dm",
+        "ammo_body_73_dm",
+        "ammo_body_74_dm",
+        "ammo_body_75_dm",
+        "ammo_body_76_dm",
+        "ammo_body_77_dm",
+        "ammo_body_78_dm",
+        "ammo_body_79_dm",
+        "ammo_body_80_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1821,6 +1882,12 @@
         "ammo_body_l_22_dm",
         "ammo_body_l_23_dm",
         "ammo_body_l_24_dm",
+        "ammo_body_l_25_dm",
+        "ammo_body_l_26_dm",
+        "ammo_body_l_27_dm",
+        "ammo_body_l_28_dm",
+        "ammo_body_l_29_dm",
+        "ammo_body_l_30_dm",
         "ammo_body_r_01_dm",
         "ammo_body_r_02_dm",
         "ammo_body_r_03_dm",
@@ -1844,7 +1911,13 @@
         "ammo_body_r_21_dm",
         "ammo_body_r_22_dm",
         "ammo_body_r_23_dm",
-        "ammo_body_r_24_dm"
+        "ammo_body_r_24_dm",
+        "ammo_body_r_25_dm",
+        "ammo_body_r_26_dm",
+        "ammo_body_r_27_dm",
+        "ammo_body_r_28_dm",
+        "ammo_body_r_29_dm",
+        "ammo_body_r_30_dm"
       ],
       "effect": [
         {
@@ -2048,10 +2121,6 @@
       "AdvancedMass": true,
       "trackMass": 700.0
     },
-    "collisionProps": {
-      "cls_turret_01": "convex_hull",
-      "cls_body_01": "convex_hull"
-    },
     "engine": {
       "horsePowers": 296.0,
       "maxRPM": 3200.0,
@@ -2118,6 +2187,10 @@
       "trackStartOffset": 0.05,
       "trackMaxHeight": 1.2,
       "trackMaxSinking": 0.1
+    },
+    "collisionProps": {
+      "cls_turret": "convex_hull",
+      "cls_body": "convex_hull"
     }
   },
   "PhysSys": {
@@ -2198,16 +2271,6 @@
       1.5,
       10.0
     ]
-  },
-  "wreckedParts": {
-    "part": {
-      "node": "bone_turret",
-      "mass": 3500.0,
-      "cutDamage": 200.0,
-      "deviation": 0.5,
-      "rotation": 0.5,
-      "collisionNode": "cls_turret_01"
-    }
   },
   "unitFx": {
     "event": [
@@ -3060,6 +3123,12 @@
       }
     }
   },
+  "user_skin": {
+    "name": "m24",
+    "replace_tex": {
+      "from": "us_camo_olive*"
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3087,220 +3156,7 @@
     "75mm_usa_APCBC": {},
     "75mm_usa_APCBC_ammo_pack": {},
     "75mm_us_M89_Smoke": {},
-    "75mm_us_M89_Smoke_ammo_pack": {},
-    "tank_smoke_screen_system_mod": {
-      "tier": 3,
-      "effects": {
-        "commonWeapons": {
-          "Weapon": [
-            {
-              "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/75mm_M6_user_cannon.blk",
-              "emitter": "bone_gun_barrel",
-              "flash": "emtr_gun_flame",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_dm",
-              "breechDP": "cannon_breech_dm",
-              "speedYaw": 24.0,
-              "speedPitch": 4.0,
-              "fireConeAngle": 1.0,
-              "bullets": 48,
-              "salvoAmount": 100.0,
-              "ChainfireTime": 0.0,
-              "DelayAfterShoot": 5.0,
-              "AttackMaxRadius": 2000.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 1.5,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "turret": {
-                "head": "bone_turret",
-                "gun": "bone_gun",
-                "barrel": "bone_gun_barrel"
-              },
-              "limits": {
-                "yaw": [
-                  -180.0,
-                  180.0
-                ],
-                "pitch": [
-                  -10.0,
-                  15.0
-                ]
-              },
-              "gunStabilizer": {
-                "hasVerticalGunFreeMode": false,
-                "hasHorizontal": false,
-                "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 50.0,
-                "hasVertical": true,
-                "verticalOmegaMult": 0.7,
-                "verticalSpeedLimitKPH": 24.0,
-                "errorKPHToDegrees": {
-                  "row": [
-                    [
-                      5.0,
-                      0.0
-                    ],
-                    [
-                      10.0,
-                      0.05
-                    ],
-                    [
-                      12.0,
-                      0.4
-                    ]
-                  ]
-                }
-              }
-            },
-            {
-              "trigger": "gunner1",
-              "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_M1919A4_user_machinegun.blk",
-              "emitter": "bone_mg_gun_twin",
-              "flash": "emtr_mg_flame_01",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_01_dm",
-              "speedYaw": 5.5,
-              "speedPitch": 4.0,
-              "fireConeAngle": [
-                1.0,
-                15.0
-              ],
-              "bullets": 3750,
-              "ChainfireTime": 3.0,
-              "DelayAfterShoot": 3.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "turret": {
-                "head": "bone_mg_gun_twin",
-                "gun": "bone_mg_gun_twin",
-                "gunnerDm": "gunner_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -0.0,
-                  0.0
-                ],
-                "pitch": [
-                  -0.0,
-                  0.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner2",
-              "triggerGroup": "machinegun",
-              "blk": "gameData/Weapons/groundModels_weapons/12_7mm_M2_HB_user_machinegun.blk",
-              "emitter": "bone_mg_aa_v_01",
-              "flash": "emtr_mg_aa_flame_01",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "barrelDP": "gun_barrel_02_dm",
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "bullets": 400,
-              "isBulletBelt": true,
-              "fireConeAngle": 5.0,
-              "ChainfireTime": 0.5,
-              "DelayAfterShoot": 2.0,
-              "accuracyAir": 1.5,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 1.5,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "forestallTime": 0.1,
-              "turret": {
-                "head": "bone_mg_aa_h_01",
-                "gun": "bone_mg_aa_v_01",
-                "gunnerDm": "commander_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -60.0,
-                  60.0
-                ],
-                "pitch": [
-                  -10.0,
-                  70.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner3",
-              "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/50mm_uk_smoke_mortar_launcher.blk",
-              "weaponType": "rockets",
-              "useEmitter": true,
-              "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [
-                1,
-                1
-              ],
-              "emitterGenFmt": "emtr_mortar_flame_%02d",
-              "createGunEffects": true,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "allowableDelta": 360.0,
-              "salvo": 1,
-              "speedYaw": 24.0,
-              "speedPitch": 15.0,
-              "fireConeAngle": 1.0,
-              "bullets": 14,
-              "salvoAmount": 100.0,
-              "ChainfireTime": 0.0,
-              "DelayAfterShoot": 5.0,
-              "AttackMaxRadius": 2000.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 1.5,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
-              },
-              "limits": {
-                "yaw": [
-                  -0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
-            }
-          ]
-        }
-      }
-    }
-  },
-  "user_skin": {
-    "name": "m24",
-    "replace_tex": {
-      "from": "us_camo_olive*"
-    }
+    "75mm_us_M89_Smoke_ammo_pack": {}
   },
   "default_skin": {
     "replace_tex": {
@@ -3374,5 +3230,15 @@
     "EngineNameAi": "engine_tank_ai_light",
     "TrackSoundNameAi": "tracks_ai_light",
     "gun_turn": "turret_turn_mg_light"
+  },
+  "wreckedParts": {
+    "part": {
+      "node": "bone_turret",
+      "mass": 3500.0,
+      "cutDamage": 200.0,
+      "deviation": 0.5,
+      "rotation": 0.5,
+      "collisionNode": "cls_turret"
+    }
   }
 }

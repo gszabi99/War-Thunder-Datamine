@@ -1,22 +1,21 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "math" import round
+from "vr" import is_stereo_mode
+from "fonts" import setFontDefHt, getFontDefHt, getFontInitialHt
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import is_steam_big_picture, display_scale
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { round } = require("math")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { is_stereo_mode } = require("vr")
-let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
-let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { setScrnTgt } = require("%scripts/utils/screenUtils.nut")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_VR = "fonts_css_vr"

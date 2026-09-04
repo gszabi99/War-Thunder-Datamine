@@ -1,8 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 
 enum GamercardDrawerState {
   STATE_CLOSED
@@ -11,7 +13,7 @@ enum GamercardDrawerState {
   STATE_CLOSING
 }
 
-gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
+let GamercardDrawer = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/gamercardDrawer.blk"
   heightPID = dagui_propid_add_name_id("height")
@@ -19,6 +21,7 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
   currentVisible = false
   currentState = GamercardDrawerState.STATE_CLOSED
   isBlockOtherRestoreFocus = false
+  contentBaseTop = null
 
   function initScreen() {
     this.getObj("gamercard_drawer").setUserData(this)
@@ -98,8 +101,32 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.currentVisible || !checkObj(this.currentTarget))
       return
 
+    this.updateContentPos()
     this.setShowContent(this.currentTarget)
     this.openDrawer()
+  }
+
+  function updateContentPos() {
+    let contentObject = this.getObj("gamercard_drawer_content")
+    if (!contentObject?.isValid())
+      return
+
+    if (this.contentBaseTop == null)
+      this.contentBaseTop = contentObject.top
+
+    let statusNestObj = topMenuHandler.get()?.scene.findObject("second_game_modes_status")
+    local extraTopExpr = "0"
+    if (statusNestObj?.isValid())
+      for (local i = 0; i < statusNestObj.childrenCount(); i++) {
+        let child = statusNestObj.getChild(i)
+        if (!child.isVisible())
+          continue
+        let childHeight = child.getSize()[1]
+        extraTopExpr = childHeight >= 0 ? childHeight.tostring() : "30@sf/@pf"
+        break
+      }
+
+    contentObject.top = $"{this.contentBaseTop} + {extraTopExpr}"
   }
 
   function onDrawerOpen(_obj) {
@@ -147,3 +174,6 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
     this.toggleFuncOnObjs("enable", obj)
   }
 }
+register_gui_handler("GamercardDrawer", GamercardDrawer)
+
+return { GamercardDrawer }

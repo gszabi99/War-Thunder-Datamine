@@ -1,10 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { enable_modifications, open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
 let { addTask } = require("%scripts/tasker.nut")
 let { getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
@@ -17,7 +19,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let modGroups = ["scope", "stock", "magazine", "underbarrel", "tactical", "grip", "muzzle"]
 
 
-let class ModsSetupHandler (gui_handlers.BaseGuiHandlerWT) {
+class ModsSetupHandler (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/customization/modsSetupWnd.blk"
   modGroupBlkName = "%gui/customization/modsSlot.blk"
@@ -199,7 +201,7 @@ let class ModsSetupHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ModsSetupHandler <- ModsSetupHandler
+register_gui_handler("ModsSetupHandler", ModsSetupHandler)
 
 return function(scene) {
   if (!scene?.isValid())

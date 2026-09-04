@@ -1,8 +1,9 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "string" import format
+from "math" import fabs
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
-let { format } = require("string")
-let { fabs } = require("math")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
 let { getCrewSkillValue } = require("%scripts/crew/crew.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -188,7 +189,7 @@ enumsAddTypes(skillParametersColumnType, {
 
     getHeaderText = function () {
       let unitName = getUnitName(getCachedCrewUnit())
-      let pad = "    "
+      const pad = "    "
       return "".concat(pad, loc("crew/forUnit", { unitName = unitName }), pad)
     }
 

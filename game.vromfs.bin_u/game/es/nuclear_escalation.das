@@ -1,6 +1,8 @@
 require ecs
 require ecs.common
 require ecs.safe
+require dm
+require WTDamageModel
 require Unit
 require IGroundModel
 require DagorMath
@@ -15,6 +17,7 @@ require Mission
 require Grid
 require level
 require %appGame.wt_events
+require %game.unit.unit_events
 
 struct TargetCandidate
   eid : EntityId
@@ -164,7 +167,7 @@ def select_tank_column_target(army : int; fromPos : float3) : EntityId
 
 def is_tank_column_target_valid(target : EntityId; army : int) : bool
   var isValid = false
-  for_each_tank_column_target(army) <| $ [unused_argument(_pos)] (eid : EntityId; _pos : float3)
+  for_each_tank_column_target(army) <| $(eid : EntityId; _pos : float3)
     if eid == target
       isValid = true
   return isValid
@@ -245,6 +248,7 @@ def equip_storage_update_es(act : UpdateStageInfoAct;
         createEntity("units_column") <| $(init)
           init |> set("units_column__units", columnUnits)
           init |> set("units_column__target", equip_factory__currentColumnTarget)
+          init |> set("units_column__origin", storage_unit__ref.unit.unitTm[3])
           init |> set("units_column__captureCheckTimer", rnd_float(0., 1.))
           init |> set("units_column__transportedEquipment", equip_factory__equipForSendColumn / float(needUnits))
           init |> set("units_column__cargoType", cargoType)
@@ -255,12 +259,14 @@ def equip_storage_repair_update_es(act : UpdateStageInfoAct;
                                    equip_storage__repairTime : float;
                                    var equip_storage__current : float&;
                                    var equip_storage__repairTimer : float&;
+                                   var equip_storage__relHp : float&;
                                    units_spawn_on_init__units : EidList const?)
   if equip_storage__repairTimer > 0.
     equip_storage__repairTimer -= act.dt
     if equip_storage__repairTimer <= 0.
       equip_storage__repairTimer = -1.
       *storage_unit__ref.unit |> repair()
+      equip_storage__relHp = 1.
       if units_spawn_on_init__units != null
         for unitEid in *units_spawn_on_init__units
           query(unitEid) <| $ [es] (var unit__ref aka spawned_unit__ref : UnitRef)
@@ -555,6 +561,7 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
           createEntity(isSpg ? "spg_units_column" : "units_column") <| $(init)
             init |> set("units_column__units", columnUnits)
             init |> set("units_column__target", equip_factory__currentColumnTarget)
+            init |> set("units_column__origin", storage_unit__ref.unit.unitTm[3])
             init |> set("units_column__captureCheckTimer", rnd_float(0., 1.)) 
 
 def capture_blocked(target_pos : float3; new_army : int; radius : float)
@@ -583,6 +590,7 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
   query() <| $ [es(REQUIRE=equip_factory__maxUnitsCount)] (var unit__ref aka target_unit__ref : UnitRef&;
                                                            equip_storage__ticketsByCapture : int;
                                                            var equip_storage__repairTimer : float&;
+                                                           var equip_storage__relHp : float&;
                                                            units_spawn_on_init__units : EidList;
                                                            tank_factory__fuelStorage : EntityId const?;
                                                            tank_factory__ammoStorage : EntityId const?)
@@ -609,6 +617,7 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
     if !target_unit__ref.unit.isAlive
       *target_unit__ref.unit |> repair()
       equip_storage__repairTimer = -1.
+      equip_storage__relHp = 1.
     for coverEid in units_spawn_on_init__units
       query(coverEid) <| $ [es] (var unit__ref aka cover_unit__ref : UnitRef&)
         if !cover_unit__ref.unit.isDelayed && !cover_unit__ref.unit.isAlive
@@ -617,20 +626,24 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
     
     if tank_factory__fuelStorage != null && *tank_factory__fuelStorage != INVALID_ENTITY_ID
       query(*tank_factory__fuelStorage) <| $ [es] (var unit__ref aka fuel_unit__ref : UnitRef&;
-                                                   var equip_storage__repairTimer aka fuel_equip_storage__repairTimer : float&)
+                                                   var equip_storage__repairTimer aka fuel_equip_storage__repairTimer : float&;
+                                                   var equip_storage__relHp aka fuel_equip_storage__relHp : float&)
         if !fuel_unit__ref.unit.isDelayed && fuel_unit__ref.unit.army != newArmy
           *fuel_unit__ref.unit |> setArmy(newArmy)
           if !fuel_unit__ref.unit.isAlive
             *fuel_unit__ref.unit |> repair()
             fuel_equip_storage__repairTimer = -1.
+            fuel_equip_storage__relHp = 1.
     if tank_factory__ammoStorage != null && *tank_factory__ammoStorage != INVALID_ENTITY_ID
       query(*tank_factory__ammoStorage) <| $ [es] (var unit__ref aka ammo_unit__ref : UnitRef&;
-                                                   var equip_storage__repairTimer aka ammo_equip_storage__repairTimer : float&)
+                                                   var equip_storage__repairTimer aka ammo_equip_storage__repairTimer : float&;
+                                                   var equip_storage__relHp aka ammo_equip_storage__relHp : float&)
         if !ammo_unit__ref.unit.isDelayed && ammo_unit__ref.unit.army != newArmy
           *ammo_unit__ref.unit |> setArmy(newArmy)
           if !ammo_unit__ref.unit.isAlive
             *ammo_unit__ref.unit |> repair()
             ammo_equip_storage__repairTimer = -1.
+            ammo_equip_storage__relHp = 1.
   
   find_query() <| $ [es] (units_spawn_on_init__units : EidList;
                           var team : int&;
@@ -973,10 +986,22 @@ def radar_management_by_threat_es(act : UpdateStageInfoAct;
       found = true
     return found
 
-  static_if typeinfo(builtin_function_exists @@ < (arg0 : Unit::Unit&; arg1 : bool) : void > _::changeSensorPowerModeByCond)
-    *unit__ref.unit |> changeSensorPowerModeByCond(!found)
+  *unit__ref.unit |> changeSensorPowerModeByCond(!found)
 
 [es(tag=server, on_appear)]
 def radar_management_by_threat_init_es(evt : Event;
                                        var nuclear_escalation_spaa_radar_on__threatCheckTimer : float&)
   nuclear_escalation_spaa_radar_on__threatCheckTimer = rnd_float(0., 1.)
+
+[es(tag=server, on_appear)]
+def init_dp_body_es(evt : Event;
+                    var equip_storage__dpBody : int3&)
+  equip_storage__dpBody = dm_find_part_kind("body")
+
+[es(tag=server)]
+def sync_storage_hp_es(evt : EventUnitDamage;
+                       unit__ref : UnitRef;
+                       equip_storage__dpBody : int3;
+                       var equip_storage__relHp : float&)
+  if int(evt.partId.globalId) == equip_storage__dpBody.x
+    equip_storage__relHp = *unit__ref.unit.visual |> dm_get_rel_hp(equip_storage__dpBody.x)

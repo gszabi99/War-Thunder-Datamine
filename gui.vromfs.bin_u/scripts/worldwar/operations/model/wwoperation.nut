@@ -1,11 +1,10 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-import "%sqStdLibs/helpers/enums.nut" as enums
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
@@ -14,7 +13,7 @@ let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
-let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
@@ -43,8 +42,8 @@ let WwOperation = class {
 
   constructor(v_data) {
     this.data = v_data
-    this.id = getTblValue("_id", this.data, -1)
-    this.status = getTblValue("st", this.data, WW_OPERATION_STATUSES.UNKNOWN)
+    this.id = (this.data?._id ?? -1)
+    this.status = (this.data?.st ?? WW_OPERATION_STATUSES.UNKNOWN)
   }
 
   function isValid() {
@@ -62,7 +61,7 @@ let WwOperation = class {
   }
 
   function getMapId() {
-    return getTblValue("map", this.data, "unknown_map")
+    return (this.data?.map ?? "unknown_map")
   }
 
   function getMap() {
@@ -112,7 +111,7 @@ let WwOperation = class {
         })
     }
 
-    let countryes = getTblValue(side, this.getCountriesByTeams(), [])
+    let countryes = (this.getCountriesByTeams()?[side] ?? [])
     let assignCountry = this.getMyAssignCountry()
     if (assignCountry) {
       res.country = assignCountry
@@ -219,9 +218,9 @@ let WwOperation = class {
 
   function getArmyGroupsBySide(side) {
     let countriesByTeams = this.getCountriesByTeams()
-    let sideCountries = getTblValue(side, countriesByTeams)
+    let sideCountries = countriesByTeams?[side]
 
-    return this.getArmyGroups().filter(@(ag) isInArray(getTblValue("cntr", ag, ""), sideCountries))
+    return this.getArmyGroups().filter(@(ag) isInArray((ag?.cntr ?? ""), sideCountries))
   }
 
   function getMyClanGroup() {
@@ -254,7 +253,7 @@ let WwOperation = class {
       return false
 
     let country = this.getMyClanCountry()
-    let countries = getTblValue(side, this.getCountriesByTeams(), [])
+    let countries = (this.getCountriesByTeams()?[side] ?? [])
     return isInArray(country, countries)
   }
 
@@ -269,11 +268,11 @@ let WwOperation = class {
   }
 
   function getArmyGroups() {
-    return getTblValue("armyGroups", this.data, [])
+    return (this.data?.armyGroups ?? [])
   }
 
   function getArmyGroupCountry(armyGroup) {
-    return getTblValue("cntr", armyGroup)
+    return armyGroup?.cntr
   }
 
   function getCountriesByTeams() {
@@ -285,7 +284,7 @@ let WwOperation = class {
     let countryToSide = map.getCountryToSideTbl()
     foreach (ag in this.getArmyGroups()) {
       let country = this.getArmyGroupCountry(ag)
-      let side = getTblValue(country, countryToSide, SIDE_NONE)
+      let side = (countryToSide?[country] ?? SIDE_NONE)
       if (side == SIDE_NONE)
         continue
 
@@ -322,23 +321,16 @@ let WwOperation = class {
   setFinishedStatus = @(isFinish) this.isFinished = isFinish
 }
 
-enums.enumsAddTypes(wwStatusType, {
-  ACTIVE_OPERATIONS = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS
-    charDataId = "activeOperations"
+setStatusTypeLoadList("ACTIVE_OPERATIONS", function loadList() {
+  this.cachedList = []
+  let data = this.getData()
+  if (!u.isArray(data))
+    return
 
-    function loadList() {
-      this.cachedList = []
-      let data = this.getData()
-      if (!u.isArray(data))
-        return
-
-      foreach (opData in data) {
-        let operation = WwOperation(opData)
-        if (operation.isValid())
-          this.cachedList.append(operation)
-      }
-    }
+  foreach (opData in data) {
+    let operation = WwOperation(opData)
+    if (operation.isValid())
+      this.cachedList.append(operation)
   }
 })
 

@@ -52,6 +52,10 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
           }
         },
         "setStandbyModeCommon": {
@@ -92,6 +96,10 @@
           "designateActiveDetectedTarget": {
             "type": "target",
             "self": true
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": true
           }
         },
         "setTrackMode": {
@@ -102,6 +110,10 @@
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
           "updateActiveTargetOfInterest": {},
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
+          },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -457,8 +469,8 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "pos": 15000.0,
-            "width": 30000.0
+            "pos": 25000.0,
+            "width": 50000.0
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
@@ -2420,8 +2432,8 @@
         "setIrstLockTrack": {
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -90.0,
-              90.0
+              -60.0,
+              60.0
             ],
             "azmithWidth": 2.0,
             "elevationRange": [
@@ -3489,7 +3501,7 @@
           "event": "scanFinished",
           "actions": {
             "matchTargetsOfInterest": {
-              "limit": 20,
+              "limit": 10,
               "timeMin": 2.0,
               "posGateTimeInitial": [
                 2.0,
@@ -3667,9 +3679,9 @@
       "power": 50.0,
       "band": 1,
       "rcs": 24000.0,
-      "range": 22000.0,
+      "range": 25000.0,
       "range1": 5000.0,
-      "rangeMax": 30000.0,
+      "rangeMax": 50000.0,
       "visibilityType": "infraRed",
       "antenna": {
         "azimuth": {
@@ -3910,11 +3922,11 @@
         60.0
       ],
       "period": 1.1,
-      "width": 25.0,
-      "barHeight": 2.5,
+      "width": 33.0,
+      "barHeight": 3.5,
       "barsCount": 2,
       "rowMajor": false,
-      "centerElevation": 15.0,
+      "centerElevation": 23.0,
       "indicate": true
     },
     "radarHmdLock": {
@@ -3992,8 +4004,8 @@
     "irstSearchWide": {
       "type": "pyramide",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,
@@ -4006,14 +4018,13 @@
       "rowMajor": false,
       "isSmoothMajor": true,
       "barsOneWay": false,
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0
+      "rollStabLimit": 15.0
     },
     "irstSearchNarrow": {
       "type": "pyramide",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,
@@ -4026,33 +4037,31 @@
       "rowMajor": false,
       "isSmoothMajor": true,
       "barsOneWay": false,
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0
+      "rollStabLimit": 15.0
     },
     "irstBvrLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,
         60.0
       ],
-      "period": 0.12,
-      "width": 4.0,
+      "period": 1.0,
+      "width": 15.0,
       "barHeight": 4.0,
       "barsCount": 1,
       "rowMajor": false,
       "indicate": true,
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0
+      "rollStabLimit": 15.0
     },
     "irstVerticalLock": {
       "type": "pyramide",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,
@@ -4072,8 +4081,8 @@
         "pyramide"
       ],
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,
@@ -4091,8 +4100,8 @@
     "irstTrack": {
       "type": "no",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,
@@ -4102,8 +4111,8 @@
     "irstHmdTrack": {
       "type": "no",
       "azimuthLimits": [
-        -90.0,
-        90.0
+        -60.0,
+        60.0
       ],
       "elevationLimits": [
         -15.0,

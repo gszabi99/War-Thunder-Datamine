@@ -1,11 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%sqstd/platform.nut" import is_xbox
+from "%gdkLib/impl/stats.nut" import write_number
+from "%gdkLib/impl/presence.nut" import set_presence
+from "%gdkLib/impl/user.nut" import is_any_user_active
 from "%scripts/dagui_library.nut" import *
 
-let { is_xbox } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { write_number } = require("%gdkLib/impl/stats.nut")
-let { set_presence } = require("%gdkLib/impl/presence.nut")
-let { is_any_user_active } = require("%gdkLib/impl/user.nut")
 let { getStats } = require("%scripts/myStats.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 

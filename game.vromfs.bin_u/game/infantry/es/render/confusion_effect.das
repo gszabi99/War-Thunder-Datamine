@@ -1,7 +1,5 @@
 require ecs
-require app
 require DagorShaders
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.game_effect_macro

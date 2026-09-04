@@ -1,9 +1,8 @@
+from "dagor.time" import get_time_msec
+from "chard" import get_char_extended_error
+from "chardConst" import EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS
+from "string" import format
 from "%scripts/dagui_library.nut" import *
-
-let { get_time_msec } = require("dagor.time")
-let { get_char_extended_error } = require("chard")
-let { EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS } = require("chardConst")
-let { format } = require("string")
 
 local serverMessageText = ""
 local serverMessageEndTime = 0

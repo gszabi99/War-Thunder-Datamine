@@ -1,7 +1,7 @@
+from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let {

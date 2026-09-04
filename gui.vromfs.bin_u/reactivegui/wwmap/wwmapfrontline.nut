@@ -1,12 +1,12 @@
+from "%rGui/wwMap/wwMapZonesData.nut" import createZoneFrontLine, getZones
+from "%rGui/wwMap/wwMapStates.nut" import zonesSides
+from "%rGui/wwMap/wwOperationStates.nut" import isPlayerSide
+from "%rGui/wwMap/wwMapUtils.nut" import getMapColor
+from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds, gridWidth
+from "math" import pow, sqrt
 from "%rGui/globals/ui_library.nut" import *
 
-let { pow, sqrt } = require("math")
-let { createZoneFrontLine, getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { zonesSides } = require("%rGui/wwMap/wwMapStates.nut")
-let { isPlayerSide } = require("%rGui/wwMap/wwOperationStates.nut")
-let { getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { activeAreaBounds, gridWidth } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 
 let partsCache = {}
 
@@ -67,7 +67,7 @@ function findNearest(point, lines) {
 }
 
 function joinFrontLine(lines) {
-  let delta = 0.02
+  const delta = 0.02
   let res = []
   while (lines.len() > 0) {
     let line = lines.pop()
@@ -142,7 +142,7 @@ function mkFrontLine(lines, allies, lineWidth) {
     rendObj = ROBJ_VECTOR_CANVAS
     color = getMapColor(color)
     lineWidth
-    size = flex()
+    size = FLEX
     commands
   }
 }

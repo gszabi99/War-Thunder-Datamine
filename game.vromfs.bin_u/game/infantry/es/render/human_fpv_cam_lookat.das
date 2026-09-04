@@ -5,7 +5,6 @@ require DagorMath
 require math.base
 require AnimV20
 require GeomNodeTree
-require DagorSystem
 require %game.events
 require Dacoll
 require PhysMat

@@ -2,7 +2,7 @@
   "model": "a_7k",
   "fmFile": "fm/a_7k.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.36,
   "gearSinkRangeC": 0.36,
   "haveCCIPForRocket": true,
@@ -11,6 +11,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsAVQ7": true,
   "ilsHaveAVQ7CCIP": true,
   "ilsHaveAVQ7CCRP": true,
@@ -2972,8 +2973,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

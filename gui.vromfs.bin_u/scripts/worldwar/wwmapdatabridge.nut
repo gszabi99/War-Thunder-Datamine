@@ -1,10 +1,8 @@
+from "eventbus" import eventbus_send, eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { selectBattle, selectArmy, selectAirfield, selectRearZone,
-  hoverBattle, hoverArmy, doAction, moveArmy, sendAircraft,
-  showAirfieldTooltip } = require("%scripts/worldWar/wwMapEventsHandler.nut")
+let { selectBattle, selectArmy, selectAirfield, selectRearZone, hoverBattle, hoverArmy, doAction, moveArmy, sendAircraft, showAirfieldTooltip } = require("%scripts/worldWar/wwMapEventsHandler.nut")
 
 let dargMapVisible = mkWatched(persist, "dargMapVisible", true)
 

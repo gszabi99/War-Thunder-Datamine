@@ -1,13 +1,13 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit
-} = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { CMH_CHAPTER } = require("%scripts/unlocks/commandersHandbookState.nut")
 
 let markerUnlocks = persist("markerUnlocksCache", @() [])
 let manualUnlocks = persist("manualUnlocksCache", @() [])
@@ -24,7 +24,7 @@ function cache() {
         && !isUnlockExpired(unlockBlk))
       markerUnlocks.append(unlockBlk)
 
-    if (canOpenUnlockManually(unlockBlk))
+    if (canOpenUnlockManually(unlockBlk) && unlockBlk?.chapter != CMH_CHAPTER)
       manualUnlocks.append(unlockBlk)
 
     if (unlockBlk?.chapter == "tank_realistic_night_battles" && isUnlockVisible(unlockBlk))

@@ -1,8 +1,8 @@
+from "%rGui/ctrlsState.nut" import cursorVisible
 from "%rGui/globals/ui_library.nut" import *
 
 let colors = require("%rGui/style/colors.nut")
 let scrollbar = require("%rGui/components/scrollbar.nut")
-let { cursorVisible } = require("%rGui/ctrlsState.nut")
 
 let logContainer = @() {
   size = FLEX_H
@@ -19,7 +19,7 @@ let hudLog = function (params) {
   return @() {
     watch = cursorVisible
     rendObj = ROBJ_SOLID
-    size = const [flex(), hdpx(158)]
+    size = const [FLEX, hdpx(158)]
     clipChildren = true
     valign = ALIGN_BOTTOM
     color = colors.hud.hudLogBgColor
@@ -28,7 +28,7 @@ let hudLog = function (params) {
       barStyle = @(has_scroll) scrollbar.styling.Bar(has_scroll && cursorVisible.get())
       scrollAlign = ALIGN_LEFT
     })
-    onAttach = @(_) logComponent.scrollHandler.scrollToY(1e10)
+    onAttach = @() logComponent.scrollHandler.scrollToY(1e10)
   }
 }
 

@@ -1,29 +1,28 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "guiMission" import GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE, MISSION_TEAM_LEAD_ZONE
+from "dagor.time" import get_time_msec
+from "mission" import get_game_mode, get_game_type, get_mplayer_by_id
+from "hudState" import getHudUnitType
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "hudMessages" import *
+from "%globalScripts/expEventConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY, HUD_VIS_PART
 from "%scripts/viewUtils/hints.nut" import g_hints
 
 let { isValidKillLogMsg, getKillLogMsgText } = require("%scripts/hud/hudBattleLog.nut")
-let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
+let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
 let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { GO_NONE, GO_FAIL, GO_WIN, GO_EARLY, GO_WAITING_FOR_RESULT, MISSION_CAPTURED_ZONE,
-  MISSION_TEAM_LEAD_ZONE
-} = require("guiMission")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
-let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { get_game_mode, get_game_type, get_mplayer_by_id } = require("mission")
-let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_REWARDS_MSG,
-  USEROPT_SHOW_MESSAGE_MISSILE_EVADE
-} = require("%scripts/options/optionsExtNames.nut")
-let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_REWARDS_MSG, USEROPT_SHOW_MESSAGE_MISSILE_EVADE } = require("%scripts/options/optionsExtNames.nut")
+let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { getKillerCardView, isKillerCardData } = require("%scripts/hud/killerCardUtils.nut")
@@ -75,7 +74,7 @@ g_hud_messages.template <- {
   }
 
   findMessageById = function(id) {
-    return u.search(this.stack,  function(m) { return getTblValue("id", m.messageData, -1) == id })
+    return u.search(this.stack,  function(m) { return (m.messageData?.id ?? -1) == id })
   }
 
   subscribeHudEvents = function() {
@@ -130,7 +129,7 @@ enumsAddTypes(g_hud_messages, {
     }
 
     createMessage = function(messageData) {
-      if (!getTblValue("show", messageData, true))
+      if (!(messageData?.show ?? true))
         return
 
       this.cleanUp()
@@ -163,12 +162,12 @@ enumsAddTypes(g_hud_messages, {
         this.guiScene.setUpdatesEnabled(true, true)
       }
 
-      if (!getTblValue("alwaysShow", mainMessage.messageData, false))
+      if (!(mainMessage.messageData?.alwaysShow ?? false))
         this.setDestroyTimer(mainMessage)
     }
 
     updateMessage = function(message, messageData) {
-      if (!getTblValue("show", messageData, true)) {
+      if (!(messageData?.show ?? true)) {
         this.animatedRemoveMessage(message)
         return
       }
@@ -184,7 +183,7 @@ enumsAddTypes(g_hud_messages, {
       message.needShowAfterReinit <- false
       msgObj.findObject("text").setValue(messageData.text)
       msgObj.state = "old"
-      if (getTblValue("alwaysShow", message.messageData, false)) {
+      if ((message.messageData?.alwaysShow ?? false)) {
         if (message.timer)
           message.timer.destroy()
       }
@@ -728,14 +727,14 @@ enumsAddTypes(g_hud_messages, {
         statusObj.setValue("".join(text))
       }
 
-      let playerTime = getTblValue("time", getTblValue("player", eventData, {}), 0.0)
+      let playerTime = ((eventData?.player ?? {})?.time ?? 0.0)
 
       foreach (blockName in ["beforePlayer", "leader", "afterPlayer", "player"]) {
         let textBlockObj = this.nest.findObject(blockName)
         if (!checkObj(textBlockObj))
           continue
 
-        let data = getTblValue(blockName, eventData)
+        let data = eventData?[blockName]
         let showBlock = data != null
         textBlockObj.show(showBlock)
         if (showBlock) {
@@ -849,9 +848,9 @@ enumsAddTypes(g_hud_messages, {
           || isMissionExtr())
         return
 
-      let oldResultIdx = getTblValue("resultIdx", this.stack, GO_NONE)
+      let oldResultIdx = (this.stack?.resultIdx ?? GO_NONE)
 
-      let resultIdx = getTblValue("resultNum", eventData, GO_NONE)
+      let resultIdx = (eventData?.resultNum ?? GO_NONE)
       let checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false 
 
       
@@ -862,9 +861,9 @@ enumsAddTypes(g_hud_messages, {
       if (checkResending && (oldResultIdx == GO_WIN || oldResultIdx == GO_FAIL))
         return
 
-      let noLives = getTblValue("noLives", eventData, false)
-      let place = getTblValue("place", eventData, -1)
-      let total = getTblValue("total", eventData, -1)
+      let noLives = (eventData?.noLives ?? false)
+      let place = (eventData?.place ?? -1)
+      let total = (eventData?.total ?? -1)
 
       let resultLocId = this.getMissionResultLocId(resultIdx, checkResending, noLives)
       local text = loc(resultLocId)
@@ -895,7 +894,7 @@ enumsAddTypes(g_hud_messages, {
       if (noLives)
         return "MF_NoAttempts"
 
-      return misResultsMap?[resultNum] ?? getTblValue("result", this.stack, "")
+      return misResultsMap?[resultNum] ?? (this.stack?.result ?? "")
     }
 
     destroy = function() {

@@ -1,8 +1,8 @@
+from "%rGui/hints/shortcuts.nut" import getShortcut
+from "fonts" import getFontName
 from "%rGui/globals/ui_library.nut" import *
 
-let { getShortcut } = require("%rGui/hints/shortcuts.nut")
 let colors = require("%rGui/style/colors.nut")
-let { getFontName } = require("fonts")
 
 let hintTags = {
   shortcut = getShortcut

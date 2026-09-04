@@ -1,7 +1,7 @@
 import "console" as console
 import "%sqstd/ecs.nut" as ecs
 from "%darg/ui_imports.nut" import *
-let { mkFrameIncrementObservable } = require("%daeditor/ec_to_watched.nut")
+from "ecs.computed" import mkEcsComputedEidMap
 let { hideAllWindows } = require("%daeditor/components/window.nut")
 
 let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
@@ -13,7 +13,7 @@ let {getEditMode=@() null, isFreeCamMode=@() false, setWorkMode=@(_) null,
      getGizmoCenterType=@() null, setGizmoCenterType=@(_) null} = require_optional("daEditorEmbedded")
 let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_mode=@(_) null, get_instance=@() null} = require_optional("entity_editor")
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
-let { selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey } = mkFrameIncrementObservable({}, "selectedEntities")
+let selectedEntities = mkEcsComputedEidMap({ comps = ["eid"], comps_rq = ["daeditor__selected"] })
 let markedScenes = mkWatched(persist, "markedScenes", {})
 let allScenesWatcher = mkWatched(persist, "allScenes", null)
 let sceneIdMap = mkWatched(persist, "sceneIdMap", null)
@@ -39,14 +39,15 @@ de4workMode.subscribe(function(v) {
 })
 
 function initWorkModes(modes, defMode=null) {
-  de4workModes.set(modes ?? [""])
+  modes = modes ?? [""]
+  de4workModes.set(modes)
   let good_mode = modes.contains(defMode) ? defMode : modes?[0] ?? ""
   let last_mode = get_setting_by_blk_path?(SETTING_EDITOR_WORKMODE) ?? good_mode
   let mode_to_set = modes.contains(last_mode) ? last_mode : good_mode
   de4workMode.set(mode_to_set)
 }
 
-function canChangeGizmoBasisType() {
+function canChangeGizmoBasisType(): bool {
   local m = getEditMode()
   return m == DE4_MODE_MOVE || m == DE4_MODE_MOVE_SURF || m == DE4_MODE_ROTATE || m == DE4_MODE_SCALE
 }
@@ -201,8 +202,6 @@ return {
   editorFreeCam = Watched(isFreeCamMode?())
   selectedEntity
   selectedEntities
-  selectedEntitiesSetKeyVal
-  selectedEntitiesDeleteKey
   selectedTemplatesGroup
   scenePath = Watched(get_scene_filepath?())
   propPanelVisible

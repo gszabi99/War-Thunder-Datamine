@@ -1,15 +1,16 @@
-from "%scripts/dagui_natives.nut" import request_load_controls_backup, request_save_controls_backup, request_delete_controls_backup, request_list_controls_backup
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
+let { request_load_controls_backup = @(...) null, request_save_controls_backup= @(...) null, request_delete_controls_backup= @(...) null, request_list_controls_backup= @(...) null } = require("controls")
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { SaveDataDialog } = require("%scripts/fileDialog/saveDataDialog.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isPresetChanged } = require("%scripts/controls/controlsState.nut")
 
-gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
+let ControlsBackupManager = class (SaveDataDialog) {
   function initScreen() {
     if (!this.isAvailable())
       return
@@ -79,11 +80,14 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
 
 
   static function isAvailable() {
-    return (isPlatformSony || isPlatformXbox) && "request_list_controls_backup" in getroottable()
+    return (isPlatformSony || isPlatformXbox) && request_list_controls_backup != null
   }
 
 
   static function open() {
-    loadHandler(gui_handlers.ControlsBackupManager)
+    loadHandler(get_gui_handler("ControlsBackupManager"))
   }
 }
+register_gui_handler("ControlsBackupManager", ControlsBackupManager)
+
+return { ControlsBackupManager }

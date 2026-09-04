@@ -614,6 +614,10 @@
           },
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
           }
         },
         "setStandbyModeCommon": {
@@ -654,6 +658,10 @@
           "designateActiveDetectedTarget": {
             "type": "target",
             "self": true
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": true
           }
         },
         "setTrackMode": {
@@ -664,6 +672,10 @@
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
           "updateActiveTargetOfInterest": {},
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
+          },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -3144,17 +3156,14 @@
             "clearTargetsOfInterest": {
               "timeOut": 12.0
             },
-            "setCueToActiveTargetOfInterest": {
-              "elevation": false
-            },
+            "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
                 "source": "constant",
                 "value": 0.0
               },
               {
-                "source": "designationCue",
-                "value": 0.5
+                "source": "designationCue"
               }
             ],
             "setCenterElevation": [
@@ -3210,9 +3219,7 @@
               ]
             },
             "updateActiveDetectedTarget": {},
-            "setCueToActiveTargetOfInterest": {
-              "elevation": false
-            }
+            "setCueToActiveTargetOfInterest": {}
           }
         },
         "switchSelectedTarget": {

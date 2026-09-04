@@ -1,9 +1,11 @@
+from "dagor.time" import get_time_msec
+from "worldwar" import wwGetOperationId
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { get_time_msec } = require("dagor.time")
-let { wwGetOperationId } = require("worldwar")
-let { getBrokenAirsInfo, checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
+let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
+let { getBrokenAirsInfo } = require("%scripts/unit/brokenAirsInfo.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { joinQueue, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")

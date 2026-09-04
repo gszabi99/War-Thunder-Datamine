@@ -87,6 +87,19 @@ def disable_radar_on_start_es(evt : Event;
   gm.useSearchRadar = false
 
 [es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
+def set_search_radar_duty_cycle_es(evt : Event;
+                                   var unit__ref : UnitRef&;
+                                   search_radar_duty__emissionTime : float;
+                                   search_radar_duty__emissionTimeVar : float;
+                                   search_radar_duty__silenceTime : float;
+                                   search_radar_duty__silenceTimeVar : float)
+  var gm = unit__ref.unit |> as_gm()
+  (*gm) |> set_search_radar_duty_cycle(true, search_radar_duty__emissionTime,
+                                       search_radar_duty__emissionTimeVar,
+                                       search_radar_duty__silenceTime,
+                                       search_radar_duty__silenceTimeVar)
+
+[es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
 def set_rearm_on_field_time_es(evt : Event;
                                var unit__ref : UnitRef&;
                                unit_params__rearmTimeOnField : float)

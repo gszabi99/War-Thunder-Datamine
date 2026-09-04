@@ -1,25 +1,24 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+import "DataBlock" as DataBlock
+from "controls" import hasXInputDevice
+from "math" import abs, round
+from "controllerState" import is_keyboard_connected, is_mouse_connected
+from "hudActionBarConst" import EII_EXTINGUISHER, EII_TOOLKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET, EII_REPAIR_BREACHES, EII_SUPPORT_PLANE_ORBITING
+  , EII_NIGHT_VISION, EII_SIGHT_STABILIZATION
+from "mission" import get_game_mode, get_game_type_by_mode
+from "gameplayBinding" import isInFlight
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import CONTROL_HELP_PATTERN, HELP_CONTENT_SET
 from "app" import is_dev_version
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { hasXInputDevice } = require("controls")
-let { abs, round } = require("math")
-let DataBlock  = require("DataBlock")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { is_keyboard_connected, is_mouse_connected } = require("controllerState")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { EII_EXTINGUISHER, EII_TOOLKIT, EII_TORPEDO, EII_DEPTH_CHARGE, EII_ROCKET,
-  EII_REPAIR_BREACHES, EII_SUPPORT_PLANE_ORBITING, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION
-} = require("hudActionBarConst")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { get_game_mode, get_game_type_by_mode } = require("mission")
-let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")
-let { isInFlight } = require("gameplayBinding")
 let generateSubmarineActionBars = require("%scripts/controls/help/generateControlsHelpSubmarineActionBarItems.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { getTankRankForHelp } = require("%scripts/controls/help/controlsHelpUnitRankGetters.nut")

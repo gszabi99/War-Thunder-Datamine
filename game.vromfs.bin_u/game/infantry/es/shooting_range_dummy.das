@@ -1,8 +1,5 @@
 require ecs
 require %appGame.wt_events
-require DagorSystem
-require GeomNodeTree
-require AnimV20
 require PhysVars
 require app
 require %game.dm.dm_events

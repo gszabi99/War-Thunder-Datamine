@@ -1,7 +1,7 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
-let { mkFrameIncrementObservable } = require("%rGui/globals/ec_to_watched.nut")
-let { controlledHeroEid } = require("%appGlobals/controlledHeroEid.nut")
+from "%rGui/globals/ec_to_watched.nut" import mkFrameIncrementObservable
+from "%appGlobals/controlledHeroEid.nut" import controlledHeroEid
+from "%rGui/globals/ui_library.nut" import *
 
 let humanCurGunSlotIdx = Watched(-1)
 
@@ -104,9 +104,6 @@ ecs.register_es("hero_ui_weapons_es",
   {
     [["onInit", ecs.EventComponentChanged]] = function(_, eid, comp){
       let idx = comp["slot_attach__weaponSlotIdx"]
-      if (idx != WEAPON_SLOTS.EWS_SPECIAL && comp["multiple_guns_slot_gun_hidden"] != null)
-        return
-
       if (idx < 0 || idx >= WEAPON_SLOTS.EWS_NUM)
         return
 
@@ -212,7 +209,6 @@ ecs.register_es("hero_ui_weapons_es",
     comps_ro = [
       ["weaponMod", ecs.TYPE_TAG, null],
       ["slot_attach__weaponSlotIdx", ecs.TYPE_INT, null],
-      ["multiple_guns_slot_gun_hidden", ecs.TYPE_TAG, null],
       ["drone_launcher", ecs.TYPE_TAG, null],
       ["gunAttachable__gunSlotName", ecs.TYPE_STRING, ""],
       ["gunmod__variableScope", ecs.TYPE_BOOL, false],
@@ -276,16 +272,19 @@ let heroModsByWeaponSlot = Computed(function(){
     local modWeapon = null
     local activeModWeapon = null
     foreach (mod in (modsByEids ?? [])){
-      let { animchar = null, weaponMod = false, isModActive = null,
-        attachedItemModSlotName = null, isWeapon = false } = mod
-      if (attachedItemModSlotName==null)
+      if (mod?.attachedItemModSlotName == null)
         continue
-      mods[attachedItemModSlotName] <- mod
+
+      let { animchar = null, weaponMod = false, isModActive = null,
+        isWeapon = false } = mod
+
+      mods[mod.attachedItemModSlotName] <- mod
       if (weaponMod) {
         iconAttachments.append({
           animchar
-          slot = attachedItemModSlotName
+          slot = mod.attachedItemModSlotName
           active = isModActive ?? true
+          fadeMainIcon = isWeapon
         })
         if (isWeapon) {
           modWeapon = mods[mod.attachedItemModSlotName]

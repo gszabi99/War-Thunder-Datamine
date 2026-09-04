@@ -181,7 +181,9 @@ def public is_utf8_string_valid(utf8_string : string const) : bool {
     var codepoint = 0u
     var state = 0u
     for (ch in utf8_string) {
-        let byte = uint(ch)
+        
+        
+        let byte = uint(uint8(ch))
         let type_ = s_utf8d[byte]
         codepoint = (state != UTF8_ACCEPT) ? (byte & 0x3F) | (codepoint << 6u) : (0xFF >> type_) & byte
         state = s_utf8d[256u + state + type_]
@@ -262,23 +264,17 @@ let _UTF32_NON_WORD_RANGES <- fixed_array(
 def public utf32_is_word_char(cp : uint) : bool {
     
     
-    if (cp < 0x80u) {
-        return ((cp >= 0x30u && cp <= 0x39u) ||
+    if (cp < 0x80u) return ((cp >= 0x30u && cp <= 0x39u) ||
                 (cp >= 0x41u && cp <= 0x5Au) ||
                 (cp >= 0x61u && cp <= 0x7Au) ||
                 cp == 0x5Fu)
-    }
     let n = length(_UTF32_NON_WORD_RANGES)
     var i = 0
     while (i < n) {
         let lo = _UTF32_NON_WORD_RANGES[i]
         let hi = _UTF32_NON_WORD_RANGES[i + 1]
-        if (cp < lo) {
-            return true
-        }
-        if (cp <= hi) {
-            return false
-        }
+        if (cp < lo) return true
+        if (cp <= hi) return false
         i += 2
     }
     return true
@@ -299,47 +295,23 @@ let _UTF32_LATIN1_LOWER <- fixed_array(
 def public utf32_to_lower(cp : uint) : uint {
     
     
-    if (cp >= 0x41u && cp <= 0x5Au) {
-        return cp + 0x20u
-    }
-    if (cp < 0xC0u) {
-        return cp
-    }
-    if (cp <= 0xFFu) {
-        return _UTF32_LATIN1_LOWER[cp - 0xC0u]
-    }
+    if (cp >= 0x41u && cp <= 0x5Au) return cp + 0x20u
+    if (cp < 0xC0u) return cp
+    if (cp <= 0xFFu) return _UTF32_LATIN1_LOWER[cp - 0xC0u]
     
     
-    if (cp >= 0x100u && cp <= 0x137u) {
-        return ((cp & 1u) == 0u) ? cp + 1u : cp
-    }
-    if (cp >= 0x139u && cp <= 0x148u) {
-        return ((cp & 1u) == 1u) ? cp + 1u : cp
-    }
-    if (cp >= 0x14Au && cp <= 0x177u) {
-        return ((cp & 1u) == 0u) ? cp + 1u : cp
-    }
-    if (cp == 0x178u) {
-        return 0xFFu  
-    }
-    if (cp >= 0x179u && cp <= 0x17Eu) {
-        return ((cp & 1u) == 1u) ? cp + 1u : cp
-    }
+    if (cp >= 0x100u && cp <= 0x137u) return ((cp & 1u) == 0u) ? cp + 1u : cp
+    if (cp >= 0x139u && cp <= 0x148u) return ((cp & 1u) == 1u) ? cp + 1u : cp
+    if (cp >= 0x14Au && cp <= 0x177u) return ((cp & 1u) == 0u) ? cp + 1u : cp
+    if (cp == 0x178u) return 0xFFu  
+    if (cp >= 0x179u && cp <= 0x17Eu) return ((cp & 1u) == 1u) ? cp + 1u : cp
     
-    if (cp >= 0x391u && cp <= 0x3A1u) {
-        return cp + 0x20u
-    }
-    if (cp >= 0x3A3u && cp <= 0x3ABu) {
-        return cp + 0x20u
-    }
     
-    if (cp >= 0x410u && cp <= 0x42Fu) {
-        return cp + 0x20u
-    }
+    if ((cp >= 0x391u && cp <= 0x3A1u)
+            || (cp >= 0x3A3u && cp <= 0x3ABu)
+            || (cp >= 0x410u && cp <= 0x42Fu)) return cp + 0x20u
     
-    if (cp >= 0x400u && cp <= 0x40Fu) {
-        return cp + 0x50u
-    }
+    if (cp >= 0x400u && cp <= 0x40Fu) return cp + 0x50u
     return cp
 }
 
@@ -355,9 +327,7 @@ def public each_word(text : string; var out : array<string>) {
         while (i < n && !utf32_is_word_char(codepoints[i])) {
             i++
         }
-        if (i >= n) {
-            break
-        }
+        if (i >= n) break
         token_buf |> resize(0)
         while (i < n && utf32_is_word_char(codepoints[i])) {
             token_buf |> utf8_encode(utf32_to_lower(codepoints[i]))
@@ -404,7 +374,7 @@ def decode_unicode_escape(str : string) {
                     }
                 }
                 writer |> write_char(int(p[i]))
-                i += 1
+                i++
             }
         }
     }

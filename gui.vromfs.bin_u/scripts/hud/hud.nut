@@ -1,41 +1,49 @@
-from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, subscribe_handler
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "blkGetters" import get_current_mission_info_cached
+from "controls" import isXInputDevice
+from "dagor.time" import get_time_msec
+from "string" import format
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "hudState" import isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible
+from "hudActionBar" import getActionBarItems, getActionBarUnitName
+from "replays" import is_replay_playing
+from "mission" import is_benchmark_game_mode, get_game_mode
+from "hudMessages" import register_hud_callbacks
+from "guiMission" import get_current_mission_desc
+from "debug.config" import was_screenshot_applied_to_config
+from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, is_unlocked
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 from "%scripts/utils_sa.nut" import is_multiplayer
+from "%scripts/unlocks/unlocksModule.nut" import reqUnlockByClient
+from "%scripts/missions/fleetTrainingMission.nut" import fleetTrainingMissionMap
 
-let { get_current_mission_info_cached } = require("blkGetters")
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
+let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
 let { g_hud_message_stack } = require("%scripts/hud/hudMessageStack.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { serverMessageUpdateScene } = require("%scripts/hud/serverMessages.nut")
-let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert,
-  getMpKickCountdown } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
-let { get_time_msec } = require("dagor.time")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert, getMpKickCountdown } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { Spectator } = require("%scripts/replays/spectator.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
-let { is_replay_playing } = require("replays")
 let { hitCameraInit, hitCameraReinit, getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
 let { hudTypeByHudUnitType, HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG,
-  USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_DAMAGE_INDICATOR_SIZE, USEROPT_TACTICAL_MAP_SIZE, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_CHAT_PLACE, USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { maybeOfferControlsHelp } = require("%scripts/hud/maybeOfferControlsHelp.nut")
 let { HudAir } = require("%scripts/hud/hudAir.nut")
 let { HudTank } = require("%scripts/hud/hudTank.nut")
@@ -43,29 +51,29 @@ let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
 let { HudInfantry } = require("%scripts/hud/hudInfantry.nut")
 let { HudInfantryDrone } = require("%scripts/hud/hudInfantryDrone.nut")
+
+
+
+
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { HudFreeCam } = require("%scripts/hud/hudFreeCam.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
+let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
+let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad } = require("%scripts/user/matchingFeature.nut")
 let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
 let { isInKillerCamera, updateHudStatesSubscribes } = require("%scripts/hud/hudState.nut")
-let { clearStreaks, onUpdateStreaks } =  require("%scripts/streaks.nut")
+let { clearStreaks, onUpdateStreaks } = require("%scripts/streaks.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getUnmappedControlsForCurrentMission } = require("%scripts/controls/controlsUtils.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { register_hud_callbacks } = require("hudMessages")
 let { hudHintsManagerInit, hudHintsManagerReinit, isHintWillBeShown } = require("%scripts/hud/hudHintsManager.nut")
 let { initOptions } = require("%scripts/options/initOptions.nut")
-let DataBlock = require("DataBlock")
-let { get_current_mission_desc } = require("guiMission")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
-let { was_screenshot_applied_to_config } = require("debug.config")
 require("%scripts/hud/scoreboardTooltipBridge.nut")
 
 dagui_propid_add_name_id("fontSize")
-
-let UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
+const UNMAPPED_CONTROLS_WARNING_TIME_WINK = 3.0
 let getUnmappedControlsWarningTime = @() get_game_mode() == GM_TRAINING ? 180000.0 : 30.0
 
 let getMissionProgressHeight = @() isProgressVisible() ? to_pixels("@missionProgressHeight") : 0
@@ -79,8 +87,16 @@ let unitTypesWithMfmHint = {
   [HUD_UNIT_TYPE.HUMAN_DRONE_HELI] = true
 }
 
+
+
+let pushMpChatHint = @() updateExtWatched({ mpChatHint = g_mp_chat_mode.getChatHint() })
+let mpChatHintListener = { onEventSquadStatusChanged = @(_p) pushMpChatHint() }
+subscribe_handler(mpChatHintListener)
+foreach (w in [hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad])
+  w.subscribe(@(_) pushMpChatHint())
+
 function getCurActionBar() {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(get_gui_handler("Hud"))
   return handler?.currentHud.actionBarWeak
 }
 
@@ -96,7 +112,7 @@ eventbus_subscribe("getHudHitCameraState", function(_) {
 
 eventbus_subscribe("preload_ingame_scenes", function preload_ingame_scenes(...) {
   handlersManager.clearScene()
-  handlersManager.loadHandler(gui_handlers.Hud)
+  handlersManager.loadHandler(get_gui_handler("Hud"))
   initMpChatStates()
 })
 
@@ -105,7 +121,7 @@ eventbus_subscribe("on_multifunc_menu_request", function hideMfmHintOnMenuOpen(_
     g_hud_event_manager.onHudEvent("hint:suggest_mfm:hide")
 })
 
-gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
+let Hud = class (BaseGuiHandlerWT) {
   sceneBlkName         = "%gui/hud/hud.blk"
   keepLoaded           = true
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -157,7 +173,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.isXinput = isXInputDevice()
     this.spectatorMode = isPlayerDedicatedSpectator() || is_replay_playing()
-    eventbus_send("updateIsSpectatorMode", this.spectatorMode)
+    updateExtWatched({ isSpectatorMode = this.spectatorMode })
+    pushMpChatHint()
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.switchHud(this.getHudType())
@@ -175,8 +192,28 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     hudHintsManagerInit(this.scene)
     g_hud_tutorial_elements.init(this.scene)
 
+    let misBlk = DataBlock()
+    get_current_mission_desc(misBlk)
+    this.missionBlk = misBlk
+
     this.updateControlsAllowMask()
     this.setTacticalMapBg()
+    this.reqFirstBattleUnlock(gm)
+  }
+
+  function reqFirstBattleUnlock(gameMode) {
+    if (is_unlocked(UNLOCKABLE_ACHIEVEMENT, "first_battle_offline"))
+      return
+    
+    
+    if (gameMode != GM_DOMINATION) {
+      let missionName = this.missionBlk?.name
+      let isFleetTrainingMission = fleetTrainingMissionMap.values()
+        .findindex(@(names) names.contains(missionName)) != null
+      if (!isFleetTrainingMission)
+        return
+    }
+    reqUnlockByClient("first_battle_offline")
   }
 
   function initDargWidgetsList() {
@@ -281,7 +318,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (newHudType == HUD_TYPE.CUTSCENE)
       this.currentHud = handlersManager.loadHandler(HudCutscene, { scene = hudObj })
     else if (newHudType == HUD_TYPE.SPECTATOR)
-      this.currentHud = handlersManager.loadHandler(gui_handlers.Spectator, { scene = hudObj })
+      this.currentHud = handlersManager.loadHandler(Spectator, { scene = hudObj })
     else if (newHudType == HUD_TYPE.AIR)
       this.currentHud = handlersManager.loadHandler(HudAir, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HUMAN_DRONE || newHudType == HUD_TYPE.HUMAN_DRONE_HELI)
@@ -292,6 +329,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       this.currentHud = handlersManager.loadHandler(HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
+
+
+
+
     else if (newHudType == HUD_TYPE.HUMAN)
       this.currentHud = handlersManager.loadHandler(HudInfantry, { scene = hudObj })
     else if (newHudType == HUD_TYPE.FREECAM && !was_screenshot_applied_to_config())
@@ -304,7 +345,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hudType = newHudType
 
     this.onHudSwitched()
-    broadcastEvent("HudTypeSwitched")
+    broadcastEvent("HudTypeSwitched", newHudType)
     maybeOfferControlsHelp()
     return true
   }
@@ -360,6 +401,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     
     if (getActionBarUnitName() == "dummy_plane")
       return HUD_TYPE.NONE
+
+
+
+
     return hudTypeByHudUnitType?[getHudUnitType()] ?? HUD_TYPE.NONE
   }
 
@@ -400,11 +445,6 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!tacticalMapBgObj?.isValid() || tacticalMapBgObj?.bgcolor.len())
       return
 
-    if (!this.missionBlk) {
-      let misBlk = DataBlock()
-      get_current_mission_desc(misBlk)
-      this.missionBlk = misBlk
-    }
     let { customMapBackColor } = getLevelMapBackgroundColors(this.missionBlk?.level ?? "")
     tacticalMapBgObj.bgcolor = customMapBackColor
   }
@@ -489,7 +529,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventHudIndicatorChangedSize(params) {
-    let option = getTblValue("option", params, -1)
+    let option = (params?.option ?? -1)
     if (option < 0)
       return
 
@@ -502,8 +542,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     let vMax   = (option?.max ?? 0) != 0 ? option.max : 2
     let size = 1.0 + 0.333 * value / vMax
 
-    let table = getTblValue(optionNum, this.objectsTable, {})
-    foreach (id, cssConst in getTblValue("objectsToScale", table, {})) {
+    let table = (this.objectsTable?[optionNum] ?? {})
+    foreach (id, cssConst in (table?.objectsToScale ?? {})) {
       let obj = this.scene.findObject(id)
       if (!checkObj(obj))
         continue
@@ -526,7 +566,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         })
       }
 
-      let func = getTblValue("onChangedFunc", table)
+      let func = table?.onChangedFunc
       if (func)
         func.call(this, obj)
     }
@@ -613,9 +653,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     eventbus_send("updateMissionProgressHeight", getMissionProgressHeight())
   }
 }
+register_gui_handler("Hud", Hud)
 
 function updateHudVisModeForce() {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(Hud)
   if (handler == null)
     return
   handler.doWhenActiveOnce("updateHudVisModeForce")
@@ -625,8 +666,10 @@ isInKillerCamera.subscribe(@(_) updateHudVisModeForce())
 isAAComplexMenuActive.subscribe(@(_) updateHudVisModeForce())
 
 eventbus_subscribe("hudProgress:visibilityChanged", function(_) {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(Hud)
   if (handler == null)
     return
   handler.doWhenActiveOnce("updateMissionProgressPlace")
 })
+
+return { Hud }

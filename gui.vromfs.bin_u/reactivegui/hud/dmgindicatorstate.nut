@@ -1,12 +1,11 @@
+from "%rGui/options/options.nut" import damageIndicatorScale
+from "%rGui/hud/actionBarState.nut" import actionBarSize, isActionBarVisible
+from "%rGui/style/screenState.nut" import safeAreaSizeHud
+from "%rGui/hudState.nut" import isSpectatorMode, unitType, needShowDmgIndicator
+from "%sqstd/underscore.nut" import isEqual
+from "math" import round
+from "eventbus" import eventbus_send
 from "%rGui/globals/ui_library.nut" import *
-
-let { isEqual } = require("%sqstd/underscore.nut")
-let { round } = require("math")
-let { damageIndicatorScale } = require("%rGui/options/options.nut")
-let { actionBarSize, isActionBarVisible } = require("%rGui/hud/actionBarState.nut")
-let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let { isSpectatorMode, unitType, needShowDmgIndicator } = require("%rGui/hudState.nut")
-let { eventbus_send } = require("eventbus")
 
 let maxDmgIndicatorWidth = Computed(@() round((safeAreaSizeHud.get().size[0] - (isActionBarVisible.get() ? (actionBarSize.get()?[0] ?? 0) : 0)) / 2 - shHud(0.3)))
 

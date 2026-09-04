@@ -2,11 +2,9 @@ require ecs
 require app
 require net
 require math.base
-require math.easing
 require Unit
 require Plane
 require FlightModelWrap
-require DagorMath
 require Sound
 require Mission
 
@@ -16,7 +14,6 @@ require %game.dm.dm_events
 require %game.player_events
 require %game.unit.unit_events
 require %game.unit.aircraft_events
-require %appGame.infantry.es.loc_squad_common
 require %appGame.infantry.es.hitpoints_common
 require %appGame.infantry.es.drone_common
 
@@ -37,13 +34,6 @@ def drone_type_bombing_init(evt : Event;
 def drone_type_kamikaze_init(evt : Event;
                              var drone__type : int&)
   drone__type = int(DroneType.Kamikaze)
-
-
-[es(track=drone__soundEnabled, on_appear)]
-def drone_enable_sound(evt : Event;
-                       drone__soundEnabled : bool;
-                       var sound_control__allowSound : bool&)
-  sound_control__allowSound = drone__soundEnabled
 
 
 [es(tag=server, REQUIRE=isDrone)]
@@ -76,9 +66,8 @@ def drone_ew_control_loss_server_es(info : UpdateStageInfoAct;
 [es(tag=sound, before=sound_update_system_es, REQUIRE=(isDrone, controlledHero))]
 def drone_update_custom_listener(info : ParallelUpdateFrameDelayed;
                                  drone__owner : EntityId)
-  query(drone__owner) <| $ [es, unused_argument(transform)] (transform aka owner_transform : float3x4)
-    static_if typeinfo(builtin_function_exists @@ < (arg0 : float3x4&) : void > _::set_custom_listener_tm)
-      set_custom_listener_tm(owner_transform)
+  query(drone__owner) <| $ [es] (transform aka owner_transform : float3x4)
+    set_custom_listener_tm(owner_transform)
 
 
 [es(tag=render, no_order)]
@@ -182,7 +171,9 @@ def switch_ai_drone_owner_beh_node_on_changed_weapon(evt : Event;
                                                      var beh_tree__wantRoleDroner : bool&)
   if beh_tree__wantRoleDroner
     if !has(human_weap__currentGunEid, "tactical_phone")
-      beh_tree__wantRoleDroner = false
+      let controlledDrone = get_Eid(eid, "human__controlledDrone") ?? INVALID_ENTITY_ID
+      if !controlledDrone
+        beh_tree__wantRoleDroner = false
   elif get_controlled_drone_from_owner(eid) != INVALID_ENTITY_ID
     beh_tree__wantRoleDroner = true
 

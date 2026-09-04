@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
 let g_ww_log_type = {
   types = []

@@ -1,15 +1,16 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 from "%scripts/dagui_natives.nut" import char_send_custom_action
 from "%scripts/items/itemsConsts.nut" import itemType
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
+
 let { addTask, TASK_CB_TYPE } = require("%scripts/tasker.nut")
 let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { checkInventoryUpdate } = require("%scripts/items/itemsManagerChecks.nut")
 let { getItemsFromList, getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
-let { inventory, getShouldCheckAutoConsume, setShouldCheckAutoConsume
-} = require("%scripts/items/itemsManagerState.nut")
+let { inventory, getShouldCheckAutoConsume, setShouldCheckAutoConsume } = require("%scripts/items/itemsManagerState.nut")
 
 
 const MAX_ITEMS_TO_MULTICONSUME_PER_REQUEST = 300

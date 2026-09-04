@@ -1,12 +1,12 @@
+from "%appGlobals/timeLoc.nut" import buildTimeStr
+from "hangarEventCommand" import set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event, point_camera_to_event, play_background_nuclear_explosion
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import start_dynamic_lut_texture
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { secondsToTime, millisecondsToSecondsInt } = require("%scripts/time.nut")
-let { buildTimeStr } = require("%appGlobals/timeLoc.nut")
-let { set_siren_state, set_nuclear_explosion_sound_active, set_seen_nuclear_event,
-point_camera_to_event, play_background_nuclear_explosion } = require("hangarEventCommand")
-let { get_time_msec } = require("dagor.time")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
@@ -20,7 +20,7 @@ const TIME_TO_POINT_CAMERA_TO_EVENT = 1000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT = 5000
 const TIME_TO_BACKGROUND_NUCLEAR_EVENT_END = 10000
 
-local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
+local class airRaidWndScene (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/wndLib/airRaidTimerScene.blk"
 
   countdownStartedTime = 0
@@ -105,6 +105,6 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
     addDelayedAction(Callback(@() this.goForward(gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
   }
 }
-gui_handlers.airRaidWndScene <- airRaidWndScene
+register_gui_handler("airRaidWndScene", airRaidWndScene)
 
 return @(params) handlersManager.loadHandler(airRaidWndScene, params)

@@ -1,35 +1,33 @@
+from "%rGui/options/measureUnits.nut" import DISTANCE, SPEED
+from "%sqStdLibs/helpers/u.nut" import shuffle
+from "%rGui/radarComponent.nut" import maxLabelHeight, maxMeasuresCompWidth
+from "%rGui/options/optionsMeasureUnits.nut" import isInitializedMeasureUnits, measureUnitsNames
+from "%rGui/fcsState.nut" import IsTargetDataAvailable, aimAngle, TargetAzimuthAngle, HeroAzimuthAngle, HeadingAngle, TargetSpeed, IsTargetSelected, IsTargetDead
+from "%rGui/fcsStateQueue.nut" import fcsShotState, showNewStateFromQueue, clearCurrentShotState
+from "%rGui/shipState.nut" import sightAngle
+from "%sqstd/math.nut" import PI, floor, cos, sin, fabs
+from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
 
-let { DISTANCE, SPEED } = require("%rGui/options/measureUnits.nut")
-let { PI, floor, cos, sin, fabs } = require("%sqstd/math.nut")
-let { cvt } = require("dagor.math")
-let { shuffle } = require("%sqStdLibs/helpers/u.nut")
-let { maxLabelHeight, maxMeasuresCompWidth } = require("%rGui/radarComponent.nut")
-let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
-let { IsTargetDataAvailable, aimAngle, TargetAzimuthAngle, HeroAzimuthAngle, HeadingAngle, TargetSpeed,
-  IsTargetSelected, IsTargetDead } = require("%rGui/fcsState.nut")
-let { fcsShotState, showNewStateFromQueue, clearCurrentShotState } = require("%rGui/fcsStateQueue.nut")
-let { sightAngle } = require("%rGui/shipState.nut")
+const backgroundColor = Color(0, 0, 0, 60)
+const transparentColor = Color(0, 0, 0, 0)
+const greenColor = Color(10, 120, 10, 100)
+const greenColorShip = Color(10, 250, 10, 165)
+const blackColor = Color(0, 0, 0, 130)
+const whiteColor = Color(255, 255, 255, 10)
+const redColor = Color(255, 0, 0, 180)
 
-let backgroundColor = Color(0, 0, 0, 60)
-let transparentColor = Color(0, 0, 0, 0)
-let greenColor = Color(10, 120, 10, 100)
-let greenColorShip = Color(10, 250, 10, 165)
-let blackColor = Color(0, 0, 0, 130)
-let whiteColor = Color(255, 255, 255, 10)
-let redColor = Color(255, 0, 0, 180)
-
-let fontSize = hdpxi(10)
+const fontSize = hdpxi(10)
 
 let bulletsOverPositions = [[0.3, 0.18], [0.5, 0.133], [0.7, 0.18]]
 let bulletsShortPositions = [[0.3, 0.82], [0.5, 0.866], [0.7, 0.82]]
 let bulletsHitPositions = [[0.3, 0.5], [0.5, 0.5], [0.7, 0.5]]
 let imageSuffixes = ["", "over", "short", "stradle", "hit"]
-let transitionDuration = 1.2
-let showDurationOnDeath = 6.5
+const transitionDuration = 1.2
+const showDurationOnDeath = 6.5
 
 let deathEasing = function(x) {
-  let wait = showDurationOnDeath / (showDurationOnDeath + transitionDuration)
+  const wait = showDurationOnDeath / (showDurationOnDeath + transitionDuration)
   return x < wait ? 0 : sin(PI * 0.5 * cvt(x, wait, 1, 0, 1))
 }
 
@@ -231,7 +229,7 @@ function mkShotResultBulletsComponent(size) {
   let center = [0.5 * size[0], 0.286 * size[1]]
   let pos = [center[0] - compSize[0] / 2, center[1] - compSize[1] / 2]
   return @(){
-    watch = isShotResultVisible
+    watch = [isShotResultVisible, fcsShotState]
     size = compSize
     pos
     children = isShotResultVisible.get() ? mkShotResultBullets(compSize, fcsShotState.get().shotState) : null
@@ -273,7 +271,7 @@ function mkShotResultText(fcsShotStateValue) {
 
 let shotResultFrame = {
   rendObj = ROBJ_FRAME
-  size = flex()
+  size = FLEX
   color = greenColor
   borderWidth = hdpx(1)
 }
@@ -281,7 +279,7 @@ let shotResultFrame = {
 function mkShotResultBack(fillColor) {
   return {
     rendObj = ROBJ_SOLID
-    size = flex()
+    size = FLEX
     color = fillColor
     opacity = 0
     key = {}
@@ -364,7 +362,7 @@ function mkHeroShipPlace(size) {
     fillColor = transparentColor
     halign = ALIGN_CENTER
     commands
-    children = mkNorthLable({pos = [0, hdpx(7)], font = Fonts.very_tiny_text_hud})
+    children = mkNorthLable({pos = const [0, hdpx(7)], font = Fonts.very_tiny_text_hud})
   }
 }
 
@@ -412,7 +410,7 @@ function mkTargetShipPlace(size) {
     fillColor = transparentColor
     halign = ALIGN_CENTER
     commands
-    children = mkNorthLable({pos = [0, hdpx(4)], font = Fonts.very_tiny_text_hud})
+    children = mkNorthLable({pos = const [0, hdpx(4)], font = Fonts.very_tiny_text_hud})
   }
 }
 
@@ -445,7 +443,7 @@ function mkBackground(size) {
 let headingAngleLabel = {
   rendObj = ROBJ_TEXT
   color = greenColor
-  pos = [pw(4), ph(48)]
+  pos = const [pw(4), ph(48)]
   font = Fonts.very_tiny_text_hud
   fontSize
   text = loc("fcs/heading_angle")
@@ -456,7 +454,7 @@ function mkHeadingAngleValue() {
     watch = HeadingAngle
     rendObj = ROBJ_TEXT
     color = greenColor
-    pos = [pw(4), ph(40)]
+    pos = const [pw(4), ph(40)]
     font = Fonts.very_tiny_text_hud
     text = "".concat($"{floor(HeadingAngle.get())}", loc("measureUnits/deg"))
   }
@@ -468,7 +466,7 @@ let mkTargetSpeedLabel = @() {
   font = Fonts.very_tiny_text_hud
   halign = ALIGN_RIGHT
   size = const [pw(96), ph(100)]
-  pos = [0, ph(48)]
+  pos = const [0, ph(48)]
   text = loc("fcs/target_speed")
   fontSize
 }
@@ -478,7 +476,7 @@ let targetSpeedValueComp = {
   valign = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
   size = const [pw(96), SIZE_TO_CONTENT]
-  pos = [0, ph(40)]
+  pos = const [0, ph(40)]
   children = [
     @(){
       watch = TargetSpeed
@@ -500,7 +498,7 @@ let targetSpeedValueComp = {
 }
 
 function mkFCSComponent(posWatched, size) {
-  let gap = sh(3)
+  const gap = sh(3)
 
   return @(){
     watch = [posWatched, IsTargetDataAvailable]
@@ -526,7 +524,7 @@ function mkFCSComponent(posWatched, size) {
 }
 
 function drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
-  let arrowSize = sh(2)
+  const arrowSize = sh(2)
   local arrowCommands = []
 
   if (fill) {
@@ -546,7 +544,7 @@ function drawArrow(x, y, dirX, dirY, color, fill = false, scale = 1) {
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [arrowSize, arrowSize]
+    size = const [arrowSize, arrowSize]
     pos = [x, y]
     lineWidth = hdpx(2 * scale)
     color = color

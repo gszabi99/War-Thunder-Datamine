@@ -1,14 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { request_matching } = require("%scripts/matching/api.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { isNewbieEventId } = require("%scripts/user/myStatsState.nut")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { isEventRandomBattlesById } = require("%scripts/events/eventsState.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 
 enum qTypeCheckOrder {
@@ -55,7 +55,7 @@ enumsAddTypes(g_queue_type,
     EVENT = {
       bit = QUEUE_TYPE_BIT.EVENT
       checkOrder = qTypeCheckOrder.ANY_EVENT
-      isParamsCorresponds = @(params) !u.isEmpty(getTblValue("mode", params))
+      isParamsCorresponds = @(params) !u.isEmpty(params?.mode)
     }
 
     NEWBIE = {
@@ -65,7 +65,7 @@ enumsAddTypes(g_queue_type,
 
     DOMINATION = {
       bit = QUEUE_TYPE_BIT.DOMINATION
-      isParamsCorresponds = @(params) ("mode" in params) && events.isEventRandomBattlesById(params.mode)
+      isParamsCorresponds = @(params) ("mode" in params) && isEventRandomBattlesById(params.mode)
     }
 
     WW_BATTLE = {
@@ -82,9 +82,9 @@ enumsAddTypes(g_queue_type,
           operationId = params.operationId
           battleId    = params.battleId
           country     = wwBattle ? wwBattle.getCountryNameBySide(side)
-                          : getTblValue("country", params, "")
+                          : (params?.country ?? "")
           team        = wwBattle ? wwBattle.getTeamNameBySide(side)
-                          : getTblValue("team", params, SIDE_1)
+                          : (params?.team ?? SIDE_1)
           isBattleByUnitsGroup = wwBattle?.isBattleByUnitsGroup() ?? false
         }
       }
@@ -95,7 +95,7 @@ enumsAddTypes(g_queue_type,
           "worldwar.get_queue_info",
           function(response) {
             let queuesInfo = {}
-            let responseQueues = getTblValue("queues", response, [])
+            let responseQueues = (response?.queues ?? [])
             foreach (battleQueueInfo in responseQueues)
               if (battleQueueInfo?.battleId)
                 queuesInfo[battleQueueInfo.battleId] <- battleQueueInfo

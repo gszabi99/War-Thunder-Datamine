@@ -1,55 +1,49 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "%sqstd/ecs.nut" as ecs
+from "dasevents" import EventUpdateDemonstratedShellVisible
+from "hangar" import secondary_weapon_camera_mode
+from "unitCustomization" import set_weapon_visual
+from "%sqstd/string.nut" import cutPrefix
+from "%sqstd/underscore.nut" import deep_clone
+from "gameplayBinding" import isInFlight
+from "%sqstd/math.nut" import round_by_value
+from "dagor.workcycle" import clearTimer, setTimeout
 from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT, INFO_DETAIL
+from "types" import String
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
-let { secondary_weapon_camera_mode } = require("hangar")
-let { set_weapon_visual } = require("unitCustomization")
-let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
-  getWeaponryByPresetInfo, getCustomWeaponryPresetView
-} = require("%scripts/weaponry/weaponryPresetsParams.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { sortPresetsList, setFavoritePresets, getWeaponryPresetView, getWeaponryByPresetInfo, getCustomWeaponryPresetView } = require("%scripts/weaponry/weaponryPresetsParams.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams
-} = require("%scripts/weaponry/weaponryTooltipPkg.nut")
+let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { weaponsPurchase, canBuyItem } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { appendOnce } = u
-let { MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX,
-  CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams
-} = require("%scripts/weaponry/weaponryPresets.nut")
-let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets
-} = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
+let { MAX_PRESETS_NUM, CHAPTER_ORDER, CHAPTER_NEW_IDX, CHAPTER_FAVORITE_IDX, CUSTOM_PRESET_PREFIX, isCustomPreset, getDefaultCustomPresetParams } = require("%scripts/weaponry/weaponryPresets.nut")
+let { renameCustomPreset, deleteCustomPreset, getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { openEditWeaponryPreset, openEditPresetName } = require("%scripts/weaponry/editWeaponryPreset.nut")
 let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPresetsWndReserved } = require("%scripts/weaponry/weaponryPresetsWndState.nut")
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
-let { round_by_value } = require("%sqstd/math.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { clearTimer, setTimeout } = require("dagor.workcycle")
+let { getChildInContainers } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
 let { checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint
-} = require("%scripts/hangar/backgroundModelHint.nut")
-let { EventToggleWeaponryWnd = null } = require("dasevents")
-let ecs = require("%sqstd/ecs.nut")
+let { initBackgroundModelHint, updateBackgroundModelHint } = require("%scripts/hangar/backgroundModelHint.nut")
 let { getShopDevMode } = require("%scripts/debugTools/dbgShop.nut")
 let { openMissileTrajectoryWnd } = require("%scripts/weaponry/graphCompareBullets/missileTrajectoryWnd.nut")
 
@@ -62,7 +56,28 @@ let predifineWndHeightsInTiers = [3.0, 7.0, 13.0]
 
 let isGettingWeaponEffects = Watched(false)
 
-gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let secondaryWeaponsWndQuery = ecs.SqQuery("secondaryWeaponsWndQuery",
+  {
+    comps_rw = [["hangar__isInWeaponryMenu", ecs.TYPE_BOOL]]
+  })
+
+function setEcsIsInWeaponryMenu(value) {
+  local isFound = false
+  secondaryWeaponsWndQuery(function(_, c) {
+    c.hangar__isInWeaponryMenu = value
+    isFound = true
+  })
+
+  if (!isFound)
+    ecs.g_entity_mgr.createEntity("hangar_weaponry_menu",
+      {
+        hangar__isInWeaponryMenu = true
+      })
+
+  ecs.g_entity_mgr.broadcastEvent(EventUpdateDemonstratedShellVisible())
+}
+
+let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
   wndType              = handlerType.BASE
   sceneTplName         = "%gui/weaponry/weaponryPresetsWnd.tpl"
   unit                 = null
@@ -171,10 +186,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("timer_update")?.setUserData(this)
     initBackgroundModelHint(this)
     this.updateChangeWndHeightButtons()
-    if (EventToggleWeaponryWnd != null)
-      ecs.g_entity_mgr.broadcastEvent(EventToggleWeaponryWnd({
-        isOpen = true
-      }))
+    this.sendToggleWeaponryWnd(true)
   }
 
   function updateCustomIdx() {
@@ -751,7 +763,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.filterStates = this.myFilters ? this.myFilters % "array" : []
     this.filterTypes = {}
     foreach (idx, key in FILTER_OPTIONS) {
-      let isRank = type(key) != "string"
+      let isRank = !(key instanceof String)
       if ((isRank && !this.presetsByRanks?[key]))
         continue
 
@@ -974,10 +986,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     isGettingWeaponEffects.set(false)
     this.setChosenWeaponVisual()
     secondary_weapon_camera_mode(false)
-    if (EventToggleWeaponryWnd != null)
-      ecs.g_entity_mgr.broadcastEvent(EventToggleWeaponryWnd({
-        isOpen = false
-      }))
+    this.sendToggleWeaponryWnd(false)
   }
 
   loadHangarModel = @() loadModel(this.unit.name)
@@ -1044,9 +1053,12 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
-}
 
-gui_handlers.weaponryPresetsModal <- class (gui_handlers.weaponryPresetsWnd) {
+  sendToggleWeaponryWnd = @(value) setEcsIsInWeaponryMenu(value)
+}
+register_gui_handler("weaponryPresetsWnd", weaponryPresetsWnd)
+
+register_gui_handler("weaponryPresetsModal", class (weaponryPresetsWnd) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/weaponryPresetsModal.tpl"
 
@@ -1058,5 +1070,6 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.weaponryPresetsWnd) {
   }
 
   loadHangarModel = @() null
+  sendToggleWeaponryWnd = @(_) null
   updateChangeWndHeightButtons= @(_ = null) null
-}
+})

@@ -1,11 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { format } = require("string")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
@@ -17,11 +16,11 @@ let ChatRoom = class (BaseInvite) {
   needCheckCanChatWithPlayer = true
 
   static function getUidByParams(params) {
-    return "".concat("CR_", getTblValue("inviterName", params, ""), "/", getTblValue("roomId", params, ""))
+    return "".concat("CR_", (params?.inviterName ?? ""), "/", (params?.roomId ?? ""))
   }
 
   function updateCustomParams(params, initial = false) {
-    this.roomId = getTblValue("roomId", params, "")
+    this.roomId = (params?.roomId ?? "")
     this.roomType = g_chat_room_type.getRoomType(this.roomId)
     let cb = Callback(@() this.checkInviteRoomType(initial), this)
     this.setDelayed(true)
@@ -39,7 +38,7 @@ let ChatRoom = class (BaseInvite) {
       if (initial)
         add_event_listener("ChatThreadInfoChanged",
                              function (data) {
-                               if (getTblValue("roomId", data) == this.roomId)
+                               if (data?.roomId == this.roomId)
                                  this.setDelayed(false)
                              },
                              this)

@@ -1,10 +1,10 @@
+from "%rGui/twsState.nut" import RwrNewTargetHoldTimeInv, CurrentTime
+from "%rGui/planeState/planeFlyState.nut" import CompassValue
+from "string" import format
+from "math" import sin, cos, PI
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-let { sin, cos, PI } = require("math")
-
-let { rwrTargets, rwrTargetsOrder, RwrNewTargetHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
-let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
 let ThreatType = {
   AI = 0,
@@ -19,8 +19,8 @@ let createCompass = @(gridStyle, color, backGroundColor, styleText) function() {
   let markAngleStep = gridStyle?.markAngleStep ?? 5.0
   let markAngle = PI * markAngleStep / 180.0
   let markDashCount = (360.0 / markAngleStep).tointeger()
-  let indicatorRadius = 45
-  let azimuthMarkLength = 2
+  const indicatorRadius = 45
+  const azimuthMarkLength = 2
   let shortAzimuthMarkLengthMult = gridStyle?.shortAzimuthMarkLengthMult ?? 0.5
 
   let comapssValueRad = CompassValue.get() / 180.0 * PI
@@ -35,19 +35,19 @@ let createCompass = @(gridStyle, color, backGroundColor, styleText) function() {
     [VECTOR_ELLIPSE, 50, 50, indicatorRadius-azimuthMarkLength, indicatorRadius-azimuthMarkLength]
   ] : [])
 
-  let textAngleStep = 30.0
-  let textDashCount = 360.0 / textAngleStep
+  const textAngleStep = 30.0
+  const textDashCount = 360.0 / textAngleStep
   local azimuthMarks = []
   for (local i = 0; i < textDashCount; ++i) {
     let angle = i * textAngleStep
     let visualAngle = angle - CompassValue.get()
     let cosa = cos(visualAngle / 180.0 * PI)
     let sina = sin(visualAngle / 180.0 * PI)
-    let offset = 0.005
+    const offset = 0.005
     azimuthMarks.append({
       rendObj = ROBJ_TEXT
       pos = [pw(50.0 * sina), ph(50.0 * (1 - cosa) - offset * 100)],
-      size = flex(),
+      size = FLEX,
       color = color,
       font = styleText.font,
       fontSize = gridStyle.fontScale * styleText.fontSize,
@@ -74,11 +74,11 @@ let createCompass = @(gridStyle, color, backGroundColor, styleText) function() {
 
 function createRwrGrid(gridStyle, color, backGroundColor) {
   return {
-    pos = [pw(50), ph(50)],
+    pos = const [pw(50), ph(50)],
     size = const [pw(100), ph(100)],
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = color,
         lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale,
@@ -94,7 +94,7 @@ function createRwrGrid(gridStyle, color, backGroundColor) {
         ]
       },
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = backGroundColor,
         lineWidth = baseLineWidth * 90,
@@ -108,14 +108,14 @@ function createRwrGrid(gridStyle, color, backGroundColor) {
 }
 
 function createRwrGridMarks(gridStyle, styleText, settings) {
-  let gridFontSizeMult = 1.5
+  const gridFontSizeMult = 1.5
   return {
-    size = flex(),
+    size = FLEX,
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [0, ph(22.5)]
-        size = flex()
+        pos = const [0, ph(22.5)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
@@ -123,8 +123,8 @@ function createRwrGridMarks(gridStyle, styleText, settings) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [0, ph(47.5)]
-        size = flex()
+        pos = const [0, ph(47.5)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
@@ -193,7 +193,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
   let directionGroup = settingsIn.directionGroups?[target.groupId]
   let targetRadiusRel = calcRwrTargetRadius(target, settingsIn)
 
-  let targetTypeFontSizeMult = 1.5
+  const targetTypeFontSizeMult = 1.5
   let iconSizeMult = 0.075 * objectStyle.scale
 
   let newTargetFontSizeMultRwr = Computed(@() (target.age0 * RwrNewTargetHoldTimeInv.get() < 1.0 && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 1.5 : 1.0))
@@ -224,7 +224,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * (4 + 6) * objectStyle.lineWidthScale
     fillColor = backGroundColor
-    size = flex()
+    size = FLEX
     commands = iconCommands
   }
 
@@ -235,7 +235,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
     fillColor = 0
-    size = flex()
+    size = FLEX
     commands = iconCommands
   }
 
@@ -245,7 +245,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
       rendObj = ROBJ_VECTOR_CANVAS,
       lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale,
       fillColor = 0,
-      size = flex(),
+      size = FLEX,
       commands = [
         [ VECTOR_ELLIPSE,
           target.x * 50.0 * targetRadiusRel,
@@ -255,8 +255,8 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
     } : null
 
   return @() {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     children = [
       background,
       targetType,

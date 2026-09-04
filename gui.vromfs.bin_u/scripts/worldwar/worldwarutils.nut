@@ -1,66 +1,53 @@
-from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war,
-  ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name,
-  ww_select_player_side_for_regular_user, ww_send_operation_request,
-  ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%appGlobals/worldWar/wwAirfieldStatus.nut" import hoveredAirfieldIndex
+from "guiMission" import get_current_mission_desc
+from "gameplayBinding" import isInFlight
+from "worldwar" import wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded, wwGetAirfieldsCount, wwGetSelectedAirfield, wwFindAirfieldByCoordinates, wwGetReinforcementsInfo, wwGetMapCellByCoords
+from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/wwNativeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import ww_is_player_on_war, get_char_error_msg, ww_stop_war, ww_get_selected_armies_names, ww_operation_request_log, ww_side_val_to_name, ww_select_player_side_for_regular_user
+  , ww_send_operation_request, ww_select_player_side_for_army_group_member, clan_get_my_clan_id, ww_get_sides_info
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let DataBlock  = require("DataBlock")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { FramedMessageBox } = require("%scripts/sqDagui/framework/framedMessageBox.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
-let { get_current_mission_desc } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
+let { addMail } = require("%scripts/matching/serviceNotifications/postbox.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
-  wwGetAirfieldsCount, wwGetSelectedAirfield,
-  wwFindAirfieldByCoordinates, wwGetReinforcementsInfo, wwGetMapCellByCoords
-} = require("worldwar")
 
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { getArmyByName, getSelectedArmies, hasEntrenchedInList
-} = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getArmyByName, getSelectedArmies, hasEntrenchedInList } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
-let { sortUnitsBySortCodeAndCount, loadUnitsFromBlk
-} = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { getNearestMapToBattle, getOperationById, updateCurOperationStatusInGlobalStatus
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { sortUnitsBySortCodeAndCount, loadUnitsFromBlk } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { getNearestMapToBattle, getOperationById, updateCurOperationStatusInGlobalStatus } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle
-} = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 let { getWWLogsData, clearWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
-let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nut")
-let {
-  updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry,
-  saveLastPlayed } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { baseWWState, isLastFlightWasWwBattle, getArmyGroups, getMyArmyGroup
-} = require("%scripts/worldWar/worldWarState.nut")
-let { curOperationCountry, invalidateRearZones
-} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed } = require("%scripts/worldWar/worldWarCfgState.nut")
+let { baseWWState, isLastFlightWasWwBattle, getArmyGroups, getMyArmyGroup } = require("%scripts/worldWar/worldWarState.nut")
+let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { openWWOperationChatRoomById } = require("%scripts/chat/openChat.nut")
 let { findQueueByName } = require("%scripts/queue/queueState.nut")
 let { leaveQueue, leaveQueueByType } = require("%scripts/queue/queueManager.nut")
@@ -113,8 +100,8 @@ function openOperationsOrQueues(needToOpenBattles = false, map = null) {
 
   updateConfigurableValues()
 
-  if (!handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler))
-    handlersManager.loadHandler(gui_handlers.WwOperationsMapsHandler,
+  if (!handlersManager.findHandlerClassInScene(get_gui_handler("WwOperationsMapsHandler")))
+    handlersManager.loadHandler(get_gui_handler("WwOperationsMapsHandler"),
       { needToOpenBattles = needToOpenBattles
         autoOpenMapOperation = map })
 }
@@ -212,7 +199,7 @@ function openWarMap() {
       showInfoMsgBox(loc("worldwar/cantUpdateOperation"))
     }
   )
-  handlersManager.loadHandler(gui_handlers.WwMap)
+  handlersManager.loadHandler(get_gui_handler("WwMap"))
 }
 
 let g_world_war = {
@@ -394,7 +381,7 @@ let g_world_war = {
     if (!accessList)
       accessList = this.getMyAccessLevelListForCurrentBattle()
 
-    let access = getTblValue(group.owner.armyGroupIdx, accessList, WW_BATTLE_ACCESS.NONE)
+    let access = (accessList?[group.owner.armyGroupIdx] ?? WW_BATTLE_ACCESS.NONE)
     return !!(access & WW_BATTLE_ACCESS.MANAGER)
   }
 
@@ -498,13 +485,13 @@ let g_world_war = {
   }
 
   function moveSelectedArmyToCell(cellIdx, params = {}) {
-    let army = getTblValue("army", params)
+    let army = params?.army
     if (!army)
       return
 
     local moveType = "EMT_ATTACK" 
-    let targetAirfieldIdx = getTblValue("targetAirfieldIdx", params, -1)
-    let target = getTblValue("target", params)
+    let targetAirfieldIdx = (params?.targetAirfieldIdx ?? -1)
+    let target = params?.target
 
     let blk = DataBlock()
     if (targetAirfieldIdx >= 0) {
@@ -518,7 +505,7 @@ let g_world_war = {
     blk.setStr("moveType", moveType)
     blk.setStr("army", army.name)
     blk.setInt("targetCellIdx", cellIdx)
-    let appendToPath = getTblValue("appendToPath", params, false)
+    let appendToPath = (params?.appendToPath ?? false)
     if (appendToPath)
       blk.setBool("appendToPath", appendToPath)
     if (target)
@@ -574,7 +561,7 @@ let g_world_war = {
       return
     }
 
-    gui_handlers.FramedMessageBox.open({
+    FramedMessageBox.open({
       title = loc("worldwar/armyAskDigout")
       message = loc("worldwar/armyAskDigoutText")
       onOpenSound = "ww_unit_entrench_move_notify"

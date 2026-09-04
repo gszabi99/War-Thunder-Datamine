@@ -1,20 +1,21 @@
+import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+from "%rGui/hud/humanSquad/humanConst.nut" import heroStateWidth, actionBarItemHeight
+from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunStaticInfo, humanCurGunInfo, humanCurGunModeInfo, getLauncherNextUseAtTime
+from "%rGui/style/colors.nut" import white
+from "%rGui/hud/state/grenades_es.nut" import grenades
+from "%rGui/hud/state/medkits_es.nut" import selfHealMedkits
+from "%rGui/hud/humanSquad/grenadeIcon.nut" import grenadeIcon, getGrenadeType
+from "dagor.math" import Color4
+from "math" import ceil
+from "mission" import get_mission_time
+from "dagor.workcycle" import setInterval, clearTimer
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
+
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
-let { heroStateWidth, actionBarItemHeight } = require("%rGui/hud/humanSquad/humanConst.nut")
-let { humanCurGunStaticInfo, humanCurGunInfo, humanCurGunModeInfo, getLauncherNextUseAtTime
-} = require("%rGui/hud/state/human_gun_info_es.nut")
-let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
-let { white, hud } = require("%rGui/style/colors.nut")
+let { hud } = require("%rGui/style/colors.nut")
 let { infantryHudInactiveColor, infantryHudCommonColor, infantryHudDisabledColor } = hud
-let { Color4 } = require("dagor.math")
-let { ceil } = require("math")
-let { get_mission_time } = require("mission")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let { grenades } = require("%rGui/hud/state/grenades_es.nut")
-let { selfHealMedkits } = require("%rGui/hud/state/medkits_es.nut")
-let { grenadeIcon, getGrenadeType } = require("%rGui/hud/humanSquad/grenadeIcon.nut")
 
 
 let coolDownTime = Watched("")
@@ -22,7 +23,7 @@ let launcherEid = Computed(@() humanCurGunInfo.get()?.launcherEid ?? 0)
 
 let weaponBlockPadding = [hdpxi(5), hdpxi(3), hdpxi(5), hdpxi(5)]
 let weaponImageSize = [shHud(12) - (weaponBlockPadding[1] + weaponBlockPadding[3]), shHud(3.5)]
-let itemGap = hdpxi(4)
+const itemGap = hdpxi(4)
 let rifleGrenadeSize = const [ hdpxi(24), hdpxi(24) ]
 let iconSize = const [ hdpxi(20), hdpxi(20) ]
 
@@ -138,7 +139,7 @@ function mkWeaponAmmo(ammoWatch, ammoTotalWatch, addChildren) {
     size = FLEX_H
     children = [
       addChildren
-      { size = [flex(), 0] }
+      { size = [FLEX, 0] }
       bigText(ammoWatch)
       bigText(Watched("/"), infantryHudInactiveColor)
       bigText(ammoTotalWatch, infantryHudInactiveColor)
@@ -220,12 +221,12 @@ return {
   children = [
     hudBlurPanel
     {
-      size = flex()
+      size = FLEX
       padding = weaponBlockPadding
       children = [
         mkAmmoBlock()
         {
-          size = flex()
+          size = FLEX
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           children = [
@@ -239,7 +240,7 @@ return {
           size = FLEX_H
           children = [
             grenadesBlock()
-            { size = [flex(), 0] }
+            { size = [FLEX, 0] }
             medkitsBlock
           ]
         }

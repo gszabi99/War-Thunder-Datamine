@@ -1886,8 +1886,6 @@
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [
-        "driver_dm",
-        "loader_dm",
         "gunner_dm",
         "commander_dm",
         "machine_gunner_dm",
@@ -1897,11 +1895,28 @@
         "gunner_02_dm",
         "loader_01_dm",
         "loader_02_dm",
-        "cannon_breech_dm",
         "radio_station_dm",
-        "drive_turret_v_dm",
-        "drive_turret_h_dm",
-        "transmission_dm"
+        "fire_control_system_dm",
+        "drive_turret_h_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_driver_compartment": {
+      "part": [
+        "driver_dm",
+        "loader_dm",
+        "driver_controls_dm"
       ],
       "effect": [
         {
@@ -2153,7 +2168,8 @@
               0.0,
               25000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 1.5
           },
           {
             "isUnit": false,
@@ -2177,7 +2193,8 @@
               0.0,
               25000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.5
           },
           {
             "isUnit": false,
@@ -2201,7 +2218,8 @@
               0.0,
               12000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.5
           },
           {
             "isUnit": false,
@@ -2225,7 +2243,8 @@
               0.0,
               10000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 2.0
           },
           {
             "isUnit": false,
@@ -2253,7 +2272,8 @@
               5.0,
               30.0
             ],
-            "priority": 25
+            "priority": 25,
+            "reactionTime": 3.0
           },
           {
             "isUnit": false,
@@ -2277,7 +2297,8 @@
               0.0,
               10000.0
             ],
-            "priority": 5
+            "priority": 5,
+            "reactionTime": 2.0
           }
         ]
       }
@@ -2285,9 +2306,8 @@
     "animatedBones": {
       "node": [
         "antenna_target_location",
-        "antenna_target_location_mount",
+        "bone_roll_05",
         "antenna_target_tagging",
-        "antenna_target_tagging_mount",
         "bone_roll_01"
       ]
     }
@@ -3910,7 +3930,19 @@
         "dmPart": [
           "antenna_target_location_dm",
           "electronic_equipment_dm"
-        ]
+        ],
+        "ai": false
+      },
+      {
+        "blk": "gameData/sensors/fr_crotale_search_ai.blk",
+        "turretIndex": 0,
+        "designationFromBody": true,
+        "designationTurretIndex": 0,
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ],
+        "human": false
       },
       {
         "blk": "gameData/sensors/fr_crotale_track.blk",

@@ -78,6 +78,30 @@
           "sideLobesSensitivity": -50.0
         }
       }
+    },
+    "sea": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1000.0,
+      "band": 8,
+      "rcs": 500.0,
+      "range": 85000.0,
+      "rangeMax": 150000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 1.0,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 3.5,
+          "sideLobesSensitivity": -50.0
+        }
+      }
     }
   },
   "scanPatterns": {
@@ -532,6 +556,10 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
+          },
           "setFsmActive": {
             "fsm": "searchModes",
             "active": true
@@ -622,6 +650,10 @@
           "designateActiveDetectedTarget": {
             "type": "target",
             "self": true
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": true
           }
         },
         "resetBvrLockMode": {
@@ -641,6 +673,10 @@
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
           "updateActiveTargetOfInterest": {},
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
+          },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -899,7 +935,7 @@
         "setSeaStandbyMode": {
           "setStandbyModeCommon": {},
           "setTransiver": {
-            "transiver": "gtm"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaSearch"
@@ -935,7 +971,7 @@
         "setSeaSearchMode": {
           "setSearchModeCommon": {},
           "setTransiver": {
-            "transiver": "gtm"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaSearch"
@@ -1045,7 +1081,7 @@
             "active": true
           },
           "setTransiver": {
-            "transiver": "gtm"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaTrack"
@@ -1098,7 +1134,7 @@
             "active": true
           },
           "setTransiver": {
-            "transiver": "gtm"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaTrack"

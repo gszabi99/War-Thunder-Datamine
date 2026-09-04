@@ -1,5 +1,6 @@
+from "string" import format
+from "types" import Function, String
 
-let { format } = require("string")
 let u = require("u.nut")
 
 
@@ -79,7 +80,7 @@ local Callback = class {
 
   function _call(origin_this, ...) {
     try {
-      if (!this.isContextValid())
+      if (!this.isValid())
         return
       return this.callbackFn.acall([origin_this].extend(vargv))
     }
@@ -93,7 +94,7 @@ local Callback = class {
 
   function call(origin_this, ...) {
     try {
-      if (!this.isContextValid())
+      if (!this.isValid())
         return
       return this.callbackFn.acall([origin_this].extend(vargv))
     }
@@ -116,19 +117,21 @@ local Callback = class {
 
     return true
   }
+
+  isEqual = @(other) this == other 
+  isEmpty = @() false
+  _typeof = @() "Callback"
 }
 
 function make(func, context = null) {
-  if (u.isCallback(func))
+  if (u.isOfClass(func, Callback))
     return func
-  if (type(func) == "function")
+  if (func instanceof Function)
     return Callback(func, context)
-  if (type(func) == "string" && (func in context) && type(context[func]) == "function")
+  if (func instanceof String && (func in context) && context[func] instanceof Function)
     return Callback(context[func], context)
   return null
 }
-
-u.registerClass("Callback", Callback)
 
 return {
   Callback

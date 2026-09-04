@@ -1,12 +1,10 @@
+from "%sqstd/math.nut" import number_of_set_bits
 from "%scripts/dagui_library.nut" import *
 
-let { seasonLevel, todayLoginExp, hasBattlePassReward,
-  loginStreak, tomorowLoginExp, levelExp, seasonEndsTime
-} = require("%scripts/battlePass/seasonState.nut")
+let { seasonLevel, todayLoginExp, hasBattlePassReward, loginStreak, tomorowLoginExp, levelExp, seasonEndsTime } = require("%scripts/battlePass/seasonState.nut")
 let { mainChallengeOfSeason, hasChallengesReward } = require("%scripts/battlePass/challenges.nut")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
 let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isEasyTaskComplete, isMediumTaskComplete } = require("%scripts/unlocks/battleTasksState.nut")
 let { getCurrentBattleTasks } = require("%scripts/unlocks/battleTasks.nut")

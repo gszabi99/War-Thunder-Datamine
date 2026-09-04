@@ -1,3 +1,4 @@
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 
@@ -80,14 +81,14 @@ let SHORTCUT = freeze({
   GAMEPAD_RSTICK_PRESS_2 = { dev = [JOYSTICK_DEVICE_0_ID], btn = [27], accessKey = "J:R.Thumb" }
 })
 
-let AXIS = freeze({
+const AXIS = {
   LEFTSTICK_X   = 0
   LEFTSTICK_Y   = 1
   RIGHTSTICK_X  = 2
   RIGHTSTICK_Y  = 3
   LTRIGGER      = 4
   RTRIGGER      = 5
-})
+}
 
 let GAMEPAD_ENTER_SHORTCUT = ps4_is_circle_selected_as_enter_button() ? SHORTCUT.GAMEPAD_B : SHORTCUT.GAMEPAD_A
 

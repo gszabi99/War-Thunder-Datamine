@@ -1,3 +1,4 @@
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 
@@ -22,6 +23,19 @@ let InputBase = class {
 
   function getMarkupData() {
     return {}
+  }
+
+  function getAxisMarkupData(image) {
+    if ((image ?? "") == "")
+      return {
+        template = "%gui/keyboardButton.tpl"
+        view = { text = this.getText() }
+      }
+
+    return {
+      template = "%gui/shortcutAxis.tpl"
+      view = { buttonImage = image }
+    }
   }
 
 

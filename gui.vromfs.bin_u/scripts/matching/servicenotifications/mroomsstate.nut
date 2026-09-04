@@ -1,9 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "matching.errors" import INVALID_ROOM_ID
+from "string" import format
 from "%scripts/dagui_natives.nut" import script_net_assert, connect_to_host_list
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
 
-let { INVALID_ROOM_ID } = require("matching.errors")
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isMyUserId } = require("%scripts/user/profileStates.nut")
 
 let roomState = persist("roomState", @() {
@@ -95,7 +96,7 @@ function connectToHost() {
   }
 
   connect_to_host_list(serverUrls, roomPub.room_key, me.private.auth_key,
-    getTblValue("sessionId", roomPub, roomState.roomId))
+    (roomPub?.sessionId ?? roomState.roomId))
 }
 
 function isNotifyForCurrentRoom(notify) {
@@ -127,16 +128,16 @@ function mergeAttribs(attrFrom, attrTo) {
     }
   }
 
-  let pub = getTblValue("public", attrFrom)
-  let priv = getTblValue("private", attrFrom)
+  let pub = attrFrom?.public
+  let priv = attrFrom?.private
 
-  if (type(priv) == "table") {
+  if (priv instanceof Table) {
     if ("private" in attrTo)
       updateAttribs(priv, attrTo.private)
     else
       attrTo.private <- priv
   }
-  if (type(pub) == "table") {
+  if (pub instanceof Table) {
     if ("public" in attrTo)
       updateAttribs(pub, attrTo.public)
     else
@@ -189,10 +190,10 @@ function updateMemberAttributes(member, curMember = null) {
 }
 
 function addRoomMember(member) {
-  if (getTblValue("operator", member.public))
+  if (member.public?.operator)
     roomState.roomOps[member.userId] <- true
 
-  if (getTblValue("host", member.public)) {
+  if (member.public?.host) {
     log(format("found host %s (%s)", member.name, member.userId.tostring()))
     roomState.hostId = member.userId
   }

@@ -1,7 +1,6 @@
 options no_aot
 require ecs
 require ecs.ecs_template
-require math.base
 require strings
 require DagorConsole
 require DagorDebug3D

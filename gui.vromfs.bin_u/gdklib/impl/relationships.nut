@@ -1,8 +1,14 @@
 import "gdk.relationships" as rel
 from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
 
+local nextEventId = 0
+function mkEventName(baseName): string {
+  nextEventId++
+  return $"{baseName}_{nextEventId}"
+}
+
 function update_friends_list(fire_events, callback) {
-  const eventName = "xbox_update_friends_list"
+  let eventName = mkEventName("xbox_update_friends_list")
   eventbus_subscribe_onehit(eventName, function(res) {
     let {success} = res
     callback?(success)
@@ -12,7 +18,7 @@ function update_friends_list(fire_events, callback) {
 
 
 function update_mute_list(fire_events, callback) {
-  const eventName = "xbox_update_mute_list"
+  let eventName = mkEventName("xbox_update_mute_list")
   eventbus_subscribe_onehit(eventName, function(res) {
     let {success} = res
     callback?(success)
@@ -22,7 +28,7 @@ function update_mute_list(fire_events, callback) {
 
 
 function update_avoid_list(fire_events, callback) {
-  const eventName = "xbox_update_avoid_list"
+  let eventName = mkEventName("xbox_update_avoid_list")
   eventbus_subscribe_onehit(eventName, function(res) {
     let {success} = res
     callback?(success)
@@ -32,7 +38,7 @@ function update_avoid_list(fire_events, callback) {
 
 
 function retrieve_related_people_list(callback) {
-  const eventName = "xbox_get_related_people_list"
+  let eventName = mkEventName("xbox_get_related_people_list")
   eventbus_subscribe_onehit(eventName, function(res) {
     let xuids = res?.xuids
     callback?(xuids)
@@ -42,7 +48,7 @@ function retrieve_related_people_list(callback) {
 
 
 function retrieve_avoid_people_list(callback) {
-  const eventName = "xbox_get_avoid_people_list"
+  let eventName = mkEventName("xbox_get_avoid_people_list")
   eventbus_subscribe_onehit(eventName, function(res) {
     let xuids = res?.xuids
     callback?(xuids)
@@ -52,7 +58,7 @@ function retrieve_avoid_people_list(callback) {
 
 
 function retrieve_muted_people_list(callback) {
-  const eventName = "xbox_get_get_muted_people_list"
+  let eventName = mkEventName("xbox_get_get_muted_people_list")
   eventbus_subscribe_onehit(eventName, function(res) {
     let xuids = res?.xuids
     callback?(xuids)

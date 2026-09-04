@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let {
   inviteToWwOperation = @() null,

@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let templateLevelNameSuffix = "_infantry_skins"
+const templateLevelNameSuffix = "_infantry_skins"
 
 
 let localizationKeys = {

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MyClanSquadsListModal } = require("%scripts/clans/clanSquadsModal.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
@@ -11,7 +12,7 @@ enum wwClanSquadInviteColors {
   MATCH_GAME = "successTextColor"
 }
 
-gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListModal) {
+let WwMyClanSquadInviteModal = class (MyClanSquadsListModal) {
   operationId = null
   battleId = null
   country = null
@@ -43,7 +44,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
   ]
 
   static function open(operationId, battleId, country) {
-    loadHandler(gui_handlers.WwMyClanSquadInviteModal,
+    loadHandler(get_gui_handler("WwMyClanSquadInviteModal"),
       { operationId = operationId, battleId = battleId, country = country })
   }
 
@@ -112,3 +113,6 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
     return true
   }
 }
+register_gui_handler("WwMyClanSquadInviteModal", WwMyClanSquadInviteModal)
+
+return { WwMyClanSquadInviteModal }

@@ -92,7 +92,8 @@ expandable statusImg[background-image] {
   background-color:@commonTextColor;
 }
 
-expandable:hover {
+expandable:hover,
+expandable[isSpecEventSlot=yes][hoverActive=yes] {
   background-color:@buttonColor;
 }
 expandable:hover statusImg[background-image] {

@@ -1,15 +1,13 @@
+from "string" import format
+from "guiOptions" import get_unit_option, set_unit_option, clearUnitOption
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+from "types" import String
 
-let { format } = require("string")
-let { get_unit_option, set_unit_option, clearUnitOption } = require("guiOptions")
 let { getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit,
-  setBulletsOptForRandomUnit, calcBulletLimits } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO,
-        getAmmoAmount,
-        isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
+let { setUnitLastBullets, isPairBulletsGroup, getOptionsBulletsList, getBulletsOptForRandomUnit, setBulletsOptForRandomUnit, calcBulletLimits } = require("%scripts/weaponry/bulletsInfo.nut")
+let { AMMO, getAmmoAmount, isAmmoFree } = require("%scripts/weaponry/ammoInfo.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
@@ -68,7 +66,7 @@ class BulletGroup {
     if (count == null)
       count = get_unit_option(this.unit.name, bulletOptionId)
 
-    if (type(count) == "string") 
+    if (count instanceof String) 
       clearUnitOption(this.unit.name, bulletOptionId)
     else if (count != null)
       this.bulletsCount = (count / this.guns).tointeger()
@@ -83,7 +81,7 @@ class BulletGroup {
   canChangePairBulletsCount = @() this.hasEnableSecondValue()
 
   function getGunIdx() {
-    return getTblValue("gunIdx", this.gunInfo, 0)
+    return (this.gunInfo?.gunIdx ?? 0)
   }
 
   function setBullet(bulletName) {
@@ -125,7 +123,7 @@ class BulletGroup {
   }
 
   function getBulletNameByIdx(idx) {
-    return getTblValue(idx, this.bullets.values)
+    return this.bullets.values?[idx]
   }
 
   function setBulletsCount(count) {
@@ -173,7 +171,7 @@ class BulletGroup {
   }
 
   function getGunMaxBullets() {
-    return getTblValue("total", this.gunInfo, 0)
+    return (this.gunInfo?.total ?? 0)
   }
 
   function getOption() {

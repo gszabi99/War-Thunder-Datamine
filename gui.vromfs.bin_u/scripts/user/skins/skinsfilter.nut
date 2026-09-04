@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 

@@ -5,8 +5,6 @@ require PhysVars
 require %game.events
 
 require %appGame.wt_events
-require %appGame.infantry.es.tactical_phone_common
-require %appGame.infantry.es.drone_launcher_common
 require DagorMath
 
 
@@ -42,47 +40,23 @@ def drone_launcher_anim_start_launch(evt : Event;
   drone_launcher_anim__launchInProgress = drone_launcher_anim__launchEnd > get_sync_time()
 
 
-[es(tag=gameClient, on_appear)]
-def drone_launcher_anim_replace_animation_with_entity_on_drone_appear(evt : Event;
-                                                                      drone__launcherEid : EntityId;
-                                                                      var animchar_render__enabled aka drone_animchar_render__enabled : bool&)
-  query(drone__launcherEid) <| $ [es] (drone_launcher_anim__replaceAnimationWithEntity : bool;
-                                       drone_launcher_anim__launchInProgress : bool;
-                                       var animchar_render__enabled : bool&)
-    if !drone_launcher_anim__launchInProgress
-      return
-    drone_animchar_render__enabled = drone_launcher_anim__replaceAnimationWithEntity
-    animchar_render__enabled = !drone_launcher_anim__replaceAnimationWithEntity
-
-
-[es(tag=gameClient, track=(drone_launcher_anim__replaceAnimationWithEntity))]
+[es(tag=gameClient, track=drone_launcher_anim__replaceAnimationWithEntity)]
 def drone_launcher_anim_replace_animation_with_entity(evt : Event;
-                                                      drone_launcher__drone : EntityId;
                                                       drone_launcher_anim__launchInProgress : bool;
                                                       drone_launcher_anim__replaceAnimationWithEntity : bool;
                                                       var animchar_render__enabled : bool&)
-  if drone_launcher_anim__launchInProgress
-    animchar_render__enabled = !drone_launcher_anim__replaceAnimationWithEntity
-  query(drone_launcher__drone) <| $ [es(REQUIRE=isDrone)] (possessedByPlr : EntityId;
-                                                           var animchar_render__enabled : bool&)
-    if possessedByPlr != get_local_player_eid()
-      animchar_render__enabled = drone_launcher_anim__replaceAnimationWithEntity
+  if drone_launcher_anim__launchInProgress && drone_launcher_anim__replaceAnimationWithEntity
+    animchar_render__enabled = false
 
 
 [es(tag=gameClient, track=drone_launcher_anim__launchInProgress)]
 def drone_launcher_anim_on_launch_animation_complete(evt : Event;
                                                      eid aka drone_launcher_eid : EntityId;
                                                      gun__owner : EntityId;
-                                                     drone_launcher__tacticalPhone : EntityId;
-                                                     drone_launcher__state : int;
                                                      drone_launcher_anim__launchInProgress : bool;
                                                      var animchar_render__enabled : bool&)
   if drone_launcher_anim__launchInProgress
     return
-
-  if drone_launcher__state != int(DroneLauncherState.DLS_READY)
-    sendEvent(drone_launcher__tacticalPhone, EventRequestTakeTactialPhone(ownerEid = gun__owner, mode = int(TacticalPhoneMode.TPM_DRONE)))
-  else
-    query(gun__owner) <| $ [es] (human_weap__currentGunEid : EntityId)
-      if human_weap__currentGunEid == drone_launcher_eid
-        animchar_render__enabled = true
+  query(gun__owner) <| $ [es] (human_weap__currentGunEid : EntityId)
+    if human_weap__currentGunEid == drone_launcher_eid
+      animchar_render__enabled = true

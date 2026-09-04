@@ -61,34 +61,7 @@
   },
   "triggers": {
     "isCategory": true,
-    "is_enabled": true,
-    "carriers_init": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "initMission": {}
-      },
-      "conditions": {},
-      "actions": {
-        "missionMarkAsRespawnPoint": {
-          "loc_name": "missions/carriers_spawn",
-          "radius": -1.0,
-          "target": "t1_carriers_squad",
-          "team": "A",
-          "isAirfield": true,
-          "showOnMap": true,
-          "tags": {
-            "carrier_take_off": true
-          }
-        }
-      },
-      "else_actions": {}
-    }
+    "is_enabled": true
   },
   "mission_objectives": {
     "isCategory": true,

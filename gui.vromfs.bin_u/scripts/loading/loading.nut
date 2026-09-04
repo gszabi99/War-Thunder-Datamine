@@ -1,31 +1,33 @@
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "loading" import loading_is_finished, loading_press_apply, loading_get_briefing
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { loading_is_finished, loading_press_apply, loading_get_briefing } = require("loading")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LoadingHangarHandler } = require("%scripts/loading/loadingHangar.nut")
+let { LoadingBrief } = require("%scripts/loading/loadingBrief.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 eventbus_subscribe("gui_start_loading", function gui_start_loading(payload) {
   let isMissionLoading = payload?["showBriefing"] ?? false
   let briefing = loading_get_briefing()
   if (isLoggedIn.get() && isMissionLoading && (briefing.blockCount() > 0)) {
     log("briefing loaded, place =", briefing.getStr("place_loc", ""))
-    handlersManager.loadHandler(gui_handlers.LoadingBrief, { briefing })
+    handlersManager.loadHandler(LoadingBrief, { briefing })
   }
   else if (isLoggedIn.get())
-    handlersManager.loadHandler(gui_handlers.LoadingHangarHandler, { isEnteringMission = isMissionLoading })
+    handlersManager.loadHandler(LoadingHangarHandler, { isEnteringMission = isMissionLoading })
   else
-    handlersManager.loadHandler(gui_handlers.LoadingHandler)
+    handlersManager.loadHandler(get_gui_handler("LoadingHandler"))
 
   showTitleLogo()
 })
 
-gui_handlers.LoadingHandler <- class (BaseGuiHandler) {
+let LoadingHandler = class (BaseGuiHandler) {
   sceneBlkName = "%gui/loading/loading.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
@@ -44,3 +46,4 @@ gui_handlers.LoadingHandler <- class (BaseGuiHandler) {
       loading_press_apply()
   }
 }
+register_gui_handler("LoadingHandler", LoadingHandler)

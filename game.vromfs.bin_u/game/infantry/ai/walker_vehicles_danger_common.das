@@ -1,8 +1,6 @@
 module walker_vehicles_danger_common shared
 
 require DagorMath
-require DagorRandom
-require DagorSystem
 require ecs
 require math.base
 require pathfinder

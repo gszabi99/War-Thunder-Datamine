@@ -1,7 +1,7 @@
 {
   "model": "f_16c_block_40_barak_2",
   "fmFile": "fm/f_16c_block_40_barak_2.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
@@ -19,7 +19,7 @@
   "isBwOpticSight": true,
   "ilsElbit967": true,
   "mfdCamLitening2": true,
-  "hmdF16c": true,
+  "hmdJhmcsGen1": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -4350,6 +4350,26 @@
             }
           },
           {
+            "iconType": "arm_type_f",
+            "name": "agm_88",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/us_lau118_launcher_agm_88c.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "asq_213"
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot4",
             "showInWeaponMenu": true,
@@ -4367,7 +4387,7 @@
               "external": true
             },
             "DependentWeaponPreset": {
-              "slot": 7,
+              "slot": 8,
               "preset": "ptb_slot7"
             }
           }
@@ -4756,6 +4776,26 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "arm_type_f",
+            "name": "agm_88",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/us_lau118_launcher_agm_88c.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "asq_213"
             }
           },
           {

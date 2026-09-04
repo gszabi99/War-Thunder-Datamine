@@ -1,15 +1,14 @@
+from "%rGui/missionState.nut" import roundTimeLeft, missionProgressScore, missionProgressDefendShip
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
-let { roundTimeLeft, missionProgressScore, missionProgressDefendShip
-} = require("%rGui/missionState.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
-let blockWidth = hdpx(136)
-let blockHeight = hdpx(36)
-let borderWidth = hdpx(2)
+const blockWidth = hdpx(136)
+const blockHeight = hdpx(36)
+const borderWidth = hdpx(2)
 let blockPadding = [0, hdpx(6)]
 
-let borderColor = 0xFFFFFFFF
-let fillColor = 0xB2383F49
+const borderColor = 0xFFFFFFFF
+const fillColor = 0xB2383F49
 
 let textParams = {
   rendObj = ROBJ_TEXT
@@ -22,7 +21,7 @@ let textParams = {
 
 let killsIcon = {
   rendObj = ROBJ_IMAGE
-  size = [blockHeight, blockHeight]
+  size = const [blockHeight, blockHeight]
   image = Picture($"!ui/gameuiskin#objective_ship.svg:{blockHeight}:{blockHeight}")
 }
 
@@ -50,7 +49,7 @@ let timeText = @() textParams.__merge({
 
 let mkBlock = @(children) {
   rendObj = ROBJ_BOX
-  size = [blockWidth, blockHeight]
+  size = const [blockWidth, blockHeight]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   padding = blockPadding

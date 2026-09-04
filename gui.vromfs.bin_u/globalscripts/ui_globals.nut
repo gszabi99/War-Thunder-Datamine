@@ -1,7 +1,8 @@
+import "utf8" as utf8
+from "dagor.localize" import loc
+
 
 let logs = require("logs.nut")
 
-let { loc } = require("dagor.localize")
-let utf8 = require("utf8")
 
 return { utf8, loc }.__update(logs)

@@ -21,9 +21,9 @@ craftTreeScrollDiv {
     moveY:t='closest'
 
     on_activate:t='onMainAction'
-    on_pushed:t='::gcb.delayedTooltipListPush'
-    on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-    on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+    on_pushed:t='gcb.delayedTooltipListPush'
+    on_hold_start:t='gcb.delayedTooltipListHoldStart'
+    on_hold_stop:t='gcb.delayedTooltipListHoldStop'
 
     include "%gui/items/craftTreeBody.tpl"
   }

@@ -1,11 +1,10 @@
+from "%sqStdLibs/helpers/enums.nut" import addTypes
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 
-let { addTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { getPlayerStatusInMySquad } = require("%scripts/squads/squadState.nut")
 let { is_in_my_clan } = require("%scripts/clans/clanState.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 enum PRESENCE_SORT {
   UNKNOWN
@@ -150,7 +149,7 @@ function getSquadPresence(squadStatus) {
 
 function updateContactPresence(contact) {
   let { uid } = contact
-  let squadStatus = g_squad_manager.getPlayerStatusInMySquad(uid)
+  let squadStatus = getPlayerStatusInMySquad(uid)
   let onlinePresence = getOnlinePresence(contact)
   let squadPresence = getSquadPresence(squadStatus)
   let presence = onlinePresence == contactPresence.IN_GAME || onlinePresence == contactPresence.IN_QUEUE

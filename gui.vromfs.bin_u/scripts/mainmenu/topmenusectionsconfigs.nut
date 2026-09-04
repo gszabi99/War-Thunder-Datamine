@@ -35,6 +35,7 @@ addTopMenuLeftSideSections([
         buttonsList.EXIT
         buttonsList.DEBUG_UNLOCK
         buttonsList.DEBUG_SHOP
+        buttonsList.DEBUG_XRAY_MODE
       ]
     ]
   },
@@ -65,7 +66,6 @@ addTopMenuLeftSideSections([
         buttonsList.LEADERBOARDS
         buttonsList.CLANS
         buttonsList.REPLAY
-        buttonsList.SPEC_EVENTS
         buttonsList.VIRAL_AQUISITION
         buttonsList.WT_ASSISTANT
         buttonsList.TSS
@@ -94,6 +94,7 @@ addTopMenuRightSideSections([
         buttonsList.PREMIUM
         buttonsList.WARPOINTS
         buttonsList.WISHLIST
+        buttonsList.SPEC_EVENTS
 
 
 

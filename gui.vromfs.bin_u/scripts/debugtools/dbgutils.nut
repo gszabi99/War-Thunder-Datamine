@@ -1,24 +1,24 @@
 
 
+
+import "DataBlock" as DataBlock
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "language" import getLocalLanguage
+from "console" import register_command
 from "%scripts/dagui_natives.nut" import periodic_task_register, copy_to_clipboard, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *
-
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { getLocalLanguage } = require("language")
-let DataBlock  = require("DataBlock")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { getVideoResolution } = require("%scripts/options/systemOptions.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let animBg = require("%scripts/loading/animBg.nut")
-let { register_command } = require("console")
 let { getAllTips } = require("%scripts/loading/loadingTips.nut")
-let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
+let { multiplyDaguiColorStr } = require("%scripts/sqDagui/daguiUtil.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { setIsScriptsIsUnloaded } = require("%sqDagui/guiBhv/bhvUpdateByWatched.nut")
+let { setIsScriptsIsUnloaded } = require("%scripts/sqDagui/guiBhv/bhvUpdateByWatched.nut")
 
 function reload_dagui() {
   setIsScriptsIsUnloaded()

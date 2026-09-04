@@ -1,9 +1,9 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+from "%sqstd/string.nut" import floatToStringRounded
+from "math" import pow
+from "string" import format
 from "%rGui/globals/ui_library.nut" import *
-
-let extWatched = require("%rGui/globals/extWatched.nut")
-let { floatToStringRounded } = require("%sqstd/string.nut")
-let { pow } = require("math")
-let { format } = require("string")
+from "types" import Array
 
 
 
@@ -16,7 +16,7 @@ function countMeasure(orderCode, value, separator = " - ", addMeasureUnits = tru
   if (unit == null)
     return ""
 
-  if (type(value) != "array")
+  if (!(value instanceof Array))
     value = [ value ]
   local maxValue = null
   foreach (val in value)

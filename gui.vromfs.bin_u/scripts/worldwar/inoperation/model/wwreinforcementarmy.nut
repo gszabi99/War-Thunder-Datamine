@@ -1,13 +1,13 @@
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetOperationTimeMillisec, wwGetLoadedArmyType
 from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { WwFormation } = require("wwArmy.nut")
-let { wwGetOperationTimeMillisec, wwGetLoadedArmyType } = require("worldwar")
+let { WwFormation } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let DataBlock = require("DataBlock")
 let { getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarCfgState.nut")
 
 let WwReinforcementArmy = class (WwFormation) {

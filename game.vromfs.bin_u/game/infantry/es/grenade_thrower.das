@@ -16,13 +16,6 @@ def is_in_range(val : float; min : float; max : float)
   return val > min && val <= max
 
 
-[es(REQUIRE=grenade_thrower, on_appear)]
-def grenade_thrower_on_gun_owner_changed(evt : Event;
-                                         eid : EntityId;
-                                         gun__owner : EntityId)
-  query(gun__owner) <| $ [es] (var multiple_guns_slots__additionalGunsEids : EidList&)
-    multiple_guns_slots__additionalGunsEids |> push(eid)
-
 [es]
 def grenade_thrower_phys_es(evt : CmdWeapPhysUpdate;
                             eid : EntityId;
@@ -228,7 +221,7 @@ def mark_slot_on_dropped_grenades(evt : Event;
     slot_attach__weaponSlotIdx = -1
 
 
-[es(tag=server, after=(human_weap_created_server_es, human_weap_reinit_guns_es, multiple_guns_slot_init), track=itemContainer, on_event=CmdReinitWeapons, on_appear)]
+[es(tag=server, after=(human_weap_created_server_es, human_weap_reinit_guns_es), track=itemContainer, on_event=CmdReinitWeapons, on_appear)]
 def grenade_thrower_init_grenade_types(evt : Event;
                                        human_weap__grenadeThrower : EntityId;
                                        itemContainer : EidList)
@@ -251,13 +244,3 @@ def grenade_thrower_update_current_grenade_index(evt : Event;
   query(gun__owner) <| $ [es] (itemContainer : EidList)
     gather_ammo_for_gun(gun__ammoHolderIds, gun__shell_prop_ids, itemContainer) <| $(grenadeItems)
       grenade_thrower__currentGrenadeTypeIndex = grenadeItems |> find_index(gun__wishAmmoItemType)
-
-[es(on_appear, track=grenade_thrower__grenadeTypesCount)]
-def grenade_thrower_hide_on_zero_grenades(evt : Event;
-                                          eid : EntityId;
-                                          grenade_thrower__grenadeTypesCount : int;
-                                          multiple_guns_slot_gun_hidden : Tag const?)
-  if multiple_guns_slot_gun_hidden != null && grenade_thrower__grenadeTypesCount > 0
-    removeSubTemplate(eid, "multiple_guns_slot_gun_hidden")
-  elif multiple_guns_slot_gun_hidden == null && grenade_thrower__grenadeTypesCount <= 0
-    addSubTemplate(eid, "multiple_guns_slot_gun_hidden")

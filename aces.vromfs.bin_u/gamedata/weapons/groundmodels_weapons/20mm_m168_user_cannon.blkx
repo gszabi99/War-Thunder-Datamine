@@ -1,6 +1,11 @@
 {
   "cannon": false,
   "weaponType": 3,
+  "maxDeltaAngle": 0.08,
+  "shotFreq": 50.0,
+  "traceFreq": 3,
+  "bullets": 250,
+  "shootingCharge": 5.5,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -10,29 +15,24 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
+  "bEnablePause": false,
+  "bulletsCluster": 1,
   "aimMinDist": 0.1,
   "aimMaxDist": 4000.0,
+  "fxType": "muzzle_ground_20mm_rapid",
+  "fxMultipleSpawn": true,
   "attackMaxDist": 2500.0,
-  "maxDeltaAngle": 0.08,
   "maxDeltaAngleVertical": 0.08,
-  "shotFreq": 50.0,
   "alternativeShotFreq": 16.666,
   "shotFreqRndK": 0.15,
-  "traceFreq": 3,
-  "bEnablePause": false,
-  "bullets": 250,
-  "bulletsCluster": 1,
   "reloadTime": 20.0,
   "bulletsCartridge": 1100,
-  "shootingCharge": 5.5,
-  "fxType": "muzzle_ground_20mm_rapid",
   "fxGroundDust": "",
   "fxGrassDust": "",
   "fxSandDust": "",
   "fxSnowDust": "",
   "fxConcreteDust": "",
   "fxWaterShockWave": "",
-  "fxMultipleSpawn": true,
   "fxCooldownTime": 0.1,
   "shouldCollideWithRendinsts": true,
   "sound_path": "tanks/weapon_tanks/cannons",
@@ -63,11 +63,11 @@
   "bullet": [
     {
       "bulletCount": 10,
-      "mass": 0.09962,
+      "mass": 0.09979,
       "caliber": 0.02,
       "speed": 1030.0,
       "maxDistance": 6250.0,
-      "Cx": 0.45,
+      "Cx": 0.46979,
       "bulletName": "20mm_m53",
       "normalizationPreset": "default",
       "ricochetPreset": "defaultExt",
@@ -870,11 +870,11 @@
     },
     {
       "bulletCount": 10,
-      "mass": 0.09962,
+      "mass": 0.09979,
       "caliber": 0.02,
       "speed": 1030.0,
       "maxDistance": 6250.0,
-      "Cx": 0.45,
+      "Cx": 0.46979,
       "bulletName": "20mm_m52a1",
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
@@ -1682,17 +1682,37 @@
       },
       {
         "bulletCount": 10,
-        "mass": 0.10166,
+        "mass": 0.09979,
         "explosiveType": "h761",
         "explosiveMass": 0.0107,
         "caliber": 0.02,
-        "bulletType": "he_frag_i",
+        "bulletType": [
+          "he_frag_i",
+          "he_frag_i"
+        ],
         "bulletName": "20mm_m56a3",
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
+        "Cx": 0.46979,
         "recoilMultiplier": 0.4,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.15,
+        "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
@@ -1706,6 +1726,29 @@
         "groundRicochetEffect": "hit_15_18mm_dirt_ap",
         "explosionPatchRadius": 0.3,
         "rendinstDamageRadius": 0.0,
+        "stabilityRicochetModifier": {
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
+          "mod3": [
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
+          ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
+        },
         "hitpower": {
           "HitPower0m": [
             1.0,
@@ -2072,11 +2115,11 @@
       },
       {
         "bulletCount": 10,
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "bulletName": "20mm_m52a1",
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -2456,17 +2499,37 @@
       },
       {
         "bulletCount": 10,
-        "mass": 0.10166,
+        "mass": 0.09979,
         "explosiveType": "h761",
         "explosiveMass": 0.0107,
         "caliber": 0.02,
-        "bulletType": "he_frag_i",
+        "bulletType": [
+          "he_frag_i",
+          "he_frag_i"
+        ],
         "bulletName": "20mm_m56a3",
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
+        "Cx": 0.46979,
         "recoilMultiplier": 0.4,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.15,
+        "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
@@ -2480,6 +2543,29 @@
         "groundRicochetEffect": "hit_15_18mm_dirt_ap",
         "explosionPatchRadius": 0.3,
         "rendinstDamageRadius": 0.0,
+        "stabilityRicochetModifier": {
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
+          "mod3": [
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
+          ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
+        },
         "hitpower": {
           "HitPower0m": [
             1.0,
@@ -2850,11 +2936,11 @@
     "bullet": [
       {
         "bulletCount": 10,
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "bulletName": "20mm_m53",
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
@@ -3232,11 +3318,11 @@
       },
       {
         "bulletCount": 10,
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "bulletName": "20mm_m52a1",
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
@@ -3616,17 +3702,37 @@
       },
       {
         "bulletCount": 10,
-        "mass": 0.10166,
+        "mass": 0.09979,
         "explosiveType": "h761",
         "explosiveMass": 0.0107,
         "caliber": 0.02,
-        "bulletType": "he_frag_i",
+        "bulletType": [
+          "he_frag_i",
+          "he_frag_i"
+        ],
         "bulletName": "20mm_m56a3",
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
+        "Cx": 0.46979,
         "recoilMultiplier": 0.4,
-        "shellAnimation": "video/shells_animations/frag_i_shell.ivf",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
+        "secondaryShattersPreset": "ap",
+        "stabilityThreshold": 0.05,
+        "stabilityCaliberToArmorThreshold": 5.0,
+        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterPenetration": 0.15,
+        "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/he_frag_i_shell.ivf",
+        "gbufferModelName": "ac_he",
+        "cartridgeCaseModelName": "ac_he_with_cartridge_case",
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
         "ricochetTimeToLive": 0.085,
@@ -3640,6 +3746,29 @@
         "groundRicochetEffect": "hit_15_18mm_dirt_ap",
         "explosionPatchRadius": 0.3,
         "rendinstDamageRadius": 0.0,
+        "stabilityRicochetModifier": {
+          "mod1": [
+            0.0,
+            0.05
+          ],
+          "mod2": [
+            20.0,
+            0.1
+          ],
+          "mod3": [
+            [
+              30.0,
+              0.2
+            ],
+            [
+              45.0,
+              0.3
+            ]
+          ]
+        },
+        "pressureDamage": {
+          "damageType": "pressure"
+        },
         "hitpower": {
           "HitPower0m": [
             1.0,
@@ -4006,11 +4135,11 @@
       },
       {
         "bulletCount": 10,
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "bulletName": "20mm_m52a1",
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",

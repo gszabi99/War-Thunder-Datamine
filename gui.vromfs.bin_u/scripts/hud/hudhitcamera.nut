@@ -1,25 +1,28 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "mission" import get_mission_time
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "dagor.workcycle" import setInterval, setTimeout, clearTimer, deferOnce, resetTimeout
+from "blkGetters" import get_game_params_blk
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/datablock.nut" import getBlkValueByPath
+from "guiMission" import get_mission_difficulty_int
+from "gameplayBinding" import isInFlight
+from "console" import register_command
+from "chard" import get_charserver_time_sec
+from "dagor.random" import rnd_int, rnd_float
 from "%scripts/dagui_natives.nut" import get_option_xray_kill
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "hitCamera" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { get_mission_time } = require("mission")
+from "types" import Table
+
 let { g_hud_enemy_debuffs } = require("%scripts/hud/hudEnemyDebuffsType.nut")
 let { updateCrewLifebar, setCrewLostText } = require("%scripts/hud/hudCrewLifebarUtils.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { setInterval, setTimeout, clearTimer, deferOnce, resetTimeout } = require("dagor.workcycle")
-let { get_game_params_blk } = require("blkGetters")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
-let { get_mission_difficulty_int } = require("guiMission")
-let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
-let { isInFlight } = require("gameplayBinding")
+let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { register_command } = require("console")
-let { get_charserver_time_sec } = require("chard")
-let { rnd_int, rnd_float } = require("dagor.random")
 
 const TIME_TITLE_SHOW_SEC = 3
 const TIME_TO_SUM_CREW_LOST = 0.15
@@ -341,7 +344,7 @@ function updateCrewCount(unitInfo, data = null, isInitUpdate = false) {
   setTimeout(TIME_TO_SUM_CREW_LOST, showCrewLoss)
 }
 
-let fullHealthColor = "#909E35"
+const fullHealthColor = "#909E35"
 let healthColorConfig = [
   { remainingHp = 0.25, color = "#FD0001" }
   { remainingHp = 0.75,  color = "#F6B236" }
@@ -593,7 +596,7 @@ function onHitCameraImportantEvents(data) {
     if (events.len() == 0)
       continue
     let unitInfoEvents = unitInfo.importantEvents?[key] ?? []
-    if (type(events) == "table") {
+    if (events instanceof Table) {
       unitInfoEvents.append(events)
       if (key == "ammoEvent")
         setDamageStatus(events.damageType == 0 ? "ammo_fire_status" : "ammo_explosion_status", 1)

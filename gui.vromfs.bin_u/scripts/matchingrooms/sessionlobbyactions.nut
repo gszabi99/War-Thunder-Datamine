@@ -1,38 +1,32 @@
-from "%scripts/dagui_natives.nut" import is_online_available
-from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, DEFAULT_HANDLER, broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import search, isEmpty
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "guiMission" import quit_to_debriefing, interrupt_multiplayer, leave_mp_session
+from "penalty" import getPenaltyStatus, BAN
+from "dynamicMission" import dynamicMissionPlayed
+from "mission" import get_game_mode
+from "matching.errors" import INVALID_ROOM_ID, SERVER_ERROR_ROOM_PASSWORD_MISMATCH
+from "dagor.workcycle" import deferOnce
+from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%scripts/dagui_natives.nut" import is_online_available
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/dagui_library.nut" import *
 from "gameplayBinding" import inFlightMenu, isInFlight
+from "%scripts/webRPC.nut" import webRpcRegister
+from "types" import String
 
-let { quit_to_debriefing, interrupt_multiplayer, leave_mp_session } = require("guiMission")
-let { getPenaltyStatus, BAN } = require("penalty")
-let { dynamicMissionPlayed } = require("dynamicMission")
-let { get_game_mode } = require("mission")
-let { INVALID_ROOM_ID, SERVER_ERROR_ROOM_PASSWORD_MISMATCH } = require("matching.errors")
-let { deferOnce } = require("dagor.workcycle")
-let { addListenersWithoutEnv, DEFAULT_HANDLER, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { search, isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { isInMenu, isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { SessionLobbyState, isInSessionRoom, isMeSessionLobbyRoomOwner, getRoomCreatorUid, isSessionStartedInRoom,
-  getSessionLobbyMaxMembersCount, getSessionLobbyPlayerInfoByUid, isInSessionLobbyEventRoom, isMemberHost,
-  sessionLobbyStatus
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { SessionLobbyState, isInSessionRoom, isMeSessionLobbyRoomOwner, getRoomCreatorUid, isSessionStartedInRoom, getSessionLobbyMaxMembersCount, getSessionLobbyPlayerInfoByUid, isInSessionLobbyEventRoom, isMemberHost, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64, userName, isMyUserId } = require("%scripts/user/profileStates.nut")
 let { matchingApiFunc, checkMatchingError } = require("%scripts/matching/api.nut")
-let { requestJoinRoom, serializeDyncampaign, requestCreateRoom
-} = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
-let { leaveSessionRoom, setSessionLobbySettings, switchSessionLobbyStatus, updateMemberHostParams,
-  changeRoomPassword, needCheckReconnect, syncAllSessionLobbyInfo, initMyParamsByMemberInfo,
-  returnStatusToRoom, checkAutoStart, destroyRoom, setLastRound, setRoomInSession, prepareSettings
-} = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { needAutoInviteSquadToSessionRoom, getRoomMGameMode, haveLobby, getRoomEvent
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { invitePlayerToSessionRoom, isRoomMemberOperator
-} = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { requestJoinRoom, serializeDyncampaign, requestCreateRoom } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
+let { leaveSessionRoom, setSessionLobbySettings, switchSessionLobbyStatus, updateMemberHostParams, changeRoomPassword, needCheckReconnect, syncAllSessionLobbyInfo, initMyParamsByMemberInfo, returnStatusToRoom, checkAutoStart, destroyRoom, setLastRound, setRoomInSession, prepareSettings } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { needAutoInviteSquadToSessionRoom, getRoomMGameMode, haveLobby, getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { invitePlayerToSessionRoom, isRoomMemberOperator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { leaveAllQueuesSilent, notifyQueueLeave } = require("%scripts/queue/queueManager.nut")
 let { showMsgboxIfEacInactive } = require("%scripts/penitentiary/antiCheat.nut")
@@ -46,7 +40,6 @@ let { getEventEconomicName, isEventWithLobby } = require("%scripts/events/eventI
 let { clearMpChatLog } = require("%scripts/chat/mpChatModel.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
 let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 local delayedJoinRoomFunc = null
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
@@ -72,9 +65,9 @@ function setIngamePresence(roomPublic, roomId) {
     team = myPinfo.team
 
   let inGamePresence = {
-    gameModeId = getTblValue("game_mode_id", roomPublic)
-    gameQueueId = getTblValue("game_queue_id", roomPublic)
-    mission    = getTblValue("mission", roomPublic)
+    gameModeId = roomPublic?.game_mode_id
+    gameQueueId = roomPublic?.game_queue_id
+    mission    = roomPublic?.mission
     roomId     = roomId
     team       = team
   }
@@ -231,12 +224,12 @@ function afterRoomJoining(params) {
 
   SessionLobbyState.roomId = params.roomId
   SessionLobbyState.roomUpdated = true
-  SessionLobbyState.members = getTblValue("members", params, [])
+  SessionLobbyState.members = (params?.members ?? [])
   initMyParamsByMemberInfo()
   clearMpChatLog()
   updateMyCountryData()
 
-  let public = getTblValue("public", params, SessionLobbyState.settings)
+  let public = (params?.public ?? SessionLobbyState.settings)
   if (!isMeSessionLobbyRoomOwner.get() || isEmpty(SessionLobbyState.settings)) {
     setSessionLobbySettings(public)
 
@@ -382,7 +375,7 @@ function rpcJoinBattle(params) {
   if (!is_online_available())
     return "client not ready"
   let battleId = params.battleId
-  if (type(battleId) != "string")
+  if (!(battleId instanceof String))
     return "bad battleId type"
   if (g_squad_manager.getSquadSize() > 1)
     return "player is in squad"
@@ -402,7 +395,7 @@ function rpcJoinBattle(params) {
   return "ok"
 }
 
-web_rpc.register_handler("join_battle", rpcJoinBattle)
+webRpcRegister("join_battle", rpcJoinBattle)
 
 addListenersWithoutEnv({
   MatchingDisconnect         = @(_) leaveSessionRoom()

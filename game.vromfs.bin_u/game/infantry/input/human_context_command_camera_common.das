@@ -5,7 +5,6 @@ require %appGame.infantry.es.battle_area_common
 require DagorMathUtils
 require DagorDebug3D
 require DagorMath
-require math.ang
 require math.base
 require DngHuman
 require Dacoll
@@ -597,7 +596,7 @@ def draw_human_context_command_sight_distance(target_pos : float3; target_dir : 
       break
 
 def trace_human_context_command_sight_distance(trace_params : TraceSightDistanceParams; target_pos : float3; target_dir : float3; trace_dist : float;
-                                               height_of_sight : HumanPointOrderHeightOfSight; var trace_handle : TraceMeshFaces&; trace_radius = 0.2)
+                                               height_of_sight : HumanPointOrderHeightOfSight; trace_handle : TraceMeshFaces&; trace_radius = 0.2)
   let traceHeight = match_height_of_sight(height_of_sight)
   let tracePos = target_pos + float3(0.0, traceHeight, 0.0)
 

@@ -1,6 +1,5 @@
 require ecs
 require ecs.common
-require DagorSystem
 require Unit
 require MPlayer
 require %game.player_events

@@ -1,11 +1,11 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers, RwrSignalHoldTimeInv, CurrentTime
 from "%rGui/globals/ui_library.nut" import *
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrSignalHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
-
-let color = Color(10, 202, 10, 250)
-let backgroundColor = Color(0, 0, 0, 255)
+const color = Color(10, 202, 10, 250)
+const backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -44,7 +44,7 @@ function createRwrTarget(index, settings, objectStyle) {
       styleText.__merge({
         rendObj = ROBJ_TEXT
         pos = [pw(target.x * 100.0 * targetRadiusRel), ph(target.y * 100.0 * targetRadiusRel)]
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = objectStyle.fontScale * styleText.fontSize
@@ -161,13 +161,13 @@ function createRwrTarget(index, settings, objectStyle) {
   let ageOpacity = Computed(@() 1.0 - min(target.age * RwrSignalHoldTimeInv.get(), 1.0))
 
   return @() {
-    size = flex()
+    size = FLEX
     watch = ageOpacity
     opacity = ageOpacity.get()
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = const [pw(50), ph(50)]
+        size = FLEX
         children = [
           icon,
           attack
@@ -234,7 +234,7 @@ let settings = Computed(function() {
 let rwrTargetsComponent = function(style) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), style))
   }
 }

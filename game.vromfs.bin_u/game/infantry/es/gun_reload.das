@@ -6,7 +6,6 @@ require %appGame.infantry.es.gun_reload_common
 require %appGame.infantry.es.human_weap_common
 require %game.events
 require DngHuman
-require WTPhysActor
 require HumanPhys
 
 

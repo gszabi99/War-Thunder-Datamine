@@ -1,14 +1,14 @@
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_natives.nut" import ps4_show_chat_restriction, gchat_is_voice_enabled, gchat_is_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 function getXboxChatEnableStatus() {

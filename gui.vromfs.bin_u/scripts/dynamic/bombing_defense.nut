@@ -1,20 +1,16 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt, mgSetReal
+  , mgSetBool, mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount, mgSetupArmada, mgSetupArea
+  , rndRange, rndRangeInt, getDistancePerMinute, getAircraftCost, getAnyPlayerFighter, mgReplace, mgSetupAirfield
+  , mgSetDistToAction, getAircraftDescription, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
+from "blkGetters" import get_warpoints_blk
 from "math" import max, min, sqrt, clamp
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetStr, mgSetInt,
-  mgSetReal, mgSetBool, mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits,
-  mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute,
-  getAircraftCost, getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgSetDistToAction,
-  getAircraftDescription, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate,
-  mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
-} = require("dynamicMission")
-let { get_warpoints_blk } = require("blkGetters")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
-  let mission_preset_name = "ground_defense_preset01"
+  const mission_preset_name = "ground_defense_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
@@ -194,7 +190,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
 
   let rndHeight = rndRange(1500, 3000)
   let playerSpeed = getDistancePerMinute(playerFighterPlane)
-  let enemyBomberSpeed = 250 * 1000 / 60.0
+  const enemyBomberSpeed = 250 * 1000 / 60.0
   let enemy1TimeToRadar = rndRange(20, 30) / 60.0
   let speedRatio = clamp(playerSpeed * 1.0 / enemyBomberSpeed, 1, 2)
   let timeToEnemy1 = rndRange(90.0 * countTime / speedRatio, 120.0 * countTime / speedRatio) / 60.0

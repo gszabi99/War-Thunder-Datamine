@@ -1,21 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 
-
-let { get_time_msec } = require("dagor.time")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { totalRooms, totalPlayers, onlineInfoServerTimeParam, onlineInfoServerTimeReceived
-} = require("%scripts/onlineInfo/onlineInfo.nut")
+let { totalRooms, totalPlayers, syncMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 
 local lastShowUpdatePopupTime = -60000
 
 
 function onOnlineInfoUpdated(params) {
-  if ("utc_time" in params) {
-    onlineInfoServerTimeParam.set(params.utc_time.tointeger())
-    onlineInfoServerTimeReceived.set(get_time_msec() / 1000)
-  }
+  if ("utc_time" in params)
+    syncMatchingServerTime(params.utc_time.tointeger())
 
   if ("online_stats" in params) {
     totalRooms.set(params.online_stats?.rooms_total ?? 0)

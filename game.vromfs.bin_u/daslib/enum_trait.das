@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module enum_trait shared private
@@ -36,14 +34,34 @@ def public string(arg) {
     return "{arg}"
 }
 
+[expect_any_enum(arg)]
+def public operator !(arg) : bool {
+    
+    
+    
+    
+    
+    
+    
+    return int64(arg) == 0l
+}
+
+[expect_any_enum(arg)]
+def public bool(arg) : bool {
+    
+    
+    
+    
+    
+    return int64(arg) != 0l
+}
+
 [template(ent), unused_argument(ent)]
 def public to_enum(ent : auto(EnumT), name : string) : EnumT {
     
     
     for (e in type<EnumT>) {
-        if ("{e}" == name) {
-            return e
-        }
+        if ("{e}" == name) return e
     }
     panic("to_enum: enum value '{name}' not found in enum '{typeinfo typename(type<EnumT>)}'")
     return default<EnumT>
@@ -54,9 +72,7 @@ def public to_enum(ent : auto(EnumT), name : string; defaultValue : EnumT) : Enu
     
     
     for (e in type<EnumT>) {
-        if ("{e}" == name) {
-            return e
-        }
+        if ("{e}" == name) return e
     }
     return defaultValue
 }
@@ -88,7 +104,7 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
             }
             return $i(varName)?[src] ?? default<$t(enumT)>
         }
-        enumFn.flags &= ~FunctionFlags.privateFunction
+        enumFn.flags.privateFunction = false
         force_at(enumFn, enu.at)
         force_generated(enumFn, true)
         compiling_module() |> add_function(enumFn)
@@ -96,7 +112,7 @@ class EnumFromStringConstruction : AstEnumerationAnnotation {
         var enumFnDefault = qmacro_function("{enu.name}") $(src : string; defaultValue : $t(enumT)) : $t(enumT) {
             return $i(varName)?[src] ?? defaultValue
         }
-        enumFnDefault.flags &= ~FunctionFlags.privateFunction
+        enumFnDefault.flags.privateFunction = false
         force_at(enumFnDefault, enu.at)
         force_generated(enumFnDefault, true)
         compiling_module() |> add_function(enumFnDefault)

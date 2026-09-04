@@ -221,6 +221,37 @@ let private
   BIPOD_RESULT_BIPOD = 2
 
 
+def private check_place_reachable(gun_eid : EntityId; support_pt : float3) : bool
+  var refTm : float3x4
+  if !get_gun_tm(gun_eid, refTm)
+    return false
+  let from = refTm[3]
+  let target = support_pt + float3(0.0, 0.10, 0.0)
+  var d = target - from
+  let t = length(d)
+  d *= safediv(1.0, t)
+  return !rayhit_normalized(from, d, t, ETF_DEFAULT, -1)
+
+
+def private check_human_fits(feet_pos : float3; human_height : float; human_radius : float; trace_handle : TraceMeshFaces?) : bool
+  let from = feet_pos + float3(0.0, human_radius + 0.02, 0.0)
+  let to = float3(feet_pos.x, feet_pos.y + human_height - human_radius, feet_pos.z)
+  if to.y <= from.y
+    return true
+  var queryOut = ShapeQueryOutput()
+  return !sphere_cast_ex(from, to, human_radius, queryOut, -1, trace_handle, BIPOD_SPHERE_CAST_MASK)
+
+
+def private check_placement_valid(solve_trace_tm : float3x4; diff : float3; barrel_offset : float3; barrel_radius : float;
+                                  gun_eid : EntityId; support_pt : float3; feet_pos : float3; human_height : float; human_radius : float;
+                                  trace_handle : TraceMeshFaces?) : bool
+  var res = true
+  res &&= check_place_gun_barrel_diff(solve_trace_tm, diff, barrel_offset, barrel_radius, trace_handle)
+  res &&= check_place_reachable(gun_eid, support_pt)
+  res &&= check_human_fits(feet_pos, human_height, human_radius, trace_handle)
+  return res
+
+
 def private check_bipod_context(gun_eid : EntityId; at_pos : float3; aim_dir : float3; is_crawl : bool;
                                 for_gun_eid : EntityId; for_pos : float3; for_dir : float3; for_crawl : bool)
   if gun_eid != for_gun_eid
@@ -407,7 +438,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                       let legL = ofs + float3(0.0, -dy, dz)
                       let pt0 = bipod__solveTraceTm * legL
                       let diff = ((bipod__solveTracePt - pt0) + (secondPt - pt1)) * 0.5 + BIPOD_TRACE_BASE_UP  
-                      if bipod__solveForCrawl || check_place_gun_barrel_diff(bipod__solveTraceTm, diff, barrel_offset, barrel_radius, trace_handle)
+                      if bipod__solveForCrawl || check_placement_valid(bipod__solveTraceTm, diff, barrel_offset, barrel_radius, gun_eid, pt, bipod__solveLastPos, human_height, human_radius, trace_handle)
                         let score = -idx * 100 + (bipod__solveStep >= 0 ? bipod__solveStep * 1000 : 0)
                         if bipod__solveBestType <= BIPOD_RESULT_REST || (bipod__solveBestType == BIPOD_RESULT_BIPOD && score > bipod__solveBestScore)
                           
@@ -446,7 +477,7 @@ def update_bipod_placing(bipod_eid : EntityId; full_check : bool; gun_eid : Enti
                     let anchorHt = pt.y - BIPOD_TRACE_RADIUS + BIPOD_REST_HEIGHT + (isFlatWeaponInCrawl ? BIPOD_REST_HEIGHT_CRAWL : 0.0) - ofs.y  
                     if anchorHt >= bipod__solveGunPosLow.y && bipod__solveGunPosHigh.y >= anchorHt
                       let diff = pt - pt1 + BIPOD_TRACE_REST_UP  
-                      if bipod__solveForCrawl || check_place_gun_barrel_diff(bipod__solveTraceTm, diff, barrel_offset, barrel_radius, trace_handle)
+                      if bipod__solveForCrawl || check_placement_valid(bipod__solveTraceTm, diff, barrel_offset, barrel_radius, gun_eid, pt, bipod__solveLastPos, human_height, human_radius, trace_handle)
                         let score = -idx * 100 + (bipod__solveForCrawl ? int(-ofs.y * 10000.0) : 0) + (bipod__solveStep >= 0 ? bipod__solveStep * 1000 : 0)
                         if bipod__solveBestType == BIPOD_RESULT_NONE || (bipod__solveBestType == BIPOD_RESULT_REST && score > bipod__solveBestScore)
                           

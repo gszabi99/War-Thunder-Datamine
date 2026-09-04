@@ -1,18 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_send } = require("eventbus")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { userstatUnlocks, receiveUnlockRewards, waitingToShowRewardsArray
-} = require("%scripts/userstat/userstat.nut")
+let { userstatUnlocks, receiveUnlockRewards, waitingToShowRewardsArray } = require("%scripts/userstat/userstat.nut")
 let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { unclaimedUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { checkWarbondsOverLimit } = require("%scripts/warbonds/warbondsManager.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
 
-let userstatItemsListLocId = "mainmenu/rewardsList"
+const userstatItemsListLocId = "mainmenu/rewardsList"
 
 let rewardsInProgress = Watched({})
 let servUnlockProgress = Computed(@() userstatUnlocks.get()?.unlocks ?? {})
@@ -125,7 +124,7 @@ function claimRegionalUnlockRewards() {
 
   let handler = handlersManager.getActiveBaseHandler()
   let handlerClass = handler?.getclass()
-  if (!handler?.isValid() || handlerClass != gui_handlers.MainMenu)
+  if (!handler?.isValid() || handlerClass != get_gui_handler("MainMenu"))
     return
 
   let unlockId = unlocks.findindex(@(_) true)

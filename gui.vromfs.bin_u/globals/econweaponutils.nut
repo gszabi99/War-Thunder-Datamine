@@ -1,7 +1,7 @@
+from "dagor.debug" import logerr
+from "blkGetters" import get_wpcost_blk, get_warpoints_blk
+from "%sqstd/math.nut" import interpolateArray
 from "math" import min
-let { logerr } = require("dagor.debug")
-let { get_wpcost_blk, get_warpoints_blk } = require("blkGetters")
-let { interpolateArray } = require("%sqstd/math.nut")
 
 function getPresetRewardMul(unitName, weaponDamage, shouldUsePremMul = true) {
   local presetRewardMul = 1.0

@@ -2,7 +2,7 @@
   "model": "mig_29kr_9_41r",
   "fmFile": "fm/mig_29kr_9_41r.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.48,
   "gearSinkRangeC": 0.21,
   "haveCCIPForRocket": true,
@@ -15,9 +15,9 @@
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "hasAimingPointsMemory": true,
-  "rwrIndicator": "L-150",
+  "rwrIndicator": "L-150 MIG",
   "ils31": true,
-  "hmdShelZoom": true,
+  "hmdShel": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -70.0,
@@ -3165,6 +3165,7 @@
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "AN/APG-79",
+              "AN/APG-83",
               "Thales RDY",
               "N019",
               "N001",
@@ -3437,88 +3438,13 @@
               "pageName": "mfdMig29Horizont"
             },
             {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
-                124,
-                191,
-                186,
-                225
-              ],
-              "font": "hud",
-              "fontSize": 18,
-              "lineWidth": 3.0,
-              "lineColor": [
-                1,
-                1,
-                1,
-                120
-              ],
-              "orient": "hdgUp",
-              "centerMarkType": "plane",
-              "centerMarkFillColor": [
-                1,
-                1,
-                1,
-                255
-              ],
-              "centerMarkLineColor": [
-                1,
-                1,
-                1,
-                255
-              ],
-              "centerMarkScale": 0.1,
-              "centerMarkSpeed": false,
-              "spi": true,
-              "spiColor": [
-                1,
-                1,
-                1,
-                255
-              ],
-              "spiInfo": true,
-              "distScale": true,
-              "distScaleBeyondAzScale": true,
-              "distScaleStepSize": 5000.0,
-              "distScaleColor": [
-                1,
-                1,
-                1,
-                120
-              ],
-              "distScaleNumbers": false,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                124,
-                191,
-                186,
-                225
-              ],
-              "azScaleType": "lines",
-              "azScaleSize": 10000.0,
-              "azScaleColor": [
-                0,
-                15,
-                0,
-                255
-              ],
-              "headingIndFillColor": [
-                124,
-                191,
-                186,
-                225
-              ],
-              "centerCross": true,
-              "time": false,
-              "mapBackground": true,
-              "extent": 45000.0,
-              "markers": true,
-              "metricUnits": false
+              "type": "custom",
+              "pageName": "mfdMigCompass"
             },
             {
               "type": "rwr",
-              "scale": 0.8
+              "scale": 0.8,
+              "migStyle": true
             },
             {
               "type": "target_tracking_bw",
@@ -3538,7 +3464,8 @@
           "page": [
             {
               "type": "rwr",
-              "scale": 0.8
+              "scale": 0.8,
+              "migStyle": true
             },
             {
               "type": "custom",
@@ -3565,12 +3492,17 @@
           "cameraFromShell": true,
           "page": [
             {
+              "type": "custom",
+              "pageName": "mfdMigCompass"
+            },
+            {
               "type": "target_tracking_bw",
               "turretIdx": 0
             },
             {
               "type": "rwr",
-              "scale": 0.8
+              "scale": 0.8,
+              "migStyle": true
             },
             {
               "type": "custom",
@@ -3711,7 +3643,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_n_010m.blk",
+        "blk": "gameData/sensors/su_n_010m_ols_ue.blk",
         "dmPart": "radar1_dm"
       },
       {
@@ -3789,6 +3721,13 @@
       {
         "name": "mig_29kr_9_41r_kh_31a",
         "blk": "gameData/FlightModels/weaponPresets/mig_29kr_9_41r_kh_31a.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "mig_29kr_9_41r_kh_35",
+        "blk": "gameData/FlightModels/weaponPresets/mig_29kr_9_41r_kh_35.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
@@ -4847,6 +4786,31 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "aku_58_adapter_001",
+                "aku_58_b001",
+                "aku_58_fin1_b001",
+                "aku_58_fin2_b001",
+                "aku_58_fin3_b001",
+                "aku_58_fin4_b001",
+                "aku_58_fin5_b001",
+                "aku_58_fin6_b001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35u.blk",
+              "emitter": "aku_58_kh_29l_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot3",
             "showInWeaponMenu": true,
@@ -5463,6 +5427,31 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot4",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "aku_58_adapter_002",
+                "aku_58_b002",
+                "aku_58_fin1_b002",
+                "aku_58_fin2_b002",
+                "aku_58_fin3_b002",
+                "aku_58_fin4_b002",
+                "aku_58_fin5_b002",
+                "aku_58_fin6_b002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35u.blk",
+              "emitter": "aku_58_kh_29l_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot4",
             "showInWeaponMenu": true,
@@ -6076,6 +6065,31 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot6",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "aku_58_adapter_003",
+                "aku_58_b003",
+                "aku_58_fin1_b003",
+                "aku_58_fin2_b003",
+                "aku_58_fin3_b003",
+                "aku_58_fin4_b003",
+                "aku_58_fin5_b003",
+                "aku_58_fin6_b003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35u.blk",
+              "emitter": "aku_58_kh_29l_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_slot6",
             "showInWeaponMenu": true,
@@ -6616,6 +6630,31 @@
               "external": true,
               "separate": true,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot7",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "aku_58_adapter_004",
+                "aku_58_b004",
+                "aku_58_fin1_b004",
+                "aku_58_fin2_b004",
+                "aku_58_fin3_b004",
+                "aku_58_fin4_b004",
+                "aku_58_fin5_b004",
+                "aku_58_fin6_b004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35u.blk",
+              "emitter": "aku_58_kh_29l_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             }
           },
           {

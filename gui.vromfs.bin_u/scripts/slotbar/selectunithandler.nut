@@ -1,35 +1,31 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { setTranspRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_obj, toPixels } = require("%sqDagui/daguiUtil.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { setTranspRecursive } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_obj, toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { startsWith } = require("%sqstd/string.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
-  USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE,
-  USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK, USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom, canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar
-} = require("%scripts/slotbar/slotbarView.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarView.nut")
 let { getBestTrainedCrewIdxForUnit } = require("%scripts/slotbar/slotbarStateData.nut")
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
-let { getCurrentGameMode, getCurrentGameModeEdiff
-} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameMode, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
@@ -114,7 +110,7 @@ function getParamsFromSlotbarConfig(crew, slotbar) {
   }
 }
 
-local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
+local class SelectUnitHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarChooseAircraft.blk"
   slotbarWeak = null
@@ -165,7 +161,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let tdObj = this.slotObj.getParent()
     let tdPos = tdObj.getPosRC()
 
-    gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
+    ActionsList.removeActionsListFromObject(tdObj)
 
     let tdClone = tdObj.getClone(this.scene, this.slotbarWeak)
     tdClone.pos = ", ".concat(tdPos[0], tdPos[1])
@@ -178,7 +174,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let curUnitCloneObj = getSlotObj(tdClone, this.countryId, this.idInCountry)
     fillUnitSlotTimers(curUnitCloneObj, this.getCurCrewUnit())
-    gui_handlers.ActionsList.switchActionsListVisibility(curUnitCloneObj)
+    ActionsList.switchActionsListVisibility(curUnitCloneObj)
 
     this.scene.findObject("tablePlace").pos = ", ".concat(tdPos[0], tdPos[1])
 
@@ -250,7 +246,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function sortUnitsList(units) {
     let ediff = this.getCurrentEdiff()
-    let trained = getTblValue("trainedSpec", this.crew, {})
+    let trained = (this.crew?.trainedSpec ?? {})
     let getSortSpecialization = @(unit) unit.name in trained ? trained[unit.name]
                                           : unit.trainCost ? -1
                                           : 0
@@ -341,7 +337,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (this.isSelectByGroups && u.isUnit(unit) && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country))
+    if (this.isSelectByGroups && u.isOfClass(unit, "Unit") && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country))
       return
 
     if (!this.hasChangeVehicle(unit))
@@ -390,7 +386,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (slot in this.unitsList) {
       let unit = this.getSlotUnit(slot)
-      if (!u.isUnit(unit))
+      if (!u.isOfClass(unit, "Unit"))
         continue
 
       let masks = []
@@ -434,18 +430,18 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       let { id, hint, items, icons = [], cb = null } = maskOption
       local { value } = maskOption
 
-      let singleOption = getTblValue("singleOption", maskOption, false)
+      let singleOption = (maskOption?.singleOption ?? false)
       if (singleOption) {
         
         value = value | ~1
         set_option(userOpt, value)
       }
-      let maskStorage = getTblValue(idx, this.curOptionsMasks, 0)
+      let maskStorage = (this.curOptionsMasks?[idx] ?? 0)
       if ((value & maskStorage) == 0) {
         value = maskStorage
         set_option(userOpt, value)
       }
-      let hideTitle = getTblValue("hideTitle", maskOption, false)
+      let hideTitle = (maskOption?.hideTitle ?? false)
       let row = {
         option_title = hideTitle ? "" : loc(hint)
         option_id = id
@@ -514,7 +510,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     if (isInSessionRoom.get())
       return getSessionLobbyMissionNameLoc()
 
-    return getTblValue("text", getCurrentGameMode(), "")
+    return (getCurrentGameMode()?.getText() ?? "")
   }
 
   function getCustomListNameFromParams(params) {
@@ -538,7 +534,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj) || !obj?.idx)
       return
 
-    let maskOptions = getTblValue(obj.idx.tointeger(), this.curOptionsMasks, null)
+    let maskOptions = this.curOptionsMasks?[obj.idx.tointeger()]
     if (!maskOptions)
       return
 
@@ -626,7 +622,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     let total = tblObj.childrenCount()
     let lengthOptions = optionMasks.len()
     local selected = 0
-    let crewUnitId = getTblValue("aircraft", this.crew, "")
+    let crewUnitId = (this.crew?.aircraft ?? "")
 
     local visibleAmount = 0
     let isFirstPage = this.curVisibleSlots == this.firstPageSlots
@@ -640,7 +636,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
         continue
       let slot = this.unitsList?[i]
       let unit = this.getSlotUnit(slot)
-      if (!u.isUnit(unit))
+      if (!u.isOfClass(unit, "Unit"))
         continue
 
       local isVisible = true
@@ -731,7 +727,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       groupName = loc(this.getSelectedGroup()?.name ?? "")
     })]
 
-    if (u.isUnit(unit) && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country))
+    if (u.isOfClass(unit, "Unit") && !canAssignInSlot(unit, this.config.unitsGroupsByCountry, this.country))
       textArray.append(colorize("red", loc("worldwar/help/slotbar/unit_unavailable")))
 
     unitsGroupTextObj.setValue("\n".join(textArray, true))
@@ -747,9 +743,10 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.SelectUnitHandler <- SelectUnitHandler
+register_gui_handler("SelectUnitHandler", SelectUnitHandler)
 
 return {
+  SelectUnitHandler
   open = @(crew, slotbar) get_cur_gui_scene().performDelayed({},
     function() {
       let params = getParamsFromSlotbarConfig(crew, slotbar)

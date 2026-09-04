@@ -1,7 +1,6 @@
 require ecs
 require soundEvent
 require %appGame.wt_events
-require DagorConsole
 
 [es(tag=sound)]
 def ri_hit_custom_sound_hit(evt : EventRendinstOnProjectileHit;

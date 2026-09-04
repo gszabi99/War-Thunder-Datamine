@@ -1,11 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
@@ -94,7 +94,7 @@ let UniversalSpare = class (BaseItemModClass) {
     LayersIcon.getTextDataFromLayer(this._getRankLayer()))
 
   function _getBaseIconCfg() {
-    let layerId = "universal_spare_base"
+    const layerId = "universal_spare_base"
     return LayersIcon.findLayerCfg(layerId)
   }
 
@@ -107,7 +107,7 @@ let UniversalSpare = class (BaseItemModClass) {
   function _getRankLayer() {
     if (this.isCoveringAllRanks)
       return null
-    let textLayerStyle = "universal_spare_rank_text"
+    const textLayerStyle = "universal_spare_rank_text"
     let layerCfg = LayersIcon.findLayerCfg(textLayerStyle)
     if (!layerCfg)
       return null
@@ -118,7 +118,7 @@ let UniversalSpare = class (BaseItemModClass) {
   function _getFlagLayer() {
     if (!this.countries || this.countries.len() != 1)
       return null
-    let flagLayerStyle = "universal_spare_flag"
+    const flagLayerStyle = "universal_spare_flag"
     let layerCfg = LayersIcon.findLayerCfg(flagLayerStyle)
     if (!layerCfg)
       return null

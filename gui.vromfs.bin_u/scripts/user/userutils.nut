@@ -1,9 +1,9 @@
 from "%scripts/dagui_natives.nut" import get_cyber_cafe_id
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { getEvent } = require("%scripts/events/eventsState.nut")
+let { getUnallowedEventEconomicNames } = require("%scripts/events/eventAllowed.nut")
+let { getLeaderGameModeId, isSquadMember } = require("%scripts/squads/squadState.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { getCurCraftsInfo } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
@@ -20,10 +20,10 @@ let { havePackage } = require("%scripts/clientState/contentPacks.nut")
 
 function getMyStateData() {
   let profileInfo = getProfileInfo()
-  let gameModeId = g_squad_manager.isSquadMember()
-    ? g_squad_manager.getLeaderGameModeId()
+  let gameModeId = isSquadMember()
+    ? getLeaderGameModeId()
     : getCurrentGameModeId()
-  let event = events.getEvent(gameModeId)
+  let event = getEvent(gameModeId)
   let prefParams = mapPreferencesParams.getParams(event)
   let slotsData = getSelSlotsData()
   let myData = {
@@ -37,7 +37,7 @@ function getMyStateData() {
     selSlots = slotsData.slots,
     brokenAirs = null,
     cyberCafeId = get_cyber_cafe_id()
-    unallowedEventsENames = events.getUnallowedEventEconomicNames(),
+    unallowedEventsENames = getUnallowedEventEconomicNames(),
     crossplay = crossplayModule.isCrossPlayEnabled()
     bannedMissions = prefParams.bannedMissions
     dislikedMissions = prefParams.dislikedMissions

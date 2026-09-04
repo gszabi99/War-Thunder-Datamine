@@ -1,10 +1,10 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "unitCalculcation" import calc_crew_parameters
+from "blkGetters" import get_skills_blk
 from "%scripts/dagui_library.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { calc_crew_parameters } = require("unitCalculcation")
 let { getMaxSkillValue } = require("%scripts/crew/crewSkills.nut")
 let { crewSkillPages } = require("%scripts/crew/crew.nut")
-let { get_skills_blk } = require("blkGetters")
 let { cacheCrewData, getCachedCrewData } = require("%scripts/crew/crewShortCache.nut")
 let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 

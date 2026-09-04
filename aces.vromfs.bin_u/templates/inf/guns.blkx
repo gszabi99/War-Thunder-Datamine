@@ -279,6 +279,10 @@
     "melee_weapon__basePropsId:props::PropsId": {},
     "animchar__actOnDemand:tag": {},
     "melee_weapon:tag": {},
+    "gun__discardRequestedAtTime:r": {
+      "_tags": "gameClient",
+      "value": -1.0
+    },
     "phys_vars": {},
     "net__notInInitialScope:tag": {},
     "gun__owner:eid": {}
@@ -575,6 +579,15 @@
     "nearDofOverride": true,
     "attaches_list:list<eid>": {}
   },
+  "gun_camo_paintable": {
+    "animchar_camo__params": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "_replicated": "animchar_camo__params"
+  },
   "visual_gun": {
     "_use": "visual_gun_with_animchar_updatable",
     "animchar__actOnDemand:tag": {}
@@ -743,6 +756,11 @@
     "gun__magnification": 2.0
   },
   "main_weap_slots": {
+    "_replicated": [
+      "animchar__objTexReplace",
+      "animchar__objTexSet"
+    ],
+    "item__lootSoundType": "weapon",
     "animchar__objTexReplace:object": {},
     "animchar__objTexSet:object": {},
     "item__weapSlots:array": {

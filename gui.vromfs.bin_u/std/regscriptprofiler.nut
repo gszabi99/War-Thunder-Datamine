@@ -21,10 +21,12 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
   let frp = require_optional("frp")
 
   local st = 0
-  function toggleProfiler(newVal = null, fileName = null) {
+  function toggleProfiler(newVal = null, fileName = null): string {
+    if (newVal != null && newVal == isProfileOn.get()) {
+      logRes("already")
+      return "already"
+    }
     local ret
-    if (newVal == isProfileOn.get())
-      ret = "already"
     isProfileOn.set(newVal ?? !isProfileOn.get())
     if (isProfileOn.get())
       ret = "on"
@@ -67,6 +69,7 @@ function registerScriptProfiler(prefix, logRes = log.console_print, filePath = n
     else{
       logRes("stopping spikes profiler")
       clearTimer(profileSpikes)
+      profiler.stop()
     }
   }
   function setSpikesThreshold(val){

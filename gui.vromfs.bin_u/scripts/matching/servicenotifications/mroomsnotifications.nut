@@ -1,14 +1,12 @@
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "string" import format
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
 
-let { format } = require("string")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { roomState, cleanupRoomState, isNotifyForCurrentRoom, connectToHost,
-  mergeAttribs, updateMemberAttributes, addRoomMember, removeRoomMember
-} = require("%scripts/matching/serviceNotifications/mroomsState.nut")
-let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin
-} = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { roomState, cleanupRoomState, isNotifyForCurrentRoom, connectToHost, mergeAttribs, updateMemberAttributes, addRoomMember, removeRoomMember } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
+let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { joinSessionRoom, onMemberLeave } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { addSessionRoomInvite } = require("%scripts/invites/invites.nut")
 
@@ -23,11 +21,16 @@ function notify_room_invite(params) {
   }
 
   let senderId = ("senderId" in params) ? params.senderId : null
-  let password = getTblValue("password", params, null)
+  let password = params?.password
   if (!senderId) 
     joinSessionRoom(params.roomId, senderId, password)
-  else
-    addSessionRoomInvite(params.roomId, senderId.tostring(), params.senderName, password)
+  else {
+    
+    
+    let { game_mode_name = null, mission = null, missionURL = null } = params
+    let roomInfo = { roomId = params.roomId, game_mode_name, mission, missionURL }
+    addSessionRoomInvite(params.roomId, senderId.tostring(), params.senderName, password, roomInfo)
+  }
   return true
 }
 
@@ -62,7 +65,7 @@ function notify_room_attribs_changed(params) {
 
 function onRoomInvite(notify, sendResp) {
   local inviteData = notify.invite_data
-  if (type(inviteData) != "table")
+  if (!(inviteData instanceof Table))
     inviteData = {}
   inviteData.roomId <- notify.roomId
 

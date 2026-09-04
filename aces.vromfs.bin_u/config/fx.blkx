@@ -53,6 +53,21 @@
   "dirtCenterSpawnRateMinSpd": 0.1,
   "dirtCenterSpawnRateMaxSpd": 3.0,
   "dirtCenterSpawnRateSpdMult": 0.8,
+  "biomeColorReplacement": {
+    "replace": {
+      "biome": [
+        "grass",
+        "forest",
+        "forest_leaves"
+      ],
+      "color": [
+        0.06,
+        0.04,
+        0.02,
+        1.0
+      ]
+    }
+  },
   "wreckageAircraftSplash": {
     "groundFx": "ad_sand",
     "waterFx": "bomb_reflection"
@@ -1780,6 +1795,16 @@
   },
   "tank_exhaust_fires": {
     "fx": "fires_exhaust_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_exhaust_fires_burst_small": {
+    "fx": "fires_exhaust_burst_small_cmps_fx",
+    "sfxPath": "sounds/effects",
+    "sfxPathStudio": "aircraft/effects"
+  },
+  "tank_exhaust_fires_burst_med": {
+    "fx": "fires_exhaust_burst_med_cmps_fx",
     "sfxPath": "sounds/effects",
     "sfxPathStudio": "aircraft/effects"
   },
@@ -3868,7 +3893,7 @@
     "soundEnableDistance": 1000.0
   },
   "hit_28_38mm_red_brick_he_rapid": {
-    "fx": "hit_28_38mm_red_brick_ap_rapid_cmps_fx",
+    "fx": "hit_28_38mm_red_brick_he_rapid_cmps_fx",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_rapid",
     "soundEnableDistance": 1000.0
@@ -4037,6 +4062,12 @@
   },
   "hit_39_58mm_red_brick_ap_rapid": {
     "fx": "hit_39_58mm_red_brick_ap_rapid_cmps_fx",
+    "sfxPathStudio": "ground/explosions",
+    "sfxEvent": "explosion_stone_small",
+    "soundEnableDistance": 500.0
+  },
+  "hit_39_58mm_red_brick_he_rapid": {
+    "fx": "hit_39_58mm_red_brick_he_rapid_cmps_fx",
     "sfxPathStudio": "ground/explosions",
     "sfxEvent": "explosion_stone_small",
     "soundEnableDistance": 500.0

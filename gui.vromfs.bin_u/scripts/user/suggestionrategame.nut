@@ -1,27 +1,27 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqstd/platform.nut" import is_gdk
+from "%sqstd/time.nut" import TIME_HOUR_IN_SECONDS, daysToSeconds, minutesToSeconds
+from "console" import register_command
+from "steam" import steam_is_running
+from "%gdkLib/impl/store.nut" import request_review
+from "chard" import get_charserver_time_sec
+from "dagor.random" import rnd_int, frnd
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
-let { is_gdk } = require("%sqstd/platform.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { TIME_HOUR_IN_SECONDS, daysToSeconds, minutesToSeconds } = require("%sqstd/time.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { register_command } = require("console")
-let { steam_is_running } = require("steam")
-let { request_review } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { get_charserver_time_sec } = require("chard")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let steamOpenReviewWnd = require("%scripts/user/steamRateGameWnd.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { isStatsLoaded, getPvpPlayed, getTotalTimePlayedSec } = require("%scripts/myStats.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { rnd_int, frnd } = require("dagor.random")
 
 let logP = log_with_prefix("[ShowRate] ")
 let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) 

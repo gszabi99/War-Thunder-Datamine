@@ -1,7 +1,14 @@
 import "gdk.user" as user
 from "eventbus" import eventbus_subscribe_onehit
+
+local nextEventId = 0
+function mkEventName(baseName): string {
+  nextEventId++
+  return $"{baseName}_{nextEventId}"
+}
+
 function init_default_user(callback) {
-  let eventName = "xbox_user_init_default_user"
+  let eventName = mkEventName("xbox_user_init_default_user")
   eventbus_subscribe_onehit(eventName, function(result) {
     let xuid = result?.xuid ?? 0
     callback?(xuid)
@@ -11,7 +18,7 @@ function init_default_user(callback) {
 
 
 function shutdown_user(callback) {
-  let eventName = "xbox_user_shutdown_user_event"
+  let eventName = mkEventName("xbox_user_shutdown_user_event")
   eventbus_subscribe_onehit(eventName, function(_) {
     callback?()
   })
@@ -20,7 +27,7 @@ function shutdown_user(callback) {
 
 
 function retrieve_auth_token(url, method, callback) {
-  let eventName = "xbox_user_get_auth_token"
+  let eventName = mkEventName("xbox_user_get_auth_token")
   eventbus_subscribe_onehit(eventName, function(result) {
     callback?(result?.success, result?.token, result?.signature)
   })
@@ -29,7 +36,7 @@ function retrieve_auth_token(url, method, callback) {
 
 
 function show_profile_card(xuid, callback) {
-  let eventName = "xbox_user_show_profile_card"
+  let eventName = mkEventName("xbox_user_show_profile_card")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)

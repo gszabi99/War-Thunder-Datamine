@@ -1,14 +1,15 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getChestChancesData, fillChestChances } = require("%scripts/items/prizeChance.nut")
 
-local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
+local class ItemInfoHandler (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/items/itemDesc.blk"
 
@@ -91,7 +92,7 @@ local class ItemInfoHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ItemInfoHandler <- ItemInfoHandler
+register_gui_handler("ItemInfoHandler", ItemInfoHandler)
 
 return function(scene) {
   if (!checkObj(scene))

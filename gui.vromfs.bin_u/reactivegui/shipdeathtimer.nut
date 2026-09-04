@@ -1,8 +1,8 @@
+from "%rGui/shipState.nut" import timeToDeath
+from "%sqstd/time.nut" import secondsToTimeFormatString
 from "%rGui/globals/ui_library.nut" import *
 
-let { timeToDeath } = require("%rGui/shipState.nut")
 let { alert } = require("%rGui/style/colors.nut").hud.damageModule
-let { secondsToTimeFormatString } = require("%sqstd/time.nut")
 let timeLocTable = require("%rGui/timeLocTable.nut")
 
 let showTimeToDeath = Computed(@() timeToDeath.get() > 0)

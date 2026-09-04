@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { WwBattleDescription } = require("%scripts/worldWar/handler/wwBattleDescription.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
@@ -88,7 +88,7 @@ let WwOperationBattle = class (BaseInvite) {
       Callback(function() {
         g_world_war.joinOperationById(this.operationId, null, false,
           Callback(function() {
-            gui_handlers.WwBattleDescription.open(getBattleById(this.battleId))
+            WwBattleDescription.open(getBattleById(this.battleId))
           }, this))
       }, this),
       null, "isCanNewflight")

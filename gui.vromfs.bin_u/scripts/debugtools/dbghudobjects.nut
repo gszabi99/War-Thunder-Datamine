@@ -1,11 +1,11 @@
+from "dagor.random" import frnd
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { frnd } = require("dagor.random")
+let { Hud } = require("%scripts/hud/hud.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let { register_command } = require("console")
 let dbgHudObjectTypes = require("%scripts/debugTools/dbgHudObjectTypes.nut")
 
 
@@ -43,13 +43,13 @@ function createTimerObjOnce() {
   if (checkObj(curTimerObj))
     return
 
-  let hudHandler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let hudHandler = handlersManager.findHandlerClassInScene(Hud)
   if (!hudHandler) {
     dlog("Error: not found active hud")
     return
   }
 
-  let blkText = "timer { id:t = 'hud_debug_objects_timer'; timer_handler_func:t = 'onUpdate' }"
+  const blkText = "timer { id:t = 'hud_debug_objects_timer'; timer_handler_func:t = 'onUpdate' }"
   hudHandler.guiScene.appendWithBlk(hudHandler.scene, blkText, null)
   curTimerObj = hudHandler.scene.findObject("hud_debug_objects_timer")
   curTimerObj.setUserData({ onUpdate })
@@ -61,7 +61,7 @@ function stop() {
 }
 
 function getCurHudType() {
-  let hudHandler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let hudHandler = handlersManager.findHandlerClassInScene(Hud)
   if (!hudHandler)
     return HUD_TYPE.NONE
   return hudHandler.hudType

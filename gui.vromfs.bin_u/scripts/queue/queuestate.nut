@@ -1,12 +1,11 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueConsts.nut" import queueStates
 
-let { get_time_msec } = require("dagor.time")
-let { deferOnce } = require("dagor.workcycle")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 

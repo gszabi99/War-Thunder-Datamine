@@ -1,37 +1,38 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "eventbus" import eventbus_subscribe
+from "%sqstd/platform.nut" import is_windows, platformId, is_gdk
+from "language" import getLocalLanguage
+from "string" import format
+from "%sqstd/datablock.nut" import eachBlock, convertBlk
+from "acesInfo" import is_fully_translated
+from "%sqstd/string.nut" import stripTags
+from "blkGetters" import get_game_settings_blk
+from "contentpacks" import getContentPackStatus, requestContentPack, ContentPackStatus
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_difficulty_name, has_entitlement, ps4_update_gui, direct_launch
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 from "app" import exitGame
 from "console" import register_command
 
-let { eventbus_subscribe } = require("eventbus")
-let { is_windows, platformId, is_gdk } = require("%sqstd/platform.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { getLocalLanguage } = require("language")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { checkMembersPkg } = require("%scripts/squads/squadState.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { format } = require("string")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { eachBlock, convertBlk } = require("%sqstd/datablock.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { is_fully_translated } = require("acesInfo")
-let DataBlock = require("DataBlock")
-let { stripTags } = require("%sqstd/string.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { langsById, needCheckLangPack } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { get_charserver_time_sec } = require("chard")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 let OFFER_DOWNLOAD_PACK_TIME_SEC = 14 * TIME_DAY_IN_SECONDS
 
@@ -46,7 +47,7 @@ function quit_and_run_cmd(cmd) {
 register_command(quit_and_run_cmd, "quit_and_run_cmd")
 
 function check_members_pkg(pack) {
-  let members = g_squad_manager.checkMembersPkg(pack)
+  let members = checkMembersPkg(pack)
   if (!members.len())
     return true
 
@@ -252,7 +253,7 @@ function updateContentPacks() {
   if (!reqPacksList.len())
     return
 
-  if (!hasFeature("Packages"))
+  if (!hasFeature("Packages") || getFromSettingsBlk("debug/skipPopups", false))
     return request_packages(reqPacksList)
 
   if (text == "") {

@@ -1,8 +1,8 @@
+from "worldwar" import wwGetArmiesNames
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { wwGetArmiesNames } = require("worldwar")
 let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 let WwOperationArmies = class {
@@ -15,12 +15,12 @@ let WwOperationArmies = class {
   }
 
   function getArmiesByStatus(status) {
-    return getTblValue(status, this.armiesByStatusCache, {})
+    return (this.armiesByStatusCache?[status] ?? {})
   }
 
   function updateArmyStatus(armyName) {
     let army = getArmyByName(armyName)
-    let cachedArmy = getTblValue(armyName, this.armiesByNameCache, null)
+    let cachedArmy = this.armiesByNameCache?[armyName]
     let hasChanged = !cachedArmy || !cachedArmy.isStatusEqual(army)
 
     if (!hasChanged)
@@ -49,7 +49,7 @@ let WwOperationArmies = class {
       if (!army.hasManageAccess())
         continue
 
-      let cachedArmy = getTblValue(armyName, this.armiesByNameCache)
+      let cachedArmy = this.armiesByNameCache?[armyName]
       if (cachedArmy)
         findedCachedArmies[armyName] <- cachedArmy
 
@@ -60,7 +60,7 @@ let WwOperationArmies = class {
     }
 
     let deletingCachedArmiesNames = this.armiesByNameCache
-      .filter(@(cachedArmy) cachedArmy.name in findedCachedArmies)
+      .filter(@(cachedArmy) !(cachedArmy.name in findedCachedArmies))
 
     foreach (armyName, _cachedArmy in deletingCachedArmiesNames)
       this.armiesByNameCache.$rawdelete(armyName)
@@ -76,7 +76,7 @@ let WwOperationArmies = class {
   }
 
   function addArmyToCache(army, needSort = false) {
-    let cacheByStatus = getTblValue(army.getActionStatus(), this.armiesByStatusCache)
+    let cacheByStatus = this.armiesByStatusCache?[army.getActionStatus()]
     if (!cacheByStatus)
       return
 
@@ -95,7 +95,7 @@ let WwOperationArmies = class {
   }
 
   function removeArmyFromCache(cachedArmy) {
-    let cacheByStatus = getTblValue(cachedArmy.getActionStatus(), this.armiesByStatusCache, null)
+    let cacheByStatus = this.armiesByStatusCache?[cachedArmy.getActionStatus()]
     if (cacheByStatus != null) {
       let cachedArr = cachedArmy.isSurrounded() ? cacheByStatus.surrounded : cacheByStatus.common
       foreach (idx, army in cachedArr)

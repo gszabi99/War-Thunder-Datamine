@@ -1,41 +1,39 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
+from "string" import format
+from "hangar" import hangar_is_model_loaded, hangar_is_no_unit_mode
+from "app" import APP_ID
+from "gameplayBinding" import isInHangar
+from "unitCustomization" import get_last_skin
 from "%scripts/dagui_natives.nut" import live_preview_resource, live_preview_resource_for_approve, live_preview_resource_by_guid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/customization/customizationConsts.nut" import PREVIEW_MODE
+from "%scripts/webRPC.nut" import webRpcRegister
 
-let { eventbus_subscribe } = require("eventbus")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hangar_is_model_loaded, hangar_is_no_unit_mode } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { APP_ID } = require("app")
 let { isCollectionPrize, hasAvailableCollections } = require("%scripts/collections/collections.nut")
-let { getDecorator, getDecoratorByResource
-} = require("%scripts/customization/decoratorGetters.nut")
+let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
 let { setDecoratorPreviewer } = require("%scripts/customization/decorator.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { isInHangar } = require("gameplayBinding")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { get_last_skin } = require("unitCustomization")
 
-let downloadTimeoutSec = 15
+const downloadTimeoutSec = 15
 local downloadProgressBox = null
 
 local onSkinReadyToShowCallback = null
@@ -59,7 +57,7 @@ function gui_start_decals(params = null) {
 
   params = params ?? {}
   params.backSceneParams <- { eventbusName = "gui_start_mainmenu" }
-  loadHandler(gui_handlers.DecalMenuHandler, params)
+  loadHandler(get_gui_handler("DecalMenuHandler"), params)
 }
 
 function guiStartInfantryCamouflage(params = null) {
@@ -68,7 +66,7 @@ function guiStartInfantryCamouflage(params = null) {
 
   params = params ?? {}
   params.backSceneParams <- { eventbusName = "gui_start_mainmenu" }
-  loadHandler(gui_handlers.InfantryCamouflageHandler, params)
+  loadHandler(get_gui_handler("InfantryCamouflageHandler"), params)
 }
 
 eventbus_subscribe("gui_start_decals", gui_start_decals)
@@ -84,10 +82,10 @@ function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = fals
       || (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
       || hasSessionInLobby())
     return "temporarily_forbidden"
-  let customizationScene = handlersManager.findHandlerClassInScene(gui_handlers.DecalMenuHandler)
+  let customizationScene = handlersManager.findHandlerClassInScene(get_gui_handler("DecalMenuHandler"))
   if (customizationScene && (!shouldAllowFromCustomizationScene || !customizationScene.canRestartSceneNow()))
     return "temporarily_forbidden"
-  let isInResearchMode = !!handlersManager.findHandlerClassInScene(gui_handlers.ShopCheckResearch)?.shopResearchMode
+  let isInResearchMode = !!handlersManager.findHandlerClassInScene(get_gui_handler("ShopCheckResearch"))?.shopResearchMode
   if (isInResearchMode)
     return "in_research_mode"
   return  ""
@@ -443,14 +441,11 @@ globalCallbacks.addTypes({
 })
 
 
+registerForNativeCall("live_start_unit_preview", @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove))
 
-
-
-getroottable()["live_start_unit_preview"] <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
-
-web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
-web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
-web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
+webRpcRegister("ugc_skin_preview", @(params) liveSkinPreview(params))
+webRpcRegister("market_view_item", @(params) marketViewItem(params))
+webRpcRegister("request_view_unit", @(params) requestUnitPreview(params))
 
 eventbus_subscribe("onLiveSkinDataLoaded", @(res) onSkinDownloaded(res.unitId, res.skinGuid, res.result))
 eventbus_subscribe("liveStartUnitPreview", @(res) showUnitSkin(res.unitId, res.skinId, res.isForApprove))

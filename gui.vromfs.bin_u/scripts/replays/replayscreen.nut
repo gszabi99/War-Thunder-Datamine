@@ -1,29 +1,30 @@
+import "regexp2" as regexp2
+from "%sqstd/platform.nut" import is_windows
+from "string" import format
+from "replays" import is_replay_turned_on, is_replay_saved, get_replays_dir, get_new_replay_filename, on_save_replay, on_view_replay, get_replays_list
+  , on_del_replay, on_open_replays_folder, get_replay_info
+from "mission" import is_benchmark_game_mode
+from "%sqstd/string.nut" import startsWith, endsWith
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import set_presence_to_player, get_option_autosave_replays, is_mouse_last_time_used, rename_file
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "app" import is_dev_version
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
-let { is_windows } = require("%sqstd/platform.nut")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let regexp2 = require("regexp2")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let replayMetadata = require("%scripts/replays/replayMetadata.nut")
-let { is_replay_turned_on, is_replay_saved, get_replays_dir,
-  get_new_replay_filename, on_save_replay, on_view_replay, get_replays_list,
-  on_del_replay, on_open_replays_folder, get_replay_info } = require("replays")
-let { is_benchmark_game_mode } = require("mission")
-let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMissionName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { countSizeInItems, move_mouse_on_child_by_value, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { countSizeInItems, move_mouse_on_child_by_value, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
@@ -42,14 +43,14 @@ let isCorruptedReplay = @(replay) (replay?.corrupted ?? false)
 local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
   && (!isCorruptedReplay(replay) || is_dev_version())
 
-let autosaveReplayMaxCount = 100
-let autosaveReplayPrefix = "#"
+const autosaveReplayMaxCount = 100
+const autosaveReplayPrefix = "#"
 const replayFileExt = "wrpl"
 
 let currentReplay = persist("currentReplay", @() { path = "" })
 
 function guiStartReplays() {
-  loadHandler(gui_handlers.ReplayScreen)
+  loadHandler(get_gui_handler("ReplayScreen"))
 }
 
 function guiStartMenuReplays() {
@@ -73,7 +74,7 @@ function guiStartReplayBattle(sessionId, backFunc) {
 }
 
 function guiModalRenameReplay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
-  loadHandler(gui_handlers.RenameReplayHandler, {
+  loadHandler(get_gui_handler("RenameReplayHandler"), {
                                                               baseName = base_name
                                                               basePath = base_path
                                                               funcOwner = func_owner
@@ -142,7 +143,7 @@ function autosaveReplay() {
   currentReplay.path = currentReplayPath
 }
 
-gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
+let ReplayScreen = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navReplays.blk"
@@ -303,8 +304,8 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       objDesc.findObject("item_desc_text").setValue(loc("msgbox/error_header"))
     }
     else {
-      let corrupted = getTblValue("corrupted", replayInfo, false) 
-      let isVersionMismatch = getTblValue("isVersionMismatch", replayInfo, false) 
+      let corrupted = (replayInfo?.corrupted ?? false) 
+      let isVersionMismatch = (replayInfo?.isVersionMismatch ?? false) 
       let isHeaderUnreadable = corrupted && !isVersionMismatch 
 
       local headerText = ""
@@ -371,7 +372,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     local tables = ""
     if (hasFeature("extendedReplayInfo") && "comments" in replayInfo) {
       let replayResultsTable = this.gatherReplayCommentData(replayInfo)
-      addDescr = getTblValue("addDescr", replayResultsTable, "")
+      addDescr = (replayResultsTable?.addDescr ?? "")
 
       foreach (name in replayResultsTable.tablesArray) {
         let rows = replayResultsTable.playersRows[name]
@@ -399,7 +400,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       addTableParams = {}
     }
 
-    let replayComments = getTblValue("comments", replayInfo)
+    let replayComments = replayInfo?.comments
     if (!replayComments)
       return data
 
@@ -413,7 +414,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     let columnsOrder = isRace ? this.statsColumnsOrderRace : this.statsColumnsOrderPvp
 
     foreach (name in replayParams) {
-      local value = getTblValue(name, replayComments)
+      local value = replayComments?[name]
       if (!value)
         continue
 
@@ -455,9 +456,9 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let missionName = getTblValue("missionName", replayInfo, "")
+    let missionName = (replayInfo?.missionName ?? "")
     let missionObjectivesMask = g_mission_type.getTypeByMissionName(missionName).getObjectives(
-      { isWorldWar = getTblValue("isWorldWar", replayInfo, false) })
+      { isWorldWar = (replayInfo?.isWorldWar ?? false) })
 
     let rowHeader = []
     let headerArray = []
@@ -608,7 +609,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     if (index < 0 || index >= this.replays.len())
       return
 
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, get_gui_handler("MainMenu"))
     this.guiScene.performDelayed(this, @() openHitsAnalysisWindow(this.replays[index].path))
   }
 
@@ -640,10 +641,11 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     this.refreshList(index)
   }
 }
+register_gui_handler("ReplayScreen", ReplayScreen)
 
 
 
-gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let RenameReplayHandler = class (BaseGuiHandlerWT) {
   function initScreen() {
     if (!this.scene)
       return this.goBack();
@@ -712,6 +714,7 @@ gui_handlers.RenameReplayHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/editBoxWindow.blk"
   title = "mainmenu/replayName"
 }
+register_gui_handler("RenameReplayHandler", RenameReplayHandler)
 
 return {
   guiStartReplayBattle

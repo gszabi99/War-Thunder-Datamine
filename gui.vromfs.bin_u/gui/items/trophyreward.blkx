@@ -196,6 +196,7 @@
         "roulette": {
           "size": "pw, ph",
           "padding": "1@framePadding, 0",
+          "hasBg": "yes",
           "overflow": "hidden",
           "css-hier-invalidate": "yes",
           "tdiv": {
@@ -210,17 +211,17 @@
             },
             "tdiv": {
               "height": "ph",
-              "width": "2",
+              "width": "2@dp",
               "pos": "50%pw-50%w, 50%ph-50%h",
               "position": "absolute",
               "received_reward_indicator": [
                 {
-                  "pos": "50%pw-50%w, 2",
+                  "pos": "50%pw-50%w, 2@dp",
                   "position": "absolute",
                   "rotation": "180"
                 },
                 {
-                  "pos": "50%pw-50%w, ph -h -1",
+                  "pos": "50%pw-50%w, ph -h -2@dp",
                   "position": "absolute"
                 }
               ]
@@ -229,15 +230,15 @@
         },
         "rewards_fade": [
           {
-            "pos": "2, 3",
+            "pos": "2@sf/@pf, 3@sf/@pf",
             "position": "absolute",
-            "size": "50%pw-0.5@itemWidth, ph-6"
+            "size": "50%pw-0.5@itemWidth, ph-6@sf/@pf"
           },
           {
-            "pos": "pw-w-2, 3",
+            "pos": "pw-w-2@sf/@pf, 3@sf/@pf",
             "position": "absolute",
             "rotation": "180",
-            "size": "50%pw-0.5@itemWidth, ph-6"
+            "size": "50%pw-0.5@itemWidth, ph-6@sf/@pf"
           }
         ]
       },

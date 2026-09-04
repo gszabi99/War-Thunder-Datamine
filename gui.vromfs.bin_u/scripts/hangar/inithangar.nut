@@ -1,16 +1,16 @@
+from "%appGlobals/login/loginState.nut" import isAuthorized, isProfileReceived, isLoginRequired, isOnlineBinariesInited
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqstd/frp.nut" import WatchedImmediate
+from "gameplayBinding" import isInHangar, isInFlight
+from "graphicsOptions" import set_gui_fps_limit_mode_active
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import resetTimeout, clearTimer, deferOnce
 from "hangar" import activate_downloadable_hangar, get_current_downloadable_hangar, reload_hangar_scene
 from "auth_wt" import setLoginHangarDelayed
 from "console" import register_command
 from "%sqstd/globalState.nut" import hardPersistWatched
-let { isAuthorized, isProfileReceived, isLoginRequired, isOnlineBinariesInited
-} = require("%appGlobals/login/loginState.nut")
-let { WatchedImmediate } = require("%sqstd/frp.nut")
+
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { isInHangar, isInFlight } = require("gameplayBinding")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { set_gui_fps_limit_mode_active } = require("graphicsOptions")
 
 
 const MAX_HANGAR_DELAY_TIME = 60

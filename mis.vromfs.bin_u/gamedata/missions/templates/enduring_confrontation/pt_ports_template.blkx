@@ -167,22 +167,22 @@
           {
             "loc_name": "missions/pt_sea_spawn_01",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "pt_t1_players_spawn_01",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": false,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "pt_t1_players_spawn_01",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -202,22 +202,22 @@
           {
             "loc_name": "missions/pt_sea_spawn_02",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "pt_t1_players_spawn_02",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": false,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "pt_t1_players_spawn_02",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -237,22 +237,22 @@
           {
             "loc_name": "missions/pt_sea_spawn_01",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "pt_t2_players_spawn_01",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": false,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "pt_t2_players_spawn_01",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -272,22 +272,22 @@
           {
             "loc_name": "missions/pt_sea_spawn_02",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "pt_t2_players_spawn_02",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": false,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "pt_t2_players_spawn_02",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -338,6 +338,66 @@
             "pt_capture_port_start",
             "pt_ports_turning_start"
           ]
+        }
+      },
+      "else_actions": {}
+    },
+    "pt_t1_check_no_ports_left": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "pt_t1_ports_count",
+          "value": 1,
+          "comparasion_func": "less"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "team A have no ports left. starting tickets bleeding"
+        },
+        "triggerEnable": {
+          "target": "teamA_tickets_bleed"
+        }
+      },
+      "else_actions": {}
+    },
+    "pt_t2_check_no_ports_left": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "varCompareInt": {
+          "var_value": "pt_t2_ports_count",
+          "value": 1,
+          "comparasion_func": "less"
+        }
+      },
+      "actions": {
+        "comment": {
+          "value": "team B have no ports left. starting tickets bleeding"
+        },
+        "triggerEnable": {
+          "target": "teamB_tickets_bleed"
         }
       },
       "else_actions": {}
@@ -727,22 +787,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_cruisers_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_cruisers_squad_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_cruisers_squad_name",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -775,22 +835,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_cruisers_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_cruisers_squad_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_cruisers_squad_name",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -844,22 +904,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_destroyers_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_destroyers_squad_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_destroyers_squad_name",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -892,22 +952,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_destroyers_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_destroyers_squad_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_destroyers_squad_name",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -998,22 +1058,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_squad_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_squad_name",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -1040,22 +1100,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_squad_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_squad_name",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -1098,6 +1158,9 @@
             },
             {
               "value": "idem dal'she po ciklu"
+            },
+            {
+              "value": "add port count to team A"
             }
           ],
           "missionMarkAsCaptureZone": {
@@ -1141,6 +1204,11 @@
           },
           "missionMakeTorpedoNet": {
             "object": "@pt_generate_capture_area_name"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "pt_t1_ports_count"
           }
         },
         "else_actions": {
@@ -1150,6 +1218,9 @@
             },
             {
               "value": "idem dal'she po ciklu"
+            },
+            {
+              "value": "add port count to team B"
             }
           ],
           "missionMarkAsCaptureZone": {
@@ -1193,6 +1264,11 @@
           },
           "missionMakeTorpedoNet": {
             "object": "@pt_generate_capture_area_name"
+          },
+          "varModify": {
+            "operator": "add",
+            "value": 1.0,
+            "var": "pt_t2_ports_count"
           }
         }
       },
@@ -1259,22 +1335,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_loc_string_air",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_port_air_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_port_air_name",
-            "team": "A",
             "spawnOffset": [
               -3000.0,
               2000.0,
@@ -1306,22 +1382,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_generate_spawn_loc_string_air",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_generate_spawns_port_air_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_generate_spawns_port_air_name",
-            "team": "B",
             "spawnOffset": [
               -3000.0,
               2000.0,
@@ -1730,22 +1806,22 @@
           "__missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string_air",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_port_air_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_port_air_name",
-            "team": "A",
             "spawnOffset": [
               -3000.0,
               2000.0,
@@ -1858,22 +1934,22 @@
           "__missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string_air",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_port_air_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_port_air_name",
-            "team": "A",
             "spawnOffset": [
               -3000.0,
               2000.0,
@@ -1941,22 +2017,22 @@
           "__missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string_air",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_port_air_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_port_air_name",
-            "team": "B",
             "spawnOffset": [
               -3000.0,
               2000.0,
@@ -2075,22 +2151,22 @@
           "__missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string_air",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_port_air_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_port_air_name",
-            "team": "B",
             "spawnOffset": [
               -3000.0,
               2000.0,
@@ -2147,22 +2223,22 @@
             {
               "loc_name": "@pt_turning_spawns_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_cruisers_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_cruisers_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2177,22 +2253,22 @@
             {
               "loc_name": "@pt_turning_spawns_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_destroyers_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_destroyers_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2247,22 +2323,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_squad_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_squad_name",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -2310,22 +2386,22 @@
             {
               "loc_name": "@pt_turning_spawns_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_cruisers_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_cruisers_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2340,22 +2416,22 @@
             {
               "loc_name": "@pt_turning_spawns_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_destroyers_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_destroyers_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2410,22 +2486,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_squad_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_squad_name",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -2473,22 +2549,22 @@
             {
               "loc_name": "@pt_turning_spawns_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_cruisers_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_cruisers_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2507,22 +2583,22 @@
             {
               "loc_name": "@pt_turning_spawns_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_destroyers_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_destroyers_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2581,22 +2657,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_squad_name",
+            "team": "A",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_squad_name",
-            "team": "A",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -2644,22 +2720,22 @@
             {
               "loc_name": "@pt_turning_spawns_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_cruisers_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_cruisers_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2678,22 +2754,22 @@
             {
               "loc_name": "@pt_turning_spawns_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_turning_spawns_destroyers_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_turning_spawns_destroyers_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -2752,22 +2828,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "@pt_turning_spawns_loc_string",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@pt_turning_spawns_squad_name",
+            "team": "B",
             "isStrictSpawn": false,
             "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": true,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": true,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "replaceAreas": true,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@pt_turning_spawns_squad_name",
-            "team": "B",
             "tags": {
               "type_bomber": false,
               "type_fighter": false,
@@ -5704,12 +5780,12 @@
             }
           ],
           "unitSetIndication": {
+            "set": true,
+            "target": "@pt_attack_port_squad_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": true,
-            "target": "@pt_attack_port_squad_name"
+            "object_var_value": 0
           },
           "triggerEnable": {
             "target": "pt_attack_port_busy_set"
@@ -6012,12 +6088,12 @@
             "target": "pt_attack_port_t1_npc_destroyed"
           },
           "unitSetIndication": {
+            "set": false,
+            "target": "@pt_attack_t1_attacker_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": false,
-            "target": "@pt_attack_t1_attacker_name"
+            "object_var_value": 0
           },
           "unitSetVar": [
             {
@@ -6102,12 +6178,12 @@
             "target": "pt_attack_port_t2_npc_destroyed"
           },
           "unitSetIndication": {
+            "set": false,
+            "target": "@pt_attack_t2_attacker_name",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "set": false,
-            "target": "@pt_attack_t2_attacker_name"
+            "object_var_value": 0
           },
           "unitSetVar": [
             {
@@ -6235,7 +6311,7 @@
           ],
           "triggerEnable": [
             {
-              "target": "t2_moderate_task_completed"
+              "target": "t2_moderate_extra_task_completed"
             },
             {
               "target": "pt_attack_port_t1_timer_reset"
@@ -6314,7 +6390,7 @@
           ],
           "triggerEnable": [
             {
-              "target": "t1_moderate_task_completed"
+              "target": "t1_moderate_extra_task_completed"
             },
             {
               "target": "pt_attack_port_t2_timer_reset"
@@ -6681,7 +6757,7 @@
           },
           "triggerEnable": [
             {
-              "target": "t1_major_task_completed"
+              "target": "t1_major_extra_task_completed"
             },
             {
               "target": "pt_capture_port_frontline_find"
@@ -6874,6 +6950,15 @@
             },
             {
               "value": "imya peremennoj s tajmerom vosstanovleniya zashchitnikov"
+            },
+            {
+              "value": "increase ports count from team A"
+            },
+            {
+              "value": "decrease ports count from team B"
+            },
+            {
+              "value": "enabling check that team B have no ports left"
             }
           ],
           "varSetString": [
@@ -7022,6 +7107,9 @@
             },
             {
               "target": "pt_capture_port_rotator"
+            },
+            {
+              "target": "pt_t2_check_no_ports_left"
             }
           ],
           "missionMarkAsRearmZone": [
@@ -7065,7 +7153,19 @@
             "value": 0,
             "var": "@pt_capture_port_restore_timer_var_name",
             "input_var": "pt_port_default_restore_time"
-          }
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "pt_t1_ports_count"
+            },
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "pt_t2_ports_count"
+            }
+          ]
         },
         "else_actions": {}
       },
@@ -7144,22 +7244,22 @@
             {
               "loc_name": "@pt_capture_port_t1_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_spawns_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": false,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_spawns_squad_name",
-              "team": "B",
               "tags": {
                 "none_can_spawn": true
               }
@@ -7167,22 +7267,22 @@
             {
               "loc_name": "@pt_capture_port_t1_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_spawns_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_spawns_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -7236,22 +7336,22 @@
             {
               "loc_name": "@pt_capture_port_t1_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_cruisers_spawns_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": false,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_cruisers_spawns_squad_name",
-              "team": "B",
               "tags": {
                 "none_can_spawn": true
               }
@@ -7259,22 +7359,22 @@
             {
               "loc_name": "@pt_capture_port_t1_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_cruisers_spawns_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_cruisers_spawns_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -7294,22 +7394,22 @@
             {
               "loc_name": "@pt_capture_port_t1_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_destroyers_spawns_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": false,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_destroyers_spawns_squad_name",
-              "team": "B",
               "tags": {
                 "none_can_spawn": true
               }
@@ -7317,22 +7417,22 @@
             {
               "loc_name": "@pt_capture_port_t1_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_destroyers_spawns_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_destroyers_spawns_squad_name",
-              "team": "A",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -7401,22 +7501,22 @@
             {
               "loc_name": "@pt_attack_port_capture_t1_air_spawns_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_air_spawns_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": false,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_air_spawns_name",
-              "team": "B",
               "spawnOffset": [
                 -3000.0,
                 2000.0,
@@ -7436,22 +7536,22 @@
             {
               "loc_name": "@pt_attack_port_capture_t1_air_spawns_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t1_air_spawns_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": false,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t1_air_spawns_name",
-              "team": "A",
               "spawnOffset": [
                 -3000.0,
                 2000.0,
@@ -7498,7 +7598,7 @@
           },
           "triggerEnable": [
             {
-              "target": "t2_major_task_completed"
+              "target": "t2_major_extra_task_completed"
             },
             {
               "target": "pt_capture_port_frontline_find"
@@ -7691,6 +7791,15 @@
             },
             {
               "value": "imya peremennoj s tajmerom vosstanovleniya zashchitnikov"
+            },
+            {
+              "value": "decrease ports count from team A"
+            },
+            {
+              "value": "increase ports count from team B"
+            },
+            {
+              "value": "enabling check that team A have no ports left"
             }
           ],
           "varSetString": [
@@ -7839,6 +7948,9 @@
             },
             {
               "target": "pt_capture_port_rotator"
+            },
+            {
+              "target": "pt_t1_check_no_ports_left"
             }
           ],
           "missionMarkAsRearmZone": [
@@ -7882,7 +7994,19 @@
             "value": 0,
             "var": "@pt_capture_port_restore_timer_var_name",
             "input_var": "pt_port_default_restore_time"
-          }
+          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "pt_t1_ports_count"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "pt_t2_ports_count"
+            }
+          ]
         },
         "else_actions": {}
       },
@@ -7961,22 +8085,22 @@
             {
               "loc_name": "@pt_attack_port_capture_t2_port_var_name",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_spawns_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": false,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_spawns_squad_name",
-              "team": "A",
               "tags": {
                 "none_can_spawn": true
               }
@@ -7984,22 +8108,22 @@
             {
               "loc_name": "@pt_attack_port_capture_t2_port_var_name",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_spawns_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_spawns_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -8053,22 +8177,22 @@
             {
               "loc_name": "@pt_capture_port_t2_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_cruisers_spawns_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": false,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_cruisers_spawns_squad_name",
-              "team": "A",
               "tags": {
                 "none_can_spawn": true
               }
@@ -8076,22 +8200,22 @@
             {
               "loc_name": "@pt_capture_port_t2_cruisers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_cruisers_spawns_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_cruisers_spawns_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -8111,22 +8235,22 @@
             {
               "loc_name": "@pt_capture_port_t2_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_destroyers_spawns_squad_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": false,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_destroyers_spawns_squad_name",
-              "team": "A",
               "tags": {
                 "none_can_spawn": true
               }
@@ -8134,22 +8258,22 @@
             {
               "loc_name": "@pt_capture_port_t2_destroyers_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_destroyers_spawns_squad_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": true,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_destroyers_spawns_squad_name",
-              "team": "B",
               "tags": {
                 "type_bomber": false,
                 "type_fighter": false,
@@ -8218,22 +8342,22 @@
             {
               "loc_name": "@pt_attack_port_capture_t2_air_spawns_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_air_spawns_name",
+              "team": "A",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": false,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_air_spawns_name",
-              "team": "A",
               "spawnOffset": [
                 -3000.0,
                 2000.0,
@@ -8253,22 +8377,22 @@
             {
               "loc_name": "@pt_attack_port_capture_t2_air_spawns_loc_string",
               "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@pt_attack_port_capture_t2_air_spawns_name",
+              "team": "B",
               "isStrictSpawn": false,
               "resetStrictSpawnIndex": false,
               "isAirfield": false,
               "isUnit": false,
+              "forceCreate": false,
               "useExisting": true,
+              "ignoreTeamsOnReuse": false,
               "isIndividual": false,
               "onlyOnePlayerPerSpawnPoint": false,
               "removeAreas": false,
               "replaceAreas": true,
               "canSpawnOnNeutral": false,
               "showOnMap": true,
-              "radius": -1.0,
-              "forceCreate": false,
-              "ignoreTeamsOnReuse": false,
-              "target": "@pt_attack_port_capture_t2_air_spawns_name",
-              "team": "B",
               "spawnOffset": [
                 -3000.0,
                 2000.0,
@@ -8722,7 +8846,9 @@
     "pt_t1_port_units_t2_count": 0,
     "pt_t2_port_units_t1_count": 0,
     "pt_t2_port_units_t2_count": 0,
-    "pt_is_launch_alowed": false
+    "pt_is_launch_alowed": false,
+    "pt_t1_ports_count": 0,
+    "pt_t2_ports_count": 0
   },
   "dialogs": {},
   "airfields": {},

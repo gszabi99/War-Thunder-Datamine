@@ -1,33 +1,31 @@
+import "DataBlock" as DataBlock
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/string.nut" import utf8ToUpper
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let unitTypesList = require("%scripts/unit/unitTypesList.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
-let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData,
-  getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor,
-  isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable,
-  setSchedulerTimeColor, hasAnyTickets, getTourDay } = require("%scripts/events/eSport.nut")
-let stdMath = require("%sqstd/math.nut")
+let { TOURNAMENT_TYPES, getCurrentSeason, checkByFilter, getMatchingEventId, fetchLbData, getTourListViewData, getTourById, removeItemFromList, getEventByDay, getOverlayTextColor, isTourStateChanged, getTourParams, getTourCommonViewParams, isTournamentWndAvailable, setSchedulerTimeColor, hasAnyTickets, getTourDay } = require("%scripts/events/eSport.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
 let FILTER_CHAPTERS = ["tour", "unit"]
 
-local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
+local ESportList = class (BaseGuiHandlerWT) {
   wndType         = handlerType.BASE
   sceneBlkName    = "%gui/events/eSportModal.blk"
   sceneTplName    = "%gui/events/eSportContent.tpl"
@@ -317,7 +315,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
   onEventGameModesUpdated = @(_) this.updateRatingByTournaments()
 }
 
-gui_handlers.ESportList <- ESportList
+register_gui_handler("ESportList", ESportList)
 
 let openESportListWnd = @() handlersManager.loadHandler(ESportList)
 

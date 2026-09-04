@@ -1,26 +1,25 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/platform.nut" import isPC
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/datablock.nut" import eachBlock
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "controls" import hasXInputDevice, isXInputDevice
+from "%sqstd/string.nut" import startsWith
+from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_natives.nut" import fill_joysticks_desc, set_current_controls
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
-let { isPC } = require("%sqstd/platform.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { hasXInputDevice, isXInputDevice } = require("controls")
-let { startsWith } = require("%sqstd/string.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
 let { OPTIONS_MODE_GAMEPLAY } = optionsExtNames
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getCurControlsPreset, setCurControlsPreset, clearControlsPresetGuiOptions
-} = require("%scripts/controls/controlsState.nut")
+let { getCurControlsPreset, setCurControlsPreset, clearControlsPresetGuiOptions } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let { registerRespondent } = require("scriptRespondent")
 
 local isControlsCommitPerformed = false
 let isLastLoadControlsSucceeded = Watched(false)
@@ -97,7 +96,7 @@ function fixDeviceMapping() {
       buttonsCount  = blkJoy["btnCnt"]
       axesOffset    = blkJoy["axesOfs"]
       axesCount     = blkJoy["axesCnt"]
-      connected     = !getTblValue("disconnected", blkJoy, false)
+      connected     = !(blkJoy?.disconnected ?? false)
     }))
 
   if (getCurControlsPreset().updateDeviceMapping(realMapping))
@@ -119,7 +118,7 @@ function fixControls() {
   foreach (fixData in fixesList) {
     let value = "valueFunction" in fixData ?
       fixData.valueFunction() : fixData.value
-    if (getTblValue("isAppend", fixData)) {
+    if (fixData?.isAppend) {
       let isGamepadExpected =  isXInputDevice() || hasXInputDevice()
       if (curPreset.isHotkeyShortcutBinded(fixData.source, value)
           || (fixData.shouldAppendIfEmptyOnXInput
@@ -152,7 +151,7 @@ function commitGuiOptions() {
 
   let mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
-  let prefix = "USEROPT_"
+  const prefix = "USEROPT_"
   let curPreset = getCurControlsPreset()
   foreach (oType, value in curPreset.params)
     if (startsWith(oType, prefix))

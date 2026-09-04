@@ -1,10 +1,9 @@
+from "%globalScripts/templates.nut" import getTemplate, getTemplateCompValue
+from "chardResearch" import shopIsModificationEnabled
+from "blkGetters" import get_modifications_blk
 from "%scripts/dagui_library.nut" import *
 
-let { getTemplate, getTemplateCompValue } = require("%globalScripts/templates.nut")
-
 let { getModificationsByModClass } = require("%scripts/weaponry/modificationInfo.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { get_modifications_blk } = require("blkGetters")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { weaponsItem } = require("%scripts/weaponry/weaponryConsts.nut")
 

@@ -1,17 +1,14 @@
+import "DataBlock" as DataBlock
+from "%rGui/wwMap/wwMapZonesData.nut" import getZoneByPoint
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwMapUtils.nut" import sendToDagui
+from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords
+from "%rGui/wwMap/wwArmyStates.nut" import hoveredArmy
+from "%appGlobals/worldWar/wwAirfieldStatus.nut" import hoveredAirfieldIndex
+from "%appGlobals/worldWar/wwMapHoverState.nut" import isMapHovered
+from "eventbus" import subscribe
+from "worldwar" import wwGetAirfieldsCount, wwGetAirfieldInfo, wwClearOutlinedZones, wwSelectAirfield, wwGetSelectedAirfield
 from "%rGui/globals/ui_library.nut" import *
-
-let { subscribe } = require("eventbus")
-let DataBlock = require("DataBlock")
-let { wwGetAirfieldsCount, wwGetAirfieldInfo, wwClearOutlinedZones,
-  wwSelectAirfield, wwGetSelectedAirfield } = require("worldwar")
-
-let { getZoneByPoint } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
-let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
-let { convertToRelativeMapCoords } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { hoveredArmy } = require("%rGui/wwMap/wwArmyStates.nut")
-let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nut")
-let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 
 let airfieldsInfo = Watched([])
 

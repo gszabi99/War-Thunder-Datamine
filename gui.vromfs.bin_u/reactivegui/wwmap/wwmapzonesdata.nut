@@ -1,9 +1,10 @@
+from "%rGui/wwMap/wwMapUtils.nut" import sendToDagui
+from "math" import fabs, cos, sin, PI, sqrt
 from "%rGui/globals/ui_library.nut" import *
-let { fabs, cos, sin, PI, sqrt } = require("math")
-let { zoneSideType, zoneSideTypeStr } = require("%rGui/wwMap/wwMapTypes.nut")
-let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
 
-let sqrt32 = sqrt(3) / 2
+let { zoneSideType, zoneSideTypeStr } = require("%rGui/wwMap/wwMapTypes.nut")
+
+const sqrt32 = sqrt(3) / 2
 
 let cachedZones = []
 let zonesForSearch = []

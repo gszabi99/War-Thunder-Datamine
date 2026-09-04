@@ -1,7 +1,6 @@
 require ecs
 require ecs.common
 require PhysMat
-require DagorSystem
 require daslib/assert_once
 
 

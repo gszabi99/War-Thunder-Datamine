@@ -1,13 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "chard" import getProfileCountry
+from "%sqstd/underscore.nut" import deep_clone
 from "%scripts/dagui_library.nut" import *
 
-let { getProfileCountry } = require("chard")
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { isWeaponModsPurchasedOrAvailableForFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponryByPresetInfo, findAvailableWeapon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { openFixWeaponryPresets } = require("%scripts/weaponry/fixWeaponryPreset.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let { validateBadLastWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
+
+
+const DBG_REPAIR_PRESET_MODE = {
+  dependentWeapon = 0 
+  brokenTiers = 1 
+}
 
 local invalidPresetsByCountries = {}
 local curCountryInvalidPresets
@@ -39,6 +45,20 @@ function getInvalidWeapon(curPreset, availableWeapons) {
       }
     }
 
+  if (curPreset.brokenTiers.len()) {
+    local brokenPresetWpn = null
+    for (local idx = 0; idx < curPreset.brokenTiers.len(); idx++) {
+      let t = curPreset.brokenTiers[idx]
+      let tierId = availableWeapons.findvalue(
+        @(w) w.presetId == t.preset && w.slot == t.slot)?.tier ?? -1
+      if (brokenPresetWpn == null || tierId != -1)
+        brokenPresetWpn = { curPreset, tierId, presetId = t.preset }
+      if (tierId != -1)
+        break
+    }
+    return brokenPresetWpn
+  }
+
   return null
 }
 
@@ -56,19 +76,24 @@ function repairInvalidPresets() {
     let p = presets.values()[0]
     presets.$rawdelete(p.curPreset.name)
     let afterModalDestroyFunc = repairInvalidPresets
-    openFixWeaponryPresets({
+    let modal = openFixWeaponryPresets({
       unit
       originalPreset = p.curPreset
       preset = deep_clone(p.curPreset)
       availableWeapons = availableWeapons
       favoriteArr = []
       afterModalDestroyFunc
-    }).chooseWeapon(p.tierId, p.presetId, true)
+    })
+    
+    
+    if (p.tierId != -1)
+      modal.chooseWeapon(p.tierId, p.presetId, true)
     return
   }
+  broadcastEvent("WeaponryPresetsRepairFinished")
 }
 
-function searchAndRepairInvalidPresets(uNames = null) {
+function searchAndRepairInvalidPresets(uNames = null, dbgRepairPresetModeInt = null) {
   let countryId = getProfileCountry()
   let isForced = uNames != null
   let unitsList = isForced ? uNames : getCurrentSlotbarPreset(countryId)?.units
@@ -90,7 +115,7 @@ function searchAndRepairInvalidPresets(uNames = null) {
       continue
 
     
-    if (curCountryInvalidPresets?[unitName] != null
+    if (dbgRepairPresetModeInt == null && curCountryInvalidPresets?[unitName] != null
       && curCountryInvalidPresets[unitName].len() == 0)
       continue
 
@@ -101,7 +126,9 @@ function searchAndRepairInvalidPresets(uNames = null) {
       @(w) isWeaponModsPurchasedOrAvailableForFree(unitName, w)
     )
     foreach (preset in presets) {
-      let invalidWeapon = getInvalidWeapon(preset, availableWeapons)
+      let invalidWeapon = getInvalidWeapon(preset,
+        dbgRepairPresetModeInt == DBG_REPAIR_PRESET_MODE.dependentWeapon ? availableWeapons?.slice(0,1)
+          : availableWeapons)
       if (invalidWeapon)
         curCountryInvalidPresets[unitName][preset.name] <- invalidWeapon
     }
@@ -118,4 +145,5 @@ addListenersWithoutEnv({
 
 return {
   searchAndRepairInvalidPresets
+  DBG_REPAIR_PRESET_MODE
 }

@@ -1,51 +1,49 @@
-from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, wp_get_repair_cost, has_entitlement, get_name_by_gamemode, wp_get_cost, clan_get_exp, get_global_stats_blk, shop_time_until_repair, is_era_available, shop_get_full_repair_time_by_mode
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT
+from "%globalScripts/templates.nut" import getTemplateCompValue
+from "math" import abs
+from "string" import format
+from "%sqstd/string.nut" import cutPostfix
+from "%sqstd/math.nut" import round, roundToDigits, round_by_value
+from "chardResearch" import shopIsModificationEnabled
+from "blkGetters" import get_warpoints_blk, get_ranks_blk, get_unittags_blk
+from "gameplayBinding" import isInFlight
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, wp_get_repair_cost, has_entitlement
+  , get_name_by_gamemode, wp_get_cost, clan_get_exp, get_global_stats_blk, shop_time_until_repair, is_era_available, shop_get_full_repair_time_by_mode
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/clans/clanState.nut" import is_in_clan
+from "%scripts/debugTools/dbgShop.nut" import getUnitDebugBattleRatingsText
+from "types" import Table
 
-let { abs } = require("math")
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let { cutPostfix } = require("%sqstd/string.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { hoursToString, secondsToHours, secondsToString } = require("%scripts/time.nut")
-let { round, roundToDigits, round_by_value } = require("%sqstd/math.nut")
-let { getUnitTooltipImage, getFontIconByBattleType,
-  getChanceToMeetText, getUnitItemStatusText, getCantBuyUnitReason
-  getUnitRarity, getCharacteristicActualValue } = require("%scripts/unit/unitInfoTexts.nut")
-let { isUnitDefault, canResearchUnit, isUnitInResearch,
-  isUnitResearched, isPrevUnitResearched, isPrevUnitBought
-} = require("%scripts/unit/unitStatus.nut")
+let { getUnitTooltipImage, getFontIconByBattleType, getChanceToMeetText, getUnitItemStatusText, getCantBuyUnitReason, getUnitRarity, getCharacteristicActualValue } = require("%scripts/unit/unitInfoTexts.nut")
+let { isUnitDefault, canResearchUnit, isUnitInResearch, isUnitResearched, isPrevUnitResearched, isPrevUnitBought } = require("%scripts/unit/unitStatus.nut")
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
-let { makeWeaponInfoData, getWeaponInfoMarkup,
-  getAdditionalWeaponInfoMarkup } = require("%scripts/weaponry/weaponryDescription.nut")
+let { makeWeaponInfoData, getWeaponInfoMarkup, getAdditionalWeaponInfoMarkup } = require("%scripts/weaponry/weaponryDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getActiveBoostersArray, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { getUnitMassPerSecValue, getWeaponModsInfoTexts,
-  isUnitHaveSecondaryWeapons, getWeaponUsedMods
-} = require("%scripts/unit/unitWeaponryInfo.nut")
+let { getUnitMassPerSecValue, getWeaponModsInfoTexts, isUnitHaveSecondaryWeapons, getWeaponUsedMods } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { fillPromUnitInfo } = require("%scripts/unit/remainingTimeUnit.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit
-} = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
-let { isInFlight } = require("gameplayBinding")
-let { calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
@@ -56,8 +54,7 @@ let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut
 let { hideBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
-} = require("%scripts/airLimits.nut")
+let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength } = require("%scripts/airLimits.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
@@ -69,8 +66,6 @@ let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut
 let { getUnitDiscountByName } = require("%scripts/discounts/discountsState.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { getTemplateCompValue } = require("%globalScripts/templates.nut")
 let { getLastWeapon, getUnitAdditionWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
 let { hasUnitSystems, getUnitSystemsMarkup } = require("%scripts/unit/unitSystems.nut")
 let { hasSupportPlane, getUnitSupportPlaneData } = require("%scripts/unit/unitSupportPlane.nut")
@@ -79,8 +74,7 @@ let { getUnitEngineMarkup } = require("%scripts/unit/unitEngine.nut")
 let { getUnitProtectionMarkup } = require("%scripts/unit/unitProtection.nut")
 let { getSelectedPresetMarkup } = require("%scripts/unit/unitSecondaryWeapon.nut")
 let { getWeaponModsInfoIcons } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getSoldiersCount, getPresetCompositionByName, getHumanWeaponIcons, INF_SOLDIER_EMPTY
-} = require("%scripts/weaponry/infantryWeapons.nut")
+let { getSoldiersCount, getPresetCompositionByName, getHumanWeaponIcons, INF_SOLDIER_EMPTY } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
 let { calcHumanModEffects } = require("%scripts/weaponry/modificationInfo.nut")
 let { getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
@@ -88,6 +82,8 @@ let { INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryToo
 let { fillTooltipsIds } = require("%scripts/unit/unitInfoTooltips.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { isUseGamePad } = require("%scripts/modalInfo/modalInfo.nut")
+
+
 
 
 let usageRatingAmount = [0.0003, 0.0005, 0.001, 0.002]
@@ -498,7 +494,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   let {
     needCrewModificators = false, rentTimeHours = -1, isReceivedPrizes = false,
     researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false,
-    showInFlightInfo = true, inHangar = false, canOpenOtherWindows = true
+    showInFlightInfo = true, inHangar = false, canOpenOtherWindows = true, needShowDebugInfo = false
   } = params
 
   let showLocalState = (params?.showLocalState ?? true) && !isSlave
@@ -622,21 +618,26 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   }
 
   
-  let showBr = !unit.hideBrForVehicle
   let battleRating = unit.getBattleRating(ediff)
+  let debugBrText = needShowDebugInfo ? getUnitDebugBattleRatingsText(unit) : ""
+  let hasDebugBrText = debugBrText != ""
+  let showBr = !unit.hideBrForVehicle || hasDebugBrText
   let brObj = showObjById("aircraft-battle_rating", showBr, holderObj)
   if (showBr) {
-    brObj.findObject("aircraft-battle_rating-header").setValue($"{loc("shop/battle_rating")}{loc("ui/colon")}")
-    brObj.findObject("aircraft-battle_rating-value").setValue(format("%.1f", unit.getBattleRating(ediff)))
+    brObj.findObject("aircraft-battle_rating-header")
+      .setValue($"{loc("shop/battle_rating")}{loc("ui/colon")}")
+    brObj.findObject("aircraft-battle_rating-value")
+      .setValue(hasDebugBrText ? debugBrText : format("%.1f", battleRating))
   }
+
   let battleRatingByBattleTypeTable = {}
-  foreach (battleTypeIter in BATTLE_TYPES) {
-    let battleRatingByBattleType = unit.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
-    let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) 
-    if (battleRatingByBattleType != battleRating && !isShipHardcore) {
-      battleRatingByBattleTypeTable[battleTypeIter] <- battleRatingByBattleType
+  if (!hasDebugBrText)
+    foreach (battleTypeIter in BATTLE_TYPES) {
+      let battleRatingByBattleType = unit.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
+      let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) 
+      if (battleRatingByBattleType != battleRating && !isShipHardcore)
+        battleRatingByBattleTypeTable[battleTypeIter] <- battleRatingByBattleType
     }
-  }
   let hasBattleRatingByTypes = battleRatingByBattleTypeTable.len() > 0
   let brByTypeObj = showObjById("aircraft-battle_rating-value_by_battle_types", hasBattleRatingByTypes, brObj)
   if (hasBattleRatingByTypes) {
@@ -654,7 +655,7 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
   if (meetObj?.isValid()) {
     local erCompare = params?.economicRankCompare
     if (erCompare != null) {
-      if (type(erCompare) == "table")
+      if (erCompare instanceof Table)
         erCompare = erCompare?[unit.shopCountry] ?? 0.0
       let text = getChanceToMeetText(battleRating, calcBattleRatingFromRank(erCompare))
       meetObj.findObject("aircraft-chance_to_met").setValue(text)
@@ -1337,8 +1338,12 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
         addInfoTextsList.append(colorize("badTextColor", disabledUnitByBRText))
     }
 
-    if (!isOwn)
-      addInfoTextsList.append(colorize("warningTextColor", loc("mainmenu/noLeaderboardProgress")))
+    if (!isOwn) {
+      
+
+
+        addInfoTextsList.append(colorize("warningTextColor", loc("mainmenu/noLeaderboardProgress")))
+    }
   }
 
   if (warbondId) {
@@ -1630,9 +1635,9 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
 
 function fillAirInfo(unit, show, holderObj = null, handler = null, params = null) {
   fillUnitInfo(unit, show, holderObj, handler, params)
-  let inHangar = params?.inHangar ?? false
-  showObjById("closeAllWindowsInfo", isUseGamePad() && !inHangar, holderObj)
-  showObjById("closeAllWindowsInfoByMouse", !isUseGamePad() && !inHangar, holderObj)
+  let { inHangar = false, showCloseHints = true } = params
+  showObjById("closeAllWindowsInfo", showCloseHints && isUseGamePad() && !inHangar, holderObj)
+  showObjById("closeAllWindowsInfoByMouse", showCloseHints && !isUseGamePad() && !inHangar, holderObj)
 }
 
 

@@ -46,11 +46,11 @@ weaponry_item {
 
     <<#isTooltipByHold>>
     tooltipId:t='<<tooltipId>>'
-    on_pushed:t='::gcb.delayedTooltipPush'
-    on_hold_start:t='::gcb.delayedTooltipHoldStart'
-    on_hold_stop:t='::gcb.delayedTooltipHoldStop'
-    on_hover:t='::gcb.delayedTooltipHover'
-    on_unhover:t='::gcb.delayedTooltipHover'
+    on_pushed:t='gcb.delayedTooltipPush'
+    on_hold_start:t='gcb.delayedTooltipHoldStart'
+    on_hold_stop:t='gcb.delayedTooltipHoldStop'
+    on_hover:t='gcb.delayedTooltipHover'
+    on_unhover:t='gcb.delayedTooltipHover'
     <</isTooltipByHold>>
 
     <<#wideItemWithSlider>>
@@ -423,9 +423,9 @@ weaponry_item {
         text:t='<<actionBtnText>>'
         on_click:t='onModActionBtn'
         <<#isTooltipByHold>>
-        on_pushed:t='::gcb.delayedTooltipChildPush'
-        on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
-        on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+        on_pushed:t='gcb.delayedTooltipChildPush'
+        on_hold_start:t='gcb.delayedTooltipChildHoldStart'
+        on_hold_stop:t='gcb.delayedTooltipChildHoldStop'
         <</isTooltipByHold>>
         btnName:t='A'
         hasIncreasedTopMargin:t='yes'
@@ -446,43 +446,15 @@ weaponry_item {
         text:t='#msgbox/btn_delete'
         on_click:t='onPresetDeleteBtn'
         <<#isTooltipByHold>>
-        on_pushed:t='::gcb.delayedTooltipChildPush'
-        on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
-        on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+        on_pushed:t='gcb.delayedTooltipChildPush'
+        on_hold_start:t='gcb.delayedTooltipChildHoldStart'
+        on_hold_stop:t='gcb.delayedTooltipChildHoldStop'
         <</isTooltipByHold>>
         btnName:t='X'
         hasIncreasedTopMargin:t='yes'
         ButtonImg {}
       }
       <</deleteButtonCanShow>>
-    }
-
-    Button_text{
-      id:t='altActionBtnCommon'
-      holderId:t='<<id>>'
-      class:t='additional'
-      canShow:t='<<altBtnCommonCanShow>>'
-      visualStyle:t='common'
-      skip-navigation:t='yes'
-      tooltip:t='<<altBtnTooltip>>'
-      on_click:t='onAltModActionCommon'
-      btnName:t='X'
-      hasIncreasedTopMargin:t='yes'
-      ButtonImg {}
-      tdiv {
-        id:t='altActionBtnCommon_new_icon'
-        height:t='ph'
-        top:t='0, 0.5ph-0.5h'
-        position:t='relative'
-        display:t='hide'
-        newIconWidgetImg {
-          background-image:t='#ui/gameuiskin#new_icon.svg'
-        }
-      }
-      btnText {
-        id:t='altActionBtnCommon_text'
-        text:t='<<altBtnBuyText>>'
-      }
     }
 
     Button_text{
@@ -497,9 +469,9 @@ weaponry_item {
       hasIncreasedTopMargin:t='yes'
       ButtonImg {}
       <<#isTooltipByHold>>
-      on_pushed:t='::gcb.delayedTooltipChildPush'
-      on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
-      on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+      on_pushed:t='gcb.delayedTooltipChildPush'
+      on_hold_start:t='gcb.delayedTooltipChildHoldStart'
+      on_hold_stop:t='gcb.delayedTooltipChildHoldStop'
       <</isTooltipByHold>>
 
       tdiv {
@@ -524,9 +496,9 @@ weaponry_item {
       behavior:t='accesskey'
       btnName:t='A'
       canShow:t='<<actionHoldDummyCanShow>>'
-      on_pushed:t='::gcb.delayedTooltipChildPush'
-      on_hold_start:t='::gcb.delayedTooltipChildHoldStart'
-      on_hold_stop:t='::gcb.delayedTooltipChildHoldStop'
+      on_pushed:t='gcb.delayedTooltipChildPush'
+      on_hold_start:t='gcb.delayedTooltipChildHoldStart'
+      on_hold_stop:t='gcb.delayedTooltipChildHoldStop'
     }
     <</isTooltipByHold>>
   }

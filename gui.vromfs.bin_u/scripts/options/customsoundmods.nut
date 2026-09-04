@@ -1,5 +1,5 @@
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
 from "%scripts/dagui_library.nut" import *
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 local onLoadValue = null
 

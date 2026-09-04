@@ -1,5 +1,4 @@
 require ecs
-require DagorSystem
 
 
 [es(on_appear, tag=server)]

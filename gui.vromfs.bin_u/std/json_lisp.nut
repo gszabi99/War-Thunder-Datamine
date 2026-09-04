@@ -1,5 +1,6 @@
 import "math"
 from "string.nut" import tostring_r
+from "types" import Table
 
 
 let log =  @(...) println(tostring_r(vargv, {compact=false, maxdeeplevel=12}))
@@ -8,7 +9,7 @@ class Env {
     parent = null
     symbols = null
     constructor(symbols, parent = null) {
-        if (type(symbols)=="table")
+        if (symbols instanceof Table)
           this.symbols = clone symbols
         else {
           this.symbols = {}
@@ -71,7 +72,7 @@ let preamble = Env({
       let [op, args] = v
       return interp([op].concat(args), env)
     },
-    ["let"] = function bind(v, interp, env) {
+    ["let"] = function bind(v, interp, env) { 
         let [bindings, body] = v
         let newBindings = bindings.map(function(vv) {
           let [sym, expr] = vv
@@ -80,7 +81,7 @@ let preamble = Env({
         
         return interp(body, Env(newBindings, env))
     },
-    ["if"] = function cond(v, interp, env) {
+    ["if"] = function cond(v, interp, env) { 
         let [cnd, thn, els] = v
         return interp(interp(cnd, env) ? thn : els, env);
     },
@@ -207,8 +208,8 @@ if (__name__ == "__main__"){
   check(["if", [">",["+", 1, 3], 2], 1, 0], (1+3) > 2 ? 1 : 0, "if")
 
   check(["!", true], !true, "!")
-  check(["and", true, false], true && false, false)
-  check(["let", [["foo", 2]], ["or", [">", "foo", 1], false]], (2>1) || false, true)
+  check(["and", true, false], true && false, false) 
+  check(["let", [["foo", 2]], ["or", [">", "foo", 1], false]], (2>1) || false, true) 
 }
 
 return freeze({

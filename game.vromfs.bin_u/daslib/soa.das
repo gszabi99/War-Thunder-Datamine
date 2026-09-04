@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module soa private
@@ -26,7 +24,7 @@ struct public SOA_INDEX {
     
 }
 
-[tag_function(soa_call)]
+[tag_function(soa_call), unused_argument(src, field)]
 def public operator .(src : SOA_INDEX explicit; field : string) {
     
     
@@ -39,9 +37,7 @@ class SoaCallMacro : AstFunctionAnnotation {
     
     
     def override transform(var expr : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
-        if (is_in_completion()) {
-            return null
-        }
+        if (is_in_completion()) return null
         if (expr.arguments |> length != 2) {
             errors := "expecting soa[index].field"
             return null
@@ -77,11 +73,6 @@ class SoaCallMacro : AstFunctionAnnotation {
 [structure_macro(name=soa)]
 class SoaStructMacro : AstStructureAnnotation {
     
-    
-    
-    
-    
-    
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (is_in_completion()) {
             var tdef = new TypeDecl(at = st.at,
@@ -95,7 +86,7 @@ class SoaStructMacro : AstStructureAnnotation {
             compiling_module() |> add_alias(tdef)
             return true
         }
-        if (st.fields |> length == 0) {
+        if (empty(st.fields)) {
             errors := "soa macro expects at least one field"
             return false
         }
@@ -168,7 +159,7 @@ class SoaStructMacro : AstStructureAnnotation {
         var fn = qmacro_function("[]") $(st : $t(stypeT); index : int const) {
             return SOA_INDEX()
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_length(st : StructurePtr; var stype : StructurePtr) : FunctionPtr {
@@ -177,7 +168,7 @@ class SoaStructMacro : AstStructureAnnotation {
         var fn = qmacro_function("length") $(st : $t(stypeT)) : int {
             return length(st.$f(firstFieldName))
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_any_named_call(st : StructurePtr; var stype : StructurePtr; var argT : TypeDeclPtr&; fnName, callName : string; argField : bool) : FunctionPtr {
@@ -194,7 +185,7 @@ class SoaStructMacro : AstStructureAnnotation {
         var fn = qmacro_function(fnName) $(var st : $t(stypeT); var arg : $t(argT)) : void {
             $b(bodyExprs)
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_erase(st : StructurePtr; var stype : StructurePtr) {
@@ -219,7 +210,7 @@ class SoaStructMacro : AstStructureAnnotation {
         var fn = qmacro_function(fnName) $(var st : $t(stypeT)) : void {
             $b(bodyExprs)
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_capacity(st : StructurePtr; var stype : StructurePtr) : FunctionPtr {
@@ -228,7 +219,7 @@ class SoaStructMacro : AstStructureAnnotation {
         var fn = qmacro_function("capacity") $(st : $t(stypeT)) : int {
             return capacity(st.$f(firstFieldName))
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_swap(st : StructurePtr; var stype : StructurePtr) : FunctionPtr {
@@ -241,7 +232,7 @@ class SoaStructMacro : AstStructureAnnotation {
         var fn = qmacro_function("swap") $(var st : $t(stypeT); i : int const; j : int const) : void {
             $b(bodyExprs)
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_from_array(var st : StructurePtr; var stype : StructurePtr) : FunctionPtr {
@@ -264,7 +255,7 @@ class SoaStructMacro : AstStructureAnnotation {
                 $b(bodyExprs)
             }
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
     def make_to_array(var st : StructurePtr; var stype : StructurePtr) : FunctionPtr {
@@ -294,7 +285,7 @@ class SoaStructMacro : AstStructureAnnotation {
             }
             return <- result
         }
-        fn.flags |= FunctionFlags.generated
+        fn.flags.generated = true
         return <- fn
     }
 }
@@ -337,9 +328,7 @@ def collect_and_replace_iterator_fields(prefix : string; blk : ExpressionPtr) : 
 class SoaForLoop : AstForLoopMacro {
     
     def override visitExprFor(prog : ProgramPtr; mod : Module?; expr : ExprFor?) : ExpressionPtr {
-        if (is_in_completion()) {
-            return null
-        }
+        if (is_in_completion()) return null
         var soa_index = -1
         for (index, its in count(), expr.sources) {
             if (its._type != null && its._type.isStructure) {
@@ -365,7 +354,7 @@ class SoaForLoop : AstForLoopMacro {
             new_for.iteratorsAka |> erase(soa_index)
             new_for.iteratorsTags |> erase(soa_index)
             var names <- collect_and_replace_iterator_fields(it_prefix, new_for.body)
-            if (names |> length == 0) {
+            if (empty(names)) {
                 names |> push <| string(expr.sources[soa_index]._type.structType.fields[0].name)
             }
             for (itn in names) {

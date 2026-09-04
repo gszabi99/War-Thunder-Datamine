@@ -1,12 +1,10 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt, mgCreateStartPoint, mgCreateStartLookAt
+  , mgSetupArmada, mgSetupAirfield, mgSetDistToAction, getAircraftDescription, mgGetMissionSector, mgGetLevelName, mgThisIsFreeFlight
+  , mgSetMinMaxAircrafts
 
-let { Point3 } = require("dagor.math")
 let { slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
-  mgCreateStartPoint, mgCreateStartLookAt, mgSetupArmada, mgSetupAirfield,
-  mgSetDistToAction, getAircraftDescription, mgGetMissionSector, mgGetLevelName,
-  mgThisIsFreeFlight, mgSetMinMaxAircrafts
-} = require("dynamicMission")
 
 function genFreeFlightMission(isFreeFlight) { 
   if (!isFreeFlight)

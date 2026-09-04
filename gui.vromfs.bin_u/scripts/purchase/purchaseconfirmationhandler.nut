@@ -1,16 +1,18 @@
+from "blkGetters" import get_game_params_blk
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_game_params_blk } = require("blkGetters")
 
 local confirmationWpEdge = -1
 
-local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local purchaseConfirmationHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/purchase/purchaseConfirmation.blk"
   id = ""
@@ -107,7 +109,7 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.purchaseConfirmationHandler <- purchaseConfirmationHandler
+register_gui_handler("purchaseConfirmationHandler", purchaseConfirmationHandler)
 
 
 function needPurchaseConfirmation(cost) {
@@ -137,6 +139,7 @@ function purchaseConfirmation(params, cost = null) {
 }
 
 return {
+  purchaseConfirmationHandler
   needPurchaseConfirmation
   purchaseConfirmation
 }

@@ -1,9 +1,9 @@
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwOperationStates.nut" import getPlayerSide
+from "eventbus" import send
 from "%rGui/globals/ui_library.nut" import *
 
-let { send } = require("eventbus")
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { getPlayerSide } = require("%rGui/wwMap/wwOperationStates.nut")
 let mapColorsCache = {}
 
 function convertColor4(color) {

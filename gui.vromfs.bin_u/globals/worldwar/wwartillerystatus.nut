@@ -1,4 +1,5 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-return {
+import "%globalScripts/sharedWatched.nut" as sharedWatched
+
+return freeze({
   artilleryReadyState = sharedWatched("artilleryReadyState", @() {})
-}
+})

@@ -13,6 +13,7 @@ simplyWeaponryPreset {
       weaponryTier{
         size:t='@tierIconSize, @tierIconSize'
         <<^isActive>>enable:t='no'<</isActive>>
+        <<#isBroken>>broken:t='yes'<</isBroken>>
         img {
           size:t='@tierIconSize, @tierIconSize'
           position:t='relative'

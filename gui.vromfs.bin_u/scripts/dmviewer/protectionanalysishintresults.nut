@@ -1,6 +1,6 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "hangar" import CHECK_PROT_RICOCHET_POSSIBLE, CHECK_PROT_RICOCHET_GUARANTEED
 from "%scripts/dagui_library.nut" import *
-let { CHECK_PROT_RICOCHET_POSSIBLE, CHECK_PROT_RICOCHET_GUARANTEED } = require("hangar")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let results = {
   types = []

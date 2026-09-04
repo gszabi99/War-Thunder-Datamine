@@ -1,16 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "math" import ceil
+from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
+let { recycleCompleteWnd } = require("%scripts/items/recycleCompleteWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj, getObjValidIndex, enableObjsByTable, move_mouse_on_child_by_value,
-  move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
-let { ceil } = require("math")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { show_obj, getObjValidIndex, enableObjsByTable, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
@@ -22,25 +28,21 @@ let workshopCraftTreeWnd = require("%scripts/items/workshop/workshopCraftTreeWnd
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { setDoubleTextToButton, setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
+let mkHoverHoldAction = require("%scripts/sqDagui/timer/mkHoverHoldAction.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { fillDescTextAboutDiv, updateExpireAlarmIcon,
-  fillItemDescUnderTable, setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
+let { fillDescTextAboutDiv, updateExpireAlarmIcon, fillItemDescUnderTable, setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let { defer } = require("dagor.workcycle")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { getWarbondsBalanceText } = require("%scripts/warbonds/warbondsManager.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey, MAXIMUM_CRAFTS_AT_ONCE_TIME
-} = require("%scripts/items/itemsRecycler.nut")
+let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey, MAXIMUM_CRAFTS_AT_ONCE_TIME } = require("%scripts/items/itemsRecycler.nut")
 let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -78,7 +80,7 @@ function isEqualItemsLists(curItemsList, newItemsList) {
   return true
 }
 
-gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
+let ItemsList = class (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/items/itemsShop.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -189,7 +191,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let handler = handlersManager.loadHandler(
-      gui_handlers.navigationPanel,
+      navigationPanel,
       { scene                  = this.scene.findObject("control_navigation")
         onSelectCb             = Callback(this.doNavigateToSection, this)
         onClickCb              = Callback(this.onNavItemClickCb, this)
@@ -392,8 +394,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let nawWidth = this.isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
     let itemHeightWithSpace = !this.isInRecyclingTab() ? "1@itemHeight+1@itemSpacing"
       : "1@itemHeight+1@itemWithRecyclingSpacingY"
-    let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
-    let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
+    const itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    const mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
     let itemsCountX = max(to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
       / max(1, to_pixels(itemWidthWithSpace)), 1)
     let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
@@ -1060,7 +1062,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         craftTreeItem  = this.craftTreeItem
       }
       stateData = {
-        currentItemId = getTblValue("id", this.getCurItem(), null)
+        currentItemId = this.getCurItem()?.id
       }
     }
     return data
@@ -1089,11 +1091,11 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventBeforeStartShowroom(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   function onEventBeforeStartTestFlight(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   function onEventItemLimitsUpdated(_params) {
@@ -1126,8 +1128,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventActiveHandlersChanged(_p) {
-    let needBlackScreen = handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null
-      || handlersManager.findHandlerClassInScene(gui_handlers.recycleCompleteWnd) != null
+    let needBlackScreen = handlersManager.findHandlerClassInScene(trophyRewardWnd) != null
+      || handlersManager.findHandlerClassInScene(recycleCompleteWnd) != null
     showObjById("black_screen", needBlackScreen, this.scene)
   }
 
@@ -1151,7 +1153,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   onShowBattlePass = @(_obj) null
 
   function onEventBeforeStartCustomMission(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   function updateInventoryItemsList() {
@@ -1251,6 +1253,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       this.isCraftTreeWndOpen = false
   }
 }
+register_gui_handler("ItemsList", ItemsList)
 
 function openItemsWndFromPromo(_owner, params = []) {
   local tab = itemsTab?[(params?[1] ?? "SHOP").toupper()] ?? itemsTab.INVENTORY
@@ -1270,3 +1273,5 @@ function openItemsWndFromPromo(_owner, params = []) {
 }
 
 addPromoAction("items", @(handler, params, _obj) openItemsWndFromPromo(handler, params))
+
+return { ItemsList }

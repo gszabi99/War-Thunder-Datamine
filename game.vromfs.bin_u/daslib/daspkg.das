@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_global_variables = false
 options indenting = 4
 options strict_smart_pointers = true
@@ -51,14 +49,11 @@ def package_license(license : string) {
 }
 
 def package_tag(tag : string) {
-    _pkg_meta.tags |> push_clone(tag)
+    _pkg_meta.tags |> push(tag)
 }
 
 def package_tags(tags : array<string>) {
-    _pkg_meta.tags |> reserve(length(_pkg_meta.tags) + length(tags))
-    for (t in tags) {
-        _pkg_meta.tags |> push_clone(t)
-    }
+    _pkg_meta.tags |> push_clone_from(tags)
 }
 
 def package_min_sdk(version : string) {
@@ -129,5 +124,120 @@ def no_build() {
 def custom_build(command : string) {
     _build_kind = BuildKind.custom
     _build_command = command
+}
+
+
+
+struct ReleaseSpec {
+    name : string                       
+    main_script : string                
+    wasm_main_script : string           
+    include_globs : array<string>       
+    include_if_missing_globs : array<string> 
+    exclude_globs : array<string>       
+    forced_modules : array<string>      
+    native_dlls : array<string>         
+    bundle_id : string                  
+    emcc_args : array<string>           
+    embed_paths : array<string>         
+    web_shell : string                  
+    wasm_build_command : string         
+    wasm_archives : array<string>       
+    requires_jit : bool                 
+    include_symbols : bool              
+    external_files : array<string>      
+}
+
+var _release_spec : ReleaseSpec
+
+def release_name(name : string) {
+    _release_spec.name = name
+}
+
+def release_main(script : string) {
+    _release_spec.main_script = script
+}
+
+
+
+
+def release_requires_jit() {
+    _release_spec.requires_jit = true
+}
+
+
+
+
+def release_include_symbols() {
+    _release_spec.include_symbols = true
+}
+
+
+def release_wasm_main(script : string) {
+    _release_spec.wasm_main_script = script
+}
+
+def release_include(pattern : string) {
+    _release_spec.include_globs |> push(pattern)
+}
+
+
+def release_include_if_missing(pattern : string) {
+    _release_spec.include_if_missing_globs |> push(pattern)
+}
+
+
+def release_include_from(source, dest : string) {
+    _release_spec.external_files |> push("{source}@{dest}")
+}
+
+def release_include_from(source : string) {
+    
+    
+    _release_spec.external_files |> push("{source}@")
+}
+
+def release_exclude(pattern : string) {
+    _release_spec.exclude_globs |> push(pattern)
+}
+
+def release_shared_module(name : string) {
+    _release_spec.forced_modules |> push(name)
+}
+
+
+def release_include_dll(name : string) {
+    _release_spec.native_dlls |> push(name)
+}
+
+def release_bundle_id(id : string) {
+    _release_spec.bundle_id = id
+}
+
+
+def release_emcc_arg(arg : string) {
+    _release_spec.emcc_args |> push(arg)
+}
+
+
+def release_embed_file(src, dst : string) {
+    _release_spec.embed_paths |> push("{src}@{dst}")
+}
+
+
+
+
+def release_web_shell(path : string) {
+    _release_spec.web_shell = path
+}
+
+
+def release_wasm_build(command : string) {
+    _release_spec.wasm_build_command = command
+}
+
+
+def release_wasm_archive(path : string) {
+    _release_spec.wasm_archives |> push(path)
 }
 

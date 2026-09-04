@@ -1,18 +1,18 @@
+import "string" as string
+from "%rGui/airHudElems.nut" import turretAngles
+from "%rGui/planeState/planeWeaponState.nut" import LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt
+from "%rGui/agmAimState.nut" import GuidanceLockState
+from "%rGui/planeState/planeToolsState.nut" import IsOnGround
+from "%rGui/style/airHudStyle.nut" import hudFontHgt, fontOutlineColor, fontOutlineFxFactor
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 
-let string = require("string")
-let { turretAngles } = require("%rGui/airHudElems.nut")
 let lineWidth = hdpx(LINE_WIDTH)
-let { LaserAtgmSightColor, LaserAgmName, LaserAgmCnt, LaserAgmSelectedCnt } = require("%rGui/planeState/planeWeaponState.nut")
-let { GuidanceLockState } = require("%rGui/agmAimState.nut")
-let { IsOnGround } = require("%rGui/planeState/planeToolsState.nut")
-let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
 
 
 let crosshair = @() {
   size = ph(10)
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = LaserAtgmSightColor.get()
   lineWidth = lineWidth * 3
@@ -26,13 +26,12 @@ let crosshair = @() {
 }
 
 let status = @() {
-  size = flex()
-  pos = [pw(2), ph(5)]
+  size = FLEX
+  pos = const [pw(2), ph(5)]
   flow = FLOW_HORIZONTAL
   children = [
     @() {
       size = SIZE_TO_CONTENT
-      watch = LaserAgmName
       rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontFxColor = fontOutlineColor
@@ -88,12 +87,12 @@ let status = @() {
 }
 
 let hints = @() {
-  size = flex()
+  size = FLEX
   children = [
     @() {
       watch = [GuidanceLockState, IsOnGround]
-      size = flex()
-      pos = [pw(42), ph(70)]
+      size = FLEX
+      pos = const [pw(42), ph(70)]
       rendObj = ROBJ_TEXT
       font = Fonts.hud
       fontSize = hudFontHgt

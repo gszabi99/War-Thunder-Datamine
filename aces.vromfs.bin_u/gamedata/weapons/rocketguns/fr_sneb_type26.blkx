@@ -1,19 +1,27 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
-  "mesh": "fr_sneb_type26",
-  "mesh_deployed": "fr_sneb_type26_deployed",
-  "helicopterGroup": 2,
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "fr_sneb_type26",
+  "mesh_deployed": "fr_sneb_type26_deployed",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
   },
   "rocket": {
+    "dragCx": 0.003,
     "bulletName": "fr_sneb_type26",
+    "iconType": "nar_he_large",
+    "amountPerTier": 18.0,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 1.3,
     "caliber": 0.07,
     "length": 0.936,
     "WdK": [
@@ -27,34 +35,21 @@
     "massEnd": 4.75,
     "timeFire": 0.82,
     "force": 3580.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 507.0,
-    "endSpeed": 0.0,
     "maxDistance": 7000.0,
     "minDistance": 30.0,
     "explosiveType": "tnt",
     "explosiveMass": 0.572,
-    "explodeTreshold": 0.01,
-    "explodeHitPower": 550.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [
-      1.0,
-      3.5
-    ],
-    "distanceFuse": false,
-    "dragCx": 0.003,
-    "amountPerTier": 18.0,
-    "iconType": "nar_he_large",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
-    "secondaryShattersPreset": "ap",
-    "stabilityThreshold": 0.5,
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "he_frag_i_tank",
+    "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
@@ -62,8 +57,7 @@
       2.0
     ],
     "explodeOnRendinst": true,
-    "fuseOnWater": true,
-    "fuseOnWaterProbability": 1.0,
+    "useEffectiveArmorThicknessForShatter": true,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -101,7 +95,9 @@
       200.0,
       1000.0
     ],
-    "maxDeltaAngle": 1.3,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_tiny",
     "groundCollisionEffect": "hit_81_105mm_dirt_ap",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -122,20 +118,6 @@
       0.0,
       0.0
     ],
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        15.0,
-        0.7
-      ],
-      "mod3": [
-        30.0,
-        0.99
-      ]
-    },
     "DamageParts": {
       "body": {
         "hp": 50.0,
@@ -220,6 +202,23 @@
           }
         ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
+      ]
     },
     "collisions": {
       "default": {

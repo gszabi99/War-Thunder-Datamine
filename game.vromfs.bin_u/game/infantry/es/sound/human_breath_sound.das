@@ -1,5 +1,4 @@
 require ecs
-require app
 require HumanPhys
 require DngHuman
 require soundEvent

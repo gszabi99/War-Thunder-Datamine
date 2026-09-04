@@ -1,13 +1,15 @@
-let { showInfoMsgBox } = require("%sqDagui/framework/msgBox.nut")
-let { loc } = require("dagor.localize")
+import "regexp2" as regexp2
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "dagor.localize" import loc
+from "auth_wt" import getPlayerSsoShortTokenAsync, getNickOrig
+from "eventbus" import eventbus_subscribe
+from "string" import format
+from "%globalScripts/yuplay2Consts.nut" import *
+
+let { showInfoMsgBox } = require("%scripts/sqDagui/framework/msgBox.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { getPlayerSsoShortTokenAsync, getNickOrig } = require("auth_wt")
-let { eventbus_subscribe } = require("eventbus")
 let { log } = require("%sqstd/log.nut")()
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { format } = require("string")
-let regexp2 = require("regexp2")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
 const EXTERNAL_DEEPLINK_URL_PARAM_NAME = "parameterizedDeeplinkURL"
@@ -44,7 +46,7 @@ function mergeAssistantDeeplinkQueryParams(extraQueryParams) {
 }
 
 function intToHexChar(value) {
-  let hexDigits = "0123456789ABCDEF"
+  const hexDigits = "0123456789ABCDEF"
   return hexDigits[value & 0x0F].tochar()
 }
 

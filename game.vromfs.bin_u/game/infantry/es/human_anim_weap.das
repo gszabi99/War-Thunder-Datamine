@@ -1,7 +1,6 @@
 require ecs
 require DngHuman
 require PhysVars
-require DagorMath
 require DagorSystem
 require DngWeapon
 require AnimV20
@@ -59,6 +58,21 @@ def human_anim_weap_es(info : ParallelUpdateFrameDelayed;
   query(human_weap__gunEids[int(gunSlot)]) <| $ [es(REQUIRE=grenade_thrower)] (grenade_thrower__selectedGrenadeVarId : int)
     if grenade_thrower__selectedGrenadeVarId >= 0 && human_anim__selectedWeaponVarId >= 0 && phys.canSwitchWeapon
       phys_vars |> setVar(human_anim__selectedWeaponVarId, float(grenade_thrower__selectedGrenadeVarId))
+
+
+
+[es(on_appear, after=init_human_anim_vars)]
+def human_anim_unarmed_init_es(evt : Event;
+                               eid : EntityId;
+                               human_weap__unarmedEnum : string;
+                               human_anim__selectedWeaponVarId : int;
+                               var phys_vars : PhysVars)
+  let enumValue = animV20_get_enum_value_by_name(human_weap__unarmedEnum)
+  if enumValue < 0
+    logerr("Unknown anim enum <{human_weap__unarmedEnum}> in human_weap__unarmedEnum,
+           eid/template {eid}<{getEntityTemplateName(eid)}>")
+    return
+  phys_vars |> setVar(human_anim__selectedWeaponVarId, float(enumValue))
 
 
 

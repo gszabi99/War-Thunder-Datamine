@@ -1,18 +1,18 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { FavoriteUnlocksListView } = require("%scripts/unlocks/favoriteUnlocksListView.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { FAVORITE_UNLOCKS_LIMIT, getFavoriteUnlocksNum,
-  canAddFavorite } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { FAVORITE_UNLOCKS_LIMIT, getFavoriteUnlocksNum, canAddFavorite } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let protectionAnalysis = require("%scripts/dmViewer/protectionAnalysis.nut")
-let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel
-} = require("%scripts/crew/crewSkills.nut")
+let { getCrewPoints, getSkillCategories, categoryHasNonGunnerSkills, getSkillCategoryCrewLevel, getSkillCategoryMaxCrewLevel } = require("%scripts/crew/crewSkills.nut")
 let { getSkillCategoryName } = require("%scripts/crew/crewSkillsView.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { slotInfoPanelButtons } = require("%scripts/slotInfoPanel/slotInfoPanelButtons.nut")
@@ -23,19 +23,15 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
-let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
-let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus, gui_modal_crew
-} = require("%scripts/crew/crew.nut")
-let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
-} = require("%scripts/crew/crewDiscount.nut")
+let { getCrewUnit, isCrewMaxLevel, getCrewLevel, getCrewName, getCrew, getCrewStatus, gui_modal_crew } = require("%scripts/crew/crew.nut")
+let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo } = require("%scripts/crew/crewDiscount.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
@@ -66,7 +62,7 @@ function getSkillCategoryView(crewData, unit) {
   return view
 }
 
-let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
+class SlotInfoPanel (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/slotInfoPanel.blk"
   showTabs = false
@@ -354,13 +350,13 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitModsRecount(params) {
-    let unit = getTblValue("unit", params)
+    let unit = params?.unit
     if (unit && unit.name == this.getCurShowUnitName())
       this.doWhenActiveOnce("updateAirInfo")
   }
 
   function onEventSecondWeaponModsUpdated(params) {
-    let unit = getTblValue("unit", params)
+    let unit = params?.unit
     if (unit && unit.name == this.getCurShowUnitName())
       this.doWhenActiveOnce("updateAirInfo")
   }
@@ -454,7 +450,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       if (! checkObj(contentObj))
         return
       this.favUnlocksHandlerWeak = handlersManager.loadHandler(
-        gui_handlers.FavoriteUnlocksListView, { scene = contentObj }).weakref()
+        FavoriteUnlocksListView, { scene = contentObj }).weakref()
       this.registerSubHandler(this.favUnlocksHandlerWeak)
     }
     else
@@ -551,7 +547,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
   function updateWeaponryNewIcon(unit) {
     let isVisibleNewIcon = unit != null
-      && (needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit))
+      && needShowUnseenModTutorialForUnit(unit)
     showObjById("btnAirInfoWeaponry_new_icon", isVisibleNewIcon, this.scene)
   }
 
@@ -576,7 +572,6 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("updateCrewInfo")
   }
 
-  onEventMarkSeenNightBattle = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
   onEventMarkSeenModTutorial = @(_) this.updateWeaponryNewIcon(this.getCurShowUnit())
 
   function onEventChangeDMVieverMode(params) {
@@ -596,7 +591,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.SlotInfoPanel <- SlotInfoPanel
+register_gui_handler("SlotInfoPanel", SlotInfoPanel)
 
 const SLOT_INFO_CFG_SAVE_PATH = "show_slot_info_panel_tab"
 

@@ -1,11 +1,9 @@
+from "string" import format
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import get_player_complaint_counts
 from "%scripts/dagui_library.nut" import *
 
-
-let { format } = require("string")
-let { get_game_settings_blk } = require("blkGetters")
-
-let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "NICK_HATESPEECH", "SPAM", "OTHER"])
+const complaintCategories = ["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "NICK_HATESPEECH", "SPAM", "OTHER"]
 
 let tribunal = {
   maxComplaintCount = 10

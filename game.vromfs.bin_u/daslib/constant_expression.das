@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module constant_expression shared private
@@ -21,15 +19,6 @@ require daslib/algorithm
 
 [function_macro(name=constexpr)]
 class ConstExprAnnotation : AstFunctionAnnotation {
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     def override verifyCall(var call : ExprCallFunc?; args, progArgs : AnnotationArgumentList; var errors : das_string) : bool {
         for (aa in args) {
@@ -61,15 +50,6 @@ def public isConstantExpression(expr : Expression?) : bool {
 [function_macro(name="constant_expression")]
 class ConstantExpressionMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override transform(var expr : ExprCallFunc?; var errors : das_string) : Expression? {
         macro_verify(expr.func != null, compiling_program(), expr.at, "expecting inferred function")
         var argi : array<int>
@@ -96,9 +76,7 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
         }
         argi |> sort_unique
         argi |> reverse
-        if (empty(argi)) {
-            return null
-        }
+        if (empty(argi)) return null
         var func_copy = clone_function(expr.func)
         let func_name = build_string() $(var w) {
             w |> write("{func_copy.name}`constant_expression")
@@ -126,12 +104,13 @@ class ConstantExpressionMacro : AstFunctionAnnotation {
             func_copy.arguments |> erase(i)
         }
         
-        func_copy.flags |= FunctionFlags.generated
+        func_copy.flags.generated = true
         func_copy.annotations |> erase(anni)
         compiling_module() |> add_function(func_copy)
         var new_call = clone_expression(expr)
         var ncall = new_call as ExprCall
-        ncall.name := func_name
+        
+        ncall.name := "__::{func_name}"
         for (i in argi) {
             ncall.arguments |> erase(i)
         }

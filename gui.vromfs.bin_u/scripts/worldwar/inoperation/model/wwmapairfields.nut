@@ -1,8 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "worldwar" import wwGetPlayerSide, wwGetZoneName
 from "%scripts/dagui_natives.nut" import ww_turn_on_sector_sprites, ww_get_zone_idx_world, ww_turn_off_sector_sprites
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { wwGetPlayerSide, wwGetZoneName } = require("worldwar")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let savedAirfields = {}

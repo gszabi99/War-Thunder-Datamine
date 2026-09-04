@@ -1,21 +1,21 @@
+import "DataBlock" as DataBlock
+import "regexp2" as regexp2
+from "%sqstd/datablock.nut" import getBlkValueByPath, blkOptFromPath, blkFromPath
+from "guiMission" import get_meta_missions_info_by_campaigns, add_custom_mission_list_full, get_current_mission_desc, get_meta_missions_info
+from "mission" import get_game_mode, get_game_type, get_current_mission_name
+from "dynamicMission" import getDynamicLayoutsBlk
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import add_last_played, has_entitlement, map_to_location
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let DataBlock = require("DataBlock")
-let { getBlkValueByPath, blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
+let { isNotAloneOnline } = require("%scripts/squads/squadState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isMissionComplete } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { get_meta_missions_info_by_campaigns, add_custom_mission_list_full,
-  get_current_mission_desc, get_meta_missions_info } = require("guiMission")
-let { get_game_mode, get_game_type, get_current_mission_name } = require("mission")
 let { getEsUnitType, findUnitNoCase } = require("%scripts/unit/unitParams.nut")
-let { getDynamicLayoutsBlk } = require("dynamicMission")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
-let regexp2 = require("regexp2")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
@@ -25,7 +25,7 @@ let dynamicLayouts = persist("dynamicLayouts", @() [])
 let gameModeMaps = persist("gameModeMaps", @() [])
 let campaignNames = []
 
-let canPlayGamemodeBySquad = @(gm) !g_squad_manager.isNotAloneOnline()
+let canPlayGamemodeBySquad = @(gm) !isNotAloneOnline()
   || gm == GM_SINGLE_MISSION || gm == GM_SKIRMISH
 
 
@@ -39,8 +39,9 @@ function isSkirmishWithKillStreaks(misBlk) {
   return misBlk.getBool("allowedKillStreaks", false);
 }
 
-function hasUnitInFullMissionBlk(fullMissionBlk, esUnitType) {
+function hasUnitInFullMissionBlk(fullMissionBlk, unitType) {
   
+  let { esUnitType } = unitType
   let unitsBlk = fullMissionBlk?.units
   let playerBlk = fullMissionBlk && getBlkValueByPath(fullMissionBlk, "mission_settings/player")
   let wings = playerBlk ? (playerBlk % "wing") : []
@@ -48,17 +49,22 @@ function hasUnitInFullMissionBlk(fullMissionBlk, esUnitType) {
   if (unitsBlk && wings.len())
     for (local i = 0; i < unitsBlk.blockCount(); i++) {
       let block = unitsBlk.getBlock(i)
-      if (block && isInArray(block?.name, wings))
-        if (block?.unit_class) {
-          if (!(block.unit_class in unitsCache))
-            unitsCache[block.unit_class] <- getEsUnitType(findUnitNoCase(block.unit_class))
-          if (unitsCache[block.unit_class] == esUnitType)
+      if (isInArray(block?.name, wings)) {
+        let { unit_class = null } = block
+        if (unit_class) {
+          if (unit_class in unitsCache)
+            continue
+
+          unitsCache[unit_class] <- true
+          let curEsUnitType = getEsUnitType(findUnitNoCase(unit_class))
+          if (curEsUnitType == esUnitType)
             return true
         }
+      }
     }
 
   
-  let tag = unitTypes.getByEsUnitType(esUnitType).tag
+  let tag = unitType.tag
   let triggersBlk = fullMissionBlk?.triggers
   if (triggersBlk)
     for (local i = 0; i < triggersBlk.blockCount(); i++) {
@@ -72,7 +78,22 @@ function hasUnitInFullMissionBlk(fullMissionBlk, esUnitType) {
   return false
 }
 
-function isMissionForUnitType(misBlk, esUnitType, useKillStreaks = null) {
+function getFullMissionBlkFromMisBlk(misBlk) {
+  let url = misBlk?.url
+  if (url != null)
+    return g_url_missions.findMissionByUrl(url)?.fullMissionBlk
+  return blkOptFromPath(misBlk?.mis_file)
+}
+
+function getFullMissionBlk(misBlk, unitType, fullMissionBlk) {
+  if (fullMissionBlk != null)
+    return fullMissionBlk
+  if (unitType.missionSettingsAvailabilityFlag in misBlk)
+    return null
+  return getFullMissionBlkFromMisBlk(misBlk)
+}
+
+function isMissionForUnitType(misBlk, esUnitType, useKillStreaks = null, fullMissionBlk = null) {
   let unitType = unitTypes.getByEsUnitType(esUnitType)
 
   
@@ -80,20 +101,21 @@ function isMissionForUnitType(misBlk, esUnitType, useKillStreaks = null) {
     return unitType.isAvailableByMissionSettings(misBlk, useKillStreaks)
 
   
-  local fullMissionBlk = null
-  let url = getTblValue("url", misBlk)
-  if (url != null)
-    fullMissionBlk = getTblValue("fullMissionBlk", g_url_missions.findMissionByUrl(url))
-  else
-    fullMissionBlk = blkOptFromPath(misBlk?.mis_file)
-  return hasUnitInFullMissionBlk(fullMissionBlk, esUnitType)
+  fullMissionBlk = getFullMissionBlk(misBlk, unitType, fullMissionBlk)
+  return hasUnitInFullMissionBlk(fullMissionBlk, unitType)
 }
 
 function getMissionAllowedUnittypesMask(misBlk, useKillStreaks = null) {
   local res = 0
-  foreach (unitType in unitTypes.types)
-    if (unitType.isAvailable() && isMissionForUnitType(misBlk, unitType.esUnitType, useKillStreaks))
+  local fullMissionBlk = null
+  foreach (unitType in unitTypes.types) {
+    if (!unitType.isAvailable())
+      continue
+    fullMissionBlk = getFullMissionBlk(misBlk, unitType, fullMissionBlk)
+
+    if (isMissionForUnitType(misBlk, unitType.esUnitType, useKillStreaks, fullMissionBlk))
       res = res | unitType.bit
+  }
   return res
 }
 
@@ -178,7 +200,7 @@ function isMissionWithBadWeatherConditions(missionBlk) {
 function getBadWeatherTooltipText(isBadWeather, hasAirfield, isSpawnAutoChanged = false) {
   if (!isBadWeather)
     return ""
-  let locKey = "bad_weather_conditions"
+  const locKey = "bad_weather_conditions"
   local tText = loc($"{locKey}/{hasAirfield ? "long" : "short"}")
   if (isSpawnAutoChanged)
     tText = "\n".concat(tText, loc($"{locKey}/airfiled_changed"))

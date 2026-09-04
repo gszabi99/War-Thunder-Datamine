@@ -1,25 +1,28 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "%globalScripts/systemConfig.nut" import setSystemConfigOption
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "eventbus" import eventbus_subscribe
+from "language" import getLocalLanguage
+from "string" import split_by_chars
+from "console" import register_command
+from "scriptRespondent" import registerRespondent
+from "modules" import reset_static_memos
 from "%scripts/dagui_natives.nut" import get_language, set_language, get_localization_blk_copy
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
+from "%sqstd/frp.nut" import WatchedImmediate
+from "types" import String
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { eventbus_subscribe } = require("eventbus")
-let DataBlock = require("DataBlock")
-let { getLocalLanguage } = require("language")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { split_by_chars } = require("string")
-let { register_command } = require("console")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { registerRespondent } = require("scriptRespondent")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { reset_static_memos } = require("modules")
 
 let langWithCommaDelimiters = ["fr", "it", "de", "ru", "pl", "cz", "tr", "pt", "uk", "hu", "be", "ro"]
 
-let steamLanguages = freeze({
+const steamLanguages = {
   English = "english"
   French = "french"
   Italian = "italian"
@@ -37,7 +40,7 @@ let steamLanguages = freeze({
   Korean = "koreana"
   TChinese = "tchinese"
   HChinese = "schinese"
-})
+}
 
 let chineseLangs = ["Chinese", "TChinese"]
 
@@ -57,7 +60,7 @@ let needCheckLangPack = Watched(false)
 let langsByChatId = {}
 let langsListForInventory = {}
 local currentLanguage = null
-let currentLanguageW = Watched(currentLanguage)
+let currentLanguageW = WatchedImmediate(currentLanguage)  
 let curLangShortName = Watched("")
 local currentSteamLanguage = ""
 local isListInited = false
@@ -143,7 +146,7 @@ function checkInitList() {
   let inventoryBlk = locBlk?.inventory_abbreviated_languages_table ?? DataBlock()
   for (local l = 0; l < inventoryBlk.paramCount(); ++l) {
     let param = inventoryBlk.getParamValue(l)
-    if (type(param) != "string")
+    if (!(param instanceof String))
       continue
 
     let abbrevName = inventoryBlk.getParamName(l)
@@ -195,7 +198,7 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
   else
     handlersManager.markfullReloadOnSwitchScene()
 
-  broadcastEvent("GameLocalizationChanged")
+  broadcastEvent(GAME_LOCALIZATION_CHANGED)
 }
 
 function reload() {
@@ -234,7 +237,7 @@ function getLocTextFromConfig(config, id = "text", defaultValue = null) {
   else
     res = config?[id] ?? res 
 
-  if (type(res) != "string")
+  if (!(res instanceof String))
     return defaultValue || id
 
   if (res.len() > 1 && res.slice(0, 1) == "#")

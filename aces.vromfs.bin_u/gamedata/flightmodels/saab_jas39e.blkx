@@ -1,7 +1,7 @@
 {
   "model": "saab_jas39e",
   "fmFile": "fm/saab_jas39e.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.13,
   "gearSinkRangeC": 0.13,
@@ -18,7 +18,7 @@
   "laserDesignator": true,
   "ilsEP17": true,
   "rwrIndicator": "jas39ERwrScreen",
-  "hmdJas39": true,
+  "hmdCobraHmd": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -3229,6 +3229,10 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_mk83.blk"
       },
       {
+        "name": "saab_jas39e_mk84",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_mk84.blk"
+      },
+      {
         "name": "saab_jas39e_120kg_sb_m71_retarded",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_120kg_sb_m71_retarded.blk"
       },
@@ -3255,6 +3259,14 @@
       {
         "name": "saab_jas39e_gbu_16",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_16.blk"
+      },
+      {
+        "name": "saab_jas39e_gbu_48",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_48.blk"
+      },
+      {
+        "name": "saab_jas39e_gbu_10",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_gbu_10.blk"
       },
       {
         "name": "saab_jas39e_gbu_24",
@@ -3435,7 +3447,7 @@
       },
       {
         "index": 1,
-        "tier": 10,
+        "tier": 11,
         "order": 1,
         "WeaponPreset": {
           "iconType": "missile_type_f_air_to_air",
@@ -3452,7 +3464,7 @@
       },
       {
         "index": 2,
-        "tier": 9,
+        "tier": 10,
         "order": 3,
         "WeaponPreset": [
           {
@@ -3719,7 +3731,7 @@
               "machLimit": 1.4
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -3771,23 +3783,6 @@
             }
           },
           {
-            "iconType": "guided_bomb_heavy_middle_jdam",
-            "name": "us_gbu_31",
-            "reqModification": "us_jdam",
-            "ShowNodes": {
-              "node": "pylon_1"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
-              "emitter": "bomblavett_m71_001",
-              "external": true,
-              "separate": true,
-              "bullets": 1,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "guided_bomb_red",
             "name": "il_spice_1000",
             "reqModification": "il_spice_250_1000",
@@ -3822,23 +3817,6 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
-            "name": "us_gbu_64",
-            "reqModification": "us_jdam",
-            "ShowNodes": {
-              "node": "pylon_1"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
-              "emitter": "bomblavett_m71_001",
-              "external": true,
-              "separate": true,
-              "bullets": 1,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "guided_bomb_middle_laser",
             "name": "gbu_12",
             "reqModification": "us_gbu_laser",
@@ -3855,7 +3833,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -3876,7 +3854,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -3897,7 +3875,28 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "bomblavett_m71_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -3934,7 +3933,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bombs_large",
             "name": "mk_83",
             "ShowNodes": {
               "node": "pylon_1"
@@ -3947,28 +3946,12 @@
               "external": true,
               "separate": true
             }
-          },
-          {
-            "iconType": "glide_guided_bomb_small_jdam_group_x4",
-            "name": "us_gbu_39_slot2",
-            "reqModification": "us_gbu39",
-            "ShowNodes": {
-              "node": "pylon_1"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
-              "emitter": "alkan_tsc_001",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.1
-            }
           }
         ]
       },
       {
         "index": 3,
-        "tier": 8,
+        "tier": 9,
         "order": 5,
         "WeaponPreset": [
           {
@@ -4235,7 +4218,7 @@
               "machLimit": 1.4
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -4371,7 +4354,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -4392,7 +4375,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -4413,7 +4396,28 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "bomblavett_m71_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -4434,7 +4438,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -4455,7 +4459,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -4524,7 +4528,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bombs_large",
             "name": "mk_83",
             "ShowNodes": {
               "node": "pylon_2"
@@ -4532,6 +4536,21 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "alkan_tsc_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk_84",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
               "emitter": "alkan_tsc_002",
               "bullets": 1,
               "external": true,
@@ -4557,7 +4576,7 @@
               "separate": true
             },
             "DependentWeaponPreset": {
-              "slot": 6,
+              "slot": 8,
               "preset": "ptb_3"
             }
           }
@@ -4565,203 +4584,1996 @@
       },
       {
         "index": 4,
-        "tier": 6,
+        "tier": 7,
         "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "missile_type_f_air_to_air_midrange_group_x3",
+            "iconType": "missile_type_f_air_to_air_midrange",
             "name": "rb99_slot4",
             "reqModification": "swd_rb99",
             "ShowNodes": {
               "node": [
                 "pylon_7",
-                "lavett_71_005",
-                "pylon_3",
-                "lavett_71_006",
-                "pylon_8",
-                "lavett_71_007"
+                "lavett_71_005"
               ]
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
-                "emitter": "us_aim_120a_missile_005",
-                "bullets": 1,
-                "order": 8
-              },
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
-                "emitter": "us_aim_120a_missile_007",
-                "bullets": 1,
-                "order": 9
-              },
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
-                "emitter": "us_aim_120a_missile_006",
-                "bullets": 1,
-                "order": 10
-              }
-            ]
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
+              "emitter": "us_aim_120a_missile_005",
+              "bullets": 1,
+              "order": 8
+            }
           },
           {
-            "iconType": "missile_type_s_air_to_air_midrange_group_x3",
-            "name": "aim120c_slot4",
-            "reqModification": "us_aim_120c",
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim120c_default_slot4",
             "ShowNodes": {
               "node": [
                 "pylon_7",
-                "lavett_71_005",
-                "pylon_3",
-                "lavett_71_006",
-                "pylon_8",
-                "lavett_71_007"
+                "lavett_71_005"
               ]
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
-                "emitter": "us_aim_120a_missile_005",
-                "bullets": 1,
-                "order": 8
-              },
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
-                "emitter": "us_aim_120a_missile_007",
-                "bullets": 1,
-                "order": 9
-              },
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
-                "emitter": "us_aim_120a_missile_006",
-                "bullets": 1,
-                "order": 10
-              }
-            ]
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
+              "emitter": "us_aim_120a_missile_005",
+              "bullets": 1,
+              "order": 8
+            }
           },
           {
-            "iconType": "missile_type_s_air_to_air_midrange_group",
-            "name": "aim120c_x2_default_slot4",
+            "iconType": "bombs_large_group_x4",
+            "name": "m71_slot4",
             "ShowNodes": {
-              "node": [
-                "pylon_7",
-                "lavett_71_005",
-                "pylon_8",
-                "lavett_71_007"
-              ]
+              "node": "pylon_7"
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
-                "emitter": "us_aim_120a_missile_005",
-                "bullets": 1,
-                "order": 8
-              },
-              {
-                "trigger": "aam",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
-                "emitter": "us_aim_120a_missile_007",
-                "bullets": 1,
-                "order": 9
-              }
-            ]
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
           },
           {
-            "iconType": "glide_guided_bomb_small_spice_group_x8",
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2_slot4",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk_83_slot4",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk_84_slot4",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded_slot4",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2_slot4",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_slot4",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_31_slot4",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_red",
+            "name": "il_spice_1000_slot4",
+            "reqModification": "il_spice_250_1000",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot4",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot4",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12_slot4",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49_slot4",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_16_slot4",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48_slot4",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu_10_slot4",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_spice_group_x4",
             "name": "il_spice_250_slot4",
             "reqModification": "il_spice_250_1000",
             "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+              "emitter": "is_spice_sqr_rack_005",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot4",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "pylon_7"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "is_spice_sqr_rack_005",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            }
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "tier": 6,
+        "order": 9,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "rb99_slot5",
+            "reqModification": "swd_rb99",
+            "ShowNodes": {
               "node": [
-                "pylon_7",
-                "pylon_8"
+                "pylon_3",
+                "lavett_71_006"
               ]
             },
-            "Weapon": [
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
+              "emitter": "us_aim_120a_missile_006",
+              "bullets": 1,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim120c_slot5",
+            "reqModification": "us_aim_120c",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "lavett_71_006"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+              "emitter": "us_aim_120a_missile_006",
+              "bullets": 1,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x4",
+            "name": "m71_slot5",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
               {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
-                "emitter": "is_spice_sqr_rack_005",
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "slot": 4,
+                "preset": "m71_slot4"
               },
               {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
-                "emitter": "is_spice_sqr_rack_006",
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
               }
             ]
           },
           {
-            "iconType": "guided_bomb_middle_laser_group_x3",
-            "name": "gbu_49_x3",
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2_slot5",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "mass": 0.01,
+              "dragCx": 0.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk_83_slot5",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk_84_slot5",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded_slot5",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2_slot5",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "mass": 0.01,
+              "dragCx": 0.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_slot5",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_31_slot5",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_red",
+            "name": "il_spice_1000_slot5",
+            "reqModification": "il_spice_250_1000",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot5",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot5",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12_slot5",
             "reqModification": "us_gbu_laser",
             "ShowNodes": {
-              "node": [
-                "pylon_7",
-                "pylon_3",
-                "pylon_8"
-              ]
+              "node": "pylon_3"
             },
-            "Weapon": [
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
-                "emitter": "us_500lb_gbu_49_late_001",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
-                "emitter": "us_500lb_gbu_49_late_003",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "guided bombs",
-                "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
-                "emitter": "us_500lb_gbu_49_late_002",
-                "bullets": 1,
-                "external": true,
-                "separate": true,
-                "machLimit": 1.01
-              }
-            ],
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49_slot5",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_16_slot5",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48_slot5",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu_10_slot5",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_small_spice_group_x4",
+            "name": "il_spice_250_slot5",
+            "reqModification": "il_spice_250_1000",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+              "emitter": "drop_tank_1100l",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot5",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "drop_tank_1100l",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_82_snakeye_x2_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
           },
           {
             "iconType": "ptb",
@@ -4780,13 +6592,496 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "rb99_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "aim120c_default_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "m71_retarded_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_83_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_82_snakeye_x2_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "mk_84_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_31_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_1000_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_64_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_16_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_48_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "gbu_10_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "il_spice_250_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "us_gbu_39_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "rb99_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "aim120c_default_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "m71_retarded_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_83_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mk_84_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_31_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_1000_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_64_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_16_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_48_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "gbu_10_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "il_spice_250_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "us_gbu_39_slot6"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 5,
+        "order": 8,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "rb99_slot6",
+            "reqModification": "swd_rb99",
+            "ShowNodes": {
+              "node": [
+                "pylon_8",
+                "lavett_71_007"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/swd_rb99.blk",
+              "emitter": "us_aim_120a_missile_007",
+              "bullets": 1,
+              "order": 10
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim120c_default_slot6",
+            "ShowNodes": {
+              "node": [
+                "pylon_8",
+                "lavett_71_007"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
+              "emitter": "us_aim_120a_missile_007",
+              "bullets": 1,
+              "order": 9
+            }
+          },
+          {
+            "iconType": "bombs_large_group_x4",
+            "name": "m71_slot6",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk_82_x2_slot6",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk_83_slot6",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk_84_slot6",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag_group_x4",
+            "name": "m71_retarded_slot6",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/swd_bomblayett_m71_retarded.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "mk_82_snakeye_x2_slot6",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/sw_tcs_saab_jas39_500lb_mk_82_snakeye.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "mass": 0.01,
+              "dragCx": 0.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam",
+            "name": "us_gbu_38_slot6",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu38_usaf.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_31_slot6",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_red",
+            "name": "il_spice_1000_slot6",
+            "reqModification": "il_spice_250_1000",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/il_spice_1000.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_middle_jdam",
+            "name": "us_gbu_62_slot6",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_62_jdam_er.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_heavy_middle_jdam",
+            "name": "us_gbu_64_slot6",
+            "reqModification": "us_jdam",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_12_slot6",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_12_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser",
+            "name": "gbu_49_slot6",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_49_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_16_slot6",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_16_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48_slot6",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_heavy_middle_laser",
+            "name": "gbu_10_slot6",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_10_paveway_2.blk",
+              "emitter": "us_500lb_gbu_49_late_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_spice_group_x4",
+            "name": "il_spice_250_slot6",
+            "reqModification": "il_spice_250_1000",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/is_spice_250_sqr_rack.blk",
+              "emitter": "is_spice_sqr_rack_006",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "glide_guided_bomb_small_jdam_group_x4",
+            "name": "us_gbu_39_slot6",
+            "reqModification": "us_gbu39",
+            "ShowNodes": {
+              "node": "pylon_8"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
+              "emitter": "is_spice_sqr_rack_006",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.1
             }
           }
         ]
       },
       {
-        "index": 5,
-        "tier": 5,
+        "index": 7,
+        "tier": 4,
         "order": 8,
         "WeaponPreset": {
           "iconType": "flir_container",
@@ -4824,8 +7119,8 @@
         }
       },
       {
-        "index": 6,
-        "tier": 4,
+        "index": 8,
+        "tier": 3,
         "order": 6,
         "WeaponPreset": [
           {
@@ -5078,7 +7373,7 @@
           },
           {
             "iconType": "missile_air_to_uni_middle_x3",
-            "name": "brimstone_dm_slot6",
+            "name": "brimstone_dm_slot8",
             "reqModification": "uk_brimstone_dm",
             "ShowNodes": {
               "node": "pylon_4"
@@ -5092,7 +7387,7 @@
               "machLimit": 1.4
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5228,7 +7523,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5249,7 +7544,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5270,7 +7565,28 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48",
+            "reqModification": "us_gbu_laser",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "bomblavett_m71_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5291,7 +7607,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5312,13 +7628,13 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
           {
             "iconType": "glide_guided_bomb_small_jdam_group_x4",
-            "name": "us_gbu_39_slot6",
+            "name": "us_gbu_39_slot8",
             "reqModification": "us_gbu39",
             "ShowNodes": {
               "node": "pylon_4"
@@ -5334,7 +7650,7 @@
           },
           {
             "iconType": "glide_guided_bomb_small_spice_group_x4",
-            "name": "il_spice_250_slot6",
+            "name": "il_spice_250_slot8",
             "reqModification": "il_spice_250_1000",
             "ShowNodes": {
               "node": "pylon_4"
@@ -5381,7 +7697,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bombs_large",
             "name": "mk_83",
             "ShowNodes": {
               "node": "pylon_4"
@@ -5389,6 +7705,21 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "bomblavett_m71_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_special",
+            "name": "mk_84",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_mk_84_ldgp.blk",
               "emitter": "bomblavett_m71_003",
               "bullets": 1,
               "external": true,
@@ -5421,8 +7752,8 @@
         ]
       },
       {
-        "index": 7,
-        "tier": 3,
+        "index": 9,
+        "tier": 2,
         "order": 4,
         "WeaponPreset": [
           {
@@ -5675,7 +8006,7 @@
           },
           {
             "iconType": "missile_air_to_uni_middle_x3",
-            "name": "brimstone_dm_slot7",
+            "name": "brimstone_dm_slot9",
             "reqModification": "uk_brimstone_dm",
             "ShowNodes": {
               "node": "pylon_5"
@@ -5689,7 +8020,7 @@
               "machLimit": 1.4
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5741,23 +8072,6 @@
             }
           },
           {
-            "iconType": "guided_bomb_heavy_middle_jdam",
-            "name": "us_gbu_31",
-            "reqModification": "us_jdam",
-            "ShowNodes": {
-              "node": "pylon_5"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu31_usaf.blk",
-              "emitter": "bomblavett_m71_004",
-              "external": true,
-              "separate": true,
-              "bullets": 1,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "guided_bomb_red",
             "name": "il_spice_1000",
             "reqModification": "il_spice_250_1000",
@@ -5792,23 +8106,6 @@
             }
           },
           {
-            "iconType": "glide_guided_bomb_heavy_middle_jdam",
-            "name": "us_gbu_64",
-            "reqModification": "us_jdam",
-            "ShowNodes": {
-              "node": "pylon_5"
-            },
-            "Weapon": {
-              "trigger": "guided bombs",
-              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_64_jdam_er.blk",
-              "emitter": "bomblavett_m71_004",
-              "external": true,
-              "separate": true,
-              "bullets": 1,
-              "machLimit": 1.01
-            }
-          },
-          {
             "iconType": "guided_bomb_middle_laser",
             "name": "gbu_12",
             "reqModification": "us_gbu_laser",
@@ -5825,7 +8122,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5846,7 +8143,7 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
@@ -5867,24 +8164,29 @@
               "machLimit": 1.01
             },
             "DependentWeaponPreset": {
-              "slot": 5,
+              "slot": 7,
               "preset": "litening_pod"
             }
           },
           {
-            "iconType": "glide_guided_bomb_small_jdam_group_x4",
-            "name": "us_gbu_39_slot7",
-            "reqModification": "us_gbu39",
+            "iconType": "guided_bomb_large_laser",
+            "name": "gbu_48",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_5"
             },
             "Weapon": {
               "trigger": "guided bombs",
-              "blk": "gameData/Weapons/containers/bru_61_bomb_pylon_gbu_39_x4.blk",
-              "emitter": "alkan_tsc_004",
+              "blk": "gameData/Weapons/BombGuns/us_gbu_48_paveway_2.blk",
+              "emitter": "bomblavett_m71_004",
+              "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.1
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "litening_pod"
             }
           },
           {
@@ -5920,7 +8222,7 @@
             }
           },
           {
-            "iconType": "bombs_special",
+            "iconType": "bombs_large",
             "name": "mk_83",
             "ShowNodes": {
               "node": "pylon_5"
@@ -5937,8 +8239,8 @@
         ]
       },
       {
-        "index": 8,
-        "tier": 2,
+        "index": 10,
+        "tier": 1,
         "order": 2,
         "WeaponPreset": {
           "iconType": "missile_type_f_air_to_air",

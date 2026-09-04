@@ -1,13 +1,13 @@
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/missionState.nut" import localTeam
+from "%sqstd/frp.nut" import watchedTable2TableOfWatched
 from "%rGui/globals/ui_library.nut" import *
 
-let { localTeam } = require("%rGui/missionState.nut")
 
 
 
 
 
-let { watchedTable2TableOfWatched } = require("%sqstd/frp.nut")
 
 let whDefValue = freeze({
   watchedHeroEid = ecs.INVALID_ENTITY_ID

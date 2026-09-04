@@ -1,22 +1,23 @@
+from "%rGui/planeState/planeFlyState.nut" import Roll
+from "%rGui/airHudElems.nut" import turretAngles
+from "%rGui/airState.nut" import IsMfdSightHudVisible, MfdSightPosSize
+from "%sqstd/math.nut" import pow, ceil
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
-let { pow, ceil } = require("%sqstd/math.nut")
-let { Roll } = require("%rGui/planeState/planeFlyState.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { turretAngles } = require("%rGui/airHudElems.nut")
+
 let agmAimState = require("%rGui/agmAimState.nut")
 let gbuAimState = require("%rGui/guidedBombsAimState.nut")
-let { IsMfdSightHudVisible, MfdSightPosSize } = require("%rGui/airState.nut")
 
 
 let opticalSight = @(width, height,
   TrackerVisible, TrackerSize, GuidanceLockState, GuidanceLockStateBlinked, PointIsTarget,
   ReleaseTargetCursorX, ReleaseTargetCursorY, LockReleaseRadiusH, LockReleaseRadiusW, MinSightFovScrSize
 ) function() {
-  let opticColor = Color(255, 255, 255)
+  const opticColor = Color(255, 255, 255)
   let opticColorWatch = Watched(opticColor)
 
   let aspectX = height / width
-  let pxToVec = 0.1
+  const pxToVec = 0.1
   let isMfdVis = IsMfdSightHudVisible.get()
   let sightSh = @(h) isMfdVis ? ceil(h * MfdSightPosSize.get()[3] / 100.0) : sh(h)
   let sightSw = @(w) isMfdVis ? ceil(w * MfdSightPosSize.get()[2] / 100) : sw(w)
@@ -24,7 +25,7 @@ let opticalSight = @(width, height,
   let lineWidth = sightHdpx(LINE_WIDTH) * (isMfdVis ? 2.0 : 1.0)
 
 
-  let minMarkSize = 5
+  const minMarkSize = 5
   local hSize = max(TrackerSize.get(), minMarkSize) * pxToVec
   if (GuidanceLockState.get() == GuidanceLockResult.RESULT_TRACKING)
     hSize = PointIsTarget.get() ? hdpx(1) : hdpx(4)
@@ -34,7 +35,6 @@ let opticalSight = @(width, height,
 
 
   let fullscreenCrosshair = @() {
-    watch = [ TrackerVisible ]
     size = [width, height]
     rendObj = ROBJ_VECTOR_CANVAS
     color = opticColor
@@ -94,15 +94,15 @@ let opticalSight = @(width, height,
   
   let rollIndicator = @() {
     size = ph(15)
-    pos = [0, ph(85)]
+    pos = const [0, ph(85)]
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_SOLID
         color = Color(0, 0, 0)
       },
       @() {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = opticColor
         fillColor = Color(0, 0, 0)
@@ -121,7 +121,7 @@ let opticalSight = @(width, height,
         }
       },
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = opticColor
         fillColor = Color(0, 0, 0)
@@ -155,7 +155,7 @@ let opticalSight = @(width, height,
     opacity = 1.0 - 0.7 * cursorOutAreaPosPercent.get()
     lineWidth = lineWidth * 2
     fillColor = 0
-    pos = [sw(50), sh(50)]
+    pos = const [sw(50), sh(50)]
     commands = isLockReleaseAreaVisible.get() ? [[VECTOR_RECTANGLE, -50, -50, 100, 100]] : null
   }
 
@@ -172,9 +172,9 @@ let opticalSight = @(width, height,
   }
 
   return {
-    pos = [0, 0]
+    pos = const [0, 0]
     size = [width, height]
-    watch = [TrackerVisible]
+    watch = [TrackerVisible, TrackerSize, GuidanceLockState, PointIsTarget]
     children = [fullscreenCrosshair, rollIndicator, releaseTargetLockArea, releaseTargetLockCursor, fovLimits,
       turretAngles(opticColorWatch, sightHdpx(150), sightHdpx(150), sightSw(50), sightSh(90), 0.5, true)
     ]

@@ -1,17 +1,17 @@
+import "regexp2" as regexp2
+from "%sqstd/string.nut" import cutPrefix, cutPostfix
 from "%scripts/dagui_library.nut" import *
 
-let { cutPrefix, cutPostfix } = require("%sqstd/string.nut")
-let regexp2 = require("regexp2")
+const STEAM_PLAYER_POSTFIX = "@steam"
 
-let STEAM_PLAYER_POSTFIX = "@steam"
+const EPIC_PLAYER_POSTFIX = "@epic"
 
-let EPIC_PLAYER_POSTFIX = "@epic"
+const XBOX_ONE_PLAYER_PREFIX = "^"
+const XBOX_ONE_PLAYER_POSTFIX = "@live"
 
-let XBOX_ONE_PLAYER_PREFIX = "^"
-let XBOX_ONE_PLAYER_POSTFIX = "@live"
-
-let PSN_PLAYER_PREFIX = "*"
-let PSN_PLAYER_POSTFIX = "@psn"
+const PSN_PLAYER_PREFIX = "*"
+const PSN_PLAYER_POSTFIX = "@psn"
+const PSN_ICON = "⋊"
 
 let xboxPrefixNameRegexp = regexp2($"^['{XBOX_ONE_PLAYER_PREFIX}']")
 let xboxPostfixNameRegexp = regexp2($".+({XBOX_ONE_PLAYER_POSTFIX})")
@@ -39,6 +39,7 @@ return {
   psnPrefixNameRegexp
   psnPostfixNameRegexp
   isPS4PlayerName
+  PSN_ICON
   steamPostfixNameRegexp
   epicPostfixNameRegexp
   cutPlayerNamePrefix

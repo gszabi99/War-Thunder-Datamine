@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module match shared private
@@ -42,7 +40,7 @@ struct MatchTo {
     failed       : bool                             
 }
 
-[macro_function]
+[macro_function, unused_argument(msg)]
 def log_m(msg : string) {
     static_if (LOG_MATCH) {
         to_log(LOG_INFO, msg)
@@ -62,16 +60,19 @@ enum MatchType {
 }
 
 [macro_function]
+def is_string_like(typ : TypeDeclPtr) : bool {
+    if (typ == null) return false
+    if (typ.baseType == Type.tString) return true
+    return typ.baseType == Type.tHandle && typ.annotation != null && typ.annotation.name == "das_string"
+}
+
+[macro_function]
 def get_match_type(typ : TypeDeclPtr) {
-    if (!typ.isStructure || typ.structType == null) {
-        return MatchType.none
-    }
+    if (!typ.isStructure || typ.structType == null) return MatchType.none
     for (ann in typ.structType.annotations) {
         if (ann.annotation.name == "match_as_is") {
             return MatchType.as_is
-        } elif (ann.annotation.name == "match_copy") {
-            return MatchType.copy
-        }
+        } elif (ann.annotation.name == "match_copy") return MatchType.copy
     }
     return MatchType.none
 }
@@ -92,7 +93,7 @@ def match_as_is(what : TypeDeclPtr; wths : Expression?; makeType : TypeDeclPtr; 
     return match_any(makeType, wths, access_expr, to)
 }
 
-[macro_function]
+[macro_function, unused_argument(as_is_name)]
 def match_copy(what : TypeDeclPtr; wths : Expression?; makeType : TypeDeclPtr; as_is_name : das_string; access : Expression?; var to : MatchTo) {
     log_m("\tmatch_copy {describe(what)} {describe(makeType)} {describe(access)}")
     let tempName = make_unique_private_name("__`match`copy", wths.at)
@@ -109,12 +110,41 @@ def match_copy(what : TypeDeclPtr; wths : Expression?; makeType : TypeDeclPtr; a
     return match_any(makeType, wths, access_new, to)
 }
 
+def public match_peel_r2v(var e : Expression?) : Expression? {
+    
+    while (e != null && e is ExprRef2Value) {
+        e = (e as ExprRef2Value).subexpr
+    }
+    return e
+}
+
+def public match_peel_r2v(e : Expression const?) : Expression const? {
+    
+    var c : Expression const? = e
+    while (c != null && c is ExprRef2Value) {
+        c = (c as ExprRef2Value).subexpr
+    }
+    return c
+}
+
 [macro_function]
 def match_struct(what : TypeDeclPtr; wths : ExprMakeStruct?; access : Expression?; var to : MatchTo) {
     
     if (wths.makeType.isHandle && isExpression(wths.makeType)
             && what.isPointer && what.firstType != null && isExpression(what.firstType)) {
-        return match_as_is(what, wths, wths.makeType,  wths.makeType.annotation.name, access, to)
+        
+        if (wths.makeType.annotation.name != "ExprRef2Value") {
+            var peeled = qmacro(match_peel_r2v($e(access)))
+            peeled |> force_at(wths.at)
+            var cond_pz = qmacro($e(peeled) != null)
+            cond_pz |> force_at(wths.at)
+            to.conditions |> emplace(cond_pz)
+            return match_as_is(what, wths, wths.makeType, wths.makeType.annotation.name, peeled, to)
+        }
+        var cond_nz = qmacro($e(access) != null)
+        cond_nz |> force_at(wths.at)
+        to.conditions |> emplace(cond_nz)
+        return match_as_is(what, wths, wths.makeType, wths.makeType.annotation.name, access, to)
     }
     
     if (what.baseType == Type.tPointer && what.firstType != null && (what.firstType.isStructure || what.firstType.isHandle)) {
@@ -134,16 +164,13 @@ def match_struct(what : TypeDeclPtr; wths : ExprMakeStruct?; access : Expression
             let mtype = get_match_type(wths.makeType)
             if (mtype == MatchType.as_is) {
                 return match_as_is(what, wths, wths.makeType, wths.makeType.structType.name, access, to)
-            } elif (mtype == MatchType.copy) {
-                return match_copy(what, wths, wths.makeType, wths.makeType.structType.name, access, to)
-            }
+            } elif (mtype == MatchType.copy) return match_copy(what, wths, wths.makeType, wths.makeType.structType.name, access, to)
         }
         to.errors |> match_error("{describe(what)} type does not match [[{describe(wths.makeType)} ... ]] structure", wths.at)
         return false
     }
-    let wdl = length(what.dim)
     let wthsLength = length(wths.structs)
-    let whatDim = wdl > 0 ? what.dim[wdl - 1] : 1
+    let whatDim = what.baseType == Type.tFixedArray ? what.fixedDim : 1
     if (wthsLength != whatDim) {
         to.errors |> match_error("{describe(what)} number of elements does not match [[describe(wths.makeType)}[{wthsLength}] ... ]]", wths.at)
         return false
@@ -171,9 +198,7 @@ def match_struct(what : TypeDeclPtr; wths : ExprMakeStruct?; access : Expression
                     return false
                 }
                 log_m("\t[[structure[{i}] {mf.name}]] match passed\n")
-                if (!match_any(ftype, mf.value, new_access, to)) {
-                    return false
-                }
+                if (!match_any(ftype, mf.value, new_access, to)) return false
             }
         }
     }
@@ -217,15 +242,11 @@ def match_tuple(what : TypeDeclPtr; wths : ExprMakeTuple?; access : Expression?;
     }
     log_m("\tuple match passed\n")
     for (i in range(wthsLength)) {
-        if (i == tagIndex) {
-            continue
-        }
+        if (i == tagIndex) continue  
         let ei = i <= tagIndex ? i : whatDim - (wthsLength - i)
         {
             var new_access = qmacro($e(access).$f("_{ei}")); new_access |> force_at(wths.at)
-            if (!match_any(what.argTypes[ei], wths.values[i], new_access, to)) {
-                return false
-            }
+            if (!match_any(what.argTypes[ei], wths.values[i], new_access, to)) return false
         }
     }
     return true
@@ -233,7 +254,7 @@ def match_tuple(what : TypeDeclPtr; wths : ExprMakeTuple?; access : Expression?;
 
 [macro_function]
 def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; access : Expression?; var to : MatchTo) {
-    let wdl = length(what.dim)
+    let isFA = what.baseType == Type.tFixedArray
     var recT : TypeDeclPtr
     
     var tagIndex = INT_MAX
@@ -248,12 +269,12 @@ def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; acces
     }
     
     let wthsLength = length(wths.values)
-    if (wdl != 0) {
+    if (isFA) {
         if (dynamic) {
             to.errors |> match_error("{describe(what)} is not a dynamic array", wths.at)
             return false
         }
-        let whatDim = what.dim[wdl - 1]
+        let whatDim = what.fixedDim
         if (tagIndex == INT_MAX) {
             if (whatDim != wthsLength) {
                 to.errors |> match_error("{describe(what)} number of elements does not match [[describe(wths.makeType)}[{wthsLength}] ... ]] array", wths.at)
@@ -265,8 +286,7 @@ def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; acces
                 return false
             }
         }
-        recT = clone_type(what)
-        recT.dim |> pop()
+        recT = clone_type(what.firstType)   
         if (!wths.makeType.isAuto && !is_same_type(recT, wths.makeType, RefMatters.no, ConstMatters.no, TemporaryMatters.no)) {
             to.errors |> match_error("{describe(what)} type does not match [[{describe(wths.recordType)}[{wthsLength}] ... ]] array", wths.at)
             return false
@@ -292,9 +312,7 @@ def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; acces
             let ei = i <= tagIndex ? i : wthsLength - i
             var new_access = i < tagIndex ? qmacro($e(access)[$v(ei)]) : qmacro($e(access)[length($e(access)) - $v(ei)])
             new_access |> force_at(wths.at)
-            if (!match_any(recT, wths.values[i], new_access, to)) {
-                return false
-            }
+            if (!match_any(recT, wths.values[i], new_access, to)) return false
         }
     }
     return true
@@ -314,13 +332,13 @@ def match_variant(what : TypeDeclPtr; wths : ExprMakeVariant?; access : Expressi
         to.errors |> match_error("{describe(what)} type does not match [[{describe(wths.makeType)} ... ]] variant", wths.at)
         return false
     }
-    let wdl = length(what.dim)
     let wthsLength = length(wths.variants)
-    let whatDim = wdl > 0 ? what.dim[wdl - 1] : 1
+    let whatDim = what.baseType == Type.tFixedArray ? what.fixedDim : 1
     if (wthsLength != whatDim) {
         to.errors |> match_error("{describe(what)} number of variant elements does not match [[describe(wths.makeType)}[{wthsLength}] ... ]]", wths.at)
         return false
     }
+    to.conditions |> reserve(length(to.conditions) + wthsLength)
     for (mf, i in wths.variants, count()) {
         {
             var new_access = whatDim == 1 ? qmacro($e(access) as $f(mf.name)) : qmacro($e(access)[$v(i)] as $f(mf.name))
@@ -335,9 +353,7 @@ def match_variant(what : TypeDeclPtr; wths : ExprMakeVariant?; access : Expressi
                 name := mf.name
             )
             log_m("\t[[variant {mf.name}]] match passed\n")
-            if (!match_any(ftype, mf.value, new_access, to)) {
-                return false
-            }
+            if (!match_any(ftype, mf.value, new_access, to)) return false
         }
     }
     return true
@@ -386,9 +402,7 @@ def match_type(what : TypeDeclPtr; wthmt : ExprCall?; access : Expression?; var 
         let mt = get_match_type(mtype)
         if (mt == MatchType.as_is) {
             return match_as_is(mtype, wthmt, mtype, mtype.structType.name, access, to)
-        } elif (mt == MatchType.copy) {
-            return match_copy(mtype, wthmt, mtype, mtype.structType.name, access, to)
-        }
+        } elif (mt == MatchType.copy) return match_copy(mtype, wthmt, mtype, mtype.structType.name, access, to)
         to.errors |> match_error("mismatching type {describe(what)} vs {describe(mtype)}", mtype.at)
         return false
     }
@@ -401,7 +415,8 @@ def match_expr(what : TypeDeclPtr; wthmt : ExprCall?; access : Expression?; var 
         return false
     }
     assume value = wthmt.arguments[0]
-    if (value._type != null && !is_same_type(what, value._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)) {
+    if (value._type != null && !is_same_type(what, value._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)
+            && !(is_string_like(what) && is_string_like(value._type))) {   
         to.errors |> match_error("mismatching expression type {describe(what)} vs {describe(value._type)}", value.at)
         return false
     }
@@ -445,10 +460,16 @@ def match_or(what : TypeDeclPtr; wth : ExprOp2?; access : Expression?; var to : 
     var toL : MatchTo
     toL.declarations := to.declarations
     if (!match_any(what, wth.left, access, toL)) {
+        
+        to.errors |> push_from(toL.errors)
+        to.failed ||= toL.failed
         return false
     }
     var toR : MatchTo
+    toR.declarations := to.declarations
     if (!match_any(what, wth.right, access, toR)) {
+        to.errors |> push_from(toR.errors)
+        to.failed ||= toR.failed
         return false
     }
     for (k in keys(to.declarations)) {
@@ -465,8 +486,9 @@ def match_or(what : TypeDeclPtr; wth : ExprOp2?; access : Expression?; var to : 
             return false
         }
     }
-    unsafe {
-        to.declarations <- toL.declarations 
+    
+    for (k, v in keys(toL.declarations), values(toL.declarations)) {
+        to.declarations[k] = v
     }
     var lcond = join_conditions(toL.conditions, wth.left.at)
     var rcond = join_conditions(toR.conditions, wth.right.at)
@@ -490,8 +512,14 @@ def match_tag(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
             to.errors |> match_error("duplicate variable {tname}", tag.at)
             return false
         }
+        var cap = clone_expression(access)
+        
+        if (what != null && what.isPointer && what.firstType != null && isExpression(what.firstType)) {
+            cap = qmacro(match_peel_r2v($e(cap)))
+            cap |> force_at(tag.at)
+        }
         unsafe {
-            to.declarations[tname] = clone_expression(access)
+            to.declarations[tname] = cap
         }
         log_m("\tadd variable {tname} as {describe(access)}\n")
         return true
@@ -503,13 +531,9 @@ def match_tag(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
 
 [macro_function]
 def is_match_call(wth : Expression?; name : string) {
-    if (!(wth is ExprCall)) {
-        return false
-    }
+    if (!(wth is ExprCall)) return false
     let ecall = wth as ExprCall
-    if (ecall.name == "match_{name}" || ecall.name == "match::match_{name}") {
-        return true
-    }
+    if (ecall.name == "match_{name}" || ecall.name == "match::match_{name}") return true
     var res = false
     peek(ecall.name) $(call_name) {
         res = call_name |> starts_with("__::match`match_{name}")
@@ -519,13 +543,9 @@ def is_match_call(wth : Expression?; name : string) {
 
 [macro_function]
 def is_to_array_move_call(wth : Expression?) {
-    if (!(wth is ExprCall)) {
-        return false
-    }
+    if (!(wth is ExprCall)) return false
     let ecall = wth as ExprCall
-    if (ecall.name == "to_array_move") {
-        return true
-    }
+    if (ecall.name == "to_array_move") return true
     var res = false
     peek(ecall.name) $(call_name) {
         res = call_name |> starts_with("__::builtin`to_array_move")
@@ -578,26 +598,29 @@ def match_any(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
         return match_guards(what, wth as ExprOp2, access, to)
     } elif ((wth is ExprOp2) && (wth as ExprOp2).op == "||") {
         return match_or(what, wth as ExprOp2, access, to)
-    } elif (string(wth.__rtti) |> starts_with("ExprConst")) {
+    } elif (wth.__rtti |> starts_with("ExprConst")) {
         if (wth._type == null) {
             to.errors |> match_error("unresolved constant type", wth.at)
             return false
         }
         if (wth.__rtti == "ExprConstPtr" && what.isPointer) {
             pass
+        } elif (is_string_like(what) && is_string_like(wth._type)) {
+            pass    
         } elif (!is_same_type(what, wth._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)) {
             to.errors |> match_error("condition type mismatch {describe(what)} vs {describe(wth._type)}", wth.at)
             return false
         }
         log_m("\tadd condition {describe(access)} == {describe(wth)}\n")
-        var ee = unsafe(reinterpret<Expression?> wth)
+        var ee = unsafe(reinterpret<Expression?>(wth))
         var cond = qmacro($e(access) == $e(ee))
         cond |> force_at(wth.at)
         to.conditions |> emplace(cond)
         return true
-    } elif (wth._type != null && is_same_type(what, wth._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)) {
+    } elif (wth._type != null && (is_same_type(what, wth._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no) ||
+            (is_string_like(what) && is_string_like(wth._type)))) {
         log_m("\tadd condition {describe(access)} == {describe(wth)}\n")
-        var ee = unsafe(reinterpret<Expression?> copy_to_local(wth))
+        var ee = unsafe(reinterpret<Expression?>(copy_to_local(wth)))
         var cond = qmacro($e(access) == $e(ee))
         cond |> force_at(wth.at)
         to.conditions |> emplace(cond)
@@ -612,12 +635,10 @@ def match_any(what : TypeDeclPtr; wth : Expression?; access : Expression?; var t
 [macro_function]
 def join_conditions(var conditions : array<Expression?>; at : LineInfo) : Expression? {
     let clen = length(conditions)
-    if (clen == 0) {
-        return new ExprConstBool(value = true, at = at)
-    }
+    if (clen == 0) return new ExprConstBool(value = true, at = at)
     var tail = conditions |> back()
     conditions |> pop()
-    while (length(conditions) > 0) {
+    while (!empty(conditions)) {
         {
             var last = conditions |> back()
             conditions |> pop()
@@ -646,13 +667,10 @@ class MatchMacro : AstCallMacro {
         assume blk = expr.arguments[1]
         return if (!(blk is ExprMakeBlock))
         
-        
-        
-        
         var eblk = ((blk as ExprMakeBlock)._block as ExprBlock)
         for (ee in eblk.list) {
             if (ee is ExprIfThenElse) {
-                (ee as ExprIfThenElse).if_flags |= IfFlags.doNotFold
+                (ee as ExprIfThenElse).if_flags.doNotFold = true
             }
         }
     }
@@ -664,7 +682,7 @@ class MatchMacro : AstCallMacro {
         macro_verify(blk._type.isGoodBlockType, prog, expr.at, "match `block` argument did not resolve")
         macro_verify(blk is ExprMakeBlock, prog, expr.at, "match `block` argument must be immediate block declaration")
         var eblk = ((blk as ExprMakeBlock)._block as ExprBlock)
-        macro_verify(length(eblk.finalList) == 0, prog, expr.at, "match `block` argument can't have finally section")
+        macro_verify(empty(eblk.finalList), prog, expr.at, "match `block` argument can't have finally section")
         for (ee in eblk.list) {
             if (ee is ExprIfThenElse) {
                 let eite = ee as ExprIfThenElse
@@ -675,7 +693,7 @@ class MatchMacro : AstCallMacro {
             }
         }
         var access = clone_expression(what)
-        var iff : ExprIfThenElse?
+        var iff : Expression?
         var iffb : array<ExprIfThenElse?>
         let eli = length(eblk.list)
         var any_errors = false
@@ -686,7 +704,6 @@ class MatchMacro : AstCallMacro {
                 var to : MatchTo
                 if (match_any(what._type, eto.cond, access, to)) {
                     log_m("match_any ok\n\n")
-                    var new_iff = new ExprIfThenElse(at = eto.at, cond = join_conditions(to.conditions, eto.at))
                     var nblk = new ExprBlock(at = eto.at)
                     for (l in (eto.if_true as ExprBlock).list) {
                         nblk.list |> emplace_new <| clone_expression(l)
@@ -700,22 +717,28 @@ class MatchMacro : AstCallMacro {
                         }
                         rules |> replaceVarTag("_") <| clone_expression(access)
                     }
-                    new_iff.if_true = nblk
-                    if (multi_match) {
-                        iffb |> emplace(new_iff)
+                    if (!multi_match && iff == null && empty(to.conditions)) {
+                        
+                        iff = nblk
                     } else {
-                        new_iff.if_false = iff
-                        iff = new_iff
+                        var new_iff = new ExprIfThenElse(at = eto.at, cond = join_conditions(to.conditions, eto.at))
+                        new_iff.if_true = nblk
+                        if (multi_match) {
+                            iffb |> emplace(new_iff)
+                        } else {
+                            new_iff.if_false = iff
+                            iff = new_iff
+                        }
                     }
                 } elif (report_match_errors || to.failed) {
                     log_m("match_any failed\n\n")
                     any_errors = true
-                    if (length(to.errors) != 0) {
+                    if (!empty(to.errors)) {
                         for (e in to.errors) {
                             macro_error(prog, *e.at, e.msg)
                         }
                     } else {
-                        macro_error(prog, eto.at, "unspecified match error")
+                        macro_error(prog, eto.at, "pattern `{describe(eto.cond)}` does not match `{describe(what._type)}`")
                     }
                     break
                 }
@@ -724,7 +747,7 @@ class MatchMacro : AstCallMacro {
                         log_m("\tERROR:: {e.msg} at {describe(*e.at)}\n")
                     }
                 }
-                if (length(to.prefix) != 0) {
+                if (!empty(to.prefix)) {
                     let p0 = length(prefix)
                     prefix |> resize(p0 + length(to.prefix))
                     for (p, i in to.prefix, count(p0)) {
@@ -733,9 +756,7 @@ class MatchMacro : AstCallMacro {
                 }
             }
         }
-        if (any_errors) {
-            return null
-        }
+        if (any_errors) return null
         if (multi_match) {
             prefix |> reserve(length(prefix) + length(iffb))
             for (ib in iffb) {

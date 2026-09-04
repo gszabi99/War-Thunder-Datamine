@@ -1843,7 +1843,12 @@
     "TrackSoundName": "tracks",
     "TrackSoundNameCockpit": "tracks_interior",
     "EngineNameAi": "engine_tank_ai_middle",
-    "TrackSoundNameAi": "tracks_ai_middle"
+    "TrackSoundNameAi": "tracks_ai_middle",
+    "subVehiclesSound": {
+      "vehicle0": {
+        "TrackSoundName": "tracks_ai_wheels"
+      }
+    }
   },
   "class_tags": {},
   "commonWeapons": {
@@ -1884,7 +1889,7 @@
             180.0
           ],
           "pitch": [
-            -12.0,
+            -12.5,
             20.0
           ]
         },
@@ -1898,7 +1903,7 @@
           "lim2": [
             -135.0,
             -45.0,
-            -12.0,
+            -12.5,
             20.0
           ],
           "lim3": [
@@ -1910,7 +1915,7 @@
           "lim4": [
             -11.0,
             10.0,
-            -12.0,
+            -12.5,
             20.0
           ],
           "lim5": [
@@ -1922,7 +1927,7 @@
           "lim6": [
             45.0,
             135.0,
-            -12.0,
+            -12.5,
             20.0
           ],
           "lim7": [
@@ -2027,9 +2032,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 44650.0,
+      "Empty": 46500.0,
       "Fuel": 500.0,
-      "TakeOff": 45150.0,
+      "TakeOff": 47000.0,
       "momentOfInertia": [
         1.125,
         4.0,
@@ -2300,6 +2305,13 @@
         },
         "collisionProps": {
           "cls_turret_03": "convex_hull"
+        },
+        "lifelineParts": {
+          "conditionPartsDead": 1,
+          "p": [
+            "fuel_tank_exterior_l_01_dm",
+            "fuel_tank_exterior_r_01_dm"
+          ]
         }
       },
       "hook": {
@@ -3318,7 +3330,7 @@
                   180.0
                 ],
                 "pitch": [
-                  -12.0,
+                  -12.5,
                   20.0
                 ]
               },
@@ -3332,7 +3344,7 @@
                 "lim2": [
                   -135.0,
                   -45.0,
-                  -12.0,
+                  -12.5,
                   20.0
                 ],
                 "lim3": [
@@ -3344,7 +3356,7 @@
                 "lim4": [
                   -11.0,
                   10.0,
-                  -12.0,
+                  -12.5,
                   20.0
                 ],
                 "lim5": [
@@ -3356,7 +3368,7 @@
                 "lim6": [
                   45.0,
                   135.0,
-                  -12.0,
+                  -12.5,
                   20.0
                 ],
                 "lim7": [

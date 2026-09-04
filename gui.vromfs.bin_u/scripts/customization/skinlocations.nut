@@ -1,14 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "%sqstd/string.nut" as string
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqstd/datablock.nut" import blkFromPath
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
-let { blkFromPath } = require("%sqstd/datablock.nut")
-let DataBlock = require("DataBlock")
-let string = require("%sqstd/string.nut")
 let guidParser = require("%scripts/guidParser.nut")
-let stdMath = require("%sqstd/math.nut")
 let { liveDecoratorsCache } = require("%scripts/customization/decoratorCache.nut")
 let { getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const MAX_LOCATION_TYPES = 64
 

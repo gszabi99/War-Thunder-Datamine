@@ -34,6 +34,7 @@
   "game_das_project": "dasProject/project.das_project",
   "game_das_sandbox_project": "",
   "game_darg_project_script": "dasProject/darg.das_project",
+  "game_sq_script": "%toolScripts/on_asset_viewer_load.nut",
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "regional-lang.vromfs.bin",
   "__allowedConfigOverrides": {
@@ -150,7 +151,8 @@
       "motionBlurStrength": 0,
       "motionBlurCancelCamera": false,
       "fxDistortionStrength": 1.0,
-      "hitCameraFilteringQuality": 1
+      "hitCameraFilteringQuality": 1,
+      "crashDeformEnabled": false
     },
     "sound": {
       "speakerMode": "",
@@ -540,6 +542,14 @@
           64.0
         ],
         "height": 64.0
+      },
+      "hangar_showroom": {
+        "texSize": 256,
+        "distance": [
+          128.0,
+          64.0
+        ],
+        "height": 64.0
       }
     },
     "voxelShadows": {
@@ -574,6 +584,9 @@
         3
       ],
       "infantry": {
+        "voxelSize": 0.75
+      },
+      "hangar_showroom": {
         "voxelSize": 0.75
       },
       "aircraft": {
@@ -627,6 +640,11 @@
         "relativeBiasMax": 1.75,
         "slopeBias": 0.15
       },
+      "hangar_showroom": {
+        "maxDist": 700.0,
+        "relativeBiasMax": 1.75,
+        "slopeBias": 0.15
+      },
       "small_ship": {},
       "big_ship": {},
       "hangar": {},
@@ -647,6 +665,7 @@
       "renderHeightmap": false,
       "occlusionSunDirThreshold": 0.5,
       "enableSparseUpdate": true,
+      "snapAnchorToHero": false,
       "aircraft": {},
       "cockpit": {},
       "underwater": {},
@@ -659,8 +678,20 @@
         "powWeight": 0.9,
         "shadowDist": 75.0
       },
-      "small_ship": {},
-      "big_ship": {},
+      "hangar_showroom": {
+        "fadeOut": 10.0,
+        "depthBias": 0.2,
+        "depthConstBias": 0.0005,
+        "depthSlopeBias": 0.4,
+        "powWeight": 0.9,
+        "shadowDist": 75.0
+      },
+      "small_ship": {
+        "snapAnchorToHero": true
+      },
+      "big_ship": {
+        "snapAnchorToHero": true
+      },
       "hangar": {},
       "hangar_ship": {}
     },
@@ -685,8 +716,8 @@
       "gpuObjects": false,
       "contactShadows": false,
       "zBias": -0.00012,
-      "slopeZBias": -0.2,
-      "shaderZBias": 0.006,
+      "slopeZBias": -0.1,
+      "shaderZBias": 0.003,
       "shaderSlopeZBias": 0.016,
       "retainShadowSizeMul": 1.25,
       "dynamicShadowsMaxUpdatePerFrame": 4,
@@ -734,6 +765,13 @@
           "maxDist": 400.0,
           "cascade0Dist": 100.0
         },
+        "hangar_showroom": {
+          "useRelativeBias": false,
+          "texWidth": 1024,
+          "depthBias": 0.001,
+          "maxDist": 400.0,
+          "cascade0Dist": 100.0
+        },
         "hangar": {
           "maxDist": 375.0,
           "texWidth": 1024
@@ -766,6 +804,10 @@
           "powWeight": 0.4
         },
         "infantry": {
+          "shadowDist": 20.0,
+          "powWeight": 0.4
+        },
+        "hangar_showroom": {
           "shadowDist": 20.0,
           "powWeight": 0.4
         },
@@ -814,6 +856,14 @@
           "cascadeCount": 2,
           "cascade0Dist": 100.0
         },
+        "hangar_showroom": {
+          "useRelativeBias": false,
+          "texWidth": 2048,
+          "depthBias": 0.001,
+          "maxDist": 400.0,
+          "cascadeCount": 2,
+          "cascade0Dist": 100.0
+        },
         "hangar": {
           "maxDist": 375.0,
           "texWidth": 1024
@@ -849,6 +899,10 @@
           "shadowDist": 20.0,
           "powWeight": 0.4
         },
+        "hangar_showroom": {
+          "shadowDist": 20.0,
+          "powWeight": 0.4
+        },
         "small_ship": {
           "shadowDist": 35.0,
           "powWeight": 0.25
@@ -869,6 +923,9 @@
       "dynamicLightsShadows": {
         "shadowQuality": 0,
         "infantry": {
+          "shadowQuality": 1
+        },
+        "hangar_showroom": {
           "shadowQuality": 1
         }
       },
@@ -904,6 +961,10 @@
         "maxDist": 375.0,
         "texWidth": 1024,
         "infantry": {
+          "texWidth": 4096,
+          "cascadeStarting": 3
+        },
+        "hangar_showroom": {
           "texWidth": 4096,
           "cascadeStarting": 3
         }
@@ -950,11 +1011,19 @@
           "cascadeWidth": 1024,
           "splitsW": 2,
           "splitsH": 2
+        },
+        "hangar_showroom": {
+          "cascadeWidth": 1024,
+          "splitsW": 2,
+          "splitsH": 2
         }
       },
       "dynamicLightsShadows": {
         "shadowQuality": 1,
         "infantry": {
+          "shadowQuality": 2
+        },
+        "hangar_showroom": {
           "shadowQuality": 2
         }
       },
@@ -990,6 +1059,10 @@
         "maxDist": 375.0,
         "texWidth": 1024,
         "infantry": {
+          "texWidth": 4096,
+          "cascadeStarting": 3
+        },
+        "hangar_showroom": {
           "texWidth": 4096,
           "cascadeStarting": 3
         }
@@ -1038,11 +1111,19 @@
           "cascadeWidth": 1024,
           "splitsW": 2,
           "splitsH": 2
+        },
+        "hangar_showroom": {
+          "cascadeWidth": 1024,
+          "splitsW": 2,
+          "splitsH": 2
         }
       },
       "dynamicLightsShadows": {
         "shadowQuality": 1,
         "infantry": {
+          "shadowQuality": 2
+        },
+        "hangar_showroom": {
           "shadowQuality": 2
         }
       },
@@ -1092,6 +1173,10 @@
         "infantry": {
           "texWidth": 4096,
           "cascadeStarting": 3
+        },
+        "hangar_showroom": {
+          "texWidth": 4096,
+          "cascadeStarting": 3
         }
       },
       "csm": {
@@ -1134,7 +1219,8 @@
           "shadowDist": 200.0,
           "powWeight": 0.9
         },
-        "infantry": {}
+        "infantry": {},
+        "hangar_showroom": {}
       },
       "contactShadows": {
         "aircraft": {
@@ -1149,6 +1235,9 @@
         "gpuObjects": true,
         "contactShadows": true,
         "infantry": {
+          "shadowQuality": 3
+        },
+        "hangar_showroom": {
           "shadowQuality": 3
         }
       },
@@ -1202,6 +1291,9 @@
         "cascadeStarting": 4,
         "infantry": {
           "texWidth": 4096
+        },
+        "hangar_showroom": {
+          "texWidth": 4096
         }
       },
       "csm": {
@@ -1247,6 +1339,10 @@
         "infantry": {
           "shadowDist": 150.0,
           "powWeight": 0.9
+        },
+        "hangar_showroom": {
+          "shadowDist": 150.0,
+          "powWeight": 0.9
         }
       },
       "contactShadows": {
@@ -1263,6 +1359,9 @@
         "gpuObjects": true,
         "dynamicObjects": true,
         "infantry": {
+          "shadowQuality": 4
+        },
+        "hangar_showroom": {
           "shadowQuality": 4
         },
         "hangar": {
@@ -1324,12 +1423,20 @@
     "infantry": {
       "sdf_voxel0Size": 0.15
     },
+    "hangar_showroom": {
+      "sdf_voxel0Size": 0.15
+    },
     "underwater": {
       "suspend_gi": true
     },
     "low": {
       "dagiQuality": -1,
       "infantry": {
+        "dagiQuality": 0,
+        "skyVisibility_clipW": 56,
+        "skyVisibility_clips": 6
+      },
+      "hangar_showroom": {
         "dagiQuality": 0,
         "skyVisibility_clipW": 56,
         "skyVisibility_clips": 6
@@ -1347,6 +1454,20 @@
       "skyVisibility_clipW": 56,
       "skyVisibility_clips": 5,
       "infantry": {
+        "dagiQuality": 1,
+        "skyVisibility_clipW": 0,
+        "skyVisibility_clips": 0,
+        "albedoScene_clips": 3,
+        "voxelScene_sdfResScale": 0.5,
+        "radianceGrid_w": 28,
+        "radianceGrid_clips": 4,
+        "radianceGrid_irradianceProbeDetail": 2.0,
+        "radianceGrid_additionalIrradianceClips": 2,
+        "volumetricGI_blurTexelOfs": 0.124,
+        "volumetricGI_slices": 16,
+        "volumetricGI_tileSize": 64
+      },
+      "hangar_showroom": {
         "dagiQuality": 1,
         "skyVisibility_clipW": 0,
         "skyVisibility_clips": 0,
@@ -1392,6 +1513,9 @@
       "infantry": {
         "dagiQuality": 1
       },
+      "hangar_showroom": {
+        "dagiQuality": 1
+      },
       "hangar": {
         "dagiQuality": 1
       },
@@ -1418,6 +1542,9 @@
         "enabled": true
       },
       "hangar_ship": {
+        "enabled": true
+      },
+      "hangar_showroom": {
         "enabled": true
       }
     },
@@ -1489,6 +1616,9 @@
       "screen_area_discard_refl_scale": 24.0
     },
     "hangar": {
+      "dafx_dynamic_lights": true
+    },
+    "hangar_showroom": {
       "dafx_dynamic_lights": true
     },
     "ultralow": {
@@ -1703,12 +1833,8 @@
       "forSource": "../prog/scripts/wt/dedicatedScripts",
       "forVromfs": "dedicatedscripts"
     },
-    "%sqDagui": {
-      "forSource": "../prog/scripts/sqDagui",
-      "forVromfs": "sqDagui"
-    },
     "%sqStdLibs": {
-      "forSource": "../prog/scripts/sqStdLibs",
+      "forSource": "../prog/scripts/wt/sqStdLibs",
       "forVromfs": "sqStdLibs"
     },
     "%daslib": {
@@ -2459,6 +2585,49 @@
       }
     }
   },
+  "graphicsAutodetect_human": {
+    "gpuBenchmarkDuration": 10.0,
+    "presetDefault": "high",
+    "presetUltralow": "ultralow",
+    "presets": {
+      "ultralow": {
+        "timeMs30": 30.0,
+        "timeMs60": 15.0,
+        "timeMs120": 7.0,
+        "timeMs240": 3.0
+      },
+      "low": {
+        "timeMs30": 17.0,
+        "timeMs60": 8.0,
+        "timeMs120": 4.0,
+        "timeMs240": 2.0
+      },
+      "medium": {
+        "timeMs30": 11.0,
+        "timeMs60": 5.5,
+        "timeMs120": 2.5,
+        "timeMs240": 1.25
+      },
+      "high": {
+        "timeMs30": 6.5,
+        "timeMs60": 3.0,
+        "timeMs120": 1.5,
+        "timeMs240": 0.75
+      },
+      "max": {
+        "timeMs30": 4.5,
+        "timeMs60": 2.0,
+        "timeMs120": 1.0,
+        "timeMs240": 0.5
+      },
+      "movie": {
+        "timeMs30": 3.5,
+        "timeMs60": 1.25,
+        "timeMs120": 0.6,
+        "timeMs240": 0.3
+      }
+    }
+  },
   "phys": {
     "fixedTimeStepHz": -60,
     "maxSubSteps": 3
@@ -2485,14 +2654,16 @@
     "gpuPreferences": {
       "amd": {
         "vendorId": 4098,
+        "preferredFamily": 9,
         "blacklistedDrivers": {
-          "deviceIds": [
-            30032,
-            30033,
-            30096
-          ],
-          "drivers": "32.0.31041.1004",
-          "fixedDriverAvailable": false
+          "32.0.31041.1004": {
+            "deviceIds": [
+              30032,
+              30033,
+              30096
+            ],
+            "fixedDriverAvailable": false
+          }
         }
       },
       "intel": {
@@ -2509,6 +2680,7 @@
         "minDriver": "27.21.14.6140",
         "blacklistedDrivers": "27.21.14.6172",
         "preferredFamily": [
+          280,
           304,
           352,
           368,
@@ -2523,6 +2695,33 @@
     "vendor": {
       "AMD": {
         "driverProps": {
+          "extensions": {
+            "entry": {
+              "gpu": [
+                "RX 6950 XT",
+                "RX 6900 XT",
+                "RX 6800 XT",
+                "RX 6800",
+                "RX 6750 XT",
+                "RX 6700 XT",
+                "RX 6700",
+                "RX 6650 XT",
+                "RX 6600 XT",
+                "RX 6600",
+                "RX 6500 XT",
+                "RX 6400",
+                "RX 6850M XT",
+                "RX 6650M XT",
+                "RX 6500M",
+                "RX 6300M",
+                "RX 6550M",
+                "RX 6450M"
+              ],
+              "data": {
+                "VK_KHR_fragment_shader_barycentric": false
+              }
+            }
+          },
           "multiQueue": {
             "entry": {
               "gpu": "RX 6600",
@@ -2631,8 +2830,6 @@
       "world_sdf_from_gbuf_cs": true,
       "dagi_albedo_scene_from_gbuf_cs": true,
       "dagi_fix_empty_alpha_cs": true,
-      "local_tone_mapping_downsample": true,
-      "local_tone_mapping_upsample": true,
       "GenerateHistogramCenterWeightedFromSourceCS": true,
       "accumulate_hist_cs": true,
       "AdaptExposureCS": true,

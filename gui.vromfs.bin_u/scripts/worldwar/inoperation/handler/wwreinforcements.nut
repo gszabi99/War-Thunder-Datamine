@@ -1,15 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { wwGetPlayerSide } = require("worldwar")
 let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
@@ -17,7 +17,7 @@ let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwRei
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
-gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
+let WwReinforcements = class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapReinforcementsList.tpl"
   sceneBlkName = null
@@ -299,3 +299,6 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
       }
   }
 }
+register_gui_handler("WwReinforcements", WwReinforcements)
+
+return { WwReinforcements }

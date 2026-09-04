@@ -2,6 +2,7 @@ require ecs
 require %game.events
 require soundEvent
 require net
+require sound_utils_net.modules.sound_desc_common
 
 def play_launch_sound(prefix, name : string;
                       pos : float3;
@@ -31,7 +32,7 @@ def shell_launch_sound(evt : Event;
   query(shell__owner) <| $ [es] (is_watched_sound : bool)
     if is_watched_sound && !is_server()
       return
-    let prefix = is_watched_sound ? "infantry/player" : "infantry/enemy"
+    let prefix = "infantry/{get_watched_sound_event_folder(is_watched_sound)}"
     play_launch_sound(prefix, shell_launch_sound__name, transform[3],
                       shell_launch_sound__hasGrains, shell_launch_sound__event,
                       shell_launch_sound__ttl, false)

@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -11,7 +12,7 @@ const RESET_ID = "reset_btn"
 const SELECT_ALL_ID = "select_all_btn"
 
 
-local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
+local PopupFilterWidget = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
@@ -89,7 +90,7 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
     .reduce(@(res, v) res += v, 0)
 }
 
-gui_handlers.PopupFilterWidget <- PopupFilterWidget
+register_gui_handler("PopupFilterWidget", PopupFilterWidget)
 
 return {
   RESET_ID

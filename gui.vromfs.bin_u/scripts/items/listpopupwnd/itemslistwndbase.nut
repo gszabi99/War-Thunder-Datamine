@@ -1,12 +1,13 @@
+import "%sqstd/math.nut" as stdMath
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
-} = require("%sqDagui/daguiUtil.nut")
-let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
-let ItemsListWndBase = class (gui_handlers.BaseGuiHandlerWT) {
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+
+let ItemsListWndBase = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
@@ -86,7 +87,7 @@ let ItemsListWndBase = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ItemsListWndBase <- ItemsListWndBase
+register_gui_handler("ItemsListWndBase", ItemsListWndBase)
 
 return {
   ItemsListWndBase

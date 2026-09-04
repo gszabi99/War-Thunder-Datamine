@@ -1,65 +1,73 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "string" import format
+from "guiOptions" import get_gui_option
+from "dynamicMission" import dynamicGetVisual
+from "guiMission" import select_mission, select_mission_full
+from "mission" import get_game_mode, get_game_type
+from "%sqstd/string.nut" import split, utf8ToLower
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import add_video_seen, was_video_seen, get_game_mode_name, is_mouse_last_time_used, play_movie
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_mislist_type, getMislistTypeByName } = require("%scripts/missions/misListType.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MissionDescription } = require("%scripts/missions/missionDescription.nut")
+let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
+let { Briefing, getBriefingOptions } = require("%scripts/briefing.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getMissionGroup, getMissionGroupName } = require("%scripts/missions/missionType.nut")
-let { missionsListCampaignId } = require("%scripts/missions/getMissionsListCampaignId.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { saveTutorialToCheckReward } = require("%scripts/tutorials/tutorialsData.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
-let { get_gui_option } = require("guiOptions")
-let { dynamicGetVisual } = require("dynamicMission")
-let { select_mission, select_mission_full } = require("guiMission")
-let { get_game_mode, get_game_type } = require("mission")
-let { split, utf8ToLower } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isInSessionRoom, isSessionLobbyCoop } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getDynamicLayouts, getNotPurchasedCampaigns,
-  getMissionAllowedUnittypesMask, getMaxPlayersForGamemode, canPlayGamemodeBySquad
-} = require("%scripts/missions/missionsUtils.nut")
+let { getDynamicLayouts, getNotPurchasedCampaigns, getMissionAllowedUnittypesMask, getMaxPlayersForGamemode, canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
 let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { guiStartDynamicSummary, briefingOptionsApply, guiStartCdOptions
-} = require("%scripts/missions/startMissionsList.nut")
-let { isRemoteMissionVar, currentCampaignId, currentCampaignMission, get_current_campaign, get_mission_settings, set_mission_settings,
-  is_user_mission
-} = require("%scripts/missions/missionsStates.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { guiStartDynamicSummary, briefingOptionsApply, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
+let { isRemoteMissionVar, currentCampaignId, currentCampaignMission, get_current_campaign, get_mission_settings, set_mission_settings, is_user_mission, isUrlMission } = require("%scripts/missions/missionsStates.nut")
 let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
 let { checkDiffPkg, checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { getBriefingOptions } = require("%scripts/briefing.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 let { MIS_PROGRESS } = require("%scripts/missions/missionProgress.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
 
-let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
+function updateMissionObj(obj, params) {
+  let { id, itemType = "", itemText, isCollapsable = false, itemIcon = "" } = params
+  obj.id = id
+  obj.missionItemType = itemType
+  obj.findObject("mission_item_text").setValue(itemText)
+  obj.findObject("medal_icon")["background-image"] = itemIcon
+  let collapseObj = showObjById("btn_mission_item_collapse", isCollapsable, obj)
+  if (isCollapsable)
+    collapseObj.missionId = id
+}
+
+let CampaignChapter = class (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   applyAtClose = false
 
@@ -96,22 +104,23 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   applyFilterTimer = null
 
   function initScreen() {
-    this.showWaitAnimation(true)
-
     this.gm = get_game_mode()
     this.loadCollapsedChapters()
     this.initCollapsingOptions()
 
     this.updateMouseMode()
+    this.updateWindowTitle()
     this.initMisListTypeSwitcher()
     this.updateFavorites()
     this.initDescHandler()
-    this.updateWindow()
+    this.initMissionsList()
     move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
   function initDescHandler() {
-    let descHandler = gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    let descHandler = MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    if (descHandler == null)
+      return
     this.registerSubHandler(descHandler)
     this.missionDescWeak = descHandler.weakref()
   }
@@ -134,7 +143,11 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     return $"mislist_collapsed_chapters/{get_game_mode_name(this.gm)}"
   }
 
-  function updateWindow() {
+  function updateWindowTitle() {
+    let obj = this.getObj("chapter_name")
+    if (obj == null)
+      return
+
     local title = ""
     if (this.gm == GM_CAMPAIGN)
       title = loc("mainmenu/btnCampaign")
@@ -144,19 +157,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
               : loc("mainmenu/btnUserMission")
     else if (this.gm == GM_SKIRMISH)
       title = loc("mainmenu/btnSkirmish")
-    else
-      title = loc($"chapters/{currentCampaignId.get()}")
-
-    this.initMissionsList(title)
-  }
-
-  function initMissionsList(title) {
-    let customChapterId = (this.gm == GM_DYNAMIC) ? currentCampaignId.get() : missionsListCampaignId.get()
-    local customChapters = null
-    if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
-      customChapters = get_current_campaign()
-
-    if (this.gm == GM_DYNAMIC) {
+    else if (this.gm == GM_DYNAMIC) {
       let info = DataBlock()
       dynamicGetVisual(info)
       let l_file = info.getStr("layout", "")
@@ -167,10 +168,18 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
           break
         }
     }
+    else
+      title = loc($"chapters/{currentCampaignId.get()}")
 
-    let obj = this.getObj("chapter_name")
-    if (obj != null)
-      obj.setValue(title)
+    obj.setValue(title)
+  }
+
+  function initMissionsList() {
+    this.showWaitAnimation(true)
+    let customChapterId = (this.gm == GM_DYNAMIC) ? currentCampaignId.get() : null
+    local customChapters = null
+    if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
+      customChapters = get_current_campaign()
 
     this.misListType.requestMissionsList(this.showAllCampaigns,
       Callback(this.updateMissionsList, this),
@@ -178,10 +187,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMissionsList(new_missions) {
-    this.showWaitAnimation(false)
-
     this.missions = new_missions
     if (this.missions.len() <= 0 && !this.canSwitchMisListType && !this.misListType.canBeEmpty) {
+      this.showWaitAnimation(false)
       this.msgBox("no_missions", loc("missions/no_missions_msgbox"), [["ok"]], "ok")
       this.goBack()
       return
@@ -197,19 +205,36 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
     let selMisConfig = this.curMission || this.misListType.getCurMission()
 
-    let view = { items = [] }
     local selIdx = -1
     local foundCurrent = false
     local hasVideoToPlay = false
 
-    foreach (idx, mission in this.missions) {
+    this.guiScene.setUpdatesEnabled(false, false)
+
+    let missionsCount = this.missions.len()
+    let childrenCount = listObj.childrenCount()
+    if (missionsCount > childrenCount)
+      this.guiScene.createMultiElementsByObject(listObj, "%gui/missions/missionBoxItem.blk",
+        "mission_item", missionsCount - childrenCount, this)
+
+    let lastIdx = listObj.childrenCount() - 1
+    for (local idx = 0; idx <= lastIdx; idx++) {
+      let obj = listObj.getChild(idx)
+      let mission = this.missions?[idx]
+      if (mission == null) {
+        obj.show(false)
+        continue
+      }
+
+      obj.show(true)
+      obj.setIntProp(this.listIdxPID, idx)
+
       if (mission.isHeader) {
-        view.items.append({
-          itemTag = mission.isCampaign ? "campaign_item" : "chapter_item_unlocked"
+        updateMissionObj(obj, {
           id = mission.id
-          itemText = this.misListType.getMissionNameText(mission)
+          itemType = mission.isCampaign ? "campaign" : "chapterUnlocked"
+          itemText = mission.getNameText()
           isCollapsable = (mission.isCampaign && this.canCollapseCampaigns) || this.canCollapseChapters
-          isNeedOnHover = showConsoleButtons.get()
         })
         continue
       }
@@ -221,91 +246,83 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
         local isCurrent = false
         if (this.gm == GM_TRAINING
             || (this.gm == GM_CAMPAIGN && !selMisConfig))
-          isCurrent = getTblValue("progress", mission, -1) == MIS_PROGRESS.UNLOCKED
+          isCurrent = (mission?.progress ?? -1) == MIS_PROGRESS.UNLOCKED
         else
           isCurrent = selMisConfig == null || selMisConfig.id == mission.id
 
         if (isCurrent) {
           selIdx = idx
           foundCurrent = isCurrent
-          if (this.gm == GM_CAMPAIGN && getTblValue("progress", mission, -1) == MIS_PROGRESS.UNLOCKED)
+          if (this.gm == GM_CAMPAIGN && (mission?.progress ?? -1) == MIS_PROGRESS.UNLOCKED)
             hasVideoToPlay = true
         }
       }
 
-      if (g_mislist_type.isUrlMission(mission)) {
-        let medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
-        view.items.append({
-          itemIcon = medalIcon
+      if (isUrlMission(mission)) {
+        let itemIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
+        updateMissionObj(obj, {
+          itemIcon
           id = mission.id
-          itemText = this.misListType.getMissionNameText(mission)
-          isNeedOnHover = showConsoleButtons.get()
+          itemText = mission.getNameText()
         })
         continue
       }
 
-      local elemCssId = "mission_item_locked"
-      local medalIcon = "#ui/gameuiskin#locked.svg"
+      local itemType = "locked"
+      local itemIcon = "#ui/gameuiskin#locked.svg"
 
       if (MODIFICATION_TUTORIAL_CHAPTERS.contains(mission.chapter)) {
-        elemCssId = "mission_item_unlocked"
-        medalIcon = ""
+        itemType = ""
+        itemIcon = ""
       }
       else if (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION || this.gm == GM_TRAINING) {
         let progress = mission.progress
         if (progress == 0) {
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_arcade"
+          itemType = "completed"
+          itemIcon = "#ui/gameuiskin#mission_complete_arcade"
         }
         else if (progress == 1) {
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_realistic"
+          itemType = "completed"
+          itemIcon = "#ui/gameuiskin#mission_complete_realistic"
         }
         else if (progress == 2) {
-          elemCssId = "mission_item_completed"
-          medalIcon = "#ui/gameuiskin#mission_complete_simulator"
+          itemType = "completed"
+          itemIcon = "#ui/gameuiskin#mission_complete_simulator"
         }
         else if (progress == 3) {
-          elemCssId = "mission_item_unlocked"
-          medalIcon = ""
+          itemType = ""
+          itemIcon = ""
         }
       }
       else if (this.gm == GM_DOMINATION || this.gm == GM_SKIRMISH) {
-        elemCssId = "mission_item_unlocked"
-        medalIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
+        itemType = ""
+        itemIcon = this.misListType.isMissionFavorite(mission) ? "#ui/gameuiskin#favorite" : ""
       }
       else if (mission.isUnlocked) {
-        elemCssId = "mission_item_unlocked"
-        medalIcon = ""
+        itemType = ""
+        itemIcon = ""
       }
 
-      view.items.append({
-        itemTag = elemCssId
-        itemIcon = medalIcon
+      updateMissionObj(obj, {
+        itemType
+        itemIcon
         id = mission.id
-        itemText = this.misListType.getMissionNameText(mission)
-        isNeedOnHover = showConsoleButtons.get()
+        itemText = mission.getNameText()
       })
     }
 
-    let data = handyman.renderCached("%gui/missions/missionBoxItemsList.tpl", view)
-    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
-    for (local i = 0; i < listObj.childrenCount(); i++)
-      listObj.getChild(i).setIntProp(this.listIdxPID, i)
-
-    if (selIdx >= 0 && selIdx < listObj.childrenCount()) {
-      let mission = this.missions[selIdx]
-      if (hasVideoToPlay && this.gm == GM_CAMPAIGN)
-        this.playChapterVideo(mission.chapter, true)
-
-      listObj.setValue(selIdx)
-    }
-    else if (selIdx < 0)
-      this.onItemSelect(listObj)
-
     this.createFilterDataArray()
     this.applyMissionFilter()
-    this.updateCollapsedItems()
+    this.updateCollapsedItems(null, selIdx)
+
+    this.guiScene.setUpdatesEnabled(true, true)
+    this.showWaitAnimation(false)
+
+    if (hasVideoToPlay && this.gm == GM_CAMPAIGN) {
+      let curIdx = listObj.getValue()
+      if (curIdx == selIdx) 
+        this.playChapterVideo(this.missions[selIdx].chapter, true)
+    }
   }
 
   function createFilterDataArray() {
@@ -313,7 +330,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.filterDataArray = []
     foreach (idx, mission in this.missions) {
-      let locText = this.misListType.getMissionNameText(mission)
+      let locText = mission.getNameText()
       let locString = utf8ToLower(locText)
       this.filterDataArray.append({
         locString = locString.replace("\t", "") 
@@ -351,7 +368,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSelectedMission(needCheckFocused = true) {
     this.curMissionIdx = this.getSelectedMissionIndex(!this.isMouseMode && needCheckFocused)
-    this.curMission = getTblValue(this.curMissionIdx, this.missions, null)
+    this.curMission = this.missions?[this.curMissionIdx]
     return this.curMission
   }
 
@@ -360,7 +377,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.missionDescWeak) {
       local previewBlk = null
       if (this.gm == GM_DYNAMIC)
-        previewBlk = getTblValue(this.curMissionIdx, get_mission_settings().dynlist)
+        previewBlk = get_mission_settings().dynlist?[this.curMissionIdx]
       this.missionDescWeak.setMission(this.curMission, previewBlk)
     }
     this.updateButtons()
@@ -402,15 +419,15 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventSquadDataUpdated(_params) {
     if (this.gm == GM_SINGLE_MISSION)
-      this.doWhenActiveOnce("updateWindow")
+      this.doWhenActiveOnce("initMissionsList")
   }
 
   function onEventUrlMissionChanged(_params) {
-    this.doWhenActiveOnce("updateWindow")
+    this.doWhenActiveOnce("initMissionsList")
   }
 
   function onEventUrlMissionAdded(_params) {
-    this.doWhenActiveOnce("updateWindow")
+    this.doWhenActiveOnce("initMissionsList")
   }
 
   function onEventUrlMissionLoaded(params) {
@@ -549,7 +566,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (! this.filterText.len())
       this.saveCollapsedChapters()
 
-    if (getTblValue("blk", this.curMission) == null && g_mislist_type.isUrlMission(this.curMission)) {
+    if (this.curMission?.blk == null && isUrlMission(this.curMission)) {
       let misBlk = this.curMission.urlMission.getMetaInfo()
       if (misBlk)
         this.curMission.blk <- misBlk
@@ -650,7 +667,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     return g_squad_manager.isNotAloneOnline() ? loc("missions/noCoopMissions") : loc("missions/emptyList")
   }
 
-  function updateCollapsedItems(selCamp = null) {
+  function updateCollapsedItems(selCamp = null, preferredIdx = null) {
     let listObj = this.getObj("items_list")
     if (!listObj)
       return
@@ -658,6 +675,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
     local collapsed = false
     let wasIdx = listObj.getValue()
+    preferredIdx = preferredIdx ?? wasIdx
     local selIdx = -1
     local hasAnyVisibleMissions = false
     let isFilteredMissions = this.filterText.len() > 0
@@ -669,7 +687,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
         let obj = listObj.getChild(idx)
         if (obj) {
           obj.collapsed = collapsed ? "yes" : "no"
-          let collapseBtnObj = obj.findObject($"btn_{obj.id}")
+          let collapseBtnObj = obj.findObject("btn_mission_item_collapse")
           if (checkObj(collapseBtnObj))
             collapseBtnObj.show(!isFilteredMissions)
         }
@@ -686,7 +704,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
       let filterData = this.filterDataArray[idx]
       isVisible = isVisible && filterData.filterCheck
-      if (isVisible && (selIdx < 0 || wasIdx == idx))
+      if (isVisible && (selIdx < 0 || preferredIdx == idx))
         selIdx = idx
 
       obj.enable(isVisible)
@@ -695,13 +713,14 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.guiScene.setUpdatesEnabled(true, true)
+
     if (selIdx >= 0) {
-      if (selIdx != wasIdx) {
+      if (selIdx != wasIdx)
         listObj.setValue(selIdx)
+      else {
         this.onItemSelect(listObj)
-      }
-      else
         listObj.getChild(selIdx).scrollToView()
+      }
     }
 
     let listText = hasAnyVisibleMissions ? "" : this.getEmptyListMsg()
@@ -729,9 +748,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   function onCollapse(obj) {
     if (!obj)
       return
-    let id = obj.id
-    if (id.len() > 4 && id.slice(0, 4) == "btn_")
-      this.collapse(id.slice(4))
+    let id = obj?.missionId ?? ""
+    if (id != "")
+      this.collapse(id)
   }
 
   function openMissionOptions(mission) {
@@ -745,8 +764,8 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     this.missionBlk = DataBlock()
     this.missionBlk.setFrom(mission.blk)
 
-    let isUrlMission = g_mislist_type.isUrlMission(mission)
-    if (isUrlMission)
+    let isMissionByUrl = isUrlMission(mission)
+    if (isMissionByUrl)
       this.missionBlk.url = mission.urlMission.url
 
     let coopAvailable = isGameModeCoop(this.gm) && canPlayGamemodeBySquad(this.gm) && !is_user_mission(this.missionBlk)
@@ -766,20 +785,20 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       this.missionBlk.setBool("autoBalance", false)
     }
 
-    if (isUrlMission)
+    if (isMissionByUrl)
       select_mission_full(this.missionBlk, mission.urlMission.fullMissionBlk)
     else
       select_mission(this.missionBlk, this.gm != GM_DOMINATION && this.gm != GM_SKIRMISH)
 
     let gt = get_game_type()
     let optionItems = getBriefingOptions(this.gm, gt, this.missionBlk)
-    let diffOption = u.search(optionItems, function(item) { return getTblValue(0, item) == USEROPT_DIFFICULTY })
+    let diffOption = u.search(optionItems, function(item) { return item?[0] == USEROPT_DIFFICULTY })
     this.needCheckDiffAfterOptions = diffOption != null
 
     let cb = Callback(this.afterMissionOptionsApply, this)
     let misBlk = this.missionBlk
     this.createModalOptions(optionItems, function() {
-      gui_handlers.Briefing.finalApply.call(this, misBlk) 
+      Briefing.finalApply.call(this, misBlk) 
       cb()
     })
   }
@@ -799,7 +818,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function createModalOptions(optionItems, applyFunc) {
     let params = this.getModalOptionsParam(optionItems, applyFunc)
-    let handler = handlersManager.loadHandler(gui_handlers.GenericOptionsModal, params)
+    let handler = handlersManager.loadHandler(GenericOptionsModal, params)
 
     if (!optionItems.len())
       handler.applyOptions()
@@ -830,7 +849,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onRefresh(_obj) {
     if (this.misListType.canRefreshList)
-      this.updateWindow()
+      this.initMissionsList()
   }
 
   function initMisListTypeSwitcher() {
@@ -847,7 +866,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       curMisListType = getMisListType()
     else {
       let typeName = loadLocalByAccount("wnd/chosenMisListType", "")
-      curMisListType = g_mislist_type.getTypeByName(typeName)
+      curMisListType = getMislistTypeByName(typeName)
     }
 
     let typesList = []
@@ -898,10 +917,10 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let typeName = obj.getChild(value).id
-    this.misListType = g_mislist_type.getTypeByName(typeName)
+    this.misListType = getMislistTypeByName(typeName)
     saveLocalByAccount("wnd/chosenMisListType", this.misListType.id)
     this.updateFavorites()
-    this.updateWindow()
+    this.initMissionsList()
   }
 
   onFilterEditBoxActivate = @() null
@@ -991,7 +1010,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventProfileUpdated(p) {
     if (p.transactionType == EATT_UPDATE_ENTITLEMENTS)
-      this.updateWindow()
+      this.initMissionsList()
   }
 }
 
@@ -1181,7 +1200,9 @@ let RemoteMissionModalHandler = class (CampaignChapter) {
     }
   }
 }
-gui_handlers.CampaignChapter <- CampaignChapter
-gui_handlers.SingleMissions <- SingleMissions
-gui_handlers.RemoteMissionModalHandler <- RemoteMissionModalHandler
-gui_handlers.SingleMissionsModal <- SingleMissionsModal
+register_gui_handler("CampaignChapter", CampaignChapter)
+register_gui_handler("SingleMissions", SingleMissions)
+register_gui_handler("RemoteMissionModalHandler", RemoteMissionModalHandler)
+register_gui_handler("SingleMissionsModal", SingleMissionsModal)
+
+return { CampaignChapter }

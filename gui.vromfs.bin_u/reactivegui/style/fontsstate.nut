@@ -1,7 +1,6 @@
+import "%rGui/globals/extWatched.nut" as extWatched
 from "daRg" import *
 from "math" import round, max
-
-let extWatched = require("%rGui/globals/extWatched.nut")
 
 let baseNameFontsById = {
   tiny       = "very_tiny_text"

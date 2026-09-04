@@ -1,6 +1,6 @@
+import "%globalScripts/sharedWatched.nut" as sharedWatched
 import "%sqstd/ecs.nut" as ecs
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
-let { Computed } = require("frp")
+from "frp" import Computed
 
 let watchedHeroSquadMembersRaw = sharedWatched("watchedHeroSquadMembersRaw", @() {
   watchedHeroSquadEid = 0
@@ -35,7 +35,7 @@ let selectedBotForOrder = Computed(@()
 let watchedHeroSquadMembersAliveCount = Computed(@()
   watchedHeroSquadMembers.get().reduce(@(acc, member) (member.isAlive ? acc + 1 : acc), 0))
 
-return {
+return freeze({
   watchedHeroSquadMembersRaw
   watchedHeroSquadMembers
   watchedHeroSquadEid
@@ -45,4 +45,4 @@ return {
   selectedBotForOrderEid
   selectedBotForOrder
   watchedHeroSquadMembersAliveCount
-}
+})

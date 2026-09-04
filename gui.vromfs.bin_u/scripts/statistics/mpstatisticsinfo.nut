@@ -1,6 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
-let { get_ranks_blk } = require("blkGetters")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 
 let cachedBonusTooltips = {}
 
@@ -61,7 +63,7 @@ function getWeaponTypeIcoByWeapon(airName, weapon) {
 }
 
 addListenersWithoutEnv({
-  GameLocalizationChanged = function (_p) {
+  [GAME_LOCALIZATION_CHANGED] = function (_p) {
     cachedBonusTooltips.clear()
   }
 })

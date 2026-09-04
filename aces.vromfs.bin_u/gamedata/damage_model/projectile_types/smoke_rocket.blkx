@@ -1,0 +1,119 @@
+{
+  "normalizationPreset": "heat",
+  "ricochetPreset": "he",
+  "groundRicochetPreset": "he_small_caliber_ground",
+  "secondaryShattersPreset": "ap",
+  "stabilityThreshold": 0.5,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.3,
+  "stabilityReductionAfterPenetration": 0.15,
+  "bulletType": "smoke_tank",
+  "slopeEffectPreset": "ap",
+  "modelName": "tank_bullet_he",
+  "fresnel": [
+    0.23,
+    0.1,
+    2.0
+  ],
+  "explodeOnRendinst": true,
+  "shellAnimation": "video/shells_animations/smoke.ivf",
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.5
+    ],
+    "mod2": [
+      15.0,
+      0.7
+    ],
+    "mod3": [
+      30.0,
+      0.99
+    ]
+  },
+  "DamageParts": {
+    "body": {
+      "hp": 50.0,
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 1.0
+    }
+  },
+  "DamageEffects": {
+    "part": {
+      "name": "body",
+      "onHit": [
+        {
+          "shellState": "inFlight",
+          "expl": 1.0
+        },
+        {
+          "shellState": "onUnit",
+          "damageType": "generic",
+          "expl": 0.05,
+          "fire": 0.45,
+          "break": 0.5,
+          "damage": 3.0,
+          "fHitCritical": true
+        },
+        {
+          "shellState": "onUnit",
+          "damageType": "genericLongRod",
+          "expl": 0.05,
+          "fire": 0.45,
+          "break": 0.5,
+          "damage": 3.0,
+          "fHitCritical": true
+        },
+        {
+          "shellState": "onUnit",
+          "damageType": "generic",
+          "expl": 0.5,
+          "fire": 0.3,
+          "break": 0.2,
+          "damage": 30.0,
+          "fHitCritical": true
+        },
+        {
+          "shellState": "onUnit",
+          "damageType": "genericLongRod",
+          "expl": 0.5,
+          "fire": 0.3,
+          "break": 0.2,
+          "damage": 30.0,
+          "fHitCritical": true
+        },
+        {
+          "shellState": "onUnit",
+          "damageType": "explosion",
+          "expl": 0.45,
+          "fire": 0.45,
+          "break": 0.1,
+          "damage": 50.0,
+          "fHitCritical": true
+        },
+        {
+          "shellState": "onUnit",
+          "damageType": "cumulative",
+          "expl": 0.4,
+          "fire": 0.4,
+          "break": 0.1,
+          "damage": 100.0,
+          "fHitCritical": true
+        }
+      ],
+      "onKill": [
+        {
+          "shellState": "inFlight",
+          "destruction": 1.0
+        },
+        {
+          "shellState": "onUnit",
+          "expl": 0.05,
+          "fire": 0.05,
+          "break": 0.9,
+          "fHitCritical": true
+        }
+      ]
+    }
+  }
+}

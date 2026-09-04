@@ -1,5 +1,5 @@
+from "%rGui/style/colors.nut" import commonIconColor
 from "%rGui/globals/ui_library.nut" import *
-let { commonIconColor } = require("%rGui/style/colors.nut")
 
 let GRENADES_ORDER = {
   antitank = 0

@@ -1,6 +1,6 @@
+from "dagor.workcycle" import setTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
 
-let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { request_matching } = require("%scripts/matching/api.nut")
 

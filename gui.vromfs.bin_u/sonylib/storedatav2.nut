@@ -2,6 +2,7 @@ import "statsd" as statsd
 import "DataBlock" as datablock
 from "%sqstd/datablock.nut" import fillBlock
 import "webApi.nut" as psn
+from "types" import Array, String
 
 let stdLog = require("%sqstd/log.nut")()
 let log = stdLog.with_prefix("[PSN: Shop Data: V2] ")
@@ -75,13 +76,18 @@ requestLinksFullInfo = function(category) {
     linksList.append(linkId)
   }
 
+  let nextCategory = getNextCategoryName(category)
+
   
   if (!linksList.len()) {
     log($"requestLinksFullInfo: No link left to display. Remove category {category}")
     categoriesData.removeBlock(category)
   }
 
-  fillLinkFullInfo(category)
+  if (nextCategory != null)
+    requestLinksFullInfo(nextCategory)
+  else
+    finalizeCollectData()
 }
 
 local requestCategoryFullLinksList = @(_category) null
@@ -98,6 +104,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
     if (response == null) {
       log($"Received response of requestCategoryFullLinksList by Category {category}")
       logerr($"PSN: Shop Data: requestCategoryFullLinksList response is null")
+      finalizeCollectData()
       return
     }
 
@@ -107,7 +114,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "success", request = "category_full_links_list", category = category})
 
-    if (type(response) != "array") 
+    if (!(response instanceof Array)) 
       response = [response]
 
     fillBlock("links", categoriesData[category], response[0].children)
@@ -124,7 +131,7 @@ collectCategories = function(response, err = null) {
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "error", request = "dig_category", error = err.code})
 
-    if (type(err.code) == "string" || err.code < 500 || err.code >= 600)
+    if (err.code instanceof String || err.code < 500 || err.code >= 600)
       logerr($"PSN: Shop Data: Dig Category: received error: {err}")
     finalizeCollectData()
     return
@@ -194,8 +201,17 @@ function updateSpecificItemInfo(idsArray, onSuccessCb, onErrorCb = @(_r, _err) n
         return
       }
 
+      if (response == null) {
+        log("updateSpecificItemInfo: items: ", idsArray, "; response is null")
+        onErrorCb(response, { code = "null response" })
+        return
+      }
+
       statsd.send_counter("sq.ingame_store.v2.request", 1,
         {status = "success", request = "update_specific_item_info"})
+
+      if (!(response instanceof Array)) 
+        response = [response]
 
       let res = []
       foreach (idx, itemData in response) {

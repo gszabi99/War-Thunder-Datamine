@@ -1,15 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "ww_leaderboard" as ww_leaderboard
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, APP_ID_CUSTOM_LEADERBOARD
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
+from "types" import Table
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let u = require("%sqStdLibs/helpers/u.nut")
-let ww_leaderboard = require("ww_leaderboard")
+let { getEvent } = require("%scripts/events/eventsState.nut")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let DataBlock = require("DataBlock")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { contacts_request } = require("%scripts/contacts/contactsClient.nut")
 let { isRaceEvent, getLeagueConfigByLevel } = require("%scripts/events/eventInfo.nut")
@@ -74,7 +74,7 @@ function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
     blk.count = 49  
   }
 
-  let event = events.getEvent(requestData.economicName)
+  let event = getEvent(requestData.economicName)
   if (requestData.tournament || isRaceEvent(event))
     blk.tournamentMode = requestData.tournament_mode
 
@@ -94,7 +94,7 @@ function requestEventLeaderboardSelfRow(requestData, onSuccessCb, onErrorCb) {
   blk.tournamentMode = GAME_EVENT_TYPE.TM_NONE
   blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
-  let event = events.getEvent(requestData.economicName)
+  let event = getEvent(requestData.economicName)
   if (requestData.tournament || isRaceEvent(event))
     blk.tournamentMode = requestData.tournament_mode
 
@@ -205,7 +205,7 @@ let leaderboardKeyCorrection = {
 function convertLeaderboardData(result, applyLocalisationToName = false, valueKey = LEADERBOARD_VALUE_TOTAL) {
   let list = []
   foreach (rowId, rowData in result) {
-    if (type(rowData) != "table")
+    if (!(rowData instanceof Table))
       continue
 
     let lbData = {
@@ -217,7 +217,7 @@ function convertLeaderboardData(result, applyLocalisationToName = false, valueKe
         continue
 
       let valueFactor = leaderboardValueFactors?[columnId]
-      local value = type(columnData) == "table"
+      local value = columnData instanceof Table
         ? columnData?[valueKey]
         : columnId == "name" && applyLocalisationToName
             ? loc(columnData)

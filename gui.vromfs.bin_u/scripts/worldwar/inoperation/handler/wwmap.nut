@@ -1,18 +1,32 @@
-from "%scripts/dagui_natives.nut" import  ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_turn_on_sector_sprites, ww_get_operation_activation_time, ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor
+from "%appGlobals/worldWar/wwOperationState.nut" import isOperationPaused, isOperationFinished
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%appGlobals/worldWar/wwMapHoverState.nut" import isMapHovered
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "chard" import get_charserver_time_millisec
+from "dagor.math" import Point2
+from "worldwar" import wwGetOperationId, wwGetPlayerSide, wwGetOperationWinner, wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones, wwGetSpeedupFactor
+from "console" import register_command
+from "worldwarConst" import RenderCategory
+from "%globalScripts/wwNativeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_highlight_zones_by_name, ww_update_popuped_armies_name, ww_get_sides_info, ww_side_val_to_name, ww_turn_on_sector_sprites, ww_get_operation_activation_time
+  , ww_find_army_name_by_coordinates, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name, ww_turn_off_sector_sprites, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { get_charserver_time_millisec } = require("chard")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { wwMapTooltip } = require("%scripts/worldWar/handler/wwMapTooltip.nut")
+let { WwBattleDescription } = require("%scripts/worldWar/handler/wwBattleDescription.nut")
+let { TopMenuButtonsHandler } = require("%scripts/mainmenu/topMenuButtonsHandler.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { Point2 } = require("dagor.math")
-let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let mapAirfields = require("%scripts/worldWar/inOperation/model/wwMapAirfields.nut")
@@ -22,35 +36,23 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { LEADER_OPERATION_STATES,
-  getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
+let { LEADER_OPERATION_STATES, getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
-let { wwGetOperationId, wwGetPlayerSide, wwGetOperationWinner,
-  wwGetZoneName, wwGetSelectedAirfield, wwClearOutlinedZones, wwGetSpeedupFactor } = require("worldwar")
+let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { setWWMapParams, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
-let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
-let { register_command } = require("console")
 let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let wwTopMenuLeftSideSections = require("%scripts/worldWar/externalServices/worldWarTopMenuSectionsConfigs.nut")
-let { isOperationPaused, isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { getWWLogsData, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide,
-  getOperationObjectives, getSaveOperationLogId, getSidesOrder, getOperationTimeSec
-} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide, getOperationObjectives, getSaveOperationLogId, getSidesOrder, getOperationTimeSec } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_map_info_type } = require("%scripts/worldWar/inOperation/model/wwMapInfoTypes.nut")
@@ -58,8 +60,7 @@ let { g_ww_map_controls_buttons } = require("%scripts/worldWar/inOperation/model
 let { g_ww_map_reinforcement_tab_type } = require("%scripts/worldWar/inOperation/model/wwMapReinforcementTabType.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
 let { getBattles, getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
-let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
-} = require("%scripts/worldWar/inOperation/wwOperations.nut")
+let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 
 
@@ -67,7 +68,7 @@ const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
 
 
-gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwMap = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/worldWar/worldWarMap.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
@@ -111,11 +112,11 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
     g_world_war_render.init()
-    this.registerSubHandler(handlersManager.loadHandler(gui_handlers.wwMapTooltip,
+    this.registerSubHandler(handlersManager.loadHandler(wwMapTooltip,
       { scene = this.scene.findObject("hovered_map_object_info"),
         controllerScene = this.scene.findObject("hovered_map_object_controller") }))
 
-    this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
+    this.leftSectionHandlerWeak = TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
       wwTopMenuLeftSideSections,
@@ -633,10 +634,10 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let orderArray = getSidesOrder()
 
     let side1Name = ww_side_val_to_name(orderArray.len() ? orderArray[0] : SIDE_NONE)
-    let side1Data = getTblValue(side1Name, armyStrengthData, {})
+    let side1Data = (armyStrengthData?[side1Name] ?? {})
 
     let side2Name = ww_side_val_to_name(orderArray.len() > 1 ? orderArray[1] : SIDE_NONE)
-    let side2Data = getTblValue(side2Name, armyStrengthData, {})
+    let side2Data = (armyStrengthData?[side2Name] ?? {})
 
     let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
     let view = {
@@ -656,7 +657,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (sideName, army in armyStrengthData)
       foreach (wwUnit in army.units)
         if (wwUnit.isValid()) {
-          local strenght = getTblValue(wwUnit.stengthGroupExpClass, armyStrengthsTable)
+          local strenght = armyStrengthsTable?[wwUnit.stengthGroupExpClass]
           if (!strenght) {
             strenght = {
               unitIcon = wwUnit.getUnitTypeOrClassIcon()
@@ -747,7 +748,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function showSelectedReinforcement(params) {
     let blockObj = this.scene.findObject("content_block_3")
-    let reinforcement = g_world_war.getReinforcementByName(getTblValue("name", params))
+    let reinforcement = g_world_war.getReinforcementByName(params?.name)
     if (!reinforcement)
       return
 
@@ -760,8 +761,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.currentReinforcementInfoTabType != g_ww_map_reinforcement_tab_type.AIRFIELDS)
       return
 
-    if (!getTblValue("formationType", params) ||
-        getTblValue("formationId", params, -1) < 0)
+    if (!params?.formationType ||
+        (params?.formationId ?? -1) < 0)
       return
 
     let airfield = WwAirfield(wwGetSelectedAirfield())
@@ -1130,12 +1131,12 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWMapSelectedBattle(params) {
-    let wwBattle = getTblValue("battle", params, WwBattle())
+    let wwBattle = (params?.battle ?? WwBattle())
     this.openBattleDescriptionModal(wwBattle)
   }
 
   function openBattleDescriptionModal(wwBattle) {
-    gui_handlers.WwBattleDescription.open(wwBattle)
+    WwBattleDescription.open(wwBattle)
   }
 
   function onEventWWSelectedReinforcement(params) {
@@ -1143,7 +1144,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(mapObj))
       return
 
-    let name = getTblValue("name", params, "")
+    let name = (params?.name ?? "")
     if (u.isEmpty(name))
       return
 
@@ -1210,7 +1211,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWMapArmiesByStatusUpdated(params) {
-    let armies = getTblValue("armies", params, [])
+    let armies = (params?.armies ?? [])
     if (armies.len() == 0)
       return
 
@@ -1342,7 +1343,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -1449,7 +1450,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function getWidgetParams(placeholderId) {
     let { pos, size } = base.getWidgetParams(placeholderId)
     setWWMapParams({ pos, size })
-    return { pos = [0, 0], size = [screen_width(), screen_height()] }
+    return { pos = const [0, 0], size = [screen_width(), screen_height()] }
   }
 
   widgetsList = [
@@ -1461,12 +1462,13 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onMapHoveredStatusUpdate = @(_obj, _dt) isMapHovered.set(this.scene.findObject("worldwar_map_darg")?.isHovered() ?? false)
 }
+register_gui_handler("WwMap", WwMap)
 
 isMapHovered.subscribe(@(v) broadcastEvent("MapHovered", { hovered = v }))
 
 register_command(function() {
     dargMapVisible.set(!dargMapVisible.get())
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.WwMap)
+    let handler = handlersManager.findHandlerClassInScene(WwMap)
     if (handler == null)
       return
 

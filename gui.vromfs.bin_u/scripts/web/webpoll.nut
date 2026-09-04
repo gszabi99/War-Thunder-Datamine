@@ -1,16 +1,15 @@
+import "dagor.webpoll" as api
+import "DataBlock" as DataBlock
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
+from "%scripts/webRPC.nut" import webRpcRegister
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { setBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let api = require("dagor.webpoll")
-let { get_time_msec } = require("dagor.time")
-let DataBlock = require("DataBlock")
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const WEBPOLL_TOKENS_VALIDATION_TIMEOUT_MS = 3000000
 const REQUEST_AUTHORIZATION_TIMEOUT_MS = 3600000
@@ -184,7 +183,7 @@ subscriptions.addListenersWithoutEnv({
   SignOut = @(_p) invalidateData()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-web_rpc.register_handler("survey_vote_result", onSurveyVoteResult)
+webRpcRegister("survey_vote_result", onSurveyVoteResult)
 
 return {
   setPollBaseUrl

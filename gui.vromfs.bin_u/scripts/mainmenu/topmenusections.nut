@@ -1,6 +1,6 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/enums.nut" import getCachedType, enumsAddTypes
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
 let topMenuSectionsTemplate = {
   name = "unknown"

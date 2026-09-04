@@ -1,18 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getSortedUnits, createMoreText
-  maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
+let { getSortedUnits, createMoreText, maxElementsInSimpleTooltip } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { buildTimeTextValue } = require("%scripts/markers/markerUtils.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")

@@ -1,42 +1,37 @@
-from "%scripts/dagui_library.nut" import *
-from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
-from "%scripts/mainConsts.nut" import SEEN
+import "%sqStdLibs/helpers/u.nut" as u
 import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%globalScripts/unlockConsts.nut" import *
+from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
+from "%scripts/unlocks/battleTasksWndConsts.nut" import BattleTasksWndTab
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRow
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { EASY_TASK, MEDIUM_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { isHardTaskIncomplete, isBattleTask, getBattleTaskNameById, getBattleTaskById
-} = require("%scripts/unlocks/battleTasksState.nut")
-let { getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable,
-  isBattleTaskActual, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
-  isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward,
-  getBattleTaskWithAvailableAward, getShowAllTasks,
-  getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData,
-  requestBattleTaskReward, rerollBattleTask, rerollSpecialTask,
-  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
-} = require("%scripts/unlocks/battleTasks.nut")
+let { isHardTaskIncomplete, isBattleTask, getBattleTaskNameById, getBattleTaskById } = require("%scripts/unlocks/battleTasksState.nut")
+let { getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable, isBattleTaskActual, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward, getBattleTaskWithAvailableAward, getShowAllTasks, getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask, canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty } = require("%scripts/unlocks/battleTasks.nut")
 let { mkUnlockConfigByBattleTask, getBattleTaskView, setBattleTasksUpdateTimer } = require("%scripts/unlocks/battleTasksView.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsShopButtonVisible
-} = require("%scripts/warbonds/warbondsManager.nut")
+let { getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsShopButtonVisible } = require("%scripts/warbonds/warbondsManager.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
@@ -47,13 +42,13 @@ function guiStartBattleTasksWnd(taskId = null, tabType = null) {
   if (!isBattleTasksAvailable())
     return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  loadHandler(gui_handlers.BattleTasksWnd, {
+  loadHandler(get_gui_handler("BattleTasksWnd"), {
     currentTaskId = taskId,
     currentTabType = tabType
   })
 }
 
-gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let BattleTasksWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/unlocks/battleTasks.tpl"
@@ -335,7 +330,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let uid = config.id
-    let widget = getTblValue(uid, this.newIconWidgetByTaskId)
+    let widget = this.newIconWidgetByTaskId?[uid]
     if (!widget)
       return
 
@@ -345,7 +340,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtons(config = null) {
     showObjById("btn_warbonds_shop",
-      isWarbondsShopButtonVisible() && !isHandlerInScene(gui_handlers.WarbondsShop), this.scene)
+      isWarbondsShopButtonVisible() && !isHandlerInScene(get_gui_handler("WarbondsShop")), this.scene)
 
     let task = getBattleTaskById(config)
     let isTask = isBattleTask(task)
@@ -360,7 +355,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_receive_reward", canGetReward, taskObj)
     if (showRerollButton)
       placePriceTextToButton(taskObj, "btn_reroll", loc("mainmenu/battleTasks/reroll"), getBattleTaskRerollCost())
-    showObjById("btn_requirements_list", showConsoleButtons.get() && getTblValue("names", config, []).len() != 0, this.scene)
+    showObjById("btn_requirements_list", showConsoleButtons.get() && (config?.names ?? []).len() != 0, this.scene)
   }
 
   function updateTabButtons() {
@@ -432,8 +427,8 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getConfigByValue(value) {
-    let checkArray = getTblValue(this.currentTabType, this.configsArrayByTabType, [])
-    return getTblValue(value, checkArray)
+    let checkArray = (this.configsArrayByTabType?[this.currentTabType] ?? [])
+    return checkArray?[value]
   }
 
   function onGetRewardForTask(obj) {
@@ -502,7 +497,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onViewBattleTaskRequirements() {
     let config = this.getCurrentConfig()
-    if (getTblValue("names", config, []).len() == 0)
+    if ((config?.names ?? []).len() == 0)
       return
 
     let awardsList = []
@@ -516,6 +511,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.scene.findObject("tasks_sheet_list")
   }
 }
+register_gui_handler("BattleTasksWnd", BattleTasksWnd)
 
 function openBattleTasksWndFromPromo(params = [], obj = null) {
   let taskId = obj?.task_id ?? params?[0]
@@ -525,5 +521,6 @@ function openBattleTasksWndFromPromo(params = [], obj = null) {
 addPromoAction("battle_tasks", @(_handler, params, obj) openBattleTasksWndFromPromo(params, obj))
 
 return {
+  BattleTasksWnd
   guiStartBattleTasksWnd
 }

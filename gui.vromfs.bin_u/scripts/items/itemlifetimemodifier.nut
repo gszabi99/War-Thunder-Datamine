@@ -1,18 +1,19 @@
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getRawInventoryItemAmount } = require("%scripts/items/itemsManager.nut")
 
-let regexp2 = require("regexp2")
 
-let class ItemLifetimeModifier {
+class ItemLifetimeModifier {
   static dependenciesRe = regexp2("\\bs\\.count_([0-9]+)")
 
   modifierFunction = null
   dependencies = null
 
   constructor(formulaStr) {
-    if (type(formulaStr) != "string" || isEmpty(formulaStr))
+    if (!(formulaStr instanceof String) || isEmpty(formulaStr))
       return
 
     

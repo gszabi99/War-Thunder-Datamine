@@ -1,27 +1,28 @@
+import "%rGui/widgetsState.nut" as widgetsState
+import "%rGui/shipHud.nut" as shipHud
+import "%rGui/hud/shipHudTouch.nut" as shipHudTouch
+import "%rGui/tankExHud.nut" as tankExHud
+import "%rGui/shipDeathTimer.nut" as shipDeathTimer
+import "%rGui/hud/scoreboard/mkScoreboard.nut" as mkScoreboard
+import "%rGui/tankHud.nut" as tankHud
+import "%rGui/infantryDroneHud.nut" as infantryDroneHud
+import "%rGui/wwMap/wwMap.nut" as wwMap
+import "%rGui/weapons/bulletsGraphPanel.nut" as bulletsGraph
+import "%rGui/weapons/bulletsPenetrationGraphPanel.nut" as bulletsPenetrationGraph
+from "%rGui/hudState.nut" import isPlayingReplay, unitType
+from "%rGui/helicopterHud.nut" import helicopterHud
+from "%rGui/infantryHud.nut" import infantryHud
+from "%rGui/ctrlsState.nut" import cursorVisible
+from "%rGui/respawnWndState.nut" import isInSpectatorMode
 from "%rGui/globals/ui_library.nut" import *
 
 let globalState = require("%rGui/globalState.nut")
-let widgetsState = require("%rGui/widgetsState.nut")
-let { isPlayingReplay, unitType } = require("%rGui/hudState.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
-let shipHud = require("%rGui/shipHud.nut")
-let shipHudTouch = require("%rGui/hud/shipHudTouch.nut")
 let shipExHud = require("%rGui/shipExHud.nut")
-let tankExHud = require("%rGui/tankExHud.nut")
-let shipDeathTimer = require("%rGui/shipDeathTimer.nut")
-let mkScoreboard = require("%rGui/hud/scoreboard/mkScoreboard.nut")
 let { aircraftHud } = require("%rGui/aircraftHud.nut")
-let { helicopterHud } = require("%rGui/helicopterHud.nut")
-let tankHud = require("%rGui/tankHud.nut")
-let { infantryHud } = require("%rGui/infantryHud.nut")
-let infantryDroneHud = require("%rGui/infantryDroneHud.nut")
 let changelog = require("%rGui/changelog/changelog.ui.nut")
-let { cursorVisible } = require("%rGui/ctrlsState.nut")
-let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
 let { fullScreenBlurPanel } = require("%rGui/components/blurPanel.nut")
 let tankSightPreview = require("%rGui/tankSightPreview.nut")
-let wwMap = require("%rGui/wwMap/wwMap.nut")
-let bulletsGraph = require("%rGui/weapons/bulletsGraphPanel.nut")
 
 
 let widgetsMap = {
@@ -66,26 +67,26 @@ let widgetsMap = {
 
   [DargWidgets.SHIP_OBSTACLE_RF] = function () {
     return {
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       children = shipDeathTimer
     }
   },
 
   [DargWidgets.SCOREBOARD] = @ () {
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     children = mkScoreboard()
   },
 
   [DargWidgets.CHANGE_LOG] = @() {
-    size = flex()
+    size = FLEX
     children = changelog
   },
 
   [DargWidgets.RESPAWN] = @() @() {
     watch = isInSpectatorMode
-    size = flex()
+    size = FLEX
     children = [
       isInSpectatorMode.get()
         ? null
@@ -97,6 +98,7 @@ let widgetsMap = {
   [DargWidgets.TANK_SIGHT_SETTINGS] = @() tankSightPreview,
   [DargWidgets.WORLDWAR_MAP] = wwMap,
   [DargWidgets.BULLETS_GRAPH] = @() bulletsGraph,
+  [DargWidgets.BULLETS_PENETRATION] = @() bulletsPenetrationGraph,
 }
 
 
@@ -104,7 +106,7 @@ let stubInteractiveCursorForDaGUI = Cursor({})
 
 let cursor = @() {
   watch = cursorVisible
-  size = flex()
+  size = FLEX
   cursor = cursorVisible.get() ? stubInteractiveCursorForDaGUI : null
 }
 
@@ -115,7 +117,7 @@ let widgets = @() {
     isPlayingReplay
     widgetsState
   ]
-  size = flex()
+  size = FLEX
   children = widgetsState.get().map(@(widget) {
     size = widget?.transform.size ?? [sw(100), sh(100)]
     pos = widget?.transform.pos ?? [0, 0]

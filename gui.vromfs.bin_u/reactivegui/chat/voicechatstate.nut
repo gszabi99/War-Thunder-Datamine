@@ -1,6 +1,6 @@
+from "dagor.workcycle" import clearTimer, setTimeout
+from "eventbus" import eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
-let { clearTimer, setTimeout } = require("dagor.workcycle")
-let { eventbus_subscribe } = require("eventbus")
 
 let VOICE_CHAT_MEMBER_PARAMS = {
   id = ""

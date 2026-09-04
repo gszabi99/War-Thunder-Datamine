@@ -1,10 +1,11 @@
+from "worldwar" import wwGetOperationId
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { wwGetOperationId } = require("worldwar")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -101,9 +102,9 @@ let WwBattleView = class  {
     let teams = []
     local maxSideArmiesNumber = 0
     local isVersusTextAdded = false
-    let hasArmyInfo = getTblValue("hasArmyInfo", param, true)
-    let hasVersusText = getTblValue("hasVersusText", param)
-    let canAlignRight = getTblValue("canAlignRight", param, true)
+    let hasArmyInfo = (param?.hasArmyInfo ?? true)
+    let hasVersusText = param?.hasVersusText
+    let canAlignRight = (param?.canAlignRight ?? true)
     foreach (sideIdx, side in sides) {
       let team = this.battle.getTeamBySide(side)
       if (!team)
@@ -186,12 +187,12 @@ let WwBattleView = class  {
     if (this.isAutoBattle)
       return loc("worldWar/unavailable_for_team")
 
-    let maxPlayers = getTblValue("maxPlayers", team)
+    let maxPlayers = team?.maxPlayers
     if (!maxPlayers)
       return loc("worldWar/unavailable_for_team")
 
-    let minPlayers = getTblValue("minPlayers", team)
-    let curPlayers = getTblValue("players", team)
+    let minPlayers = team?.minPlayers
+    let curPlayers = team?.players
     return this.battle.isConfirmed() && this.battle.getMyAssignCountry() ?
       loc("worldwar/battle/playersCurMax", { cur = curPlayers, max = maxPlayers }) :
       loc("worldwar/battle/playersMinMax", { min = minPlayers, max = maxPlayers })

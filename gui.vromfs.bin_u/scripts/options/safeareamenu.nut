@@ -1,14 +1,13 @@
+import "sony" as sony
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "vr" import is_stereo_mode
 from "%scripts/dagui_library.nut" import *
 
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let sony = require("sony")
-let { is_stereo_mode } = require("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA
-} = require("%scripts/options/optionsExtNames.nut")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_MENU_SCREEN_SAFE_AREA } = require("%scripts/options/optionsExtNames.nut")
 let g_font = require("%scripts/options/fonts.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
@@ -20,7 +19,7 @@ function is_low_width_screen() {
 let getCurrentFont = @() currentFont
 let setCurrentFont = @(font) currentFont=font
 
-let defValue  = 1.0
+const defValue  = 1.0
 let values    = [ 1.0, 0.95, 0.9 ]
 let items     = ["100%", "95%", "90%"]
 

@@ -1,9 +1,10 @@
-let { toString } = require("%sqStdLibs/helpers/toString.nut")
+from "%sqStdLibs/helpers/toString.nut" import toString
+from "types" import Table, Array, String, Function
 
-function isTable(v) {return type(v)=="table"}
-function isArray(v) {return type(v)=="array"}
-function isString(v) {return type(v)=="string"}
-function isFunction(v) {return type(v)=="function"}
+function isTable(v) {return v instanceof Table}
+function isArray(v) {return v instanceof Array}
+function isString(v) {return v instanceof String}
+function isFunction(v) {return v instanceof Function}
 
 
 
@@ -102,7 +103,7 @@ function addType(enumTable, typeTemplate, typeName, typeDefinition, enumTablePer
 
 function addTypes(enumTable, typesToAdd, typeConstructor = null, addTypeNameKey = null, enumTablePersistId = null) {
   let { template = null, types = null } = enumTable
-  if (type(types) !="array") {
+  if (!(types instanceof Array)) {
     assertOnce(
       "Not found types array",
       $"Unable to find 'types' array in enum table /*typesToAdd = {toString(typesToAdd, 2)}*/")

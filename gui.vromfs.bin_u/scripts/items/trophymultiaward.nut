@@ -1,18 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "dagor.random" import rnd
+from "%sqstd/underscore.nut" import isDataBlock
+from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { rnd } = require("dagor.random")
 let { isIPoint2 } = u
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isDataBlock } = require("%sqstd/underscore.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 
-let class TrophyMultiAward {
+class TrophyMultiAward {
   blk = null
 
   static listDiv = "\n * "

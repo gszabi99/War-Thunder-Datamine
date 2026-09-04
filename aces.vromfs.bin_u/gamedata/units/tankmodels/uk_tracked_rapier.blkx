@@ -1932,14 +1932,24 @@
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
-        "loader_dm",
         "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
         "commander_dm",
         "machine_gunner_dm",
         "machine_gunner_01_dm",
         "machine_gunner_02_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
         "radio_station_dm",
@@ -2021,8 +2031,8 @@
         "staticElevation": 3.0,
         "barrelDP": "gun_barrel_dm",
         "createGunEffects": true,
-        "defaultYaw": 180.0,
-        "defaultPitch": 0.0,
+        "defaultYaw": 0.0,
+        "defaultPitch": 23.0,
         "speedYaw": 70.0,
         "speedPitch": 60.0,
         "allowableDelta": 10.0,
@@ -2056,6 +2066,9 @@
           120.0,
           1200.0
         ],
+        "useGroundProjectionForUnitTargetRange": true,
+        "useGroundProjectionForShellTargetRange": true,
+        "useGroundProjectionForGuidedShellTargetRange": true,
         "targetPriorityDefault": 0,
         "targetPriorityMin": 1,
         "turret": {
@@ -2212,7 +2225,8 @@
               0.0,
               25000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 2.5
           },
           {
             "isUnit": false,
@@ -2236,7 +2250,8 @@
               0.0,
               25000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 2.5
           },
           {
             "isUnit": false,
@@ -2260,7 +2275,8 @@
               0.0,
               12000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 2.5
           },
           {
             "isUnit": false,
@@ -2284,7 +2300,8 @@
               0.0,
               10000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 3.0
           },
           {
             "isUnit": false,
@@ -2312,7 +2329,8 @@
               5.0,
               30.0
             ],
-            "priority": 25
+            "priority": 25,
+            "reactionTime": 4.0
           },
           {
             "isUnit": false,
@@ -2336,7 +2354,8 @@
               0.0,
               10000.0
             ],
-            "priority": 5
+            "priority": 5,
+            "reactionTime": 3.0
           }
         ]
       }
@@ -3763,8 +3782,8 @@
     "sightName": "rapier_sight",
     "headPos": [
       0.0,
-      4.7,
-      -7.5
+      4.0,
+      -8.2
     ],
     "headPosOnShooting": [
       2.0,
@@ -3861,8 +3880,8 @@
               "staticElevation": 3.0,
               "barrelDP": "gun_barrel_dm",
               "createGunEffects": true,
-              "defaultYaw": 180.0,
-              "defaultPitch": 0.0,
+              "defaultYaw": 0.0,
+              "defaultPitch": 23.0,
               "speedYaw": 70.0,
               "speedPitch": 60.0,
               "allowableDelta": 10.0,
@@ -3896,6 +3915,9 @@
                 120.0,
                 1200.0
               ],
+              "useGroundProjectionForUnitTargetRange": true,
+              "useGroundProjectionForShellTargetRange": true,
+              "useGroundProjectionForGuidedShellTargetRange": true,
               "targetPriorityDefault": 0,
               "targetPriorityMin": 1,
               "turret": {
@@ -4052,7 +4074,8 @@
                     0.0,
                     25000.0
                   ],
-                  "priority": 500
+                  "priority": 500,
+                  "reactionTime": 2.5
                 },
                 {
                   "isUnit": false,
@@ -4076,7 +4099,8 @@
                     0.0,
                     25000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 2.5
                 },
                 {
                   "isUnit": false,
@@ -4100,7 +4124,8 @@
                     0.0,
                     12000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 2.5
                 },
                 {
                   "isUnit": false,
@@ -4124,7 +4149,8 @@
                     0.0,
                     10000.0
                   ],
-                  "priority": 300
+                  "priority": 300,
+                  "reactionTime": 3.0
                 },
                 {
                   "isUnit": false,
@@ -4152,7 +4178,8 @@
                     5.0,
                     30.0
                   ],
-                  "priority": 25
+                  "priority": 25,
+                  "reactionTime": 4.0
                 },
                 {
                   "isUnit": false,
@@ -4176,7 +4203,8 @@
                     0.0,
                     10000.0
                   ],
-                  "priority": 5
+                  "priority": 5,
+                  "reactionTime": 3.0
                 }
               ]
             },

@@ -1,8 +1,8 @@
+from "%rGui/wwMap/wwConfigurableValues.nut" import initConfigurableValues
+from "%appGlobals/worldWar/wwSettings.nut" import clearSettingsCache
+from "%rGui/wwMap/wwOperationConfiguration.nut" import loadOperationData, isOperationDataLoaded
+from "%rGui/wwMap/wwAirfieldsStates.nut" import updateAirfieldsData
 from "%rGui/globals/ui_library.nut" import *
-let { initConfigurableValues } = require("%rGui/wwMap/wwConfigurableValues.nut")
-let { clearSettingsCache } = require("%appGlobals/worldWar/wwSettings.nut")
-let { loadOperationData, isOperationDataLoaded } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { updateAirfieldsData } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 
 let configurationLoaded = Watched(false)
 

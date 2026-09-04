@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exchangeRecipes.nut")
-let { Chest } = require("itemChest.nut")
+let { Chest } = require("%scripts/items/itemsClasses/itemChest.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let RecipesBundle = class (Chest) {

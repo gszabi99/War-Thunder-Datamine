@@ -1,6 +1,7 @@
+from "controls" import isTrackerJoystick
 from "%scripts/dagui_natives.nut" import ps4_headtrack_is_attached
 from "%scripts/dagui_library.nut" import *
-let { isTrackerJoystick } = require("controls")
+
 let { isPlatformPS4, isPlatformPS5, isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y } = require("%scripts/options/optionsExtNames.nut")

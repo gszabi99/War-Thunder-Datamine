@@ -1,10 +1,10 @@
+import "DataBlock" as datablock
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let datablock = require("DataBlock")
 
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_PS4_SHOP)
 let storeData = require("%sonyLib/storeData.nut")

@@ -1,20 +1,22 @@
+from "eventbus" import eventbus_subscribe
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout
+from "math" import fabs
+from "guiMission" import MISSION_CAPTURE_ZONE_START, MISSION_CAPTURING_ZONE
+from "mission" import get_local_mplayer, get_mp_local_team
+from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/timeBar.nut" import g_time_bar
+from "types" import Array
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout } = require("dagor.workcycle")
-let { fabs } = require("math")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { millisecondsToSeconds } = require("%scripts/time.nut")
-let { MISSION_CAPTURE_ZONE_START, MISSION_CAPTURING_ZONE } = require("guiMission")
-let { get_local_mplayer, get_mp_local_team } = require("mission")
-let { startsWith } = require("%sqstd/string.nut")
 
-let REPAIR_SHOW_TIME_THRESHOLD = 1.5
+const REPAIR_SHOW_TIME_THRESHOLD = 1.5
 
 local scene = null
 local guiScene = null
@@ -344,7 +346,7 @@ function clearAllTimers() {
 }
 
 function hudDisplayTimersReInit() {
-  if (getTblValue("isDead", get_local_mplayer(), false))
+  if ((get_local_mplayer()?.isDead ?? false))
     clearAllTimers()
 }
 
@@ -521,7 +523,7 @@ function onRepair(debuffs_data) {
   let iconObj = placeObj.findObject("icon")
   if (isAutoRepairing && timersUnitType == ES_UNIT_TYPE_TANK && repairingParts != null) {
     local partsArray = repairingParts?.name ?? []
-    partsArray = type(partsArray) == "array" ? partsArray : [partsArray] 
+    partsArray = partsArray instanceof Array ? partsArray : [partsArray] 
     let tracksPartsArray = partsArray.filter(@(part) startsWith(part, "track_") || startsWith(part, "wheel_"))
     iconObj["background-image"] = tracksPartsArray.len() == partsArray.len() ? "#ui/gameuiskin#track_state_indicator.svg"
       : "#ui/gameuiskin#icon_repair_in_progress.svg"
@@ -1100,7 +1102,7 @@ function hudDisplayTimersInit(nest, v_unitType) {
   g_hud_event_manager.subscribe("selfHealingInProgress", onSelfHealingEvent, scene)
   g_hud_event_manager.subscribe("firePutOutInProgress", onFirePutOutEvent, scene)
 
-  if (getTblValue("isDead", get_local_mplayer(), false))
+  if ((get_local_mplayer()?.isDead ?? false))
     clearAllTimers()
 }
 

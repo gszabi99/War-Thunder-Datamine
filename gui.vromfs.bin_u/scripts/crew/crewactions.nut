@@ -1,14 +1,12 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk, shop_upgrade_crew
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 let { buySkillPointsPack } = require("%scripts/crew/crewPointsBuyActions.nut")
 let { getPacksToBuyAmount } = require("%scripts/crew/crewPoints.nut")
-let { doWithAllSkills, getCrewMaxSkillValue, getCrewSkillValue,
-getCrewSkillPointsToMaxAllSkills, getCrewCountry
-} = require("%scripts/crew/crew.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { doWithAllSkills, getCrewMaxSkillValue, getCrewSkillValue, getCrewSkillPointsToMaxAllSkills, getCrewCountry } = require("%scripts/crew/crew.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 
 
@@ -52,7 +50,7 @@ function buyAllCrewSkills(crew, unit, crewUnitType) {
   if (totalPointsToMax <= 0)
     return
 
-  let curPoints = getTblValue("skillPoints", crew, 0)
+  let curPoints = (crew?.skillPoints ?? 0)
   if (curPoints >= totalPointsToMax)
     return maximazeAllSkillsImpl(crew, unit, crewUnitType)
 

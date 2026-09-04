@@ -1,15 +1,16 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
 from "%scripts/utils_sa.nut" import call_for_handler
+from "types" import Function, Array
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { removeTextareaTags, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { removeTextareaTags, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_time_msec } = require("dagor.time")
 
 
 
@@ -25,7 +26,7 @@ let { get_time_msec } = require("dagor.time")
 
 
 
-gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
+let RightClickMenu = class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/rightClickMenu.tpl"
   needVoiceChat = false
@@ -53,13 +54,13 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
       return view
 
     foreach (idx, item in this.config.actions) {
-      if ("show" in item && !((type(item.show) == "function") ? item.show.call(this.owner) : item.show))
+      if ("show" in item && !((item.show instanceof Function) ? item.show.call(this.owner) : item.show))
         continue
 
       local actionData = null 
       local enabled = true
       if ("enabled" in item)
-        enabled = type(item.enabled) == "function"
+        enabled = item.enabled instanceof Function
                   ? item.enabled.call(this.owner)
                   : item.enabled
 
@@ -68,10 +69,10 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
         id = $"{this.idPrefix}{idx.tostring()}"
         text = text
         textUncolored = text != null ? removeTextareaTags(text) : ""
-        tooltip = getTblValue("tooltip", item, "")
+        tooltip = (item?.tooltip ?? "")
         enabled = enabled
         isVisualDisabled = item?.isVisualDisabled ?? false
-        needTimer = u.isFunction(getTblValue("onUpdateButton", item))
+        needTimer = u.isFunction(item?.onUpdateButton)
         hasSeparator = item?.hasSeparator ?? false
       }
 
@@ -113,7 +114,7 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
 
   function initTimers(listObj, actions) {
     foreach (idx, item in actions) {
-      let onUpdateButton = getTblValue("onUpdateButton", item)
+      let onUpdateButton = item?.onUpdateButton
       if (!u.isFunction(onUpdateButton))
         continue
 
@@ -130,13 +131,13 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
   }
 
   function updateBtnByTable(btnObj, data) {
-    let text = getTblValue("text", data)
+    let text = data?.text
     if (!u.isEmpty(text)) {
       btnObj.setValue(removeTextareaTags(text))
       btnObj.findObject("text").setValue(text)
     }
 
-    let enable = getTblValue("enable", data)
+    let enable = data?.enable
     if (u.isBool(enable))
       btnObj.enable(enable)
   }
@@ -159,18 +160,19 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
   function afterModalDestroy() {
     local isActionActivate = false
     if (this.choosenValue in this.config.actions) {
-      let applyFunc = getTblValue("action", this.config.actions[this.choosenValue])
+      let applyFunc = this.config.actions[this.choosenValue]?.action
       call_for_handler(this.owner, applyFunc)
       isActionActivate = true
     }
     this.onClose?(isActionActivate)
   }
 }
+register_gui_handler("RightClickMenu", RightClickMenu)
 
 function openRightClickMenu(config, owner, position = null, orientation = null, onClose = null) {
-  if (type(config) == "array")
+  if (config instanceof Array)
     config = { actions = config }
-  handlersManager.loadHandler(gui_handlers.RightClickMenu, {
+  handlersManager.loadHandler(RightClickMenu, {
     config
     owner
     position

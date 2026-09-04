@@ -1,24 +1,20 @@
+import "DataBlock" as DataBlock
+from "string" import format
+from "%sqstd/string.nut" import isStringInteger
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { Cost } = require("%scripts/money.nut")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
-let { getUnlockLocName, getSubUnlockLocName, getFullUnlockDesc, getIconByUnlockBlk,
-  getUnlockNameText, getUnlockableMedalImage, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTypeText, getUnlockCostText, buildUnlockDesc,
-  buildUnlockTooltipByConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockLocName, getSubUnlockLocName, getFullUnlockDesc, getIconByUnlockBlk, getUnlockNameText, getUnlockableMedalImage, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTypeText, getUnlockCostText, buildUnlockDesc, buildUnlockTooltipByConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, hasMultiStageLocId, getMultiStageLocId,
-  cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened
-} = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, hasMultiStageLocId, getMultiStageLocId, cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { isBattleTask, getBattleTaskById, getBattleTaskNameById, getDifficultyTypeByTask
-} = require("%scripts/unlocks/battleTasksState.nut")
+let { isBattleTask, getBattleTaskById, getBattleTaskNameById, getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
 let { isBattleTaskDone, isBattleTaskExpired } = require("%scripts/unlocks/battleTasks.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -29,7 +25,6 @@ let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
-let { isStringInteger } = require("%sqstd/string.nut")
 let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
@@ -59,7 +54,7 @@ function buildLogUnlockData(config) {
       && (stage == -1 || stage == unlockCfg.curStage)
       && unlockCfg.curVal < unlockCfg.maxVal
     let progressData = isProgressing ? unlockCfg.getProgressBarData() : null
-    let haveProgress = getTblValue("show", progressData, false)
+    let haveProgress = (progressData?.show ?? false)
     if (haveProgress)
       res.progressBar <- progressData
     unlockCfg = buildUnlockDesc(unlockCfg)
@@ -71,7 +66,7 @@ function buildLogUnlockData(config) {
   res.id = id
   res.type = uType
   res.rewardText = ""
-  res.amount = getTblValue("amount", config, res.amount)
+  res.amount = (config?.amount ?? res.amount)
   res.hideAward <- config?.hideAward ?? false
   res.allowActionText <- config?.allowActionText
 
@@ -243,7 +238,7 @@ function buildLogUnlockData(config) {
   }
 
   else if ( uType == UNLOCKABLE_SLOT) {
-    let slotNum = getTblValue("slot", config, 0)
+    let slotNum = (config?.slot ?? 0)
     res.name = (slotNum > 0)
       ? "".concat(loc("options/crewName"), slotNum)
       : loc("options/crew")
@@ -257,11 +252,11 @@ function buildLogUnlockData(config) {
   }
 
   else if ( uType == UNLOCKABLE_SKILLPOINTS) {
-    let slotId = getTblValue("slot", config, -1)
+    let slotId = (config?.slot ?? -1)
     let crew = getCrewById(slotId)
     let crewName = crew ? getCrewName(crew) : loc("options/crew")
     let country = crew ? crew.country : config?.country ?? ""
-    let skillPoints = getTblValue("sp", config, 0)
+    let skillPoints = (config?.sp ?? 0)
     let skillPointsStr = getCrewSpTextIfNotZero(skillPoints)
 
     if (checkCountry(country, "userlog EULT_*_CREW"))
@@ -400,11 +395,11 @@ function buildLogUnlockData(config) {
     if (rBlock?.iconStyle)
       res.iconStyle <- rBlock.iconStyle
 
-    if (getTblValue("descrImage", res, "") == "") {
+    if ((res?.descrImage ?? "") == "") {
       let icon = getIconByUnlockBlk(unlockBlk)
       if (icon)
         res.descrImage <- icon
-      else if (getTblValue("iconStyle", res, "") == "")
+      else if ((res?.iconStyle ?? "") == "")
         res.iconStyle <- !showLocalState || isUnlockOpened(id, uType) ? "default_unlocked"
           : "default_locked"
     }
@@ -425,10 +420,10 @@ function buildLogUnlockData(config) {
   }
 
   if (showLocalState) {
-    let cost = Cost(getTblValue("wp", res, 0),
-                        getTblValue("gold", res, 0),
-                        getTblValue("frp", res, 0),
-                        getTblValue("rp", res, 0))
+    let cost = Cost((res?.wp ?? 0),
+                        (res?.gold ?? 0),
+                        (res?.frp ?? 0),
+                        (res?.rp ?? 0))
 
     res.rewardText = colorize("activeTextColor", $"{res.rewardText}{cost.tostring()}")
     res.showShareBtn <- true

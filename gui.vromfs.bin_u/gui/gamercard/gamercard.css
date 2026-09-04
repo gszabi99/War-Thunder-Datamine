@@ -158,10 +158,6 @@ gamercardShadePlace {
   overflow: hidden;
 }
 
-gamercardShadePlace[isBottom=yes] {
-  pos:0.5sw-0.5w, sh - 1@bhInVr - h;
-}
-
 gamercardShade {
   size:2*sw, sh/2 - 1@bhInVr;
   pos:50%sw-50%w, 0;
@@ -170,6 +166,13 @@ gamercardShade {
   background-image:#ui/gameuiskin#optionlist_background_top;
   background-position:4;
   background-repeat:expand;
+}
+
+gamercardShade[isBottom=yes] {
+  rotation:180;
+  pos:50%sw-50%w, ph-h;
+  size:2*sw, 250@sf/@pf;
+  background-color:#88000000;
 }
 
 ShadowPlate {
@@ -206,4 +209,17 @@ chatPopupNest {
   size:0.4@sf, 100*@sf/@pf;
   flow:vertical;
   input-transparent:yes;
+}
+
+GamecardPlate:hover secondGameModesPanel[isInQueue=no] > secondGameModesDetails,
+secondGameModesPanel[isInQueue=no]:hover > secondGameModesDetails {
+  display:show;
+}
+
+secondGameModesPanel[isEmpty=yes] {
+  display:hide;
+}
+
+secondGameModesPanel[isEmpty=no] {
+  display:show;
 }

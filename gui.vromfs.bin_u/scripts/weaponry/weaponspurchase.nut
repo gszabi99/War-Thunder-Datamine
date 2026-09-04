@@ -1,19 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "string" import format
 from "%scripts/dagui_natives.nut" import char_send_blk, shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
-let { format } = require("string")
 let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { repairNoMsgBox} = require("%scripts/unit/unitActions.nut")
+let { repairNoMsgBox } = require("%scripts/unit/unitActions.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getItemCost, getAllModsCost, getItemStatusTbl, getItemUnlockCost
-} = require("%scripts/weaponry/itemInfo.nut")
+let { getItemCost, getAllModsCost, getItemStatusTbl, getItemUnlockCost } = require("%scripts/weaponry/itemInfo.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
@@ -92,7 +91,7 @@ local class WeaponsPurchaseProcess {
     this.afterSuccessfullPurchaseCb = additionalParams?.afterSuccessfullPurchaseCb
     this.onCompleteCb = additionalParams?.onFinishCb
 
-    this.modItem = getTblValue("modItem", additionalParams)
+    this.modItem = additionalParams?.modItem
     if (!u.isEmpty(this.modItem)) {
       this.modName = this.modItem.name
       this.modType = this.modItem.type
@@ -124,7 +123,7 @@ local class WeaponsPurchaseProcess {
       onExitFunc = Callback(function() { this.complete() }, this)
     }
 
-    loadHandler(gui_handlers.MultiplePurchase, params)
+    loadHandler(get_gui_handler("MultiplePurchase"), params)
   }
 
   function complete() {

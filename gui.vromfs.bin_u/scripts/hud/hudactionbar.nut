@@ -1,54 +1,48 @@
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+import "%sqstd/ecs.nut" as ecs
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, add_event_listener, subscribe_handler
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "controls" import hasXInputDevice, emulateShortcut
+from "string" import format
+from "dagor.debug" import debug_dump_stack
+from "hudActionBar" import getWheelBarItems, activateActionBarAction, getActionBarUnitName
+from "hudActionBarConst" import EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_SLAVE_UNIT_STATUS, EII_SELECT_SPECIAL_WEAPON, EII_GRENADE
+from "replays" import is_replay_playing
+from "hudState" import getHudUnitType
+from "mission" import get_game_type, get_mission_time
+from "dagor.workcycle" import setTimeout, clearTimer
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "%globalScripts/inputDeviceConsts.nut" import *
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import fakeBullets_prefix
-import "%sqstd/ecs.nut" as ecs
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_live_stats } = require("%scripts/hud/hudLiveStats.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { wheelMenuHandler, guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent, add_event_listener, subscribe_handler
-} = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { hasXInputDevice, emulateShortcut } = require("controls")
-let { format } = require("string")
-let { debug_dump_stack } = require("dagor.debug")
 let { isFakeBullet, getBulletsSetData } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { shouldActionBarFontBeTiny , getActionItemAmountText, getActionItemModificationName,
-  getActionItemStatus, curHeroTemplates } = require("%scripts/hud/hudActionBarInfo.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_SLAVE_UNIT_STATUS,
-  EII_SELECT_SPECIAL_WEAPON, EII_GRENADE } = require("hudActionBarConst")
+let { shouldActionBarFontBeTiny, getActionItemAmountText, getActionItemModificationName, getActionItemStatus, curHeroTemplates } = require("%scripts/hud/hudActionBarInfo.nut")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
-let { is_replay_playing } = require("replays")
-let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE, hudTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { actionBarItems, updateActionBar } = require("%scripts/hud/actionBarState.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { get_game_type, get_mission_time } = require("mission")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR
-} = require("%scripts/options/optionsExtNames.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_ACTION_BAR } = require("%scripts/options/optionsExtNames.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
-let { guiStartWheelmenu, closeCurWheelmenu } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
-let { isVisualHudAirWeaponSelectorOpened, setWeaponSelectorAttachedToActionBar,
- isWeaponSelectorSavedPinnedState } = require("%scripts/hud/hudAirWeaponSelector.nut")
-let { getExtraActionItemsView, WEAPON_SELECTOR_SHORTCUT_ID
-} = require("%scripts/hud/hudActionBarExtraActions.nut")
+let { isVisualHudAirWeaponSelectorOpened, setWeaponSelectorAttachedToActionBar, isWeaponSelectorSavedPinnedState } = require("%scripts/hud/hudAirWeaponSelector.nut")
+let { getExtraActionItemsView, WEAPON_SELECTOR_SHORTCUT_ID } = require("%scripts/hud/hudActionBarExtraActions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { bhvHintForceUpdateValuePID } = require("%scripts/viewUtils/bhvHint.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
 ecs.register_es("current_weapons_templates_init_es", {
@@ -129,7 +123,7 @@ function getVisibilityStateProfilePath() {
   return $"actionBar/isCollapsed/{hudType}"
 }
 
-let class ActionBar {
+class ActionBar {
   actionItems             = null
   rawActionItems          = null
   guiScene                = null
@@ -567,10 +561,11 @@ let class ActionBar {
     if (needShortcuts && actionBarType.getShortcut(item, hudUnitType)) {
       shortcutId = actionBarType.getVisualShortcut(item, hudUnitType)
 
-      if (this.isFootballMission)
-        shortcutId = item?.modificationName == "152mm_football" ? "ID_FIRE_GM"
-          : item?.modificationName == "152mm_football_jump" ? "ID_FIRE_GM_MACHINE_GUN"
+      if (this.isFootballMission) {
+        shortcutId = item?.modificationName == "152mm_football" ? "ID_TANK_FOOTBALL_SHOOT"
+          : item?.modificationName == "152mm_football_jump" ? "ID_TANK_FOOTBALL_JUMP"
           : shortcutId
+      }
 
       let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
       let scInput = shType.getFirstInput(shortcutId)
@@ -634,8 +629,8 @@ let class ActionBar {
     }
 
     if (!modifName && item.type != EII_BULLET && item.type != EII_FORCED_GUN) {
-      let killStreakTag = getTblValue("killStreakTag", item)
-      let killStreakUnitTag = getTblValue("killStreakUnitTag", item)
+      let killStreakTag = item?.killStreakTag
+      let killStreakUnitTag = item?.killStreakUnitTag
       if ("getLayeredIcon" in actionBarType)
         viewItem.layeredIcon <- actionBarType.getLayeredIcon(null, null, unit)
       else {
@@ -686,8 +681,8 @@ let class ActionBar {
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, item.modificationName, { isInHudActionBar = true })
     } else if (item?.type != null && item.type != EII_BULLET && item.type != EII_FORCED_GUN) {
       let actionBarType = g_hud_action_bar_type.getByActionItem(item)
-      let killStreakTag = getTblValue("killStreakTag", item)
-      let killStreakUnitTag = getTblValue("killStreakUnitTag", item)
+      let killStreakTag = item?.killStreakTag
+      let killStreakUnitTag = item?.killStreakUnitTag
       viewItem.icon <- actionBarType.getIcon(item, killStreakUnitTag)
       viewItem.cooldownIcon <- actionBarType.getCooldownIcon(item, killStreakUnitTag)
       viewItem.name <- actionBarType.getTitle(item, killStreakTag)
@@ -1095,7 +1090,7 @@ let class ActionBar {
   }
 
   function activateWeapon(streakId) {
-    let action = getTblValue(streakId, this.weaponActions)
+    let action = this.weaponActions?[streakId]
     if (action) {
       let shortcut = g_hud_action_bar_type.getByActionItem(action).getShortcut(action, getHudUnitType())
       toggleShortcut(shortcut)
@@ -1169,7 +1164,7 @@ let class ActionBar {
     if (!this.useWheelmenu)
       return
 
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+    let handler = handlersManager.findHandlerClassInScene(wheelMenuHandler)
     if (!(handler?.isActive ?? false))
       return
 

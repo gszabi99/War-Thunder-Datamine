@@ -4,7 +4,6 @@ require HumanPhys
 require DngHuman
 require math.base
 require DagorMath
-require DagorMathUtils
 require %game.events
 require %appGame.infantry.es.human_weap_common
 

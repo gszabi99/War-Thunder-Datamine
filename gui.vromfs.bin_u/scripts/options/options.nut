@@ -1,6 +1,7 @@
+from "guiOptions" import set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
-let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 
 let optionsModeByGameMode = {
   [GM_CAMPAIGN]          = OPTIONS_MODE_CAMPAIGN,

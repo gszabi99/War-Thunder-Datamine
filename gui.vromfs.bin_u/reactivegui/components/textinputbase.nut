@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
 from "string" import regexp, split_by_chars
+from "types" import String
 
 
 
@@ -28,7 +29,7 @@ function isStringLikelyEmail(strv, _verbose = true) {
 
 
 
-  if (type(strv) != "string")
+  if (!(strv instanceof String))
     return false
   let splitted = split_by_chars(strv, "@")
   if (splitted.len() < 2)
@@ -111,7 +112,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     setValue = @(v) text_state.set(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = 250,
     title = null, font = null, fontSize = null, hotkeys = null,
-    size = [flex(), fontH(100)], textmargin = const [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
+    size = [FLEX, fontH(100)], textmargin = const [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
     margin = const [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
 

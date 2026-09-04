@@ -115,7 +115,7 @@ struct EventAmmoStowageSetup
   initNum : bool
   isRefill : bool
 
-[event(unicast, version=0, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+[event(unicast, version=0, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventAmmoStowageNetSync
   bs : BitStream const?
 

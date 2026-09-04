@@ -83,8 +83,8 @@ def swimsplash_on_update(evt : ParallelUpdateFrameDelayed;
     let wpos = geomtree_getNodeWpos(*animchar.nodeTree, nodeId)
 
     if is_nan(wpos) || length_sq(wpos) >= 1e10
-      let nodeName = geomtree_getNodeName(*animchar.nodeTree, nodeId)
-      let animcharResName = animchar_get_res_name(animchar)
+      let _nodeName = geomtree_getNodeName(*animchar.nodeTree, nodeId)
+      let _animcharResName = animchar_get_res_name(animchar)
       
       continue
 

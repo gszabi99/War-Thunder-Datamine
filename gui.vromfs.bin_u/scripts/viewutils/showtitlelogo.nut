@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getTitleLogo } = require("%scripts/viewUtils/getTitleLogo.nut")
 
 return function(scene = null, logoHeight = -1) {

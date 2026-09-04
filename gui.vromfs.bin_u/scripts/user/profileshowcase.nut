@@ -1,17 +1,17 @@
+import "DataBlock" as DataBlock
+from "chard" import charSendBlk
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { charSendBlk } = require("chard")
 let { addTask } = require("%scripts/tasker.nut")
-let DataBlock = require("DataBlock")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getConditionsToUnlockShowcaseById } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { setCurrentShowcase, updateShowcaseDataInCache } = require("%scripts/user/profileShowcasesData.nut")
-let { showcaseValues, getUnitFromTerseInfo, getStatsValue, defaultShowcaseType, diffNames, findUnitStats
-} = require("%scripts/user/showcase/showcaseValues.nut")
+let { showcaseValues, getUnitFromTerseInfo, getStatsValue, defaultShowcaseType, diffNames, findUnitStats } = require("%scripts/user/showcase/showcaseValues.nut")
 let { favoriteShowcase } = require("%scripts/user/showcase/favoriteShowcase.nut")
 let { aceOfSpades } = require("%scripts/user/showcase/aceOfSpades.nut")
 let { unitsCollector } = require("%scripts/user/showcase/unitsCollector.nut")
@@ -20,8 +20,8 @@ let { achivHunter } = require("%scripts/user/showcase/achievementHunter.nut")
 let { tankFootballer } = require("%scripts/user/showcase/tankFootball.nut")
 let { leaderboardModes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
-let defaultShowcase = "favorite_mode"
-let defaultTitleIcon = "#ui/gameuiskin#all_unit_types.svg"
+const defaultShowcase = "favorite_mode"
+const defaultTitleIcon = "#ui/gameuiskin#all_unit_types.svg"
 let getDiffByIndex = @(index) diffNames?[index] ?? diffNames[0]
 
 let pageTypes = [

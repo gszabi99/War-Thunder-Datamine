@@ -1,20 +1,20 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "app" import draw_attention_to_inactive_window
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-let DataBlock  = require("DataBlock")
+
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { notifyMailRead } = require("%scripts/matching/serviceNotifications/postbox.nut")
-let { draw_attention_to_inactive_window } = require("app")
-let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass, findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInvite
-} = require("%scripts/invites/invites.nut")
+let { updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInvite } = require("%scripts/invites/invites.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -26,7 +26,7 @@ function removeInviteToOperation(operationId) {
 }
 
 const WW_OPERATION_INVITE_EXPIRE_SEC = 3600
-let inviteActiveColor = "userlogColoredText"
+const inviteActiveColor = "userlogColoredText"
 
 let Operation = class (BaseInvite) {
   mailId           = null

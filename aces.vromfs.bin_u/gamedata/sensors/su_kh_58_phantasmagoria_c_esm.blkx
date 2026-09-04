@@ -48,7 +48,8 @@
       "centerElevation": -8.0,
       "preciseMinor": true,
       "tws": true,
-      "period": 0.5
+      "period": 0.5,
+      "showInstantaneousScanAreaInHud": false
     },
     "bvrLockSearch": {
       "type": "no",
@@ -63,7 +64,8 @@
       "rollStabLimit": 10.0,
       "centerElevation": -8.0,
       "preciseMinor": true,
-      "tws": true
+      "tws": true,
+      "showInstantaneousScanAreaInHud": false
     },
     "track": {
       "type": "no",
@@ -74,7 +76,8 @@
       "elevationLimits": [
         -16.0,
         0.0
-      ]
+      ],
+      "showInstantaneousScanAreaInHud": false
     }
   },
   "signals": {
@@ -168,11 +171,17 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "search"
           },
+          "setDesignatedTarget": [
+            {
+              "aiOnly": true,
+              "set": false
+            },
+            {
+              "set": false
+            }
+          ],
           "setSignal": {
             "signal": "search"
-          },
-          "setDesignatedTarget": {
-            "set": false
           }
         },
         "resetStandbyMode": {},
@@ -193,11 +202,17 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "search"
           },
+          "setDesignatedTarget": [
+            {
+              "aiOnly": true,
+              "set": false
+            },
+            {
+              "set": false
+            }
+          ],
           "setSignal": {
             "signal": "search"
-          },
-          "setDesignatedTarget": {
-            "set": false
           },
           "setDesignationSourceType": {
             "sourceType": "dummy"
@@ -278,6 +293,10 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
           },
           "setSignal": {
             "signal": "track"
@@ -362,6 +381,10 @@
               "type": "target",
               "self": true,
               "sensorIndex": 0
+            },
+            "setDesignatedTarget": {
+              "aiOnly": true,
+              "set": true
             }
           }
         },

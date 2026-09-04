@@ -30,6 +30,7 @@
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
+  "boilerOverpressureStartFx": "steam_leak",
   "deadCoverCountToDelayedSinking": 3,
   "delayedSinkingBreachesFreq": 4.0,
   "delayedSinkingBreachesSize": [
@@ -7723,10 +7724,10 @@
       "hidableInViewer": true,
       "hydroShockDamageMult": 260.0,
       "at_bulge_01_dm": {
-        "hp": 2000.0
+        "hp": 3000.0
       },
       "at_bulge_02_dm": {
-        "hp": 2000.0
+        "hp": 3000.0
       }
     },
     "masts": {
@@ -8679,6 +8680,7 @@
           "fire_director_01_dm",
           "fire_director_04_dm"
         ],
+        "directedTurret": "gunner75",
         "measureAccuracy": 1.0,
         "targetLockTime": 15.0,
         "calcTime": 8.0,
@@ -8766,13 +8768,11 @@
   "commonWeapons": {
     "animatedBones": {
       "node": [
-        "fire_director_01",
+        "antenna_target_location_01",
         "fire_director_02",
         "fire_director_03",
-        "fire_director_04",
         "fire_director_05",
-        "fire_director_06",
-        "antenna_target_location_01"
+        "fire_director_06"
       ]
     },
     "Weapon": [
@@ -20717,6 +20717,32 @@
         }
       },
       {
+        "dummy": true,
+        "trigger": "gunner75",
+        "triggerGroup": "special",
+        "blk": "gameData/Weapons/dummy_weapon.blk",
+        "emitter": "fire_director_01",
+        "useEmitter": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 6.0,
+        "speedPitch": 0.0,
+        "turret": {
+          "head": "fire_director_04",
+          "gun": "fire_director_01"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
         "trigger": "gunner56",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/20mm_oerlikon_mk2_single_naval_user_cannon.blk",
@@ -20771,7 +20797,7 @@
             65.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -120.0,
@@ -20868,7 +20894,7 @@
             65.0
           ]
         },
-        "limitsTable": {
+        "limitsTableWithParent": {
           "lim1": [
             -180.0,
             -155.0,
@@ -24093,18 +24119,14 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_01_dm": {
-            "count": 208
-          }
+          "ammunition_storage_shells_01_dm": {}
         },
         {
           "entityMunition": "shells",
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_03_dm": {
-            "count": 208
-          }
+          "ammunition_storage_shells_03_dm": {}
         }
       ],
       "charges": [
@@ -24112,17 +24134,13 @@
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_01_dm": {
-            "count": 208
-          }
+          "ammunition_storage_charges_01_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_03_dm": {
-            "count": 208
-          }
+          "ammunition_storage_charges_03_dm": {}
         }
       ]
     },
@@ -24146,18 +24164,14 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_02_dm": {
-            "count": 208
-          }
+          "ammunition_storage_shells_02_dm": {}
         },
         {
           "entityMunition": "shells",
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_04_dm": {
-            "count": 208
-          }
+          "ammunition_storage_shells_04_dm": {}
         }
       ],
       "charges": [
@@ -24165,17 +24179,13 @@
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_02_dm": {
-            "count": 208
-          }
+          "ammunition_storage_charges_02_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_04_dm": {
-            "count": 208
-          }
+          "ammunition_storage_charges_04_dm": {}
         }
       ]
     },
@@ -24201,9 +24211,7 @@
       "shareDuration": 120,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_02_dm": {
-          "count": 2400
-        }
+        "ammunition_storage_aux_02_dm": {}
       }
     },
     "ammo4": {
@@ -24228,9 +24236,7 @@
       "shareDuration": 120,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_03_dm": {
-          "count": 2400
-        }
+        "ammunition_storage_aux_03_dm": {}
       }
     },
     "ammo5": {
@@ -24255,16 +24261,12 @@
           "entityMunition": "first_stage",
           "firstStage": true,
           "damageEffect": "ammunition_storage_aux",
-          "ammo_turret_01_dm": {
-            "count": 60
-          }
+          "ammo_turret_01_dm": {}
         },
         {
           "reloadTimeMult": 1.2,
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_04_dm": {
-            "count": 1140
-          }
+          "ammunition_storage_aux_04_dm": {}
         }
       ]
     },
@@ -24290,16 +24292,12 @@
           "entityMunition": "first_stage",
           "firstStage": true,
           "damageEffect": "ammunition_storage_aux",
-          "ammo_turret_02_dm": {
-            "count": 60
-          }
+          "ammo_turret_02_dm": {}
         },
         {
           "reloadTimeMult": 1.2,
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_05_dm": {
-            "count": 1140
-          }
+          "ammunition_storage_aux_05_dm": {}
         }
       ]
     },
@@ -24325,16 +24323,12 @@
           "entityMunition": "first_stage",
           "firstStage": true,
           "damageEffect": "ammunition_storage_aux",
-          "ammo_turret_03_dm": {
-            "count": 60
-          }
+          "ammo_turret_03_dm": {}
         },
         {
           "reloadTimeMult": 1.2,
           "damageEffect": "ammunition_storage_aux",
-          "ammunition_storage_aux_06_dm": {
-            "count": 1140
-          }
+          "ammunition_storage_aux_06_dm": {}
         }
       ]
     },
@@ -24396,9 +24390,7 @@
       "splashPenetrationConstraint": 15.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_01_dm": {
-          "count": 139400
-        }
+        "ammunition_storage_aux_01_dm": {}
       }
     },
     "ammo9": {
@@ -24437,9 +24429,7 @@
       "splashPenetrationConstraint": 15.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_07_dm": {
-          "count": 62600
-        }
+        "ammunition_storage_aux_07_dm": {}
       }
     }
   },
@@ -26249,6 +26239,18 @@
       "unlockId": "ship_flag_ussr_04",
       "nameLocId": "ship_flag_ussr_04/name",
       "texture": "ship_flag_ussr_04_c*"
+    },
+    "flag_york_city": {
+      "category": "other",
+      "unlockId": "flag_york_city",
+      "nameLocId": "flag_york_city/name",
+      "texture": "flag_york_city_c*"
+    },
+    "ship_flag_genoa_city_01": {
+      "category": "other",
+      "unlockId": "ship_flag_genoa_city_01",
+      "nameLocId": "ship_flag_genoa_city_01/name",
+      "texture": "ship_flag_genoa_city_01_c*"
     }
   }
 }

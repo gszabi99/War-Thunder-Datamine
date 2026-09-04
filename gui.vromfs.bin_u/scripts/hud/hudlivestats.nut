@@ -1,21 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "guiMission" import GO_NONE, GO_WAITING_FOR_RESULT
+from "mission" import get_game_mode, get_game_type, get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST, get_mplayer_by_id, get_local_mplayer
+from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import mpstat_get_sort_func
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/playerStateConsts.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { combineSimilarAwards } = require("%scripts/unlocks/unlocksModule.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
-let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_game_mode, get_game_type, get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST,
-  get_mplayer_by_id, get_local_mplayer
-} = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 
@@ -197,7 +198,7 @@ let g_hud_live_stats = {
       this.curViewPlayerId = playerId
       this.curViewMode = (viewMode != null && viewMode >= 0 && viewMode < LIVE_STATS_MODE.TOTAL) ?
         viewMode : LIVE_STATS_MODE.WATCH
-      this.curColumnsOrder = getTblValue(this.curViewMode, getTblValue(this.missionMode, this.columnsOrder, {}), [])
+      this.curColumnsOrder = ((this.columnsOrder?[this.missionMode] ?? {})?[this.curViewMode] ?? [])
 
       let misObjs = this.missionObjectives
       let gt = this.gameType
@@ -227,7 +228,7 @@ let g_hud_live_stats = {
     if (this.curViewMode == LIVE_STATS_MODE.WATCH || this.missionResult == GO_WAITING_FOR_RESULT)
       title = ""
     else if (this.curViewMode == LIVE_STATS_MODE.SPAWN && !this.isMissionLastManStanding) {
-      let txtUnitName = getUnitName(getTblValue("aircraftName", state.player, ""))
+      let txtUnitName = getUnitName((state.player?.aircraftName ?? ""))
       let txtLifetime = time.secondsToString(state.lifetime, true)
       title = "".concat(loc("multiplayer/lifetime"),
         loc("ui/parentheses/space", { text = txtUnitName }), loc("ui/colon"), txtLifetime)
@@ -235,7 +236,7 @@ let g_hud_live_stats = {
     else if (this.curViewMode == LIVE_STATS_MODE.FINAL || this.isMissionLastManStanding) {
       title = this.isMissionTeamplay ? loc("debriefing/placeInMyTeam") :
        "".concat(loc("mainmenu/btnMyPlace"), loc("ui/colon"))
-      title = "".concat(title, colorize("userlogColoredText", getTblValue("rowNo", state.player, this.getPlayerPlaceInTeam(state.player))))
+      title = "".concat(title, colorize("userlogColoredText", (state.player?.rowNo ?? this.getPlayerPlaceInTeam(state.player))))
     }
 
     let isHeader = this.curViewMode == LIVE_STATS_MODE.FINAL
@@ -288,8 +289,8 @@ let g_hud_live_stats = {
     foreach (id in this.curColumnsOrder) {
       let param = g_mplayer_param_type.getTypeById(id)
 
-      let value = getTblValue(id, state.player, param.defVal)
-      let visValue = this.visState ? getTblValue(id, this.visState.player, param.defVal) : param.defVal
+      let value = (state.player?[id] ?? param.defVal)
+      let visValue = this.visState ? (this.visState.player?[id] ?? param.defVal) : param.defVal
       if (visValue == value && !param.isForceUpdate)
         continue
 
@@ -347,14 +348,14 @@ let g_hud_live_stats = {
   }
 
   function getPlayerPlaceInTeam(player) {
-    let playerId = getTblValue("id", player, -1)
-    let teamId = this.isMissionTeamplay ? getTblValue("team", player, GET_MPLAYERS_LIST) : GET_MPLAYERS_LIST
+    let playerId = (player?.id ?? -1)
+    let teamId = this.isMissionTeamplay ? (player?.team ?? GET_MPLAYERS_LIST) : GET_MPLAYERS_LIST
     let players = get_mplayers_list(teamId, true)
 
     players.sort(mpstat_get_sort_func(this.gameType))
 
     foreach (idx, p in players)
-      if (getTblValue("id", p) == playerId)
+      if (p?.id == playerId)
         return idx + 1
     return 0
   }
@@ -365,7 +366,7 @@ let g_hud_live_stats = {
     let player = get_local_mplayer()
     if (player.isDead || player.state != PLAYER_IN_FLIGHT)
       return
-    let aircraftName = getTblValue("aircraftName", player, "")
+    let aircraftName = (player?.aircraftName ?? "")
     if (aircraftName == "" || aircraftName == "dummy_plane")
       return
     this.isAwaitingSpawn = false
@@ -387,7 +388,7 @@ let g_hud_live_stats = {
   }
 
   function onEventStreakArrived(params) {
-    this.hero.streaks.append(getTblValue("id", params))
+    this.hero.streaks.append(params?.id)
   }
 
   function onMissionResult(eventData) {
@@ -406,7 +407,7 @@ let g_hud_live_stats = {
     if (!this.isSelfTogglable || this.isMissionFinished)
       return
     hudLiveStatsState.spawnStartState = this.getState()
-    u.appendOnce(getTblValue("aircraftName", hudLiveStatsState.spawnStartState.player), this.hero.units)
+    u.appendOnce(hudLiveStatsState.spawnStartState.player?.aircraftName, this.hero.units)
     this.show(false)
   }
 
@@ -420,4 +421,3 @@ let g_hud_live_stats = {
 return {
   g_hud_live_stats
 }
-

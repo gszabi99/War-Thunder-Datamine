@@ -1,10 +1,11 @@
+from "math" import abs
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { rollIndicator = null, isVisibleRollIndicator = Watched(false), isVisibleGunBlockedIndicator = Watched(false) } = require("hudTankStates")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { abs } = require("math")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 
 let iconedHintsConfig = [{
   id = "roll_indicator"

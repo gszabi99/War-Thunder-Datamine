@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { worldWarMapControls } = require("bhvWorldWarMap.nut")
+let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 
 replace_script_gui_behaviour("worldWarMapControls", worldWarMapControls)
 

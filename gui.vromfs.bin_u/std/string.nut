@@ -1,9 +1,9 @@
 from "string" import regexp, format
 from "iostream" import blob
 from "math" import clamp, log10, min
+from "types" import Table, Array, String, Function, Integer, Float
 import "string" as string
 
-let regexp2 = require_optional("regexp2")
 let utf8 = require_optional("utf8")
 
 
@@ -11,12 +11,6 @@ const CASE_PAIR_LOWER = "abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìí�
 const CASE_PAIR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮIĲĴĶĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŹŻŽƂƄƇƋƑƘƠƢƤƧƬƯƳƵƸƼǄǇǊǍǏǑǓǕǗǙǛǞǠǢǤǦǨǪǬǮǱǴǺǼǾȀȂȄȆȈȊȌȎȐȒȔȖƁƆƊƎƏƐƓƔƗƖƜƝƟƩƮƱƲƷΆΈΉΊΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΣΤΥΦΧΨΩΪΫΌΎΏϢϤϦϨϪϬϮАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁЂЃЄЅІЇЈЉЊЋЌЎЏѠѢѤѦѨѪѬѮѰѲѴѶѸѺѼѾҀҐҒҔҖҘҚҜҞҠҢҤҦҨҪҬҮҰҲҴҶҸҺҼҾӁӃӇӋӐӒӔӖӘӚӜӞӠӢӤӦӨӪӮӰӲӴӸԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖႠႡႢႣႤႥႦႧႨႩႪႫႬႭႮႯႰႱႲႳႴႵႶႷႸႹႺႻႼႽႾႿჀჁჂჃჄჅḀḂḄḆḈḊḌḎḐḒḔḖḘḚḜḞḠḢḤḦḨḪḬḮḰḲḴḶḸḺḼḾṀṂṄṆṈṊṌṎṐṒṔṖṘṚṜṞṠṢṤṦṨṪṬṮṰṲṴṶṸṺṼṾẀẂẄẆẈẊẌẎẐẒẔẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸἈἉἊἋἌἍἎἏἘἙἚἛἜἝἨἩἪἫἬἭἮἯἸἹἺἻἼἽἾἿὈὉὊὋὌὍὙὛὝὟὨὩὪὫὬὭὮὯᾈᾉᾊᾋᾌᾍᾎᾏᾘᾙᾚᾛᾜᾝᾞᾟᾨᾩᾪᾫᾬᾭᾮᾯᾸᾹῘῙῨῩⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
 local INVALID_INDEX = -1
 
-local intRegExp = null
-local possibleNotStrRegExp = null
-local floatRegExp = null
-local trimRegExp = null
-local stripTagsConfig = null
-local escapeConfig = null
 
 
 
@@ -26,8 +20,7 @@ local escapeConfig = null
 
 
 
-
-function implode(pieces = [], glue = "") {
+function implode(pieces: array = [], glue: string = ""): string {
   return glue.join(pieces, true)
 }
 
@@ -41,7 +34,7 @@ function implode(pieces = [], glue = "") {
 
 
 
-function join(pieces, glue="") {
+function join(pieces: array, glue: string = ""): string {
   return glue.join(pieces)
 }
 
@@ -54,100 +47,41 @@ function join(pieces, glue="") {
 
 
 
-function split(joined, glue, isIgnoreEmpty = false) {
+function split(joined: string, glue: string, isIgnoreEmpty = false): array {
   return (!isIgnoreEmpty) ? joined.split(glue)
             : joined.split(glue).filter(@(v) v!="")
 }
 
 const intre = @"^-?\d+$"
 const floatre = @"^-?\d+\.?\d*([eE][-+]?\d{1,3})?$"
-let notstringre = @"(^-?\d+$)|(^-?\d+\.?\d*([eE][-+]?\d{1,3})?$)|^(null|true|false)$"
-if (regexp2 != null) {
-  intRegExp = regexp2(intre)
-  floatRegExp  = regexp2(floatre)
-  trimRegExp = regexp2(@"^\s+|\s+$")
-  possibleNotStrRegExp = regexp2(notstringre)
-  stripTagsConfig = [
-    {
-      re2 = regexp2("~")
-      repl = "~~"
-    }
-    {
-      re2 = regexp2("\"")
-      repl = "~\""
-    }
-    {
-      re2 = regexp2("\r")
-      repl = "~r"
-    }
-    {
-      re2 = regexp2("\n")
-      repl = "~n"
-    }
-    {
-      re2 = regexp2("\'")
-      repl = "~\'"
-    }
-  ]
-  escapeConfig = [
-    { re2 = regexp2(@"\\"), repl = @"\\\\" }
-    { re2 = regexp2(@""""), repl = @"\\""" }
-    { re2 = regexp2(@"\n"), repl = @"\\n"  }
-    { re2 = regexp2(@"\r"), repl = @"\\r"  }
-  ]
-  for (local ch = 0; ch < 32; ch++)
-    escapeConfig.append({
-      re2 = regexp2(format(@"\x%02X", ch))
-      repl = format(@"\\u%04X", ch)
-    })
-}
-else if (regexp != null) {
-  intRegExp = regexp(intre)
-  possibleNotStrRegExp = regexp(notstringre)
-  floatRegExp  = regexp(floatre)
-  trimRegExp = regexp(@"^(\s+)|(\s+)$")
-  stripTagsConfig = [
-    {
-      re2 = regexp(@"~")
-      repl = "~~"
-    }
-    {
-      re2 = regexp("\"")
-      repl = "~\""
-    }
-    {
-      re2 = regexp(@"\r")
-      repl = "~r"
-    }
-    {
-      re2 = regexp(@"\n")
-      repl = "~n"
-    }
-    {
-      re2 = regexp(@"\'")
-      repl = "~\'"
-    }
-  ]
-  escapeConfig = [
-    { re2 = regexp(@"\\"), repl = @"\\\\" }
-    { re2 = regexp(@""""), repl = @"\\""" }
-    { re2 = regexp(@"\n"), repl = @"\\n"  }
-    { re2 = regexp(@"\r"), repl = @"\\r"  }
-  ]
-  for (local ch = 0; ch < 32; ch++)
-    escapeConfig.append({
-      re2 = regexp(format(@"\x%02X", ch))
-      repl = format(@"\\u%04X", ch)
-    })
+const notstringre = @"(^-?\d+$)|(^-?\d+\.?\d*([eE][-+]?\d{1,3})?$)|^(null|true|false)$"
+let intRegExp = regexp(intre)
+let possibleNotStrRegExp = regexp(notstringre)
+let floatRegExp = regexp(floatre)
+let stripTagsConfig = [
+  { from = "~",  repl = "~~"  }
+  { from = "\"", repl = "~\"" }
+  { from = "\r", repl = "~r"  }
+  { from = "\n", repl = "~n"  }
+  { from = "\'", repl = "~\'" }
+]
+let escapeConfig = [
+  { from = "\\", repl = "\\\\" }
+  { from = "\"", repl = "\\\"" }
+  { from = "\n", repl = "\\n"  }
+  { from = "\r", repl = "\\r"  }
+]
+for (local ch = 0; ch < 32; ch++)
+  escapeConfig.append({
+    from = ch.tochar()
+    repl = format("\\u%04X", ch)
+  })
+
+function [pure] isStringObviousString(str: string): bool {
+  return !possibleNotStrRegExp.match(str)
 }
 
-function [pure] isStringObviousString(str) {
-  if (possibleNotStrRegExp != null)
-    return !possibleNotStrRegExp.match(str)
-  return false
-}
-
-let defTostringParams = freeze({
+const defTostringParams = {
   maxdeeplevel = 4
   compact=true
   tostringfunc= {
@@ -159,18 +93,18 @@ let defTostringParams = freeze({
   newline="\n"
   splitlines = true
   showArrIdx=false
-})
+}
 
-function func2str_compact(func) {
+function func2str_compact(func): string {
   local { native, name } = func.getfuncinfos()
   return native ? $"(nativefunc): {name}"
     : name.slice(0,1) == "(" ? "@()" : $"{name}()"
 }
 
-function func2str(func, p={}) {
+function func2str(func, p: table|null = const {}): string {
   local compact = p?.compact ?? false
   local showsrc = p?.showsrc ?? false
-  local showparams = p?.showparams ?? compact
+  local showparams = p?.showparams ?? !compact
   local showdefparams = p?.showdefparams ?? compact
   local tostr_func = p?.tostr_func ?? @(v) $"{v}"
 
@@ -207,7 +141,7 @@ function func2str(func, p={}) {
     if (showsrc)
       out.append("(func): ", (info?.src ?? ""), " ")
     out.append(fname, "(")
-    if (!showparams)
+    if (showparams)
       out.extend(params_str)
     out.append(")")
   } else if (info.native) {
@@ -227,9 +161,9 @@ let function_types = ["function", "generator"]
 function tostring_any(input, tostringfunc=null, compact=true) {
   local typ = type(input)
   if (tostringfunc!=null) {
-    if (type(tostringfunc) == "table")
+    if (tostringfunc instanceof Table)
       tostringfunc = [tostringfunc]
-    if (type(tostringfunc) == "array") {
+    if (tostringfunc instanceof Array) {
       foreach (tf in tostringfunc){
         if (tf?.compare != null && tf.compare(input)){
           return tf.tostring(input)
@@ -270,23 +204,20 @@ function tostring_any(input, tostringfunc=null, compact=true) {
   }
   return input.tostring()
 }
-let FOO = {}
-function tableLen(t){
-  return FOO.len.call(t)
-}
 
 let table_types = ["table","class","instance"]
   .reduce(@(res, v) res.$rawset(v, true), {})
-let openSymByType = {
+
+const openSymByType = {
   ["array"] = "[",
   ["class"] = "class {",
   ["instance"] = "instance {",
 }
 
 let openSym = @(value) openSymByType?[type(value)] ?? "{"
-let closeSym = @(value) type(value) == "array" ? "]" : "}"
+let closeSym = @(value) value instanceof Array ? "]" : "}"
 
-function tostring_r(inp, params=defTostringParams) {
+function tostring_r(inp, params=defTostringParams): string {
   local newline = params?.newline ?? defTostringParams.newline
   local maxdeeplevel = params?.maxdeeplevel ?? defTostringParams.maxdeeplevel
   local separator = params?.separator ?? defTostringParams.separator
@@ -297,9 +228,9 @@ function tostring_r(inp, params=defTostringParams) {
   local compact = params?.compact ?? defTostringParams.compact
 
   function tostringLeaf(val) {
-    local typ =type(val)
+    local typ = type(val)
     if (tostringfunc!=null) {
-      if (type(tostringfunc) == "table")
+      if (tostringfunc instanceof Table)
         tostringfunc = [tostringfunc]
       foreach (tf in tostringfunc)
         if (tf.compare(val))
@@ -308,15 +239,15 @@ function tostring_r(inp, params=defTostringParams) {
 
     if (typ in simple_types || typ in function_types)
       return [true, tostring_any(val, null, compact)]
-    if (typ == "table" && tableLen(val) == 0)
-      return [true, "{}"]
+    if (typ == "table" && val.$len() == 0)
+      return const [true, "{}"]
     if (typ == "array" && val.len() == 0)
-      return [true, "[]"]
+      return const [true, "[]"]
     if (typ == "instance") {
-      let str = type(val?.tostring) == "function" ? val.tostring() : null
+      let str = val?.tostring instanceof Function ? val.tostring() : null
       return [str != null && str.indexof("(instance : 0x") != 0, str]
     }
-    return [false, null]
+    return const [false, null]
   }
 
   local arrSep = separator
@@ -331,7 +262,7 @@ function tostring_r(inp, params=defTostringParams) {
     local li = 0
     local maxind = -1
     try {
-      if (type(input?.len)=="function") {
+      if (input?.len instanceof Function) {
         let info = input.len.getfuncinfos()
         if (!info.native && info.parameters.len()==1)
           maxind = input.len()-1
@@ -403,7 +334,7 @@ function tostring_r(inp, params=defTostringParams) {
           stream.writestring(newline)
           stream.writestring(arrInd)
         }
-        else if (arrayElem && li < maxind && type(input[li+1]) != "table"){
+        else if (arrayElem && li < maxind && !(input[li+1] instanceof Table)){
           stream.writestring(newline)
           stream.writestring(indent)
         }
@@ -462,7 +393,7 @@ function substring(str, start = 0, length = null) {
 
 
 
-function startsWith(str, value) {
+function startsWith(str, value): bool {
   str = str ?? ""
   value = value ?? ""
   return str.startswith(value)
@@ -475,7 +406,7 @@ function startsWith(str, value) {
 
 
 
-function endsWith(str, value) {
+function endsWith(str, value): bool {
   str = str ?? ""
   value = value ?? ""
   return str.endswith(value)
@@ -492,6 +423,8 @@ function endsWith(str, value) {
 function indexOf(str, value, startIndex = 0) {
   str = str ?? ""
   value = value ?? ""
+  if (value == "")
+    return clamp(startIndex, 0, str.len())
   local idx = str.indexof(value, startIndex)
   return idx ?? INVALID_INDEX
 }
@@ -504,9 +437,11 @@ function indexOf(str, value, startIndex = 0) {
 
 
 
-function lastIndexOf(str, value, startIndex = 0) {
+function lastIndexOf(str, value, startIndex = 0): int {
   str = str ?? ""
   value = value ?? ""
+  if (value == "")
+    return str.len()
   local idx = INVALID_INDEX
   local curIdx = startIndex - 1
   local length = str.len()
@@ -529,9 +464,11 @@ function lastIndexOf(str, value, startIndex = 0) {
 
 function indexOfAny(str, anyOf, startIndex = 0) {
   str = str ?? ""
-  anyOf = anyOf ?? [ "" ]
+  anyOf = anyOf ?? []
   local idx = INVALID_INDEX
   foreach (value in anyOf) {
+    if (value == null || value == "")
+      continue
     local curIdx = indexOf(str, value, startIndex)
     if (curIdx != INVALID_INDEX && (idx == INVALID_INDEX || curIdx < idx))
       idx = curIdx
@@ -547,11 +484,13 @@ function indexOfAny(str, anyOf, startIndex = 0) {
 
 
 
-function lastIndexOfAny(str, anyOf, startIndex = 0) {
+function lastIndexOfAny(str, anyOf, startIndex = 0): int {
   str = str ?? ""
-  anyOf = anyOf ?? [ "" ]
+  anyOf = anyOf ?? []
   local idx = INVALID_INDEX
   foreach (value in anyOf) {
+    if (value == null || value == "")
+      continue
     local curIdx = lastIndexOf(str, value, startIndex)
     if (curIdx != INVALID_INDEX && (idx == INVALID_INDEX || curIdx > idx))
       idx = curIdx
@@ -560,20 +499,21 @@ function lastIndexOfAny(str, anyOf, startIndex = 0) {
 }
 
 
-function countSubstrings(str, substr) {
-  local res = -1
-  local findex = -1
-  for(res; findex != 0; res++) {
-    findex = str.indexof(substr, ++findex)
+function countSubstrings(str: string, substr: string): int {
+  local res = 0
+  local findex = str.indexof(substr)
+  while (findex != null) {
+    res++
+    findex = str.indexof(substr, findex + 1)
   }
   return res
 }
 
-function capitalize(str) {
+function capitalize(str: string): string {
   return "".concat(str.slice(0, 1).toupper(), str.slice(1))
 }
 
-function replace(str, from, to) {
+function replace(str, from: string, to: string): string {
   return (str ?? "").replace(from, to)
 }
 
@@ -583,9 +523,9 @@ function replace(str, from, to) {
 
 
 
-function trim(str) {
+function trim(str): string {
   str = str ?? ""
-  return trimRegExp ? trimRegExp.replace("", str) : str 
+  return str.strip()
 }
 
 
@@ -604,7 +544,7 @@ function trim(str) {
 
 
 
-function [pure] floatToStringRounded(value, presize) {
+function [pure] floatToStringRounded(value: number, presize: number): string {
   if (presize >= 1) {
     local res = (value / presize + (value < 0 ? -0.5 : 0.5)).tointeger()
     return res == 0 ? "0" : "".join([res].extend(array(log10(presize).tointeger(), "0")))
@@ -612,30 +552,20 @@ function [pure] floatToStringRounded(value, presize) {
   return format("%.{0}f".subst(-log10(presize).tointeger()), value)
 }
 
-function [pure] isStringInteger(str) {
-  if (type(str) == "integer")
+function [pure] isStringInteger(str): bool {
+  if (str instanceof Integer)
     return true
-  if (type(str) != "string")
+  if (!(str instanceof String))
     return false
-  if (intRegExp != null)
-    return intRegExp.match(str)
-
-  if (str.startswith("-"))
-    str = str.slice(1)
-  if (str == "")
-    return false
-  for (local i = 0; i < str.len(); i++)
-    if (str[i] < '0' || str[i] > '9')
-      return false
-  return true
+  return intRegExp.match(str)
 }
 
-function [pure] isStringFloat(str, separator=".") {
-  if (type(str) == "integer" || type(str) == "float")
+function [pure] isStringFloat(str, separator="."): bool {
+  if (str instanceof Integer || str instanceof Float)
     return true
-  if (type(str) != "string")
+  if (!(str instanceof String))
     return false
-  if (floatRegExp != null && separator == ".")
+  if (separator == ".")
     return floatRegExp.match(str)
 
   if (str.startswith("-"))
@@ -675,7 +605,7 @@ function [pure] isStringFloat(str, separator=".") {
 }
 
 function [pure] toIntegerSafe(str, defValue = 0, needAssert = true) {
-  if (type(str) == "string")
+  if (str instanceof String)
     str = str.strip()
   if (isStringInteger(str))
     return str.tointeger()
@@ -685,7 +615,7 @@ function [pure] toIntegerSafe(str, defValue = 0, needAssert = true) {
 }
 
 function [pure] toFloatSafe(str, defValue = 0.0, needAssert = true) {
-  if (type(str) == "string")
+  if (str instanceof String)
     str = str.strip()
   if (isStringFloat(str))
     return str.tofloat()
@@ -715,13 +645,14 @@ if (utf8 != null) {
   utf8CapitalizeWords = @[pure] utf8CapitalizeWordsImpl(str) " ".join(str.split(" ").map(utf8Capitalize))
 }
 else {
-  function noUtf8Module(...) { assert("No 'utf8' module") }
+  function noUtf8Module(...) { assert(false, "No 'utf8' module") }
   utf8ToUpper = noUtf8Module
   utf8ToLower = noUtf8Module
   utf8Capitalize = noUtf8Module
+  utf8CapitalizeWords = noUtf8Module
 }
 
-function [pure] intToUtf8Char(c) {
+function [pure] intToUtf8Char(c: int): string {
   if (c <= 0x7F)
     return c.tochar()
   if (c <= 0x7FF)
@@ -729,19 +660,19 @@ function [pure] intToUtf8Char(c) {
   if (c <= 0xFFFF)
     return "".concat((0xE0 + (c>>12)).tochar(), (0x80 + ((c>>6) & 0x3F)).tochar(), (0x80 + (c & 0x3F)).tochar())
   if (c <= 0x10FFFF)
-    return "".concat((0xF0 + (c>>12)).tochar(), (0x80 + ((c>>12) & 0x3F)).tochar(), (0x80 + ((c>>6) & 0x3F)).tochar(), (0x80 + (c & 0x3F)).tochar())
+    return "".concat((0xF0 + (c>>18)).tochar(), (0x80 + ((c>>12) & 0x3F)).tochar(), (0x80 + ((c>>6) & 0x3F)).tochar(), (0x80 + (c & 0x3F)).tochar())
   return ""
 }
 
-let firstOctet = [
+const firstOctet = [
   { ofs = 0, mask = 0x7F }
   { ofs = 0xC0, mask = 0x1F }
   { ofs = 0xE0, mask = 0x0F }
   { ofs = 0xF0, mask = 0x07 }
 ]
-let nextOctet = { ofs = 0x80, mask = 0x3F }
+const nextOctet = { ofs = 0x80, mask = 0x3F }
 
-function [pure] utf8CharToInt(str) {
+function [pure] utf8CharToInt(str): int {
   let list = []
   foreach (i in str)
     list.append(i)
@@ -761,7 +692,7 @@ function [pure] utf8CharToInt(str) {
   return res
 }
 
-function [pure] hexStringToInt(hexString) {
+function [pure] hexStringToInt(hexString): int {
   
   if (hexString.len() >= 2 && hexString.slice(0, 2) == "0x")
     hexString = hexString.slice(2)
@@ -800,7 +731,7 @@ function [pure] cutPostfix(id, postfix, defValue = null) {
   return defValue
 }
 
-function [pure] intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
+function [pure] intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3): string {
   local res = value.tointeger().tostring()
   local negativeSignCorrection = value < 0 ? 1 : 0
   local idx = res.len()
@@ -815,20 +746,18 @@ function [pure] intToStrWithDelimiter(value, delimiter = " ", charsAmount = 3) {
 function [pure] stripTags(str) {
   if (!str || !str.len())
     return ""
-  if (stripTagsConfig == null)
-    assert(stripTagsConfig != null, "stripTags is not working without regexp")
   foreach(test in stripTagsConfig)
-    str = test.re2.replace(test.repl, str)
+    str = str.replace(test.from, test.repl)
   return str
 }
 
-function [pure] escape(str) {
-  if (type(str) != "string") {
+function [pure] escape(str): string {
+  if (!(str instanceof String)) {
     assert(false, @() $"wrong escape param type: {type(str)}")
     return ""
   }
   foreach(test in escapeConfig)
-    str = test.re2.replace(test.repl, str)
+    str = str.replace(test.from, test.repl)
   return str
 }
 
@@ -879,8 +808,8 @@ function pprint(...){
   }
 }
 
-function validateEmail(no_dump_email) {
-  if (type(no_dump_email) != "string")
+function validateEmail(no_dump_email): bool {
+  if (!(no_dump_email instanceof String))
     return false
 
   local str = split(no_dump_email,"@")
@@ -904,7 +833,7 @@ function validateEmail(no_dump_email) {
   if (quotes == null && locpart.contains("@"))
     return false 
 
-  if (!dompart.contains(".") || dompart.indexof(".") > dompart.len() - 3) 
+  if (!dompart.contains(".") || lastIndexOf(dompart, ".") > dompart.len() - 3)
     return false  
 
   return true
@@ -922,7 +851,7 @@ function clearBorderSymbolsMultiline(str) {
   return clearBorderSymbols(str, [" ", 0x0A.tochar(), 0x0D.tochar()])
 }
 
-function [pure] splitStringBySize(str, maxSize) {
+function [pure] splitStringBySize(str, maxSize): array {
   if (maxSize <= 0) {
     assert(false, $"maxSize = {maxSize}")
     return [str]
@@ -938,15 +867,14 @@ function [pure] splitStringBySize(str, maxSize) {
   return result
 }
 
-function obj2stringarray(obj, curpath = null){
+function obj2stringarray(obj, curpath = null): array {
   let res = []
   curpath = curpath ?? []
-  let t = type(obj)
-  if (t=="array") {
+  if (obj instanceof Array) {
     foreach(i in obj)
       res.extend(obj2stringarray(i, [].extend(curpath)))
   }
-  else if (t=="table") {
+  else if (obj instanceof Table) {
     foreach( k, v in obj)
       res.extend(obj2stringarray(v, [].extend(curpath).append(k)))
   }
@@ -977,7 +905,7 @@ return freeze(string.__merge({
   floatToStringRounded
   isStringInteger
   isStringFloat
-  isStringLatin = @(str) regexp(@"[a-z,A-Z]*").match(str)
+  isStringLatin = @(str) regexp(@"[a-zA-Z]+").match(str)
   intToUtf8Char
   utf8CharToInt
   capitalize

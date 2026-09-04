@@ -1,8 +1,8 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsInfo.nut")

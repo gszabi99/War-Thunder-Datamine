@@ -1,22 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqStdLibs/helpers/u.nut" import isEmpty, copy
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { isRoomInSession, getSessionLobbyRoomId, getIsSpectatorSelectLocked,
-  getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isRoomInSession, getSessionLobbyRoomId, getIsSpectatorSelectLocked, getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getSessionLobbyMissionNameLocIdsArray } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { findInviteByUid, addSessionRoomInvite } = require("%scripts/invites/invites.nut")
@@ -72,8 +69,8 @@ let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
 
 
 
-let BASE64_SEPARATOR = "/"
-let BASE64_GARBAGE = "+"
+const BASE64_SEPARATOR = "/"
+const BASE64_GARBAGE = "+"
 let encodeDataToBase64Like = function(data) {
   let res = []
   foreach (block in data) {

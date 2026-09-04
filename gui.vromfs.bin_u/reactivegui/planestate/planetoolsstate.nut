@@ -1,7 +1,7 @@
+import "%rGui/interopGen.nut" as interopGen
 from "%rGui/globals/ui_library.nut" import *
 
 let { interop } = require("%rGui/globals/interop.nut")
-let interopGen = require("%rGui/interopGen.nut")
 
 let IlsVisible = Watched(false)
 let IlsPosSize = [0, 0, 0, 0]
@@ -11,6 +11,8 @@ let BombingMode = Watched(false)
 let AimLocked = Watched(false)
 let TargetPosValid = Watched(false)
 let TargetPos = Watched([0, 0])
+let BombHorFlyDistance = Watched(0.0)
+let BombHorDistToTarget = Watched(0.0)
 let TimeBeforeBombRelease = Watched(0.0)
 let DistToSafety = Watched(0.0)
 let DistToTarget = Watched(0.0)
@@ -37,6 +39,8 @@ let RadarTargetPos = [0, 0]
 let RadarTargetAngle = Watched(-1.0)
 let RadarTargetVel = Watched(-1.0)
 let RadarTargetBearing = Watched(0.0)
+let RadarTargetIsHelicopter = Watched(false)
+let RadarTargetIsPlane = Watched(false)
 let GunfireSolutionPointNum = Watched(-1)
 let GunfireSolution = [-1, -1]
 let AamAccelLock = Watched(false)
@@ -88,6 +92,8 @@ let planeState = {
   AimLocked,
   TargetPosValid,
   TargetPos,
+  BombHorFlyDistance,
+  BombHorDistToTarget,
   TimeBeforeBombRelease,
   DistToSafety,
   DistToTarget,
@@ -111,6 +117,8 @@ let planeState = {
   RadarTargetAngle,
   RadarTargetBearing,
   RadarTargetVel,
+  RadarTargetIsHelicopter,
+  RadarTargetIsPlane,
   GunfireSolutionPointNum,
   GunfireSolution,
   AamAccelLock,

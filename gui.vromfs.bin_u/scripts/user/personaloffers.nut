@@ -1,42 +1,40 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/timeLoc.nut" import buidPartialTimeStr
+from "chard" import charSendBlk, get_charserver_time_sec
+from "string" import format
+from "%sqstd/string.nut" import utf8ToUpper
+from "%sqstd/datablock.nut" import convertBlk, copyParamsToTable
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj } = require("%sqDagui/daguiUtil.nut")
-let DataBlock = require("DataBlock")
-let { charSendBlk, get_charserver_time_sec } = require("chard")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { format }  = require("string")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
-let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer,
-  isSeenOffer, clearOfferCache
-} = require("%scripts/user/personalOffersStates.nut")
+let { curPersonalOffer, cachePersonalOfferIfNeed, markSeenPersonalOffer, isSeenOffer, clearOfferCache } = require("%scripts/user/personalOffersStates.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let prizesRewardWnd = require("%scripts/items/prizesRewardWnd.nut")
 let { performPromoAction, togglePromoItem } = require("%scripts/promo/promo.nut")
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
-let { convertBlk, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText,
-  getEntitlementLocParams
-} = require("%scripts/onlineShop/entitlements.nut")
+let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText, getEntitlementLocParams } = require("%scripts/onlineShop/entitlements.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { getPrizeActionButtonsView, getPrizeImageByConfig, getTrophyRewardText
-} = require("%scripts/items/prizesView.nut")
+let { getPrizeActionButtonsView, getPrizeImageByConfig, getTrophyRewardText } = require("%scripts/items/prizesView.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
@@ -67,7 +65,7 @@ let personalOfferWndStyles = {
     }
     function updateHeader(headerObj) {
       headerObj["background-image"] = "!ui/images/premium/premium_account_image"
-      let imgForParts = "!ui/images/premium/premium_account_header"
+      const imgForParts = "!ui/images/premium/premium_account_header"
       let partLeftImgObj = headerObj.findObject("header_image_left")
       partLeftImgObj.width = "304@sf/@pf"
       partLeftImgObj["background-image"] = imgForParts
@@ -103,7 +101,7 @@ let descriptionByOfferType = {
   entitlement = getEntitlementTimeForDesc
 }
 
-let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
+class PersonalOfferHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/profile/personalOfferWnd.blk"
 
@@ -312,7 +310,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventBeforeStartShowroom(_p) {
     markSeenPersonalOffer(this.offerName)
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   function goBack() {
@@ -321,7 +319,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-let PersonalOfferPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
+let PersonalOfferPromoHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/promo/promoPersonalOffer.blk"
 
@@ -379,12 +377,12 @@ function checkShowPersonalOffers() {
     openCurPersonalOfferWnd()
 }
 
-gui_handlers.PersonalOfferHandler <- PersonalOfferHandler
-gui_handlers.PersonalOfferPromoHandler <- PersonalOfferPromoHandler
+register_gui_handler("PersonalOfferHandler", PersonalOfferHandler)
+register_gui_handler("PersonalOfferPromoHandler", PersonalOfferPromoHandler)
 
 addPromoAction("personal_offer", @(_handler, _params, _obj) openCurPersonalOfferWnd())
 
-let promoButtonId = "personal_offer_mainmenu_button"
+const promoButtonId = "personal_offer_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId

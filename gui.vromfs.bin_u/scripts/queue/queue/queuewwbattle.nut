@@ -1,8 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { request_matching } = require("%scripts/matching/api.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { getCurCraftsInfo } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
@@ -39,7 +38,7 @@ let WwBattle = class (BaseQueue) {
   }
 
   static function getName(params) {
-    return "".concat(getTblValue("operationId", params, ""), "_", getTblValue("battleId", params, ""))
+    return "".concat((params?.operationId ?? ""), "_", (params?.battleId ?? ""))
   }
 
   function getBattleName() {

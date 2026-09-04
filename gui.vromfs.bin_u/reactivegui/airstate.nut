@@ -1,8 +1,8 @@
+import "%rGui/interopGen.nut" as interopGen
+from "hudState" import NUM_ENGINES_MAX
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGen = require("%rGui/interopGen.nut")
 let { interop } = require("%rGui/globals/interop.nut")
-let { NUM_ENGINES_MAX } = require("hudState")
 
 const NUM_TRANSMISSIONS_MAX = 8
 const NUM_CANNONS_MAX = 3
@@ -22,6 +22,7 @@ local CurrentTime = Watched(false)
 
 let DistanceToGround = Watched(0.0)
 let RadarAltitude = Watched(0.0)
+let RadarAltitudeValid = Watched(true)
 let RadarAltitudeAlert = Watched(0.0)
 let VerticalSpeed = Watched(0.0)
 
@@ -126,6 +127,7 @@ let StaminaState = Watched(0)
 
 local BombReleaseVisible = Watched(false)
 local BombReleaseBlockedState = Watched(0)
+let BombReleaseMachLimit = Watched(0.0)
 local BombReleaseBlockedTextPosX = Watched(0)
 local BombReleaseBlockedTextPosY = Watched(0)
 local BombReleaseDirX = Watched(0)
@@ -177,6 +179,7 @@ let AamState = Watched({ count = 0, seconds = -1, timeToHit = -1, selected = fal
 let GuidedBombsState = Watched({ seconds = -1, timeToHit = -1, count = 0, mode = 0, selected = false, name = "", actualCount = -1, timeToWarning = -1, weaponIdx = -1})
 let FlaresState = Watched({ count = 0, mode = 0, seconds = -1 })
 let ChaffsState = Watched({ count = 0, mode = 0, seconds = -1 }) 
+let TowedDecoysState = Watched({ count = 0, seconds = -1 })
 
 let IsCanAdditionalEmpty = Watched(false)
 let IsTrpEmpty = Watched(false)
@@ -187,6 +190,7 @@ let IsGuidedBmbEmpty = Watched(false)
 let IsBmbEmpty = Watched(false)
 let IsFlrEmpty = Watched(false)
 let IsChaffsEmpty = Watched(false)
+let IsTowedDecoysEmpty = Watched(false)
 
 let IsHighRateOfFire = Watched(false)
 
@@ -275,6 +279,7 @@ let helicopterState = {
 
   DistanceToGround,
   RadarAltitude,
+  RadarAltitudeValid,
   RadarAltitudeAlert,
   VerticalSpeed,
 
@@ -426,6 +431,9 @@ let helicopterState = {
   ChaffsMode = Computed(@() ChaffsState.get().mode),
   ChaffsSeconds = Computed(@() ChaffsState.get().seconds),
 
+  TowedDecoysCount = Computed(@() TowedDecoysState.get().count),
+  TowedDecoysSeconds = Computed(@() TowedDecoysState.get().seconds),
+
   IsMachineGunsEmpty,
   MachineGunsSelectedArray,
   MachineGunsCount = MachineGunState.map(@(c) Computed(@() c.get().count)),
@@ -468,6 +476,7 @@ let helicopterState = {
   IsTrpEmpty,
   IsFlrEmpty,
   IsChaffsEmpty,
+  IsTowedDecoysEmpty,
 
   IsHighRateOfFire,
 
@@ -535,6 +544,7 @@ let helicopterState = {
   BombReleaseVisible,
   BombReleaseBlockedStates,
   BombReleaseBlockedState,
+  BombReleaseMachLimit,
   BombReleaseBlockedTextPosX,
   BombReleaseBlockedTextPosY,
   BombReleaseDirX,
@@ -672,6 +682,12 @@ interop.updateChaffs <- function(count, mode, seconds, _, __) {
   let curVal = ChaffsState.get()
   if (curVal.count != count || curVal.mode != mode || curVal.seconds != seconds)
     ChaffsState.set({ count, mode, seconds })
+}
+
+interop.updateTowedDecoys <- function(count, seconds, _, __) {
+  let curVal = TowedDecoysState.get()
+  if (curVal.count != count || curVal.seconds != seconds)
+    TowedDecoysState.set({ count, seconds })
 }
 
 for (local i = 0; i < NUM_ENGINES_MAX; ++i) {

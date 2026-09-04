@@ -1,0 +1,179 @@
+{
+  "wing1_r_structure": {
+    "hpRel": 1.3,
+    "part": "wing2_r_dm",
+    "effect": {
+      "conditionDamageType": "collision",
+      "conditionDamageRel": 0.8,
+      "cutPart": "spar2_r_dm"
+    }
+  },
+  "wing1_l_structure": {
+    "hpRel": 1.3,
+    "part": "wing2_l_dm",
+    "effect": {
+      "conditionDamageType": "collision",
+      "conditionDamageRel": 0.8,
+      "cutPart": "spar2_l_dm"
+    }
+  },
+  "wing_l_structure": {
+    "hpRel": 0.8,
+    "part": [
+      "wing_l_dm",
+      "wing1_l_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 0.9,
+        "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_l_dm"
+      }
+    ]
+  },
+  "wing_r_structure": {
+    "hpRel": 0.8,
+    "part": [
+      "wing_r_dm",
+      "wing1_r_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 0.9,
+        "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "collision",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_r_dm"
+      }
+    ]
+  },
+  "spar_l_structure": {
+    "hpRel": 0.8,
+    "part": [
+      "spar_l_dm",
+      "spar1_l_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_l_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_l_dm"
+      }
+    ]
+  },
+  "spar_r_structure": {
+    "hpRel": 0.8,
+    "part": [
+      "spar_r_dm",
+      "spar1_r_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_r_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 0.8,
+        "cutPart": "spar_r_dm"
+      }
+    ]
+  },
+  "fuse_structure": {
+    "hpRel": 1.5,
+    "part": [
+      "fuse_dm",
+      "fuse1_dm",
+      "fuse2_dm",
+      "fuse3_dm",
+      "fuse4_dm",
+      "fuse5_dm"
+    ],
+    "effect": [
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 1.6,
+        "cutPart": [
+          "spar_r_dm",
+          "spar_l_dm"
+        ]
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 1.5,
+        "cutPart": [
+          "spar_r_dm",
+          "spar_l_dm"
+        ]
+      }
+    ]
+  },
+  "tail_structure": {
+    "hpRel": 1.1,
+    "part": [
+      "stab_dm",
+      "stab1_dm",
+      "stab2_dm",
+      "tail_dm",
+      "fin_dm",
+      "fin1_dm",
+      "fin2_dm"
+    ],
+    "effect": [
+      {
+        "conditionDead": true,
+        "cutPart": "tail_dm"
+      },
+      {
+        "conditionDamageType": "explosion",
+        "conditionDamageRel": 1.1,
+        "cutPart": "tail_dm"
+      },
+      {
+        "conditionDamageType": "generic",
+        "conditionDamageRel": 1.1,
+        "cutPart": "tail_dm"
+      }
+    ]
+  }
+}

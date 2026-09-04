@@ -1,14 +1,14 @@
+from "%appGlobals/timeLoc.nut" import buidPartialTimeStr
+from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import resetTimeout, setTimeout, clearTimer, deferOnce
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
-let { resetTimeout, setTimeout, clearTimer, deferOnce } = require("dagor.workcycle")
-let { get_charserver_time_sec } = require("chard")
+
 let { getExpireText } = require("%scripts/time.nut")
-let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { isDeniedProfileJwtDueToAasLimits } = require("%scripts/queue/queueBattleData.nut")
 
 const SKIPPED_AAS_WARNING_MSG = "skipped_msg/aasWarningMessage"
@@ -54,7 +54,7 @@ function showMultiplayerLimitByAasMsg(onAcceptCb, onCancelCb) {
   let messageLocId = isDeniedProfileJwtDueToAasLimits.get() ? "antiAddictSystem/limitExceededMsg"
     : "antiAddictSystem/warningMsgOnlyPlayTime"
 
-  loadHandler(gui_handlers.SkipableMsgBox, {
+  loadHandler(SkipableMsgBox, {
     parentHandler = {}
     message = loc(messageLocId,
       { playTime = getExpireText(curMin), limitTime = buidPartialTimeStr(limitSec) })
@@ -89,7 +89,7 @@ function checkShowMultiplayerAasWarningMsg(onAcceptCb, onCancelCb = null) {
     return
   }
 
-  loadHandler(gui_handlers.SkipableMsgBox, {
+  loadHandler(SkipableMsgBox, {
     parentHandler = {}
     message = loc("antiAddictSystem/warningMsgOnlyPlayTime", { playTime = getExpireText(curMin) })
     cancelBtnText = loc("msgbox/btn_yes")

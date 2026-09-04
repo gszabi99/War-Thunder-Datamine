@@ -1,3 +1,6 @@
+from "%sqstd/platform.nut" import is_gdk
+from "chat" import get_option_voicechat
+from "worldwar" import wwGetOperationId
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import WW_GLOBAL_STATUS_TYPE
@@ -5,19 +8,17 @@ from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
-let { is_gdk } = require("%sqstd/platform.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { squadInviteListWnd } = require("%scripts/squads/squadInviteListWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { getSquadLeaderOperation } = require("%scripts/squads/leaderWwOperationStates.nut")
-let { get_option_voicechat } = require("chat")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { wwGetOperationId } = require("worldwar")
 let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 let { openSearchSquadPlayer } = require("%scripts/contacts/searchForSquadHandler.nut")
 let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
@@ -25,7 +26,7 @@ let { getContact } = require("%scripts/contacts/contacts.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
-gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("SquadWidgetCustomHandler", class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/squads/squadWidget.tpl"
@@ -105,7 +106,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         countryIcon = getCountryIcon(member.country)
 
       let status = g_squad_manager.getPlayerStatusInMySquad(member.uid)
-      memberObj["status"] = getTblValue(status, this.squadStateToString, "")
+      memberObj["status"] = (this.squadStateToString?[status] ?? "")
       memberObj.findObject($"member_country_{indexStr}")["background-image"] = countryIcon
 
       let memberVoipObj = memberObj.findObject($"member_voip_{indexStr}")
@@ -134,7 +135,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("txt_squad_title", g_squad_manager.canManageSquad()
       && g_squad_manager.getMembers().len() < SQUAD_MEMBERS_TO_HIDE_TITLE, this.scene)
 
-    showObjById("btn_squadInvites", gui_handlers.squadInviteListWnd.canOpen(), this.scene)
+    showObjById("btn_squadInvites", squadInviteListWnd.canOpen(), this.scene)
     this.updateVisibleNewApplications()
 
     let btnSquadLeave = showObjById("btn_squadLeave", g_squad_manager.canLeaveSquad(), this.scene)
@@ -180,7 +181,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onSquadInvitesClick(obj) {
     if (checkObj(obj))
-      gui_handlers.squadInviteListWnd.open(obj.findObject("invite_widget"))
+      squadInviteListWnd.open(obj.findObject("invite_widget"))
   }
 
   function onSquadLeave() {
@@ -204,7 +205,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateVisibleNewApplications() {
     let objGlow = this.scene.findObject("iconGlow")
     if (checkObj(objGlow))
-      objGlow.wink = (gui_handlers.squadInviteListWnd.canOpen() &&
+      objGlow.wink = (squadInviteListWnd.canOpen() &&
         g_squad_manager.getHasNewApplication()) ? "yes" : "no"
   }
 
@@ -234,7 +235,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventVoiceChatStatusUpdated(params) {
-    let uid = getTblValue("uid", params, "")
+    let uid = (params?.uid ?? "")
     if (g_squad_manager.getMemberData(uid) == null)
       return
 
@@ -264,4 +265,4 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.performDelayed(this, @() joinOperationById(squadLeaderOperationId,
       g_squad_manager.getWwOperationCountry()))
   }
-}
+})

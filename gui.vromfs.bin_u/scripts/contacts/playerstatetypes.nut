@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "%scripts/dagui_library.nut" import *
-
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+from "%globalScripts/playerStateConsts.nut" import *
 
 let g_player_state = {
   types = []
@@ -16,7 +16,7 @@ let g_player_state = {
     getIconColor = @() get_main_gui_scene().getConstantValue(this.constantColor) ?? ""
     getIcon = @(playerInfo) $"#ui/gameuiskin#{this.isSpectator(playerInfo) ? this.spectatorIcon : this.stateText}.svg"
 
-    isSpectator = @(playerInfo) getTblValue("spectator", playerInfo, false)
+    isSpectator = @(playerInfo) (playerInfo?.spectator ?? false)
     getText = function(playerInfo = {}) {
       let stateLoc = this.stateText.len() ? loc($"multiplayer/state/{this.stateText}") : ""
       let roleLoc = this.isSpectator(playerInfo) ? loc("multiplayer/state/player_referee") : ""
@@ -79,11 +79,11 @@ enumsAddTypes(g_player_state, {
 }, null, "name")
 
 g_player_state.getStateByPlayerInfo <- function getStateByPlayerInfo(playerInfo) {
-  if (getTblValue("isBot", playerInfo, false))
+  if ((playerInfo?.isBot ?? false))
     return g_player_state.BOT
 
   return enumsGetCachedType("state",
-                                      getTblValue("state", playerInfo, ""),
+                                      (playerInfo?.state ?? ""),
                                       g_player_state.cache.byState,
                                       g_player_state,
                                       g_player_state.UNKNOWN)

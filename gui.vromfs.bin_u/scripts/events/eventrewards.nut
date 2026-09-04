@@ -1,17 +1,16 @@
+import "DataBlock" as DataBlock
+from "%sqstd/datablock.nut" import getBlkValueByPath
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
-let DataBlock = require("DataBlock")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { requestRewardProgress } = require("%scripts/events/rewardProgressManager.nut")
 
@@ -181,7 +180,7 @@ let rewardsConfig = [
         if (trophy)
           return {
             trophy = trophy
-            count = getTblValue("trophyCount", blk, 1)
+            count = (blk?.trophyCount ?? 1)
           }
       }
       return null
@@ -208,7 +207,7 @@ let rewardsConfig = [
         if (item)
           return {
             item = item
-            count = getTblValue("itemsCount", blk, 1)
+            count = (blk?.itemsCount ?? 1)
           }
       }
       return null
@@ -413,7 +412,7 @@ function getNextReward(rewardBlk, event) {
     return null
 
   foreach (nextPretendetn in allRewards[conditionId]) {
-    if (!getTblValue(conditionId, nextPretendetn))
+    if (!nextPretendetn?[conditionId])
       continue
     if (nextPretendetn[conditionId] > rewardBlk[conditionId])
       return nextPretendetn

@@ -1,12 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import check_aircraft_tags
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { WEAPON_TAG,
-        isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { ShopCheckResearch } = require("%scripts/shop/shopCheckResearch.nut")
+let { WEAPON_TAG, isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 
@@ -16,7 +15,7 @@ let g_tutorials_manager = {
   function canAct() {
     if (!isInMenu.get())
       return false
-    if (isHandlerInScene(gui_handlers.ShopCheckResearch))
+    if (isHandlerInScene(ShopCheckResearch))
       return false
     return true
   }
@@ -39,7 +38,7 @@ let g_tutorials_manager = {
   }
 
   function onEventCrewTakeUnit(params) {
-    let unit = getTblValue("unit", params)
+    let unit = params?.unit
     this.actions.append((function() { return this.checkTutorialOnSetUnit(unit) }).bindenv(this))
     this.processActions()
   }

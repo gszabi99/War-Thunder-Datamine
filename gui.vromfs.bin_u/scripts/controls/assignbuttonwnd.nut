@@ -1,14 +1,15 @@
+from "controls" import setBindMode, ActivationCondition
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "controls" import ActivationCondition
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLocalizedControlName, hackTextAssignmentForR2buttonOnPS4, getLocalizedShortcutName
-} = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, hackTextAssignmentForR2buttonOnPS4, getLocalizedShortcutName } = require("%scripts/controls/controlsVisual.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { setBindMode } = require("controls")
-let { clearControlsInputBhvBindings } = require("%sqDagui/guiBhv/bhvControlsInput.nut")
+let { clearControlsInputBhvBindings } = require("%scripts/sqDagui/guiBhv/bhvControlsInput.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
 
@@ -39,10 +40,10 @@ let activationTypeChooseConfig = [
 ]
 
 function assignButtonWindow(owner, onButtonEnteredFunc, shortcutId) {
-  loadHandler(gui_handlers.assignModalButtonWindow, { owner, onButtonEnteredFunc, shortcutId })
+  loadHandler(get_gui_handler("assignModalButtonWindow"), { owner, onButtonEnteredFunc, shortcutId })
 }
 
-gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+let assignModalButtonWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsInput.blk"
 
@@ -212,6 +213,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 }
+register_gui_handler("assignModalButtonWindow", assignModalButtonWindow)
 
 return {
   assignButtonWindow

@@ -1,12 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%globalScripts/guiGeom/hintPlacement.nut" import findPlaceForHintByRect
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
 let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
-let { findPlaceForHintByRect } = require("%globalScripts/guiGeom/hintPlacement.nut")
 
 
 
@@ -45,7 +46,7 @@ function findPlaceForHint(itemObj, rects, hintSizes, safeAreaRect) {
   return findPlaceForHintByRect(itemRect, rects, hintSize, hintSizes.padding, safeAreaRect)
 }
 
-gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let HelpInfoHandlerModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
   config = null
@@ -54,7 +55,7 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
   handlerHelpCaller = null
 
   static function openHelp(handler) {
-    gui_handlers.HelpInfoHandlerModal.open(handler.getWndHelpConfig(), handler.scene, handler)
+    get_gui_handler("HelpInfoHandlerModal").open(handler.getWndHelpConfig(), handler.scene, handler)
   }
 
   static function open(wndInfoConfig, wndScene, handlerHelpCaller = null) {
@@ -66,18 +67,18 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
       ownerScene = wndScene
       handlerHelpCaller = handlerHelpCaller?.weakref()
     }
-    return handlersManager.loadHandler(gui_handlers.HelpInfoHandlerModal, params)
+    return handlersManager.loadHandler(get_gui_handler("HelpInfoHandlerModal"), params)
   }
 
   function initScreen() {
     if (!this.config)
       return this.goBack()
 
-    this.objContainer = getTblValue("objContainer", this.config, this.ownerScene)
+    this.objContainer = (this.config?.objContainer ?? this.ownerScene)
     if (!checkObj(this.objContainer))
       return this.goBack()
 
-    let links = getTblValue("links", this.config)
+    let links = this.config?.links
     if (!links)
       return this.goBack()
 
@@ -128,8 +129,10 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.goBack()
   }
 }
+register_gui_handler("HelpInfoHandlerModal", HelpInfoHandlerModal)
 
 return {
+  HelpInfoHandlerModal
   findPlaceForHint
   updateHintPosition
 }

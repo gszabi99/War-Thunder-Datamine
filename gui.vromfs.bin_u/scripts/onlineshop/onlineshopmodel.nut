@@ -1,34 +1,31 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/platform.nut" import is_gdk
+from "string" import format
+from "math" import ceil
+from "url" import get_url_for_purchase
+from "steam" import steam_is_running, steam_get_my_id, steam_get_app_id
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import is_online_available, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
-let { is_gdk } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let { ceil } = require("math")
-let { get_url_for_purchase } = require("url")
 let { isPlatformSony, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { getShopItem, canUseIngameShop } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { showGuestEmailRegistration, needShowGuestEmailRegistration
-} = require("%scripts/user/suggestionEmailRegistration.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData, getUnitsSharedEntitlements
-} = require("%scripts/onlineShop/onlineShopState.nut")
-let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
+let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData, getUnitsSharedEntitlements } = require("%scripts/onlineShop/onlineShopState.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { getUpdateEntitlementsTimeoutMsec,
-  updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { eventbus_subscribe } = require("eventbus")
+let { getUpdateEntitlementsTimeoutMsec, updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
@@ -173,7 +170,7 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
     return
 
   if (chapter == "premium") {
-    loadHandler(gui_handlers.BuyPremiumHandler, { owner = owner, afterCloseFunc = afterCloseFunc })
+    loadHandler(get_gui_handler("BuyPremiumHandler"), { owner = owner, afterCloseFunc = afterCloseFunc })
     return
   }
 
@@ -187,8 +184,8 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
   }
 
   let useIngameCurrencyView = chapter != null && isInArray(chapter, ["eagles", "warpoints"])
-  let hClass = useIngameCurrencyView ? gui_handlers.IngameCurrencyShopHandler
-    : gui_handlers.OnlineShopHandler
+  let hClass = useIngameCurrencyView ? get_gui_handler("IngameCurrencyShopHandler")
+    : get_gui_handler("OnlineShopHandler")
   let prevShopHandler = handlersManager.findHandlerClassInScene(hClass)
   if (prevShopHandler) {
     if (!afterCloseFunc) {

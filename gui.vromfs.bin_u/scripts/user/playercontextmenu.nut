@@ -1,41 +1,42 @@
-from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_get_role_rank, myself_can_devoice, ps4_is_chat_enabled, clan_get_my_role, myself_can_ban, copy_to_clipboard, clan_get_my_clan_id, clan_get_admin_editor_mode
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "gameplayBinding" import isInFlight
+from "%sqstd/platform.nut" import is_console, is_gdk
+from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_get_role_rank, myself_can_devoice, ps4_is_chat_enabled, clan_get_my_role, myself_can_ban, copy_to_clipboard
+  , clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isChatEnabled, attemptShowOverlayMessage, hasMenuChat,
-  isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
+let { isChatEnabled, attemptShowOverlayMessage, hasMenuChat, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isInFlight } = require("gameplayBinding")
-let { isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, getMemberByName, getExternalSessionId
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, getMemberByName, getExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isEnableFriendsJoin } = require("%scripts/events/eventInfo.nut")
 let { guiStartChangeRoleWnd } = require("%scripts/clans/clanChangeRoleModal.nut")
 let { guiStartClanActivityWnd } = require("%scripts/clans/clanActivityModal.nut")
 let { openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
-let { is_console, is_gdk } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
-let { isSquadRoomJoined, generateInviteMenu, getRoomById,
-  isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
+let { generateInviteMenu, isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
+let { isSquadRoomJoined } = require("%scripts/chat/squadChatRoom.nut")
+
 let { openChatRoom, openChatPrivate } = require("%scripts/chat/openChat.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
@@ -49,9 +50,7 @@ let { joinFriendsQueue } = require("%scripts/queue/queueManager.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
+let { getRoomById, getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 
 
 
@@ -246,7 +245,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     actions.append(
       {
         text = loc("squadAction/openChat")
-        show = !isMe && isSquadRoomJoined() && inMySquad && hasChatEnable
+        show = !isMe && isSquadRoomJoined(g_squad_manager.getSquadRoomName()) && inMySquad && hasChatEnable
         action = @() openChatRoom(g_chat_room_type.getMySquadRoomId())
       }
       {

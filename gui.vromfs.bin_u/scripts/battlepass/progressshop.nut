@@ -1,27 +1,28 @@
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "frp" import FRP_INITIAL
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { FRP_INITIAL } = require("frp")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
@@ -95,7 +96,7 @@ addListenersWithoutEnv({
 
 seenBattlePassShop.setListGetter(@() seenBattlePassShopRows.get())
 
-local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
+local BattlePassShopWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 
@@ -325,7 +326,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
   onDestroy = @() markRowsSeen()
 }
 
-gui_handlers.BattlePassShopWnd <- BattlePassShopWnd
+register_gui_handler("BattlePassShopWnd", BattlePassShopWnd)
 
 function openBattlePassShopWnd() {
   if (isUserstatMissingData.get()) {
@@ -337,11 +338,7 @@ function openBattlePassShopWnd() {
 }
 
 
-globalCallbacks.addTypes({
-  openBattlePassShopWnd = {
-    onCb = @(_obj, _params) openBattlePassShopWnd()
-  }
-})
+eventbus_subscribe("battlePass.openShopWnd", @(_) openBattlePassShopWnd())
 
 return {
   openBattlePassShopWnd

@@ -29,15 +29,18 @@
     "devSoldier:tag": {}
   },
   "dev_soldier_equip": {
-    "human_equipment__initialEquip:object": {
-      "attachable_wear_head_nigerian_04_item": "face",
-      "attachable_wear_fast_sf_helmet_item": "helmet",
-      "attachable_wear_hands_black_long_item": "hands",
-      "attachable_wear_tactical_gloves_item": "gloves",
-      "attachable_wear_mnla_jacket_sleeveless_item": "tunic",
-      "attachable_wear_mnla_pants_item": "pants",
-      "ballistic_glasses_transp_item": "face_goggles",
-      "attachable_wear_fama_boots_item": "boots"
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_hdossier_head_item",
+      "hair": "attachable_wear_hdossier_hair_item",
+      "helmet": "attachable_wear_fast_sf_helmet_item",
+      "backpack": "attachable_wear_hdossier_backpack_item",
+      "hands": "attachable_wear_hands_hdossier_long_item",
+      "gloves": "attachable_wear_hdossier_gloves_item",
+      "tunic": "attachable_wear_pa2_jacket_brown_item",
+      "pants": "attachable_wear_bme_f3_pants_item",
+      "chest_armor": "attachable_wear_hdossier_platecarrier_brown_item",
+      "face_goggles": "ballistic_glasses_transp_item",
+      "boots": "attachable_wear_hdossier_boots_item"
     },
     "human__useBaseEquip:tag": {}
   },
@@ -143,37 +146,37 @@
         "type": "head"
       },
       "Bip01 L Thigh:object": {
-        "dmgMult": 0.35,
+        "dmgMult": 0.42,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_leg"
       },
       "Bip01 R Thigh:object": {
-        "dmgMult": 0.35,
+        "dmgMult": 0.42,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_leg"
       },
       "Bip01 L Calf:object": {
-        "dmgMult": 0.35,
+        "dmgMult": 0.42,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_leg"
       },
       "Bip01 R Calf:object": {
-        "dmgMult": 0.35,
+        "dmgMult": 0.42,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_leg"
       },
       "Bip01 L Foot:object": {
-        "dmgMult": 0.2,
+        "dmgMult": 0.3,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "l_leg"
       },
       "Bip01 R Foot:object": {
-        "dmgMult": 0.2,
+        "dmgMult": 0.3,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "r_leg"
@@ -330,6 +333,7 @@
       0.0
     ],
     "hitpoints__lastHitAtTime": -1.0,
+    "hitpoints__deathAtTime": -1.0,
     "hitpoints__lastHitDir": [
       0.0,
       0.0,
@@ -527,10 +531,6 @@
       "radioMode__startTime",
       "radioMode__endTime",
       "human_weap__mortarMode",
-      "multiple_guns_slots__additionalGunsEids",
-      "multiple_guns_slots__gunsEids",
-      "multiple_guns_slots__wantedGunEid",
-      "multiple_guns_slots__hiddenGunInSlot",
       "human_weap__currentScope",
       "human_weap__grenadeThrowModeServer"
     ],
@@ -549,9 +549,6 @@
     "mortar_mode__pivotOffsetPhysVarName": "pivot_offset",
     "mortar_mode__pivotOffsetPhysVarId": -1,
     "mortar_mode__pivotOffsetInMortarMode": -0.3,
-    "multiple_guns_slots__hiddenGunInAnySlot": false,
-    "multiple_guns_slots__hiddenGunHideDelay": 0.6,
-    "multiple_guns_slots__hiddenGunDontHideUntil": 0.0,
     "human_weap__opticsAttached": false,
     "human_weap__opticsRecoilMult": 0.3,
     "human_weap_anim__boltActionVarId": -1,
@@ -773,11 +770,6 @@
       "radioMode__endTime",
       "human_weap__mortarMode",
       "human_weap__reserveAmmoPropIds",
-      "multiple_guns_slots__additionalGunsEids",
-      "multiple_guns_slots__gunsEids",
-      "multiple_guns_slots__wantedGunEid",
-      "multiple_guns_slots__hiddenGunInSlot",
-      "multiple_guns_slots__lastVisibleGunIndex",
       "human_weap__currentScope",
       "human_weap__gunEquipAIForce",
       "human_weap__grenadeThrowModeServer",
@@ -837,17 +829,6 @@
     "human_weap__grenadeThrowServerConfirmed": true,
     "human_weap__grenadeThrower:eid": {},
     "precomp_weapon_pos": {},
-    "multiple_guns_slots__wantedGunEid:list<eid>": {},
-    "multiple_guns_slots__hiddenGunInSlot:list<b>": {},
-    "multiple_guns_slots__lastVisibleGunIndex:list<i>": {},
-    "multiple_guns_slots__active:list<b>": {
-      "primary": false,
-      "secondary": false,
-      "tertiary": false,
-      "melee": false,
-      "grenade": true,
-      "special": true
-    },
     "human_weap__currentScope:eid": {},
     "human_weap__currentGunEid:eid": {},
     "human_weap__currentGunModEids:list<eid>": {},
@@ -877,8 +858,6 @@
     },
     "human_weap__defHolsterTime:list<r>": {},
     "human_weap__defEquipTime:list<r>": {},
-    "multiple_guns_slots__additionalGunsEids:list<eid>": {},
-    "multiple_guns_slots__gunsEids:list<eid>": {},
     "human_weap__traceIntersectedEid:eid": {},
     "human_weap__lastShotGunEid:eid": {},
     "human_weap__weapInfo:array": {
@@ -1293,6 +1272,7 @@
     "isAlive": true,
     "_replicated": [
       "isAlive",
+      "human_net_phys__segPhysState",
       "human_net_phys__isClimbing",
       "human_net_phys__climbToPos",
       "human_net_phys__attachedToLadder",
@@ -1337,6 +1317,15 @@
       0.0
     ],
     "human_net_phys__blk": "content/modern_conflict/gamedata/units/walkers/base_human_phys.blk",
+    "human_net_phys__segPhysStateVersion": -1,
+    "human_net_phys__segPhysStateOld": [
+      -1.0,
+      0.0
+    ],
+    "human_net_phys__segPhysState": [
+      -1.0,
+      0.0
+    ],
     "human_net_phys__isClimbing": false,
     "human_net_phys__climbToPos": [
       0.0,
@@ -1835,7 +1824,7 @@
     "human_anim__sprintVariationVarId": -1,
     "human_anim__crawlContinuousRotationVarId": -1,
     "human_anim__gunLengthCompensationVarId": -1,
-    "human_anim__fullBodyRootRotateVarId": -1,
+    "human_anim__climbStageVarId": -1,
     "human_anim__leanSpineRotateVarId": -1,
     "human_anim__isCrawlContinuousRotating": true,
     "human_anim__crawlContinuousRotationLastChangeTime": -1.0,
@@ -1890,39 +1879,40 @@
     "human_anim__comboStateFullBodyWalk": -1,
     "human_anim__comboStateFullBodyRun": -1,
     "human_anim__comboStateFullBodyCrouch": -1,
+    "human_anim__comboStateClimbTrajectory": -1,
     "human_anim__comboStateDead": -1,
     "human_anim__ladderQuickDescentProgressVar": "ladder_drop_slide_width",
     "human_anim__ladderQuickDescentProgressVarId": -1,
-    "human_anim__fullBodyRootRotateValue": 0.0,
+    "human_anim__climbTrajBlendParamVarId": -1,
     "human_anim__rotateLeftElbowVarId": -1,
     "human_anim__rotateRightElbowVarId": -1,
     "human_anim__leftElbowRotateStand": [
       0.0,
       0.0,
-      0.0
+      20.0
     ],
     "human_anim__rightElbowRotateStand": [
+      7.0,
       0.0,
-      0.0,
-      0.0
+      20.0
     ],
     "human_anim__leftElbowRotateCrouch": [
+      20.0,
       0.0,
-      0.0,
-      0.0
+      20.0
     ],
     "human_anim__rightElbowRotateCrouch": [
+      7.0,
       0.0,
-      0.0,
-      0.0
+      30.0
     ],
     "human_anim__leanSpineRotateAnglesStand": [
-      10.0,
+      15.0,
       0.0,
-      0.0
+      -15.0
     ],
     "human_anim__leanSpineRotateAnglesCrouch": [
-      10.0,
+      15.0,
       0.0,
       0.0
     ],
@@ -2025,7 +2015,7 @@
     "human_weap__throwMode": false,
     "itemContainer:list<eid>": {},
     "human_equipment__initialEquip:object": {
-      "attachable_wear_head_french_01_item": "face",
+      "attachable_wear_s_male_head_05_item": "face",
       "attachable_wear_short_hands_item": "hands",
       "attachable_wear_ger_pants_w_m14_boots_item": "pants",
       "attachable_wear_ger_m15_bluse_w_equip_item": "tunic",
@@ -2150,12 +2140,20 @@
     "customUsePrompt:t": {}
   },
   "human_equipment_slots": {
-    "_replicated": "human_equipment__slots",
-    "_tracked": "human_equipment__slots",
+    "_replicated": [
+      "human_equipment__wearTemplates",
+      "human_equipment__slots"
+    ],
+    "_tracked": [
+      "human_equipment__wearTemplates",
+      "human_equipment__slots"
+    ],
     "human_equipment__itemRemap:object": {},
     "human_equipment__initialEquip:object": {},
     "human_equipment__initialEquipComponents:object": {},
     "human_equipment__initialEquipEids:list<eid>": {},
+    "human_equipment__wearTemplates:object": {},
+    "human_equipment__clientSlots:object": {},
     "human_equipment__slots:object": {
       "head:object": {
         "template": "",
@@ -2707,6 +2705,30 @@
         0.0
       ]
     ],
+    "human_vehicle__pendingExitTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "human_vehicle__pendingExitUntilTime": -1.0,
+    "human_vehicle__pendingExitLifetime": 1.0,
     "human_vehicle__isInHatch": false,
     "disable_collision": false,
     "maxVehicleVelocityCanReEnter": -1.0,
@@ -2771,9 +2793,6 @@
     "_use": "base_equipped_soldier",
     "hitpoints__hp": -100.0,
     "isAlive": false
-  },
-  "multiple_guns_slot_gun_hidden": {
-    "multiple_guns_slot_gun_hidden:tag": {}
   },
   "hangar_weapon_placer": {
     "_use": [
@@ -2872,6 +2891,8 @@
       0.0
     ],
     "human__friendlyImpulseToDamageMul": 0.0,
+    "human_anim__previousHeight": 1.0,
+    "human_anim__lastUpdatedDedHeight": 1.0,
     "transform": [
       [
         1.0,
@@ -2905,6 +2926,7 @@
     "shooting_range_dummy__aliveAtTime": -1.0,
     "unit__className": "humans/shooting_range_dummy",
     "human_equipment__initialEquip:object": {},
+    "human_equipment__wearTemplates:object": {},
     "human_weap__weapTemplates:object": {
       "primary": "",
       "secondary": "",
@@ -2920,8 +2942,10 @@
     "_use": "shooting_range_dummy",
     "human_equipment__initialEquip:object": {
       "attachable_wear_ihps_helmet_coyote_item+rank3_helmet_medium_class_3a_protection": "helmet",
-      "ihps_helmet_cover_item": "helmet_cover_attachment",
       "attachable_wear_lbx_armatus2_w_pouches_item+rank3_body_armor_medium_class_3_protection": "chest_armor"
+    },
+    "human_equipment__wearTemplates:object": {
+      "helmet_cover_attachment": "ihps_helmet_cover_item"
     }
   },
   "shooting_range_dummy_heavy_armor": {

@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 let { isQueueActive, findQueue } = require("%scripts/queue/queueState.nut")
 let { getQueueEvent } = require("%scripts/queue/queueInfo.nut")
 
-gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
+let QiHandlerBase = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName   = "%gui/events/eventQueue.blk"
 
@@ -97,3 +98,6 @@ gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
   function createStats() {}
   function updateStats() {}
 }
+register_gui_handler("QiHandlerBase", QiHandlerBase)
+
+return { QiHandlerBase }

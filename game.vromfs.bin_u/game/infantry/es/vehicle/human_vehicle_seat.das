@@ -3,8 +3,6 @@ require %game.events
 require DagorMath
 require DngHuman
 require AnimV20
-require CollRes
-require GeomNodeTree
 require Unit
 require %appGame.infantry.es.vehicle.vehicle_events
 require %appGame.infantry.es.vehicle.vehicle_seats_common

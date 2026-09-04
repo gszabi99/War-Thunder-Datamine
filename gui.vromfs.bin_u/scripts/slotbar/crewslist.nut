@@ -1,14 +1,14 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
+from "gameplayBinding" import isInFlight
+from "chard" import getProfileCountry
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_natives.nut" import get_crew_info
 from "%scripts/dagui_library.nut" import *
 
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { isInFlight } = require("gameplayBinding")
-let { getProfileCountry } = require("chard")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 function getCrewInfo(isInBattle) {
   let crewInfo = get_crew_info()

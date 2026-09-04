@@ -1,10 +1,12 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import has_entitlement, get_shop_prices
 from "%scripts/dagui_library.nut" import *
-let DataBlock = require("DataBlock")
-let { get_game_settings_blk } = require("blkGetters")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+from "types" import String
+
 let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 
@@ -74,7 +76,7 @@ function getEntitlementsByFeature(name) {
   if (feature == null)
     return entitlements
   foreach (condition in (feature % "condition")) {
-    if (type(condition) == "string" && (condition in getShopPriceBlk()))
+    if (condition instanceof String && (condition in getShopPriceBlk()))
       entitlements.append(condition)
   }
   return entitlements

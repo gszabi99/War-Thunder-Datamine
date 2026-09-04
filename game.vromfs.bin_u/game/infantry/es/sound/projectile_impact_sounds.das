@@ -1,15 +1,9 @@
 require ecs
 require ecs.safe
 require math
-require math.base
-require %appGame.infantry.es.team_common
-require %appGame.infantry.es.hit_result_common
-require %appGame.infantry.es.hitpoints_common
 
 require %appGame.wt_events
 require %game.dm.dm_events
-require %game.unit.unit_proximity_damage_events
-require human_net_speech.modules.human_net_speech_request_common
 require sound_utils.modules.sound_player_common
 require soundEvent
 require soundSystem

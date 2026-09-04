@@ -1,9 +1,10 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { GenericOptions } = require("%scripts/genericOptions.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 
-gui_handlers.FramedOptionsWnd <- class (gui_handlers.GenericOptions) {
+let FramedOptionsWnd = class (GenericOptions) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/framedOptionsWnd.blk"
   sceneNavBlkName = null
@@ -55,3 +56,6 @@ gui_handlers.FramedOptionsWnd <- class (gui_handlers.GenericOptions) {
     animObj[$"{scaleId}-end"] = size[scaleAxis].tostring()
   }
 }
+register_gui_handler("FramedOptionsWnd", FramedOptionsWnd)
+
+return { FramedOptionsWnd }

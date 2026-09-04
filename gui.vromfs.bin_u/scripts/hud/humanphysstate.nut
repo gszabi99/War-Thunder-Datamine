@@ -1,4 +1,5 @@
-let { canHoldBreath, canScopeChange, canSightChange, canBipodFocus } = require("%appGlobals/hud/humanPhysState.nut")
+from "%appGlobals/hud/humanPhysState.nut" import canHoldBreath, canScopeChange, canSightChange, canBipodFocus
+
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 canHoldBreath.subscribe(function(v) {

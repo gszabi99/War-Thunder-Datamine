@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "blkGetters" import get_unlocks_blk, get_personal_unlocks_blk
+from "chard" import get_updated_unlocks_ids
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { get_unlocks_blk, get_personal_unlocks_blk } = require("blkGetters")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { get_updated_unlocks_ids } = require("chard")
 
 let unlocksCacheById = persist("unlocksCacheById", @() {})
 let personalUnlocksCacheById = persist("personalUnlocksCacheById", @() {})
@@ -204,8 +204,10 @@ regionalUnlocks.subscribe(function(_) {
 addListenersWithoutEnv({
   SignOut = @(_) clearAllCache()
   ProfileReceived = @(_) clearAllCache()
+  
   RefreshProfileOnLogin = @(_) clearAllCacheSilent() 
   ProfileUpdated = @(_) invalidateCache()
+  BlksDataStorageLoaded = @(_) clearAllCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
 return {

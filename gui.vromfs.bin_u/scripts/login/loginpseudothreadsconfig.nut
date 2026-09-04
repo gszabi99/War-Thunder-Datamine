@@ -1,16 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "steam" import steam_is_running
+from "steam_wt" import steam_process_dlc
+from "sqEulaUtils" import getAgreedEulaVersion, setAgreedEulaVersion
+from "gpuBenchmark" import isGpuBenchmarkRunning
 from "%scripts/dagui_natives.nut" import run_reactive_gui, get_player_user_id_str, set_show_attachables
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
 let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { steam_is_running } = require("steam")
-let { steam_process_dlc } = require("steam_wt")
-let { getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
 let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
-let { isPlatformSony, isPlatformXbox
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { hasLoginState } = require("%scripts/login/loginStates.nut")
 let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
@@ -20,28 +21,25 @@ let checkUnlocksByAbTest = require("%scripts/unlocks/checkUnlocksByAbTest.nut")
 let { getProfileInfo, updatePlayerRankByCountries } = require("%scripts/user/userInfoStats.nut")
 let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let g_font = require("%scripts/options/fonts.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { FontChoiceWnd } = require("%scripts/options/fontChoiceWnd.nut")
+let { FirstGpuBenchmarkWnd } = require("%scripts/options/firstGpuBenchmarkWnd.nut")
+let { UnitTypeChoiceHandler } = require("%scripts/firstChoice/unitTypeChoiceHandler.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs
-} = require("%scripts/userLog/userlogUtils.nut")
+let { shownUserlogNotifications, collectOldNotifications, collectUserlogItemdefs } = require("%scripts/userLog/userlogUtils.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
-let { reqFirstUnitTypeChoice, clearUnlockedCountries, checkUnlockedCountries,
-  checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
+let { reqFirstUnitTypeChoice, clearUnlockedCountries, checkUnlockedCountries, checkUnlockedCountriesByAirs } = require("%scripts/firstChoice/firstChoice.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, getEulaVersion, openEulaWnd, localAgreedEulaVersion } = require("%scripts/eulaWnd.nut")
-let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings,
-NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings, saveLocalAccountSettings, NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { needShowHdrSettingsOnStart, openHdrSettings } = require("%scripts/options/fxOptions.nut")
 let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { initSlotbarPresets } = require("%scripts/slotbar/slotbarPresets.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
-let { isGpuBenchmarkRunning } = require("gpuBenchmark")
 let { needShowGpuBenchmark } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null })
@@ -162,7 +160,7 @@ function initLoginPseudoThreadsConfig(cb) {
     }
     function() {
       if (isFirstLoginOnSystem && needShowGpuBenchmark())
-        loadHandler(gui_handlers.FirstGpuBenchmarkWnd)
+        loadHandler(FirstGpuBenchmarkWnd)
     }
     function() {
       if (isGpuBenchmarkRunning())
@@ -174,8 +172,8 @@ function initLoginPseudoThreadsConfig(cb) {
         disableMarkSeenAllResourcesForNewUser()
         saveLocalAccountSettings(NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED, false)
         forceUpdateGameModes()
-        loadHandler(gui_handlers.UnitTypeChoiceHandler)
-        gui_handlers.FontChoiceWnd.markSeen()
+        loadHandler(UnitTypeChoiceHandler)
+        FontChoiceWnd.markSeen()
         saveVersion()
 
         if(havePlayerTag("steamlogin"))

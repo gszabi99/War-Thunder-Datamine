@@ -1,27 +1,25 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "dagor.fs" import mkdir
+from "dagor.workcycle" import defer
+from "dagor.time" import get_local_unixtime
+from "app" import get_game_version_str
+from "%sqstd/path.nut" import fileName
+from "%sqstd/json.nut" import saveJson
+from "%sqstd/datablock.nut" import blkFromPath
+from "language" import getLocalLanguage
+from "guiMission" import get_meta_missions_info
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/webRPC.nut" import webRpcRegister
 
-let { mkdir } = require("dagor.fs")
-let { defer } = require("dagor.workcycle")
-let { get_local_unixtime } = require("dagor.time")
-
-let { get_game_version_str } = require("app")
-
-let { fileName } = require("%sqstd/path.nut")
-let { saveJson } = require("%sqstd/json.nut")
-let { blkFromPath } = require("%sqstd/datablock.nut")
-
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { getLocalLanguage } = require("language")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 
-let { get_meta_missions_info } = require("guiMission")
 let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { getUnitBasicRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getUnitTooltipImage, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 
 local activeExporter = null
 
@@ -32,7 +30,7 @@ function fileNameWithoutExt(path) {
 }
 
 
-let class ExporterForTss {
+class ExporterForTss {
   currentStep = -1
   startTime = null
   isSuccessful = null
@@ -425,4 +423,4 @@ function handlerExportForTss(params) {
   return "started"
 }
 
-web_rpc.register_handler("exportForTss", handlerExportForTss)
+webRpcRegister("exportForTss", handlerExportForTss)

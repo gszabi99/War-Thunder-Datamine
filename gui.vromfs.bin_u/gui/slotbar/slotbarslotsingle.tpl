@@ -36,7 +36,7 @@ shopItem {
   isInTable:t='no'
   <</isInTable>>
   on_hover:t='onUnitHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
+  on_unhover:t='gcb.delayedTooltipHover'
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
   <</isTooltipByHold>>
@@ -109,6 +109,8 @@ shopItem {
   recentlyReleasedIcon {}
   <</isRecentlyReleased>>
 
+  slotSelectionRectangle {}
+  focus_border {}
   <<#hasTalismanIcon>>
   talismanIcon {}
   <</hasTalismanIcon>>
@@ -262,8 +264,6 @@ shopItem {
   title:t='$tooltipObj'
   <</isTooltipByHold>>
 
-  focus_border {}
-
   <<#needDnD>>
   on_drag_start:t='onUnitCellDragStart'
   on_drag_drop:t='onUnitCellDrop'
@@ -281,8 +281,6 @@ shopItem {
     valign:t='center'
   }
   <</hasLockedIcon>>
-
-  slotSelectionRectangle {}
 }
 <<#needDnD>>
 on_end_edit:t='onCrewDropFinish'

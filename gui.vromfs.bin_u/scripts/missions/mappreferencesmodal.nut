@@ -1,21 +1,22 @@
+import "mapPreferences" as mapPreferences
+from "math" import ceil, floor
+from "dagor.random" import rnd
+from "%sqstd/string.nut" import trim, utf8ToLower
+from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_natives.nut" import save_online_single_job
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { ceil, floor } = require("math")
-let { rnd } = require("dagor.random")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let mapPreferences    = require("mapPreferences")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { setMapPreview, getMissionBriefingConfig } = require("%scripts/missions/mapPreview.nut")
-let { trim, utf8ToLower } = require("%sqstd/string.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
@@ -26,7 +27,7 @@ dagui_propid_add_name_id("hasMaxBanned")
 dagui_propid_add_name_id("hasMaxDisliked")
 dagui_propid_add_name_id("hasMaxLiked")
 
-gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let mapPreferencesModal = class (BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
   sceneTplName        = "%gui/missions/mapPreferencesModal.tpl"
   curEvent            = null
@@ -453,12 +454,13 @@ gui_handlers.mapPreferencesModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillMapPreview()
   }
 }
+register_gui_handler("mapPreferencesModal", mapPreferencesModal)
 
 return {
   open = function(params) {
     if (!mapPreferencesParams.hasPreferences(params.curEvent))
       return
 
-    handlersManager.loadHandler(gui_handlers.mapPreferencesModal, params)
+    handlersManager.loadHandler(mapPreferencesModal, params)
   }
 }

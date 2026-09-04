@@ -1,7 +1,7 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import clan_get_decorators_block_name
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { get_warpoints_blk } = require("blkGetters")
 
 class ClanTagDecorator {
   id = null

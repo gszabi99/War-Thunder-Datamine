@@ -1,14 +1,9 @@
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/hud/humanSquad/humanEnums.nut" import HitResult, HEAL_RES_COMMON, HEAL_RES_REVIVE, ATTACK_RES, AiActionEnum
+from "%appGlobals/hudSquadMembers.nut" import watchedHeroSquadMembers, watchedHeroSquadMembersRaw, watchedHeroSquadEid, localPlayerHumanContext, selectedBotForOrderEid
+from "%rGui/hud/humanSquad/grenadeIcon.nut" import getGrenadeType
+from "%sqstd/underscore.nut" import isEqual
 from "%rGui/globals/ui_library.nut" import *
-
-let { isEqual } = require("%sqstd/underscore.nut")
-let { HitResult, HEAL_RES_COMMON, HEAL_RES_REVIVE, ATTACK_RES, AiActionEnum
-} = require("%rGui/hud/humanSquad/humanEnums.nut")
-let { watchedHeroSquadMembers, watchedHeroSquadMembersRaw, watchedHeroSquadEid,
-  localPlayerHumanContext, selectedBotForOrderEid
-} = require("%appGlobals/hudSquadMembers.nut")
-let { getGrenadeType } = require("%rGui/hud/humanSquad/grenadeIcon.nut")
-
 
 let MINES_ORDER = {
   tnt_exploder = 0

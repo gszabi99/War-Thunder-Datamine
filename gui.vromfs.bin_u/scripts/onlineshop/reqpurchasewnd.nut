@@ -1,14 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqstd/datablock.nut" import getBlkByPathArray
+from "%sqstd/string.nut" import cutPrefix
+from "blkGetters" import get_gui_regional_blk
 from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getBlkByPathArray } = require("%sqstd/datablock.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { get_gui_regional_blk } = require("blkGetters")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
@@ -23,7 +24,7 @@ let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.
 
 
 
-gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let ReqPurchaseWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -38,7 +39,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   static function open(config) {
     if (!("purchaseData" in config) || !config.purchaseData.canBePurchased)
       return
-    handlersManager.loadHandler(gui_handlers.ReqPurchaseWnd, config)
+    handlersManager.loadHandler(get_gui_handler("ReqPurchaseWnd"), config)
   }
 
   function initScreen() {
@@ -108,3 +109,6 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function onUseDecorator() {}
   function onUnitActivate() {}
 }
+register_gui_handler("ReqPurchaseWnd", ReqPurchaseWnd)
+
+return { ReqPurchaseWnd }

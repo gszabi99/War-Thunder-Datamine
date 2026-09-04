@@ -1,20 +1,21 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "math" import ceil
+from "string" import format
 from "%scripts/dagui_natives.nut" import wp_get_cost, shop_get_researchable_unit_name, shop_get_free_exp, set_char_cb, shop_convert_free_exp_for_unit, wp_get_exp_convert_exp_for_gold_rate
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { ceil } = require("math")
-let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { research, buyUnit } = require("%scripts/unit/unitActions.nut")
 let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -44,7 +45,7 @@ enum windowState {
 
 const tabsWidthStyles = ["normal", "short"]
 
-let ConvertExpHandler = class (gui_handlers.BaseGuiHandlerWT) {
+let ConvertExpHandler = class (BaseGuiHandlerWT) {
   wndType         = handlerType.MODAL
   sceneBlkName    = "%gui/convertExp/convertExp.blk"
 
@@ -694,7 +695,7 @@ let ConvertExpHandler = class (gui_handlers.BaseGuiHandlerWT) {
   
 }
 
-gui_handlers.ConvertExpHandler <- ConvertExpHandler
+register_gui_handler("ConvertExpHandler", ConvertExpHandler)
 
 function openConvertExpWnd(unit = null) {
   if (!hasFeature("SpendGold"))

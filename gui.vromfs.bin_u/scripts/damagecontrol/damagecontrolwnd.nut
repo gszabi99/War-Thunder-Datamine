@@ -1,21 +1,21 @@
+import "DataBlock" as DataBlock
+from "math" import abs
+from "console" import register_command
+from "chard" import getUnitExtraData, saveUnitExtraData
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { abs } = require("math")
-let { register_command } = require("console")
-let { getUnitExtraData, saveUnitExtraData } = require("chard")
-
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
-let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
+let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
 let { gatherShipDamageControlData, hasShipDamageControl } = require("%scripts/damageControl/damageControlModule.nut")
 
 register_command(
   function () {
-    handlersManager.loadHandler(gui_handlers.DamageControlWnd, { unitName = "us_destroyer_clemson_litchfield"})
+    handlersManager.loadHandler(get_gui_handler("DamageControlWnd"), { unitName = "us_destroyer_clemson_litchfield"})
   },
   "ui.debug_damage_control")
 
@@ -80,7 +80,7 @@ function findIntersectsObj(draggedPresetRect, presets) {
   return objs.len() > 0 ? objs[0] : null
 }
 
-gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let DamageControlWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName         = "%gui/damageControl/damageControl.tpl"
   unitName             = null
@@ -365,11 +365,12 @@ gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.dropTargetObj = intersectedObj.dropTargetObj
   }
 }
+register_gui_handler("DamageControlWnd", DamageControlWnd)
 
 return {
   showDamageControl = function(unit) {
     if (unit == null || !unit.isShipOrBoat() || !hasShipDamageControl(unit.name))
       return
-    handlersManager.loadHandler(gui_handlers.DamageControlWnd, { unitName = unit.name })
+    handlersManager.loadHandler(DamageControlWnd, { unitName = unit.name })
   }
 }

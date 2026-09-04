@@ -2,7 +2,7 @@
   "model": "f9f_8",
   "fmFile": "fm/f9f-8.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.3,
   "gearSinkRangeC": 0.197,
   "gyroSight": true,
@@ -3489,8 +3489,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

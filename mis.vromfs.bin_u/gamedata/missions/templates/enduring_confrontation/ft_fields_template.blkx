@@ -53,14 +53,14 @@
         "unitSetProperties": [
           {
             "targetChangeProf": 0.25,
-            "object": [
-              "ft_t1_medium_aaa_squad",
-              "ft_t2_medium_aaa_squad"
-            ],
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": [
+              "ft_t1_medium_aaa_squad",
+              "ft_t2_medium_aaa_squad"
+            ],
             "targetAir": true,
             "targetGnd": false,
             "accuracy": 0.75,
@@ -78,14 +78,14 @@
           },
           {
             "targetChangeProf": 0.25,
-            "object": [
-              "ft_t1_big_aaa_squad",
-              "ft_t2_big_aaa_squad"
-            ],
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
+            "object": [
+              "ft_t1_big_aaa_squad",
+              "ft_t2_big_aaa_squad"
+            ],
             "accuracy": 0.75,
             "airAccuracy": 0.75,
             "checkVisibilityTarget": true,
@@ -164,28 +164,7 @@
             "value": "zapuskaem generaciyu aerodromov"
           },
           {
-            "value": "zhdem okonchaniya generacii"
-          },
-          {
-            "value": "zapuskaem rotator proverki obnaruzheniya aerodromov"
-          },
-          {
-            "value": "zapuskaem rotator proverki unichtozheniya  aerodromov"
-          },
-          {
-            "value": "zapuskaem rotator proverki povrezhdeniya aerodromov"
-          },
-          {
-            "value": "airifled capturing rotation"
-          },
-          {
-            "value": "airifled disabling rotation"
-          },
-          {
-            "value": "airifled enabling rotation"
-          },
-          {
-            "value": "starting checkin does aaa was killed by teammate"
+            "value": "starting post-generation logic with 60 secs delay"
           }
         ],
         "varSetInt": [
@@ -219,10 +198,59 @@
         "triggerEnable": [
           {
             "target": [
-              "ft_generate_t1_airfield_start",
-              "ft_generate_t2_airfield_start"
+              "ft_generate_t1_first_airfield_start",
+              "ft_generate_t2_first_airfield_start"
             ]
           },
+          {
+            "target": "ft_post_generate_start"
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "ft_post_generate_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 60.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": [
+          {
+            "value": "post generation logic with 60 sec delay that allows all fields been generated"
+          },
+          {
+            "value": "zapuskaem rotator proverki obnaruzheniya aerodromov"
+          },
+          {
+            "value": "zapuskaem rotator proverki unichtozheniya  aerodromov"
+          },
+          {
+            "value": "zapuskaem rotator proverki povrezhdeniya aerodromov"
+          },
+          {
+            "value": "airifled capturing rotation"
+          },
+          {
+            "value": "airifled disabling rotation"
+          },
+          {
+            "value": "airifled enabling rotation"
+          },
+          {
+            "value": "starting checkin does aaa was killed by teammate"
+          }
+        ],
+        "triggerEnable": [
           {
             "target": [
               "ft_detect_t1_rotator",
@@ -262,10 +290,7 @@
           {
             "target": "ft_aaa_teamate_destroy_check_start"
           }
-        ],
-        "wait": {
-          "time": 60.0
-        }
+        ]
       },
       "else_actions": {}
     },
@@ -316,10 +341,10 @@
         }
       }
     },
-    "ft_generate_routine": {
+    "ft_first_airfield_generate_routine": {
       "isCategory": true,
       "is_enabled": true,
-      "ft_generate_t1_airfield_start": {
+      "ft_generate_t1_first_airfield_start": {
         "is_enabled": false,
         "comments": "",
         "props": {
@@ -328,21 +353,73 @@
           "enableAfterComplete": false
         },
         "events": {
-          "periodicEvent": {
-            "time": 0.0
-          }
+          "initMission": {}
         },
         "conditions": {},
         "actions": {
           "comment": [
             {
-              "value": "obnulyaem znacheniya indeksa dlya generacii"
+              "value": "setting initial zero values for generatin variables"
             },
             {
-              "value": "schitaem kolichestvo  aerodromov"
+              "value": "counting max airfields num"
             },
             {
-              "value": "zapuskaem rotaciyu generacii aerodromov"
+              "value": "increasing index for generating airfield"
+            },
+            {
+              "value": "set cur idx for airfield"
+            },
+            {
+              "value": "set random position for airfield"
+            },
+            {
+              "value": "store random number for future checks"
+            },
+            {
+              "value": "store airfield type "
+            },
+            {
+              "value": "increase num of active fields by 1"
+            },
+            {
+              "value": "creating variable name for storing airfield name"
+            },
+            {
+              "value": "creating airfield name"
+            },
+            {
+              "value": "store variable with name of arifield"
+            },
+            {
+              "value": "localization name"
+            },
+            {
+              "value": "creating variable name to store bombing area name"
+            },
+            {
+              "value": "creating bombing area"
+            },
+            {
+              "value": "storing variable with bombing area name"
+            },
+            {
+              "value": "placing airfiled to location"
+            },
+            {
+              "value": "setting backup respawn point"
+            },
+            {
+              "value": "allow bombers to respawn cause first field is alwyas FAR field"
+            },
+            {
+              "value": "setting airfields properties"
+            },
+            {
+              "value": "check for radar placement"
+            },
+            {
+              "value": "all other fields will be generated afterwards by rotation logic"
             }
           ],
           "varSetInt": [
@@ -357,6 +434,19 @@
             {
               "value": 0,
               "var": "ft_t1_max_airfields_count"
+            },
+            {
+              "value": 1,
+              "var": "ft_generate_t1_cur_idx"
+            },
+            {
+              "value": 0,
+              "var": "ft_generate_t1_prev_value",
+              "input_var": "ft_generate_t1_add_idx"
+            },
+            {
+              "value": 0,
+              "var": "ft_generate_t1_try_count"
             }
           ],
           "varModify": [
@@ -380,14 +470,574 @@
               "var": "ft_t1_max_airfields_count",
               "use_variable": true,
               "var_value": "ft_t1_max_near_airfields_count"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t1_idx"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_t1_cur_far_airfields_count"
             }
           ],
+          "varSetRandomInt": {
+            "var": "ft_generate_t1_add_idx",
+            "from": 1,
+            "to_not_including": 5,
+            "check_prev_value": "ft_generate_t1_prev_value"
+          },
+          "varSetString": [
+            {
+              "value": "ft_t1_cur_far_airfields_count",
+              "var": "ft_generate_t1_cur_idx_var_name"
+            },
+            {
+              "value": "ft_t1_airfield_",
+              "var": "ft_generate_t1_var_name"
+            },
+            {
+              "value": "ft_t1_airfield_",
+              "var": "ft_generate_t1_airfield_name"
+            },
+            {
+              "value": "missions/airfield_spawn",
+              "var": "ft_generate_t1_loc_name"
+            },
+            {
+              "value": "ft_t1_airfield_",
+              "var": "ft_generate_t1_area_var_name"
+            },
+            {
+              "value": "ft_t1_airfield_",
+              "var": "ft_generate_t1_area_name"
+            },
+            {
+              "value": "",
+              "var": "ft_generate_t1_backup_spawn_name",
+              "input_var": "ft_generate_t1_area_name"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "@ft_generate_t1_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_var_name"
+            },
+            {
+              "value": "_name",
+              "digits": 0,
+              "var": "ft_generate_t1_var_name"
+            },
+            {
+              "value": "@ft_generate_t1_cur_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_airfield_name"
+            },
+            {
+              "value": "_",
+              "digits": 0,
+              "var": "ft_generate_t1_airfield_name"
+            },
+            {
+              "value": "@ft_generate_t1_add_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_airfield_name"
+            },
+            {
+              "value": "@ft_generate_t1_idx",
+              "digits": 0,
+              "var": "ft_generate_t1_loc_name"
+            },
+            {
+              "value": "@ft_generate_t1_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_area_var_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_generate_t1_area_var_name"
+            },
+            {
+              "value": "@ft_generate_t1_cur_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_area_name"
+            },
+            {
+              "value": "_",
+              "digits": 0,
+              "var": "ft_generate_t1_area_name"
+            },
+            {
+              "value": "@ft_generate_t1_add_idx",
+              "digits": 2,
+              "var": "ft_generate_t1_area_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_generate_t1_area_name"
+            }
+          ],
+          "varGetStringValue": [
+            {
+              "from_var_name": "ft_generate_t1_airfield_name",
+              "var": "@ft_generate_t1_var_name"
+            },
+            {
+              "from_var_name": "ft_generate_t1_area_name",
+              "var": "@ft_generate_t1_area_var_name"
+            }
+          ],
+          "unitWakeUp": {
+            "target": "@ft_generate_t1_airfield_name"
+          },
+          "objectGroupSetAirfield": {
+            "army": 1,
+            "target": "@ft_generate_t1_airfield_name"
+          },
+          "airfieldSetVisibility": {
+            "target": "@ft_generate_t1_airfield_name",
+            "team": "A"
+          },
+          "missionMarkAsRespawnPoint": [
+            {
+              "loc_name": "@ft_generate_t1_backup_spawn_name",
+              "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@ft_generate_t1_backup_spawn_name",
+              "team": "A",
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "forceCreate": false,
+              "useExisting": true,
+              "ignoreTeamsOnReuse": false,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "tags": {
+                "none_can_spawn": true
+              }
+            },
+            {
+              "loc_name": "@ft_generate_t1_loc_name",
+              "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@ft_generate_t1_airfield_name",
+              "team": "A",
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "forceCreate": false,
+              "useExisting": false,
+              "ignoreTeamsOnReuse": false,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": true,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "separate_fuel_time": true,
+              "modular_airfield": true,
+              "respawnAirBackup": "@ft_generate_t1_backup_spawn_name",
+              "tags": {
+                "none_can_spawn": false,
+                "helicopter": false,
+                "tank": false,
+                "artillery": false,
+                "aaa": false,
+                "ship": false,
+                "boat": false
+              }
+            }
+          ],
+          "airfieldSetProperties": {
+            "object": "@ft_generate_t1_airfield_name",
+            "repairMul": 1.0,
+            "fuelMul": 1.0,
+            "reloadMul": 1.0,
+            "enemySurrenderOnLanding": true,
+            "airfield": {
+              "hp_var": "ft_airfield_module_spawn_hp"
+            },
+            "storage": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "parking": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "dwelling": {
+              "hp_var": "ft_airfield_module_hp"
+            }
+          },
+          "airfieldGetModuleHP": {
+            "object": "@ft_generate_t1_airfield_name",
+            "module": "airfield",
+            "var": "ft_damage_t1_airfield_cur_hp"
+          },
           "triggerEnable": {
-            "target": "ft_generate_t1_airfield_rotator"
+            "target": "ft_generate_t1_radar_check"
           }
         },
         "else_actions": {}
       },
+      "ft_generate_t2_first_airfield_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "setting initial zero values for generatin variables"
+            },
+            {
+              "value": "counting max airfields num"
+            },
+            {
+              "value": "increasing index for generating airfield"
+            },
+            {
+              "value": "set cur idx for airfield"
+            },
+            {
+              "value": "set random position for airfield"
+            },
+            {
+              "value": "store random number for future checks"
+            },
+            {
+              "value": "store airfield type "
+            },
+            {
+              "value": "increase num of active fields by 1"
+            },
+            {
+              "value": "creating variable name for storing airfield name"
+            },
+            {
+              "value": "creating airfield name"
+            },
+            {
+              "value": "store variable with name of arifield"
+            },
+            {
+              "value": "localization name"
+            },
+            {
+              "value": "creating variable name to store bombing area name"
+            },
+            {
+              "value": "creating bombing area"
+            },
+            {
+              "value": "storing variable with bombing area name"
+            },
+            {
+              "value": "placing airfiled to location"
+            },
+            {
+              "value": "setting backup respawn point"
+            },
+            {
+              "value": "allow bombers to respawn cause first field is alwyas FAR field"
+            },
+            {
+              "value": "setting airfields properties"
+            },
+            {
+              "value": "check for radar placement"
+            },
+            {
+              "value": "all other fields will be generated afterwards by rotation logic"
+            }
+          ],
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "ft_generate_t2_idx"
+            },
+            {
+              "value": 0,
+              "var": "ft_generate_t2_try_count"
+            },
+            {
+              "value": 0,
+              "var": "ft_t2_max_airfields_count"
+            },
+            {
+              "value": 1,
+              "var": "ft_generate_t2_cur_idx"
+            },
+            {
+              "value": 0,
+              "var": "ft_generate_t2_prev_value",
+              "input_var": "ft_generate_t2_add_idx"
+            },
+            {
+              "value": 0,
+              "var": "ft_generate_t2_try_count"
+            }
+          ],
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 0.0,
+              "var": "ft_t2_max_airfields_count",
+              "use_variable": true,
+              "var_value": "ft_t2_max_far_airfields_count"
+            },
+            {
+              "operator": "add",
+              "value": 0.0,
+              "var": "ft_t2_max_airfields_count",
+              "use_variable": true,
+              "var_value": "ft_t2_max_mid_airfields_count"
+            },
+            {
+              "operator": "add",
+              "value": 0.0,
+              "var": "ft_t2_max_airfields_count",
+              "use_variable": true,
+              "var_value": "ft_t2_max_near_airfields_count"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_generate_t2_idx"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "ft_t2_cur_far_airfields_count"
+            }
+          ],
+          "varSetRandomInt": {
+            "var": "ft_generate_t2_add_idx",
+            "from": 1,
+            "to_not_including": 5,
+            "check_prev_value": "ft_generate_t2_prev_value"
+          },
+          "varSetString": [
+            {
+              "value": "ft_t2_cur_far_airfields_count",
+              "var": "ft_generate_t2_cur_idx_var_name"
+            },
+            {
+              "value": "ft_t2_airfield_",
+              "var": "ft_generate_t2_var_name"
+            },
+            {
+              "value": "ft_t2_airfield_",
+              "var": "ft_generate_t2_airfield_name"
+            },
+            {
+              "value": "missions/airfield_spawn",
+              "var": "ft_generate_t2_loc_name"
+            },
+            {
+              "value": "ft_t2_airfield_",
+              "var": "ft_generate_t2_area_var_name"
+            },
+            {
+              "value": "ft_t2_airfield_",
+              "var": "ft_generate_t2_area_name"
+            },
+            {
+              "value": "",
+              "var": "ft_generate_t2_backup_spawn_name",
+              "input_var": "ft_generate_t2_area_name"
+            }
+          ],
+          "varAddString": [
+            {
+              "value": "@ft_generate_t2_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_var_name"
+            },
+            {
+              "value": "_name",
+              "digits": 0,
+              "var": "ft_generate_t2_var_name"
+            },
+            {
+              "value": "@ft_generate_t2_cur_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_airfield_name"
+            },
+            {
+              "value": "_",
+              "digits": 0,
+              "var": "ft_generate_t2_airfield_name"
+            },
+            {
+              "value": "@ft_generate_t2_add_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_airfield_name"
+            },
+            {
+              "value": "@ft_generate_t2_idx",
+              "digits": 0,
+              "var": "ft_generate_t2_loc_name"
+            },
+            {
+              "value": "@ft_generate_t2_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_area_var_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_generate_t2_area_var_name"
+            },
+            {
+              "value": "@ft_generate_t2_cur_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_area_name"
+            },
+            {
+              "value": "_",
+              "digits": 0,
+              "var": "ft_generate_t2_area_name"
+            },
+            {
+              "value": "@ft_generate_t2_add_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_area_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_generate_t2_area_name"
+            }
+          ],
+          "varGetStringValue": [
+            {
+              "from_var_name": "ft_generate_t2_airfield_name",
+              "var": "@ft_generate_t2_var_name"
+            },
+            {
+              "from_var_name": "ft_generate_t2_area_name",
+              "var": "@ft_generate_t2_area_var_name"
+            }
+          ],
+          "unitWakeUp": {
+            "target": "@ft_generate_t2_airfield_name"
+          },
+          "objectGroupSetAirfield": {
+            "army": 2,
+            "target": "@ft_generate_t2_airfield_name"
+          },
+          "airfieldSetVisibility": {
+            "target": "@ft_generate_t2_airfield_name",
+            "team": "B"
+          },
+          "missionMarkAsRespawnPoint": [
+            {
+              "loc_name": "@ft_generate_t2_backup_spawn_name",
+              "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@ft_generate_t2_backup_spawn_name",
+              "team": "B",
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": false,
+              "isUnit": false,
+              "forceCreate": false,
+              "useExisting": true,
+              "ignoreTeamsOnReuse": false,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": false,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "tags": {
+                "none_can_spawn": true
+              }
+            },
+            {
+              "loc_name": "@ft_generate_t2_loc_name",
+              "spawnEffect": false,
+              "radius": -1.0,
+              "target": "@ft_generate_t2_airfield_name",
+              "team": "B",
+              "isStrictSpawn": false,
+              "resetStrictSpawnIndex": false,
+              "isAirfield": true,
+              "isUnit": false,
+              "forceCreate": false,
+              "useExisting": false,
+              "ignoreTeamsOnReuse": false,
+              "isIndividual": false,
+              "onlyOnePlayerPerSpawnPoint": false,
+              "removeAreas": false,
+              "replaceAreas": true,
+              "canSpawnOnNeutral": false,
+              "showOnMap": true,
+              "separate_fuel_time": true,
+              "modular_airfield": true,
+              "respawnAirBackup": "@ft_generate_t2_backup_spawn_name",
+              "tags": {
+                "none_can_spawn": false,
+                "helicopter": false,
+                "tank": false,
+                "artillery": false,
+                "aaa": false,
+                "ship": false,
+                "boat": false
+              }
+            }
+          ],
+          "airfieldSetProperties": {
+            "object": "@ft_generate_t2_airfield_name",
+            "repairMul": 1.0,
+            "fuelMul": 1.0,
+            "reloadMul": 1.0,
+            "enemySurrenderOnLanding": true,
+            "airfield": {
+              "hp_var": "ft_airfield_module_spawn_hp"
+            },
+            "storage": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "parking": {
+              "hp_var": "ft_airfield_module_hp"
+            },
+            "dwelling": {
+              "hp_var": "ft_airfield_module_hp"
+            }
+          },
+          "airfieldGetModuleHP": {
+            "object": "@ft_generate_t2_airfield_name",
+            "module": "airfield",
+            "var": "ft_damage_t2_airfield_cur_hp"
+          },
+          "triggerEnable": {
+            "target": "ft_generate_t2_radar_check"
+          }
+        },
+        "else_actions": {}
+      }
+    },
+    "ft_generate_routine": {
+      "isCategory": true,
+      "is_enabled": true,
       "ft_generate_t1_airfield_rotator": {
         "is_enabled": false,
         "comments": "",
@@ -1688,75 +2338,6 @@
             "target": "ft_generate_t1_aaa_rotator_field"
           }
         }
-      },
-      "ft_generate_t2_airfield_start": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.0
-          }
-        },
-        "conditions": {},
-        "actions": {
-          "comment": [
-            {
-              "value": "obnulyaem znacheniya indeksa dlya generacii"
-            },
-            {
-              "value": "schitaem kolichestvo  aerodromov"
-            },
-            {
-              "value": "zapuskaem rotaciyu generacii aerodromov"
-            }
-          ],
-          "varSetInt": [
-            {
-              "value": 0,
-              "var": "ft_generate_t2_idx"
-            },
-            {
-              "value": 0,
-              "var": "ft_generate_t2_try_count"
-            },
-            {
-              "value": 0,
-              "var": "ft_t2_max_airfields_count"
-            }
-          ],
-          "varModify": [
-            {
-              "operator": "add",
-              "value": 1.0,
-              "var": "ft_t2_max_airfields_count",
-              "use_variable": true,
-              "var_value": "ft_t2_max_far_airfields_count"
-            },
-            {
-              "operator": "add",
-              "value": 1.0,
-              "var": "ft_t2_max_airfields_count",
-              "use_variable": true,
-              "var_value": "ft_t2_max_mid_airfields_count"
-            },
-            {
-              "operator": "add",
-              "value": 1.0,
-              "var": "ft_t2_max_airfields_count",
-              "use_variable": true,
-              "var_value": "ft_t2_max_near_airfields_count"
-            }
-          ],
-          "triggerEnable": {
-            "target": "ft_generate_t2_airfield_rotator"
-          }
-        },
-        "else_actions": {}
       },
       "ft_generate_t2_airfield_rotator": {
         "is_enabled": false,
@@ -3489,24 +4070,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar",
+              "unitToSpawnCount": 1,
               "object": "@ft_t1_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t1_airfield_name"
             },
             {
               "type": "air_flight_radar",
+              "unitToSpawnCount": 1,
               "object": "@ft_t1_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t1_airfield_name"
             },
             {
               "type": "air_flight_radar",
+              "unitToSpawnCount": 1,
               "object": "@ft_t1_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t1_airfield_name"
             }
           ],
           "triggerEnable": {
@@ -3563,24 +4144,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar_snow",
+              "unitToSpawnCount": 1,
               "object": "@ft_t1_snowed_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t1_airfield_name"
             },
             {
               "type": "air_flight_radar_snow",
+              "unitToSpawnCount": 1,
               "object": "@ft_t1_snowed_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t1_airfield_name"
             },
             {
               "type": "air_flight_radar_snow",
+              "unitToSpawnCount": 1,
               "object": "@ft_t1_snowed_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t1_airfield_name"
             }
           ],
           "triggerEnable": {
@@ -3681,24 +4262,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar",
+              "unitToSpawnCount": 1,
               "object": "@ft_t2_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t2_airfield_name"
             },
             {
               "type": "air_flight_radar",
+              "unitToSpawnCount": 1,
               "object": "@ft_t2_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t2_airfield_name"
             },
             {
               "type": "air_flight_radar",
+              "unitToSpawnCount": 1,
               "object": "@ft_t2_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t2_airfield_name"
             }
           ],
           "triggerEnable": {
@@ -3755,24 +4336,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar_snow",
+              "unitToSpawnCount": 1,
               "object": "@ft_t2_snowed_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t2_airfield_name"
             },
             {
               "type": "air_flight_radar_snow",
+              "unitToSpawnCount": 1,
               "object": "@ft_t2_snowed_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t2_airfield_name"
             },
             {
               "type": "air_flight_radar_snow",
+              "unitToSpawnCount": 1,
               "object": "@ft_t2_snowed_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name",
-              "unitToSpawnCount": 1
+              "target": "@ft_generate_t2_airfield_name"
             }
           ],
           "triggerEnable": {
@@ -9199,11 +9780,11 @@
           "unitSetProperties": {
             "stabInfluenceEnabled": true,
             "realisticAI": false,
-            "object": "@st_t1_generate_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "@st_t1_generate_name"
           },
           "unitMoveTo": {
             "object_marking": 0,
@@ -9236,6 +9817,7 @@
             "playerAttracted": false,
             "object": "@st_t1_generate_name",
             "target": "t1_enemy_planes_squad",
+            "resetObjectToFollow": false,
             "fireRandom": true,
             "targetTypeName": "airplane",
             "targetDistMax": 7000.0,
@@ -9249,8 +9831,7 @@
             "targetToAnchorDist": [
               6000.0,
               7000.0
-            ],
-            "resetObjectToFollow": false
+            ]
           },
           "varSetString": {
             "value": "sentinnel ",
@@ -9657,11 +10238,11 @@
           "unitSetProperties": {
             "stabInfluenceEnabled": true,
             "realisticAI": false,
-            "object": "@st_t2_generate_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0
+            "object_var_value": 0,
+            "object": "@st_t2_generate_name"
           },
           "unitMoveTo": {
             "object_marking": 0,
@@ -9694,6 +10275,7 @@
             "playerAttracted": false,
             "object": "@st_t2_generate_name",
             "target": "t2_enemy_planes_squad",
+            "resetObjectToFollow": false,
             "fireRandom": true,
             "targetTypeName": "airplane",
             "targetDistMax": 7000.0,
@@ -9707,8 +10289,7 @@
             "targetToAnchorDist": [
               6000.0,
               7000.0
-            ],
-            "resetObjectToFollow": false
+            ]
           },
           "varSetString": {
             "value": "sentinnel ",
@@ -10618,6 +11199,7 @@
               "playerAttracted": false,
               "object": "@st_rearm_t1_sentinell_name",
               "target": "t2_enemy_planes_squad",
+              "resetObjectToFollow": false,
               "fireRandom": true,
               "targetTypeName": "airplane",
               "targetDistMax": 7000.0,
@@ -10630,8 +11212,7 @@
               "targetToAnchorDist": [
                 6000.0,
                 7000.0
-              ],
-              "resetObjectToFollow": false
+              ]
             },
             "comment": [
               {
@@ -10714,6 +11295,7 @@
               "playerAttracted": false,
               "object": "@st_rearm_t2_sentinell_name",
               "target": "t1_enemy_planes_squad",
+              "resetObjectToFollow": false,
               "fireRandom": true,
               "targetTypeName": "airplane",
               "targetDistMax": 7000.0,
@@ -10726,8 +11308,7 @@
               "targetToAnchorDist": [
                 6000.0,
                 7000.0
-              ],
-              "resetObjectToFollow": false
+              ]
             },
             "comment": [
               {

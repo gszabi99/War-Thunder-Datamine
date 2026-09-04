@@ -1,23 +1,30 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "uk_hvar",
   "offsetForDemonstration": [
     0.0,
     -0.005,
     0.0
   ],
-  "helicopterGroup": 2,
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
   },
   "rocket": {
+    "dragCx": 0.018,
     "bulletName": "uk_hvar",
+    "iconType": "rockets_he_small",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 3.5,
     "caliber": 0.127,
     "length": 1.73,
     "WdK": [
@@ -31,40 +38,21 @@
     "massEnd": 51.1,
     "timeFire": 1.15,
     "force": 20250.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 403.0,
-    "endSpeed": 0.0,
     "maxDistance": 7000.0,
     "minDistance": 30.0,
     "explosiveType": "tnt",
     "explosiveMass": 3.45,
-    "bulletType": [
-      "rocket_tank",
-      "rocket_tank"
-    ],
-    "explodeTreshold": 0.01,
-    "explodeHitPower": 550.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [
-      1.0,
-      3.5
-    ],
-    "hitPowerMult": 400.0,
-    "fuseDelayDist": 1.0,
-    "distanceFuse": false,
-    "dragCx": 0.018,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "rockets_he_small",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
     "fresnel": [
       0.23,
@@ -73,8 +61,50 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "maxDeltaAngle": 3.5,
+    "shellAnimation": "video/shells_animations/aphe.ivf",
+    "hitPowerMult": [
+      1.0,
+      400.0
+    ],
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "fuseDelayDist": 3.5,
+    "explodeTreshold": 0.25,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -112,33 +142,6 @@
         15.0,
         10000.0
       ]
-    },
-    "hitpower": {
-      "HitPower0m": [
-        400.0,
-        500.0
-      ],
-      "HitPower10000m": [
-        400.0,
-        10000.0
-      ]
-    },
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        15.0,
-        0.7
-      ],
-      "mod3": [
-        30.0,
-        0.99
-      ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
     },
     "DamageParts": {
       "body": {
@@ -224,6 +227,33 @@
           }
         ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
+      ]
+    },
+    "hitpower": {
+      "HitPower0m": [
+        400.0,
+        500.0
+      ],
+      "HitPower10000m": [
+        400.0,
+        10000.0
+      ]
     },
     "explosionSmoke": {
       "radius": 5.0,

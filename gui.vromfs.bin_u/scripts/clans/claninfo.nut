@@ -1,10 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rank, clan_get_role_rights, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 
-let { get_time_msec } = require("dagor.time")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
 

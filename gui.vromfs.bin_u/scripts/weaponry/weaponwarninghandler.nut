@@ -1,11 +1,13 @@
+from "guiOptions" import set_gui_option
 from "%scripts/dagui_natives.nut" import get_auto_refill
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { set_gui_option } = require("guiOptions")
 let { USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
 
-gui_handlers.WeaponWarningHandler <- class (gui_handlers.SkipableMsgBox) {
+let WeaponWarningHandler = class (SkipableMsgBox) {
   skipOption = USEROPT_SKIP_WEAPON_WARNING
   showCheckBoxBullets = true
 
@@ -26,3 +28,6 @@ gui_handlers.WeaponWarningHandler <- class (gui_handlers.SkipableMsgBox) {
     saveProfile()
   }
 }
+register_gui_handler("WeaponWarningHandler", WeaponWarningHandler)
+
+return { WeaponWarningHandler }

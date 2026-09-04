@@ -1,10 +1,11 @@
 from "%scripts/dagui_natives.nut" import get_tournament_desk_blk
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { getRewardConditionId, getRewardConditionById, getConditionValue, getConditionField,
@@ -14,7 +15,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
-gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let EventRewardsWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/events/eventRewardsWnd.tpl"
@@ -43,7 +44,7 @@ gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (tabsList.len() == 0)
       return
 
-    handlersManager.loadHandler(gui_handlers.EventRewardsWnd, { tabsList })
+    handlersManager.loadHandler(get_gui_handler("EventRewardsWnd"), { tabsList })
   }
 
   function initScreen() {
@@ -148,3 +149,6 @@ gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
 }
+register_gui_handler("EventRewardsWnd", EventRewardsWnd)
+
+return { EventRewardsWnd }

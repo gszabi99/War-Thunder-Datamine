@@ -1,4 +1,5 @@
-let { blkFromPath, blkOptFromPath } = require("%sqstd/datablock.nut")
+from "%sqstd/datablock.nut" import blkFromPath, blkOptFromPath
+
 let blkCache = { unitName = "", blks = {} }
 
 function getBlkCached(path, unitName, fn) {

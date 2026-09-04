@@ -1,14 +1,16 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, clearTimer, resetTimeout
+from "%sqstd/datablock.nut" import isDataBlock, convertBlk
+from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
-let { setTimeout, clearTimer, resetTimeout } = require("dagor.workcycle")
+from "types" import Array
+
 let { charRequestBlk } = require("%scripts/tasker.nut")
-let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { UsersInfoRetryManager } = require("%scripts/user/usersInfoRetryManager.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 
 
@@ -219,7 +221,7 @@ function requestUsersInfo(userIds) {
 
   clearTimer(updateUsersInfo)
 
-  if (type(userIds) != "array")
+  if (!(userIds instanceof Array))
     userIds = [userIds]
 
   foreach(userId in userIds) {

@@ -2,7 +2,7 @@
   "model": "tornado_ids_de_assta1",
   "fmFile": "/fm/tornado_ids_de_assta1.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.11,
   "gearSinkRangeC": 0.212,
   "jetEnginePowerFullScale": true,
@@ -3864,8 +3864,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

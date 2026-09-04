@@ -1,3 +1,4 @@
+from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
 
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
@@ -6,11 +7,10 @@ let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { round_by_value } = require("%sqstd/math.nut")
 let { leaderboardsList } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getPlayerLeaderboard } = require("%scripts/user/userInfoStats.nut")
 
-let defaultShowcaseType = "air_arcade"
+const defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]
 let gamemodesNoAiStats = ["tank_arcade", "tank_realistic", "tank_simulation", "test_ship_arcade", "test_ship_realistic"]
 let selectUnitWndFilters = {}

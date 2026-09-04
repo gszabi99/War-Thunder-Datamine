@@ -1,8 +1,8 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { popupList } = require("%scripts/popups/popupList.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let popupTreeList = class(popupList) {
   branches             = null
@@ -44,7 +44,7 @@ let popupTreeList = class(popupList) {
   }
 }
 
-gui_handlers.popupTreeList <- popupTreeList
+register_gui_handler("popupTreeList", popupTreeList)
 
 return {
   openPopupTreeList = @(params = {}) handlersManager.loadHandler(popupTreeList, params)

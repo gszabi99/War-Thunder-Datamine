@@ -1,13 +1,9 @@
 require ecs
-require app
 require math.base
 require DagorShaders
-require %game.events
-require app
 require ecs
 require math
 require math.base
-require math.random
 require DagorMath
 
 

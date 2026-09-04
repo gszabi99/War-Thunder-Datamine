@@ -1,39 +1,39 @@
+import "colorCorrector" as colorCorrector
+import "fonts" as fonts
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isAuthorized
+from "%sqstd/platform.nut" import is_android
+from "controlsMask" import setAllowedControlsMask
+from "string" import format
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "dagor.workcycle" import deferOnce
+from "vr" import is_stereo_mode
+from "mission" import get_mp_local_team
+from "reactiveGuiCommand" import setSceneActive, reloadDargUiScript
+from "guiMission" import get_team_colors
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, get_dagui_pre_include_css_str, is_steam_big_picture, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
-let { is_android } = require("%sqstd/platform.nut")
-let { setAllowedControlsMask } = require("controlsMask")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let colorCorrector = require("colorCorrector")
-let fonts = require("fonts")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { is_stereo_mode } = require("vr")
-let { get_mp_local_team } = require("mission")
+
+let { get_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let screenInfo = require("%scripts/options/screenInfo.nut")
-let {getSafearea, getCurrentFont, setCurrentFont} = require("%scripts/options/safeAreaMenu.nut")
+let { getSafearea, getCurrentFont, setCurrentFont } = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let focusFrame = require("%scripts/viewUtils/focusFrameWT.nut")
-let { setSceneActive, reloadDargUiScript } = require("reactiveGuiCommand")
 let { isPlatformSony, isPlatformXbox, targetPlatform } = require("%scripts/clientState/platform.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { get_team_colors } = require("guiMission")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { showConsoleButtons, getIsConsoleModeEnabled,
-  switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
+let { check_obj } = require("%scripts/sqDagui/daguiUtil.nut")
+let { showConsoleButtons, getIsConsoleModeEnabled, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { is_active_msg_box_in_scene } = require("%scripts/sqDagui/framework/msgBox.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
-let { isInFlight } = require("gameplayBinding")
 let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
 let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
-let { isLoggedIn, isAuthorized } = require("%appGlobals/login/loginState.nut")
 let g_font = require("%scripts/options/fonts.nut")
 let { getCurrentWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
 let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
@@ -188,7 +188,7 @@ function getHandlerControlsAllowMask(handler) {
     res = handler.getControlsAllowMask()
   if (res != null)
     return res
-  return getTblValue(handler.wndType, controlsAllowMaskDefaults, CtrlsInGui.CTRL_ALLOW_FULL)
+  return (controlsAllowMaskDefaults?[handler.wndType] ?? CtrlsInGui.CTRL_ALLOW_FULL)
 }
 
 let reloadDarg = @() reloadDargUiScript(false)
@@ -243,8 +243,8 @@ handlersManager.__update({
 
   function onBaseHandlerLoadFailed(handler) {
     if (!isLoggedIn.get()
-        || handler.getclass() == gui_handlers.MainMenu
-        || handler.getclass() == gui_handlers.FlightMenu
+        || handler.getclass() == get_gui_handler("MainMenu")
+        || handler.getclass() == get_gui_handler("FlightMenu")
        )
       eventbus_send("request_logout")
     else if (isInFlight())
@@ -468,7 +468,7 @@ handlersManager.__update({
     if (focusFrame.isEnabled)
       handler.guiScene.createElementByObject(handler.scene, "%gui/focusFrameAnim.blk", "tdiv", null)
 
-    if (!isLoggedIn.get() || handler instanceof gui_handlers.BaseGuiHandlerWT)
+    if (!isLoggedIn.get() || is_gui_handler_instance(handler, "BaseGuiHandlerWT"))
       return
 
     this.initVoiceChatWidget(handler)
@@ -512,7 +512,7 @@ function get_cur_base_gui_handler() {
   let handler = handlersManager.getActiveBaseHandler()
   if (handler)
     return handler
-  return gui_handlers.BaseGuiHandlerWT(get_cur_gui_scene())
+  return get_gui_handler("BaseGuiHandlerWT")(get_cur_gui_scene())
 }
 
 function gui_start_empty_screen(...) {

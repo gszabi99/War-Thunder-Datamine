@@ -1,46 +1,46 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "guiOptions" import getCdBaseDifficulty, set_gui_option, get_gui_option
+from "hudActionBar" import getActionBarUnitName
+from "guiMission" import select_training_mission, get_meta_mission_info_by_name
+from "%sqstd/string.nut" import stripTags
+from "blkGetters" import get_game_settings_blk, get_unittags_blk
 from "%scripts/dagui_natives.nut" import enable_bullets_modifications
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_radar_scan_pattern_names, set_option_radar_scan_pattern_name, get_radar_range_values
 from "%scripts/options/optionsConsts.nut" import AIR_SPAWN_POINT
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { unitWeaponsHandler } = require("%scripts/weaponry/unitWeaponsHandler.nut")
+let { changeAircraftForBuilder } = require("%scripts/missionBuilder/changeAircraftForBuilder.nut")
+let { GenericOptions, GenericOptionsModal } = require("%scripts/genericOptions.nut")
 let { getLastWeapon, getTorpedoAutoUpdateDepthByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getCdBaseDifficulty, set_gui_option, get_gui_option } = require("guiOptions")
-let { getActionBarUnitName } = require("hudActionBar")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { isPreviewingLiveSkin, setCurSkinToHangar
-} = require("%scripts/customization/skins.nut")
-let { stripTags } = require("%sqstd/string.nut")
+let { isPreviewingLiveSkin, setCurSkinToHangar } = require("%scripts/customization/skins.nut")
 let { set_option, get_option, create_options_container } = require("%scripts/options/optionsExt.nut")
 let { sendStartTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
 let { getUnitName, getBattleTypeByUnit } = require("%scripts/unit/unitInfo.nut")
-let { get_game_settings_blk, get_unittags_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
-let { guiStartBuilder, guiStartFlight, guiStartCdOptions
-} = require("%scripts/missions/startMissionsList.nut")
+let { guiStartBuilder, guiStartFlight, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
-let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
-let DataBlock = require("DataBlock")
+let { tryAddToWishlist, updateWishlistButton } = require("%scripts/wishlist/addWishWnd.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { enable_current_modifications, updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
@@ -55,7 +55,7 @@ function mergeToBlk(sourceTable, blk) {
     blk[idx] = val
 }
 
-gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
+register_gui_handler("TestFlight", class (GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
   sceneNavBlkName = "%gui/navTestflight.blk"
@@ -78,13 +78,13 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!this.unit)
       return this.goBack()
 
-    gui_handlers.GenericOptions.initScreen.bindenv(this)()
+    GenericOptions.initScreen.bindenv(this)()
 
     let btnBuilder = showObjById("btn_builder", this.hasMissionBuilder, this.scene)
     if (this.hasMissionBuilder)
       btnBuilder.setValue(loc("mainmenu/btnBuilder"))
     showObjById("btn_select", true, this.scene)
-    this.updateWishlistButton()
+    updateWishlistButton(this.scene, this.unit)
     this.needSlotbar = this.needSlotbar && !isPreviewingLiveSkin() && isUnitInSlotbar(this.unit)
     if (this.needSlotbar) {
       let frameObj = this.scene.findObject("wnd_frame")
@@ -187,7 +187,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     let isUnitUsable = this.unit.isUsable()
     let isUntSpecial = isUnitSpecial(this.unit)
 
-    let handler = loadHandler(gui_handlers.unitWeaponsHandler, {
+    let handler = loadHandler(unitWeaponsHandler, {
       scene = weaponryObj
       unit = this.unit
       isForcedAvailable = isUntSpecial && !isUnitUsable
@@ -354,7 +354,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
           loc(getCurSlotbarUnit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
       else
-        loadHandler(gui_handlers.changeAircraftForBuilder, { shopAir = this.unit })
+        loadHandler(changeAircraftForBuilder, { shopAir = this.unit })
       return
     }
 
@@ -753,21 +753,10 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     this.doWhenActiveOnce("updateCountermeasureOptions")
   }
 
-  function onAddToWishlist() {
-    if(isWishlistFull())
-      return showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
-
-    addToWishlist(this.unit)
-  }
-
-  function updateWishlistButton() {
-    showObjById("btn_add_to_wishlist", hasFeature("Wishlist") && !hasInWishlist(this.unit.name) && !this.unit.isBought(), this.scene)
-    if(isWishlistFull())
-      this.scene.findObject("btn_add_to_wishlist")["status"] = "red"
-  }
+  onAddToWishlist = @() tryAddToWishlist(this.unit)
 
   function onEventAddedToWishlist(_p) {
-    this.updateWishlistButton()
+    updateWishlistButton(this.scene, this.unit)
   }
 
   function getHandlerRestoreData() {
@@ -788,4 +777,4 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     this.saveOptionsBeforeCloseWindow()
     handlersManager.requestHandlerRestore(this)
   }
-}
+})

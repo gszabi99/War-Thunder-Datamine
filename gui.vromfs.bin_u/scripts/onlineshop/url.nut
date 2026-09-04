@@ -1,24 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "base64" as base64
+import "samsung" as samsung
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "string" import split_by_chars
+from "url" import shell_launch
+from "%sqstd/string.nut" import clearBorderSymbols, lastIndexOf
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "steam" import steam_is_running, steam_is_overlay_enabled
+from "auth_wt" import get_authenticated_url_sso
+from "json" import object_to_json_string, parse_json
+from "dagor.workcycle" import defer
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import use_embedded_browser
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { split_by_chars } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { shell_launch } = require("url")
-let { clearBorderSymbols, lastIndexOf } = require("%sqstd/string.nut")
-let base64 = require("base64")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let samsung = require("samsung")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { g_url_type } = require("%scripts/onlineShop/urlType.nut")
-let { steam_is_running, steam_is_overlay_enabled } = require("steam")
-let { get_authenticated_url_sso } = require("auth_wt")
-let { object_to_json_string, parse_json } = require("json")
-let { defer } = require("dagor.workcycle")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { open_browser_modal } = require("%scripts/onlineShop/browserWndActions.nut")
 let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
 
@@ -197,7 +198,7 @@ function openUrl(baseUrl, forceExternal = false, isAlreadyAuthenticated = false,
   sendBqEvent("CLIENT_POPUP_1", forceExternal ? "player_opens_external_browser" : "player_opens_browser", bigQueryInfoObject)
 
   if(samsung.is_running()) {
-    handlersManager.loadHandler(gui_handlers.qrWindow, {
+    handlersManager.loadHandler(get_gui_handler("qrWindow"), {
       headerText = ""
       qrCodesData = [
         {url = baseUrl}

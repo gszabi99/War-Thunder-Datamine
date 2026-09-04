@@ -1,9 +1,8 @@
+from "controls" import hasXInputDevice
+from "vr" import is_stereo_mode
+from "math" import pow, atan2, abs, sqrt
 from "%scripts/dagui_natives.nut" import get_axis_value, get_axis_index, joystick_get_default
 from "%scripts/dagui_library.nut" import *
-
-let { hasXInputDevice } = require("controls")
-let { is_stereo_mode } = require("vr")
-let { pow, atan2, abs, sqrt } = require("math")
 
 let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
 const maxAbsoluteAxisValue = 1.0
@@ -109,7 +108,7 @@ function getAxisStuck(watchAxis = []) {
       if (axisName in res)
         continue
 
-      res[axisName] <- getTblValue(idx, axisData[idxPair], 0)
+      res[axisName] <- (axisData[idxPair]?[idx] ?? 0)
     }
   }
   return res

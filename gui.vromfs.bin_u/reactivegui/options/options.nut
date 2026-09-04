@@ -1,6 +1,6 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+from "%globalScripts/shipHitIconsConsts.nut" import SHIP_HIT_ICONS_VIS_ALL_FLAGS
 from "%rGui/globals/ui_library.nut" import *
-let extWatched = require("%rGui/globals/extWatched.nut")
-let { SHIP_HIT_ICONS_VIS_ALL_FLAGS } = require("%globalScripts/shipHitIconsConsts.nut")
 
 const DAMAGE_INDICATOR_MAX_VALUE = 2
 const DAMAGE_INDICATOR_SCALE_FACTOR = 0.333

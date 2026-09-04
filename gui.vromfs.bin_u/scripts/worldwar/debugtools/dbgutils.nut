@@ -1,11 +1,11 @@
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetOperationId, wwIsOperationLoaded
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
 
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
-let DataBlock  = require("DataBlock")
-let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
 let { charSimpleAction } = require("%scripts/tasker.nut")
-let { register_command } = require("console")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 function ww_destroy_cur_operation() {

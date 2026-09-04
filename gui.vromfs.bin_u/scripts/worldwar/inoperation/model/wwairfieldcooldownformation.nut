@@ -1,9 +1,9 @@
+from "worldwar" import wwGetOperationTimeMillisec
 from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { WwAirfieldFormation } = require("wwAirfieldFormation.nut")
-let { wwGetOperationTimeMillisec } = require("worldwar")
+let { WwAirfieldFormation } = require("%scripts/worldWar/inOperation/model/wwAirfieldFormation.nut")
 
 let WwAirfieldCooldownFormation = class (WwAirfieldFormation) {
   cooldownFinishedMillis = 0

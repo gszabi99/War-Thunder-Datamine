@@ -1,14 +1,14 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
+from "%appGlobals/ranks_common_shared.nut" import EDIFF_SHIFT
+from "guiOptions" import get_cd_preset
 from "%scripts/dagui_natives.nut" import get_name_by_gamemode, get_difficulty_name
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
-let { get_cd_preset } = require("guiOptions")
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
-let { USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES,
-  USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES,
-  USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES,
-  USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR } = require("%scripts/options/optionsExtNames.nut")
-let { EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
+let { USEROPT_CONTENT_ALLOWED_PRESET, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR } = require("%scripts/options/optionsExtNames.nut")
 
 let g_difficulty_cache = {
   byDiffCode = {}

@@ -1,12 +1,12 @@
+import "%rGui/chat/voiceChat.nut" as voiceChat
+import "%rGui/hudLogs.nut" as hudLogs
+from "%rGui/hudState.nut" import missionProgressHeight, needShowDmgIndicator, isSpectatorMode
+from "%rGui/style/screenState.nut" import safeAreaSizeHud
+from "%rGui/activeOrder.nut" import activeOrderComps
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth, updateDmgIndicatorElement
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/gameRendObjs.nut" import *
 
-let { missionProgressHeight, needShowDmgIndicator, isSpectatorMode
-} = require("%rGui/hudState.nut")
-let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let { activeOrderComps }= require("%rGui/activeOrder.nut")
-let voiceChat = require("%rGui/chat/voiceChat.nut")
-let hudLogs = require("%rGui/hudLogs.nut")
-let { dmgIndicatorWidth, updateDmgIndicatorElement } = require("%rGui/hud/dmgIndicatorState.nut")
 
 let xraydoll = {
   rendObj = ROBJ_XRAYDOLL
@@ -35,7 +35,7 @@ let logsComp = {
 }
 
 let panel = @() {
-  watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
+  watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode, needShowDmgIndicator]
   size = FLEX_V
   padding = [0, 0, missionProgressHeight.get(), 0]
   margin = safeAreaSizeHud.get().borders
@@ -44,10 +44,11 @@ let panel = @() {
   halign = ALIGN_LEFT
   gap = hdpx(10)
   children = isSpectatorMode.get() ? [hudLogs, xrayIndicator] : [
+    needShowDmgIndicator.get() ? null : xrayIndicator
     voiceChat
     activeOrderComps
     logsComp
-    xrayIndicator
+    needShowDmgIndicator.get() ? xrayIndicator : null
   ]
 }
 

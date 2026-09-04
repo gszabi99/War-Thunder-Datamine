@@ -1,12 +1,13 @@
+from "%sqstd/platform.nut" import isPC
 from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, set_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
 
-let { isPC } = require("%sqstd/platform.nut")
 let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
-let MAX_VOICE_MESSAGE_BUTTONS = 8
+const MAX_VOICE_MESSAGE_BUTTONS = 8
 
 function getIdVoiceMessageOption(index) {
   return {

@@ -1,6 +1,7 @@
+from "%sqstd/datablock.nut" import eachBlock, blkOptFromPath
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")

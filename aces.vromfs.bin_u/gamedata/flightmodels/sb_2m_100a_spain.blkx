@@ -1,7 +1,7 @@
 {
   "model": "sb_2m_100a_spain",
   "fmFile": "fm/sb_2m_100.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_inline_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": [
@@ -21,7 +21,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "400kph",
+  "fireParamsPreset": "400kph_nb",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "thisIsFakeDM": true,
@@ -783,15 +783,15 @@
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
-      55.0,
+      104.0,
       138.0
     ],
     "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
+      0.02,
+      0.8
     ],
-    "fireDamagePowerRel": 0.05,
-    "nonExtinguishFireTime": 5.0
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "balanceData": {
     "accSpd": 0.957849,

@@ -41,7 +41,6 @@
   "mass": 37000.0,
   "destroysRendInstances": true,
   "destroysTrees": true,
-  "targetChannelsMax": 4,
   "type": "typeSPAA",
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
@@ -1180,7 +1179,13 @@
           "fuel_tank_exterior_r_01_dm",
           "fuel_tank_exterior_r_02_dm",
           "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_exterior_l_02_dm",
+          "fuel_tank_exterior_r_03_dm",
+          "fuel_tank_exterior_r_04_dm",
+          "fuel_tank_exterior_l_03_dm",
+          "fuel_tank_exterior_l_04_dm",
+          "fuel_tank_exterior_r_05_dm",
+          "fuel_tank_exterior_l_05_dm"
         ],
         "onHit": [
           {
@@ -1902,19 +1907,35 @@
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
-        "loader_dm",
         "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
         "commander_dm",
         "machine_gunner_dm",
         "machine_gunner_01_dm",
         "machine_gunner_02_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
         "radio_station_dm",
+        "driver_controls_dm",
+        "fire_control_system_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
+        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm",
         "ammo_turret_09_dm"
       ],
       "effect": [
@@ -2139,7 +2160,8 @@
               0.0,
               3000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2163,7 +2185,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2187,7 +2210,8 @@
               0.0,
               3000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2211,7 +2235,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           }
         ]
       },
@@ -2414,7 +2439,8 @@
               0.0,
               3000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2438,7 +2464,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2462,7 +2489,8 @@
               0.0,
               3000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2486,7 +2514,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           }
         ]
       },
@@ -2688,7 +2717,8 @@
               0.0,
               3000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2712,7 +2742,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2736,7 +2767,8 @@
               0.0,
               3000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2760,7 +2792,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           }
         ]
       },
@@ -2986,7 +3019,8 @@
               0.0,
               3000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -3010,7 +3044,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -3034,7 +3069,8 @@
               0.0,
               3000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -3058,7 +3094,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           }
         ]
       }
@@ -3146,6 +3183,7 @@
             ],
             "targetPriorityDefault": 0,
             "targetPriorityMin": 1,
+            "targetChannelsMax": 4,
             "turret": {
               "head": "bone_gun_02",
               "gun": "bone_gun_02",
@@ -3268,7 +3306,8 @@
                   0.0,
                   25000.0
                 ],
-                "priority": 500
+                "priority": 500,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3292,7 +3331,8 @@
                   0.0,
                   25000.0
                 ],
-                "priority": 400
+                "priority": 400,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3316,7 +3356,8 @@
                   0.0,
                   12000.0
                 ],
-                "priority": 400
+                "priority": 400,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3340,7 +3381,8 @@
                   0.0,
                   10000.0
                 ],
-                "priority": 300
+                "priority": 300,
+                "reactionTime": 2.0
               },
               {
                 "isUnit": false,
@@ -3368,7 +3410,8 @@
                   5.0,
                   30.0
                 ],
-                "priority": 25
+                "priority": 25,
+                "reactionTime": 3.0
               },
               {
                 "isUnit": false,
@@ -3392,7 +3435,8 @@
                   0.0,
                   10000.0
                 ],
-                "priority": 5
+                "priority": 5,
+                "reactionTime": 2.0
               }
             ]
           }
@@ -3450,6 +3494,7 @@
             ],
             "targetPriorityDefault": 0,
             "targetPriorityMin": 1,
+            "targetChannelsMax": 4,
             "turret": {
               "head": "bone_gun_02",
               "gun": "bone_gun_02",
@@ -3572,7 +3617,8 @@
                   0.0,
                   25000.0
                 ],
-                "priority": 500
+                "priority": 500,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3596,7 +3642,8 @@
                   0.0,
                   25000.0
                 ],
-                "priority": 400
+                "priority": 400,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3620,7 +3667,8 @@
                   0.0,
                   12000.0
                 ],
-                "priority": 400
+                "priority": 400,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3644,7 +3692,8 @@
                   0.0,
                   10000.0
                 ],
-                "priority": 300
+                "priority": 300,
+                "reactionTime": 2.0
               },
               {
                 "isUnit": false,
@@ -3672,7 +3721,8 @@
                   5.0,
                   30.0
                 ],
-                "priority": 25
+                "priority": 25,
+                "reactionTime": 3.0
               },
               {
                 "isUnit": false,
@@ -3696,7 +3746,8 @@
                   0.0,
                   10000.0
                 ],
-                "priority": 5
+                "priority": 5,
+                "reactionTime": 2.0
               }
             ]
           }
@@ -3755,6 +3806,7 @@
             ],
             "targetPriorityDefault": 0,
             "targetPriorityMin": 1,
+            "targetChannelsMax": 4,
             "turret": {
               "head": "bone_gun_02",
               "gun": "bone_gun_02",
@@ -3877,7 +3929,8 @@
                   0.0,
                   25000.0
                 ],
-                "priority": 500
+                "priority": 500,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3901,7 +3954,8 @@
                   0.0,
                   25000.0
                 ],
-                "priority": 400
+                "priority": 400,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3925,7 +3979,8 @@
                   0.0,
                   12000.0
                 ],
-                "priority": 400
+                "priority": 400,
+                "reactionTime": 1.5
               },
               {
                 "isUnit": false,
@@ -3949,7 +4004,8 @@
                   0.0,
                   10000.0
                 ],
-                "priority": 300
+                "priority": 300,
+                "reactionTime": 2.0
               },
               {
                 "isUnit": false,
@@ -3977,7 +4033,8 @@
                   5.0,
                   30.0
                 ],
-                "priority": 25
+                "priority": 25,
+                "reactionTime": 3.0
               },
               {
                 "isUnit": false,
@@ -4001,7 +4058,8 @@
                   0.0,
                   10000.0
                 ],
-                "priority": 5
+                "priority": 5,
+                "reactionTime": 2.0
               }
             ]
           }
@@ -5248,7 +5306,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 500
+                  "priority": 500,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5272,7 +5331,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5296,7 +5356,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 300
+                  "priority": 300,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5320,7 +5381,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 }
               ]
             },
@@ -5523,7 +5585,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 500
+                  "priority": 500,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5547,7 +5610,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5571,7 +5635,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 300
+                  "priority": 300,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5595,7 +5660,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 }
               ]
             },
@@ -5797,7 +5863,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 500
+                  "priority": 500,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5821,7 +5888,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5845,7 +5913,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 300
+                  "priority": 300,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -5869,7 +5938,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 }
               ]
             },
@@ -6095,7 +6165,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 500
+                  "priority": 500,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -6119,7 +6190,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -6143,7 +6215,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 300
+                  "priority": 300,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -6167,7 +6240,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 }
               ]
             },

@@ -1,25 +1,25 @@
+import "sony.social" as psnSocial
+from "%sqStdLibs/helpers/u.nut" import isEmpty, isInteger
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "%sqstd/platform.nut" import is_gdk
+from "%sqstd/string.nut" import utf8ToLower
+from "%gdkLib/impl/user.nut" import show_profile_card
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import gchat_voice_mute_peer_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_PS4_FRIENDS
-let { is_gdk } = require("%sqstd/platform.nut")
+
 let { isPlayerFromXboxOne, isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed
-} = require("%scripts/chat/chatStates.nut")
-let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
+let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let psnSocial = require("sony.social")
-let { contactsByGroups, blockedMeUids, cacheContactByName, clanUserTable
-} = require("%scripts/contacts/contactsListState.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { show_profile_card } = require("%gdkLib/impl/user.nut")
+let { contactsByGroups, blockedMeUids, cacheContactByName, clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { can_we_text_user, CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { getEvent } = require("%scripts/events/eventsState.nut")
+let { getEventNameText } = require("%scripts/events/eventTexts.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
 
@@ -131,9 +131,9 @@ class Contact {
     if (!hasDesc)
       return {}
 
-    let event = events.getEvent(this.gameConfig?.eventId)
+    let event = getEvent(this.gameConfig?.eventId)
     return {
-      gameMode = event ? events.getEventNameText(event) : ""
+      gameMode = event ? getEventNameText(event) : ""
       country = loc(this.gameConfig?.country ?? "")
     }
   }

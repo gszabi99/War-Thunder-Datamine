@@ -25,7 +25,7 @@
   "sfxReloadBullet": "grd_cannon_reload",
   "mesh": "m136_at4_ammo_deployed",
   "mesh_deployed": "m136_at4_ammo_deployed",
-  "maxDistance": 2500.0,
+  "maxDistance": 500.0,
   "selfDestructionInAir": true,
   "recoilMultiplier": 0.05,
   "stabilityRicochetModifier": {
@@ -131,25 +131,27 @@
     }
   },
   "rocket": {
-    "statType": "",
-    "caliber": 0.084,
-    "length": 1.2,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "CxK": 0.85,
-    "distFromCmToStab": 0.05,
-    "mass": 2.6,
-    "massEnd": 2.4,
-    "speed": 290.0,
     "speedPitch": 0.6,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "statType": "",
+    "explosionSoundType": "explosion_infantry_at_rocket",
+    "maxDeltaAngle": 0.03,
+    "caliber": 0.084,
+    "length": 0.5,
+    "CxK": 1.5,
+    "distFromCmToStab": 0.075,
+    "mass": 1.8,
+    "massEnd": 1.8,
+    "force": 0.0,
+    "fireDelay": 0.0,
+    "timeFire": 0.0,
+    "startSpeed": 290.0,
+    "maxSpeed": 290.0,
     "maxDistance": 1500.0,
     "minDistance": 6.0,
-    "maxDeltaAngle": 0.03,
-    "explosiveType": "ocfol",
-    "explosiveMass": 0.73,
+    "explosiveType": "octol",
+    "explosiveMass": 0.46,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
     "groundRicochetPreset": "heat_fs",
@@ -167,11 +169,9 @@
       2.0
     ],
     "shellAnimation": "video/shells_animations/heat_fs.ivf",
-    "dragCx": 0.027,
     "explosionOffset": 0.05,
+    "hitPowerMult": 6.5,
     "hitPower": 20.0,
-    "fuseDelayDist": 0.05,
-    "explodeTreshold": 0.1,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -180,8 +180,9 @@
       200.0,
       1000.0
     ],
+    "fuseDelayDist": 0.05,
+    "explodeTreshold": 0.1,
     "distanceFuse": false,
-    "explosionSoundType": "explosion_infantry_at_rocket",
     "selfDestructionFx": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -198,11 +199,12 @@
       0.0,
       0.0
     ],
-    "effectOffset": [
-      -0.14,
-      0.0,
-      0.0
-    ],
+    "cumulativeDamage": {
+      "armorPower": 400.0,
+      "distance": 3.8,
+      "damage": 200.0,
+      "onHitChanceMultFire": 25.0
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -371,12 +373,6 @@
         1.0,
         7000.0
       ]
-    },
-    "cumulativeDamage": {
-      "armorPower": 400.0,
-      "distance": 6.8,
-      "damage": 200.0,
-      "onHitChanceMultFire": 25.0
     },
     "hitpower": {
       "HitPower0m": [

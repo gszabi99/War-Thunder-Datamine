@@ -1,5 +1,5 @@
+from "mission" import get_local_mplayer
 from "%sqstd/ecs.nut" import *
-let { get_local_mplayer } = require("mission")
 
 let find_local_player_compsQuery = SqQuery("find_local_player_compsQuery", {comps_ro=[["eid", TYPE_EID],["base_player_id", TYPE_INT]]})
 function find_local_player(){

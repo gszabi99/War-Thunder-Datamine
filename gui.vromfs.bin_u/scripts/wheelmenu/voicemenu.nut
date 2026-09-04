@@ -1,18 +1,20 @@
+from "string" import format
+from "%sqstd/functools.nut" import KWARG_NON_STRICT
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_option_favorite_voice_message, switch_voice_message_list_in_squad
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { wheelMenuHandler } = require("%scripts/wheelmenu/wheelmenu.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
-let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showConsoleButtons, getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
+register_gui_handler("voiceMenuHandler", class (wheelMenuHandler) {
   wndType = handlerType.CUSTOM
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -108,4 +110,4 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   }
 
   function onWheelmenuSwitchPage(_obj) {}
-}
+})

@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "types" import Function
 
 let fontsState = require("%rGui/style/fontsState.nut")
 let defStyle = require("%rGui/components/textButton.style.nut")
@@ -87,7 +88,7 @@ let textButton = @(fill_color, border_width) function(text, handler, params = {}
 
       children = textCtor({
         rendObj = ROBJ_TEXT
-        text = (type(text) == "function") ? text() : text
+        text = (text instanceof Function) ? text() : text
         scrollOnHover = true
         delay = 0.5
         speed = [hdpx(100), hdpx(700)]

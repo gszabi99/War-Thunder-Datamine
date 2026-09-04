@@ -1,10 +1,11 @@
+import "userstat" as userstat
+from "app" import APP_ID
+from "chard" import get_charserver_time_sec
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-let userstat = require("userstat")
-let { APP_ID } = require("app")
+
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
-let { get_charserver_time_sec } = require("chard")
-let { register_command } = require("console")
 
 enum CaptchaUserstatName {
   FAILS_BLOCK_COUNTER    = "val_captcha_fail_count"

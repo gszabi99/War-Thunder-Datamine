@@ -1,17 +1,17 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isEmpty, shuffle, search
+from "math" import round
+from "dagor.random" import set_rnd_seed
+from "dagor.time" import get_time_msec, ref_time_ticks
+from "string" import split_by_chars
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_library.nut" import *
 
-let { isEmpty, shuffle, search } = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
-let { round } = require("math")
-let { set_rnd_seed } = require("dagor.random")
-let { get_time_msec, ref_time_ticks } = require("dagor.time")
-let { split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { ExchangeRecipes, hasFakeRecipesInList, saveMarkedRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { registerItemGeneratorClass } = require("%scripts/items/itemGeneratorsManager.nut")
 let { getItemGenerator, findItemById } = require("%scripts/items/itemsManagerModule.nut")

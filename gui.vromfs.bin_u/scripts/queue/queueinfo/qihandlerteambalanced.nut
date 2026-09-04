@@ -2,15 +2,15 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { QiHandlerBase } = require("%scripts/queue/queueInfo/qiHandlerBase.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getQueueTeam, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
 let { getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
 
-gui_handlers.QiHandlerTeamBalanced <- class (gui_handlers.QiHandlerBase) {
+register_gui_handler("QiHandlerTeamBalanced", class (QiHandlerBase) {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
 
@@ -74,7 +74,7 @@ gui_handlers.QiHandlerTeamBalanced <- class (gui_handlers.QiHandlerBase) {
 
   function getQueueTableMarkup(queueStats, teamName, clusters) {
     local res = ""
-    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    const rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     if (queueStats.isMultiCluster) {
       let maxCluster = queueStats.getClusterWithMaxPlayers(teamName, false)
@@ -106,4 +106,4 @@ gui_handlers.QiHandlerTeamBalanced <- class (gui_handlers.QiHandlerBase) {
     ]
     return params
   }
-}
+})

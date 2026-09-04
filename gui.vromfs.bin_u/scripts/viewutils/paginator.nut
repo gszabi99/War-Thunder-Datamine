@@ -1,16 +1,17 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 
 function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = null, show_last_page = false, hasSimpleNavButtons = false) {
   if (!checkObj(nest_obj))
     return
 
   let guiScene = nest_obj.getScene()
-  let paginatorTpl = "%gui/paginator/paginator.tpl"
+  const paginatorTpl = "%gui/paginator/paginator.tpl"
   local buttonsMid = ""
-  let numButtonText = "button { to_page:t='%s'; text:t='%s'; %s on_click:t='goToPage'; underline{}}"
-  let numPageText = "activeText{ text:t='%s'; %s}"
+  const numButtonText = "button { to_page:t='%s'; text:t='%s'; %s on_click:t='goToPage'; underline{}}"
+  const numPageText = "activeText{ text:t='%s'; %s}"
   local paginatorObj = nest_obj.findObject("paginator_container")
 
   if (!checkObj(paginatorObj)) {

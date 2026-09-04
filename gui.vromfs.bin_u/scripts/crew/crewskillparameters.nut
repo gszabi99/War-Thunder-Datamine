@@ -1,13 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "unitCalculcation" import calc_crew_parameters
+from "blkGetters" import get_game_params_blk, get_wpcost_blk
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { calc_crew_parameters } = require("unitCalculcation")
-let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank, getSkillsNotAffectedByLeadership
-} = require("%scripts/crew/crewSkills.nut")
-let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
+let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank, getSkillsNotAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { g_skill_parameters_type } = require("skillParametersType.nut")
+let { g_skill_parameters_type } = require("%scripts/crew/skillParametersType.nut")
 let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
 
 let parametersByCrewId = {}
@@ -232,7 +232,7 @@ function filterSkillsList(skillsList, crewUnitType) {
     if (!skill.isVisible(crewUnitType))
       continue
 
-    let group = getTblValue(skill.skillName, skillGroups)
+    let group = skillGroups?[skill.skillName]
     if (group) {
       let resSkill = u.search(res,
         @(rs) skill.skillName == rs.skillName && isInArray(rs.memberName, group))

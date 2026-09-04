@@ -1,26 +1,33 @@
+import "%rGui/compass.nut" as compass
+import "%rGui/hints/hints.nut" as hints
+import "%sqstd/math.nut" as math
+import "string" as string
+import "weaponUtils" as weaponUtils
+from "%rGui/options/measureUnits.nut" import CLIMBSPEED, DISTANCE_SHORT
+from "%rGui/planeState/planeToolsState.nut" import AimLockValid
+from "%rGui/hud/targetTrackerState.nut" import IsTargetTracked, TargetAge, TargetX, TargetY, TargetInZone
+from "%rGui/hud/targetTracker.nut" import lockSight, targetSize
+from "%rGui/options/optionsMeasureUnits.nut" import isInitializedMeasureUnits, measureUnitsNames
+from "%rGui/rocketAamAimState.nut" import GuidanceLockState as aamGuidanceLockState, HasTOFInHud
+from "%rGui/ctrlsState.nut" import showConsoleButtons
+from "%rGui/hudState.nut" import isUnitAlive, unitType, isPlayingReplay
+from "%rGui/globalState.nut" import isInFlight
+from "guidanceConstants" import GuidanceLockResult
+from "dagor.workcycle" import clearTimer, setTimeout, resetTimeout
+from "eventbus" import eventbus_send, eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
 from "%rGui/airState.nut" import *
+from "%globalScripts/gameRendObjs.nut" import *
 
-let { CLIMBSPEED, DISTANCE_SHORT } = require("%rGui/options/measureUnits.nut")
-
-let math = require("%sqstd/math.nut")
-let string = require("string")
 let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let HudStyle = require("%rGui/style/airHudStyle.nut")
-let weaponUtils = require("weaponUtils")
 
-let { AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
+let { AimLockPos } = require("%rGui/planeState/planeToolsState.nut")
 
-let { IsTargetTracked, TargetAge, TargetX, TargetY, TargetInZone } = require("%rGui/hud/targetTrackerState.nut")
-let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 
-let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 
-let { GuidanceLockResult } = require("guidanceConstants")
 
-let aamGuidanceLockState = require("%rGui/rocketAamAimState.nut").GuidanceLockState
-let { HasTOFInHud } = require("%rGui/rocketAamAimState.nut")
 
 let agmAimState = require("%rGui/agmAimState.nut")
 let agmGuidanceLockState = agmAimState.GuidanceLockStateBlinked
@@ -28,13 +35,6 @@ let agmGuidancePointIsTarget = agmAimState.PointIsTarget
 let guidedBombsAimState = require("%rGui/guidedBombsAimState.nut")
 let guidedBombsGuidanceLockState = guidedBombsAimState.GuidanceLockStateBlinked
 let guidedBombsGuidancePointIsTarget = guidedBombsAimState.PointIsTarget
-let compass = require("%rGui/compass.nut")
-let hints = require("%rGui/hints/hints.nut")
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
-let { isUnitAlive, unitType, isPlayingReplay } = require("%rGui/hudState.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { clearTimer, setTimeout, resetTimeout } = require("dagor.workcycle")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
 
 const NUM_VISIBLE_ENGINES_MAX = 8
 const NUM_TRANSMISSIONS_MAX = 8
@@ -114,8 +114,8 @@ function verticalSpeedInd(height, style, color) {
 }
 
 function verticalSpeedScale(width, height, style, color) {
-  let part1_16 = 0.0625 * 100
-  let lineStart = 70
+  const part1_16 = 0.0625 * 100
+  const lineStart = 70
 
   return style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -168,7 +168,7 @@ function HelicopterVertSpeed(scaleWidth, height, posX, posY, color, elemStyle = 
         size = [scaleWidth, height]
         children = @() elemStyle.__merge({
           rendObj = ROBJ_VECTOR_CANVAS
-          pos = [LINE_WIDTH, 0]
+          pos = const [LINE_WIDTH, 0]
           size = [LINE_WIDTH, height]
           tmpHeight = 0
           watch = [DistanceToGround, relativeHeight]
@@ -743,6 +743,14 @@ let agmBlinkComputed = Computed(@() (IsAgmLaunchZoneVisible.get() &&
 let agmBlinkTrigger = {}
 agmBlinkComputed.subscribe(@(v) v ? anim_start(agmBlinkTrigger) : anim_request_stop(agmBlinkTrigger))
 
+let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.get())
+let atgmLaunchZoneTrigger = {}
+atgmLaunchZoneBlinking.subscribe(@(v) v ? anim_start(atgmLaunchZoneTrigger) : anim_request_stop(atgmLaunchZoneTrigger))
+
+let atgmLaunchDistanceBlinking = Computed(@() IsRangefinderEnabled.get() && !IsInsideLaunchZoneDist.get())
+let atgmLaunchDistanceTrigger = {}
+atgmLaunchDistanceBlinking.subscribe(@(v) v ? anim_start(atgmLaunchDistanceTrigger) : anim_request_stop(atgmLaunchDistanceTrigger))
+
 let textParamsMapMain = {
   [AirParamsMain.RPM] = {
     titleComputed = Computed(@() IsRpmVisible.get() ? generateRpmTitleFunction(TrtModeForRpm.get()) : "")
@@ -778,7 +786,9 @@ let textParamsMapMain = {
   },
   [AirParamsMain.RADAR_ALTITUDE] = {
     titleComputed = WatchedRo(loc("HUD/RADAR_ALTITUDE_SHORT"))
-    valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? "" : " ".concat(math.floor(RadarAltitude.get()), loc(measureUnitsNames.get().alt)))
+    valueComputed = Computed(@() !isInitializedMeasureUnits.get() ? ""
+      : !RadarAltitudeValid.get() ? "-"
+      : " ".concat(math.floor(RadarAltitude.get()), loc(measureUnitsNames.get().alt)))
     alertStateCaptionComputed = Computed(@() RadarAltitude.get() < RadarAltitudeAlert.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() RadarAltitude.get() < RadarAltitudeAlert.get() ? HudColorState.HIGH_ALERT : HudColorState.ACTIV)
   },
@@ -884,6 +894,12 @@ let textParamsMapMain = {
     fireSelectedShortcut = "ID_FLARES"
     alertStateCaptionComputed = Computed(@() IsChaffsEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsChaffsEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+  },
+  [AirParamsMain.TOWED_DECOYS] = {
+    titleComputed = WatchedRo(loc("HUD/TOWED_DECOYS_SHORT"))
+    valueComputed = Computed(@() generateBulletsTextFunction(TowedDecoysCount.get(), TowedDecoysSeconds.get()))
+    alertStateCaptionComputed = Computed(@() IsTowedDecoysEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
+    alertValueStateComputed = Computed(@() IsTowedDecoysEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   },
   [AirParamsMain.IRCM] = {
     titleComputed = WatchedRo(loc("HUD/IRCM_SHORT"))
@@ -1023,6 +1039,7 @@ let textParamsMapTertiary = {
 
 let textParamsMapMainKeys = textParamsMapMain.keys().sort()
 let textParamsMapSecondaryKeys = textParamsMapSecondary.keys().sort()
+let tertiaryKeysAfterSecondary = [instructorKeyId, staminaKeyId]
 
 function generateParamsTable(mainMask, secondaryMask, tertiaryMask, width, height, posWatched, gap, needCaption = true, forIls = false, is_aircraft = false, font_size = HudStyle.hudFontHgt) {
   function getChildren(colorWatch, style, isBomberView) {
@@ -1038,36 +1055,21 @@ function generateParamsTable(mainMask, secondaryMask, tertiaryMask, width, heigh
 
     }
 
-    local tertiaryMaskValue = tertiaryMask.get()
-    if (is_aircraft) {
-      if ((1 << fuelKeyId) & tertiaryMaskValue) {
-        children.append(createParam(textParamsMapTertiary[fuelKeyId], width, height, style, colorWatch, createParamOptions))
-        tertiaryMaskValue = tertiaryMaskValue - (1 << fuelKeyId)
-      }
-    }
+    let tertiaryMaskValue = tertiaryMask.get()
+    if ((1 << fuelKeyId) & tertiaryMaskValue)
+      children.append(createParam(textParamsMapTertiary[fuelKeyId], width, height, style, colorWatch, createParamOptions))
 
     if (is_aircraft)
       children.append(vertIndent)
 
-    local secondaryMaskValue = secondaryMask.get()
-    foreach (key in textParamsMapSecondaryKeys) {
+    let secondaryMaskValue = secondaryMask.get()
+    foreach (key in textParamsMapSecondaryKeys)
       if ((1 << key) & secondaryMaskValue)
         children.append(createParam(textParamsMapSecondary[key], width, height, style, colorWatch, createParamOptions))
-    }
 
-    if (is_aircraft) {
-      if ((1 << instructorKeyId) & tertiaryMaskValue) {
-        children.append(createParam(textParamsMapTertiary[instructorKeyId], width, height, style, colorWatch, createParamOptions))
-        tertiaryMaskValue = tertiaryMaskValue - (1 << instructorKeyId)
-      }
-    }
-
-    if (is_aircraft) {
-      if ((1 << staminaKeyId) & tertiaryMaskValue) {
-        children.append(createParam(textParamsMapTertiary[staminaKeyId], width, height, style, colorWatch, createParamOptions))
-        tertiaryMaskValue = tertiaryMaskValue - (1 << staminaKeyId)
-      }
-    }
+    foreach (key in tertiaryKeysAfterSecondary)
+      if ((1 << key) & tertiaryMaskValue)
+        children.append(createParam(textParamsMapTertiary[key], width, height, style, colorWatch, createParamOptions))
 
     return children
   }
@@ -1239,12 +1241,10 @@ function getAgmLaunchDistanceRangeCommands(_visible, enabled, distMin, distMax, 
   return commands
 }
 
-
-
 function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, isSeekerSight = false, style = {}) {
 
-  let offset = 1.3
-  let crossL = 2
+  const offset = 1.3
+  const crossL = 2
 
   let getTurretCommands = function(yaw, pitch) {
     let px = yaw * 100.0
@@ -1258,12 +1258,6 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
   }
   let isAtgmGuidanceRangeVisible = Computed(@() IsAgmLaunchZoneVisible.get())
   let isAtgmAngularRangeVisible = Computed(@() (IsAgmLaunchZoneVisible.get() && AgmLaunchZoneYawMin.get() > 0.0 && AgmLaunchZoneYawMax.get() < 1.0 && AgmLaunchZonePitchMin.get() > 0.0 && AgmLaunchZonePitchMax.get() < 1.0))
-  let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.get())
-  let atgmLaunchZoneTrigger = {}
-  atgmLaunchZoneBlinking.subscribe(@(v) v ? anim_start(atgmLaunchZoneTrigger) : anim_request_stop(atgmLaunchZoneTrigger))
-  let atgmLaunchDistanceblinking = Computed(@() IsRangefinderEnabled.get() && !IsInsideLaunchZoneDist.get())
-  let atgmLaunchDistanceTrigger = {}
-  atgmLaunchDistanceblinking.subscribe(@(v) v ? anim_start(atgmLaunchDistanceTrigger) : anim_request_stop(atgmLaunchDistanceTrigger))
 
   let outOfZoneTxt = @() HudStyle.styleText.__merge({
     rendObj = ROBJ_TEXT
@@ -1293,7 +1287,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
     color = colorWatch.get()
     halign = ALIGN_CENTER
     valign = ALIGN_TOP
-    watch = [colorWatch, atgmLaunchZoneBlinking, isAtgmGuidanceRangeVisible]
+    watch = [colorWatch, atgmLaunchZoneBlinking, isAtgmGuidanceRangeVisible, isAtgmAngularRangeVisible]
     commands = [
       [VECTOR_LINE, 0, 100 - vl, 0, 100, hl, 100],
       [VECTOR_LINE, 100 - hl, 100, 100, 100, 100, 100 - vl],
@@ -1303,7 +1297,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
     children = [
       style?.showAltitude ? @() HudStyle.styleText.__merge({
         watch = [distToGroundText, colorWatch]
-        size = flex()
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_BOTTOM
         pos = [0, -height + hdpx(-22)]
@@ -1313,7 +1307,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
       }) : null,
       style?.showVerticalSpeed ? @() HudStyle.styleText.__merge({
         watch = [VerticalSpeed, IsMfdEnabled, colorWatch]
-        size = flex()
+        size = FLEX
         halign = ALIGN_RIGHT
         valign = ALIGN_BOTTOM
         pos = [0, -height + hdpx(-22)]
@@ -1381,7 +1375,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
               ]
               commands = getAgmLaunchDistanceRangeCommands(IsAgmLaunchZoneVisible.get(), IsRangefinderEnabled.get(),
                 AgmLaunchZoneDistMin.get(), AgmLaunchZoneDistMax.get(), RangefinderDist.get())
-              animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchDistanceblinking.get(),
+              animations = [{ prop = AnimProp.opacity, from = 1, to = 0, duration = blinkDuration, play = atgmLaunchDistanceBlinking.get(),
                 loop = true, easing = InOutSine, trigger = atgmLaunchDistanceTrigger }]
             }) : null
     ]
@@ -1447,7 +1441,7 @@ let helicopterRocketAim = @(width, height, color, style = HudStyle.styleLineFore
   })
 }
 
-let turretAnglesAspect = 2.0
+const turretAnglesAspect = 2.0
 let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blinkDuration = 0.5, isSeekerSight = false, style = {}) {
   return {
     pos = [posX - turretAnglesAspect * width * 0.5, posY - height]
@@ -1459,16 +1453,12 @@ let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blin
 
 
 function agmLaunchZone(colorWatch, _w, _h) {
-  let isLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.get())
-  let isLaunchZoneTrigger = {}
-  isLaunchZoneBlinking.subscribe(@(v) v ? anim_start(isLaunchZoneTrigger) : anim_request_stop(isLaunchZoneTrigger))
-
   let zoneElem = function() {
     let zoneParent = HudStyle.styleLineForeground.__merge({
       rendObj = ROBJ_VECTOR_CANVAS
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
-      size = flex()
+      size = FLEX
       color = colorWatch.get()
       watch = [ IsAgmLaunchZoneVisible,
         AgmLaunchZoneYawMin, AgmLaunchZoneYawMax,
@@ -1477,8 +1467,8 @@ function agmLaunchZone(colorWatch, _w, _h) {
         FovYaw, FovPitch, IsInsideLaunchZoneYawPitch,
         colorWatch
       ]
-      animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.25, play = isLaunchZoneBlinking.get(),
-        loop = true, easing = InOutSine, trigger = isLaunchZoneTrigger }]
+      animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.25, play = atgmLaunchZoneBlinking.get(),
+        loop = true, easing = InOutSine, trigger = atgmLaunchZoneTrigger }]
     })
     local drawRectCommands = null
     if (IsAgmLaunchZoneVisible.get() && IsZoomedAgmLaunchZoneVisible.get()) {
@@ -1520,7 +1510,7 @@ function agmLaunchZone(colorWatch, _w, _h) {
           rendObj = ROBJ_VECTOR_CANVAS
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
-          size = flex()
+          size = FLEX
           color = colorWatch.get()
           commands = drawArrowCommands
           transform = {
@@ -1540,10 +1530,10 @@ function agmLaunchZone(colorWatch, _w, _h) {
     rendObj = ROBJ_VECTOR_CANVAS
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
-    size = flex()
+    size = FLEX
     color = colorWatch.get()
     children = [ zoneElem ]
-    watch = [IsInsideLaunchZoneYawPitch, colorWatch]
+    watch = colorWatch
   }
 }
 
@@ -1627,10 +1617,10 @@ function agmLaunchZoneTps(colorWatch) {
 }
 
 function sight(colorWatch, height) {
-  let longL = 22
-  let shortL = 10
-  let dash = 0.8
-  let centerOffset = 3
+  const longL = 22
+  const shortL = 10
+  const dash = 0.8
+  const centerOffset = 3
 
   return @() HudStyle.styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1773,7 +1763,7 @@ let HelicopterTATarget = @(w, h, isForIls) function() {
 
 let targetSizeComponent = function(colorWatch, width, height) {
   return @() {
-    pos = [0, 0]
+    pos = const [0, 0]
     size = SIZE_TO_CONTENT
     watch = IsMfdEnabled
     children = targetSize(colorWatch, width, height, IsMfdEnabled.get())

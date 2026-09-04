@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_request_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -17,8 +17,7 @@ let { requestMyClanData } = require("%scripts/clans/clanActions.nut")
 let { getArmyGroups, getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { isStillInOperation, isAutoBattle
-} = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+let { isStillInOperation, isAutoBattle } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 let wwTooltipTypes = {

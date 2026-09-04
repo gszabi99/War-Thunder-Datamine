@@ -1,5 +1,6 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
-let DataBlock = require("DataBlock")
+
 let statCache = DataBlock()
 
 function getStatCardInfo() {

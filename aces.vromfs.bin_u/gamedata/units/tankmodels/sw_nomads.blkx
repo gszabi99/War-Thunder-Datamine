@@ -44,7 +44,6 @@
   "mass": 29000.0,
   "destroysRendInstances": true,
   "destroysTrees": true,
-  "targetChannelsMax": 2,
   "type": "typeSPAA",
   "partDamageFx": "part_damage",
   "explosionFx": "tank_explosion",
@@ -1782,11 +1781,29 @@
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
-        "loader_dm",
         "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
         "commander_dm",
         "machine_gunner_dm",
-        "radio_station_dm"
+        "machine_gunner_01_dm",
+        "machine_gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
+        "loader_01_dm",
+        "loader_02_dm",
+        "radio_station_dm",
+        "driver_controls_dm",
+        "fire_control_system_dm"
       ],
       "effect": [
         {
@@ -1896,6 +1913,7 @@
         ],
         "targetPriorityDefault": 0,
         "targetPriorityMin": 1,
+        "targetChannelsMax": 2,
         "turret": {
           "head": "bone_gun",
           "gun": "bone_gun",
@@ -1995,7 +2013,8 @@
               0.0,
               25000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.5
           }
         ]
       },
@@ -3501,12 +3520,11 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "removeLoadedAmmo": false,
       "weaponTrigger": "gunner0",
       "fatalFire": true,
       "fatalExplosion": true,
-      "ammoLoadedInGun": true,
       "shells": {
+        "ammoLoadedInGun": true,
         "ammo_turret_01_dm": {
           "count": 1
         },
@@ -3545,7 +3563,6 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "rangefinderDmPart": "fire_control_system_dm",
         "distanceError": [
           1.0,
           1.0,
@@ -3587,6 +3604,7 @@
           0.5
         ],
         "rcostAddParam": 0.98,
+        "rangefinderDmPart": "fire_control_system_dm",
         "sensors": {
           "sensor": [
             {
@@ -3690,6 +3708,7 @@
               ],
               "targetPriorityDefault": 0,
               "targetPriorityMin": 1,
+              "targetChannelsMax": 2,
               "turret": {
                 "head": "bone_gun",
                 "gun": "bone_gun",
@@ -3789,7 +3808,8 @@
                     0.0,
                     25000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.5
                 }
               ]
             },

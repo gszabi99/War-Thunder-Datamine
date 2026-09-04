@@ -1,7 +1,7 @@
 {
   "model": "tornado_f3",
   "fmFile": "/fm/tornado_f3.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.1,
   "gearSinkRangeC": 0.212,
   "jetEnginePowerFullScale": true,
@@ -14,6 +14,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForGun": true,
   "laserDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsTornado": true,
   "rwrIndicator": "ARI-18241",
   "needTpsNightVision": true,
@@ -4613,8 +4614,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

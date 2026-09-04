@@ -1,7 +1,6 @@
+from "hudActionBarConst" import EII_TORPEDO, EII_MINE, EII_REPAIR_BREACHES, EII_EXTINGUISHER, EII_PERISCOPE
+
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { EII_TORPEDO, EII_MINE, EII_REPAIR_BREACHES, EII_EXTINGUISHER,
-  EII_PERISCOPE
-} = require("hudActionBarConst")
 
 return function generateSubmarineActionBars(actionBarsCount = 1) {
   let actionBars = []

@@ -1,7 +1,6 @@
 require ecs
 require HumanPhys
 require DngHuman
-require %game.events
 
 [es(on_appear)]
 def entity_stamina_boost_mult_applier(evt : Event;

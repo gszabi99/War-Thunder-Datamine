@@ -1,9 +1,10 @@
 from "%darg/ui_imports.nut" import *
 from "math" import min
+from "types" import String, Array
 
-let isString = @(v) type(v) == "string"
+let isString = @(v) v instanceof String
 
-function splitTextToParts(fullText, replaceTable) {
+function splitTextToParts(fullText, replaceTable): array {
   local parts = [fullText]
   foreach (key, comp in replaceTable) {
     let prevParts = parts
@@ -18,7 +19,7 @@ function splitTextToParts(fullText, replaceTable) {
       while (idx != null) {
         if (idx > startIdx)
           parts.append(text.slice(startIdx, idx))
-        if (type(comp) == "array")
+        if (comp instanceof Array)
           parts.extend(comp)
         else
           parts.append(comp)
@@ -50,7 +51,7 @@ function getSeparatorPrevIdx(str, startIdx) {
   return null
 }
 
-function extractLastLine(text, mkTextarea) {
+function extractLastLine(text, mkTextarea): table {
   let fullParH = calc_comp_size(mkTextarea(text))[1]
   local si = text.len()
   while (true) {
@@ -65,7 +66,7 @@ function extractLastLine(text, mkTextarea) {
   return { t1 = "", t2 = text }
 }
 
-function extractFirstWords(text, fontParams, freeWidth) {
+function extractFirstWords(text, fontParams, freeWidth): table {
   local res = { t1 = "", t2 = text }
   local si = -1
   while (true) {
@@ -85,12 +86,12 @@ function extractFirstWords(text, fontParams, freeWidth) {
   return res
 }
 
-let pushLine = @(arr, line) arr.append({
+let pushLine = @(arr: array, line) arr.append({
   flow = FLOW_HORIZONTAL
   children = line
 })
 
-function mkProps(textareaProps) {
+function mkProps(textareaProps): table {
   let { font = null, fontSize = null, size = null, maxWidth = 0 } = textareaProps
   let sz = size?[0] ?? size ?? 0
   return  {

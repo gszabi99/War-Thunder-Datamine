@@ -8,15 +8,11 @@ require math.base
 require BehNodes
 require DngWalkerai
 require DagorDataBlock
-require HumanPhys
-require Dacoll
-require pathfinder
 require DagorRandom
 require DagorMath
 require Grid
 require GridCollision
 require %appGame.infantry.es.team_common
-require DagorSystem
 
 
 [beh_node(name="checkHealTeammatesAround")]

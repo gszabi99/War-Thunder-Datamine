@@ -1,14 +1,14 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "string" import format
+from "%sqstd/string.nut" import stripTags
 from "%scripts/dagui_natives.nut" import get_modification_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 let { isModUpgradeable, hasActiveOverdrive } = require("%scripts/weaponry/modificationInfo.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
 elemModelType.addTypes({

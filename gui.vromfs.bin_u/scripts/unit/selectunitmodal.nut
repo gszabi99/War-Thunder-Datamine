@@ -1,9 +1,9 @@
+from "%sqstd/math.nut" import floor
 from "%scripts/dagui_library.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { floor } = require("%sqstd/math.nut")
 let { getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -13,7 +13,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getUnitRankText } = require("%scripts/shop/shopUnitCellFill.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 
@@ -255,7 +255,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
 }
 
-gui_handlers.selectUnitModal <- handlerClass
+register_gui_handler("selectUnitModal", handlerClass)
 
 return {
   openSelectUnitWnd = function(params = {}) {

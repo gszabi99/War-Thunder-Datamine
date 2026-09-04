@@ -1,7 +1,6 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_natives.nut" import fill_joysticks_desc
 from "%scripts/dagui_library.nut" import *
-
-let DataBlock  = require("DataBlock")
 
 function isDeviceConnected(devId = null) {
   if (!devId)

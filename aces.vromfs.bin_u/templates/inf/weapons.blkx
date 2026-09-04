@@ -104,6 +104,8 @@
       "attachable_mod_modificators",
       "scope_hitmark_position"
     ],
+    "weapon_mod__active": false,
+    "_tracked": "weapon_mod__active",
     "gun_attachable_mod_params__adderNames:list<t>": {
       "name": [
         "gun_anim_var__fpsGunOffsetUp",
@@ -2155,24 +2157,24 @@
     "gun_anim_var__fpsGunOffsetUp": 0.02,
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/rifle/sv_98"
+      "path": "/weapon/rifle/m1903_springfield"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "reload:object": {
-        "path": "/weapon/rifle/mosin/reload"
+        "path": "/weapon/rifle/m1903_springfield/reload"
       },
       "reload_prepare:object": {
-        "path": "/weapon/rifle/sv_98/reload_foley_start"
+        "path": "/weapon/rifle/m1903_springfield/reload_prepare"
       },
       "reload_loop:object": {
-        "path": "/weapon/rifle/sv_98/reload_mag_in"
+        "path": "/weapon/rifle/m1903_springfield/reload_loop_single"
       },
       "reload_post:object": {
-        "path": "/weapon/rifle/sv_98/reload_foley_end"
+        "path": "/weapon/rifle/m1903_springfield/reload_post"
       },
       "boltAction:object": {
-        "path": "/weapon/rifle/sv_98/reload_shutter_in"
+        "path": "/weapon/rifle/m1903_springfield/bolt_action"
       }
     },
     "gun__mountPoints:shared:array": {
@@ -2516,7 +2518,7 @@
         "path": "/weapon/mgun/m249/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -2955,24 +2957,28 @@
     "gun__saveAmmoInChamberOnReload": true,
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/rifle/svd_m"
+      "path": "/weapon/rifle/svt40"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "reload1:object": {
-        "path": "/weapon/rifle/svd_m/reload_mag_out"
+        "path": "/weapon/rifle/svt40/reload1/change_ammo"
+      },
+      "reload2:object": {
+        "path": "/weapon/rifle/svt40/reload2/change_ammo"
+      },
+      "reload3:object": {
+        "path": "/weapon/rifle/svt40/reload3/change_ammo"
       },
       "reload4:object": {
-        "path": "/weapon/rifle/svd_m/reload_mag_in"
+        "path": "/weapon/rifle/svt40/reload4/change_ammo"
       },
       "reload5:object": {
-        "path": "/weapon/rifle/svd_m/reload_foley_start"
+        "path": "/weapon/rifle/svt40/reload5/change_ammo"
       },
-      "reload6:object": {
-        "path": "/weapon/rifle/svd_m/reload_foley_end"
-      },
-      "boltAction:object": {
-        "path": "/weapon/rifle/svd_m/reload_shutter_in"
+      "ammo_drop:object": {
+        "watched": "player/weapon/_common/magazine_drop",
+        "type": "matUnderFeet"
       }
     },
     "gun__mountPoints:shared:array": {
@@ -3057,7 +3063,7 @@
       "sks",
       "sniper_rifle_muzzle_preset",
       "dmr_gun_tilt",
-      "mgun_gun_aim_sound"
+      "rifle_gun_aim_sound"
     ],
     "gun_anim_var__tpsGunOffsetAlong": 0.03,
     "gun_anim_var__tpsGunOffsetAcross": 0.04,
@@ -3079,30 +3085,27 @@
     },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/mgun/ak_12"
+      "path": "/weapon/rifle/sks_44"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "foley_start:object": {
-        "path": "/weapon/mgun/ak_12/reload_foley_start"
-      },
-      "mag_out:object": {
-        "path": "/weapon/mgun/ak_12/reload_mag_out"
+        "path": "/weapon/rifle/sks_30/reload_foley_start"
       },
       "mag_in:object": {
-        "path": "/weapon/mgun/ak_12/reload_mag_in"
+        "path": "/weapon/rifle/sks_30/reload_mag_in"
       },
       "shutter_in:object": {
-        "path": "/weapon/mgun/ak_12/reload_shutter_in"
+        "path": "/weapon/rifle/sks_30/reload_shutter_in"
       },
-      "shutter_out:object": {
-        "path": "/weapon/mgun/ak_12/reload_shutter_out"
+      "shutter_clip_out:object": {
+        "path": "/weapon/rifle/sks_30/reload_clip_out"
       },
       "foley_end:object": {
-        "path": "/weapon/mgun/ak_12/reload_foley_end"
+        "path": "/weapon/rifle/sks_30/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/clip_drop",
         "type": "matUnderFeet"
       }
     }
@@ -3205,7 +3208,7 @@
     },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
-      "path": "/weapon/rifle/sv_98"
+      "path": "/weapon/rifle/mosin_m44"
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
@@ -3213,16 +3216,16 @@
         "path": "/weapon/rifle/mosin/reload"
       },
       "reload_prepare:object": {
-        "path": "/weapon/rifle/sv_98/reload_foley_start"
+        "path": "/weapon/rifle/mosin/reload_prepare"
       },
       "reload_loop:object": {
-        "path": "/weapon/rifle/sv_98/reload_mag_in"
+        "path": "/weapon/rifle/mosin/reload_loop"
       },
       "reload_post:object": {
-        "path": "/weapon/rifle/sv_98/reload_foley_end"
+        "path": "/weapon/rifle/mosin/reload_post"
       },
       "boltAction:object": {
-        "path": "/weapon/rifle/sv_98/reload_shutter_in"
+        "path": "/weapon/rifle/mosin/bolt_action"
       }
     },
     "gun__mountPoints:shared:array": {
@@ -3356,7 +3359,7 @@
         "path": "/weapon/mgun/pkp_pecheneg/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/drum_drop",
+        "watched": "player/weapon/_common/drum_drop",
         "type": "matUnderFeet"
       }
     },
@@ -3532,7 +3535,7 @@
         "path": "/weapon/mgun/rp_46/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/rigid_belt_drop",
+        "watched": "player/weapon/_common/rigid_belt_drop",
         "type": "matUnderFeet"
       }
     },
@@ -3721,7 +3724,7 @@
         "path": "/weapon/mgun/pkp_pecheneg/reload_belt_rattle"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/ammo_box_drop",
+        "watched": "player/weapon/_common/ammo_box_drop",
         "type": "matUnderFeet"
       }
     },
@@ -3899,7 +3902,7 @@
         "path": "/weapon/mgun/pkp_pecheneg/reload_belt_rattle"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/ammo_box_drop",
+        "watched": "player/weapon/_common/ammo_box_drop",
         "type": "matUnderFeet"
       }
     },
@@ -4029,7 +4032,7 @@
         "path": "/weapon/mgun/m4a1/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -4240,11 +4243,11 @@
         "path": "/weapon/mgun/m4a1/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       },
       "drum_drop:object": {
-        "hero": "player/weapon/_common/drum_drop",
+        "watched": "player/weapon/_common/drum_drop",
         "type": "matUnderFeet"
       }
     },
@@ -4391,7 +4394,7 @@
         "path": "/weapon/mgun/m16a4/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -4572,7 +4575,7 @@
         "path": "/weapon/mgun/m16a4/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -4795,7 +4798,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -5006,7 +5009,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -5183,7 +5186,7 @@
         "path": "/weapon/mgun/as_val/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -5412,7 +5415,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -5621,7 +5624,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -5830,7 +5833,7 @@
         "path": "/weapon/mgun/sig_xm5/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -6023,7 +6026,7 @@
         "path": "/weapon/rifle/vintorez/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -6147,7 +6150,7 @@
         "path": "/weapon/rifle/svd_m/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -6310,7 +6313,7 @@
         "path": "/weapon/rifle/svd_m/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -6479,7 +6482,7 @@
         "path": "/weapon/rifle/m110a1_sdmr/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -6790,7 +6793,7 @@
         "path": "/weapon/rifle/mcmillan_tac_50/reload_shell_out"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -6964,7 +6967,7 @@
         "path": "/weapon/mgun/pp_19_vityaz/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -7125,7 +7128,7 @@
         "path": "/weapon/mgun/pp_19_bizon/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -7283,7 +7286,7 @@
         "path": "/weapon/mgun/pp_2000/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -7455,7 +7458,7 @@
         "path": "/weapon/mgun/m4a1/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -7833,7 +7836,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/drum_drop",
+        "watched": "player/weapon/_common/drum_drop",
         "type": "matUnderFeet"
       }
     },
@@ -8046,7 +8049,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -8240,7 +8243,7 @@
         "path": "/weapon/mgun/m249/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -8421,7 +8424,7 @@
         "path": "/weapon/mgun/m240/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/rigid_belt_drop",
+        "watched": "player/weapon/_common/rigid_belt_drop",
         "type": "matUnderFeet"
       }
     },
@@ -8642,7 +8645,7 @@
         "path": "/weapon/mgun/mk_48/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/ammo_box_drop",
+        "watched": "player/weapon/_common/ammo_box_drop",
         "type": "matUnderFeet"
       }
     },
@@ -9126,7 +9129,7 @@
         "path": "/weapon/pistol/beretta_m9/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/pistol_magazine_drop",
+        "watched": "player/weapon/_common/pistol_magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -9235,7 +9238,7 @@
         "path": "/weapon/pistol/mp_443/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/pistol_magazine_drop",
+        "watched": "player/weapon/_common/pistol_magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -9345,7 +9348,7 @@
         "path": "/weapon/rifle/mossberg_590/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/shotgun_shell_out",
+        "watched": "player/weapon/_common/shotgun_shell_out",
         "type": "matUnderFeet"
       }
     },
@@ -9362,7 +9365,7 @@
         },
         {
           "relPos": 0.9,
-          "hero": "player/weapon/_common/shotgun_shell_out",
+          "watched": "player/weapon/_common/shotgun_shell_out",
           "matUnderFeet:object": {}
         }
       ]
@@ -9543,12 +9546,12 @@
     "sound_irqs:shared:object": {
       "_tags": "sound",
       "unfold:object": {
-        "hero": "infantry/player/walker/mc_soldier/foley_mov/common/knife/open",
-        "enemy": "infantry/enemy/walker/mc_soldier/foley_mov/common/knife/open"
+        "watched": "infantry/player/walker/mc_soldier/foley_mov/common/knife/open",
+        "other": "infantry/enemy/walker/mc_soldier/foley_mov/common/knife/open"
       },
       "fold:object": {
-        "hero": "infantry/player/walker/mc_soldier/foley_mov/common/knife/close",
-        "enemy": "infantry/enemy/walker/mc_soldier/foley_mov/common/knife/close"
+        "watched": "infantry/player/walker/mc_soldier/foley_mov/common/knife/close",
+        "other": "infantry/enemy/walker/mc_soldier/foley_mov/common/knife/close"
       }
     }
   },
@@ -9556,6 +9559,7 @@
     "_use": [
       "gun_sound_with_animchar",
       "melee_weapon",
+      "hit_effect_group_knife",
       "knife"
     ],
     "weapon__holsterTime": 0.66,
@@ -9838,49 +9842,41 @@
   },
   "molotov_shell_base": {
     "_use": [
-      "dng_projectile",
-      "molotov_base"
+      "projectile_with_shell",
+      "molotov_base",
+      "grenade_thrower_tilt"
     ],
-    "shell__explNodeIdx": -1,
+    "gun_attach__slot": "l_hand",
+    "shell__explosionTimer": 30.0,
     "animchar__actOnDemand:tag": {}
   },
   "molotov_phys_base": {
     "_use": [
-      "molotov_base",
+      "awared_danger",
+      "grenade_phys_base",
       "molotov_spread",
-      "projectile_phys",
-      "impact_shell",
       "fire_splash_shell",
       "hud_grenade_marker",
-      "molotov_throw_sound"
+      "molotov_throw_sound",
+      "impact_shell"
     ],
-    "start_omega": [
-      -15.0,
-      0.0,
-      3.0
-    ],
-    "active": false,
     "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/molotov_base.blk",
-    "_tracked": "active",
     "effect__scale": 1.0,
     "shell_explosion_fx__infoTemplate": "hit_effect_group_molotov_explosion",
     "on_exploded__create": "molotov_fire",
     "molotov_fire__minDistanceBetween": 1.0,
-    "ai_target_node__node": "weaponRoot",
-    "shell__waterImpactFx": "hit_water_medium_effect",
-    "entity_destroyer__destroyAtTime": -1.0,
     "shell__concussionMaxRadius:r": {
       "value": 0.0,
       "_tags": "server"
     },
-    "shell__explodeOnContact:tag": {},
-    "ai_target_node__nodeId:i": {
-      "value": -1,
-      "_tags": "server"
-    }
+    "shell__explodeOnContact:tag": {}
   },
   "molotov_fire": {
     "_use": "fire_source",
+    "fire_source__spreadTime": 0.5,
+    "fire_source__fullForceTime": 5.0,
+    "fire_source__maxFullForceTime": 10.0,
+    "fire_source__fadeTime": 5.0,
     "_group": {
       "_tags": "render",
       "effect__name": "fire_tank_napalm_smal_cmps_fx"
@@ -9927,13 +9923,26 @@
       ]
     }
   },
+  "ussr_molotov_shell": {
+    "animchar__res": "m_67_char"
+  },
   "ussr_molotov": {
-    "_use": "molotov_shell_base",
+    "_use": [
+      "molotov_shell_base",
+      "ussr_molotov_shell"
+    ],
     "item__name": "items/molotov",
+    "grenade__selectedWeaponVar": "m_67"
+  },
+  "ussr_molotov_thrown": {
+    "_use": "ussr_molotov",
     "animchar__res": "m_67_char"
   },
   "ussr_molotov_phys": {
-    "_use": "molotov_phys_base",
+    "_use": [
+      "molotov_phys_base",
+      "ussr_molotov_shell"
+    ],
     "animchar__res": "m_67_active_char",
     "collres__res": "m_67_active_collision",
     "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/ussr_molotov.blk"
@@ -10054,7 +10063,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -10187,7 +10196,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     }
@@ -10390,7 +10399,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -10652,6 +10661,9 @@
     },
     "sound_irqs:shared:object": {
       "_tags": "sound",
+      "foley_start:object": {
+        "path": "/weapon/antivehicle/rpg_7/reload_foley_start"
+      },
       "reload1:object": {
         "path": "/weapon/antivehicle/rpg_7/reload1/change_ammo"
       },
@@ -10660,12 +10672,18 @@
       },
       "reload3:object": {
         "path": "/weapon/antivehicle/rpg_7/reload3/change_ammo"
+      },
+      "foley_end:object": {
+        "path": "/weapon/antivehicle/rpg_7/reload_foley_end"
       }
     }
   },
   "rpg_2_rocket_shell": {
     "animchar__res": "rpg_2_ammo_char",
     "collres__res": "rpg_2_ammo_collision"
+  },
+  "rpg_2_default_gun": {
+    "_use": "rpg_2_gun"
   },
   "rpg_7": {
     "_use": [
@@ -11261,9 +11279,7 @@
   "tactical_phone_gun": {
     "_use": [
       "melee_weapon",
-      "replicating",
-      "multiple_guns_slot_gun",
-      "multiple_guns_slot_gun_hidden"
+      "replicating"
     ],
     "specialAIWeaponType": -1,
     "weap__sprintLerpFactor": 1.0,
@@ -11290,7 +11306,6 @@
     "_tracked": "gun__owner",
     "_replicated": "gun__owner",
     "meleeSoundType": "",
-    "multiple_guns_slot_gun__slot": 5,
     "anim_phys": {},
     "hud_action_bar_override:object": {
       "item__iconRoll": 90.0,
@@ -11538,7 +11553,7 @@
         "path": "/weapon/mgun/sig_xm5/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -12012,7 +12027,7 @@
         "path": "/weapon/mgun/as_val/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },
@@ -12173,7 +12188,7 @@
         "path": "/weapon/rifle/ksvk_12_7/bolt_action"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/drum_drop",
+        "watched": "player/weapon/_common/drum_drop",
         "type": "matUnderFeet"
       }
     },
@@ -12403,7 +12418,7 @@
         "path": "/weapon/mgun/ak_12/reload_foley_end"
       },
       "ammo_drop:object": {
-        "hero": "player/weapon/_common/magazine_drop",
+        "watched": "player/weapon/_common/magazine_drop",
         "type": "matUnderFeet"
       }
     },

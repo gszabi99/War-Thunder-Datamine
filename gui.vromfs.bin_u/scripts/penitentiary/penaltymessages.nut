@@ -1,10 +1,11 @@
+from "string" import format
+from "penalty" import getPenaltyStatus, DEVOICE, BAN_USER_INFINITE_PENALTY
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import get_time_till_decals_disabled
-let { format } = require("string")
+
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { secondsToHours, hoursToString } = require("%scripts/time.nut")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
-let { getPenaltyStatus, DEVOICE, BAN_USER_INFINITE_PENALTY } = require("penalty")
 
 function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
   let st = getPenaltyStatus()

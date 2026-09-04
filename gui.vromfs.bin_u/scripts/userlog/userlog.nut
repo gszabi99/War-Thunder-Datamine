@@ -1,22 +1,23 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "string" import format
+from "guiOptions" import set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
+from "dagor.time" import get_local_unixtime
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, copy_to_clipboard, set_char_cb, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
-let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
-} = require("guiOptions")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { saveOnlineJob, getUserLogsList, isUserlogVisible } = require("%scripts/userLog/userlogUtils.nut")
 let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
 let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
-let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER } = require("%scripts/options/optionsExtNames.nut")
 let { restoreCharCallback } = require("%scripts/tasker.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
@@ -25,7 +26,6 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
 let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
-let { get_local_unixtime } = require("dagor.time")
 let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { showLeaveSessionFirstPopup } = require("%scripts/invites/invites.nut")
@@ -74,13 +74,13 @@ let userlogPages = [
       if (logType == EULT_CLAN_ACTION
           || logType == EULT_BUYING_UNLOCK
           || logType == EULT_BUYING_RESOURCE)
-        return getTblValue("goldCost", body, 0) > 0 || getTblValue("wpCost", body, 0) > 0
+        return (body?.goldCost ?? 0) > 0 || (body?.wpCost ?? 0) > 0
 
       if (logType == EULT_BUYENTITLEMENT)
-        return getTblValue("cost", body, 0) > 0
+        return (body?.cost ?? 0) > 0
 
       if (logType == EULT_OPEN_TROPHY)
-        return getTblValue("gold", body, 0) > 0 || getTblValue("warpoints", body, 0) > 0
+        return (body?.gold ?? 0) > 0 || (body?.warpoints ?? 0) > 0
 
       return true
     }
@@ -161,7 +161,7 @@ function gerRecentItemsLogs(timeDistInSeconds) {
   return fullLogs.filter(@(p) (!p?.isDubTrophy && (localTime - p.time < timeDistInSeconds)))
 }
 
-gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("UserLogHandler", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 
@@ -211,7 +211,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       tabs = []
     }
     foreach (idx, page in userlogPages) {
-      if (getTblValue("reqFeature", page) && !hasFeature(page.reqFeature))
+      if (page?.reqFeature && !hasFeature(page.reqFeature))
         continue
       view.tabs.append({
         id = $"page_{idx}"
@@ -445,7 +445,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let idx = to_integer_safe(getObjIdByPrefix(obj.getChild(value), "page_"), -1)
-    let newPage = getTblValue(idx, userlogPages)
+    let newPage = userlogPages?[idx]
     if (!newPage || newPage == this.curPage)
       return
 
@@ -497,7 +497,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     copy_to_clipboard(get_userlog_plain_text(this.currentLog))
   }
-}
+})
 
 return {
   gerRecentItemsLogs

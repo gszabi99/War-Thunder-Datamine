@@ -1,7 +1,7 @@
+from "mission" import get_mplayers_list, GET_MPLAYERS_LIST
 from "%scripts/dagui_library.nut" import *
 
 let { updateNameMapping } = require("%scripts/user/nameMapping.nut")
-let { get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_mplayer_color } = require("%scripts/utils_sa.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")

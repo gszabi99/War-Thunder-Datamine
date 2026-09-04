@@ -1,15 +1,15 @@
+from "%rGui/planeRwrs/rwrL150Components.nut" import color, baseLineWidth, settings, createCompass, rwrTargetsComponent
+from "string" import format
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-
-let { color, baseLineWidth, styleText, settings, createCompass, rwrTargetsComponent} = require("%rGui/planeRwrs/rwrL150Components.nut")
+let { styleText } = require("%rGui/planeRwrs/rwrL150Components.nut")
 
 function createRwrGrid(gridStyle) {
   return {
-    size = flex()
+    size = FLEX
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = color,
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
@@ -27,14 +27,14 @@ function createRwrGrid(gridStyle) {
 }
 
 function createRwrGridMarks(gridStyle, settingsIn) {
-  let gridFontSizeMult = 2.0
+  const gridFontSizeMult = 2.0
   return {
-    size = flex(),
+    size = FLEX,
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(30), ph(10)]
-        size = flex()
+        pos = const [pw(30), ph(10)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
@@ -42,8 +42,8 @@ function createRwrGridMarks(gridStyle, settingsIn) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(64), ph(20)]
-        size = flex()
+        pos = const [pw(64), ph(20)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
@@ -51,8 +51,8 @@ function createRwrGridMarks(gridStyle, settingsIn) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(95), ph(30)]
-        size = flex()
+        pos = const [pw(95), ph(30)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
@@ -65,7 +65,7 @@ function createRwrGridMarks(gridStyle, settingsIn) {
 function rwrGridMarksComponent(gridStyle) {
   return @() {
     watch = settings
-    size = flex()
+    size = FLEX
     children = createRwrGridMarks(gridStyle, settings.get())
   }
 }
@@ -82,12 +82,12 @@ function scope(size, scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        size = [pw(90), ph(90)]
+        size = const [pw(90), ph(90)]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         children = [
           {
-            size = flex()
+            size = FLEX
             children = [
               rwrTargetsComponent(style.object, 100.0),
               createRwrGrid(style.grid),
@@ -101,7 +101,7 @@ function scope(size, scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()
@@ -112,4 +112,4 @@ let function tws(posWatched, sizeWatched, scale, style) {
   }
 }
 
-return tws
+return { tws, scope }

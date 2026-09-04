@@ -1,15 +1,15 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "matching.errors" import SERVER_ERROR_ROOM_NOT_FOUND
 from "%scripts/dagui_library.nut" import *
 
 let { matchingApiFunc, checkMatchingError } = require("%scripts/matching/api.nut")
-let { get_time_msec } = require("dagor.time")
-let { SERVER_ERROR_ROOM_NOT_FOUND } = require("matching.errors")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const MROOM_INFO_UPDATE_DELAY    = 5000
 const MROOM_INFO_REQUEST_TIMEOUT = 15000
 const MROOM_INFO_OUTDATE_TIME    = 600000
 
-let class MRoomInfo {
+class MRoomInfo {
   roomId = -1
   lastUpdateTime = -MROOM_INFO_OUTDATE_TIME
   lastRequestTime = -MROOM_INFO_OUTDATE_TIME

@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { guiStartBuilder } = require("%scripts/missions/startMissionsList.nut")
 
-gui_handlers.changeAircraftForBuilder <- class (gui_handlers.BaseGuiHandlerWT) {
+let changeAircraftForBuilder = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/shop/shopTakeAircraft.blk"
   shopAir = null
@@ -53,3 +54,6 @@ gui_handlers.changeAircraftForBuilder <- class (gui_handlers.BaseGuiHandlerWT) {
       : "yes"
   }
 }
+register_gui_handler("changeAircraftForBuilder", changeAircraftForBuilder)
+
+return { changeAircraftForBuilder }

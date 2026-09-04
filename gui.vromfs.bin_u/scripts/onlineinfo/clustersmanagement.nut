@@ -1,29 +1,27 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "string" import split_by_chars
+from "auth_wt" import getCountryCode
+from "%sqstd/datablock.nut" import isDataBlock, eachParam
+from "blkGetters" import get_network_block
+from "%sqstd/math.nut" import is_bit_set
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, is_online_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "app" import is_dev_version
 
-let { split_by_chars } = require("string")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getCountryCode } = require("auth_wt")
 let { getClustersByCountry } = require("%scripts/onlineInfo/defaultClusters.nut")
 let { optimalClusters } = require("%scripts/onlineInfo/optimalClusters.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { isDataBlock, eachParam } = require("%sqstd/datablock.nut")
 let { fetchClustersList } = require("%scripts/matching/serviceNotifications/match.nut")
-let { get_network_block } = require("blkGetters")
-let { OPTIONS_MODE_MP_DOMINATION, USEROPT_CLUSTERS, USEROPT_RANDB_CLUSTERS
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_MP_DOMINATION, USEROPT_CLUSTERS, USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { get_option, registerOption } = require("%scripts/options/optionsExt.nut")
-let { isInSessionRoom, getSessionLobbyPublicParam
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyPublicParam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { get_bit_value_by_array } = require("%scripts/utils_sa.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 const MAX_FETCH_RETRIES = 5
 
@@ -64,7 +62,7 @@ function onClustersLoaded(params) {
   log("[MM] clusters loaded")
   debugTableData(params)
 
-  let clusters = getTblValue("clusters", params)
+  let clusters = params?.clusters
   if (!u.isArray(clusters))
     return false
 

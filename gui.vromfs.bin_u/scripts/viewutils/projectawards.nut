@@ -1,6 +1,6 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 function setProjectAwards(handler) {

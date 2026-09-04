@@ -1,5 +1,6 @@
+from "%sqstd/datablock.nut" import eachBlock
 from "%scripts/dagui_library.nut" import *
-let { eachBlock } = require("%sqstd/datablock.nut")
+
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 

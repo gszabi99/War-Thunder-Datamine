@@ -2,7 +2,7 @@
   "fmFile": "fm/f-84g.blk",
   "model": "f_84g",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.25,
   "gearSinkRangeC": 0.235,
   "gyroSight": true,
@@ -60,6 +60,14 @@
     "armor8": {
       "armor3_dm": {
         "hp": 40.0
+      }
+    },
+    "dural5": {
+      "radar1_dm": {
+        "hp": 35.0
+      },
+      "cockpit_control1_dm": {
+        "hp": 60.0
       }
     },
     "armor_jet_engine": {
@@ -947,6 +955,9 @@
         }
       },
       {
+        "name": "cockpit_countrol1_dm"
+      },
+      {
         "name": "mgun1_dm"
       },
       {
@@ -977,7 +988,7 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm",
+        "name": "radar1_dm",
         "onHit": [
           {
             "damage": 200.0,
@@ -2560,7 +2571,7 @@
   "sensors": {
     "sensor": {
       "blk": "gameData/sensors/us_an_apg_30.blk",
-      "dmPart": "radar_dm"
+      "dmPart": "radar1_dm"
     }
   },
   "commonWeapons": {

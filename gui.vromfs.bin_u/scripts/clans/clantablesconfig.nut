@@ -1,9 +1,10 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_natives.nut" import clan_evaluate_membership_requirements
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { getClanRequirementsText } = require("%scripts/clans/clanTextInfo.nut")
-let DataBlock  = require("DataBlock")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { ranked_column_prefix } = require("%scripts/clans/clanInfoTable.nut")
 let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")

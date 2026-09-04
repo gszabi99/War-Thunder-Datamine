@@ -1,20 +1,20 @@
+from "%sqstd/platform.nut" import isPC
+from "dagor.random" import frnd, rnd, rnd_int
+from "math" import floor, abs
+from "console" import register_command
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_player_complaint_counts, char_ban_user
 from "%scripts/dagui_library.nut" import *
-let { isPC } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { frnd, rnd, rnd_int } = require("dagor.random")
-let { floor, abs } = require("math")
 let getCaptchaCache = require("%scripts/captcha/captchaCache.nut")
 let { sfpf } = require("%scripts/utils/screenUtils.nut")
-let { register_command } = require("console")
-let { get_charserver_time_sec } = require("chard")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlockCounter,
-  captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter,
-  captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
+let { increaseCaptchaFailsCount, resetAllCaptchaFailsCounters, captchaFailsBlockCounter, captchaLastAttemptTimestamp, hasSuccessfullyTry, resetCaptchaFailsBlockCounter, captchFailsBanCounter, resetCaptchaFailsBanCounter, setLastAttemptTime } = require("%scripts/userstat/userstatCaptcha.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getMaxUnitsRank } = require("%scripts/shop/shopCountryInfo.nut")
@@ -86,15 +86,15 @@ function checkIsTempBlocked() {
 }
 
 function banUser() {
-  let category = "BOT"
-  let penalty =  "BAN"
+  const category = "BOT"
+  const penalty =  "BAN"
   let comment = loc("charServer/ban/reason/BOT2")
   char_ban_user(userIdStr.get(), BAN_DURATION_SEC, "", category, penalty, comment, "" , "")
 }
 
 local lastShowReason = "Captcha: there were no shows"
 
-local CaptchaHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local CaptchaHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/captcha/captcha.blk"
 
@@ -269,11 +269,11 @@ local CaptchaHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.CaptchaHandler <- CaptchaHandler
+register_gui_handler("CaptchaHandler", CaptchaHandler)
 
-let maxTimeBetweenShowCaptcha = 14400
-let minComplaintsCountForShowCaptcha = 5
-let minVehicleRankForShowCaptcha = 2
+const maxTimeBetweenShowCaptcha = 14400
+const minComplaintsCountForShowCaptcha = 5
+const minVehicleRankForShowCaptcha = 2
 
 function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
   let isCaptchaNotAllowed = !isPC || isPlatformSteamDeck

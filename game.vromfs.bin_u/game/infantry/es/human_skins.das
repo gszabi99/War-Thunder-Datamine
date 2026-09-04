@@ -17,9 +17,39 @@ def find_key_in_initial_equip_by_slot(slot : string; equipList : Object)
       return out
   return ""
 
+
+def find_slot_template(slot : string;
+                       human_equipment__initialEquip : Object;
+                       human_equipment__wearTemplates : Object)
+  let wearTemplate = human_equipment__wearTemplates[slot] ?? ""
+  if wearTemplate != ""
+    let out = clone_string(wearTemplate)
+    return out
+  return find_key_in_initial_equip_by_slot(slot, human_equipment__initialEquip)
+
+def erase_slot_template(slot : string;
+                        var human_equipment__initialEquip : Object;
+                        var human_equipment__wearTemplates : Object)
+  human_equipment__wearTemplates |> erase(slot)
+  let keyToErase = find_key_in_initial_equip_by_slot(slot, human_equipment__initialEquip)
+  if keyToErase != ""
+    human_equipment__initialEquip |> erase(keyToErase)
+
+def apply_slot_protection(slot, protectionTemplate : string;
+                          var human_equipment__initialEquip : Object;
+                          var human_equipment__wearTemplates : Object)
+  let curTemplate = find_slot_template(slot, human_equipment__initialEquip, human_equipment__wearTemplates)
+  if curTemplate == ""
+    return false
+  let templParts <- split(curTemplate, "+") 
+  erase_slot_template(slot, human_equipment__initialEquip, human_equipment__wearTemplates)
+  human_equipment__initialEquip |> set(add_sub_template_name(templParts[0], protectionTemplate), slot)
+  return true
+
 def apply_armor_preset_skin(skinInfo : Object;
                             commonSkinPresetName, helmetProtectionTemplate, bodyProtectionTemplate : string;
                             var human_equipment__initialEquip : Object;
+                            var human_equipment__wearTemplates : Object;
                             modeName : string; 
                             team : int;
                             skin : string;
@@ -35,32 +65,20 @@ def apply_armor_preset_skin(skinInfo : Object;
       logerr("No common skinPreset {commonSkinPresetName} for skin {skin} in {team} with tier {tier}, in infantry_equipment__teamSkins")
       return false
     for kv in *curPreset
-      let slot = kv.key
+      let slot = clone_string(kv.key)
       let gametempate = kv.value ?? ""
-      let keyToErase := find_key_in_initial_equip_by_slot(slot, human_equipment__initialEquip)
-      if keyToErase != ""
-        human_equipment__initialEquip |> erase(keyToErase)
+      erase_slot_template(slot, human_equipment__initialEquip, human_equipment__wearTemplates)
       if gametempate != ""
-        human_equipment__initialEquip |> set(gametempate, slot)
+        human_equipment__wearTemplates |> set(slot, gametempate)
           
           
 
   if helmetProtectionTemplate != ""
-    let curHelmetTemplate := find_key_in_initial_equip_by_slot("helmet", human_equipment__initialEquip)
-    if curHelmetTemplate != ""
-      let templParts <- split(curHelmetTemplate, "+")
-      human_equipment__initialEquip |> set(add_sub_template_name(templParts[0], helmetProtectionTemplate), "helmet")
-      human_equipment__initialEquip |> erase(curHelmetTemplate)
-    else
+    if !apply_slot_protection("helmet", helmetProtectionTemplate, human_equipment__initialEquip, human_equipment__wearTemplates)
       logerr("No helmet for apply armor modification {modeName} for soldier with team {team} skin {skin} tier {tier} soldierIdx {soldierIdx} commonSkinPreset {commonSkinPresetName}")
 
   if bodyProtectionTemplate != ""
-    let curBodyTemplate := find_key_in_initial_equip_by_slot("chest_armor", human_equipment__initialEquip)
-    if curBodyTemplate != ""
-      let templParts <- split(curBodyTemplate, "+") 
-      human_equipment__initialEquip |> set(add_sub_template_name(templParts[0], bodyProtectionTemplate), "chest_armor")
-      human_equipment__initialEquip |> erase(curBodyTemplate)
-    else
+    if !apply_slot_protection("chest_armor", bodyProtectionTemplate, human_equipment__initialEquip, human_equipment__wearTemplates)
       logerr("No chest_armor for apply armor modification {modeName} for soldier with team {team} skin {skin} tier {tier} soldierIdx {soldierIdx} commonSkinPreset {commonSkinPresetName}")
   return true
 
@@ -70,15 +88,12 @@ def human_init_skins_preset_es(evt : CmdInitComponent;
                                squad_member__memberIdx : int;
                                unit__ref : UnitRef;
                                var human_equipment__initialEquip : Object;
+                               var human_equipment__wearTemplates : Object;
                                squad_member__noBotsMaxSkinId : int = 0;
                                unit__overrideSkinRank : int const?)
   let missionTier = unit__overrideSkinRank == null ? get_mission_max_rank() : *unit__overrideSkinRank
   let skin = evt.data.humanSkin != "" ? string(evt.data.humanSkin) : "default"
-  var loneFightersMode = false
-  static_if typeinfo(builtin_function_exists @@ < () : bool > _::get_mission_lone_fighters_mode)
-    loneFightersMode = get_mission_lone_fighters_mode()
-  else
-    loneFightersMode = false
+  let loneFightersMode = get_mission_lone_fighters_mode()
   let soldierSkinIdx = loneFightersMode ? rnd_int(0, squad_member__noBotsMaxSkinId - 1) : squad_member__memberIdx;
   let soldierIdx = soldierSkinIdx + 1
 
@@ -123,20 +138,21 @@ def human_init_skins_preset_es(evt : CmdInitComponent;
       logerr("No data for soldier {soldierIdx} in {skin} with team {team}, tier {tier}, in infantry_equipment__teamSkins")
       return true
     clear(human_equipment__initialEquip)
+    clear(human_equipment__wearTemplates)
     for kv in *soldierEquipInfo
       let slot = kv.key
       if slot == "commonSkinPreset"
         continue
       let gametempate = kv.value ?? ""
       if gametempate != ""
-        human_equipment__initialEquip |> set(gametempate, slot)
+        human_equipment__wearTemplates |> set(slot, gametempate)
 
     if evt.modelBlk != null
       let unitCommonSkinPresetName = evt.modelBlk |> datablock_getStr("commonSkinPreset", "")
       if unitCommonSkinPresetName != ""
         let unitBodyProtectionTemplate = evt.modelBlk |> datablock_getStr("bodyProtectionTemplate", "")
         let unitHelmetProtectionTemplate = evt.modelBlk |> datablock_getStr("helmetProtectionTemplate", "")
-        if !apply_armor_preset_skin(*soldierEquipInfo, unitCommonSkinPresetName, unitHelmetProtectionTemplate, unitBodyProtectionTemplate, human_equipment__initialEquip, "unitBlkMod", team, skin, tier, soldierIdx)
+        if !apply_armor_preset_skin(*soldierEquipInfo, unitCommonSkinPresetName, unitHelmetProtectionTemplate, unitBodyProtectionTemplate, human_equipment__initialEquip, human_equipment__wearTemplates, "unitBlkMod", team, skin, tier, soldierIdx)
           return true
 
     
@@ -155,6 +171,6 @@ def human_init_skins_preset_es(evt : CmdInitComponent;
           let helmetProtectionTemplate = effectsBlk |> datablock_getStr("helmetProtectionTemplate", "")
           let bodyProtectionTemplate = effectsBlk |> datablock_getStr("bodyProtectionTemplate", "")
           let commonSkinPresetName = effectsBlk |> datablock_getStr("commonSkinPreset", "")
-          if !apply_armor_preset_skin(*soldierEquipInfo, commonSkinPresetName, helmetProtectionTemplate, bodyProtectionTemplate, human_equipment__initialEquip, modeName, team, skin, tier, soldierIdx)
+          if !apply_armor_preset_skin(*soldierEquipInfo, commonSkinPresetName, helmetProtectionTemplate, bodyProtectionTemplate, human_equipment__initialEquip, human_equipment__wearTemplates, modeName, team, skin, tier, soldierIdx)
             return true
     return true

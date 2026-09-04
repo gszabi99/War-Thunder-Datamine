@@ -1,7 +1,9 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
@@ -95,7 +97,7 @@ function getWndTitle(unlockId) {
   })
 }
 
-let class UnlockUnitListWnd (gui_handlers.BaseGuiHandlerWT) {
+class UnlockUnitListWnd (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
@@ -123,7 +125,7 @@ let class UnlockUnitListWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.UnlockUnitListWnd <- UnlockUnitListWnd
+register_gui_handler("UnlockUnitListWnd", UnlockUnitListWnd)
 
 function openUnlockUnitListWnd(unlockId, onUnitSelectCb) {
   handlersManager.loadHandler(UnlockUnitListWnd, {

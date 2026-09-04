@@ -1,15 +1,14 @@
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease, BombingMode, AimLocked
+  , RocketMode, CannonMode, BombCCIPMode, DistToSafety
+from "%rGui/planeState/planeFlyState.nut" import Speed, Roll, Aoa, ClimbSpeed, Tangage
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, mpsToFpm, baseLineWidth
+from "%rGui/rocketAamAimState.nut" import GuidanceLockState, TrackerVisible
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkSUM
+from "%rGui/planeIlses/commonElements.nut" import yawIndicator, angleTxt, bombFallingLine, SUMAltitude
+from "guidanceConstants" import GuidanceLockResult
+from "dagor.math" import cvt
+from "math" import round
 from "%rGui/globals/ui_library.nut" import *
-
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease, BombingMode,
-       AimLocked, RocketMode, CannonMode, BombCCIPMode, DistToSafety } = require("%rGui/planeState/planeToolsState.nut")
-let { Speed, Roll, Aoa, ClimbSpeed, Tangage } = require("%rGui/planeState/planeFlyState.nut");
-let { mpsToKnots, mpsToFpm, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { GuidanceLockState, TrackerVisible } = require("%rGui/rocketAamAimState.nut")
-let { cvt } = require("dagor.math")
-let { compassWrap, generateCompassMarkSUM } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { yawIndicator, angleTxt, bombFallingLine, SUMAltitude } = require("%rGui/planeIlses/commonElements.nut")
-let { round } = require("math")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 
@@ -18,7 +17,7 @@ let SUMAoa = @() {
   watch = [SUMAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(3), ph(40)]
-  pos = [pw(15), ph(30)]
+  pos = const [pw(15), ph(30)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
   commands = [
@@ -39,7 +38,7 @@ let SUMVerticalSpeed = @() {
   watch = [SUMVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(3), ph(40)]
-  pos = [pw(85), ph(30)]
+  pos = const [pw(85), ph(30)]
   color = IlsColor.get()
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
   commands = [
@@ -60,7 +59,7 @@ let SUMVerticalSpeed = @() {
 let flyDirectionSUM = @() {
   watch = IlsColor
   size = const [pw(10), ph(10)]
-  pos = [pw(50), ph(40)]
+  pos = const [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -77,7 +76,7 @@ let SUMSpeed = @() {
   watch = [SUMSpeedValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(27), ph(25)]
+  pos = const [pw(27), ph(25)]
   color = IlsColor.get()
   fontSize = 60
   font = Fonts.hud
@@ -92,7 +91,7 @@ function generatePitchLineSum(num) {
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -107,7 +106,7 @@ function generatePitchLineSum(num) {
       }
     ] : (num == 90 || num == -90 ? [
         @() {
-          size = flex()
+          size = FLEX
           watch = IlsColor
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth = baseLineWidth * IlsLineScale.get()
@@ -123,7 +122,7 @@ function generatePitchLineSum(num) {
       [
         @() {
           watch = IlsColor
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth = baseLineWidth * IlsLineScale.get()
           color = IlsColor.get()
@@ -165,7 +164,7 @@ function pitchSum(height) {
 
   return {
     size = const [pw(40), ph(50)]
-    pos = [pw(30), ph(40)]
+    pos = const [pw(30), ph(40)]
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
@@ -262,7 +261,7 @@ let BombCCIPModeComp = @() {
 
 let CCIPModeComp = @(){
   watch = TargetPosValid
-  size = flex()
+  size = FLEX
   children = [
     (TargetPosValid.get() ? SUMCCIPReticle : null),
     BombCCIPModeComp
@@ -271,7 +270,7 @@ let CCIPModeComp = @(){
 
 let SUMCCIPMode = @(){
   watch = CCIPMode
-  size = flex()
+  size = FLEX
   children = CCIPMode.get() ? CCIPModeComp : null
 }
 
@@ -304,7 +303,7 @@ function SumAAMMode(width, height) {
       SumAAMCrosshair([width * 0.5, height * 0.5], false),
       (GuidanceLockState.get() != GuidanceLockResult.RESULT_TRACKING ?
       {
-        size = flex()
+        size = FLEX
         children = [SumAAMCrosshair([width * 0.5, height * 0.25], true)]
         transform = {}
         animations = [
@@ -319,7 +318,7 @@ function SumAAMMode(width, height) {
 function SUMCcrpTarget(width, height) {
   return @() {
     watch = AimLocked
-    size = flex()
+    size = FLEX
     children = AimLocked.get() ?
       @() {
         watch = IlsColor
@@ -345,11 +344,11 @@ function SUMCcrpTarget(width, height) {
 function rotatedBombReleaseSUM(width, height) {
   return @() {
     watch = TargetPosValid
-    size = flex()
+    size = FLEX
     children = TargetPosValid.get() ? [
       SUMCcrpTarget(width, height),
       {
-        size = const [pw(20), flex()]
+        size = const [pw(20), FLEX]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [bombFallingLine()]
@@ -369,12 +368,12 @@ function rotatedBombReleaseSUM(width, height) {
 let cancelBombVisible = Computed(@() DistToSafety.get() <= 0.0)
 let cancelBombingSUM = @() {
   watch = cancelBombVisible
-  size = flex()
+  size = FLEX
   children = cancelBombVisible.get() ?
     @() {
       watch = IlsColor
       size = const [pw(7), ph(7)]
-      pos = [pw(50), ph(30)]
+      pos = const [pw(50), ph(30)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
@@ -391,7 +390,7 @@ let timeToRelease = @() {
   watch = [releaseMarkSector, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(8), ph(8)]
-  pos = [pw(50), ph(30)]
+  pos = const [pw(50), ph(30)]
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -416,7 +415,7 @@ function SumBombingSight(width, height) {
 let gunVisible = Computed(@() !CCIPMode.get() && !BombingMode.get())
 let gunWrap = @(){
   watch = gunVisible
-  size = flex()
+  size = FLEX
   children = gunVisible.get() ? SUMGunReticle : null
 }
 function IlsSum(width, height) {

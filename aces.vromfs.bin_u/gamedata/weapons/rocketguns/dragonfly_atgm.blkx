@@ -1,13 +1,24 @@
 {
   "rocketGun": true,
   "preset_cost": 25,
-  "mesh": "df_missile",
-  "mesh_deployed": "df_missile_deployed",
   "helicopterGroup": 2,
   "shotFreq": 20.0,
-  "sound": "weapon.rocketgun_132",
+  "sound": "atgm",
+  "mesh": "df_missile",
+  "mesh_deployed": "df_missile_deployed",
   "rocket": {
+    "dragCx": 0.0035,
+    "iconType": "atgm_type_pars3_x4",
+    "amountPerTier": 4.0,
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "gunnerFilterMaxDistMult": 0.3,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.1,
     "length": 1.6,
     "WdK": [
@@ -27,15 +38,10 @@
     "timeFire1": 15.0,
     "force": 11500.0,
     "force1": 230.0,
-    "fireDelay": [
-      0.0,
-      0.03
-    ],
+    "fireDelay": 0.03,
     "timeLife": 20.0,
-    "useStartSpeed": true,
     "startSpeed": 25.0,
     "maxSpeed": 290.0,
-    "endSpeed": 0.0,
     "maxDistance": 2000.0,
     "minDistance": 30.0,
     "operatedDist": 2000.0,
@@ -43,56 +49,39 @@
     "loadFactorMax": 15.0,
     "guidanceType": "optical",
     "guidanceSfx": "alarm_con_scan",
-    "hitPower": 260.0,
-    "fuseDelayDist": 0.05,
-    "explodeTreshold": 0.1,
     "explosiveType": "hta",
     "explosiveMass": 1.8,
-    "dragCx": 0.0035,
-    "distanceFuse": false,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "amountPerTier": 4.0,
-    "iconType": "atgm_type_pars3_x4",
-    "maxDeltaAngle": 0.02,
-    "shellCollision": true,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
+    "normalizationPreset": "heat",
+    "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
+    "secondaryShattersPreset": "ap",
+    "stabilityThreshold": 0.5,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "atgm_tank",
+    "cumulativeSecondaryShattersPreset": "atgm",
+    "explodeOnRendinst": true,
+    "fresnel": [
+      0.23,
       0.1,
-      1000.0
+      2.0
     ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
+    "shellAnimation": "video/shells_animations/atgm.ivf",
+    "hitPowerMult": 100.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
     ],
     "relativeVelArmorShift": [
       200.0,
       1000.0
     ],
+    "hitPower": 260.0,
+    "shellCollision": true,
+    "fuseDelayDist": 0.05,
+    "explodeTreshold": 0.01,
+    "distanceFuse": false,
     "explosionEffect": "hit_81_132mm_heat",
     "groundCollisionEffect": "hit_81_105mm_dirt_ap",
     "ricochetEffect": "hit_59_80mm_metal_ap",
@@ -114,10 +103,6 @@
       0.0,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.3,
-      "finsAoaVer": 0.3
-    },
     "guidance": {
       "warmUpTime": 0.5,
       "workTime": 60.0,
@@ -159,6 +144,164 @@
         "accelControlDiff": 0.5
       }
     },
+    "cumulativeDamage": {
+      "armorPower": 1000.0,
+      "distance": 7.5,
+      "damage": 900.0,
+      "onHitChanceMultFire": 25.0
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        15.0,
+        0.7
+      ],
+      "mod3": [
+        30.0,
+        0.99
+      ]
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "hitpower": {
+      "HitPower0m": [
+        1.0,
+        500.0
+      ],
+      "HitPower1000m": [
+        0.9,
+        1000.0
+      ],
+      "HitPower1500m": [
+        0.65,
+        1500.0
+      ],
+      "HitPower2500m": [
+        0.5,
+        2500.0
+      ],
+      "HitPower7000m": [
+        0.0,
+        7000.0
+      ]
+    },
+    "damage": {
+      "explosive": {
+        "radius": 0.3,
+        "offset": 0.2
+      },
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.15,
+        "segment": [
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.5,
+            "damageScale": 1.5,
+            "angles": [
+              0.0,
+              9.0
+            ],
+            "countPortion": 0.1
+          },
+          {
+            "angles": [
+              10.0,
+              29.0
+            ],
+            "countPortion": 0.0
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              30.0,
+              124.0
+            ],
+            "countPortion": 0.35
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.5,
+            "damageScale": 1.5,
+            "angles": [
+              45.0,
+              70.0
+            ],
+            "countPortion": 0.05
+          },
+          {
+            "angles": [
+              125.0,
+              169.0
+            ],
+            "countPortion": 0.0
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              170.0,
+              189.0
+            ],
+            "countPortion": 0.1
+          },
+          {
+            "angles": [
+              190.0,
+              234.0
+            ],
+            "countPortion": 0.0
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.0,
+            "damageScale": 1.0,
+            "angles": [
+              235.0,
+              329.0
+            ],
+            "countPortion": 0.35
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.5,
+            "damageScale": 1.5,
+            "angles": [
+              290.0,
+              315.0
+            ],
+            "countPortion": 0.05
+          },
+          {
+            "angles": [
+              330.0,
+              349.0
+            ],
+            "countPortion": 0.0
+          },
+          {
+            "radiusScale": 1.0,
+            "penetrationScale": 1.5,
+            "damageScale": 1.5,
+            "angles": [
+              350.0,
+              359.0
+            ],
+            "countPortion": 0.1
+          }
+        ]
+      }
+    },
+    "shatterDamage": {
+      "breachConeAngle": 45.0
+    },
     "armorpower": {
       "ArmorPower0m": [
         5.0,
@@ -168,74 +311,6 @@
         4.0,
         10000.0
       ]
-    },
-    "damage": {
-      "damage": {
-        "explosive": {
-          "radius": 0.3,
-          "offset": 0.2
-        },
-        "shatter": {
-          "useRealShatters": true,
-          "countPortion": 1.2,
-          "realShattersSplicing": 0.5,
-          "segment": [
-            {
-              "radiusScale": 0.2,
-              "penetrationScale": 2.25,
-              "damageScale": 1.0,
-              "angles": [
-                10.0,
-                45.0
-              ],
-              "countPortion": 0.05
-            },
-            {
-              "radiusScale": 0.7,
-              "penetrationScale": 2.15,
-              "damageScale": 1.0,
-              "angles": [
-                45.0,
-                90.0
-              ],
-              "countPortion": 0.7
-            },
-            {
-              "radiusScale": 0.2,
-              "penetrationScale": 2.0,
-              "damageScale": 1.0,
-              "angles": [
-                90.0,
-                160.0
-              ],
-              "countPortion": 0.2
-            },
-            {
-              "radiusScale": 0.2,
-              "penetrationScale": 1.8,
-              "damageScale": 1.0,
-              "angles": [
-                160.0,
-                180.0
-              ],
-              "countPortion": 0.05
-            }
-          ]
-        }
-      },
-      "shatterDamage": {
-        "breachConeAngle": 45.0
-      },
-      "explosive": {
-        "radius": 0.15,
-        "offset": 0.2
-      }
-    },
-    "cumulativeDamage": {
-      "armorPower": 1000.0,
-      "distance": 7.5,
-      "damage": 900.0,
-      "onHitChanceMultFire": 25.0
     },
     "DamageParts": {
       "body": {

@@ -1,26 +1,24 @@
+import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "math" import round, fabs
+from "%sqstd/string.nut" import utf8ToLower
+from "blkGetters" import get_wpcost_blk
 from "%scripts/dagui_natives.nut" import wp_get_cost_gold, wp_get_cost
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "types" import String
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { round, fabs } = require("math")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName,
-  getPrevUnit
-} = require("%scripts/unit/unitInfo.nut")
+let { bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { get_wpcost_blk } = require("blkGetters")
-let { isUnitDefault, isUnitsEraUnlocked, isPrevUnitResearched, isUnitResearched, isPrevUnitBought,
-  isRequireUnlockForUnit, canResearchUnit, isUnitInResearch
-} = require("%scripts/unit/unitStatus.nut")
+let { isUnitDefault, isUnitsEraUnlocked, isPrevUnitResearched, isUnitResearched, isPrevUnitBought, isRequireUnlockForUnit, canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitRequireUnlockText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
 let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
-let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
 
 let { havePackage } = require("%scripts/clientState/contentPacks.nut")
 
@@ -168,7 +166,7 @@ function getUnitRarity(unit) {
 
 function getUnitClassIco(unit) {
   local unitName = unit?.name ?? ""
-  if (type(unit) == "string") {
+  if (unit instanceof String) {
     unitName = unit
     unit = getAircraftByName(unit)
   }

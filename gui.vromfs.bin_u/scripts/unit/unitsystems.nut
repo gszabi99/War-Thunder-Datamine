@@ -1,16 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%globalScripts/modeXrayLib.nut" import getPartType, getRadarSensorType, getPartLocNameByBlkFile, findBlockByNameWithParamValue, mkRwrTexts, mkMlwsTexts, findParamValue, getUnitSensorsList
+from "math" import abs, sin, PI
+from "string" import format
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "blkGetters" import get_modifications_blk
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
-let { abs, sin, PI } = require("math")
-let { format } = require("string")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { get_modifications_blk } = require("blkGetters")
 let { getBulletsList, getLastFakeBulletsIndex } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getPartType, getRadarSensorType, getPartLocNameByBlkFile, findBlockByNameWithParamValue,
-  mkRwrTexts, mkMlwsTexts, findParamValue, getUnitSensorsList } = require("%globalScripts/modeXrayLib.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { xrayCommonGetters } = require("%scripts/dmViewer/modeXrayUtils.nut")
 
@@ -19,7 +20,7 @@ let airVehicle = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER]
 let importantEffects = ["enableNightVision", "diggingAvailable", "rangefinderMounted"]
 let fireDirectingPartTypes = ["fire_director", "fire_control_room", "rangefinder"]
 
-let newLine = "\n"
+const newLine = "\n"
 
 let unitDataCache = {}
 let unitSystemsCache = {}
@@ -205,6 +206,9 @@ function findAirSystems(unit, unitBlk, unitType) {
   if ((unitBlk?.havePointOfInterestDesignator ?? false) || unitType == ES_UNIT_TYPE_HELICOPTER)
     unitSystemsCache[unit.name].append({ name = "avionics_aim_spi", ttype = "UNIT_SIMPLE_TOOLTIP",
       params = { unitId = unit.name, textLoc = "avionics_aim_spi/desc" } })
+  if (unitBlk?.hasAimingPointsMemory ?? false)
+    unitSystemsCache[unit.name].append({ name = "avionics_target_point", ttype = "UNIT_SIMPLE_TOOLTIP",
+      params = { unitId = unit.name, textLoc = "avionics_target_point/desc" } })
   if (unitBlk?.laserDesignator ?? false)
     unitSystemsCache[unit.name].append({ name = "avionics_aim_laser_designator", ttype = "UNIT_SIMPLE_TOOLTIP",
       params = { unitId = unit.name, textLoc = "avionics_aim_laser_designator/desc" } })
@@ -251,10 +255,12 @@ function findAirSystems(unit, unitBlk, unitType) {
         { mode = "flir", have = blk?.sightThermal != null }
       ].map(@(v) v.have ? loc($"avionics_sight_vision/{v.mode}") : ""), true)
 
-      let desc = "".concat(loc("armor_class/optic"), loc("ui/colon"), zoom,
+      let systemTechInfo = "".concat(zoom,
         visionModes != "" ? loc("ui/parentheses/space", { text = visionModes }) : "")
+      let systemName = "".concat(loc("armor_class/optic"), loc("ui/colon"), systemTechInfo)
+      let desc = " ".concat(loc("optics/system_desc"), systemTechInfo)
 
-      unitSystemsCache[unit.name].append({ name = desc, ttype = "UNIT_SIMPLE_TOOLTIP",
+      unitSystemsCache[unit.name].append({ name = systemName, ttype = "UNIT_SIMPLE_TOOLTIP",
         params = { unitId = unit.name, text = desc } })
     }
   }
@@ -326,10 +332,11 @@ function findAirSystems(unit, unitBlk, unitType) {
           params = { unitId = unit.name, text = getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk) } })
     }
     else if (sensorType == "rwr") {
-      let desc = [getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)]
-      desc.extend(mkRwrTexts(commonData, sensorPropsBlk, "  "))
+      let title = getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)
+      let desc = mkRwrTexts(commonData, sensorPropsBlk, "")
       unitSystemsCache[unit.name].append({ name = $"avionics_sensor_{sensorType}", ttype = "UNIT_SIMPLE_TOOLTIP",
-        params = { unitId = unit.name, text = newLine.join(desc) } })
+        params = { unitId = unit.name, title, shortDesc = loc("avionics_sensor_rwr/desc"),
+          text = newLine.join(desc) } })
 
       if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
         autoCmByRwr = true
@@ -425,7 +432,7 @@ function getUnitSystemsMarkup(unitName, unitType) {
 }
 
 addListenersWithoutEnv({
-  GameLocalizationChanged = @(_) unitSystemsCache.clear()
+  [GAME_LOCALIZATION_CHANGED] = @(_) unitSystemsCache.clear()
 })
 
 return {

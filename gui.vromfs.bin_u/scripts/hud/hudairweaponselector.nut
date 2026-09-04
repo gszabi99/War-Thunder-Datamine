@@ -1,27 +1,27 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, subscribe_handler
+from "controlsMask" import setAllowedControlsMask
+from "weaponSelector" import get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset, COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF
+  , has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector, get_periodic_countermeasure_enabled, get_secondary_weapons_selector_enabled
+from "eventbus" import eventbus_subscribe
+from "controls" import isXInputDevice, emulateShortcut
+from "dagor.workcycle" import deferOnce
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { setAllowedControlsMask } = require("controlsMask")
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
- COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode, set_secondary_weapons_selector,
- get_periodic_countermeasure_enabled, get_secondary_weapons_selector_enabled
-} = require("weaponSelector")
-let { eventbus_subscribe } = require("eventbus")
-let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { broadcastEvent, subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
-let { isXInputDevice, emulateShortcut } = require("controls")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { deferOnce } = require("dagor.workcycle")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
@@ -57,8 +57,8 @@ let counterMeasuresViews = {
 }
 
 function getCurrentHandler() {
-  let airHandler = handlersManager.findHandlerClassInScene(gui_handlers.HudAir)?.airWeaponSelector
-    ?? handlersManager.findHandlerClassInScene(gui_handlers.HudHeli)?.airWeaponSelector
+  let airHandler = handlersManager.findHandlerClassInScene(get_gui_handler("HudAir"))?.airWeaponSelector
+    ?? handlersManager.findHandlerClassInScene(get_gui_handler("HudHeli"))?.airWeaponSelector
   return !airHandler?.isValid() ? null : airHandler
 }
 
@@ -79,7 +79,7 @@ let isWeaponSelectorSavedPinnedState = @()
 
 eventbus_subscribe("toggleAirWeaponVisualSelector", onToggleSelectorState)
 
-let class HudAirWeaponSelector {
+class HudAirWeaponSelector {
   sceneTplName = "%gui/hud/hudAirWeaponSelector.tpl"
   unit = null
   guiScene = null

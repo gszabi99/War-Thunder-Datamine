@@ -1,0 +1,31 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "frame": {
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "position": "absolute",
+      "size": "1200*@sf/@pf, 1@maxWindowHeight",
+      "max-height": "@rh",
+      "class": "wnd",
+      "frame_header": {
+        "activeText": {
+          "id": "title_text",
+          "text": "",
+          "caption": "yes"
+        },
+        "Button_close": {}
+      },
+      "listbox": {
+        "id": "unlocks_list",
+        "flow": "vertical",
+        "size": "pw, fh",
+        "overflow": "auto",
+        "itemInterval": "@unlocksListboxItemInterval",
+        "navigatorShortcuts": "yes",
+        "scrollbarShortcuts": "yes",
+        "on_dbl_click": "unlockToFavoritesByActivateItem"
+      }
+    }
+  }
+}

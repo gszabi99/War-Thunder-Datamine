@@ -1,7 +1,7 @@
 {
   "model": "f_16d_block_40_barak_2",
   "fmFile": "fm/f_16d_block_40_barak_2.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
@@ -17,7 +17,7 @@
   "hasPointOfInterestMemory": true,
   "ilsElbit967": true,
   "mfdCamLitening2": true,
-  "hmdF16c": true,
+  "hmdJhmcsGen1": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -4524,6 +4524,11 @@
       "modClass": "weapon",
       "tier": 2
     },
+    "us_gbu_15v1": {
+      "modClass": "weapon",
+      "tier": 3,
+      "prevModification": "us_gbu_laser"
+    },
     "M60_air_targets": {},
     "M60_armor_targets": {},
     "M60_stealth": {},
@@ -4534,10 +4539,16 @@
       "reqModification": "M60_belt_pack",
       "tier": 2
     },
-    "us_gbu_15v1": {
+    "is_delilah": {
+      "prevModification": "M60_new_gun",
+      "reqModification": "us_gbu_15v1",
       "modClass": "weapon",
-      "tier": 3,
-      "prevModification": "us_gbu_laser"
+      "tier": 3
+    },
+    "is_delilah_ir": {
+      "reqModification": "is_delilah",
+      "modClass": "weapon",
+      "tier": 4
     },
     "us_aim_9l": {
       "tier": 1,

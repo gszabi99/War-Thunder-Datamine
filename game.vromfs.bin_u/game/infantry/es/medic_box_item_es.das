@@ -1,5 +1,4 @@
 require ecs
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.human_weap_common
@@ -9,6 +8,7 @@ require AnimV20
 require PhysVars
 require net
 require soundEvent
+require sound_utils_net.modules.sound_desc_common
 
 
 [es(REQUIRE=medBox)]
@@ -36,7 +36,7 @@ def medic_box_item_switch_to_another_weap(evt : CmdFinishPlacePlaceableItem;
     switch_to_first_weap_with_ammo(human_weap__gunEids, human_net_phys.phys)
     query(evt.itemEid) <| $ [es] (placeable_item__dropSoundName : string;
                                   placeable_item__startPlacingPos : float3)
-      let playerStr = has(evt.itemEid, "watchedPlayerItem") ? "player" : "enemy"
+      let playerStr = get_watched_sound_event_folder(has(evt.itemEid, "watchedPlayerItem"))
       oneshot("{human_sound__prefix}{playerStr}/{placeable_item__dropSoundName}", placeable_item__startPlacingPos)
 
 

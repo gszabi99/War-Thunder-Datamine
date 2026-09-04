@@ -1,8 +1,8 @@
+from "%rGui/wwMap/wwMapUtils.nut" import getMapColor
+from "%rGui/wwMap/wwMapZonesData.nut" import hoveredZone, getZones
+from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds
 from "%rGui/globals/ui_library.nut" import *
 
-let { getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { hoveredZone, getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 
 let mkMapZoneName = @(zone, areaBounds) function() {

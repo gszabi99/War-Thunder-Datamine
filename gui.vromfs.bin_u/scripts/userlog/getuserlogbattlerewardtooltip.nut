@@ -1,13 +1,15 @@
+from "%sqstd/platform.nut" import isPC
+from "math" import floor
+from "%sqstd/math.nut" import round_by_value
+from "dagor.localize" import doesLocTextExist
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { isPC } = require("%sqstd/platform.nut")
-let { floor } = require("math")
-let { round_by_value } = require("%sqstd/math.nut")
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { secondsToString } = require("%scripts/time.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { doesLocTextExist } = require("dagor.localize")
 let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
@@ -87,6 +89,9 @@ let tableColumns = [
 
       if (cellValue == "leaveKill")
         return {text = loc("userlog/leave_kill_without_offender")}
+
+      if (cellValue == "drownKill")
+        return {text = loc("userlog/drown_kill_without_offender")}
 
       if (doesLocTextExist(cellValue))
         return {text = loc(cellValue)}
@@ -256,7 +261,7 @@ let tableColumns = [
     titleLocId = "userlog/finishing_type"
     cellTransformFn = function(cellValue, reward) {
       let weaponName = reward?.weaponName
-      if (weaponName == "crashKill" || weaponName == "leaveKill")
+      if (weaponName == "crashKill" || weaponName == "leaveKill" || weaponName == "drownKill")
         return { text = loc("ui/mdash") }
       return { text = loc($"userlog/finishing_type/{cellValue}") }
     }

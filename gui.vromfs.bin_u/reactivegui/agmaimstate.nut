@@ -1,6 +1,5 @@
+import "%rGui/interopGen.nut" as interopGen
 from "%rGui/globals/ui_library.nut" import *
-
-let interopGen = require("%rGui/interopGen.nut")
 
 let agmAimState = {
   TrackerX = Watched(0.0)
@@ -29,6 +28,7 @@ let agmAimState = {
   MinSightFovScrSize = Watched(0.0)
 
   AgmBlockedState = Watched(0)
+  AgmMachLimit = Watched(0.0)
 }
 
 interopGen({

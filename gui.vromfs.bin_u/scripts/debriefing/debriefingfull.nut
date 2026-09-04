@@ -1,16 +1,29 @@
-from "%scripts/dagui_natives.nut" import  get_local_player_country, get_race_winners_count, stat_get_exp
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/ranks_common_shared.nut" import get_pve_trophy_name, get_mission_mode
+from "math" import fabs
+from "multiplayer" import get_mp_session_id_str, is_mplayer_peer
+from "replays" import is_replay_playing
+from "eventbus" import eventbus_subscribe
+from "mission" import is_benchmark_game_mode, get_game_mode, get_game_type, get_mp_local_team, get_current_mission_name
+from "guiMission" import MISSION_STATUS_SUCCESS, get_mission_difficulty_int, stat_get_benchmark, get_race_best_lap_time, get_race_lap_times, get_player_score_for_exp_events, get_player_army_for_hud
+  , get_mission_restore_type, get_mp_tbl_teams, get_mission_status
+from "dynamicMission" import dynamicApplyStatus
+from "%sqstd/string.nut" import capitalize
+from "blkGetters" import get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk
+from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/gameTypeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import get_local_player_country, get_race_winners_count, stat_get_exp
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/teams.nut" import g_team
 from "%scripts/utils_sa.nut" import is_multiplayer
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "types" import Table, Array
 
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
-let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost, Money, money_type } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { fabs } = require("math")
-let { get_mp_session_id_str, is_mplayer_peer } = require("multiplayer")
 let { getLogForBanhammer } = require("%scripts/chat/mpChatModel.nut")
 let { getGameChatLogText } = require("%scripts/chat/mpChat.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -18,23 +31,10 @@ let { getRewardSources } = require("%scripts/debriefing/rewardSources.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { is_replay_playing } = require("replays")
-let { eventbus_subscribe } = require("eventbus")
 let { getSkillBonusTooltipText } = require("%scripts/statistics/mpStatisticsInfo.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { is_benchmark_game_mode, get_game_mode, get_game_type, get_mp_local_team,
-  get_current_mission_name
-} = require("mission")
-let { MISSION_STATUS_SUCCESS, get_mission_difficulty_int, stat_get_benchmark,
-  get_race_best_lap_time, get_race_lap_times, get_player_score_for_exp_events,
-  get_player_army_for_hud, get_mission_restore_type, get_mp_tbl_teams, get_mission_status
-} = require("guiMission")
-let { dynamicApplyStatus } = require("dynamicMission")
-let { capitalize } = require("%sqstd/string.nut")
 let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
-let { isInSessionRoom, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyPlayersInfo
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
@@ -66,7 +66,7 @@ function countWholeRewardInTable(table, currency, specParam = null) {
   let upCur = capitalize(currency)
   let searchArray = specParam ?? ["noBonus", "premMod", "premAcc", "booster"]
   foreach (cur in searchArray)
-    reward += getTblValue(cur + upCur, table, 0)
+    reward += (table?[cur + upCur] ?? 0)
   return reward
 }
 
@@ -144,7 +144,7 @@ let debriefingRowDefault = {
     return (isDebriefingFull || !this.showOnlyWhenFullResult) && (isTooltip || !this.isShowOnlyInTooltips)
   }
   isVisibleWhenEmpty = function() { return this.showEvenEmpty }
-  getName = function() { return loc(getTblValue("text", this,$"debriefing/{this.id}")) }
+  getName = function() { return loc((this?.text ?? $"debriefing/{this.id}")) }
   getNameIcon = null
 }
 
@@ -429,15 +429,15 @@ debriefingRows = [
     }
     tooltipComment = function() {
       let texts = []
-      let tournamentWp   = getTblValue("wpTournamentBaseReward",   debriefingResult.exp, 0)
-      let tournamentGold = getTblValue("goldTournamentBaseReward", debriefingResult.exp, 0)
-      let goldTotal = getTblValue("goldTotal",   debriefingResult.exp, 0)
+      let tournamentWp   = (debriefingResult.exp?.wpTournamentBaseReward ?? 0)
+      let tournamentGold = (debriefingResult.exp?.goldTournamentBaseReward ?? 0)
+      let goldTotal = (debriefingResult.exp?.goldTotal ?? 0)
       if (tournamentWp || tournamentGold)
         texts.append("".concat(loc("debriefing/tournamentBaseReward"), loc("ui/colon"), Cost(tournamentWp, tournamentGold)))
       else if (goldTotal)
         texts.append("".concat(loc("chapters/training"), loc("ui/colon"), Cost(0, goldTotal)))
-      let raceWp = getTblValue("wpRace",  debriefingResult.exp, 0)
-      let raceRp = getTblValue("expRace", debriefingResult.exp, 0)
+      let raceWp = (debriefingResult.exp?.wpRace ?? 0)
+      let raceRp = (debriefingResult.exp?.expRace ?? 0)
       if (raceWp || raceRp)
         texts.append("".concat(loc("events/chapter/race"), loc("ui/colon"), Cost(raceWp, 0, 0, raceRp)))
       return texts.len() ? colorize("commonTextColor", "\n".join(texts, true)) : null
@@ -714,7 +714,7 @@ debriefingRows = [
 
                               local result = 0
                               foreach (logObj in logs) {
-                                result = getTblValue(this.id, logObj, 0)
+                                result = (logObj?[this.id] ?? 0)
                                 if (result > 0)
                                   break
                               }
@@ -773,7 +773,7 @@ debriefingRows = [
 
 
 foreach (idx, row in debriefingRows) {
-  if (type(row) != "table")
+  if (!(row instanceof Table))
     debriefingRows[idx] = { id = row }
   foreach (param, value in debriefingRowDefault)
     if (!(param in debriefingRows[idx]))
@@ -796,19 +796,19 @@ function updateDebriefingExpInvestmentData() {
   local gatheredTotalModsExp = 0
   local gatheredTotalUnitExp = 0
   foreach (_airName, airData in debriefingResult.exp.aircrafts) {
-    let expModuleTotal = getTblValue("expInvestModuleTotal", airData, 0)
+    let expModuleTotal = (airData?.expInvestModuleTotal ?? 0)
     airData.expModsTotal <- expModuleTotal
     gatheredTotalModsExp += expModuleTotal
 
-    let expUnitTotal = getTblValue("expInvestUnitTotal", airData, 0)
+    let expUnitTotal = (airData?.expInvestUnitTotal ?? 0)
     airData.expUnitTotal <- expUnitTotal
     gatheredTotalUnitExp += expUnitTotal
 
-    airData.expModuleCapped <- expModuleTotal != getTblValue("expInvestModule", airData, 0)
+    airData.expModuleCapped <- expModuleTotal != (airData?.expInvestModule ?? 0)
         
   }
 
-  let expTotal = getTblValue("expTotal", debriefingResult.exp, 0)
+  let expTotal = (debriefingResult.exp?.expTotal ?? 0)
   debriefingResult.exp.pctUnitTotal <- expTotal > 0 ? gatheredTotalUnitExp.tofloat() / expTotal : 0.0
 
   debriefingResult.exp.expModsTotal <- gatheredTotalModsExp
@@ -818,7 +818,7 @@ function updateDebriefingExpInvestmentData() {
 function getStatReward(row, currency, keysArray = []) {
   if (!keysArray.len()) { 
     let finalId = "".concat(currency, row.getRewardId())
-    return getTblValue(finalId, debriefingResult.exp, 0)
+    return (debriefingResult.exp?[finalId] ?? 0)
   }
 
   local result = 0
@@ -874,7 +874,7 @@ function recountDebriefingResult() {
     local isRowEmpty = true
     foreach (currency in ["wp", "exp", "gold"]) {
       let id = $"{currency}{row.getRewardId()}"
-      let result = getTblValue(id, debriefingResult.exp, 0)
+      let result = (debriefingResult.exp?[id] ?? 0)
       row[currency] <- result
       isRowEmpty = isRowEmpty && !result
     }
@@ -882,9 +882,9 @@ function recountDebriefingResult() {
     if (row.getValueFunc)
       row.value = row.getValueFunc()
     else if (row.customValueName)
-      row.value = getTblValue(row.customValueName, debriefingResult.exp, 0)
+      row.value = (debriefingResult.exp?[row.customValueName] ?? 0)
     else
-      row.value = getTblValue($"{row.rowType}{row.getRewardId()}", debriefingResult.exp, 0)
+      row.value = (debriefingResult.exp?[$"{row.rowType}{row.getRewardId()}"] ?? 0)
     isRowEmpty = isRowEmpty && !row.value
 
     let isHide = (row.showByValue && !row.showByValue(row.value))
@@ -933,8 +933,8 @@ function getDebriefingBaseTournamentReward() {
     currentRoomOnly = true
   })
   if (logs.len()) {
-    result.wp   = getTblValue("baseTournamentWp", logs[0], 0)
-    result.gold = getTblValue("baseTournamentGold", logs[0], 0)
+    result.wp   = (logs[0]?.baseTournamentWp ?? 0)
+    result.gold = (logs[0]?.baseTournamentGold ?? 0)
   }
 
   if (!result.isZero())
@@ -946,8 +946,8 @@ function getDebriefingBaseTournamentReward() {
     filters = { rewardType = ["TournamentReward"] }
   })
   if (logs.len()) {
-    result.wp   = getTblValue("wpEarned", logs[0], 0)
-    result.gold = getTblValue("goldEarned", logs[0], 0)
+    result.wp   = (logs[0]?.wpEarned ?? 0)
+    result.gold = (logs[0]?.goldEarned ?? 0)
   }
 
   return result
@@ -964,7 +964,7 @@ function getDebriefingActiveBoosters() {
   })
   foreach (logObj in logs) {
     local boosters = logObj?.affectedBoosters.activeBooster ?? []
-    if (type(boosters) != "array")
+    if (!(boosters instanceof Array))
       boosters = [boosters]
     if (boosters.len() > 0)
       return boosters
@@ -996,12 +996,12 @@ function getDebriefingActiveWager() {
     if (wagerIds != null)
       break
   }
-  if (wagerIds == null || (type(wagerIds) == "array" && wagerIds.len() == 0)) 
+  if (wagerIds == null || (wagerIds instanceof Array && wagerIds.len() == 0)) 
     return null
 
   let data = {
     wagerInventoryId = null
-    wagerShopId = type(wagerIds) == "array" ? wagerIds[0] : wagerIds 
+    wagerShopId = wagerIds instanceof Array ? wagerIds[0] : wagerIds 
     wagerResult = null
     wagerWpEarned = 0
     wagerGoldEarned = 0
@@ -1018,18 +1018,18 @@ function getDebriefingActiveWager() {
     currentRoomOnly = true
   })
   foreach (logObj in logs) {
-    let wagerShopId = getTblValue("id", logObj)
+    let wagerShopId = logObj?.id
     if (wagerShopId != data.wagerShopId)
       continue
-    let rewardType = getTblValue("rewardType", logObj)
+    let rewardType = logObj?.rewardType
     if (rewardType == null)
       continue
     data.wagerResult = rewardType
-    data.wagerInventoryId = getTblValue("uid", logObj)
-    data.wagerWpEarned = getTblValue("wpEarned", logObj, 0)
-    data.wagerGoldEarned = getTblValue("goldEarned", logObj, 0)
-    data.wagerNumWins = getTblValue("numWins", logObj, 0)
-    data.wagerNumFails = getTblValue("numFails", logObj, 0)
+    data.wagerInventoryId = logObj?.uid
+    data.wagerWpEarned = (logObj?.wpEarned ?? 0)
+    data.wagerGoldEarned = (logObj?.goldEarned ?? 0)
+    data.wagerNumWins = (logObj?.numWins ?? 0)
+    data.wagerNumFails = (logObj?.numFails ?? 0)
     break
   }
 
@@ -1051,7 +1051,7 @@ function getDebriefingEventId() {
     currentRoomOnly = true
   })
 
-  return logs.len() ? getTblValue("eventId", logs[0]) : null
+  return logs.len() ? logs[0]?.eventId : null
 }
 
 
@@ -1143,13 +1143,13 @@ function debriefingApplyFirstWinInDayMul(exp, debrResult) {
 }
 
 function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
-  let pveTrophyName = getTblValue("pveTrophyName", get_current_mission_info_cached())
+  let pveTrophyName = get_current_mission_info_cached()?.pveTrophyName
   if (u.isEmpty(pveTrophyName))
     return null
 
   let warpoints = get_warpoints_blk()
 
-  let isEnoughActivity = sessionActivity >= getTblValue("pveTrophyMinActivity", warpoints, 1)
+  let isEnoughActivity = sessionActivity >= (warpoints?.pveTrophyMinActivity ?? 1)
   let reachedTrophyName = isEnoughActivity ? get_pve_trophy_name(sessionTime, isSuccess) : null
   local receivedTrophyName = null
 
@@ -1164,10 +1164,10 @@ function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
     receivedTrophyName = (reachedTrophyName in trophyRewardsList) ? reachedTrophyName : null
   }
 
-  let victoryStageTime = getTblValue("pveTimeAwardWinVisual", warpoints, 1)
+  let victoryStageTime = (warpoints?.pveTimeAwardWinVisual ?? 1)
   let stagesTime = []
-  for (local i = 0; i <= getTblValue("pveTrophyMaxStage", warpoints, -1); i++) {
-    let time = getTblValue($"pveTimeAwardStage{i}", warpoints, -1)
+  for (local i = 0; i <= (warpoints?.pveTrophyMaxStage ?? -1); i++) {
+    let time = (warpoints?[$"pveTimeAwardStage{i}"] ?? -1)
     if (time > 0 && time < victoryStageTime)
       stagesTime.append(time)
   }
@@ -1203,7 +1203,7 @@ function getDebriefingGiftItemsInfo(skipItemId = null) {
   })
   foreach (logObj in logs)
     foreach (data in logObj) {
-      if (type(data) != "table" || !("itemDefId" in data))
+      if (!(data instanceof Table) || !("itemDefId" in data))
         continue
 
       res.append({
@@ -1326,7 +1326,7 @@ function gatherDebriefingResult() {
   debriefingResult.isMp <- is_multiplayer()
   debriefingResult.isReplay <- is_replay_playing()
   debriefingResult.sessionId <- get_mp_session_id_str()
-  debriefingResult.useFinalResults <- getTblValue("useFinalResults", get_current_mission_info_cached(), false)
+  debriefingResult.useFinalResults <- (get_current_mission_info_cached()?.useFinalResults ?? false)
   debriefingResult.mpTblTeams <- get_mp_tbl_teams()
   debriefingResult.unitTypesMask <- getRoomUnitTypesMask()
   debriefingResult.playersInfo <- clone getSessionLobbyPlayersInfo()
@@ -1382,7 +1382,7 @@ function gatherDebriefingResult() {
   debriefingResult.chatLog <- getGameChatLogText()
   debriefingResult.logForBanhammer <- getLogForBanhammer()
 
-  debriefingResult.exp.timBattleTime <- getTblValue("battleTime", debriefingResult.exp, 0)
+  debriefingResult.exp.timBattleTime <- (debriefingResult.exp?.battleTime ?? 0)
   debriefingResult.needRewardColumn <- false
   debriefingResult.mulsList <- []
 
@@ -1399,16 +1399,16 @@ function gatherDebriefingResult() {
   foreach (airName in aircraftsForDelete)
     debriefingResult.exp.aircrafts.$rawdelete(airName)
 
-  debriefingResult.exp["tntDamage"] <- getTblValue("numDamage", debriefingResult.exp, 0)
+  debriefingResult.exp["tntDamage"] <- (debriefingResult.exp?.numDamage ?? 0)
   foreach (_airName, airData in debriefingResult.exp.aircrafts)
-    airData["tntDamage"] <- getTblValue("numDamage", airData, 0)
+    airData["tntDamage"] <- (airData?.numDamage ?? 0)
 
   if (gameType & GT_RACE) {
     debriefingResult.exp.ptmBestLap <- get_race_best_lap_time()
     debriefingResult.exp.ptmLapTimesArray <- get_race_lap_times()
   }
 
-  let sessionTime = getTblValue("sessionTime", debriefingResult.exp, 0)
+  let sessionTime = (debriefingResult.exp?.sessionTime ?? 0)
   local timePlayed = 0.0
   foreach (_airName, airData in debriefingResult.exp.aircrafts) {
     timePlayed += (airData.sessionTime + 0.5).tointeger().tofloat()
@@ -1428,11 +1428,11 @@ function gatherDebriefingResult() {
   let trournamentBaseReward = getDebriefingBaseTournamentReward()
   debriefingResult.exp.wpTournamentBaseReward <- trournamentBaseReward.wp
   debriefingResult.exp.goldTournamentBaseReward <- trournamentBaseReward.gold
-  debriefingResult.exp.expMission <- getTblValue("expMission", exp, 0) + getTblValue("expRace", exp, 0)
-  debriefingResult.exp.wpMission <- getTblValue("wpMission", exp, 0) + getTblValue("wpRace", exp, 0)
-  debriefingResult.exp.expSkillBonus <- getTblValue("expSkillBonusTotal", exp, 0)
+  debriefingResult.exp.expMission <- (exp?.expMission ?? 0) + (exp?.expRace ?? 0)
+  debriefingResult.exp.wpMission <- (exp?.wpMission ?? 0) + (exp?.wpRace ?? 0)
+  debriefingResult.exp.expSkillBonus <- (exp?.expSkillBonusTotal ?? 0)
   gatherReturnSpawnCost()
-  let wpTotal = getTblValue("wpTotal", debriefingResult.exp, 0)
+  let wpTotal = (debriefingResult.exp?.wpTotal ?? 0)
   if (wpTotal >= 0)
     debriefingResult.exp.wpTotal <- wpTotal + trournamentBaseReward.wp + debriefingResult.exp.wpReturnSpawnCost
 
@@ -1464,18 +1464,18 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
       foreach (ut in unitTypes.types)
         list.append([$"expInvestUnitTotal{ut.name}"])
     foreach (id in list)
-      if (getTblValue(id, data, 0) > 0)
+      if ((data?[id] ?? 0) > 0)
         data[id] += totalVirtPremAccExp
   }
 
   if (isRoot)
     foreach (ut in unitTypes.types) {
       let typeName = ut.name
-      let unitId = getTblValue($"investUnitName{typeName}", data, "")
+      let unitId = (data?[$"investUnitName{typeName}"] ?? "")
       if (u.isEmpty(unitId))
         continue
       let unitVirtPremAccExp = data?.aircrafts[unitId].tblTotal.virtPremAccExp ?? 0
-      if (unitVirtPremAccExp > 0 && getTblValue($"expInvestUnit{typeName}", data, 0) > 0)
+      if (unitVirtPremAccExp > 0 && (data?[$"expInvestUnit{typeName}"] ?? 0) > 0)
         data[$"expInvestUnit{typeName}"] += unitVirtPremAccExp
     }
 
@@ -1486,13 +1486,13 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
     if ((rowTbl?.len() ?? 0) == 0)
       continue
     foreach (suffix in [ "Exp", "Wp" ]) {
-      let virtPremAcc = getTblValue($"virtPremAcc{suffix}", rowTbl, 0)
+      let virtPremAcc = (rowTbl?[$"virtPremAcc{suffix}"] ?? 0)
       if (virtPremAcc <= 0)
         continue
       rowTbl[$"premAcc{suffix}"] <- virtPremAcc
 
       let precalcResultId = $"{suffix.tolower()}{row.getRewardId()}"
-      let origFinal = getTblValue(precalcResultId, data, 0)
+      let origFinal = (data?[precalcResultId] ?? 0)
       if (origFinal >= 0) {
         data[$"noPremAcc{suffix}"] <- origFinal
         data[precalcResultId] += virtPremAcc

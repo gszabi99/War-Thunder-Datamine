@@ -4,7 +4,6 @@ require ecs
 require math
 require math.base
 require app
-require DagorDebug3D
 require DagorMath
 require AnimV20
 require Dacoll
@@ -411,7 +410,7 @@ def private human_point_order_get_positional_order(pose : int; subtype : int; va
 
 
 def private human_point_order_try_find_peekout_position(var in_out_pos : float3&; var out_dir : float3&; var out_cover_pos : float3&; trace_params : TraceSightDistanceParams;
-                                                        forw_pos : float3; forw_dir : float3; look_dir : float3; look_corner_dist : float; var trace_handle : TraceMeshFaces&)
+                                                        forw_pos : float3; forw_dir : float3; look_dir : float3; look_corner_dist : float; trace_handle : TraceMeshFaces&)
   let PEEKOUT_LEAN_DIST = 0.2
   let PEEKOUT_LOOK_CORNER_DIST = 3.0
   let PEEKOUT_SEARCH_DIST = 0.6
@@ -585,7 +584,7 @@ def private human_point_order_get_overwatch_auto_look_point(from_pos : float3; o
 def private human_point_order_correct_positional_order(human_eid : EntityId; from_pos : float3; to_pos : float3; base_dir : float3; pose : int;
                                                        var current_turn_counter : int&;
                                                        var high_traces_dists : FloatList&;
-                                                       var trace_handle : TraceMeshFaces&)
+                                                       trace_handle : TraceMeshFaces&)
   var leaderPos = float3()
   query(human_eid) <| $ [es] (transform : float3x4)
     leaderPos = transform[3]

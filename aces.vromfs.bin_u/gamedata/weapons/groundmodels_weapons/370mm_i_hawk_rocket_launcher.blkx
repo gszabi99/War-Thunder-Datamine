@@ -99,7 +99,12 @@
     },
     "tags": {},
     "rocket": {
+      "dragCx": 0.018,
+      "iconType": "missile_type_b_air_to_air_midrange",
+      "useStartSpeed": true,
+      "price": 3000.0,
       "statType": "hydra",
+      "maxDeltaAngle": 0.0,
       "caliber": 0.37,
       "length": 5.08,
       "CxK": 1.05,
@@ -116,7 +121,6 @@
       "force": 83900.0,
       "force1": 12400.0,
       "timeLife": 105.0,
-      "useStartSpeed": true,
       "machMax": 4.0,
       "maxDistance": 110000.0,
       "minDistance": 30.0,
@@ -124,6 +128,9 @@
       "loadFactorMax": 20.0,
       "guidanceType": "radar",
       "guidanceSfx": "alarm_spin_scan",
+      "explosiveType": "pbxn_3",
+      "explosiveMass": 36.2874,
+      "warheadMass": 74.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -133,31 +140,10 @@
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aam",
-      "explosiveType": "pbxn_3",
-      "explosiveMass": 36.2874,
-      "maxDeltaAngle": 0.0,
-      "dragCx": 0.018,
-      "distanceFuse": false,
-      "hitPowerMult": 400.0,
-      "fuseDelayDist": 1.0,
-      "explodeTreshold": [
-        0.1,
-        0.01
-      ],
       "hasProximityFuse": true,
-      "explodeHitPower": 550.0,
-      "explodeArmorPower": 75.0,
-      "explodeRadius": [
-        1.0,
-        3.5
-      ],
-      "shutterDamage": true,
-      "shutterDamageRadius": 17.0,
-      "shutterAmount": 2000,
-      "shutterArmorPower": 12.0,
-      "shutterHit": 10.0,
-      "price": 3000.0,
-      "iconType": "missile_type_b_air_to_air_midrange",
+      "fuseDelayDist": 0.4,
+      "explodeTreshold": 0.05,
+      "distanceFuse": false,
       "explosionEffect": "explosion_midair_rocket_medium",
       "groundCollisionEffect": "hit_206_290mm_dirt_he",
       "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -182,18 +168,14 @@
       "startSpeed": 20.0,
       "endSpeed": 1000.0,
       "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
-      "mesh": "mim_23_hawk_missile",
-      "arcadeProp": {
-        "finsAoaHor": 0.1,
-        "finsAoaVer": 0.1
-      },
+      "mesh": "mim_23_hawk_missile_deployed",
       "guidance": {
-        "warmUpTime": 0.5,
-        "workTime": 100.0,
         "uncageBeforeLaunch": true,
         "lockAfterLaunch": true,
         "useTargetVel": true,
         "lockTimeOut": 0.75,
+        "warmUpTime": 0.5,
+        "workTime": 100.0,
         "inertialNavigation": true,
         "afterLaunchSpeedUp": 200.0,
         "breakLockMaxTime": 10.0,
@@ -491,7 +473,7 @@
           "segment": [
             {
               "radiusScale": 0.75,
-              "penetrationScale": 1.5,
+              "penetrationScale": 2.5,
               "damageScale": 1.5,
               "angles": [
                 0.0,
@@ -501,7 +483,7 @@
             },
             {
               "radiusScale": 0.33,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.0,
               "damageScale": 1.0,
               "angles": [
                 20.0,
@@ -511,7 +493,7 @@
             },
             {
               "radiusScale": 0.5,
-              "penetrationScale": 1.5,
+              "penetrationScale": 2.85,
               "damageScale": 1.5,
               "angles": [
                 60.0,
@@ -521,7 +503,7 @@
             },
             {
               "radiusScale": 1.0,
-              "penetrationScale": 1.5,
+              "penetrationScale": 2.85,
               "damageScale": 1.5,
               "angles": [
                 75.0,
@@ -531,7 +513,7 @@
             },
             {
               "radiusScale": 0.5,
-              "penetrationScale": 1.5,
+              "penetrationScale": 2.5,
               "damageScale": 1.5,
               "angles": [
                 100.0,
@@ -541,7 +523,7 @@
             },
             {
               "radiusScale": 0.33,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.0,
               "damageScale": 1.0,
               "angles": [
                 120.0,
@@ -551,7 +533,7 @@
             },
             {
               "radiusScale": 0.3,
-              "penetrationScale": 1.0,
+              "penetrationScale": 2.0,
               "damageScale": 0.8,
               "angles": [
                 160.0,
@@ -565,7 +547,7 @@
           "breachConeAngle": 45.0
         },
         "explosive": {
-          "radius": 0.15,
+          "radius": 0.25,
           "offset": 0.9
         }
       },
@@ -589,11 +571,11 @@
       },
       "hitpower": {
         "HitPower0m": [
-          400.0,
+          1.0,
           500.0
         ],
         "HitPower10000m": [
-          400.0,
+          0.5,
           10000.0
         ]
       },
@@ -1141,7 +1123,12 @@
       },
       "tags": {},
       "rocket": {
+        "dragCx": 0.018,
+        "iconType": "missile_type_b_air_to_air_midrange",
+        "useStartSpeed": true,
+        "price": 3000.0,
         "statType": "hydra",
+        "maxDeltaAngle": 0.0,
         "caliber": 0.37,
         "length": 5.08,
         "CxK": 1.05,
@@ -1158,7 +1145,6 @@
         "force": 83900.0,
         "force1": 12400.0,
         "timeLife": 105.0,
-        "useStartSpeed": true,
         "machMax": 4.0,
         "maxDistance": 110000.0,
         "minDistance": 30.0,
@@ -1166,6 +1152,9 @@
         "loadFactorMax": 20.0,
         "guidanceType": "radar",
         "guidanceSfx": "alarm_spin_scan",
+        "explosiveType": "pbxn_3",
+        "explosiveMass": 36.2874,
+        "warheadMass": 74.0,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_ground",
@@ -1175,31 +1164,10 @@
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "aam",
-        "explosiveType": "pbxn_3",
-        "explosiveMass": 36.2874,
-        "maxDeltaAngle": 0.0,
-        "dragCx": 0.018,
-        "distanceFuse": false,
-        "hitPowerMult": 400.0,
-        "fuseDelayDist": 1.0,
-        "explodeTreshold": [
-          0.1,
-          0.01
-        ],
         "hasProximityFuse": true,
-        "explodeHitPower": 550.0,
-        "explodeArmorPower": 75.0,
-        "explodeRadius": [
-          1.0,
-          3.5
-        ],
-        "shutterDamage": true,
-        "shutterDamageRadius": 17.0,
-        "shutterAmount": 2000,
-        "shutterArmorPower": 12.0,
-        "shutterHit": 10.0,
-        "price": 3000.0,
-        "iconType": "missile_type_b_air_to_air_midrange",
+        "fuseDelayDist": 0.4,
+        "explodeTreshold": 0.05,
+        "distanceFuse": false,
         "explosionEffect": "explosion_midair_rocket_medium",
         "groundCollisionEffect": "hit_206_290mm_dirt_he",
         "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -1224,18 +1192,14 @@
         "startSpeed": 20.0,
         "endSpeed": 1000.0,
         "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
-        "mesh": "mim_23_hawk_missile",
-        "arcadeProp": {
-          "finsAoaHor": 0.1,
-          "finsAoaVer": 0.1
-        },
+        "mesh": "mim_23_hawk_missile_deployed",
         "guidance": {
-          "warmUpTime": 0.5,
-          "workTime": 100.0,
           "uncageBeforeLaunch": true,
           "lockAfterLaunch": true,
           "useTargetVel": true,
           "lockTimeOut": 0.75,
+          "warmUpTime": 0.5,
+          "workTime": 100.0,
           "inertialNavigation": true,
           "afterLaunchSpeedUp": 200.0,
           "breakLockMaxTime": 10.0,
@@ -1533,7 +1497,7 @@
             "segment": [
               {
                 "radiusScale": 0.75,
-                "penetrationScale": 1.5,
+                "penetrationScale": 2.5,
                 "damageScale": 1.5,
                 "angles": [
                   0.0,
@@ -1543,7 +1507,7 @@
               },
               {
                 "radiusScale": 0.33,
-                "penetrationScale": 1.0,
+                "penetrationScale": 2.0,
                 "damageScale": 1.0,
                 "angles": [
                   20.0,
@@ -1553,7 +1517,7 @@
               },
               {
                 "radiusScale": 0.5,
-                "penetrationScale": 1.5,
+                "penetrationScale": 2.85,
                 "damageScale": 1.5,
                 "angles": [
                   60.0,
@@ -1563,7 +1527,7 @@
               },
               {
                 "radiusScale": 1.0,
-                "penetrationScale": 1.5,
+                "penetrationScale": 2.85,
                 "damageScale": 1.5,
                 "angles": [
                   75.0,
@@ -1573,7 +1537,7 @@
               },
               {
                 "radiusScale": 0.5,
-                "penetrationScale": 1.5,
+                "penetrationScale": 2.5,
                 "damageScale": 1.5,
                 "angles": [
                   100.0,
@@ -1583,7 +1547,7 @@
               },
               {
                 "radiusScale": 0.33,
-                "penetrationScale": 1.0,
+                "penetrationScale": 2.0,
                 "damageScale": 1.0,
                 "angles": [
                   120.0,
@@ -1593,7 +1557,7 @@
               },
               {
                 "radiusScale": 0.3,
-                "penetrationScale": 1.0,
+                "penetrationScale": 2.0,
                 "damageScale": 0.8,
                 "angles": [
                   160.0,
@@ -1607,7 +1571,7 @@
             "breachConeAngle": 45.0
           },
           "explosive": {
-            "radius": 0.15,
+            "radius": 0.25,
             "offset": 0.9
           }
         },
@@ -1631,11 +1595,11 @@
         },
         "hitpower": {
           "HitPower0m": [
-            400.0,
+            1.0,
             500.0
           ],
           "HitPower10000m": [
-            400.0,
+            0.5,
             10000.0
           ]
         },

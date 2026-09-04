@@ -1,9 +1,10 @@
+import "DataBlock" as DataBlock
+from "dagor.localize" import getLocTextForLang
+from "string" import split_by_chars
 from "%scripts/dagui_natives.nut" import get_localization_blk_copy
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { getLocTextForLang } = require("dagor.localize")
-let DataBlock = require("DataBlock")
-let { split_by_chars } = require("string")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let {
   getPreferredVersion = @() -1
@@ -15,7 +16,7 @@ local unlocksPunctuationWithoutSpace = ","
 let setUnlocksPunctuationWithoutSpace = @(p)
   unlocksPunctuationWithoutSpace = p
 
-let activityFeedRequestLocParams = freeze({
+const activityFeedRequestLocParams = {
   player        = "$USER_NAME_OR_ID"
   count         = "$STORY_COUNT"
   onlineUserId  = "$ONLINE_ID"
@@ -23,7 +24,7 @@ let activityFeedRequestLocParams = freeze({
   titleName     = "$TITLE_NAME"
   fiveStarValue = "$FIVE_STAR_VALUE"
   sourceCount   = "$SOURCE_COUNT"
-})
+}
 
 function getLocIdsArray(keyValue) {
   if (keyValue == null)
@@ -62,7 +63,7 @@ function getLocalizedTextWithAbbreviation(locId) {
   let output = {}
   for (local i = 0; i < abbreviationsList.paramCount(); i++) {
     let param = abbreviationsList.getParamValue(i)
-    if (type(param) != "string")
+    if (!(param instanceof String))
       continue
 
     let abbrevName = abbreviationsList.getParamName(i)

@@ -121,7 +121,7 @@ def human_weap_update_es(info : ParallelUpdateFrameDelayed;
                          var transform : float3x4&;
                          human_weap__weapModActivateStartTime : float;
                          human_weap__weapModActivateFinishTime : float;
-                         var human_weap__gunEids : EidList;
+                         human_weap__gunEids : EidList;
                          var human_weap__throwMode : bool&;
                          unit__ref : UnitRef)
   if !isAlive || isDowned || unit__ref.unit.isDelayed || human_net_phys.phys.currentState |> human_phys_state_attachedToLadder

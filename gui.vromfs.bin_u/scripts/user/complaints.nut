@@ -1,8 +1,8 @@
+from "dagor.time" import get_time_msec
+from "multiplayer" import get_mp_session_id_str
 from "%scripts/dagui_library.nut" import *
 
 let { is_myself_anyof_moderators } = require("%scripts/utils_sa.nut")
-let { get_time_msec } = require("dagor.time")
-let { get_mp_session_id_str } = require("multiplayer")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const timeToComplainExpiredMS = 900000 

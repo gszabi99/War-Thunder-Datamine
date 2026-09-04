@@ -1,46 +1,39 @@
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%sqstd/math.nut" import is_bit_set, number_of_set_bits
+from "controls" import emulateShortcut, isXInputDevice
+from "hudState" import getHudUnitType
+from "guiMission" import get_mission_difficulty_int
+from "eventbus" import eventbus_subscribe, eventbus_unsubscribe
+from "vehicleModel" import hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns, hasCountermeasureSystemIRCM, hasCollimatorSight
+  , hasSightStabilization, canSwitchCockpitSightMode, hasCCRPSightMode, hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision
+  , hasHelmetDesignator, hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem, getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons
+  , hasAiGunners, hasGunStabilizer, hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview
+  , hasOpticsFps, hasTvOpticalGuidance, hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask
+  , hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride, hasMfdZoomLevels
+from "dagor.workcycle" import deferOnce
+from "weaponSelector" import has_secondary_weapons
+from "hudActionBarConst" import EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT
+from "mission" import get_mission_time
 from "%scripts/dagui_natives.nut" import request_voice_message_list, is_last_voice_message_list_for_squad
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
+from "%globalScripts/weaponConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { getCantUseVoiceMessagesReason } = require("%scripts/wheelmenu/voiceMessages.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
-let { emulateShortcut, isXInputDevice } = require("controls")
-let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
-let { get_mission_difficulty_int } = require("guiMission")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitPresets } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { eventbus_subscribe, eventbus_unsubscribe } = require("eventbus")
-let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasCountermeasureFlareGuns,
-  hasCountermeasureSystemIRCM, hasCollimatorSight, hasSightStabilization, canSwitchCockpitSightMode, hasCCRPSightMode,
-  hasRocketsBallisticComputer, hasCannonsBallisticComputer, hasLaserDesignator, hasNightVision, hasHelmetDesignator,
-  hasInfraredProjector, isTerraformAvailable, canUseRangefinder, hasMissileLaunchWarningSystem,
-  getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
-  hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview, hasOpticsFps, hasTvOpticalGuidance,
-  hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
-  hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride, hasMfdZoomLevels
-} = require("vehicleModel")
-let { deferOnce } = require("dagor.workcycle")
-let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
+let getHandler = @() handlersManager.findHandlerClassInScene(get_gui_handler("multifuncMenuHandler"))
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
-let { has_secondary_weapons } = require("weaponSelector")
 let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
-let { canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenade, canMateAttackVehicle, canGiveOrders,
-  commandFragGrenade, commandSmokeGrenade, commandFlashGrenade, commandAttackVehicle, cancelAllCommandsForSelectedBot,
-  cancelAllCommandsForSquad, isAnyPersonalOrderSet, canCancelMateOrder
-} = require("%scripts/hud/humanCommandsUtils.nut")
+let { canMateThrowFragGrenade, canMateThrowSmokeGrenade, canMateThrowFlashGrenade, canMateAttackVehicle, canGiveOrders, commandFragGrenade, commandSmokeGrenade, commandFlashGrenade, commandAttackVehicle, cancelAllCommandsForSelectedBot, cancelAllCommandsForSquad, isAnyPersonalOrderSet, canCancelMateOrder } = require("%scripts/hud/humanCommandsUtils.nut")
 
-let { canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus,
-  hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive,
-  sightPresetsInfo, selectSightPreset, needShowWeaponMenu
-} = require("%scripts/hud/humanWeaponUtils.nut")
+let { canSwitchFireMods, switchFireModOn, canSwithchOnUnbarrelLauncher, unbarrelSwitchStatus, hasLaserMod, laserModActive, hasFlashlightMod, flashlightModActive, sightPresetsInfo, selectSightPreset, needShowWeaponMenu } = require("%scripts/hud/humanWeaponUtils.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
-let { EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT } = require("hudActionBarConst")
-let { get_mission_time } = require("mission")
 
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])

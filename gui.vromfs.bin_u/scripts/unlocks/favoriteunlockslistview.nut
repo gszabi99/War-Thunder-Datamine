@@ -1,16 +1,17 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { updateProgress, getSubunlockCfg, fillSimplifiedUnlockInfo
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+let { updateProgress, getSubunlockCfg, fillSimplifiedUnlockInfo } = require("%scripts/unlocks/unlocksViewModule.nut")
 
-gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
+let FavoriteUnlocksListView = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/unlocks/favoriteUnlocksList.blk"
   curFavoriteUnlocksBlk = null
@@ -85,3 +86,6 @@ gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.listContainer.getChild(idx - 1).getClone(this.listContainer, this)
   }
 }
+register_gui_handler("FavoriteUnlocksListView", FavoriteUnlocksListView)
+
+return { FavoriteUnlocksListView }

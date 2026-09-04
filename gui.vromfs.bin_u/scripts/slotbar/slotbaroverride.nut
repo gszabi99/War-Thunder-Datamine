@@ -1,19 +1,18 @@
+from "%sqStdLibs/helpers/u.nut" import isDataBlock, isEmpty, isEqual
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%sqstd/datablock.nut" import eachBlock, convertBlk
+from "dagor.random" import rnd
 from "%scripts/dagui_natives.nut" import is_country_available
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { isDataBlock, isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getEventMission } = require("%scripts/events/eventsState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { eachBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { rnd } = require("dagor.random")
 
 let overrideSlotbarMissionName = mkWatched(persist, "overrideSlotbarMissionName", "") 
 let overrideSlotbar = persist("overrideSlotbar", @() { value = null }) 
@@ -192,7 +191,7 @@ function getEventSlotbarHint(event, country) {
   if (!needShowOverrideSlotbar(event))
     return ""
 
-  let overrideSlotbarData = getSlotbarOverrideData(events.getEventMission(event.name), event)
+  let overrideSlotbarData = getSlotbarOverrideData(getEventMission(event.name), event)
   if ((overrideSlotbarData?.len() ?? 0) == 0)
     return ""
 

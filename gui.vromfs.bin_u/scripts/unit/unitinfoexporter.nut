@@ -1,23 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "language" import getLocalLanguage
+from "dagor.time" import get_time_msec
+from "string" import format
+from "unitCalculcation" import export_calculations_parameters_for_wta
+from "%sqstd/json.nut" import saveJson
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
+from "%scripts/webRPC.nut" import webRpcRegister
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getLocalLanguage } = require("language")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX, processWeaponPresets,
-  processWeaponPilons, g_unit_info_type } = require("%scripts/unit/unitInfoType.nut")
+let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX, processWeaponPresets, processWeaponPilons, g_unit_info_type } = require("%scripts/unit/unitInfoType.nut")
 let { checkUnitModsUpdate } = require("%scripts/unit/unitChecks.nut")
-let { export_calculations_parameters_for_wta } = require("unitCalculcation")
-let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
-let { register_command } = require("console")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 
 const ARMY_GROUP = "army"
@@ -29,7 +28,7 @@ const EXTENDED_GROUP = "extended"
 
 let EXCLUDED_TAGS = ["type_exoskeleton"]
 
-let class ExporterStatus {
+class ExporterStatus {
   static DETAILS_FIELD = "details"
   static SUCCESS_FIELD = "success"
 
@@ -74,7 +73,7 @@ let class ExporterStatus {
   }
 }
 
-let class UnitInfoExporter {
+class UnitInfoExporter {
   static EXPORT_TIME_OUT = 20000
   static FRAME_TIME_OUT = 2000
   static activeUnitInfoExporters = []
@@ -400,7 +399,7 @@ function printWeaponPilonsInfo(unitName) {
   processWeaponPilons(unitName, debugLog)
 }
 
-web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
+webRpcRegister("exportUnitInfo", exportUnitInfo)
 
 register_command(@(unitName) printUnitPresetsInfo(unitName), "debug.print_unit_presets")
 register_command(@(unitName) printWeaponPilonsInfo(unitName), "debug.print_pilons")

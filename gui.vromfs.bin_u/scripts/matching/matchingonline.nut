@@ -1,15 +1,15 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
+from "%sqstd/platform.nut" import is_console
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
 let { canLogout, startLogout } = require("%scripts/login/logout.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
-let { eventbus_subscribe } = require("eventbus")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 let { isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
-let { is_console } = require("%sqstd/platform.nut")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 

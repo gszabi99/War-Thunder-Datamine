@@ -1,41 +1,36 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%globalScripts/chatState.nut" import ReputationType
+from "%sqstd/platform.nut" import isPC
+from "guiMission" import get_player_army_for_hud
+from "string" import format
+from "replays" import is_replay_playing
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "chat" import chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL
+from "mission" import get_mplayer_by_userid
+from "scriptRespondent" import registerRespondent
+from "dagor.workcycle" import defer
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 from "hudState" import is_hud_visible
 from "gameplayBinding" import getIsInFlightMenu, isInFlight
 
-let { isPC } = require("%sqstd/platform.nut")
-let { get_player_army_for_hud } = require("guiMission")
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { enableObjsByTable, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { enableObjsByTable, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { onInternalMessage, getLogForBanhammer, chatSystemMessage
-} = require("%scripts/chat/mpChatModel.nut")
-let { unblockMessageInLog, getMpChatLog, getCurrentModeId, getMaxLogSize,
-  validateCurMode, hasEnableChatMode, setModeId, isActiveMpChat, setActiveMpChat,
-  getScenes, appendScene, sceneIdxPID, cleanScenesList, findSceneDataByScene,
-  findSceneDataByObj, doForAllScenes, canEnableChatInput
-} = require("%scripts/chat/mpChatState.nut")
+let { onInternalMessage, getLogForBanhammer, chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
+let { unblockMessageInLog, getMpChatLog, getCurrentModeId, getMaxLogSize, validateCurMode, hasEnableChatMode, setModeId, isActiveMpChat, setActiveMpChat, getScenes, appendScene, sceneIdxPID, cleanScenesList, findSceneDataByScene, findSceneDataByObj, doForAllScenes, canEnableChatInput } = require("%scripts/chat/mpChatState.nut")
 let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
-let { is_replay_playing } = require("replays")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL
-} = require("chat")
-let { get_mplayer_by_userid } = require("mission")
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { registerRespondent } = require("scriptRespondent")
-let { defer } = require("dagor.workcycle")
-let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
+let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
@@ -43,7 +38,6 @@ let { get_option } = require("%scripts/options/optionsExt.nut")
 let { filterMessageText, getPlayerTag, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { hasChatReputationFilter, getReputationBlockMessage } = require("%scripts/user/usersReputation.nut")
-let { ReputationType } = require("%globalScripts/chatState.nut")
 
 enum mpChatView {
   CHAT
@@ -310,7 +304,7 @@ function updatePrompt(sceneData) {
   let prompt = scene.findObject("chat_prompt")
   if (prompt) {
     prompt.chatMode = curMode.name
-    if (getTblValue("no_text", prompt, "no") != "yes")
+    if ((prompt?.no_text ?? "no") != "yes")
       prompt.setValue(curMode.getNameText())
     if ("tooltip" in prompt)
       prompt.tooltip = "".concat(loc("chat/to"), loc("ui/colon"), curMode.getDescText())
@@ -624,7 +618,7 @@ addListenersWithoutEnv({
   }
 
   function MpChatInputRequested(params) {
-    let activate = getTblValue("activate", params, false)
+    let activate = (params?.activate ?? false)
     if (!activate || !canEnableChatInput())
       return
 

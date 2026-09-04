@@ -1,19 +1,20 @@
+from "%globalScripts/modeXrayLib.nut" import getPartType
+from "string" import format
+from "console" import register_command, command
+from "json" import object_to_json_string
+from "blkGetters" import get_wpcost_blk
+from "io" import file
+from "vehicleModel" import getUnitFileName
+from "hangar" import DM_VIEWER_NONE, DM_VIEWER_XRAY
+from "dagor.fs" import mkpath, file_exists
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+from "%sqstd/datablock.nut" import eachBlock
 from "%scripts/dagui_library.nut" import *
-let { format } = require("string")
-let { register_command, command } = require("console")
-let { object_to_json_string } = require("json")
-let { get_wpcost_blk } = require("blkGetters")
-let { file } = require("io")
-let { getUnitFileName } = require("vehicleModel")
-let { DM_VIEWER_NONE, DM_VIEWER_XRAY } = require("hangar")
-let { mkpath, file_exists } = require("dagor.fs")
-let { get_time_msec } = require("dagor.time")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { getPartType } = require("%globalScripts/modeXrayLib.nut")
+
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
-let progressId = "unitsXray"
+const progressId = "unitsXray"
 local loadAllItemsProgress = null
 let onFinishActions = []
 
@@ -123,7 +124,7 @@ function exportXrayPartsDescs(nullOrPartIdWhitelist = null, nullOrUnitIdWhitelis
     dmViewer.isDebugBatchExportProcess = false
     dmViewer.toggle(DM_VIEWER_NONE)
 
-    let filePath = "export/unitsXray.json"
+    const filePath = "export/unitsXray.json"
     mkpath(filePath)
     let fp = file(filePath, "wt+")
     fp.writestring(object_to_json_string(res, true))

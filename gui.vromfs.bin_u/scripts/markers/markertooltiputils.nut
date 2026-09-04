@@ -1,8 +1,9 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 
-let maxTooltipUnitsCount = 20
+const maxTooltipUnitsCount = 20
 
 function getSortedUnits(rawData) {
   let res = []

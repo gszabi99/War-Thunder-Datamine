@@ -1,6 +1,5 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
-
-let DataBlock = require("DataBlock")
 
 let saclosMissileBeaconIRSourceBand = mkWatched(persist, "saclosMissileBeaconIRSourceBand", 4)
 let reloadCooldownTimeByCaliber = mkWatched(persist, "reloadCooldownTimeByCaliber", {})

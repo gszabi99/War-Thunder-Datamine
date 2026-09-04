@@ -1,5 +1,4 @@
 require ecs
-require %game.events
 require %appGame.infantry.es.vehicle.vehicle_seats_common
 
 [es(tag=server, no_order)]

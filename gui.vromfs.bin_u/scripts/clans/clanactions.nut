@@ -1,25 +1,25 @@
-from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, set_char_cb, char_send_blk,
-  clan_request_accept_membership_request, clan_request_reject_membership_request, clan_action_blk,
-  clan_get_admin_editor_mode, clan_request_change_info_blk, clan_request_disband, clan_get_my_clan_id,
-  clan_request_dismiss_member, clan_request_edit_black_list, clan_request_my_info, clan_get_exp,
-  clan_request_sync_profile, sync_handler_simulate_request, chard_request_profile
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "penalty" as penalty
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "eventbus" import eventbus_subscribe
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import defer
+from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, set_char_cb, char_send_blk, clan_request_accept_membership_request, clan_request_reject_membership_request, clan_action_blk, clan_get_admin_editor_mode
+  , clan_request_change_info_blk, clan_request_disband, clan_get_my_clan_id, clan_request_dismiss_member, clan_request_edit_black_list, clan_request_my_info, clan_get_exp
+  , clan_request_sync_profile, sync_handler_simulate_request, chard_request_profile
 from "%scripts/dagui_library.nut" import *
-from "%scripts/contacts/contactsConsts.nut" import EPLX_CLAN
-from "%scripts/contacts/contactsConsts.nut" import contactEvent
+from "%scripts/contacts/contactsConsts.nut" import EPLX_CLAN, contactEvent
 from "%scripts/clans/clanState.nut" import is_in_clan, MY_CLAN_UPDATE_DELAY_MSEC, lastUpdateMyClanTime, myClanInfo
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
 let { openCommentModal } = require("%scripts/wndLib/commentModal.nut")
-let DataBlock  = require("DataBlock")
 let { getMyClanRights, getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 let { addContact } = require("%scripts/contacts/contactsManager.nut")
-let { contactsPlayers, contactsByGroups, getContactByName, clanUserTable
-} = require("%scripts/contacts/contactsListState.nut")
+let { contactsPlayers, contactsByGroups, getContactByName, clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
@@ -28,11 +28,7 @@ let { chatRooms } = require("%scripts/chat/chatStorage.nut")
 let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
 let { setSeenCandidatesBlk, parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
-let { get_time_msec } = require("dagor.time")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
-let penalty = require("penalty")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { defer } = require("dagor.workcycle")
 
 const CLAN_ID_NOT_INITED = ""
 
@@ -305,7 +301,7 @@ function requestMyClanData(forceUpdate = false) {
   }
 
   if (!forceUpdate && (myClanInfo.get()?.id ?? "-1") == myClanId)
-    if (get_time_msec() - lastUpdateMyClanTime.get() < -MY_CLAN_UPDATE_DELAY_MSEC)
+    if (get_time_msec() - lastUpdateMyClanTime.get() < MY_CLAN_UPDATE_DELAY_MSEC)
       return
 
   lastUpdateMyClanTime.set(get_time_msec())
@@ -408,7 +404,7 @@ addListenersWithoutEnv({
     lastClanId = CLAN_ID_NOT_INITED
     setSeenCandidatesBlk(null)
     cacheSquadronExp = 0
-    lastUpdateMyClanTime.set(MY_CLAN_UPDATE_DELAY_MSEC)
+    lastUpdateMyClanTime.set(-MY_CLAN_UPDATE_DELAY_MSEC)
   }
 }, g_listener_priority.DEFAULT_HANDLER)
 

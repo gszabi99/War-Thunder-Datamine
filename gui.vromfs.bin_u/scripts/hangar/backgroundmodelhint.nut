@@ -1,22 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%sqstd/string.nut" import endsWith
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "hangar" import hangar_get_current_unit_name
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "json" import parse_json
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { endsWith } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { hangar_get_current_unit_name } = require("hangar")
 let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
 let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
-  getModificationBulletsEffect
-} = require("%scripts/weaponry/bulletsInfo.nut")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
-let { openModalInfo, destroyModalInfo, getModalInfoByUnitId, isUseGamePad
-} = require("%scripts/modalInfo/modalInfo.nut")
+let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let { openModalInfo, destroyModalInfo, getModalInfoByUnitId, isUseGamePad } = require("%scripts/modalInfo/modalInfo.nut")
 let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
-let { parse_json } = require("json")
 
 let shellFocusedInHangar = Watched("")
 
@@ -30,14 +27,14 @@ let defData = {
   viewData = null
 }
 
-let delayedTooltipButtonParamsText = @"
-  on_pushed:t='::gcb.delayedTooltipPush'
-  on_hold_start:t='::gcb.delayedTooltipHoldStart'
-  on_hold_stop:t='::gcb.delayedTooltipHoldStop'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
+const delayedTooltipButtonParamsText = @"
+  on_pushed:t='gcb.delayedTooltipPush'
+  on_hold_start:t='gcb.delayedTooltipHoldStart'
+  on_hold_stop:t='gcb.delayedTooltipHoldStop'
+  on_hover:t='gcb.delayedTooltipHover'
+  on_unhover:t='gcb.delayedTooltipHover'
 "
-let shellClickButtonText = @"
+const shellClickButtonText = @"
 tdiv {
   id:t='shell_click_btn'
   size:t='pw, ph'

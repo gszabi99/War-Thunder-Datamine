@@ -1,29 +1,33 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "string" import format
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_gui_regional_blk, get_es_custom_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { WwOperationsListModal } = require("%scripts/worldWar/operations/handler/wwOperationsListModal.nut")
+let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
+let { TopMenuButtonsHandler } = require("%scripts/mainmenu/topMenuButtonsHandler.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
+let { move_mouse_on_child_by_value, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
-let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps,
-  getOperationById, isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { refreshGlobalStatusData,
-  actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps, getOperationById, isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { refreshGlobalStatusData, actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getUnlockLocName, getUnlockMainCondDesc, getUnlockNameText, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockLocName, getUnlockMainCondDesc, getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let wwAnimBgLoad = require("%scripts/worldWar/wwAnimBg.nut")
 let { addPopupOptList } = require("%scripts/worldWar/operations/handler/wwClustersList.nut")
@@ -32,21 +36,16 @@ let { getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.n
 let { isUnlockComplete } = require("%scripts/unlocks/unlocksModule.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
 let wwVehicleSetModal = require("%scripts/worldWar/operations/handler/wwVehicleSetModal.nut")
-let { get_charserver_time_sec } = require("chard")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { get_gui_regional_blk, get_es_custom_blk } = require("blkGetters")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { charRequestJson } = require("%scripts/tasker.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry
-} = require("%scripts/worldWar/worldWarCfgState.nut")
+let { getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarCfgState.nut")
 let wwTopMenuOperationMap = require("%scripts/worldWar/externalServices/wwTopMenuOperationMapConfig.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
@@ -56,13 +55,13 @@ let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatu
 
 const MY_CLUSRTERS = "ww/clusters"
 
-let WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
+const WW_DAY_SEASON_OVER_NOTICE = "worldWar/seasonOverNotice/day"
 local WW_SEASON_OVER_NOTICE_PERIOD_DAYS = 7
 
 dagui_propid_add_name_id("countryId")
 dagui_propid_add_name_id("mapId")
 
-gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("WwOperationsMapsHandler", class (BaseGuiHandlerWT) {
   sceneBlkName   = "%gui/worldWar/wwOperationsMaps.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "mainmenu/btnWorldwar"
@@ -124,7 +123,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.reinitScreen()
     let seenEntity = this.selMap?.name
     seenWWOperationAvailable.setListGetter(@() seenEntity ? [seenEntity] : [])
-    this.topMenuHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
+    this.topMenuHandlerWeak = TopMenuButtonsHandler.create(
       this.scene.findObject("topmenu_menu_panel"),
       this,
       wwTopMenuOperationMap,
@@ -525,7 +524,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!item)
       return
 
-    this.mapDescrObj = gui_handlers.WwMapDescription.link(this.scene.findObject("item_desc"), item, item,
+    this.mapDescrObj = WwMapDescription.link(this.scene.findObject("item_desc"), item, item,
       isCreateOperationMode ? {
         onJoinQueueCb = this.onJoinQueue.bindenv(this)
         onLeaveQueueCb = this.onLeaveQueue.bindenv(this)
@@ -901,7 +900,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function openOperationsListByMap(map) {
-    loadHandler(gui_handlers.WwOperationsListModal,
+    loadHandler(WwOperationsListModal,
       { map = map, isDescrOnly = !hasFeature("WWOperationsList") })
   }
 
@@ -1076,7 +1075,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -1264,4 +1263,4 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     
     this.updateWindow()
   }
-}
+})

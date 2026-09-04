@@ -151,7 +151,16 @@
         },
         "unitSetZeroAmmo": {
           "target": "all_players_squad",
-          "target_type": "canBomb"
+          "target_type": "canBomb",
+          "trigger": [
+            "bombs",
+            "rockets",
+            "guided bombs",
+            "atgm",
+            "aam",
+            "torpedoes",
+            "mines"
+          ]
         }
       },
       "else_actions": {}

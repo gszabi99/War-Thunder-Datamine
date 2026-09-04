@@ -1,18 +1,18 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers, RwrSignalHoldTimeInv, CurrentTime
+from "%rGui/planeState/planeFlyState.nut" import CompassValue
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/planeIlses/ilsConstants.nut" import metrToNavMile
+from "string" import format
+from "math" import sin, cos, PI
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-let { sin, cos, PI } = require("math")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrSignalHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
 
-let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
-let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
 
-let { metrToNavMile} = require("%rGui/planeIlses/ilsConstants.nut")
-
-let backGroundColor = Color(0, 0, 0, 255)
-let white = Color(255, 255, 255, 255)
+const backGroundColor = Color(0, 0, 0, 255)
+const white = Color(255, 255, 255, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -25,14 +25,14 @@ let styleText = {
 }
 
 function createCompass(gridStyle) {
-  let markAngleStep = 10.0
-  let markAngle = PI * markAngleStep / 180.0
+  const markAngleStep = 10.0
+  const markAngle = PI * markAngleStep / 180.0
   let markDashCount = (360.0 / markAngleStep).tointeger()
   let dotCommands = array(markDashCount / 3 * 2).map(
     @(_, i) [ VECTOR_ELLIPSE, 50 + cos(((i / 2) * 3 + 1 + (i % 2)) * markAngle) * 100, 50 + sin(((i / 2) * 3 + 1 + (i % 2)) * markAngle) * 100, 1, 1 ] )
   let dots = {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex(),
+    size = FLEX,
     color = white,
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
     fillColor = white
@@ -42,10 +42,10 @@ function createCompass(gridStyle) {
   local childrens = []
   childrens.append(dots)
 
-  let textAngleStep = 30.0
-  let textMarkAngle = PI * textAngleStep / 180.0
-  let textDashCount = 360.0 / textAngleStep
-  let compassFontSizeMult = 2.0
+  const textAngleStep = 30.0
+  const textMarkAngle = PI * textAngleStep / 180.0
+  const textDashCount = 360.0 / textAngleStep
+  const compassFontSizeMult = 2.0
   for (local i = 0; i < textDashCount; ++i) {
     let degrees = (i * textAngleStep).tointeger()
     local txt = ""
@@ -63,7 +63,7 @@ function createCompass(gridStyle) {
     childrens.append({
       rendObj = ROBJ_TEXT
       pos = [pw(sin(i * textMarkAngle) * 100), ph(-cos(i * textMarkAngle) * 100)],
-      size = flex(),
+      size = FLEX,
       color = white,
       font = styleText.font,
       fontSize = gridStyle.fontScale * styleText.fontSize * compassFontSizeMult,
@@ -79,7 +79,7 @@ function createCompass(gridStyle) {
   let gapCommands = array(markDashCount).map(@(_, i) [ VECTOR_ELLIPSE, 50 + cos(i * markAngle) * 100, 50 + sin(i * markAngle) * 100, (i % 3 == 0) ? 7 : 2, (i % 3 == 0) ? 7 : 2 ] )
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex(),
+    size = FLEX,
     color = backGroundColor,
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
     fillColor = backGroundColor
@@ -95,14 +95,14 @@ function createCompass(gridStyle) {
 }
 
 function createRwrGrid(gridStyle) {
-  let blue = Color(0, 128, 255, 255)
+  const blue = Color(0, 128, 255, 255)
   let gridLineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = white,
         lineWidth = gridLineWidth,
@@ -116,7 +116,7 @@ function createRwrGrid(gridStyle) {
         ]
       },
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = blue,
         lineWidth = gridLineWidth,
@@ -144,9 +144,9 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   let targetRadiusRel = calcRwrTargetRadius(target)
 
   let iconSizeMult = 0.2 * objectStyle.scale
-  let iconColor = Color(230, 20, 20, 255)
+  const iconColor = Color(230, 20, 20, 255)
 
-  let targetTypeFontSizeMult = 2.0
+  const targetTypeFontSizeMult = 2.0
   local targetTypeText = styleText.__merge({
     rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
@@ -177,21 +177,21 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 
   let iconBackground = @() {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = backGroundColor
     fillColor = backGroundColor
     lineWidth = baseLineWidth * (4 + 6) * objectStyle.lineWidthScale
     commands = iconCommands
   }
 
-  let iconBorderColor = white
+  const iconBorderColor = white
   let iconLineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
 
   let ageOpacity = Computed(@() (target.age * RwrSignalHoldTimeInv.get() < 0.25 ? 1.0 : 0.1))
   let icon = @() {
     watch = ageOpacity
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = iconColor
     opacity = ageOpacity.get()
     fillColor = 0
@@ -205,14 +205,14 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   let attack = target.track || target.launch ? @() {
     watch = [ageOpacity, attackOpacityRwr]
     opacity = ageOpacity.get() * attackOpacityRwr.get()
-    size = flex()
+    size = FLEX
     children = [
       {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = iconLineWidth
         color = iconBorderColor
         fillColor = iconBorderColor
-        size = flex()
+        size = FLEX
         commands = target.launch ? [
           [ VECTOR_RECTANGLE,
             target.x * targetRadiusRel * 100.0 - 0.5 * (iconSizeMult + launchMarkSize[0]) * 100.0,
@@ -249,7 +249,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
         lineWidth = iconLineWidth
         color = iconColor
         fillColor = 0
-        size = flex()
+        size = FLEX
         commands = [
           target.launch ? [ VECTOR_LINE, 0.0, 0.0, target.x * targetRadiusRel * 100.0, target.y * targetRadiusRel * 100.0 ] :
             [ VECTOR_LINE_DASHED, 0.0, 0.0, target.x * targetRadiusRel * 100.0, target.y * targetRadiusRel * 100.0, 5, 10 ]
@@ -259,8 +259,8 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   } : null
 
   return @() {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       iconBackground,
       targetType,
@@ -427,13 +427,13 @@ let settings = Computed(function() {
 function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
 
-let addInfoLargeFontSizeMult = 3.0
-let addInfoFontSizeMult = 2.0
+const addInfoLargeFontSizeMult = 3.0
+const addInfoFontSizeMult = 2.0
 
 function scope(scale, style) {
   return {
@@ -442,7 +442,7 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(7), ph(7)],
+        pos = const [pw(7), ph(7)],
         size = const [pw(80), ph(80)],
         children = [
           {
@@ -456,8 +456,8 @@ function scope(scale, style) {
 
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-120), ph(90)]
-            size = flex()
+            pos = const [pw(-120), ph(90)]
+            size = FLEX
             color = white
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -467,8 +467,8 @@ function scope(scale, style) {
           @() styleText.__merge({
             watch = ChaffsCount
             rendObj = ROBJ_TEXT
-            pos = [pw(-100), ph(90)]
-            size = flex()
+            pos = const [pw(-100), ph(90)]
+            size = FLEX
             color = white
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -477,8 +477,8 @@ function scope(scale, style) {
           }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-120), ph(100)]
-            size = flex()
+            pos = const [pw(-120), ph(100)]
+            size = FLEX
             color = white
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -488,8 +488,8 @@ function scope(scale, style) {
           @() styleText.__merge({
             watch = FlaresCount
             rendObj = ROBJ_TEXT
-            pos = [pw(-100), ph(100)]
-            size = flex()
+            pos = const [pw(-100), ph(100)]
+            size = FLEX
             color = white
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -499,9 +499,9 @@ function scope(scale, style) {
 
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(130), ph(-55)]
+            pos = const [pw(130), ph(-55)]
             color = white
-            size = flex()
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             fontSize = style.grid.fontScale * styleText.fontSize * addInfoFontSizeMult
@@ -510,8 +510,8 @@ function scope(scale, style) {
           @() styleText.__merge({
             watch = settings
             rendObj = ROBJ_TEXT
-            pos = [pw(130), ph(-40)]
-            size = flex()
+            pos = const [pw(130), ph(-40)]
+            size = FLEX
             color = white
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -520,8 +520,8 @@ function scope(scale, style) {
           }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(130), ph(-25)]
-            size = flex()
+            pos = const [pw(130), ph(-25)]
+            size = FLEX
             color = white
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
@@ -534,7 +534,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

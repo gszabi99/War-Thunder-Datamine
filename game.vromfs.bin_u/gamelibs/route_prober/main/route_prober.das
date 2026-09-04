@@ -73,7 +73,7 @@ def get_settings(param : string; fallback : int) : int
 
 
 def is_matching_experiment_enabled(chance : float) : bool
-  let session : uint64 = get_session_id()
+  let session : uint64 = get_session_id() 
   var seed : int = int(session)
   let r : float = _frnd(seed)
   return r < chance

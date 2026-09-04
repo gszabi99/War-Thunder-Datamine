@@ -1,25 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "guiOptions" import setGuiOptionsMode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
+from "types" import Array
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { VehiclesWindow, updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
+let { GenericOptions } = require("%scripts/genericOptions.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { setGuiOptionsMode } = require("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY
-} = require("%scripts/options/optionsExtNames.nut")
-let { sessionLobbyStatus, getRoomMembersCnt, getRoomSize, getSessionLobbyGameMode
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
+let { sessionLobbyStatus, getRoomMembersCnt, getRoomSize, getSessionLobbyGameMode } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { checkAndCreateGamemodeWnd } = require("%scripts/missions/startMissionsList.nut")
 let { matchSearchGm } = require("%scripts/missions/missionsStates.nut")
@@ -28,11 +28,10 @@ let { getRoomsInfoTbl } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { joinSessionLobbyFoundRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { buildMpTable, countWidthForMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
-let { updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
-gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
+register_gui_handler("SessionsList", class (GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
   sceneNavBlkName = "%gui/navSessionsList.blk"
   optionsContainer = "mp_coop_options"
@@ -176,7 +175,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   function updateSearchMsg() {
     let infoText = this.guiScene["info-text"]
     if (checkObj(infoText)) {
-      let show = (type(this.roomsList) != "array") || (this.roomsList.len() == 0)
+      let show = (!(this.roomsList instanceof Array)) || (this.roomsList.len() == 0)
       if (show)
         infoText.setValue(this.roomsListData.isNewest() ? loc("wait/sessionNone") : loc("wait/sessionSearch"))
       infoText.show(show)
@@ -379,8 +378,8 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   }
 
   function onVehiclesInfo(_obj) {
-    loadHandler(gui_handlers.VehiclesWindow, {
-      teamDataByTeamName = getTblValue("public", this.getCurRoom())
+    loadHandler(VehiclesWindow, {
+      teamDataByTeamName = this.getCurRoom()?.public
     })
   }
-}
+})

@@ -8,6 +8,7 @@ require DngHuman
 require DagorMath
 require DagorSystem
 require soundEvent
+require sound_utils_net.modules.sound_desc_common
 
 
 [es(tag=server, on_appear, REQUIRE=deadEntity)]
@@ -112,8 +113,7 @@ def reanimation_start_sound(evt : CmdStartReanimation;
                             human_reanimator__soundName : string;
                             human_sound__prefix : string = "";
                             is_watched_sound : bool)
-  let playerStr = is_watched_sound ? "player/" : "enemy/"
-  let path = "{human_sound__prefix}{playerStr}{human_reanimator__soundName}"
+  let path = "{human_sound__prefix}{get_watched_sound_event_folder(is_watched_sound)}/{human_reanimator__soundName}"
   play(human_reanimator__soundEvent, path, evt.reanimatedPos)
 
 

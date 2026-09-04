@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers
 
 module ast_boost shared public
@@ -81,8 +79,6 @@ def isExpression(t : TypeDeclPtr; top : bool = true) : bool {
     
     if (t == null) {
         return false
-    } elif (t.dim |> length != 0) {
-        return false
     } elif (t.baseType == Type.tHandle) {
         if (t.annotation._module.name == "ast_core") {
             return starts_with("{t.annotation.name}", "Expr")
@@ -100,9 +96,7 @@ def is_same_or_inherited(parent, child : Structure const?) {
     
     var ch = child
     while (ch != null) {
-        if (parent == ch) {
-            return true
-        }
+        if (parent == ch) return true
         ch = ch.parent
     }
     return false
@@ -110,25 +104,10 @@ def is_same_or_inherited(parent, child : Structure const?) {
 
 def is_class_method(cinfo : StructurePtr; finfo : TypeDeclPtr) {
     
-    if (finfo.baseType != Type.tFunction) {
-        return false
-    }
-    if (finfo.dim |> length != 0) {
-        return false
-    }
-    if (finfo.argTypes |> length == 0) {
-        return false
-    }
-    if (finfo.argTypes[0].baseType != Type.tStructure) {
-        return false
-    }
-    if (finfo.argTypes[0].dim |> length != 0) {
-        return false
-    }
-    if (!is_same_or_inherited(finfo.argTypes[0].structType, cinfo)) {
-        return false
-    }
-    return true
+    if (finfo.baseType != Type.tFunction
+            || empty(finfo.argTypes)
+            || finfo.argTypes[0].baseType != Type.tStructure) return false
+    return !!is_same_or_inherited(finfo.argTypes[0].structType, cinfo)
 }
 
 def emplace_new(var vec : dasvector`ptr`Expression; var ptr : Expression?) {
@@ -177,8 +156,8 @@ class MacroMacro : AstFunctionAnnotation {
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         
-        compiling_program().flags |= ProgramFlags.needMacroModule
-        func.flags |= FunctionFlags.macroInit
+        compiling_program().flags.needMacroModule = true
+        func.flags.macroInit = true
         var blk = new ExprBlock(at = func.at)
         var ifm = new ExprCall(at = func.at, name := "is_compiling_macros")
         var ife = new ExprIfThenElse(at = func.at, cond = ifm, if_true = func.body)
@@ -247,9 +226,7 @@ def private for_each_tag_function(mod : Module?; tag : string; blk : block<(var 
 def find_arg(argn : string; args : AnnotationArgumentList) : RttiValue {
     
     for (a in args) {
-        if (a.name == argn) {
-            return get_annotation_argument_value(a)
-        }
+        if (a.name == argn) return get_annotation_argument_value(a)
     }
     return RttiValue_nothing()
 }
@@ -257,9 +234,7 @@ def find_arg(argn : string; args : AnnotationArgumentList) : RttiValue {
 def find_arg(args : AnnotationArgumentList; argn : string) : RttiValue {
     
     for (a in args) {
-        if (a.name == argn) {
-            return get_annotation_argument_value(a)
-        }
+        if (a.name == argn) return get_annotation_argument_value(a)
     }
     return RttiValue_nothing()
 }
@@ -337,27 +312,27 @@ def setup_call_list(name : string; at : LineInfo; subblock : block<(var fn : Fun
     } elif (fn.body.__rtti != "ExprBlock") {
         panic("expecting func.ExprBlock")
     }
-    return unsafe(reinterpret<ExprBlock?> fn.body)
+    return unsafe(reinterpret<ExprBlock?>(fn.body))
 }
 
 def setup_call_list(name : string; at : LineInfo; isInit : bool = false; isPrivate : bool = true; isLateInit : bool = false) : ExprBlock? {
     
     return setup_call_list(name, at) $(fn) {
         if (isInit) {
-            fn.flags |= FunctionFlags.init
+            fn.flags.init = true
             if (isLateInit) {
-                fn.moreFlags |= MoreFunctionFlags.lateInit
+                fn.moreFlags.lateInit = true
             }
         }
         if (isPrivate) {
-            fn.flags |= FunctionFlags.privateFunction
+            fn.flags.privateFunction = true
         }
     }
 }
 
 def setup_macro(name : string; at : LineInfo) : ExprBlock? {
     
-    compiling_program().flags |= ProgramFlags.needMacroModule
+    compiling_program().flags.needMacroModule = true
     var fn = compiling_module() |> find_unique_function(name)
     if (fn == null) {
         fn = new Function(at = at, atDecl = at, name := "{name}",
@@ -376,21 +351,21 @@ def setup_macro(name : string; at : LineInfo) : ExprBlock? {
         if (!(compiling_module() |> add_function(fn))) {
             panic("failed to setup macro, can't add function {fn.name}")
         }
-        return unsafe(reinterpret<ExprBlock?> res)
+        return unsafe(reinterpret<ExprBlock?>(res))
     } else {
         if (fn.body.__rtti != "ExprBlock") {
             panic("expecting func.ExprBlock")
         }
         unsafe {
-            var blk = reinterpret<ExprBlock?> fn.body
+            var blk = reinterpret<ExprBlock?>(fn.body)
             if (blk.list |> length != 1 || blk.list[0].__rtti != "ExprIfThenElse") {
                 panic("expecting is_compiling_macros")
             }
-            var ife = reinterpret<ExprIfThenElse?> blk.list[0]
+            var ife = reinterpret<ExprIfThenElse?>(blk.list[0])
             if (ife.if_true.__rtti != "ExprBlock") {
                 panic("expecting ife.if_true.ExprBlock")
             }
-            return reinterpret<ExprBlock?> ife.if_true
+            return reinterpret<ExprBlock?>(ife.if_true)
         }
     }
 }
@@ -416,7 +391,7 @@ class SetupAnyAnnotation : AstStructureAnnotation {
         }
         var blk <- setup_macro("__setup_macros", st.at)
         var cll = new ExprCall(at = st.at, name := annotation_function_call)
-        self->setup_call(st, cll)
+        setup_call(st, cll)
         var nee = new ExprNew(at = st.at, initializer = true,
             typeexpr = new TypeDecl(baseType = Type.tStructure, structType = st, at = st.at)
         )
@@ -506,6 +481,18 @@ class SetupDirtyInferMacro : SetupAnyAnnotation {
     override annotation_function_call : string = "add_new_dirty_infer_macro"
 }
 
+class SetupPreInferMacro : SetupAnyAnnotation {
+    
+    
+    override annotation_function_call : string = "add_new_pre_infer_macro"
+}
+
+class SetupPostInferMacro : SetupAnyAnnotation {
+    
+    
+    override annotation_function_call : string = "add_new_post_infer_macro"
+}
+
 class SetupLintMacro : SetupAnyAnnotation {
     
     override annotation_function_call : string = "add_new_lint_macro"
@@ -541,7 +528,7 @@ class TagFunctionMacro : SetupAnyAnnotation {
             return false
         }
         tag = argTag as tString
-        return SetupAnyAnnotation`apply(cast<SetupAnyAnnotation> self, st, group, args, errors)
+        return SetupAnyAnnotation`apply(cast<SetupAnyAnnotation>(self), st, group, args, errors)
     }
 }
 
@@ -608,16 +595,12 @@ class BetterRttiVisitor : AstVariantMacro {
     }
     def override visitExprAsVariant(prog : ProgramPtr; mod : Module?; expr : ExprAsVariant?) : Expression? {
         
-        if (isExpression(expr.value._type)) {
-            return makeAsOrSafeAs(expr, new ExprCall(at = expr.at, name := "panic_expr_as"))
-        }
+        if (isExpression(expr.value._type)) return makeAsOrSafeAs(expr, new ExprCall(at = expr.at, name := "panic_expr_as"))
         return null
     }
     def override visitExprSafeAsVariant(prog : ProgramPtr; mod : Module?; expr : ExprSafeAsVariant?) : Expression? {
         
-        if (isExpression(expr.value._type)) {
-            return makeAsOrSafeAs(expr, new ExprConstPtr(at = expr.at))
-        }
+        if (isExpression(expr.value._type)) return makeAsOrSafeAs(expr, new ExprConstPtr(at = expr.at))
         return null
     }
 }
@@ -687,6 +670,21 @@ def operator as StructureAnnotation(foo : Annotation?) {
     return unsafe(reinterpret<StructureAnnotation?>(foo));
 }
 
+def make_fixed_array_type(total : int; var element : TypeDecl?) : TypeDecl? {
+    
+    
+    var fa = new TypeDecl(at = element.at, baseType = Type.tFixedArray)
+    fa.fixedDim = total
+    fa.flags.ref = element.flags.ref
+    element.flags.ref = false
+    fa.flags.constant = element.flags.constant
+    element.flags.constant = false
+    fa.flags.temporary = element.flags.temporary
+    element.flags.temporary = false
+    fa.firstType = element
+    return fa
+}
+
 def private walk_and_convert_array(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : Expression? {
     let total = any_array_size(data)
     if (total != 0) {
@@ -695,7 +693,7 @@ def private walk_and_convert_array(data : uint8 const?; info : TypeDeclPtr; at :
         any_array_foreach(data, stride) $(value) {
             emplace_new(mkArr.values) <| walk_and_convert(value, info.firstType, at)
         }
-        push(mkArr.makeType.dim, total)
+        mkArr.makeType = make_fixed_array_type(total, mkArr.makeType)
         var mkToArrayMove = new ExprCall(at = at, name := "to_array_move")
         emplace(mkToArrayMove.arguments, mkArr)
         return mkToArrayMove
@@ -708,7 +706,9 @@ def private walk_and_convert_dim(data : uint8 const?; info : TypeDeclPtr; at : L
     let stride = info.baseSizeOf
     let total = info.countOf
     var einfo = clone_type(info)
-    clear(einfo.dim)
+    while (einfo.baseType == Type.tFixedArray && einfo.firstType != null) {
+        einfo = clone_type(einfo.firstType)
+    }
     var mkArr = new ExprMakeArray(at = at, makeType = clone_type(info))
     for (x in range(total)) {
         unsafe {
@@ -721,7 +721,7 @@ def private walk_and_convert_dim(data : uint8 const?; info : TypeDeclPtr; at : L
 
 def private walk_and_convert_pointer(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : Expression? {
     unsafe {
-        let pdata = *(reinterpret<uint8 const ??> data)
+        let pdata = *(reinterpret<uint8 const ??>(data))
         var elem = walk_and_convert(pdata, info.firstType, at)
         var mkAsc = new ExprAscend(at = at, subexpr = elem)
         return mkAsc
@@ -763,7 +763,7 @@ def private walk_and_convert_structure(data : uint8 const?; info : TypeDeclPtr; 
 
 def private walk_and_convert_variant(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : Expression? {
     unsafe {
-        let vindex = *reinterpret<int?> data
+        let vindex = *reinterpret<int?>(data)
         let offset = get_variant_field_offset(info, vindex)
         var mkVariant = new ExprMakeVariant(at = at, makeType = clone_type(info))
         var elem = walk_and_convert(data + offset, info.argTypes[vindex], at)
@@ -793,7 +793,7 @@ def private walk_and_convert_table(data : uint8 const?; info : TypeDeclPtr; at :
             emplace(mkTup.values, value)
             emplace(mkArr.values, mkTup)
         }
-        push(mkArr.makeType.dim, total)
+        mkArr.makeType = make_fixed_array_type(total, mkArr.makeType)
         var mkToTableMove = new ExprCall(at = at, name := "to_table_move")
         emplace(mkToTableMove.arguments, mkArr)
         return mkToTableMove
@@ -805,42 +805,44 @@ def private walk_and_convert_table(data : uint8 const?; info : TypeDeclPtr; at :
 def private walk_and_convert_basic(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : Expression? {
     unsafe {
         if (info.baseType == Type.tInt8) {
-            return new ExprConstInt8(at = at, value = *reinterpret<int8?> data)
+            return new ExprConstInt8(at = at, value = *reinterpret<int8?>(data))
         } elif (info.baseType == Type.tInt16) {
-            return new ExprConstInt16(at = at, value = *reinterpret<int16?> data)
+            return new ExprConstInt16(at = at, value = *reinterpret<int16?>(data))
+        } elif (info.baseType == Type.tFloat16) {
+            return new ExprConstFloat16(at = at, value = *reinterpret<float16?>(data))
         } elif (info.baseType == Type.tInt) {
-            return new ExprConstInt(at = at, value = *reinterpret<int?> data)
+            return new ExprConstInt(at = at, value = *reinterpret<int?>(data))
         } elif (info.baseType == Type.tInt64) {
-            return new ExprConstInt64(at = at, value = *reinterpret<int64?> data)
+            return new ExprConstInt64(at = at, value = *reinterpret<int64?>(data))
         } elif (info.baseType == Type.tUInt8) {
-            return new ExprConstUInt8(at = at, value = *reinterpret<uint8?> data)
+            return new ExprConstUInt8(at = at, value = *reinterpret<uint8?>(data))
         } elif (info.baseType == Type.tUInt16) {
-            return new ExprConstUInt16(at = at, value = *reinterpret<uint16?> data)
+            return new ExprConstUInt16(at = at, value = *reinterpret<uint16?>(data))
         } elif (info.baseType == Type.tUInt) {
-            return new ExprConstUInt(at = at, value = *reinterpret<uint?> data)
+            return new ExprConstUInt(at = at, value = *reinterpret<uint?>(data))
         }  elif (info.baseType == Type.tUInt64) {
-            return new ExprConstUInt64(at = at, value = *reinterpret<uint64?> data)
+            return new ExprConstUInt64(at = at, value = *reinterpret<uint64?>(data))
         } elif (info.baseType == Type.tFloat) {
-            return new ExprConstFloat(at = at, value = *reinterpret<float?> data)
+            return new ExprConstFloat(at = at, value = *reinterpret<float?>(data))
         } elif (info.baseType == Type.tDouble) {
-            return new ExprConstDouble(at = at, value = *reinterpret<double?> data)
+            return new ExprConstDouble(at = at, value = *reinterpret<double?>(data))
         } elif (info.baseType == Type.tBool) {
-            return new ExprConstBool(at = at, value = *reinterpret<bool?> data)
+            return new ExprConstBool(at = at, value = *reinterpret<bool?>(data))
         } elif (info.baseType == Type.tRange) {
-            return new ExprConstRange(at = at, value = *reinterpret<range?> data)
+            return new ExprConstRange(at = at, value = *reinterpret<range?>(data))
         } elif (info.baseType == Type.tURange) {
-            return new ExprConstURange(at = at, value = *reinterpret<urange?> data)
+            return new ExprConstURange(at = at, value = *reinterpret<urange?>(data))
         } elif (info.baseType == Type.tRange64) {
-            return new ExprConstRange64(at = at, value = *reinterpret<range64?> data)
+            return new ExprConstRange64(at = at, value = *reinterpret<range64?>(data))
         } elif (info.baseType == Type.tURange64) {
-            return new ExprConstURange64(at = at, value = *reinterpret<urange64?> data)
+            return new ExprConstURange64(at = at, value = *reinterpret<urange64?>(data))
         } elif (info.baseType == Type.tString) {
-            return new ExprConstString(at = at, value := *reinterpret<string?> data)
+            return new ExprConstString(at = at, value := *reinterpret<string?>(data))
         } elif (info.baseType == Type.tBitfield8
                 || info.baseType == Type.tBitfield16
                 || info.baseType == Type.tBitfield
                 || info.baseType == Type.tBitfield64) {
-            return new ExprConstBitfield(at = at, value = *reinterpret<bitfield?> data, bitfieldType = clone_type(info))
+            return new ExprConstBitfield(at = at, value = *reinterpret<bitfield?>(data), bitfieldType = clone_type(info))
         } else {
             panic("unsupported {info.baseType}")
             return null
@@ -848,36 +850,37 @@ def private walk_and_convert_basic(data : uint8 const?; info : TypeDeclPtr; at :
     }
 }
 
+[unused_argument(at)]
 def private walk_and_convert_enumeration(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : Expression? {
     var eval = 0l
     if (info.baseType == Type.tEnumeration) {
-        eval = int64(*unsafe(reinterpret<int?> data))
+        eval = int64(*unsafe(reinterpret<int?>(data)))
     } elif (info.baseType == Type.tEnumeration8) {
         eval = int64(*data)
     } elif (info.baseType == Type.tEnumeration16) {
-        eval = int64(*unsafe(reinterpret<int16?> data))
+        eval = int64(*unsafe(reinterpret<int16?>(data)))
     } elif (info.baseType == Type.tEnumeration64) {
-        eval = *unsafe(reinterpret<int64?> data)
+        eval = *unsafe(reinterpret<int64?>(data))
     } else {
         panic("unsupported enumeration")
     }
     let name = info.enumType |> find_enum_name(eval)
     panic("can't find name of enum value {eval} in {describe(info)}") if (name == "")
     return new ExprConstEnumeration(
-        enumType := unsafe(reinterpret<Enumeration?> info.enumType),
+        enumType := unsafe(reinterpret<Enumeration?>(info.enumType)),
         value := name)
 }
 
 def walk_and_convert(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : Expression? {
     
     
-    if (info.dim |> length != 0) {
+    if (info.baseType == Type.tFixedArray) {
         return walk_and_convert_dim(data, info, at)
     } elif (info.baseType == Type.tArray) {
         return walk_and_convert_array(data, info, at)
     } elif (info.baseType == Type.tPointer) {
         unsafe {
-            if (*reinterpret<uint8 const ??> data == null) {
+            if (*reinterpret<uint8 const ??>(data) == null) {
                 return new ExprConstPtr(at = at)
             } elif (info.firstType == null || info.firstType.isVoid) {
                 return new ExprConstPtr(at = at)
@@ -905,7 +908,7 @@ def convert_to_expression(var value : auto& ==const; at : LineInfo) {
     var info = typeinfo ast_typedecl(value)
     unsafe {
         let pval = addr(value)
-        return walk_and_convert(reinterpret<uint8 const?> pval, info, at)
+        return walk_and_convert(reinterpret<uint8 const?>(pval), info, at)
     }
 }
 
@@ -914,7 +917,7 @@ def convert_to_expression(value : auto ==const; at : LineInfo) {
     var info = typeinfo ast_typedecl(value)
     unsafe {
         let pval = addr(value)
-        return walk_and_convert(reinterpret<uint8 const?> pval, info, at)
+        return walk_and_convert(reinterpret<uint8 const?>(pval), info, at)
     }
 }
 
@@ -931,9 +934,7 @@ def convert_to_expression(value : auto ==const) {
 def find_annotation(mod_name, ann_name : string) : Annotation const? {
     
     var mod = find_compiling_module(mod_name)
-    if (mod == null) {
-        return null
-    }
+    if (mod == null) return null
     var ann : Annotation const?
     module_for_each_annotation(mod) $(value) {
         if (value.name == ann_name) {
@@ -1076,12 +1077,33 @@ def add_annotation_argument(var arguments : AnnotationArgumentList; ann : rtti::
     return argIdx
 }
 
+def append_loop_flag(var loop : ExprFor?; name : string) : int {
+    
+    
+    return loop.annotations |> add_annotation_argument(name, true)
+}
+
+def append_loop_hint(var loop : ExprFor?; name : string; value : int) : int {
+    
+    return loop.annotations |> add_annotation_argument(name, value)
+}
+
+def append_vectorize(var loop : ExprFor?; width : int = 0) {
+    
+    loop |> append_loop_flag("vectorize")
+    if (width > 0) loop |> append_loop_hint("vectorize_width", width)
+}
+
+def append_unroll(var loop : ExprFor?; count : int = 0) {
+    
+    if (count > 0) loop |> append_loop_hint("unroll_count", count)
+    else loop |> append_loop_flag("unroll")
+}
+
 def get_for_source_index(expr : ExprFor?; svar : VariablePtr) {
     
     for (v, t in expr.iteratorVariables, count()) {
-        if (v == svar) {
-            return t
-        }
+        if (v == svar) return t
     }
     return -1
 }
@@ -1089,9 +1111,7 @@ def get_for_source_index(expr : ExprFor?; svar : VariablePtr) {
 def get_for_source_index(expr : ExprFor?; source : Expression?) {
     
     for (s, t in expr.sources, count()) {
-        if (s == source) {
-            return t
-        }
+        if (s == source) return t
     }
     return -1
 }
@@ -1129,6 +1149,8 @@ def private setup {
         add_new_structure_annotation("infer_macro", new SetupInferMacro())
         add_new_structure_annotation("dirty_infer_macro", new SetupDirtyInferMacro())
         add_new_structure_annotation("optimization_macro", new SetupOptimizationMacro())
+        add_new_structure_annotation("pre_infer_macro", new SetupPreInferMacro())
+        add_new_structure_annotation("post_infer_macro", new SetupPostInferMacro())
         add_new_structure_annotation("lint_macro", new SetupLintMacro())
         add_new_structure_annotation("global_lint_macro", new SetupGlobalLintMacro())
         add_new_variant_macro("better_rtti_in_expr", new BetterRttiVisitor())
@@ -1194,9 +1216,7 @@ def public get_workhorse_types {
 def public find_argument_index(typ : TypeDeclPtr; name : string) {
     
     for (a, ai in typ.argNames, count()) {
-        if (a == name) {
-            return ai
-        }
+        if (a == name) return ai
     }
     return -1
 }
@@ -1212,7 +1232,7 @@ bitfield DebugExpressionFlags {
     lineInfo
 }
 
-def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expression?; deFlags : DebugExpressionFlags; tabs : int) {
+def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expression?; deFlags : DebugExpressionFlags; tabs : int) { 
     if (expr == null) {
         writer |> write("null")
         return
@@ -1231,52 +1251,52 @@ def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expre
         if (e.at.fileInfo != null) {
             writer |> write(" file=\"{e.at.fileInfo.name}\"")
         }
-        if (string(e.__rtti) == "ExprCall" || string(e.__rtti) == "ExprInvoke") { 
-            let enc = unsafe(reinterpret<ExprLooksLikeCall?> e)
+        if (e.__rtti == "ExprCall" || e.__rtti == "ExprInvoke") {
+            let enc = unsafe(reinterpret<ExprLooksLikeCall?>(e))
             if (int(enc.atEnclosure.line) != 0 || int(enc.atEnclosure.last_line) != 0) {
                 writer |> write(" atEnclosure={int(enc.atEnclosure.line)}:{int(enc.atEnclosure.column)}-{int(enc.atEnclosure.last_line)}:{int(enc.atEnclosure.last_column)}")
             }
         }
     }
-    if (string(expr.__rtti) |> starts_with("ExprConst")) {
+    if (expr.__rtti |> starts_with("ExprConst")) {
         writer |> write(" {describe(expr)})")
         return
     }
-    var ann = unsafe(reinterpret<BasicStructureAnnotation?> get_expression_annotation(expr))
+    var ann = unsafe(reinterpret<BasicStructureAnnotation?>(get_expression_annotation(expr)))
     if (ann == null) {
         writer |> write(")")
         return
     }
-    for_each_field(*ann) $(name, cppName, xtype, offset) {
+    for_each_field(*ann) $(name, _cppName, xtype, offset) {
         if (offset != -1u) {
             let tstr = describe(xtype)
             var p8 : int8?
             unsafe {
-                p8 = (reinterpret<int8?> expr) + int(offset)
+                p8 = (reinterpret<int8?>(expr)) + int(offset)
             }
             if (tstr == "ast_core::Expression?") {
-                let pv = unsafe(reinterpret<Expression ??> p8)
+                let pv = unsafe(reinterpret<Expression ??>(p8))
                 let ts = repeat("  ", tabs + 2)
                 writer |> write("\n{ts}({name} ")
                 debug_expression_impl(writer, *pv, deFlags, tabs + 2)
                 writer |> write(")")
             } elif (tstr == "$::das_string") {
-                let pv = unsafe(reinterpret<das_string?> p8)
+                let pv = unsafe(reinterpret<das_string?>(p8))
                 writer |> write(" {name}=\"{*pv}\"")
             } elif (tstr == "int") {
-                let pv = unsafe(reinterpret<int?> p8)
+                let pv = unsafe(reinterpret<int?>(p8))
                 writer |> write(" {name}={*pv}")
             } elif (tstr == "uint") {
-                let pv = unsafe(reinterpret<uint?> p8)
+                let pv = unsafe(reinterpret<uint?>(p8))
                 writer |> write(" {name}={*pv}")
             } elif (tstr == "int64") {
-                let pv = unsafe(reinterpret<int64?> p8)
+                let pv = unsafe(reinterpret<int64?>(p8))
                 writer |> write(" {name}={*pv}")
             } elif (tstr == "uint64") {
-                let pv = unsafe(reinterpret<uint64?> p8)
+                let pv = unsafe(reinterpret<uint64?>(p8))
                 writer |> write(" {name}={*pv}")
             } elif (tstr == "bool") {
-                let pv = unsafe(reinterpret<bool?> p8)
+                let pv = unsafe(reinterpret<bool?>(p8))
                 writer |> write(" {name}={*pv}")
             } else {
                 pass
@@ -1284,16 +1304,16 @@ def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expre
         }
     }
                 
-    for_each_field(*ann) $(name, cppName, xtype, offset) {
+    for_each_field(*ann) $(name, _cppName, xtype, offset) {
         if (offset != -1u) {
             let tstr = describe(xtype)
             var p8 : int8?
             unsafe {
-                p8 = (reinterpret<int8?> expr) + int(offset)
+                p8 = (reinterpret<int8?>(expr)) + int(offset)
             }
             if (tstr == "$::dasvector`ptr`Expression") {
-                let pv = unsafe(reinterpret<dasvector`ptr`Expression?> p8)
-                if (length(*pv) != 0) {
+                let pv = unsafe(reinterpret<dasvector`ptr`Expression?>(p8))
+                if (!empty(*pv)) {
                     let ts = repeat("  ", tabs + 2)
                     writer |> write("\n{ts}[{name}\n")
                     for (l, i in *pv, count()) {
@@ -1306,8 +1326,8 @@ def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expre
                     writer |> write("]")
                 }
             } elif (tstr == "$::dasvector`ptr`Variable") {
-                let pv = unsafe(reinterpret<dasvector`ptr`Variable?> p8)
-                if (length(*pv) != 0) {
+                let pv = unsafe(reinterpret<dasvector`ptr`Variable?>(p8))
+                if (!empty(*pv)) {
                     let ts = repeat("  ", tabs + 2)
                     writer |> write("\n{ts}[{name}\n")
                     for (l, i in *pv, count()) {

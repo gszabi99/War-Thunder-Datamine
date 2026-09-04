@@ -1,16 +1,16 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "math" import ceil, sqrt
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import shop_get_spawn_score
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
-} = require("%sqDagui/daguiUtil.nut")
-let { ceil, sqrt } = require("math")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes,
-  needSecondaryWeaponsWnd, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes, needSecondaryWeaponsWnd, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
 let { INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -43,7 +43,7 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
       continue
 
     let needShowDefTorpedoes = forceShowDefaultTorpedoes && isDefaultTorpedoes(weapon)
-    let spawnScore = shop_get_spawn_score(unit.name, weapon.name, lastBullets, true, true)
+    let spawnScore = shop_get_spawn_score(unit.name, weapon.name, lastBullets)
     uniqueSpawnScores[spawnScore] <- true
     list.append({
       weaponryItem = weapon
@@ -75,7 +75,7 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
     })
 }
 
-gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("WeaponrySelectModal", class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/weaponry/weaponrySelectModal.tpl"
   needVoiceChat = false
@@ -125,7 +125,7 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
       let groupIndex = getBulletGroupIndex(this.unit.name, config.weaponryItem)
       let weaponName = getWeaponBlkNameByGroupIdx(this.unit, groupIndex)
       let spawnScore = shop_get_spawn_score(this.unit.name, getLastWeapon(this.unit.name),
-        [{name = config.weaponryItem.name, weapon = weaponName}], true, true)
+        [{name = config.weaponryItem.name, weapon = weaponName}])
       uniqueSpawnScores[spawnScore] <- true
     }
     let isSamePriceForAll = uniqueSpawnScores.len() == 1
@@ -158,10 +158,10 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < total; i++) {
       let config = this.list[i]
       let itemObj = listObj.getChild(i)
-      let enabled = getTblValue("enabled", config, true)
+      let enabled = (config?.enabled ?? true)
       itemObj.enable(enabled)
 
-      this.weaponItemParams.visualDisabled <- !enabled || getTblValue("visualDisabled", config, false)
+      this.weaponItemParams.visualDisabled <- !enabled || (config?.visualDisabled ?? false)
       updateModItem(this.unit, config.weaponryItem, itemObj, false, this, this.weaponItemParams)
     }
     this.weaponItemParams.visualDisabled <- false
@@ -208,9 +208,9 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
         || !(this.selIdx in this.list)
         || !this.onChangeValueCb)
       return
-    this.onChangeValueCb(getTblValue("weaponryItem", this.list[this.selIdx]))
+    this.onChangeValueCb(this.list[this.selIdx]?.weaponryItem)
   }
-}
+})
 
 return {
   guiStartChooseUnitWeapon

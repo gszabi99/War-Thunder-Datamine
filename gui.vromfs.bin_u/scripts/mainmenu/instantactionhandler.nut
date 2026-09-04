@@ -1,18 +1,34 @@
-from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb, get_invited_players_info, clan_get_my_clan_id
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "postFxSettings" import shouldShowDynamicLutPopUpMessage, setIsUsingDynamicLut, getTonemappingMode, setTonemappingMode
+from "string" import format
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "guiMission" import select_mission, get_meta_mission_info_by_name
+from "blkGetters" import get_game_settings_blk
+from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb
+  , get_invited_players_info, clan_get_my_clan_id
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
+from "%scripts/mainmenu/secondGameModesPanel.nut" import setSecondGameModeActive, updateSecondGameModesPanel, isClassicGameModeEnabled
+from "%scripts/events/secondGameModesUtils.nut" import getJoinBlockReason, mainModePairs
+from "%scripts/unlocks/personalUnlocks.nut" import getNightBattlesUnlocks
+from "%scripts/rewards/awardsListWnd.nut" import openAwardsListWnd
 
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { QueueTable } = require("%scripts/queue/queueTable.nut")
+let { GamercardDrawer } = require("%scripts/gamercard/gamercardDrawer.nut")
+let { GameModeSelect } = require("%scripts/gameModes/gameModeSelect.nut")
+let { ChangeCountry } = require("%scripts/changeCountry.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let { shouldShowDynamicLutPopUpMessage, setIsUsingDynamicLut, getTonemappingMode, setTonemappingMode } = require("postFxSettings")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager, get_cur_base_gui_handler, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let DataBlock = require("DataBlock")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { recentBR } = require("%scripts/battleRating.nut")
@@ -29,75 +45,54 @@ let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.n
 let { checkNuclearEvent } = require("%scripts/matching/serviceNotifications/nuclearEventHandler.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
-let { needShowChangelog,
-  openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
+let { needShowChangelog, openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
 let { getSelAircraftByCountry, getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell
-} = require("%scripts/hangar/backgroundModelHint.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { initBackgroundModelHint, updateBackgroundModelHint, openPresetWndForShell } = require("%scripts/hangar/backgroundModelHint.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isHaveNonApprovedClanUnitResearches } = require("%scripts/unit/squadronUnitAction.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let time = require("%scripts/time.nut")
-let { LEADER_OPERATION_STATES,
-  getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
+let { LEADER_OPERATION_STATES, getLeaderOperationState } = require("%scripts/squads/leaderWwOperationStates.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { select_mission, get_meta_mission_info_by_name } = require("guiMission")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
 let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION, USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { getEventEconomicName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { canJoinFlightMsgBox, checkSquadMembersMrankDiff, checkCanChangeGameModeAndDo
-} = require("%scripts/squads/squadUtils.nut")
+let { canJoinFlightMsgBox, checkSquadMembersMrankDiff, checkCanChangeGameModeAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
-let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
-  getTimePlayedOnUnitType
-} = require("%scripts/myStats.nut")
-let { guiStartSessionList, guiStartFlight
-} = require("%scripts/missions/startMissionsList.nut")
-let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById,
-  getCurrentGameMode, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount,
-  isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode
-} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete, getTimePlayedOnUnitType } = require("%scripts/myStats.nut")
+let { guiStartSessionList, guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
+let { getCurrentGameModeId, getUserGameModeId, setUserGameModeId, setCurrentGameModeById, getCurrentGameMode, getCurrentEvent, getGameModeById, getGameModeByUnitType, getUnseenGameModeCount, isUnitAllowedForGameMode, getGameModeEvent, findPresetValidForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGameModeOnBattleButtonClick } = require("%scripts/gameModes/gameModeManagerView.nut")
-let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit, gui_modal_crew
-} = require("%scripts/crew/crew.nut")
+let { getCrewSkillPageIdToRunTutorial, isAllCrewsMinLevel, getCrewUnit, gui_modal_crew } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { unlockCrew } = require("%scripts/crew/crewActions.nut")
 let { matchSearchGm, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
-let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
-  } = require("%scripts/clans/clanCandidates.nut")
+let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd } = require("%scripts/clans/clanCandidates.nut")
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { needShowTutorial, reqFirstCountryChoice,
-  saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
+let { needShowTutorial, reqFirstCountryChoice, saveShowedTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
 
 let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
 let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
 let { getQueueSlots } = require("%scripts/queue/queueInfo.nut")
 let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
 let { canEditCountryPreset } = require("%scripts/slotbar/slotbarPresets.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { showPopupWndIfNeed } = require("%scripts/utils/popupMessages.nut")
 
 enum GM_CHANGED_STATUS {
@@ -106,7 +101,7 @@ enum GM_CHANGED_STATUS {
   BY_UNITS          = 2
 }
 
-gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
+let InstantDomination = class (BaseGuiHandlerWT) {
   static keepLoaded = true
 
   sceneBlkName = "%gui/mainmenu/instantAction.blk"
@@ -159,6 +154,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   newGameModeIconWidget = null
   slotbarPresetsTutorial = null
+  topNoticesBlockBaseTop = null
 
   function initScreen() {
     
@@ -170,6 +166,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initToBattleButton()
     this._lastGameModeId = getCurrentGameModeId()
     this.setCurrentGameModeName()
+    this.updateTopNoticesBlockPos()
 
     this.setCurQueue(findQueue({}, this.queueMask))
 
@@ -184,6 +181,29 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   function reinitScreen(_params) {
     this.inited = false
     this.initScreen()
+  }
+
+  function updateTopNoticesBlockPos() {
+    let noticeBlockObj = this.scene?.findObject("top_notices_block")
+    if (!noticeBlockObj?.isValid())
+      return
+
+    this.guiScene.applyPendingChanges(false)
+    if (this.topNoticesBlockBaseTop == null)
+      this.topNoticesBlockBaseTop = noticeBlockObj.top
+
+    let statusNestObj = this.rootHandlerWeak?.scene.findObject("second_game_modes_status")
+    local extraTopExpr = "0"
+    if (statusNestObj?.isValid())
+      for (local i = 0;  i < statusNestObj.childrenCount(); i++) {
+        let child = statusNestObj.getChild(i)
+        if (!child.isVisible())
+          continue
+        let childHeight = child.getSize()[1]
+        extraTopExpr = childHeight >= 0 ? childHeight.tostring() : "30@sf/@pf"
+        break
+      }
+    noticeBlockObj.top = $"{this.topNoticesBlockBaseTop} + {extraTopExpr}"
   }
 
   function canShowDmViewer() {
@@ -206,7 +226,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       scene = queueTableContainer
       queueMask = this.queueMask
     }
-    this.queueTableHandler = loadHandler(gui_handlers.QueueTable, params)
+    this.queueTableHandler = loadHandler(QueueTable, params)
   }
 
   function initGamercardDrawerHandler() {
@@ -226,7 +246,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let params = {
       scene = gamercardDrawerContainer
     }
-    this.gamercardDrawerHandler = loadHandler(gui_handlers.GamercardDrawer, params)
+    this.gamercardDrawerHandler = loadHandler(GamercardDrawer, params)
     this.registerSubHandler(this.gamercardDrawerHandler)
   }
 
@@ -277,20 +297,25 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local name = ""
-
+    let secondGameModesObj = this.rootHandlerWeak?.scene.findObject("second_game_modes_nest")
+    let currentEvent = secondGameModesObj?.isValid()
+      || (isMultiplayerPrivilegeAvailable.get() && g_squad_manager.isSquadMember())
+        ? getCurrentEvent()
+        : null
     if (isMultiplayerPrivilegeAvailable.get()) {
-      let gameMode = getCurrentGameMode()
+      let gameModeText = getCurrentGameMode()?.getText() ?? ""
       let br = recentBR.get()
-      name = gameMode && gameMode?.text != ""
-        ? "".concat(gameMode.text, br > 0 ? loc("mainmenu/BR", { br = format("%.1f", br) }) : "")
-        : ""
+      let isClassicModeOff = currentEvent != null && !isClassicGameModeEnabled(currentEvent)
+      name = gameModeText == "" ? ""
+        : "".concat(gameModeText,
+          isClassicModeOff ? loc("ui/parentheses/space", { text = loc("options/disabled/short") })
+            : br > 0 ? loc("mainmenu/BR", { br = format("%.1f", br) })
+            : "")
 
       if (g_squad_manager.isSquadMember()) {
-        let gameModeId = g_squad_manager.getLeaderGameModeId()
-        let event = events.getEvent(gameModeId)
         let leaderBR = g_squad_manager.getLeaderBattleRating()
-        if (event)
-          name = events.getEventNameText(event)
+        if (currentEvent)
+          name = events.getEventNameText(currentEvent)
         if (leaderBR > 0)
           name = "".concat(name, loc("mainmenu/BR", { br = format("%.1f", leaderBR) }))
       }
@@ -301,6 +326,9 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.gameModeChangeButtonObj.findObject("game_mode_change_button_text").setValue(
       name != "" ? name : loc("mainmenu/gamemodesNotLoaded")
     )
+
+    if (secondGameModesObj)
+      updateSecondGameModesPanel(currentEvent, secondGameModesObj, this)
   }
 
   function updateUnseenGameModesCounter() {
@@ -311,6 +339,18 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       this.newGameModeIconWidget = newIconWidget(this.guiScene, this.newGameModesWidgetsPlaceObj)
 
     this.newGameModeIconWidget.setValue(getUnseenGameModeCount())
+  }
+
+  function refreshSecondGameModesPanel(forceUpdate = false) {
+    let secondGameModesObj = this.rootHandlerWeak?.scene.findObject("second_game_modes_nest")
+    if (secondGameModesObj?.isValid())
+      updateSecondGameModesPanel(getCurrentEvent(), secondGameModesObj, this, forceUpdate)
+  }
+
+  function onSecondGameModeSlider(slider) {
+    setSecondGameModeActive(slider.modeId, slider.getValue(), getCurrentEvent())
+    this.setCurrentGameModeName()
+    this.refreshSecondGameModesPanel(true)
   }
 
   function goToBattleFromDebriefing() {
@@ -333,7 +373,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSlotbarPresetLoaded(params) {
-    if (getTblValue("crewsChanged", params, true))
+    if ((params?.crewsChanged ?? true))
       this.doWhenActiveOnce("onCountrySelectAction")
   }
 
@@ -342,14 +382,26 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSquadStatusChanged(params) {
-    if (params?.isLeaderChanged)
+    if (params?.isLeaderChanged) {
       this.updateNoticeGMChanged()
+      this.setCurrentGameModeName()
+    }
 
+    this.refreshSecondGameModesPanel()
     this.doWhenActiveOnce("updateStartButton")
+  }
+
+  function onEventSquadMemberVehiclesChanged(_params) {
+    this.refreshSecondGameModesPanel()
   }
 
   function onEventCrewChanged(_params) {
     this.doWhenActiveOnce("checkCountries")
+    this.refreshSecondGameModesPanel()
+  }
+
+  function onEventUnitRepaired(_params) {
+    this.refreshSecondGameModesPanel()
   }
 
   function onEventCheckClientUpdate(params) {
@@ -360,7 +412,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    obj.show(getTblValue("update_avail", params, false))
+    obj.show((params?.update_avail ?? false))
   }
 
   function onEventNewClientVersion(params) {
@@ -373,6 +425,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventQueueChangeState(p) {
+    let secondGameModesObj = this.rootHandlerWeak?.scene.findObject("second_game_modes_nest")
+    if (secondGameModesObj?.isValid())
+      secondGameModesObj.isInQueue = isAnyQueuesActive() ? "yes" : "no"
+
     let _queue = p?.queue
     if (!checkQueueType(_queue, this.queueMask))
       return
@@ -613,6 +669,12 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!events.checkEventFeature(event))
         return
 
+      let blockReason = getJoinBlockReason(event, mainModePairs)
+      if (blockReason != null) {
+        this.msgBox("no_main_mode", blockReason, [["ok", @() null]], "ok")
+        return
+      }
+
       let countryGoodForMode = events.isCountryAvailable(event, this.getCurCountry())
       let multiSlotEnabled = this.isCurrentGameModeMultiSlotEnabled()
       let requiredUnitsAvailable = this.checkRequiredUnits(this.getCurCountry())
@@ -625,7 +687,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       else if (countryGoodForMode && !this.testCurrentUnitForMode(this.getCurCountry()) && !multiSlotEnabled)
         this.showBadCurrentUnitMsgBox()
       else
-        loadHandler(gui_handlers.ChangeCountry, {
+        loadHandler(ChangeCountry, {
           currentCountry = this.getCurCountry()
           onCountryChooseCb = Callback(this.onCountryChoose, this)
         })
@@ -744,7 +806,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function isCurrentGameModeMultiSlotEnabled() {
     let gameMode = getCurrentGameMode()
-    return events.isEventMultiSlotEnabled(getTblValue("source", gameMode, null))
+    return events.isEventMultiSlotEnabled(gameMode?.source)
   }
 
   function onCountryChoose(country) {
@@ -853,7 +915,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       modeName = event.name
     else {
       let gameMode = getCurrentGameMode()
-      modeName = getTblValue("id", gameMode, "")
+      modeName = (gameMode?.id ?? "")
     }
     if (!query) {
       query = {
@@ -1015,7 +1077,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkCountrySelect() {
     if (!needShowTutorial("unitTypeChoice", 1) && reqFirstCountryChoice())
-      loadHandler(gui_handlers.CountryChoiceHandler)
+      loadHandler(get_gui_handler("CountryChoiceHandler"))
   }
 
   function canRunNoviceTutor() {
@@ -1173,7 +1235,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         let gmBlk = get_game_settings_blk()
         let reminderPeriod = gmBlk?.viralAcquisitionReminderPeriodDays ?? 10
         let today = time.getUtcDays()
-        let never = 0
+        const never = 0
         let lastLoginDay = loadLocalAccountSettings("viralAcquisition/lastLoginDay", today)
         local lastShowTime = loadLocalAccountSettings("viralAcquisition/lastShowTime", never)
 
@@ -1276,7 +1338,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     scene_msg_box("new_unit_type_to_battle_tutorial_msgbox", null,
-      loc("msgBox/start_new_unit_type_to_battle_tutorial", { gameModeName = gameModeForTutorial.text }),
+      loc("msgBox/start_new_unit_type_to_battle_tutorial", { gameModeName = gameModeForTutorial.getText() }),
       [
         ["yes", function() {
           sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_msgbox_btn", { result = "yes" })
@@ -1328,7 +1390,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     let isChangedByLeader = newGmChangedStatus == GM_CHANGED_STATUS.BY_LEADER
     let notice = isChangedByLeader
       ? loc("mainmenu/leader_gamemode_notice")
-      : format(loc("mainmenu/gamemode_change_notice"), gameMode.text)
+      : format(loc("mainmenu/gamemode_change_notice"), gameMode.getText())
 
     alertObj.hideConsoleImage = isChangedByLeader ? "yes" : "no"
     alertObj.setValue(notice)
@@ -1389,8 +1451,16 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isValid())
       return
 
-    this.checkQueue(@() checkCanChangeGameModeAndDo(@() gui_handlers.GameModeSelect.open()))
+    this.checkQueue(@() checkCanChangeGameModeAndDo(@() GameModeSelect.open()))
+  }
+
+  function onNightBattlesAdditionalAwardsBtn(_btn) {
+    let unlocksList = getNightBattlesUnlocks()
+    openAwardsListWnd(loc("gameMode/unique_themed_rewards"), unlocksList)
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)
 }
+register_gui_handler("InstantDomination", InstantDomination)
+
+return { InstantDomination }

@@ -1,7 +1,7 @@
 {
   "model": "he_177a_5",
   "fmFile": "fm/he-177a-5.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_inline_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "harmonizationSuffix": "_tomoe",
   "gearSinkRangeLR": 0.2,
@@ -17,7 +17,7 @@
   "isCapableOfAttackTurn": false,
   "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
-  "fireParamsPreset": "600kph",
+  "fireParamsPreset": "600kph_nb",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
@@ -4408,15 +4408,15 @@
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
-      82.0,
+      146.0,
       194.0
     ],
     "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
+      0.02,
+      0.8
     ],
-    "fireDamagePowerRel": 0.05,
-    "nonExtinguishFireTime": 5.0
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "damagePartsDependencyMap": {
     "dp": [

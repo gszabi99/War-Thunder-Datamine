@@ -1,13 +1,15 @@
+from "%sqstd/string.nut" import clearBorderSymbolsMultiline, replace
+from "console" import register_command
+from "mission" import get_mplayers_list, GET_MPLAYERS_LIST
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_CHAT_FILTER, USEROPT_ONLY_FRIENDLIST_CONTACT } = require("%scripts/options/optionsExtNames.nut")
 let { isPlayerNickInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
-let { clearBorderSymbolsMultiline, replace } = require("%sqstd/string.nut")
-let { register_command } = require("console")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
-let { get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 
 function getChatObject(scene) {
   if (!checkObj(scene))
@@ -28,14 +30,7 @@ function isUserBlockedByPrivateSetting(uid = null, name = "") {
     || isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
-function validateChatMessage(text, multilineAllowed = false) {
-  
-  text = text.replace("<", "[")
-  text = text.replace(">", "]")
-  if (!multilineAllowed)
-    text = text.replace("\\n", " ")
-  return text
-}
+let { validateChatMessage } = require("%scripts/chat/localizedMessages.nut")
 
 function validateThreadTitle(title) {
   local res = title.replace("\\n", "\n")
@@ -106,12 +101,9 @@ function addTextToEditbox(obj, text) {
     obj.setValue($"{value}{text}")
 }
 
-::cross_call_api.filter_chat_message <- filterMessageText
-
 return {
   getChatObject
   isUserBlockedByPrivateSetting
-  validateChatMessage
   validateThreadTitle
   prepareThreadTitleToSend
   restoreReceivedThreadTitle

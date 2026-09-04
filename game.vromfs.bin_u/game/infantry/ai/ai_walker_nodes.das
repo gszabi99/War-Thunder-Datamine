@@ -10,7 +10,6 @@ require %appGame.infantry.es.walker_common
 require %appGame.infantry.ai.covers_common
 require %appGame.infantry.ai.ai_covers_common
 require %appGame.infantry.ai.walker_nodes_common
-require %appGame.infantry.es.squad_common
 require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 require %appGame.infantry.es.loc_squad_common
@@ -29,7 +28,6 @@ require math.base
 require math.random
 require DagorMathUtils
 require DagorMath
-require DagorDebug3D
 require BehNodes
 require Grid
 require pathfinder
@@ -417,6 +415,7 @@ class UpdateGoalCapzone : BehNodeAdapter
                        transform aka capzone_transform : float3x4;
                        capzone__capTeam : int; capzone__progress : float;
                        capzone__owningTeam : int = TEAM_UNASSIGNED;
+                       capture_zone__aiHint : int = 0;
                        teamPresence : Object)
       if !active || !capzone__hasNearestNavmeshPos
         return
@@ -481,12 +480,14 @@ class UpdateGoalCapzone : BehNodeAdapter
 
         
 
-        if !bestToDefendEid || score > bestToDefendScore || (score == bestToDefendScore && distSq < bestToDefendDistSq)
-          bestToDefendEid = capzone_eid
-          bestToDefendCrowd = teamSquadsInZone
-          bestToDefendEnemy = enemyMatesInZone
-          bestToDefendDistSq = distSq
-          bestToDefendScore = score
+        let notDefend = capture_zone__aiHint == int(CapZoneAIHint.NO_DEFEND)
+        if !notDefend
+          if !bestToDefendEid || score > bestToDefendScore || (score == bestToDefendScore && distSq < bestToDefendDistSq)
+            bestToDefendEid = capzone_eid
+            bestToDefendCrowd = teamSquadsInZone
+            bestToDefendEnemy = enemyMatesInZone
+            bestToDefendDistSq = distSq
+            bestToDefendScore = score
       else
         var score = max(0, int((float(1 + max(0, 10 - enemyMatesInZone)) * 5000.0 * (square(100.0) * safeinv(max(distSq, square(60.0)))))))
         score += int(100.0 * (1.0 - capzone__progress))
@@ -565,8 +566,9 @@ class ShouldSquadStayAtCapzone : BehNodeAdapter
       query(squad_member__squad) <| $ [es] (var squadAI_tactical__stayEid : EntityId&;
                                             var squadAI_tactical__stayTime : float2&;
                                             squadAI_tactical__stayMaxTime : float2)
-        query(zoneEid) <| $ [es] (active : bool; transform aka capzone_transform : float3x4)
-          if !active || distance_sq(agent_transform[3], capzone_transform[3]) > square(MAX_DISTANCE_TO_STAY)
+        query(zoneEid) <| $ [es] (active : bool; transform aka capzone_transform : float3x4; capture_zone__aiHint : int = 0)
+          let notStay = capture_zone__aiHint == int(CapZoneAIHint.NO_DEFEND)
+          if !active || distance_sq(agent_transform[3], capzone_transform[3]) > square(MAX_DISTANCE_TO_STAY) || notStay
             squadAI_tactical__stayEid = INVALID_ENTITY_ID
             squadAI_tactical__stayTime = float2()
             return
@@ -683,6 +685,7 @@ class GetCapzoneInfo : BehNodeAdapter
 
     query(agentEid) <| $ [es] (transform aka agent_transform : float3x4; team aka agent_team : int)
       query(zoneEid) <| $ [es] (active : bool; capzone__progress : float; capzone__capTeam : int;
+                                capture_zone__aiHint : int = 0;
                                 capzone__owningTeam : int = TEAM_UNASSIGNED;
                                 capzone__hasNearestNavmeshPos : bool; transform aka capzone_transform : float3x4;
                                 capzone__approximateRadius = -1.0; sphere_zone__radius = 0.0)
@@ -692,7 +695,8 @@ class GetCapzoneInfo : BehNodeAdapter
         let TO_DEFEND_CAPTURE_PROGRESS = 0.8
         let captured = (abs(1. - capzone__progress) <= TO_DEFEND_CAPTURE_PROGRESS && capzone__capTeam == agent_team) || capzone__owningTeam == agent_team
         if captured || get_sync_time() < MIN_TIME_TO_DEFEND_EVERYTHING_SINCE_MISSION_START
-          toDefend = true
+          if capture_zone__aiHint != int(CapZoneAIHint.NO_DEFEND)
+            toDefend = true
           result = true
 
     if outAgentInsideParam >= 0
@@ -708,11 +712,12 @@ class ShouldFocusOnCapZones : BehNodeAdapter
     query(beh_tree_eid(owner)) <| $ [es] (team aka agent_team : int)
       if agent_team == TEAM_UNASSIGNED
         return
-      find_query() <| $ [es(REQUIRE=capzone__progress)] (active : bool;
+      find_query() <| $ [es(REQUIRE=capzone__progress)] (active : bool; capture_zone__aiHint : int = 0;
                                                          capzone__hasNearestNavmeshPos : bool;
                                                          capzone__owningTeam : int = TEAM_UNASSIGNED;
                                                          capzone__capTeam : int = TEAM_UNASSIGNED)
-        if !active || !capzone__hasNearestNavmeshPos
+        let notFocus = capture_zone__aiHint == int(CapZoneAIHint.NO_DEFEND)
+        if !active || !capzone__hasNearestNavmeshPos || notFocus
           return false
         let isOwnedByTeamOrAlly = capzone__owningTeam == agent_team || is_teams_friendly(capzone__owningTeam, agent_team)
         let beingCapturedByEnemy = capzone__capTeam != agent_team || !is_teams_friendly(capzone__capTeam, agent_team)
@@ -2672,7 +2677,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           if filter_cover(cover, coverDesc, box, maxOccupied, filterInfo)
             return
 
-          let numSlots = cover_num_slots(coverDesc)
+          let numSlots = coverDesc.numSlots
           let isPrevCover = prevCoverId.x == id && likelyKeepCover
 
           var slotBestCoverId = int2(id, -1)
@@ -2681,7 +2686,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           var slotBestTight = bestTight
           var slotBestOKDir = bestOKDir
           for i in range(0, numSlots)
-            if cover_slot_at(covers, coverDesc, i).numUsed > 0
+            if cover_slot(covers, coverDesc, i).numUsed > 0
               continue
             let isPrevCoverSlot = isPrevCover && i == prevCoverId.y
             let coverSlotPosBase = get_cover_slot_pos(cover, coverDesc, covers, i)
@@ -2754,7 +2759,7 @@ class FindCoverAroundPoint : BehNodeAdapter
           assume coverDesc = covers.coverDescs[bestCoverId.x]
 
           push(cover_updater__heldCovers, bestCoverId)
-          occupy_cover_slot(covers, bestCoverId.x, bestCoverId.y)
+          covers |> occupySlot(bestCoverId.x, bestCoverId.y)
 
           let coverAIPos = get_cover_slot_pos(cover, coverDesc, covers, bestCoverId.y)
           owner.blackBoard |> set(coverPosParam, coverAIPos)
@@ -2952,16 +2957,10 @@ class IsOnNavmesh : BehNodeAdapter
 
   def override update(dt : float) : EBehResult
     let agent = beh_tree_entity_agent(*owner)
-    static_if typeinfo(builtin_function_exists @@ < (arg0 : int; arg1 : float3&; arg2 : float; arg3 : float; arg4 : int; arg5 : int) : bool > _::is_navmesh_position_suitable_ex)
-      let horzExtents = 0.1
-      let vertExtents = 1.0
-      if is_navmesh_position_suitable_ex(NM_MAIN, agent.pos, horzExtents, vertExtents, minPolys, maxDepth)
-        return EBehResult.ER_SUCCESS
-    else
-      let extents = 0.1
-      var pos = agent.pos
-      if project_to_nearest_navmesh_point(pos, extents) && abs(pos.y - agent.pos.y) < 1.0
-        return EBehResult.ER_SUCCESS
+    let horzExtents = 0.1
+    let vertExtents = 1.0
+    if is_navmesh_position_suitable_ex(NM_MAIN, agent.pos, horzExtents, vertExtents, minPolys, maxDepth)
+      return EBehResult.ER_SUCCESS
     return EBehResult.ER_FAILED
 
 [beh_node(name="forceDoor")]

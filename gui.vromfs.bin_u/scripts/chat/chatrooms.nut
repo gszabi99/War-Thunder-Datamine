@@ -1,13 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
 from "%scripts/dagui_natives.nut" import gchat_raw_command, gchat_escape_target
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { chatRooms } = require("%scripts/chat/chatStorage.nut")
+let { chatRooms, isRoomJoined } = require("%scripts/chat/chatStorage.nut")
 let { systemMessage, checkChatConnected } = require("%scripts/chat/chatHelper.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
 
 local _roomJoinedIdx = 0
 
@@ -19,19 +18,10 @@ function isRoomClan(roomId) {
   return g_chat_room_type.CLAN.checkRoomId(roomId)
 }
 
-function getRoomById(id) {
-  return u.search(chatRooms, function (room) { return room.id == id })
-}
-
 function isNotUsersClanRoom(roomId) {
   if (!isRoomClan(roomId))
     return false
   return g_chat_room_type.CLAN.canBeClosed(roomId)
-}
-
-function isRoomJoined(roomId) {
-  let room = getRoomById(roomId)
-  return room != null && room.joined
 }
 
 function addRoom(room) {
@@ -57,14 +47,6 @@ function joinThread(roomId) {
     gchat_raw_command($"xtjoin {roomId}")
   else
     broadcastEvent("ChatSwitchCurRoom", { roomId })
-}
-
-function isSquadRoomJoined() {
-  let roomId = g_chat_room_type.getMySquadRoomId()
-  if (roomId == null)
-    return false
-
-  return isRoomJoined(roomId)
 }
 
 function generateInviteMenu(playerName) {
@@ -113,9 +95,6 @@ function isImRoomOwner(roomData) {
 return {
   joinThread
   addRoom
-  isRoomJoined
-  getRoomById
-  isSquadRoomJoined
   generateInviteMenu
   isRoomSquad
   isRoomClan

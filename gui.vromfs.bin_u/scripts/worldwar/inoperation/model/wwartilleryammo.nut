@@ -1,9 +1,9 @@
+import "DataBlock" as DataBlock
+from "math" import ceil
+from "worldwar" import wwGetOperationTimeMillisec, wwGetSpeedupFactor, wwGetArtilleryStrikes
 from "%scripts/dagui_library.nut" import *
 
 let time = require("%scripts/time.nut")
-let { ceil } = require("math")
-let DataBlock  = require("DataBlock")
-let { wwGetOperationTimeMillisec, wwGetSpeedupFactor, wwGetArtilleryStrikes } = require("worldwar")
 
 let WwArtilleryAmmo = class {
   hasArtilleryStrike = false
@@ -38,8 +38,8 @@ let WwArtilleryAmmo = class {
       return
 
     this.hasArtilleryStrike = true
-    this.nextStrikeTimeMillis = getTblValue("nextStrikeTimeMillis", strikeBlk, 0)
-    this.strikesDone = getTblValue("strikesDone", strikeBlk, 0)
+    this.nextStrikeTimeMillis = (strikeBlk?.nextStrikeTimeMillis ?? 0)
+    this.strikesDone = (strikeBlk?.strikesDone ?? 0)
   }
 
   function getAmmoCount() {
@@ -102,10 +102,10 @@ let WwArtilleryAmmo = class {
     if (!params)
       return
 
-    this.maxAmmoCount = getTblValue("maxAmmo", params, 0)
-    this.maxStrikesPerAttack = getTblValue("maxStrikesPerAttack", params, 0)
-    this.cooldownAfterMoveSec = getTblValue("cooldownAfterMoveSec", params, 0)
-    this.strikeIntervalSec = getTblValue("strikeIntervalSec", params, 0)
+    this.maxAmmoCount = (params?.maxAmmo ?? 0)
+    this.maxStrikesPerAttack = (params?.maxStrikesPerAttack ?? 0)
+    this.cooldownAfterMoveSec = (params?.cooldownAfterMoveSec ?? 0)
+    this.strikeIntervalSec = (params?.strikeIntervalSec ?? 0)
   }
 }
 return { WwArtilleryAmmo }

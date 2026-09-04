@@ -1,7 +1,7 @@
 {
   "model": "mirage_f1c_200",
   "fmFile": "fm/mirage_f1c_200.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeC": 0.09,
   "gearSinkRangeLR": 0.19,
   "jetEnginePowerFullScale": true,
@@ -12,6 +12,7 @@
   "haveCCRPForBombs": true,
   "ilsTCSF196": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -2491,8 +2492,8 @@
             1.0
           ],
           "page": {
-            "type": "radar",
-            "scale": 0.65
+            "type": "custom",
+            "pageName": "mfdMirageF1Radar"
           }
         },
         {

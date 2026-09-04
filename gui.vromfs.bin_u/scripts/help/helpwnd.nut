@@ -1,28 +1,31 @@
+from "%sqStdLibs/helpers/u.nut" import search, isEmpty, isTMatrix
+from "controls" import isXInputDevice
+from "math" import ceil
+from "string" import format
+from "mission" import get_current_mission_name
+from "guiMission" import get_meta_mission_info_by_name
+from "%sqstd/datablock.nut" import blkFromPath
+from "hudActionBarConst" import EII_BULLET
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
+from "types" import Table
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isXInputDevice } = require("controls")
-let { ceil } = require("math")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let { get_current_mission_name } = require("mission")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { blkFromPath } = require("%sqstd/datablock.nut")
-let { search, isEmpty, isTMatrix } = require("%sqStdLibs/helpers/u.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
 let helpMarkup = require("%scripts/controls/help/controlsHelpMarkup.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { EII_BULLET } = require("hudActionBarConst")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
@@ -38,14 +41,14 @@ let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
 function gui_modal_help(isStartedFromMenu, contentSet, missionType = null) {
-  loadHandler(gui_handlers.helpWndModalHandler, {
+  loadHandler(get_gui_handler("helpWndModalHandler"), {
     isStartedFromMenu
     contentSet
     missionType
   })
 }
 
-gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let helpWndModalHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWnd.blk"
 
@@ -188,12 +191,12 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.pageUnitTag = tab?.pageUnitTag
 
     let sheetObj = this.scene.findObject("help_sheet")
-    let pageBlkName = getTblValue("pageBlkName", tab, "")
+    let pageBlkName = (tab?.pageBlkName ?? "")
     if (!isEmpty(pageBlkName))
       this.guiScene.replaceContent(sheetObj, pageBlkName, this)
 
-    let fillFuncName = getTblValue("pageFillfuncName", tab)
-    let fillFunc = fillFuncName ? getTblValue(fillFuncName, this) : this.fillHelpPage
+    let fillFuncName = tab?.pageFillfuncName
+    let fillFunc = fillFuncName ? (this?[fillFuncName] ?? this.fillHelpPage) : this.fillHelpPage
     fillFunc()
 
     this.showTabSpecificControls(tab)
@@ -207,7 +210,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showTabSpecificControls(tab) {
-    let countryRelatedObjs = getTblValue("countryRelatedObjs", tab, null)
+    let countryRelatedObjs = tab?.countryRelatedObjs
     if (countryRelatedObjs != null) {
       local selectedCountry = profileCountrySq.get().slice(8)
       selectedCountry = (selectedCountry in countryRelatedObjs) ? selectedCountry : tab.defaultValues.country
@@ -222,7 +225,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillTabLinkLines(tab) {
-    let linkLines = getTblValue("linkLines", tab, null)
+    let linkLines = tab?.linkLines
     this.scene.findObject("link_lines_block").show(linkLines != null)
     if (linkLines == null)
       return
@@ -234,9 +237,9 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let linkLinesConfig = {
       startObjContainer = linkContainer
       endObjContainer = linkContainer
-      lineInterval = getTblValue("lineInterval", linkLines, this.defaultLinkLinesInterval)
+      lineInterval = (linkLines?.lineInterval ?? this.defaultLinkLinesInterval)
       links = linkLines?.links ?? []
-      obstacles = getTblValue("obstacles", linkLines, null)
+      obstacles = linkLines?.obstacles
     }
     let linesData = getLinkLinesMarkup(linkLinesConfig)
     this.guiScene.replaceContentFromText(this.scene.findObject("link_lines_block"), linesData, linesData.len(), this)
@@ -261,7 +264,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
                      ? curCountry
                      : tab.defaultValues.country
 
-    backImg["background-image"] = format(getTblValue("imagePattern", tab, ""), curCountry)
+    backImg["background-image"] = format((tab?.imagePattern ?? ""), curCountry)
     this.fillActionBars(tab)
     this.updatePlatformControls()
   }
@@ -295,9 +298,9 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = 0; i < shortcutsList.len(); i++) {
       let item = shortcutsList[i]
-      let name = (type(item) == "table") ? item.id : item
-      let isAxis = type(item) == "table" && item.type == CONTROL_TYPE.AXIS
-      let isHeader = type(item) == "table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
+      let name = (item instanceof Table) ? item.id : item
+      let isAxis = item instanceof Table && item.type == CONTROL_TYPE.AXIS
+      let isHeader = item instanceof Table && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
       let shortcutNames = []
       let axisModifierButtons = []
       local scText = ""
@@ -378,7 +381,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function remapKeyboardKeysByLang() {
-    let map = getTblValue(getLanguageName(), this.kbdKeysRemapByLang)
+    let map = this.kbdKeysRemapByLang?[getLanguageName()]
     if (!map)
       return
     let kbdObj = this.scene.findObject("keyboard_div")
@@ -512,8 +515,8 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         if (actions) {
           local titlesCount = 0
-          let sliceBtn = "button"
-          let sliceDirpad = "dirpad"
+          const sliceBtn = "button"
+          const sliceDirpad = "dirpad"
           let slicedSuffix = idSuffix.slice(0, 6)
           local maxActionsInTitle = 2
           if (slicedSuffix == sliceBtn || slicedSuffix == sliceDirpad)
@@ -523,7 +526,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             let actionId = actions[a]
 
             local shText = loc($"hotkeys/{actionId}")
-            if (getTblValue(actionId, customLocalization, null))
+            if (customLocalization?[actionId])
               shText = loc(customLocalization[actionId])
 
             if (titlesCount < maxActionsInTitle) {
@@ -603,7 +606,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!tab)
       return
 
-    let frameForHideIds = getTblValue("defaultControlsIds", tab, [])
+    let frameForHideIds = (tab?.defaultControlsIds ?? [])
     foreach (item in frameForHideIds)
       if ("frameId" in item)
         this.scene.findObject(item.frameId).show(isDefaultControls)
@@ -616,7 +619,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       rows = []
     }
     foreach (item in frameForHideIds) {
-      let shortcutId = getTblValue("shortcut", item)
+      let shortcutId = item?.shortcut
       if (!shortcutId)
         continue
 
@@ -641,6 +644,8 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       smoke_screen_label = !isGamepadPreset
       controller_medicalkit_label = isGamepadPreset
       medicalkit_label = !isGamepadPreset
+      controller_voice_msg_label = isGamepadPreset
+      voice_msg_label = !isGamepadPreset
     }
 
     showObjectsByTable(this.scene, buttonsList)
@@ -699,7 +704,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function afterModalDestroy() {
     if (this.isStartedFromMenu) {
       let curHandler = handlersManager.getActiveBaseHandler()
-      if (curHandler != null && curHandler instanceof gui_handlers.FlightMenu)
+      if (is_gui_handler_instance(curHandler, "FlightMenu"))
         curHandler.onResumeRaw()
     }
   }
@@ -740,7 +745,9 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return viewItem
   }
 }
+register_gui_handler("helpWndModalHandler", helpWndModalHandler)
 
 return {
+  helpWndModalHandler
   gui_modal_help
 }

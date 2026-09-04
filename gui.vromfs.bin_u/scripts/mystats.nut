@@ -1,23 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "dagor.time" import get_time_msec
+from "console" import register_command
 from "%scripts/dagui_natives.nut" import get_player_public_stats, req_player_public_statinfo
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
+from "%scripts/user/userInfoStats.nut" import getPlayerStatsFromBlk, getPlayerSummary, getPlayerSummaryMode
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
-let { broadcastEvent, addListenersWithoutEnv
-} = require("%sqStdLibs/helpers/subscriptions.nut")
+let { EVENTS_DATA_UPDATED } = require("%scripts/crossModuleEvents.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
 let { getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getPlayerStatsFromBlk, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { get_time_msec } = require("dagor.time")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
@@ -27,10 +28,7 @@ let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { register_command } = require("console")
+let { getEvent } = require("%scripts/events/eventsState.nut")
 let { getNewPlayersBattlesConfig } = require("%scripts/user/myStatsState.nut")
 
 
@@ -67,7 +65,7 @@ local newbie = null
 local forcedIsNotNewbie = false
 
 function getTitles(showHidden = false) {
-  let titles = getTblValue("titles", myStats, [])
+  let titles = (myStats?.titles ?? [])
   if (showHidden)
     return titles
 
@@ -184,7 +182,7 @@ function getStats() {
 
 function getSummary(summaryName, filter = {}) {
   local res = 0
-  let pvpSummary = getTblValue(summaryName, getPlayerSummary(myStats))
+  let pvpSummary = getPlayerSummaryMode(myStats, summaryName)
   if (!pvpSummary)
     return res
 
@@ -195,10 +193,10 @@ function getSummary(summaryName, filter = {}) {
       if (!isInArray(unitRole, roles))
         continue
 
-      foreach (param in getTblValue("addArray", filter, []))
-        res += getTblValue(param, data, 0)
-      foreach (param in getTblValue("subtractArray", filter, []))
-        res -= getTblValue(param, data, 0)
+      foreach (param in (filter?.addArray ?? []))
+        res += (data?[param] ?? 0)
+      foreach (param in (filter?.subtractArray ?? []))
+        res -= (data?[param] ?? 0)
     }
   return res
 }
@@ -247,13 +245,13 @@ function calculateMaxUnitsUsedRanks() {
   saveBlk.setFrom(loadedBlk)
   let countryCrewsList = getCrewsList()
   foreach (countryCrews in countryCrewsList)
-    foreach (crew in getTblValue("crews", countryCrews, [])) {
+    foreach (crew in (countryCrews?.crews ?? [])) {
       let unit = getCrewUnit(crew)
       if (unit == null)
         continue
 
       let curUnitType = getEsUnitType(unit)
-      saveBlk[curUnitType.tostring()] = max(getTblValue(curUnitType.tostring(), saveBlk, 0), unit?.rank ?? -1)
+      saveBlk[curUnitType.tostring()] = max((saveBlk?[curUnitType.tostring()] ?? 0), unit?.rank ?? -1)
     }
 
   if (!u.isEqual(saveBlk, loadedBlk))
@@ -266,7 +264,7 @@ function checkUnitInSlot(requiredUnitRank, unitType) {
   if (maxUnitsUserRank == null)
     maxUnitsUserRank = calculateMaxUnitsUsedRanks()
 
-  return requiredUnitRank <= getTblValue(unitType.tostring(), maxUnitsUserRank, 0)
+  return requiredUnitRank <= (maxUnitsUserRank?[unitType.tostring()] ?? 0)
 }
 
 function checkRecountNewbie() {
@@ -343,7 +341,7 @@ function checkRecountNewbie() {
         continue
       if (evData.unitRank && checkUnitInSlot(evData.unitRank, unitType))
         continue
-      let event = events.getEvent(evData.event)
+      let event = getEvent(evData.event)
       if (!event)
         continue
       if (isGoToTestModes && evData.abTest) {
@@ -431,7 +429,7 @@ function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true
         unitType = types[0]
     }
   }
-  return getTblValue(unitType, newbieNextEvent)
+  return newbieNextEvent?[unitType]
 }
 
 function getMissionsComplete(summaryArray = summaryNameArray) {
@@ -468,8 +466,8 @@ addListenersWithoutEnv({
     requestMyStats()
   }
   UnitBought = @(_) markStatsReset()
-  AllModificationsPurchased = @(_) markStatsReset()
-  EventsDataUpdated = @(_) needRecountNewbie = true
+  AllModificationsPurchased = @(_) markStatsReset(),
+  [EVENTS_DATA_UPDATED] = @(_) needRecountNewbie = true,
   SignOut = @(_) resetStatsParams()
   CrewTakeUnit = onEventCrewTakeUnit
 }, g_listener_priority.LOGIN_PROCESS)

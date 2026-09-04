@@ -2,8 +2,6 @@ require darg
 require DagorStdGuiRender
 require math
 require DagorMath
-require DagorMathUtils
-require DagorSystem
 require RadarHud
 require strings
 require app
@@ -17,7 +15,6 @@ require %rGui.utils.radar_common
 require %rGui.utils.constants_common
 require %rGui.utils.canvas_common
 require %rGui.utils.canvas_interactables_common
-require %rGui.utils.input_common
 require %rGui.utils.helpers_common
 require Localization
 
@@ -104,6 +101,9 @@ def rad_to_deg(rad : float)
 def deg_to_rad(rad : float)
   return rad * PI / 180.
 
+def get_iff_filter_size(params : CanvasParams&)
+  return float2(params |> hdpx(15.0), params |> hdpx(20.0))
+
 let angularWidthMin = deg_to_rad(5.0)
 
 def calc_angular_gate_width_polar(distance_rel : float; azimuth_half_width)
@@ -187,7 +187,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cScopeIndicatorHeightMult = props |> getFloat("cScopeIndicatorHeightMult", 0.42)
 
 [export]
-def handle_click(var elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
+def handle_click(elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
   let clickPos = float2(click_pos_x, click_pos_y)
   var storage = CanvasParams()
   setup_radar_data(elem.props, storage)
@@ -197,7 +197,7 @@ def handle_click(var elem : Element&; click_pos_x, click_pos_y : float; dev_id, 
   mainEll.walkLayout(clickVisisitor)
 
 [export]
-def handle_double_click(var elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
+def handle_double_click(elem : Element&; click_pos_x, click_pos_y : float; dev_id, button_id : int)
   let clickPos = float2(click_pos_x, click_pos_y)
   var storage = CanvasParams()
   setup_radar_data(elem.props, storage)
@@ -207,7 +207,7 @@ def handle_double_click(var elem : Element&; click_pos_x, click_pos_y : float; d
   mainEll.walkLayout(doubleClickVisitor)
 
 [export]
-def handle_press(var elem : Element&; start_pos_x, start_pos_y : float; dev_id, button_id : int)
+def handle_press(elem : Element&; start_pos_x, start_pos_y : float; dev_id, button_id : int)
   let startPos = float2(start_pos_x, start_pos_y)
   let currPos = get_mouse_pos()
   var storage = CanvasParams()
@@ -218,7 +218,7 @@ def handle_press(var elem : Element&; start_pos_x, start_pos_y : float; dev_id, 
   mainEll.walkLayout(pressVisitor)
 
 [export]
-def handle_press_end(var elem : Element&; start_pos_x, start_pos_y : float; dev_id, button_id : int)
+def handle_press_end(elem : Element&; start_pos_x, start_pos_y : float; dev_id, button_id : int)
   let startPos = float2(start_pos_x, start_pos_y)
   let currPos = get_mouse_pos()
   var storage = CanvasParams()
@@ -229,7 +229,7 @@ def handle_press_end(var elem : Element&; start_pos_x, start_pos_y : float; dev_
   mainEll.walkLayout(pressVisitor)
 
 [export]
-def handle_mouse_wheel(var elem : Element&; mouse_x, mouse_y : float; delta : float)
+def handle_mouse_wheel(elem : Element&; mouse_x, mouse_y : float; delta : float)
   let pos = float2(mouse_x, mouse_y)
   var scrollVisitor = ScrollVisitor(pos, delta)
 
@@ -1176,7 +1176,7 @@ def b_scope_half_circle_markers(var visitor : InteractableVisitor&; data : Canva
       Radar`changeRange()
     scanRangeEl.walkLayout(visitor)
 
-  let iffFilterSize = float2(data |> hdpx(15.0), data |> hdpx(20.0))
+  let iffFilterSize = data |> get_iff_filter_size()
   let iffOffset = float2(data |> hdpx(3.0), -data |> hdpx(3.0))
   let iffPos = float2(lt.x, rb.y - iffFilterSize.y) + iffOffset
   var iffFilter = IFFFilterButton(iffPos, iffFilterSize, data)
@@ -1281,7 +1281,7 @@ struct BScopeSquareMain : RadarInteractableEll
     var centerEl = BScopeSquareCenter(elemPos, sz, *self.data)
     centerEl.walkLayout(visitor)
 
-    let iffFilterSize = float2(*self.data |> hdpx(15.0), *self.data |> hdpx(20.0))
+    let iffFilterSize = *self.data |> get_iff_filter_size()
     let offset = -float2(*self.data |> hdpx(3.0))
     var iffFilter = IFFFilterButton(elemPos + float2(0.0, sz.y) + offset - iffFilterSize, iffFilterSize, *self.data)
     iffFilter.walkLayout(visitor)
@@ -2260,14 +2260,18 @@ struct ESMBScopeMain : RadarInteractableEll
 
     let margin = *self.data |> hdpx(4.0)
 
+    let isIffBtnVisible = get_air_radar_control_mode() == AirRadarControlMode.HIDDEN
+    let iffFilterSize = *self.data |> get_iff_filter_size()
+    let iffLeftReserve = isIffBtnVisible ? iffFilterSize.x : 0.0
+
     let curretWidth = size.x * 0.05
-    let lb = float2(pos.x + margin + curretWidth + margin, pos.y + size.y - margin)
-    var targets = ESMBScopeTargets(lb, size.x - 3.0 * margin - curretWidth, *self.data)
+    let lb = float2(pos.x + margin + iffLeftReserve + curretWidth + margin, pos.y + size.y - margin)
+    var targets = ESMBScopeTargets(lb, size.x - 3.0 * margin - curretWidth - iffLeftReserve, *self.data)
     targets.walkLayout(visitor)
 
     let gridTopY = targets.targetAreaAnchor.y
     let gridBottomY = targets.pos.y + targets.size.y
-    let curretPos = float2(pos.x + margin, gridTopY)
+    let curretPos = float2(pos.x + margin + iffLeftReserve, gridTopY)
     let curretSize = float2(curretWidth, gridBottomY - gridTopY)
     var elevationCurret = CScopeElevationCurret(curretPos, curretSize, *self.data)
     elevationCurret.walkLayout(visitor)
@@ -2302,6 +2306,11 @@ struct ESMBScopeMain : RadarInteractableEll
       scanEl.onClickCallback <- @ <| ()
         Radar`changeScanPattern()
       scanEl.walkLayout(visitor)
+
+    if isIffBtnVisible
+      let iffPos = float2(curretPos.x - iffFilterSize.x, gridBottomY - iffFilterSize.y)
+      var iffFilter = IFFFilterButton(iffPos, iffFilterSize, *self.data)
+      iffFilter.walkLayout(visitor)
 
 
 
@@ -2526,7 +2535,7 @@ struct BScopeMain : RadarInteractableEll
     var centerEl = BScopeCenter(p, sz, *self.data)
     centerEl.walkLayout(visitor)
 
-    let iffFilterSize = float2(*self.data |> hdpx(15.0), *self.data |> hdpx(20.0))
+    let iffFilterSize = *self.data |> get_iff_filter_size()
     let offset = float2(*self.data |> hdpx(3.0), -*self.data |> hdpx(3.0))
     var iffFilter = IFFFilterButton(float2(pos.x, p.y) + offset, iffFilterSize, *self.data)
     iffFilter.walkLayout(visitor)
@@ -2585,10 +2594,10 @@ def b_scope_labels_aa_complex(var visitor : InteractableVisitor&; data : CanvasP
 def b_scope_labels(var visitor : InteractableVisitor&; data : CanvasParams&; elem_pos, elem_size : float2)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
-  var topOffset = 0.
-  var leftOffset = 0.
-  var rightOffset = 0.
-  var bottomOffset = 0.
+  var topOffset : float
+  var leftOffset : float
+  var rightOffset : float
+  var bottomOffset : float
 
   var style = TextButtonStyle()
   style.color = data.color

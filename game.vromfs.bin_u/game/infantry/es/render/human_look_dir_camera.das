@@ -8,7 +8,6 @@ require math.ang
 require DagorMath
 require DagorMathUtils
 require AnimV20
-require app
 require WTInput
 require %game.events
 require %appGame.infantry.es.human_weap_common

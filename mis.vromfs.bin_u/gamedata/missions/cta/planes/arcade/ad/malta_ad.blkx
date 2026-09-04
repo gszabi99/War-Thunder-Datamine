@@ -80,17 +80,17 @@
     "mission": {
       "level": "levels/malta.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
       "weather": "hazy",
+      "locName": "missions/_AD;location/malta",
+      "locDesc": "missions/_AD/desc",
       "scoreLimit": 3000,
       "timeLimit": 20,
       "deathPenaltyMul": 0.5,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "locName": "missions/_AD;location/malta",
-      "locDesc": "missions/_AD/desc",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -144,11 +144,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -158,11 +160,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -172,11 +176,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -186,11 +192,29 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/destroy_bomb_areas_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -224,25 +248,26 @@
           "canCaptureInAir": true,
           "canCaptureByGM": false,
           "onlyPlayersCanCapture": true,
-          "captureNoPenalty": true
+          "captureNoPenalty": true,
+          "zoneDefenders": {}
         },
         "__missionMarkAsRespawnPoint": [
           {
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "t1_bombers_spawn",
+            "team": "A",
             "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
             "useExisting": false,
             "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "target": "t1_bombers_spawn",
-            "team": "A",
             "tags": {
               "type_bomber": true,
               "tank": false
@@ -251,25 +276,29 @@
           {
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "t2_bombers_spawn",
+            "team": "B",
             "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
             "isAirfield": false,
             "isUnit": false,
             "useExisting": false,
             "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "target": "t2_bombers_spawn",
-            "team": "B",
             "tags": {
               "type_bomber": true,
               "tank": false
             }
           }
-        ]
+        ],
+        "varSetInt": {
+          "value": 4,
+          "var": "max_bomb_areas"
+        }
       },
       "else_actions": {}
     }
@@ -315,9 +344,9 @@
           1.0
         ],
         [
-          13278.5,
+          4466.7,
           497.25,
-          2100.86
+          3421.31
         ]
       ],
       "unit_class": "dummy_plane",
@@ -334,6 +363,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -356,7 +387,257 @@
         }
       },
       "way": {}
-    }
+    },
+    "objectGroups": [
+      {
+        "name": "t1_bomb_target_01",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -2476.22,
+            470.176,
+            -5879.91
+          ]
+        ],
+        "unit_class": "dynBase_field_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_bomb_target_02",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -540.556,
+            565.308,
+            -7122.88
+          ]
+        ],
+        "unit_class": "dynBase_oil_storage_large_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_bomb_target_03",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            5100.11,
+            217.844,
+            -7151.18
+          ]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_bomb_target_04",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            7571.27,
+            63.6328,
+            -6007.35
+          ]
+        ],
+        "unit_class": "dynBase_small_factory_square_large",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_target_01",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -2546.21,
+            87.7939,
+            -762.484
+          ]
+        ],
+        "unit_class": "dynBase_field_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_target_02",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            -425.264,
+            16.1387,
+            226.836
+          ]
+        ],
+        "unit_class": "dynBase_ammunition_storage_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_target_03",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            7644.68,
+            137.138,
+            -671.706
+          ]
+        ],
+        "unit_class": "dynBase_hq_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t2_bomb_target_04",
+        "tm": [
+          [
+            -1.0,
+            0.0,
+            1.49012e-7
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.49012e-7,
+            0.0,
+            -1.0
+          ],
+          [
+            5113.67,
+            77.0287,
+            241.164
+          ]
+        ],
+        "unit_class": "dynBase_petrol_camp_square",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      }
+    ]
   },
   "areas": {
     "capture_area": {
@@ -378,12 +659,12 @@
           3500.0
         ],
         [
-          11256.5,
+          2444.7,
           0.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "area01": {
@@ -405,12 +686,12 @@
           8000.0
         ],
         [
-          11254.7,
+          2442.9,
           1500.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "t1_fighters_spawn_near": {
@@ -432,9 +713,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           1500.0,
-          -10812.7
+          -9492.25
         ]
       ],
       "objLayer": 0,
@@ -459,9 +740,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           1500.0,
-          1192.46
+          2512.91
         ]
       ],
       "objLayer": 0,
@@ -486,12 +767,12 @@
           24000.0
         ],
         [
-          11254.7,
+          2442.9,
           1500.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "area03": {
@@ -513,12 +794,12 @@
           12000.0
         ],
         [
-          11254.7,
+          2442.9,
           1500.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "t1_fighters_spawn_middle": {
@@ -540,9 +821,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           1500.0,
-          -12804.5
+          -11484.0
         ]
       ],
       "objLayer": 0,
@@ -567,9 +848,9 @@
           0.0000226494
         ],
         [
-          11250.2,
+          2438.4,
           1500.0,
-          -14779.7
+          -13459.3
         ]
       ],
       "objLayer": 0,
@@ -594,9 +875,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           1500.0,
-          3193.42
+          4513.87
         ]
       ],
       "objLayer": 0,
@@ -621,9 +902,9 @@
           0.0000226494
         ],
         [
-          11256.0,
+          2444.2,
           1500.0,
-          5208.99
+          6529.44
         ]
       ],
       "objLayer": 0,
@@ -648,9 +929,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           2000.0,
-          -10812.7
+          -9492.25
         ]
       ],
       "objLayer": 0,
@@ -675,9 +956,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           2000.0,
-          -12804.5
+          -11484.0
         ]
       ],
       "objLayer": 0,
@@ -702,9 +983,9 @@
           0.0000226494
         ],
         [
-          11250.2,
+          2438.4,
           2000.0,
-          -14779.7
+          -13459.3
         ]
       ],
       "objLayer": 0,
@@ -729,9 +1010,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           2000.0,
-          1192.46
+          2512.91
         ]
       ],
       "objLayer": 0,
@@ -756,9 +1037,9 @@
           0.0000226494
         ],
         [
-          11256.4,
+          2444.6,
           2000.0,
-          3193.42
+          4513.87
         ]
       ],
       "objLayer": 0,
@@ -783,9 +1064,9 @@
           0.0000226494
         ],
         [
-          11256.0,
+          2444.2,
           2000.0,
-          5208.99
+          6529.44
         ]
       ],
       "objLayer": 0,
@@ -810,12 +1091,12 @@
           13500.0
         ],
         [
-          11254.7,
+          2442.9,
           3500.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "t1_bombers_spawn": {
@@ -837,9 +1118,9 @@
           0.0000226494
         ],
         [
-          11255.8,
+          2444.0,
           3500.0,
-          -16805.7
+          -15485.3
         ]
       ],
       "objLayer": 0,
@@ -864,9 +1145,9 @@
           -0.0000679481
         ],
         [
-          11252.0,
+          2440.2,
           3500.0,
-          7176.25
+          8496.7
         ]
       ],
       "objLayer": 0,
@@ -891,9 +1172,9 @@
           0.0000226494
         ],
         [
-          11255.8,
+          2444.0,
           1500.0,
-          -16805.7
+          -15485.3
         ]
       ],
       "objLayer": 0,
@@ -918,9 +1199,9 @@
           -0.0000679481
         ],
         [
-          11252.0,
+          2440.2,
           1500.0,
-          7176.25
+          8496.7
         ]
       ],
       "objLayer": 0,
@@ -945,9 +1226,9 @@
           0.0000226494
         ],
         [
-          11255.8,
+          2444.0,
           2000.0,
-          -16805.7
+          -15485.3
         ]
       ],
       "objLayer": 0,
@@ -972,9 +1253,9 @@
           -0.0000679481
         ],
         [
-          11252.0,
+          2440.2,
           2000.0,
-          7176.25
+          8496.7
         ]
       ],
       "objLayer": 0,
@@ -999,12 +1280,12 @@
           0.000075498
         ],
         [
-          22840.9,
+          14029.1,
           0.0,
-          -7982.73
+          -6662.28
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "t2_plane_exit_zone": {
@@ -1026,9 +1307,9 @@
           0.000075498
         ],
         [
-          -369.591,
+          -9181.4,
           0.0,
-          -1786.58
+          -466.132
         ]
       ],
       "objLayer": 0,
@@ -1053,9 +1334,9 @@
           0.0000226494
         ],
         [
-          11255.8,
+          2444.0,
           3000.0,
-          -16805.7
+          -15485.3
         ]
       ],
       "objLayer": 0,
@@ -1080,9 +1361,9 @@
           -0.0000679481
         ],
         [
-          11252.0,
+          2440.2,
           3000.0,
-          7176.25
+          8496.7
         ]
       ],
       "objLayer": 0,
@@ -1107,12 +1388,12 @@
           16000.0
         ],
         [
-          11254.7,
+          2442.9,
           1500.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "area06": {
@@ -1134,12 +1415,12 @@
           20000.0
         ],
         [
-          11254.7,
+          2442.9,
           1500.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "capture_area_near": {
@@ -1161,12 +1442,12 @@
           3500.0
         ],
         [
-          11256.5,
+          2444.7,
           0.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "capture_area_middle": {
@@ -1188,12 +1469,12 @@
           4500.0
         ],
         [
-          11256.5,
+          2444.7,
           750.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "capture_area_far": {
@@ -1215,12 +1496,12 @@
           5500.0
         ],
         [
-          11256.5,
+          2444.7,
           750.0,
-          -4807.75
+          -3487.3
         ]
       ],
-      "objLayer": 0,
+      "objLayer": 3,
       "props": {}
     },
     "capture_area_huge": {
@@ -1242,12 +1523,282 @@
           6500.0
         ],
         [
-          11256.5,
+          2444.7,
           750.0,
-          -4807.75
+          -3487.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_bomb_area_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          -2474.12,
+          470.905,
+          -5904.3
         ]
       ],
       "objLayer": 0,
+      "props": {}
+    },
+    "t1_bomb_area_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          -534.356,
+          565.091,
+          -7126.11
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_bomb_area_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          5096.61,
+          195.499,
+          -7138.43
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_bomb_area_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          7554.63,
+          64.5967,
+          -5988.67
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bomb_area_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          -2549.41,
+          87.2109,
+          -763.133
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bomb_area_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          -433.465,
+          16.6631,
+          224.635
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bomb_area_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          7636.48,
+          137.601,
+          -685.106
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_bomb_area_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -500.0,
+          0.0,
+          0.0000762939
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -0.0000762939,
+          0.0,
+          -500.0
+        ],
+        [
+          5120.27,
+          77.1049,
+          203.262
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_bomb_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.00150996,
+          0.0,
+          20000.0
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          -20000.0,
+          0.0,
+          0.00150996
+        ],
+        [
+          2444.6,
+          317.273,
+          -9492.25
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_bomb_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.00150996,
+          0.0,
+          -20000.0
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          20000.0,
+          0.0,
+          0.00150996
+        ],
+        [
+          2444.6,
+          668.574,
+          2512.91
+        ]
+      ],
+      "objLayer": 3,
       "props": {}
     }
   },
@@ -1263,7 +1814,7 @@
         "enabled": true
       },
       {
-        "enabled": true
+        "enabled": false
       }
     ]
   },

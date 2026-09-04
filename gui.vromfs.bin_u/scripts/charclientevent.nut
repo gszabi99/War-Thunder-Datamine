@@ -1,8 +1,9 @@
+from "%appGlobals/charClientUtils.nut" import shortValue, shortKeyValue
+from "app" import APP_ID
+from "dagor.debug" import debug
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-let { APP_ID } = require("app")
-let { debug } = require("dagor.debug")
-let { eventbus_subscribe } = require("eventbus")
-let { shortValue, shortKeyValue } = require("%appGlobals/charClientUtils.nut")
+
 
 
 
@@ -135,4 +136,3 @@ function charClientEvent(name, client) {
 }
 
 return charClientEvent
-

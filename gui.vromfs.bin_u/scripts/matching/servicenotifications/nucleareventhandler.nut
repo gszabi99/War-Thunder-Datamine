@@ -1,17 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "hangarEventCommand" import is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "app" import get_base_game_version
-let { is_seen_nuclear_event, is_seen_main_nuclear_event, need_show_after_streak
-} = require("hangarEventCommand")
+from "%scripts/webRPC.nut" import webRpcRegister
+
 let airRaidWndScene = require("%scripts/wndLib/airRaidWnd.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { Version } = require("%sqstd/version.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isInFlight } = require("gameplayBinding")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false
@@ -74,7 +73,7 @@ addListenersWithoutEnv({
   ProfileReceived = @(_p) bigQuerryForNuclearEvent()
 })
 
-web_rpc.register_handler("new_client_version", onNewClientVersion)
+webRpcRegister("new_client_version", onNewClientVersion)
 
 return {
   checkNuclearEvent

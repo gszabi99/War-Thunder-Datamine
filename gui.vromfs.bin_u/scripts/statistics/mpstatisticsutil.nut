@@ -1,41 +1,41 @@
-from "%scripts/dagui_natives.nut" import  get_mp_kick_countdown
+import "%sqStdLibs/helpers/u.nut" as u
+from "console" import register_command
+from "dagor.random" import rnd
+from "eventbus" import eventbus_subscribe
+from "matching.errors" import INVALID_SQUAD_ID
+from "string" import format
+from "replays" import is_replay_playing
+from "mission" import get_game_mode, get_mp_local_team, get_game_type
+from "guiMission" import get_mission_difficulty_int, get_mp_session_info, get_player_army_for_hud
+from "%sqstd/string.nut" import stripTags
+from "blkGetters" import get_game_settings_blk, get_ranks_blk
+from "gameplayBinding" import isInFlight
+from "%scripts/dagui_natives.nut" import get_mp_kick_countdown
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
 
-let { register_command } = require("console")
-let { rnd } = require("dagor.random")
 let { g_mplayer_param_type } = require("%scripts/mplayerParamType.nut")
 let { g_team } = require("%scripts/teams.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { INVALID_SQUAD_ID } = require("matching.errors")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { updateTopSquadScore, isShowSquad,
-  getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
-let { is_replay_playing } = require("replays")
-let { get_game_mode, get_mp_local_team, get_game_type } = require("mission")
-let { get_mission_difficulty_int, get_mp_session_info, get_player_army_for_hud } = require("guiMission")
-let { stripTags } = require("%sqstd/string.nut")
+let { updateTopSquadScore, isShowSquad, getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_game_settings_blk, get_ranks_blk } = require("blkGetters")
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { isInFlight } = require("gameplayBinding")
-let { sessionLobbyStatus, getSessionLobbyTeam
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { sessionLobbyStatus, getSessionLobbyTeam } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getRankByExp } = require("%scripts/ranks.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 let { isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -74,7 +74,7 @@ let colsWithWishlistContextMenu = hasFeature("Wishlist")
 
 function gui_start_mpstatscreen_(params = {}) {
   let isFromGame = params?.isFromGame ?? false
-  handlersManager.loadHandler(gui_handlers.MPStatisticsModal,
+  handlersManager.loadHandler(get_gui_handler("MPStatisticsModal"),
     {
       backSceneParams = isFromGame ? null : handlersManager.getLastBaseHandlerStartParams(),
     }.__update(params))
@@ -195,11 +195,11 @@ let createBaseTooltip = @(tooltipId) format(
 
 const DELAYED_TOOLTIP_MARKUP =
   @"behavior:t='button'
-  on_pushed:t='::gcb.delayedTooltipPush'
-  on_hold_start:t='::gcb.delayedTooltipHoldStart'
-  on_hold_stop:t='::gcb.delayedTooltipHoldStop'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
+  on_pushed:t='gcb.delayedTooltipPush'
+  on_hold_start:t='gcb.delayedTooltipHoldStart'
+  on_hold_stop:t='gcb.delayedTooltipHoldStop'
+  on_hover:t='gcb.delayedTooltipHover'
+  on_unhover:t='gcb.delayedTooltipHover'
   on_r_click:t='onUserRClick'
   tooltipId:t=''
   focusBtnName:t='A'"
@@ -238,7 +238,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       local item = ""
       local tdData = ""
       let widthAdd = ((j == 0) || (j == (hdr.len() - 1))) ? "+@tablePad" : ""
-      let textPadding = "style:t='padding:@tablePad,0;'; "
+      const textPadding = "style:t='padding:@tablePad,0;'; "
       let customTooltipId = hasCustomTooltip && hdr[j] in colsWithCustomTooltip
         ? $"{hdr[j]}_tooltip"
         : null
@@ -279,7 +279,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         if (!isEmpty && !isHeader && !table[i].isBot)
           nameText = getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
-        nameText = stripTags(nameText)
+        nameText = stripTags(colorizeWhitePsnIcon(nameText))
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
         let nameAlign = isRowInvert ? "text-align:t='right' " : ""
         tdData = "".concat($"width:t='{nameWidth}'; {textPadding}",
@@ -328,7 +328,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       else if (hdr[j] == "rowNo") {
         let tdProp = []
         if (hdr[j] in markup)
-          tdProp.append(format("width:t='%s'", getTblValue("width", markup[hdr[j]], "")))
+          tdProp.append(format("width:t='%s'", (markup[hdr[j]]?.width ?? "")))
 
         trAdd.append("winnerPlace:t='none';")
         tdData = format("%s activeText { text:t = '%i'; halign:t='center'} ", "".join(tdProp), i + 1)
@@ -340,7 +340,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       else if (hdr[j] in colsWithParamType) {
         let txt = isEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData = format("activeText { text:t='%s' halign:t='center' } ", txt)
-        let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
+        let width = ((markup?[hdr[j]] ?? {})?.width ?? "")
         if (width != "")
           tdData = "".concat(tdData, format("width:t='%s'; ", width))
       }
@@ -571,7 +571,7 @@ function setMpTable(obj_tbl, table, params = {}) {
 
         let objName = objTd.findObject("name-text")
         if (checkObj(objName))
-         objName.setValue(nameText)
+         objName.setValue(colorizeWhitePsnIcon(nameText))
 
         let objDlcImg = objTd.findObject("dlc-ico")
         if (checkObj(objDlcImg))
@@ -688,7 +688,7 @@ function setMpTable(obj_tbl, table, params = {}) {
         let pos = tablePos + continueRowNum
         objTd.getChild(0).setValue(pos.tostring())
         local winPlace = "none"
-        if (numberOfWinningPlaces > 0 && getTblValue("raceLastCheckpoint", table[i], 0) > 0) {
+        if (numberOfWinningPlaces > 0 && (table[i]?.raceLastCheckpoint ?? 0) > 0) {
           if (tablePos == 1)
             winPlace = "1st"
           else if (tablePos <= numberOfWinningPlaces)
@@ -729,11 +729,12 @@ function setMpTable(obj_tbl, table, params = {}) {
       }
       else if (hdr == "squad") {
         let squadInfo = isShowSquad() ? getSquadInfoByMemberId(table[i]?.userId.tointeger()) : null
-        let squadId = getTblValue("squadId", squadInfo, INVALID_SQUAD_ID)
+        let squadId = (squadInfo?.squadId ?? INVALID_SQUAD_ID)
         let labelSquad = squadInfo ? squadInfo.label.tostring() : ""
         let needSquadIcon = labelSquad != ""
-        let squadScore = needSquadIcon ? getTblValue("squadScore", table[i], 0) : 0
-        let isTopSquad = needSquadIcon && squadScore && squadId != INVALID_SQUAD_ID && squadId == getTopSquadId(squadInfo.teamId)
+        let squadScore = needSquadIcon ? (table[i]?.squadScore ?? 0) : 0
+        
+        let isTopSquad = needSquadIcon && squadScore && squadId != INVALID_SQUAD_ID && squadId == getTopSquadId(squadInfo?.teamId)
 
         let cellText = objTd.findObject($"txt_{hdr}")
         if (checkObj(cellText))
@@ -743,14 +744,14 @@ function setMpTable(obj_tbl, table, params = {}) {
         if (checkObj(cellIcon)) {
           cellIcon.show(needSquadIcon)
           if (needSquadIcon) {
-            cellIcon["iconSquad"] = squadInfo.autoSquad ? "autosquad" : "squad"
+            cellIcon["iconSquad"] = squadInfo?.autoSquad ? "autosquad" : "squad"
             cellIcon["topSquad"] = isTopSquad ? "yes" : "no"
             cellIcon["tooltip"] = "".concat(format("%s %s%s", loc("options/chat_messages_squad"), loc("ui/number_sign", "#"), labelSquad),
               "\n", loc("profile/awards"), loc("ui/colon"), squadScore,
               (isTopSquad ? $"\n{loc("streaks/squad_best")}" : ""))
 
             if (isReplay)
-              objTd.team = squadInfo.teamId == get_player_army_for_hud() ? "blue" : "red"
+              objTd.team = squadInfo?.teamId == get_player_army_for_hud() ? "blue" : "red"
           }
         }
       }

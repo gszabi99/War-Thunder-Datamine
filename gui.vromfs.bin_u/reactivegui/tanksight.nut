@@ -1,39 +1,38 @@
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
+from "tankSightSettings" import set_tank_sight_setting, get_tank_sight_highlight_obj, TSI_RANGEFINDER_POS, TSI_TURRET_ORI_POS, TSI_GUN_READY_POS, TSO_TURRET, TSO_RANGEFINDER
+  , TSO_GUN_READY, TSO_VERT_DIST, TSI_VERT_DIST_OFFSET, TSO_BULLET_TYPE, get_tank_sight_elem_pos, get_tank_sight_elem_size, TSI_BULLET_TYPE_POS
+from "dagor.math" import Point2, E3DCOLOR
+from "eventbus" import eventbus_subscribe, eventbus_send
 from "%rGui/globals/ui_library.nut" import *
-let {set_tank_sight_setting, get_tank_sight_highlight_obj, TSI_RANGEFINDER_POS, TSI_TURRET_ORI_POS, TSI_GUN_READY_POS, TSO_TURRET,
-  TSO_RANGEFINDER, TSO_GUN_READY, TSO_VERT_DIST, TSI_VERT_DIST_OFFSET, TSO_BULLET_TYPE, get_tank_sight_elem_pos,
-  get_tank_sight_elem_size, TSI_BULLET_TYPE_POS} = require("tankSightSettings")
-let { Point2, E3DCOLOR } = require("dagor.math")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
 
 let getTankSightDas  = @() getDasScriptByPath("%rGui/tankSight.das")
 
 let turretState = Watched({
-  pos = [0, 0]
+  pos = const [0, 0]
 })
 
 let rangefinderState = Watched({
-  pos = [0, 0]
+  pos = const [0, 0]
 })
 
 let gunReadyState = Watched({
-  pos = [0, 0]
+  pos = const [0, 0]
 })
 
 let vertDistState = Watched({
-  pos = [0, 0]
+  pos = const [0, 0]
   size = const [hdpx(80), hdpx(50)]
 })
 
 let bulletTypeState = Watched({
-  pos = [0, 0]
+  pos = const [0, 0]
 })
 
 let highlightedObjectWatch = Watched(0)
 eventbus_subscribe("TankSight.HighlightedObjectChanged", @(_) highlightedObjectWatch.trigger())
 
 let highlightColor = E3DCOLOR(255, 76, 255, 255)
-let lineWidth = 2.0
+const lineWidth = 2.0
 
 function onTankSightReloaded(_) {
   let newTPos = get_tank_sight_elem_pos(TSI_TURRET_ORI_POS)
@@ -59,10 +58,10 @@ eventbus_subscribe("onCrosshairReloaded", onCrosshairReloaded)
 
 let mkTankSight = @(isPreviewMode = false)
   {
-    size = flex()
+    size = FLEX
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_DAS_CANVAS
         script = getTankSightDas()
         drawFunc = "draw_inner_fov_elem"
@@ -200,7 +199,7 @@ let mkTankSight = @(isPreviewMode = false)
               rendObj = ROBJ_VECTOR_CANVAS
               color = highlightColor
               fillColor = E3DCOLOR(0x00000000)
-              size = flex()
+              size = FLEX
               lineWidth = hdpx(lineWidth)
               commands = isSellected ? [
                 [VECTOR_RECTANGLE, -50, 0, 150, 100],

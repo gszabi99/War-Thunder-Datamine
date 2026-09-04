@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options indenting = 4
 options strict_smart_pointers = true
 
@@ -109,6 +107,7 @@ def public re_gen_get_rep_limit {
     return re_gen_rep_limit
 }
 
+[unused_argument(msg, offset)]
 def private trace(msg : string; offset : int) {
     static_if (log_parse_enabled) {
         print("{repeat(" ",trace_tab)}{offset}: {msg}\n")
@@ -116,6 +115,7 @@ def private trace(msg : string; offset : int) {
     }
 }
 
+[unused_argument(msg, offset)]
 def private note(msg : string; offset : int) {
     static_if (log_parse_enabled) {
         print("{repeat(" ",trace_tab)}{offset}: {msg}\n")
@@ -129,6 +129,7 @@ def private trace_backtrack() {
     }
 }
 
+[unused_argument(value)]
 def private trace_value(value : ReNode?) {
     static_if (log_parse_enabled) {
         if (value == null) {
@@ -182,9 +183,7 @@ def private next(re : MaybeReNode) {
 
 def private is_set_empty(cset : CharSet) {
     for (x in cset) {
-        if (x != 0u) {
-            return false
-        }
+        if (x != 0u) return false
     }
     return true
 }
@@ -274,23 +273,17 @@ def private is_set_character(ch : int) : bool {
 }
 
 def private is_digit(ch : int) : bool {
-    return ch >= '0' && ch <= '9'
+    return ch >= '0' && ch <= '9'  
 }
 
 def private is_word_character(ch : int) : bool {
-    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_'
+    return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_'  
 }
 
 def private from_hex(ch : int) {
-    if (ch >= '0' && ch <= '9') {
-        return ch - '0'
-    }
-    if (ch >= 'a' && ch <= 'f') {
-        return ch - 'a' + 10
-    }
-    if (ch >= 'A' && ch <= 'F') {
-        return ch - 'A' + 10
-    }
+    if (ch >= '0' && ch <= '9') return ch - '0'  
+    if (ch >= 'a' && ch <= 'f') return ch - 'a' + 10
+    if (ch >= 'A' && ch <= 'F') return ch - 'A' + 10
     panic("from_hex")
     return 0
 }
@@ -310,9 +303,7 @@ def private string_from_hex(ch1, ch2 : int) {
 
 def private re_char(expr : string; offset : int) : MaybeReNode {
     trace("re_char", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
+    if (eos(expr, offset)) return nada()
     let ch = at(expr, offset)
     if (ch == '\\') {
         let ech = at(expr, offset + 1)
@@ -344,29 +335,20 @@ def private re_char(expr : string; offset : int) : MaybeReNode {
         if (is_set_character(ech)) {
             if (ech == 'b') {
                 return maybe(new ReNode(op = ReOp.WordBoundary, at = range(offset, offset + 2)))
-            } elif (ech == 'B') {
-                return maybe(new ReNode(op = ReOp.NonWordBoundary, at = range(offset, offset + 2)))
-            }
+            } elif (ech == 'B') return maybe(new ReNode(op = ReOp.NonWordBoundary, at = range(offset, offset + 2)))
             var cset : CharSet
             set_meta(cset, ech)
             return maybe(new ReNode(op = ReOp.Set, cset = cset, at = range(offset, offset + 2)))
         }
         return maybe(new ReNode(op = ReOp.Char, text = to_char(ech), textLen = 1, at = range(offset, offset + 2)))
-    } elif (is_meta_character(ch)) {
-        return nada()
-    }
+    } elif (is_meta_character(ch)) return nada()
     return maybe(new ReNode(op = ReOp.Char, text = to_char(ch), textLen = 1, at = range(offset, offset + 1)))
 }
 
 
-
-
-
-def private re_set_items(expr : string; offset : int) : MaybeReNode {
+def private re_set_items(expr : string; offset : int) : MaybeReNode {  
     trace("re_set_items", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
+    if (eos(expr, offset)) return nada()
     var cset : CharSet
     var iofs = offset
     var prev_char = -1
@@ -433,11 +415,11 @@ def private re_set_items(expr : string; offset : int) : MaybeReNode {
                 return nada();
             }
             next_range = true;
-            iofs += 1;
+            iofs++;
         } else {
             next_char = ch;
             note("set - character {uint(ch)} {ch} {uint(ch)}", iofs);
-            iofs += 1;
+            iofs++;
         }
         note("next_char {uint(next_char)} prev_char {uint(prev_char)} next_range {next_range}", iofs);
         if (next_char != -1) {
@@ -466,20 +448,13 @@ def private re_set_items(expr : string; offset : int) : MaybeReNode {
 
 def private re_set(expr : string; offset : int) : MaybeReNode {
     trace("re_set", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
-    if (at(expr, offset) != '[') {
-        return nada();
-    }
+    if (eos(expr, offset) || at(expr, offset) != '[') return nada()
     var negative = false;
     if (at(expr, offset + 1) == '^') {
         negative = true;
     }
     var oset = re_set_items(expr, negative ? offset + 2 : offset + 1);
-    if (oset is nothing) {
-        return nada();
-    }
+    if (oset is nothing) return nada();
     if (at(expr, next(oset)) != ']') {
         unsafe {
             delete oset
@@ -500,48 +475,31 @@ def private re_set(expr : string; offset : int) : MaybeReNode {
 
 def private re_any(expr : string; offset : int) : MaybeReNode {
     trace("re_any", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
-    if (at(expr, offset) == '.') {
-        return maybe(new ReNode(op = ReOp.Any, at = range(offset, offset + 1)))
-    }
+    if (eos(expr, offset)) return nada()
+    if (at(expr, offset) == '.') return maybe(new ReNode(op = ReOp.Any, at = range(offset, offset + 1)))
     return nada()
 }
 
 
 def private re_eos(expr : string; offset : int) : MaybeReNode {
     trace("re_eos", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
-    if (at(expr, offset) == '$') {
-        return maybe(new ReNode(op = ReOp.Eos, at = range(offset, offset + 1)))
-    }
+    if (eos(expr, offset)) return nada()
+    if (at(expr, offset) == '$') return maybe(new ReNode(op = ReOp.Eos, at = range(offset, offset + 1)))
     return nada()
 }
 
 
 def private re_bos(expr : string; offset : int) : MaybeReNode {
     trace("re_bos", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
-    if (at(expr, offset) == '^') {
-        return maybe(new ReNode(op = ReOp.Bos, at = range(offset, offset + 1)))
-    }
+    if (eos(expr, offset)) return nada()
+    if (at(expr, offset) == '^') return maybe(new ReNode(op = ReOp.Bos, at = range(offset, offset + 1)))
     return nada()
 }
 
 
 def private re_group(expr : string; offset : int) : MaybeReNode {
     trace("re_group", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
-    if (at(expr, offset) != '(') {
-        return nada();
-    }
+    if (eos(expr, offset) || at(expr, offset) != '(') return nada()
     var group_offset = offset + 1
     var non_capturing = false
     var group_name = ""
@@ -574,9 +532,7 @@ def private re_group(expr : string; offset : int) : MaybeReNode {
         }
     }
     var ore = re_re(expr, group_offset);
-    if (ore is nothing) {
-        return nada();
-    }
+    if (ore is nothing) return nada();
     if (at(expr, next(ore)) != ')') {
         delete ore
         return nada()
@@ -599,33 +555,19 @@ def private re_group(expr : string; offset : int) : MaybeReNode {
 
 def private re_elementary(expr : string; offset : int) : MaybeReNode {
     trace("re_elementary", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
+    if (eos(expr, offset)) return nada()
     var ogr = re_group(expr, offset)
-    if (ogr is value) {
-        return ogr
-    }
+    if (ogr is value) return ogr
     var oany = re_any(expr, offset)
-    if (oany is value) {
-        return oany
-    }
+    if (oany is value) return oany
     var oeos = re_eos(expr, offset)
-    if (oeos is value) {
-        return oeos
-    }
+    if (oeos is value) return oeos
     var obos = re_bos(expr, offset)
-    if (obos is value) {
-        return obos
-    }
+    if (obos is value) return obos
     var oset = re_set(expr, offset)
-    if (oset is value) {
-        return oset
-    }
+    if (oset is value) return oset
     var ochr = re_char(expr, offset)
-    if (ochr is value) {
-        return ochr
-    }
+    if (ochr is value) return ochr
     return nada()
 }
 
@@ -661,10 +603,7 @@ def private mk_union(var left, right : ReNode?) : ReNode? {
     if (left.op == ReOp.Union) {
         left.at.y = right.at.y
         if (right.op == ReOp.Union) {
-            left.all |> reserve(length(left.all) + length(right.all))
-            for (x in right.all) {
-                push(left.all, x)
-            }
+            push_from(left.all, right.all)
             unsafe {
                 delete right
             }
@@ -682,14 +621,9 @@ def private mk_union(var left, right : ReNode?) : ReNode? {
 }
 
 
-
-
-
 def private  re_re(expr : string; offset : int) : MaybeReNode {
     trace("re_re", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
+    if (eos(expr, offset)) return nada()
     var cofs = offset
     var last : ReNode?
     while (!eos(expr, cofs)) {
@@ -707,9 +641,7 @@ def private  re_re(expr : string; offset : int) : MaybeReNode {
             cofs = last.at.y
         } else {
             var onext = re_basic(expr, cofs)
-            if (onext is nothing) {
-                return last == null ? nada() : maybe(last)
-            }
+            if (onext is nothing) return last == null ? nada() : maybe(last)
             last = mk_concat(last, onext as value)
             cofs = last.at.y
         }
@@ -718,19 +650,11 @@ def private  re_re(expr : string; offset : int) : MaybeReNode {
 }
 
 
-
-
-
-
-def private re_basic(expr : string; offset : int) : MaybeReNode {
+def private re_basic(expr : string; offset : int) : MaybeReNode {  
     trace("re_basic", offset)
-    if (eos(expr, offset)) {
-        return nada()
-    }
+    if (eos(expr, offset)) return nada()
     var oelem = re_elementary(expr, offset)
-    if (oelem is nothing) {
-        return nada()
-    }
+    if (oelem is nothing) return nada()
     let ch = at(expr, next(oelem))
     
     if (ch == '*' || ch == '+' || ch == '?' || ch == '{') {
@@ -825,9 +749,7 @@ def private re_basic(expr : string; offset : int) : MaybeReNode {
 
 def private re_parse(expr : string) : ReNode? {
     var ore = re_re(expr, 0)
-    if (ore is nothing) {
-        return null
-    }
+    if (ore is nothing) return null
     let at = next(ore)
     if (at != length(expr)) {
         note("syntax error", at)
@@ -876,9 +798,7 @@ def private re_assign_groups(var re : Regex) {
     push(re.groups, (range(0), ""))
     visit_top_down(re.root) $(var node) {
         if (node.op == ReOp.Group) {
-            if (node.index == -1) {
-                return  
-            }
+            if (node.index == -1) return  
             let index = length(re.groups)
             node.index = index
             if (!empty(node.text)) {
@@ -894,8 +814,8 @@ def private re_assign_groups(var re : Regex) {
 
 
 
-def private re_assign_match_functions(var re : Regex) {
-    visit_top_down(re.root) $(var node) {
+def private re_assign_match_functions(var re : Regex) {  
+    visit_top_down(re.root) $(var node) {  
         if (node.op == ReOp.Char) {
             if (re.caseInsensitive) {
                 if (node.textLen == 1) {
@@ -989,9 +909,7 @@ def private re_assign_match_functions(var re : Regex) {
 
 def private ci_lower(ch : int) : int {
     
-    if (ch >= 'A' && ch <= 'Z') {
-        return ch + 32
-    }
+    if (ch >= 'A' && ch <= 'Z') return ch + 32
     return ch
 }
 
@@ -1012,13 +930,9 @@ def private re_match2_single_char(var regex : Regex; var node : ReNode?; str : u
     if (log_match_enabled) {
         print("match single char `{node.text}` {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
+    if (*str == 0u8) return null
     unsafe {
-        if (character_uat(node.text, 0) != int(*str)) {
-            return null
-        }
+        if (character_uat(node.text, 0) != int(*str)) return null
         var tail = str + 1
         node.tail = tail
         var node2 = node.next
@@ -1035,13 +949,9 @@ def private re_match2_char(var regex : Regex; var node : ReNode?; str : uint8 co
     if (log_match_enabled) {
         print("match char `{node.text}` {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
+    if (*str == 0u8) return null
     unsafe {
-        if (memcmp(reinterpret<uint8?> node.text, str, node.textLen) != 0) {
-            return null
-        }
+        if (memcmp(reinterpret<uint8?>(node.text), str, node.textLen) != 0) return null
         var tail = str + node.textLen
         node.tail = tail
         var node2 = node.next
@@ -1061,13 +971,9 @@ def private re_match2_single_char_ci(var regex : Regex; var node : ReNode?; str 
     if (log_match_enabled) {
         print("match single char ci `{node.text}` {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
+    if (*str == 0u8) return null
     unsafe {
-        if (ci_lower(character_uat(node.text, 0)) != ci_lower(int(*str))) {
-            return null
-        }
+        if (ci_lower(character_uat(node.text, 0)) != ci_lower(int(*str))) return null
         var tail = str + 1
         node.tail = tail
         var node2 = node.next
@@ -1084,14 +990,10 @@ def private re_match2_char_ci(var regex : Regex; var node : ReNode?; str : uint8
     if (log_match_enabled) {
         print("match char ci `{node.text}` {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
+    if (*str == 0u8) return null
     unsafe {
         for (i in range(node.textLen)) {
-            if (ci_lower(character_uat(node.text, i)) != ci_lower(int(*(str + i)))) {
-                return null
-            }
+            if (ci_lower(character_uat(node.text, i)) != ci_lower(int(*(str + i)))) return null
         }
         var tail = str + node.textLen
         node.tail = tail
@@ -1124,12 +1026,7 @@ def private re_match2_set(var regex : Regex; var node : ReNode?; str : uint8 con
     if (log_match_enabled) {
         print("match2 set {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
-    if (!is_char_in_set(int(*str), node.cset)) {
-        return null
-    }
+    if (*str == 0u8 || !is_char_in_set(int(*str), node.cset)) return null
     unsafe {
         var tail = str + 1
         node.tail = tail
@@ -1147,12 +1044,7 @@ def private re_match2_any(var regex : Regex; var node : ReNode?; str : uint8 con
     if (log_match_enabled) {
         print("match2 any {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
-    if (!regex.dotAll && int(*str) == '\n') {
-        return null
-    }
+    if (*str == 0u8 || (!regex.dotAll && int(*str) == '\n')) return null
     unsafe {
         var tail = str + 1
         node.tail = tail
@@ -1172,9 +1064,7 @@ def private re_match2_concat(var regex : Regex; var node : ReNode?; str : uint8 
     }
     var left = node.left
     let oleft = invoke(left.fun2, regex, left, str)
-    if (oleft == null) {
-        return null
-    }
+    if (oleft == null) return null
     node.tail = node.right.tail
     return oleft
 }
@@ -1184,9 +1074,7 @@ def private re_match2_eos(var regex : Regex; var node : ReNode?; str : uint8 con
     if (log_match_enabled) {
         print("match eos {str}\n")
     }
-    if (*str != 0u8) {
-        return null
-    }
+    if (*str != 0u8) return null
     node.tail = str
     var node2 = node.next
     if (node2 != null) {
@@ -1220,23 +1108,17 @@ def private re_match2_plus(var regex : Regex; var node : ReNode?; str : uint8 co
     if (log_match_enabled) {
         print("match2 plus {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
+    if (*str == 0u8) return null
     var nsub = node.subexpr
     var osym = invoke(nsub.fun2, regex, nsub, str)
-    if (osym == null) {
-        return null
-    }
+    if (osym == null) return null
     var ofs = osym
     var node2 = node.next
     if (node2 != null) {
         while (osym != null) {
             node.tail = osym
             var otail = invoke(node2.fun2, regex, node2, osym)
-            if (otail != null) {
-                return otail
-            }
+            if (otail != null) return otail
             osym = invoke(nsub.fun2, regex, nsub, osym)
         }
         return null
@@ -1255,12 +1137,7 @@ def private re_match2_plus_set(var regex : Regex; var node : ReNode?; str : uint
     if (log_match_enabled) {
         print("match2 plus {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
-    if (!is_char_in_set(int(*str), node.cset)) {
-        return null
-    }
+    if (*str == 0u8 || !is_char_in_set(int(*str), node.cset)) return null
     unsafe {
         var ofs = str + 1
         var osym = ofs
@@ -1269,21 +1146,15 @@ def private re_match2_plus_set(var regex : Regex; var node : ReNode?; str : uint
             while (osym != null) {
                 node.tail = osym
                 var otail = invoke(node2.fun2, regex, node2, osym)
-                if (otail != null) {
-                    return otail
-                }
-                if (*osym == 0u8 || !is_char_in_set(int(*osym), node.cset)) {
-                    return null
-                }
+                if (otail != null) return otail
+                if (*osym == 0u8 || !is_char_in_set(int(*osym), node.cset)) return null
                 osym++
             }
             return null
         } else {
             while (osym != null) {
                 ofs = osym
-                if (*osym == 0u8 || !is_char_in_set(int(*osym), node.cset)) {
-                    break
-                }
+                if (*osym == 0u8 || !is_char_in_set(int(*osym), node.cset)) break
                 osym++
             }
             node.tail = ofs
@@ -1304,9 +1175,7 @@ def private re_match2_star(var regex : Regex; var node : ReNode?; str : uint8 co
         while (ofs != null) {
             node.tail = ofs
             let oany = invoke(node2.fun2, regex, node2, ofs)
-            if (oany != null) {
-                return oany
-            }
+            if (oany != null) return oany
             ofs = invoke(nsub.fun2, regex, nsub, ofs)
         }
         return null
@@ -1328,11 +1197,9 @@ def private re_match2_group(var regex : Regex; var node : ReNode?; str : uint8 c
     }
     var nsub = node.subexpr
     let osub = invoke(nsub.fun2, regex, nsub, str)
-    if (osub == null) {
-        return null
-    }
+    if (osub == null) return null
     if (node.index >= 0) {
-        regex.groups[node.index]._0 = range(int(str - regex.match), int(node.subexpr.tail - regex.match))
+        regex.groups[node.index]._0 = range(int(str - regex.match), int(node.subexpr.tail - regex.match))  
     }
     return osub
 }
@@ -1342,9 +1209,7 @@ def private re_match2_bos(var regex : Regex; var node : ReNode?; str : uint8 con
     if (log_match_enabled) {
         print("match bos {str}\n")
     }
-    if (str != regex.match) {
-        return null
-    }
+    if (str != regex.match) return null
     node.tail = str
     var node2 = node.next
     if (node2 != null) {
@@ -1365,9 +1230,7 @@ def private re_match2_word_boundary(var regex : Regex; var node : ReNode?; str :
             prev_is_word = is_word_character(int(*(str + (-1))))
         }
         let curr_is_word = (*str != 0u8) && is_word_character(int(*str))
-        if (prev_is_word == curr_is_word) {
-            return null
-        }
+        if (prev_is_word == curr_is_word) return null
         node.tail = str
         var node2 = node.next
         if (node2 != null) {
@@ -1389,9 +1252,7 @@ def private re_match2_non_word_boundary(var regex : Regex; var node : ReNode?; s
             prev_is_word = is_word_character(int(*(str + (-1))))
         }
         let curr_is_word = (*str != 0u8) && is_word_character(int(*str))
-        if (prev_is_word != curr_is_word) {
-            return null
-        }
+        if (prev_is_word != curr_is_word) return null
         node.tail = str
         var node2 = node.next
         if (node2 != null) {
@@ -1409,9 +1270,7 @@ def private re_match2_lookahead(var regex : Regex; var node : ReNode?; str : uin
     }
     var nsub = node.subexpr
     let osub = invoke(nsub.fun2, regex, nsub, str)
-    if (osub == null) {
-        return null
-    }
+    if (osub == null) return null
     
     node.tail = str
     var node2 = node.next
@@ -1429,9 +1288,7 @@ def private re_match2_negative_lookahead(var regex : Regex; var node : ReNode?; 
     }
     var nsub = node.subexpr
     let osub = invoke(nsub.fun2, regex, nsub, str)
-    if (osub != null) {
-        return null   
-    }
+    if (osub != null) return null   
     
     node.tail = str
     var node2 = node.next
@@ -1451,13 +1308,9 @@ def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 
     var ofs = str
     
     for (_i in range(node.min_rep)) {
-        if (*ofs == 0u8 && nsub.op != ReOp.Eos && nsub.op != ReOp.Bos && nsub.op != ReOp.WordBoundary && nsub.op != ReOp.NonWordBoundary) {
-            return null
-        }
+        if (*ofs == 0u8 && nsub.op != ReOp.Eos && nsub.op != ReOp.Bos && nsub.op != ReOp.WordBoundary && nsub.op != ReOp.NonWordBoundary) return null
         var osym = invoke(nsub.fun2, regex, nsub, ofs)
-        if (osym == null) {
-            return null
-        }
+        if (osym == null) return null
         ofs = osym
     }
     
@@ -1470,9 +1323,7 @@ def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 
             push(positions, ofs)
             while (true) {
                 var osym = invoke(nsub.fun2, regex, nsub, ofs)
-                if (osym == null || osym == ofs) {
-                    break
-                }
+                if (osym == null || osym == ofs) break
                 push(positions, osym)
                 ofs = osym
             }
@@ -1482,9 +1333,7 @@ def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 
                 var pos = positions[pidx]
                 node.tail = pos
                 var otail = invoke(node2.fun2, regex, node2, pos)
-                if (otail != null) {
-                    return otail
-                }
+                if (otail != null) return otail
                 pidx--
             }
             return null
@@ -1492,9 +1341,7 @@ def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 
             
             while (true) {
                 var osym = invoke(nsub.fun2, regex, nsub, ofs)
-                if (osym == null || osym == ofs) {
-                    break
-                }
+                if (osym == null || osym == ofs) break
                 ofs = osym
             }
             node.tail = ofs
@@ -1508,9 +1355,7 @@ def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 
             push(positions, ofs)
             for (_i in range(remaining)) {
                 var osym = invoke(nsub.fun2, regex, nsub, ofs)
-                if (osym == null || osym == ofs) {
-                    break
-                }
+                if (osym == null || osym == ofs) break
                 push(positions, osym)
                 ofs = osym
             }
@@ -1520,18 +1365,14 @@ def private re_match2_repeat(var regex : Regex; var node : ReNode?; str : uint8 
                 var pos = positions[pidx]
                 node.tail = pos
                 var otail = invoke(node2.fun2, regex, node2, pos)
-                if (otail != null) {
-                    return otail
-                }
+                if (otail != null) return otail
                 pidx--
             }
             return null
         } else {
             for (_i in range(remaining)) {
                 var osym = invoke(nsub.fun2, regex, nsub, ofs)
-                if (osym == null || osym == ofs) {
-                    break
-                }
+                if (osym == null || osym == ofs) break
                 ofs = osym
             }
             node.tail = ofs
@@ -1554,17 +1395,13 @@ def private re_match2_question_lazy(var regex : Regex; var node : ReNode?; str :
     if (node2 != null) {
         node.tail = str
         var otail = invoke(node2.fun2, regex, node2, str)
-        if (otail != null) {
-            return otail
-        }
+        if (otail != null) return otail
     }
     
     var nsub = node.subexpr
     var tail = invoke(nsub.fun2, regex, nsub, str)
     if (tail == null) {
-        if (node2 == null) {
-            return str  
-        }
+        if (node2 == null) return str  
         return null
     }
     node.tail = tail
@@ -1588,9 +1425,7 @@ def private re_match2_star_lazy(var regex : Regex; var node : ReNode?; str : uin
         while (ofs != null) {
             node.tail = ofs
             let oany = invoke(node2.fun2, regex, node2, ofs)
-            if (oany != null) {
-                return oany
-            }
+            if (oany != null) return oany
             ofs = invoke(nsub.fun2, regex, nsub, ofs)
         }
         return null
@@ -1606,23 +1441,17 @@ def private re_match2_plus_lazy(var regex : Regex; var node : ReNode?; str : uin
     if (log_match_enabled) {
         print("match2 plus lazy {str}\n")
     }
-    if (*str == 0u8) {
-        return null
-    }
+    if (*str == 0u8) return null
     var nsub = node.subexpr
     var osym = invoke(nsub.fun2, regex, nsub, str)
-    if (osym == null) {
-        return null
-    }
+    if (osym == null) return null
     var node2 = node.next
     if (node2 != null) {
         
         while (osym != null) {
             node.tail = osym
             var otail = invoke(node2.fun2, regex, node2, osym)
-            if (otail != null) {
-                return otail
-            }
+            if (otail != null) return otail
             osym = invoke(nsub.fun2, regex, nsub, osym)
         }
         return null
@@ -1642,13 +1471,9 @@ def private re_match2_repeat_lazy(var regex : Regex; var node : ReNode?; str : u
     var ofs = str
     
     for (_i in range(node.min_rep)) {
-        if (*ofs == 0u8 && nsub.op != ReOp.Eos && nsub.op != ReOp.Bos && nsub.op != ReOp.WordBoundary && nsub.op != ReOp.NonWordBoundary) {
-            return null
-        }
+        if (*ofs == 0u8 && nsub.op != ReOp.Eos && nsub.op != ReOp.Bos && nsub.op != ReOp.WordBoundary && nsub.op != ReOp.NonWordBoundary) return null
         var osym = invoke(nsub.fun2, regex, nsub, ofs)
-        if (osym == null) {
-            return null
-        }
+        if (osym == null) return null
         ofs = osym
     }
     
@@ -1659,13 +1484,9 @@ def private re_match2_repeat_lazy(var regex : Regex; var node : ReNode?; str : u
             while (true) {
                 node.tail = ofs
                 var otail = invoke(node2.fun2, regex, node2, ofs)
-                if (otail != null) {
-                    return otail
-                }
+                if (otail != null) return otail
                 var osym = invoke(nsub.fun2, regex, nsub, ofs)
-                if (osym == null || osym == ofs) {
-                    break
-                }
+                if (osym == null || osym == ofs) break
                 ofs = osym
             }
             return null
@@ -1681,14 +1502,10 @@ def private re_match2_repeat_lazy(var regex : Regex; var node : ReNode?; str : u
             for (i in range(remaining + 1)) {
                 node.tail = ofs
                 var otail = invoke(node2.fun2, regex, node2, ofs)
-                if (otail != null) {
-                    return otail
-                }
+                if (otail != null) return otail
                 if (i < remaining) {
                     var osym = invoke(nsub.fun2, regex, nsub, ofs)
-                    if (osym == null || osym == ofs) {
-                        break
-                    }
+                    if (osym == null || osym == ofs) break
                     ofs = osym
                 }
             }
@@ -1764,15 +1581,12 @@ def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
 
 
 
-def is_valid(var re : Regex) {
+def is_valid(re : Regex) {
     
     return re.root != null
 }
 
 def regex_compile(var re : Regex; expr : string; case_insensitive : bool = false; dot_all : bool = false) : bool {
-    
-    
-    
     
     re.caseInsensitive = case_insensitive
     re.dotAll = dot_all
@@ -1810,18 +1624,14 @@ def regex_compile(var re : Regex) {
 def regex_match(var regex : Regex; str : string; offset : int = 0) : int {
     
     
-    if (empty(str)) {
-        return -1
-    }
+    if (empty(str)) return -1
     if (log_match_enabled) {
         print("matching with `{str}` at {offset}\n")
     }
     unsafe {
-        regex.match = reinterpret<uint8?> str
+        regex.match = reinterpret<uint8?>(str)
         let mptr = invoke(regex.root.fun2, regex, regex.root, regex.match + offset)
-        if (mptr == null) {
-            return -1
-        }
+        if (mptr == null) return -1
         return int(mptr - regex.match)
     }
 }
@@ -1835,27 +1645,21 @@ def regex_group(regex : Regex; index : int; match : string) {
 [unsafe_deref]
 def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bool>) {
     
-    if (empty(str)) {
-        return
-    }
+    if (empty(str)) return
     unsafe {
-        regex.match = reinterpret<uint8 const?> str
+        regex.match = reinterpret<uint8 const?>(str)
         var root = regex.root
-        var pstr = reinterpret<uint8 const?> str
+        var pstr = reinterpret<uint8 const?>(str)
         var cstr = pstr
         if (regex.canEarlyOut) {
             
             while (true) {
                 let Ch = int(*cstr)
-                if (Ch == 0) {
-                    break
-                }
+                if (Ch == 0) break
                 if (is_char_in_set(Ch, regex.earlyOut)) {
                     let om = invoke(root.fun2, regex, root, cstr)
                     if (om != null) {
-                        if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) {
-                            break
-                        }
+                        if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) break  
                         if (om == cstr) {
                             cstr++
                         } else {
@@ -1872,9 +1676,7 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
             while (int(*cstr) != 0) {
                 let om = invoke(root.fun2, regex, root, cstr)
                 if (om != null) {
-                    if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) {
-                        break
-                    }
+                    if (!invoke(blk, range(int(cstr - pstr), int(om - pstr)))) break  
                     if (om == cstr) {
                         cstr++
                     } else {
@@ -1888,25 +1690,21 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
     }
 }
 
-[unsafe_deref]
+[unsafe_deref, temp_string_result]
 def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : string>) {
     
-    if (empty(str)) {
-        return ""
-    }
+    if (empty(str)) return ""
     unsafe {
         return build_string() $(writer) {
-            regex.match = reinterpret<uint8 const?> str
+            regex.match = reinterpret<uint8 const?>(str)
             var root = regex.root
-            var pstr = reinterpret<uint8 const?> str
+            var pstr = reinterpret<uint8 const?>(str)
             var cstr = pstr
             if (regex.canEarlyOut) {
                 
                 while (true) {
                     let Ch = int(*cstr)
-                    if (Ch == 0) {
-                        break
-                    }
+                    if (Ch == 0) break
                     if (is_char_in_set(Ch, regex.earlyOut)) {
                         let om = invoke(root.fun2, regex, root, cstr)
                         if (om != null) {
@@ -1949,8 +1747,7 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
     }
 }
 
-def private expand_replacement(var regex : Regex; str : string; replacement : string; match_start, match_end : int) : string {
-    
+def private expand_replacement(regex : Regex; str : string; replacement : string; match_start, match_end : int) : string {
     
     return build_string() $(writer) {
         let rlen = length(replacement)
@@ -1980,7 +1777,7 @@ def private expand_replacement(var regex : Regex; str : string; replacement : st
                             
                             var is_numeric = !empty(name)
                             for (nc in name) {
-                                if (nc < '0' || nc > '9') {
+                                if (!is_number(nc)) {
                                     is_numeric = false
                                     break
                                 }
@@ -2018,27 +1815,20 @@ def private expand_replacement(var regex : Regex; str : string; replacement : st
     }
 }
 
-[unsafe_deref]
+[unsafe_deref, temp_string_result]
 def regex_replace(var regex : Regex; str : string; replacement : string) : string {
     
-    
-    
-    
-    if (empty(str)) {
-        return ""
-    }
+    if (empty(str)) return ""
     unsafe {
         return build_string() $(writer) {
-            regex.match = reinterpret<uint8 const?> str
+            regex.match = reinterpret<uint8 const?>(str)
             var root = regex.root
-            var pstr = reinterpret<uint8 const?> str
+            var pstr = reinterpret<uint8 const?>(str)
             var cstr = pstr
             if (regex.canEarlyOut) {
                 while (true) {
                     let Ch = int(*cstr)
-                    if (Ch == 0) {
-                        break
-                    }
+                    if (Ch == 0) break
                     if (is_char_in_set(Ch, regex.earlyOut)) {
                         let om = invoke(root.fun2, regex, root, cstr)
                         if (om != null) {
@@ -2090,34 +1880,26 @@ def regex_search(var regex : Regex; str : string; offset : int = 0) : int2 {
     
     
     
-    if (empty(str)) {
-        return int2(-1, -1)
-    }
+    if (empty(str)) return int2(-1, -1)
     unsafe {
-        regex.match = reinterpret<uint8 const?> str
+        regex.match = reinterpret<uint8 const?>(str)
         var root = regex.root
-        var pstr = reinterpret<uint8 const?> str
+        var pstr = reinterpret<uint8 const?>(str)
         var cstr = pstr + offset
         if (regex.canEarlyOut) {
             while (true) {
                 let Ch = int(*cstr)
-                if (Ch == 0) {
-                    break
-                }
+                if (Ch == 0) break
                 if (is_char_in_set(Ch, regex.earlyOut)) {
                     let om = invoke(root.fun2, regex, root, cstr)
-                    if (om != null) {
-                        return int2(int(cstr - pstr), int(om - pstr))
-                    }
+                    if (om != null) return int2(int(cstr - pstr), int(om - pstr))
                 }
                 cstr++
             }
         } else {
             while (int(*cstr) != 0) {
                 let om = invoke(root.fun2, regex, root, cstr)
-                if (om != null) {
-                    return int2(int(cstr - pstr), int(om - pstr))
-                }
+                if (om != null) return int2(int(cstr - pstr), int(om - pstr))
                 cstr++
             }
         }
@@ -2128,9 +1910,7 @@ def regex_search(var regex : Regex; str : string; offset : int = 0) : int2 {
 def regex_split(var regex : Regex; str : string) : array<string> {
     
     var result : array<string>
-    if (empty(str)) {
-        return <- result
-    }
+    if (empty(str)) return <- result
     var last_end = 0
     regex_foreach(regex, str) $(at : range) {
         push(result, slice(str, last_end, at.x))
@@ -2151,13 +1931,12 @@ def regex_match_all(var regex : Regex; str : string) : array<range> {
     return <- result
 }
 
+[temp_string_result]
 def regex_group_by_name(regex : Regex; name : string; str : string) : string {
     
     
     for (g in regex.groups) {
-        if (g._1 == name) {
-            return slice(str, g._0.x, g._0.y)
-        }
+        if (g._1 == name) return slice(str, g._0.x, g._0.y)
     }
     return ""
 }
@@ -2171,9 +1950,7 @@ def operator [] (regex : Regex; name : string) : range {
     
     
     for (g in regex.groups) {
-        if (g._1 == name) {
-            return g._0
-        }
+        if (g._1 == name) return g._0
     }
     return range(0, 0)
 }
@@ -2191,7 +1968,7 @@ def regex_debug(regex : Regex) {
         debug_set(regex.earlyOut)
         print("\n")
     }
-    if (length(regex.groups) != 0) {
+    if (!empty(regex.groups)) {
         print("groups:")
         for (g in regex.groups) {
             print("\t{g._1}\n")
@@ -2212,7 +1989,7 @@ def debug_set(cset : CharSet) {
     }
 }
 
-def private debug_re(node : ReNode?; tab : int) {
+def private debug_re(node : ReNode?; tab : int) {  
     print("(")
     if (node != null) {
         print("#{node.id}")
@@ -2305,6 +2082,7 @@ def private rnd_set_character(cset : uint[8]; var rnd : ReGenRandom) : int {
     return set_element(int(idx), cset)
 }
 
+[unused_argument(node, rnd, str)]
 def private re_gen2_fail(var node : ReNode?; var rnd : ReGenRandom; var str : StringBuilderWriter) : void {
     if (log_gen_enabled) {
         print("gen fail\n")

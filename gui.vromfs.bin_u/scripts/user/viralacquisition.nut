@@ -1,14 +1,14 @@
+from "string" import format
 from "%scripts/dagui_natives.nut" import copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let { userIdStr, isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 let awardRanks = [3, 4, 7]
 let awards = [[70000, 0], [300000, 100], [0, 2500]]
-let awardCount = 3
+const awardCount = 3
 
 let getLinkString = @() format(loc("msgBox/viralAcquisition"), userIdStr.get())
 

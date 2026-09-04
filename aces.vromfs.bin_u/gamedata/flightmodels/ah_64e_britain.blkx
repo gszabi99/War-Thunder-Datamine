@@ -10,9 +10,10 @@
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hasAimingPointsMemory": true,
   "hasHmdGunControl": true,
   "mfdCamTadsApache": true,
-  "hmdAH64": true,
+  "hmdIhadss": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -1587,6 +1588,7 @@
       0.0
     ],
     "hmdEnabledByDefault": true,
+    "hmdScreenBlockRad": 0.026,
     "lightPos": [
       1.882572,
       0.389432,
@@ -1603,6 +1605,21 @@
     "sightFov": 0.01,
     "sightInFov": 1.15998,
     "sightOutFov": 24.74,
+    "hmdBlock": {
+      "full_devices": {
+        "pos": [
+          1.906,
+          0.265,
+          0.0
+        ],
+        "norm": [
+          1.0,
+          -0.24,
+          0.0
+        ],
+        "rad": 0.48
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -3.0,
@@ -2031,6 +2048,10 @@
       {
         "name": "ah_64e_agm_179_ir",
         "blk": "gameData/flightModels/weaponPresets/ah_64e_agm_179_ir.blk"
+      },
+      {
+        "name": "ah_64e_spike_nlos",
+        "blk": "gameData/flightModels/weaponPresets/ah_64e_spike_nlos.blk"
       }
     ]
   },
@@ -2259,8 +2280,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "aero_7_l_b001",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2278,8 +2298,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "aero_7_l_b001",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2334,6 +2353,16 @@
             }
           },
           {
+            "iconType": "rls",
+            "name": "spike_nlos_targeting_pod",
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/spike_nlos_targeting_pod.blk",
+              "emitter": "pylon_m272_001",
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "missile_air_to_air_group_heli",
             "name": "aim92",
             "reqModification": "stinger_aam",
@@ -2383,8 +2412,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "aero_7_l_b002",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2402,8 +2430,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "aero_7_l_b002",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2457,6 +2484,40 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
           }
         ]
       },
@@ -2496,8 +2557,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "aero_7_l_b003",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2515,8 +2575,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "aero_7_l_b003",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2570,6 +2629,40 @@
               "separate": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
           }
         ]
       },
@@ -2609,8 +2702,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
               "emitter": "aero_7_l_b004",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2628,8 +2720,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
               "emitter": "aero_7_l_b004",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -2681,6 +2772,40 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x2",
+            "name": "spike_nlos_x2",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_2.blk",
+              "emitter": "pylon_m272_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
+            }
+          },
+          {
+            "iconType": "atgm_type_spike_er_x4",
+            "name": "spike_nlos_x4",
+            "reqModification": "atgm_spike_nlos",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/is_spike_nlos_launcher_4.blk",
+              "emitter": "pylon_m272_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "spike_nlos_targeting_pod"
             }
           },
           {
@@ -3935,44 +4060,11 @@
       "tier": 3,
       "prevModification": "cd_98_main_rotor"
     },
-    "new_heli_cover": {},
-    "heli_flak_jacket": {},
-    "heli_structure": {},
-    "air_extinguisher": {
-      "prevModification": "heli_structure",
-      "tier": 3,
-      "invertEnableLogic": false
+    "new_heli_cover": {
+      "modClass": "lth"
     },
-    "aden_new_gun": {
-      "tier": 1
-    },
-    "ah_1_AGM_114_16": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "us_agm_179": {
-      "deactivationIsAllowed": false,
-      "reqModification": "ah_1_AGM_114_16",
-      "modClass": "weapon",
-      "tier": 3
-    },
-    "us_agm_179_ir": {
-      "deactivationIsAllowed": false,
-      "reqModification": "us_agm_179",
-      "modClass": "weapon",
-      "tier": 4
-    },
-    "us_apkws": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "stinger_aam": {
-      "prevModification": "us_apkws",
-      "modClass": "weapon",
-      "tier": 3,
-      "enabled": false
+    "heli_structure": {
+      "modClass": "lth"
     },
     "maw_countermeasures_launcher_chaff": {},
     "MAW_system_heli_false_thermal_targets_large": {
@@ -3995,14 +4087,14 @@
               "powerButtonIdx": -1
             },
             {
-              "blk": "gameData/sensors/uk_sky_guardian_200d_apr_48.blk"
+              "blk": "gameData/sensors/us_an_apr_39_v4_apr_48.blk"
             },
             {
               "blk": "gameData/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/uk_s1223.blk"
+              "blk": "gameData/sensors/us_an_avr-2b_v.blk"
             },
             {
               "blk": "gameData/sensors/us_an_aar_57.blk"
@@ -4011,8 +4103,22 @@
         }
       }
     },
-    "heli_night_vision_system": {
+    "heli_flak_jacket": {
       "prevModification": "MAW_system_heli_false_thermal_targets_large",
+      "modClass": "armor",
+      "tier": 2
+    },
+    "air_extinguisher": {
+      "prevModification": "heli_flak_jacket",
+      "modClass": "armor",
+      "tier": 3,
+      "invertEnableLogic": false
+    },
+    "aden_new_gun": {
+      "tier": 1
+    },
+    "heli_night_vision_system": {
+      "prevModification": "aden_new_gun",
       "tier": 3,
       "modClass": "weapon",
       "image": "!#ui/gameuiskin#thermal_sight.avif",
@@ -4045,6 +4151,40 @@
           }
         }
       }
+    },
+    "ah_1_AGM_114_16": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_agm_179": {
+      "deactivationIsAllowed": false,
+      "reqModification": "ah_1_AGM_114_16",
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "us_agm_179_ir": {
+      "deactivationIsAllowed": false,
+      "reqModification": "us_agm_179",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "atgm_spike_nlos": {
+      "deactivationIsAllowed": false,
+      "reqModification": "us_agm_179_ir",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "us_apkws": {
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "stinger_aam": {
+      "prevModification": "us_apkws",
+      "modClass": "weapon",
+      "tier": 3,
+      "enabled": false
     }
   },
   "user_skin": {

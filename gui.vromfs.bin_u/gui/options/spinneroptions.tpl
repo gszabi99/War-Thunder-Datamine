@@ -4,6 +4,9 @@
   <<#isDropright>>
   width:t='pw'
   <</isDropright>>
+  <<#hasInteractiveTooltip>>
+  has-interactive-tooltip:t='yes'
+  <</hasInteractiveTooltip>>
 <</controlTag>>
 <<@controlStyle>>
 
@@ -36,7 +39,7 @@
     <</inactive>>
 
     <<#images>>
-      optionImg { background-image:t='<<image>>' <<#imageNoMargin>>noMargin:t='yes'<</imageNoMargin>> }
+      optionImg { background-image:t='<<image>>' <<#imageNoMargin>>noMargin:t='yes'<</imageNoMargin>> <<#iconType>>iconType:t='<<iconType>>'<</iconType>> }
     <</images>>
 
     <<@addDiv>>
@@ -106,9 +109,9 @@
   }
   <</options>>
   <<#tooltipOnHold>>
-  on_pushed:t='::gcb.delayedTooltipListPush'
-  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+  on_pushed:t='gcb.delayedTooltipListPush'
+  on_hold_start:t='gcb.delayedTooltipListHoldStart'
+  on_hold_stop:t='gcb.delayedTooltipListHoldStop'
   <</tooltipOnHold>>
 <<#controlTag>>
 }

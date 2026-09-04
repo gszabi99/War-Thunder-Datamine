@@ -1,9 +1,9 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+import "%globalScripts/sharedWatched.nut" as sharedWatched
 
 let isAAComplexMenuActive = sharedWatched("isAAComplexMenuActive", @() false)
 let isWheelMenuActive = sharedWatched("isWheelMenuActive", @() false)
 let savedRadarFilters = sharedWatched("savedRadarFilters", @() {})
-let AAComplexRadarFiltersSaveSlotName = "AAComplex"
+const AAComplexRadarFiltersSaveSlotName = "AAComplex"
 
 
 return {

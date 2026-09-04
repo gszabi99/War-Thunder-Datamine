@@ -1,12 +1,9 @@
+from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_CAMERA_SMOOTH, OPTION_CAMERA_MOUSE_SPEED
 from "%scripts/dagui_library.nut" import *
-let { get_option_multiplier, set_option_multiplier,
-  OPTION_CAMERA_SMOOTH, OPTION_CAMERA_MOUSE_SPEED
-} = require("gameOptions")
+
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_FIX_GUN_IN_MOUSE_LOOK, USEROPT_MOUSE_SMOOTH, USEROPT_MOUSE_SENSE,
-  USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_INVERTY_SPECTATOR
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_FIX_GUN_IN_MOUSE_LOOK, USEROPT_MOUSE_SMOOTH, USEROPT_MOUSE_SENSE, USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_INVERTY_SPECTATOR } = require("%scripts/options/optionsExtNames.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 return [

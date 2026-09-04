@@ -1,18 +1,18 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { QiHandlerBase } = require("%scripts/queue/queueInfo/qiHandlerBase.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getQueueTeam, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
 let { getCustomViewCountryData, isTeamSizeBalancedEvent } = require("%scripts/events/eventInfo.nut")
 
-gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
+register_gui_handler("QiHandlerByTeams", class (QiHandlerBase) {
   timerUpdateObjId = "queue_box"
   timerTextObjId = "waitText"
 
@@ -162,7 +162,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
     let maxRank = maxCountryRank.get()
     for (local i = 1; i <= maxRank; i++) {
       params.append({
-        text = getTblValue(i.tostring(), queueStatData, 0).tostring()
+        text = (queueStatData?[i.tostring()] ?? 0).tostring()
         tdalign = "center"
       })
     }
@@ -180,4 +180,4 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
     }
     return buildTableRow("", headerData, 0, "inactive:t='yes'; commonTextColor:t='yes';", "0")
   }
-}
+})

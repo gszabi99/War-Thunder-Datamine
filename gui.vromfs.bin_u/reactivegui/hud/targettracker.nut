@@ -1,18 +1,8 @@
+from "%rGui/hud/targetTrackerState.nut" import HasTargetTracker, IsSightLocked, IsTargetTracked, AimCorrectionEnabled, TargetRadius, TargetAge, TargetX, TargetY
 from "%rGui/globals/ui_library.nut" import *
 
-let {
-  HasTargetTracker,
-  IsSightLocked,
-  IsTargetTracked,
-  AimCorrectionEnabled,
-  TargetRadius,
-  TargetAge,
-  TargetX,
-  TargetY } = require("%rGui/hud/targetTrackerState.nut")
-
-
-let hl = 20
-let vl = 20
+const hl = 20
+const vl = 20
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -40,8 +30,8 @@ function lockSight(colorWatched, width, height, _posX, _posY) {
 }
 
 let targetSize = @(colorWatched, width, height, is_static_pos) function() {
-  let hd = 5
-  let vd = 5
+  const hd = 5
+  const vd = 5
   let posX = is_static_pos ? 50 : (TargetX.get() / sw(100) * 100)
   let posY = is_static_pos ? 50 : (TargetY.get() / sh(100) * 100)
 
@@ -156,9 +146,8 @@ function targetSizeComponent(
   is_static_pos) {
 
   return @() {
-    pos = [0, 0]
+    pos = const [0, 0]
     size = SIZE_TO_CONTENT
-    watch = [TargetX, TargetY]
     animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.get() >= 0.2, loop = true, easing = InOutSine, trigger = targetSizeTrigger }]
     children = targetSize(colorWatched, width, height, is_static_pos)
   }

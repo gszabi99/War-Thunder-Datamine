@@ -1,16 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { approvePlayerRequest, rejectPlayerRequest } = require("%scripts/clans/clanActions.nut")
 let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
@@ -22,7 +23,7 @@ let clan_candidate_list = [
   { id = "date", type = lbDataType.DATE }
 ];
 
-gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("clanRequestsModal", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanRequests.blk";
   owner = null;
@@ -211,4 +212,4 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let candidate = u.search(this.candidatesList, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
-}
+})

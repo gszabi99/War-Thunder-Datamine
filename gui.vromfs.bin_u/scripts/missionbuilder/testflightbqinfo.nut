@@ -1,7 +1,8 @@
+from "guiOptions" import get_gui_option
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-let { get_gui_option } = require("guiOptions")
+
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { get_charserver_time_sec } = require("chard")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 
 let testFlightData = {

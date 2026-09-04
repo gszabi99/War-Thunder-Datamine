@@ -180,11 +180,17 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "search"
           },
+          "setDesignatedTarget": [
+            {
+              "aiOnly": true,
+              "set": false
+            },
+            {
+              "set": false
+            }
+          ],
           "setSignal": {
             "signal": "search"
-          },
-          "setDesignatedTarget": {
-            "set": false
           }
         },
         "resetStandbyMode": {},
@@ -205,11 +211,17 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "search"
           },
+          "setDesignatedTarget": [
+            {
+              "aiOnly": true,
+              "set": false
+            },
+            {
+              "set": false
+            }
+          ],
           "setSignal": {
             "signal": "search"
-          },
-          "setDesignatedTarget": {
-            "set": false
           },
           "setDesignationSourceType": {
             "sourceType": "dummy"
@@ -286,6 +298,10 @@
           "setFsmActive": {
             "fsm": "track",
             "active": true
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
           },
           "setSignal": {
             "signal": "track"
@@ -370,6 +386,10 @@
               "type": "target",
               "self": true,
               "sensorIndex": 0
+            },
+            "setDesignatedTarget": {
+              "aiOnly": true,
+              "set": true
             }
           }
         },

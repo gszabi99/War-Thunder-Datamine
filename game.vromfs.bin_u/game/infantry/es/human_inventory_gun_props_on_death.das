@@ -1,8 +1,6 @@
 require ecs
-require %game.events
 
 require %appGame.wt_events
-require DngWeapon
 require %appGame.infantry.es.human_weap_common
 
 

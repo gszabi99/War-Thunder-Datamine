@@ -1,27 +1,26 @@
+import "%sqstd/string.nut" as string
+import "DataBlock" as DataBlock
+from "mission" import get_game_mode
+from "guiOptions" import setGuiOptionsMode
+from "guiMission" import restart_mission, get_meta_mission_info_by_name, get_meta_mission_info_by_gm_and_name
+from "blkGetters" import get_current_mission_info
+from "%sqstd/datablock.nut" import blkFromPath
 from "%scripts/dagui_natives.nut" import get_player_multipliers, get_mission_progress
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { get_game_mode } = require("mission")
-let { setGuiOptionsMode } = require("guiOptions")
-let { restart_mission, get_meta_mission_info_by_name, get_meta_mission_info_by_gm_and_name
-} = require("guiMission")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByResourceType, getViewTypeByUnlockedItemType
-} = require("%scripts/customization/decoratorViewType.nut")
+let { getViewTypeByResourceType, getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
 let { getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
-let { get_current_mission_info } = require("blkGetters")
-let { blkFromPath } = require("%sqstd/datablock.nut")
-let string = require("%sqstd/string.nut")
-let DataBlock = require("DataBlock")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001

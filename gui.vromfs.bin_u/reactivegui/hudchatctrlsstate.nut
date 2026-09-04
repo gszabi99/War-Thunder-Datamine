@@ -1,10 +1,14 @@
+from "%rGui/globalState.nut" import isInFlight
+from "%rGui/hudChatState.nut" import canWriteToChat, inputChatVisible
+from "%rGui/hud/hudPartVisibleState.nut" import isChatPlaceVisible
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive, isWheelMenuActive
+from "%rGui/radarButtons.nut" import isRadarGamepadNavEnabled
+from "controlsMask" import setAllowedControlsMask
 from "%rGui/globals/ui_library.nut" import *
-let { setAllowedControlsMask } = require("controlsMask")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { canWriteToChat, inputChatVisible } = require("%rGui/hudChatState.nut")
-let { isChatPlaceVisible } = require("%rGui/hud/hudPartVisibleState.nut")
-let { isAAComplexMenuActive, isWheelMenuActive } = require("%appGlobals/hud/hudState.nut")
-let { isRadarGamepadNavEnabled } = require("%rGui/radarButtons.nut")
+
+
+
+
 
 let ctrlsState = keepref(Computed(function() {
   local res = CtrlsInGui.CTRL_ALLOW_FULL
@@ -22,6 +26,15 @@ let ctrlsState = keepref(Computed(function() {
       | CtrlsInGui.CTRL_ALLOW_ARTILLERY
       | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
       | CtrlsInGui.CTRL_IN_AA_COMPLEX_MENU
+
+
+
+
+
+
+
+
+
   if (isRadarGamepadNavEnabled.get())
     return  CtrlsInGui.CTRL_ALLOW_VEHICLE_XINPUT
       | CtrlsInGui.CTRL_ALLOW_VEHICLE_JOY

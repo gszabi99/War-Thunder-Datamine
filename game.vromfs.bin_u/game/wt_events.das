@@ -1,7 +1,6 @@
 module wt_events shared
 
 require ecs
-require RiDestr
 require RendInst
 require %appGame.squad_order_enums
 
@@ -93,23 +92,7 @@ struct RequestBipodPlacing
   anchorNormal : float3
   anchorYawLimit : float2
   recoilMult : float
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct RequestBipodPlacingV2
-  enabled : bool
-  isCrawl : bool
-  anchorPos : float3
-  anchorDir : float3
-  anchorHeight : float
-  anchorOffset : float3
-  anchorNormal : float3
-  anchorYawLimit : float2
-  recoilMult : float
   mountIsRest : bool
-
-[cpp_event(unicast, with_scheme)]
-struct EventToggleHydrophoneMode
-{}
 
 [cpp_event(broadcast, with_scheme)]
 struct EventOnShotImpulse
@@ -129,14 +112,6 @@ struct EventProjectilePhysContact
   pos : float3
   vel : float3
   norm : float3
-
-[event(unicast)]
-struct EventSetHydrophoneMode
-  isActive : bool
-
-[cpp_event(unicast, with_scheme)]
-struct EventIdentifyHydrophoneTarget
-{}
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct CmdStartPlantingMineOnWall
@@ -219,7 +194,9 @@ struct EventRendinstImpulse
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct RequestRendinstDamage
-  handle : riex_handle_t
+  pool : int
+  cellIdx : int
+  offs : uint
   damage : float
   pos : float3
   impulse : float3
@@ -562,7 +539,7 @@ struct EventOnLootUse
 [event(unicast)]
 struct EventInterruptItemUse {}
 
-[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+[event(unicast)]
 struct EventEntityDied
   victim : EntityId
   offender : EntityId
@@ -595,6 +572,10 @@ struct CmdInventoryDropGun
 
 [event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
 struct HumanDropWeapRequest
+  slotId : int
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER, net_liable=ignore)]
+struct HumanDropSpecialWeapRequest
   slotId : int
 
 [cpp_event(unicast)]
@@ -794,12 +775,7 @@ struct CmdPlayItemUseSound
   requesterEid : EntityId
 
 [event(broadcast)]
-struct EventToggleWeaponryWnd
-  isOpen : bool
-
-[event(broadcast)]
-struct EventToggleDemonstratedShellOpt
-  enable : bool
+struct EventUpdateDemonstratedShellVisible {}
 
 [cpp_event(broadcast)]
 struct EventOnPlayerHit
@@ -824,6 +800,14 @@ struct EventCalcAndVerifySpawnTm
 struct EventGetZoneEntityById
   zoneId : int
   result : EntityId
+
+[cpp_event(broadcast)]
+struct EventSelectBotSpawnZone
+  team : int
+  frontZoneShare : float
+  otherZonesShare : float
+  zoneId : int
+  pos : float3
 
 [event(unicast)]
 struct EventResetSpawnOnUnitEid {}

@@ -1,31 +1,28 @@
-from "%scripts/dagui_natives.nut" import has_entitlement, player_have_attachable, get_decal_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, is_decal_allowed, get_decal_cost_gold, get_attachable_cost_wp
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "sony.user" import hasPremium
+from "unitCustomization" import get_last_skin, get_decal_in_slot, set_current_decal_slot, set_decal_in_slot, enter_decal_mode, add_attachable, remove_attachable
+  , select_attachable_slot, exit_attachables_mode, get_attachable_name, get_attachable_group, focus_on_current_decal, get_num_decal_slots, get_max_num_decal_slots
+  , exit_decal_mode, save_decals, enter_ship_flags_mode, exit_ship_flags_mode, get_default_ship_flag, apply_ship_flag, get_ship_flag_in_slot
+from "dagor.debug" import debug_dump_stack
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "%globalScripts/unlockConsts.nut" import *
+from "%scripts/dagui_natives.nut" import has_entitlement, player_have_attachable, get_decal_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_attachable_cost_gold
+  , save_attachables, get_max_num_attachables_slots, is_decal_allowed, get_decal_cost_gold, get_attachable_cost_wp
 from "%scripts/dagui_library.nut" import *
-from "%sqDagui/daguiNativeApi.nut" import *
+from "%scripts/sqDagui/daguiNativeApi.nut" import *
 
 let time = require("%scripts/time.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { hasPremium } = require("sony.user")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { Cost } = require("%scripts/money.nut")
-let { get_last_skin, get_decal_in_slot, set_current_decal_slot, set_decal_in_slot,
-  enter_decal_mode, add_attachable, remove_attachable, select_attachable_slot,
-  exit_attachables_mode, get_attachable_name, get_attachable_group, focus_on_current_decal,
-  get_num_decal_slots, get_max_num_decal_slots, exit_decal_mode, save_decals,
-  enter_ship_flags_mode, exit_ship_flags_mode, get_default_ship_flag,
-  apply_ship_flag, get_ship_flag_in_slot
-} = require("unitCustomization")
 let guidParser = require("%scripts/guidParser.nut")
 let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin, getSkinCost } = require("%scripts/customization/skinUtils.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isDecorInFavorites, addDecorToFavorite, removeDecorFromFavorite, getFavoriteDecorators
-} = require("%scripts/customization/decoratorFavoritesStorage.nut")
+let { isDecorInFavorites, addDecorToFavorite, removeDecorFromFavorite, getFavoriteDecorators } = require("%scripts/customization/decoratorFavoritesStorage.nut")
 
 function memoizeByProfile(func, hashFunc = null) {
   

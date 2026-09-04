@@ -5,7 +5,7 @@ import "%gdkLib/impl/app.nut" as app
 let logX = require("%sqstd/log.nut")().with_prefix("[ACTIVATION] ")
 
 
-let ACTIVATION_EVENT_NAME = "xbox_sq_activation_event"
+const ACTIVATION_EVENT_NAME = "xbox_sq_activation_event"
 let activationData = hardPersistWatched("activationData", null)
 
 
@@ -30,7 +30,7 @@ return freeze({
   get_sender_xuid = @() activationData.get()?.senderXuid ?? 0
   get_invited_xuid = @() activationData.get()?.invitedXuid ?? 0
   get_activation_data = @() activationData.get()?.data
-  hasActivationData = @() activationData.get() != null
+  hasActivationData = @(): bool activationData.get() != null
   resetActivationData = @() activationData.set(null)
   get_is_from_invitation = @() activationData.get()?.isFromInvitation
   register_activation_callback

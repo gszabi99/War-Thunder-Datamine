@@ -1,25 +1,20 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "math" import ceil, fabs
+from "%sqstd/string.nut" import cutPrefix
+from "%sqstd/underscore.nut" import deep_clone
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { ceil, fabs } = require("math")
-let DataBlock = require("DataBlock")
+
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { BULLET_TYPE, isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
-let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry,
-  isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { TRIGGER_TYPE, addWeaponsFromBlk, getPresetsList, getUnitWeaponry, isWeaponEnabled, isWeaponUnlocked, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { WEAPON_PRESET_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { MIN_TIERS_COUNT, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX,
-  getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams, getSlotsWeaponsForEditPreset,
-  getUnitWeaponSlots
-} = require("%scripts/weaponry/weaponryPresets.nut")
-let { getCustomPresetByPresetBlk, convertPresetToBlk
-} = require("%scripts/unit/unitWeaponryCustomPresets.nut")
+let { MIN_TIERS_COUNT, CHAPTER_ORDER, CHAPTER_FAVORITE_IDX, CHAPTER_NEW_IDX, CUSTOM_PRESET_PREFIX, getUnitPresets, isCustomPreset, getWeaponsByTypes, getWeaponBlkParams, getSlotsWeaponsForEditPreset, getUnitWeaponSlots } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getCustomPresetByPresetBlk, convertPresetToBlk } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { appendOnce } = u
-let { cutPrefix } = require("%sqstd/string.nut")
 let { openRestrictionsWeaponryPreset } = require("%scripts/weaponry/restrictionsWeaponryPreset.nut")
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
@@ -104,8 +99,8 @@ function getTypeByPurpose(weaponry) {
 }
 
 function getTierIcon(weaponry, itemsNum) {
-  let path = "#ui/gameuiskin#"
-  let triggerType = weaponry.tType
+  const path = "#ui/gameuiskin#"
+  let triggerType = weaponry?.tType ?? weaponry?.trigger
   let iconType = weaponry.iconType
   let isGroup = itemsNum > 1
   let isBlock = (weaponry?.amountPerTier ?? 0) > 1
@@ -420,6 +415,7 @@ function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = n
     dependentWeaponPreset = {}
     bannedWeaponPreset = {}
     tiersView         = {}
+    brokenTiers       = preset?.brokenTiers ?? []
     weaponPreset      = u.copy(preset)
     weaponsByTypes    = {}
     weaponsSlotCount  = getFullUnitBlk(unit.name)?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
@@ -677,10 +673,10 @@ function editSlotInPreset(preset, tierId, presetId, availableWeapons, unit, favo
   else {
     let wBlk = findAvailableWeapon(availableWeapons, presetId, tierId)
     if (wBlk != null) {
-      editSlotParams.slots.append({ slot = wBlk.slot, presetId = wBlk.presetId, tierId })
-      addDependentWeaponsParams(unitName, preset, availableWeapons, wBlk, editSlotParams)
       addBannedWeaponsParams(unitName, preset, availableWeapons, wBlk, editSlotParams)
       addBanedByWeaponsParams(unitName, preset, tierId, presetId, availableWeapons, wBlk, editSlotParams)
+      addDependentWeaponsParams(unitName, preset, availableWeapons, wBlk, editSlotParams)
+      editSlotParams.slots.append({ slot = wBlk.slot, presetId = wBlk.presetId, tierId })
     }
   }
   addRemovedDependentWeaponsParams(unitName, preset, tierId, availableWeapons, editSlotParams)
@@ -737,7 +733,7 @@ function getPresetWeightRestrictionText(preset, unitBlk) {
 
   foreach (idx, tier in preset.tiersView) {
     let { tierId = -1, massKg = 0.0 } = tier?.weaponry
-    let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[idx]
+    let { additionalMassKg = 0.0 } = tier?.weaponry.tiers[tierId]
     let amount = tier?.weaponry.tiers[tierId].amountPerTier ?? 1.0
     let addWeaponryMassKg = tier?.weaponry.addWeaponry.massKg ?? 0.0
     let addWeaponryAmount = tier?.weaponry.addWeaponry.tiers[tierId].amountPerTier ?? 1.0

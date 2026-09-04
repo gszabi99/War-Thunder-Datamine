@@ -1,13 +1,15 @@
+from "string" import format
+from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
@@ -17,7 +19,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
-gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let ShopSearchWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopSearchWnd.tpl"
 
@@ -154,13 +156,14 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     return maxColumnHeight <= visibleHeight
   }
 }
+register_gui_handler("ShopSearchWnd", ShopSearchWnd)
 
 return {
   open = function(searchString, cbOwnerShowUnit, getEdiffFunc) {
     let units = shopSearchCore.findUnitsByLocName(searchString)
     if (!units.len())
       return false
-    handlersManager.loadHandler(gui_handlers.ShopSearchWnd, {
+    handlersManager.loadHandler(ShopSearchWnd, {
       searchString = searchString
       cbOwnerShowUnit = cbOwnerShowUnit
       getEdiffFunc = getEdiffFunc

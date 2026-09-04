@@ -1,9 +1,11 @@
+from "%sqstd/string.nut" import stripTags
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
+
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let imageByActivationType = {

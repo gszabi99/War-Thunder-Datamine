@@ -2,6 +2,7 @@ require ecs
 require AnimV20
 require soundEvent
 require sound_utils.modules.sound_player_common
+require sound_utils_net.modules.sound_desc_common
 require human_sounds.modules.human_voice_effect_common
 require human_sounds.modules.human_sound_geomtree_nodes_common
 require %appGame.wt_events
@@ -35,8 +36,7 @@ def human_death_sound(evt : EventEntityDied;
         set_var_optional(gun_sound__event, "on_shot", 0.)
 
     if evt.offender == evt.victim
-      let playerStr = is_watched_sound ? "player/" : "enemy/"
-      oneshot("{human_sound__prefix}{playerStr}{human_suicide_sound__path}", voicePos)
+      oneshot("{human_sound__prefix}{get_watched_sound_event_folder(is_watched_sound)}/{human_suicide_sound__path}", voicePos)
 
 [es(tag=sound, on_event=ParallelUpdateFrameDelayed, REQUIRE=deadEntity, REQUIRE_NOT=shootingRangeDummy)]
 def human_death_sound_update(evt : Event;

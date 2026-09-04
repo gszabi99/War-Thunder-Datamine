@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { get_time_msec } = require("dagor.time")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
 let { getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 

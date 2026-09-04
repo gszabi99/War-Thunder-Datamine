@@ -1,7 +1,7 @@
 {
   "model": "f_84b",
   "fmFile": "fm/f-84b.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "gyroSight": true,
   "haveCCRPForBombs": true,
@@ -60,6 +60,14 @@
     "armor8": {
       "armor3_dm": {
         "hp": 40.0
+      }
+    },
+    "dural5": {
+      "radar1_dm": {
+        "hp": 35.0
+      },
+      "cockpit_control1_dm": {
+        "hp": 60.0
       }
     },
     "armor_jet_engine": {
@@ -942,6 +950,9 @@
         }
       },
       {
+        "name": "cockpit_countrol1_dm"
+      },
+      {
         "name": "mgun1_dm"
       },
       {
@@ -970,6 +981,31 @@
       },
       {
         "name": "pilot_dm"
+      },
+      {
+        "name": "radar1_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "rudder_dm",

@@ -1,28 +1,31 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 from "guiTacticalMap" import TacticalMapIconType
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+
 let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 
 let { IT_Fighter, IT_Bomber, IT_Assault, IT_LightTank, IT_MediumTank, IT_HeavyTank, IT_TankDestroyer,
   IT_Tracked, IT_SPAA, IT_Airdefence, IT_Structure, IT_AmmoStorage, IT_FuelStorage, IT_TankStorage,
-  IT_Wheeled, IT_Airport, IT_MLRS, IT_TBMLauncher, IT_Radar, IT_SAM,
+  IT_Wheeled, IT_Airport, IT_MLRS, IT_TBMLauncher, IT_Radar, IT_SAM, IT_IFV,
+  IT_Pillbox, IT_Artillery, IT_AntiTankArtillery,
   IT_Ship, IT_Boat, IT_MissileBoat, IT_Corvette, IT_MissileCorvette, IT_Frigate, IT_MissileFrigate,
   IT_Destroyer, IT_MissileDestroyer, IT_LightCruiser, IT_MissileLightCruiser,
-  IT_HeavyCruiser, IT_MissileHeavyCruiser, IT_BattleShip, IT_MissileBattleship, IT_Submarine,
-  IT_AircraftCarrier } = TacticalMapIconType
+  IT_HeavyCruiser, IT_MissileHeavyCruiser, IT_BattleShip, IT_MissileBattleship, IT_BattleCruiser,
+  IT_AircraftCarrier, IT_Submarine } = TacticalMapIconType
 
 let unitTypesData = [
   { name = "mainmenu/aviation", types = [IT_Fighter, IT_Bomber, IT_Assault] }
-  { name = "mainmenu/armored_vehicles", types = [IT_LightTank, IT_MediumTank, IT_HeavyTank, IT_TankDestroyer, IT_Tracked] }
+  { name = "mainmenu/armored_vehicles", types = [IT_LightTank, IT_MediumTank, IT_HeavyTank, IT_TankDestroyer, IT_Tracked, IT_IFV] }
   { name = "mainmenu/air_defense", types = [IT_SPAA, IT_Airdefence, IT_SAM] }
   { name = "mapMarkerFilters/rocketAndMissileSystems", types = [IT_MLRS, IT_TBMLauncher] }
   { name = "xray/radar", types = [IT_Radar] }
   { name = "mainmenu/fleet", types = [IT_Ship, IT_Boat, IT_MissileBoat,
     IT_Corvette, IT_MissileCorvette, IT_Frigate, IT_MissileFrigate,
     IT_Destroyer, IT_MissileDestroyer, IT_LightCruiser, IT_MissileLightCruiser,
-    IT_HeavyCruiser, IT_MissileHeavyCruiser, IT_BattleShip, IT_MissileBattleship,
+    IT_HeavyCruiser, IT_MissileHeavyCruiser, IT_BattleShip, IT_MissileBattleship, IT_BattleCruiser,
     IT_AircraftCarrier, IT_Submarine] }
-  { name = "mainmenu/ground_facilities", types = [IT_Structure, IT_AmmoStorage, IT_FuelStorage, IT_TankStorage] }
+  { name = "mainmenu/ground_facilities", types = [IT_Structure, IT_AmmoStorage, IT_FuelStorage, IT_TankStorage,
+    IT_Pillbox, IT_Artillery, IT_AntiTankArtillery] }
   { name = "mainmenu/supply", types = [IT_Wheeled] }
   { name = "worldWar/airfieldsList", types = [IT_Airport, IT_AircraftCarrier] }
 ]

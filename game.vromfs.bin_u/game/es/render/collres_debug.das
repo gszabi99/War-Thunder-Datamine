@@ -10,7 +10,6 @@ require Dacoll
 require PhysMat
 require RendInst
 require DagorDebug3D
-require DagorSystem
 require DagorFiles
 require math.base
 require strings
@@ -250,21 +249,15 @@ def get_node_info(collres : CollisionResource; node) : string
     geomInfo += "; " + format_scale(node.flags, collres_get_node_tm(collres, int(node.nodeIndex)))
 
   var behFlags = ""
-  if (uint(node.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
+  let liveBeh = uint(collres_get_node_behavior_flags(collres, int(node.nodeIndex)))
+  if (liveBeh & uint(BehaviorFlag.TRACEABLE)) != 0u
     behFlags += (behFlags != "" ? "+" : "") + "trace"
-  if (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
+  if (liveBeh & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
     behFlags += (behFlags != "" ? "+" : "") + "phys"
   if behFlags != ""
     geomInfo += "; beh: {behFlags}"
 
   return "node {node.nodeIndex}: {collres_get_node_name(collres, int(node.nodeIndex))}" + geomInfo
-
-def get_grid_info(collres : CollisionResource; flag : uint8)
-  var width : int3
-  var leafSize : float3
-  if collres |> collres_getGridSize(flag, width, leafSize)
-    return "{width.x}x{width.y}x{width.z} leaf {max(leafSize.x, max(leafSize.y, leafSize.z)):.2f}"
-  return "no"
 
 def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animchar : AnimcharBaseComponent const?;
                             dist : float; best_node_idx : int; intersection_pos : float3; collres : CollisionResource)
@@ -289,8 +282,8 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
   var noteType = 0
   for i in range(nodesCnt)
     let inode = collres |> collres_get_node(i)
-    let isTraceable = (uint(inode.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
-    let isCollidable = (uint(inode.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
+    let isTraceable = (uint(collres_get_node_behavior_flags(collres, int(inode.nodeIndex))) & uint(BehaviorFlag.TRACEABLE)) != 0u
+    let isCollidable = (uint(collres_get_node_behavior_flags(collres, int(inode.nodeIndex))) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
     if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
       meshCnt++
       if (uint(inode.flags) & uint(CollisionNodeFlag.ORTHONORMALIZED)) == 0u
@@ -351,12 +344,12 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
   if geomCnt != 0
     nodesText += "; geom_attached: {geomCnt}"
   add_debug_text_mark(markPos, name, -1, 0.0, E3DCOLOR(0xFF8FFF8F))
-  add_debug_text_mark(markPos, "dist {dist:.2f}m; bsph_rad: {collres.boundingSphereRad:.3f}; node_mat: {node.physMatId} ({get_material_name(get_material(int(node.physMatId)))}); tm " + format_scale(transform), -1, 1.2, E3DCOLOR(0xFF8FFF8F))
+  let nodeMat = collres_get_node_phys_mat(collres, int(node.nodeIndex))
+  add_debug_text_mark(markPos, "dist {dist:.2f}m; bsph_rad: {collres.boundingSphereRad:.3f}; node_mat: {nodeMat} ({get_material_name(get_material(nodeMat))}); tm " + format_scale(transform), -1, 1.2, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, "Selected " + get_node_info(collres, node), -1, 2.4, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, nodesText, -1, 3.6, E3DCOLOR(0xFF8FFF8F))
   if noteType != 0
     add_debug_text_mark(markPos, "Last scaled " + get_node_info(collres, collres |> collres_get_node(noteId)), -1, 4.8, E3DCOLOR(0xFF8FFF8F))
-  add_debug_text_mark(markPos, "Grids: trace={get_grid_info(collres, uint8(BehaviorFlag.TRACEABLE))} coll={get_grid_info(collres, uint8(BehaviorFlag.PHYS_COLLIDABLE))}", -1, noteType != 0 ? 6.0 : 4.8, E3DCOLOR(0xFF8FFF8F))
 
 [es(tag=(render, dev), no_order, REQUIRE=collisionRulerDebug)]
 def draw_collision_ruler_es(evt : UpdateStageInfoRenderDebug)
@@ -449,7 +442,7 @@ def collres_dump_vertices(ri_name : string = "")
       df_write(file, "### Vertices ###\n")
       for nodeIdx in range(nodeCount)
         let node = *riCollres |> collres_get_node(nodeIdx)
-        let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
+        let isCollidable = (uint(collres_get_node_behavior_flags(*riCollres, int(node.nodeIndex))) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
         if !isCollidable
           continue
         df_write(file, "# Node '{collres_get_node_name(*riCollres, nodeIdx)}'\n")
@@ -460,7 +453,7 @@ def collres_dump_vertices(ri_name : string = "")
       var indexOffset = 1
       for nodeIdx in range(nodeCount)
         let node = *riCollres |> collres_get_node(nodeIdx)
-        let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
+        let isCollidable = (uint(collres_get_node_behavior_flags(*riCollres, int(node.nodeIndex))) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
         if !isCollidable
           continue
         df_write(file, "# Node '{collres_get_node_name(*riCollres, nodeIdx)}' Offset +{indexOffset}\n")

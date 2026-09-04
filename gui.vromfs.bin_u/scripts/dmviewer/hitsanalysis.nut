@@ -1,17 +1,17 @@
+import "DataBlock" as DataBlock
+from "string" import format
+from "math" import floor
+from "hangar" import hangar_set_dm_viewer_mode, DM_VIEWER_NONE
+from "replays" import on_parse_replay, get_parsed_replay, get_replay_info, repeat_shot_from_blk, on_parse_temp_replay, get_temp_replay_info, get_replay_hits_dir
+  , set_replay_hits_mode, on_update_loaded_model, restore_loaded_model
+from "dagor.localize" import doesLocTextExist
+from "unitCalculcation" import calculate_tank_bullet_parameters
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let DataBlock = require("DataBlock")
-let { format } = require("string")
-let { floor } = require("math")
-let { hangar_set_dm_viewer_mode, DM_VIEWER_NONE } = require("hangar")
-let { on_parse_replay, get_parsed_replay, get_replay_info, repeat_shot_from_blk,
-  on_parse_temp_replay, get_temp_replay_info, get_replay_hits_dir, set_replay_hits_mode,
-  on_update_loaded_model, restore_loaded_model } = require("replays")
-let { doesLocTextExist } = require("dagor.localize")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -19,13 +19,11 @@ let { image_for_air, getUnitName, getUnitCountry, getUnitCountryIcon } = require
 let { secondsToTimeSimpleString } = require("%scripts/time.nut")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
-  getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getWeaponParamsByWeaponBlkPath } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { initBackgroundModelHint, updateBackgroundModelHint
-} = require("%scripts/hangar/backgroundModelHint.nut")
+let { initBackgroundModelHint, updateBackgroundModelHint } = require("%scripts/hangar/backgroundModelHint.nut")
 
 let bulletInfoCache = {}
 
@@ -136,7 +134,7 @@ function restoreState() {
   restore_loaded_model()
 }
 
-gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
+let HitsAnalysis = class (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/dmViewer/hitsAnalysis.blk"
 
@@ -329,7 +327,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
       this.selectedHit.saveToTextFile(filePath)
     }
 
-    handlersManager.loadHandler(gui_handlers.RenameReplayHandler, {
+    handlersManager.loadHandler(get_gui_handler("RenameReplayHandler"), {
       baseName = fileName
       basePath = "/".concat(get_replay_hits_dir(), fileName)
       funcOwner = this
@@ -353,6 +351,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onShellClick = @(_obj) null
 }
+register_gui_handler("HitsAnalysis", HitsAnalysis)
 
 function canOpenHitsAnalysisWindow() {
   return hasFeature("HitsAnalysis")
@@ -383,7 +382,7 @@ function openHitsAnalysisWindow(path = null) {
   })
 
   let ediff = (path == null) ? get_temp_replay_info().difficulty : get_replay_info(path).difficulty
-  handlersManager.loadHandler(gui_handlers.HitsAnalysis, { hitsData, ediff })
+  handlersManager.loadHandler(HitsAnalysis, { hitsData, ediff })
 }
 
 return {

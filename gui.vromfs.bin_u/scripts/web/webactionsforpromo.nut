@@ -1,5 +1,5 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { getPollIdByFullUrl, invalidateTokensCache } = require("%scripts/web/webpoll.nut")
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
@@ -37,4 +37,3 @@ addPromoButtonConfig({
 return {
   openLinkWithSource
 }
-

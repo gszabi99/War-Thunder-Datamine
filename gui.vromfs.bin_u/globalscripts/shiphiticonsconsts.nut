@@ -1,4 +1,4 @@
-let { get_game_params_blk } = require("blkGetters")
+from "blkGetters" import get_game_params_blk
 
 let IS_SHIP_HIT_NOTIFICATIONS_VISIBLE = get_game_params_blk()?.isVisibleShipHitCounters ?? false
 

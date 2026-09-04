@@ -18,7 +18,7 @@ let Skin = class (ItemCouponBase) {
     if (this.unitId)
       return
     this.unitId = v_unitId
-    this.addResources({ unitId = this.unitId })
+    this.addResources(this.unitId)
   }
 
   getDecorator = @() getDecoratorByResource(this.metaBlk?.resource, this.metaBlk?.resourceType)

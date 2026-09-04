@@ -81,16 +81,15 @@ def vehicle_seats_window_es(info : UpdateStageInfoAct;
     return
   seat_window__openPos = clamp(seat_window__openPos + (isOpen ? 1.0f : -1.0f) * seat_window__openVel * info.dt, 0.0f, 1.0f)
 
-  static_if typeinfo(builtin_function_exists @@ < (var self : DamageableVisualModel&; arg0 : int; arg1 : float3x4&) : void > _::dvm_set_visual_node_tm)
-    query(seat__vehicleEid) <| $ [es] (var unit__ref : UnitRef)
-      var unit = unit__ref.unit
-      if unit == null || unit.visual == null
-        return
-      let tree = get_entity_visual_node_tree(unit__ref)
-      if tree == null
-        return
-      for nodeId, basePos, slideDir in seat_window__nodeIds, seat_window__baseLocalPos, seat_window__slideDirLocal
-        var nodeTm : float3x4
-        geomtree_getNodeTmScalar(*tree, nodeId, nodeTm)
-        nodeTm[3] = basePos + slideDir * (seat_window__slideDist * seat_window__openPos)
-        *unit.visual |> dvm_set_visual_node_tm(nodeId, nodeTm)
+  query(seat__vehicleEid) <| $ [es] (var unit__ref : UnitRef)
+    var unit = unit__ref.unit
+    if unit == null || unit.visual == null
+      return
+    let tree = get_entity_visual_node_tree(unit__ref)
+    if tree == null
+      return
+    for nodeId, basePos, slideDir in seat_window__nodeIds, seat_window__baseLocalPos, seat_window__slideDirLocal
+      var nodeTm : float3x4
+      geomtree_getNodeTmScalar(*tree, nodeId, nodeTm)
+      nodeTm[3] = basePos + slideDir * (seat_window__slideDist * seat_window__openPos)
+      *unit.visual |> dvm_set_visual_node_tm(nodeId, nodeTm)

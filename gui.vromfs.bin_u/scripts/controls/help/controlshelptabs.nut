@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/u.nut" import search
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 
-let { search } = require("%sqStdLibs/helpers/u.nut")
 let platform = require("%scripts/clientState/platform.nut")
 let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")

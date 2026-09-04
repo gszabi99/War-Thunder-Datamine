@@ -5,7 +5,7 @@ from "components/style.nut" import colors
 from "%darg/laconic.nut" import *
 
 let entity_editor = require_optional("entity_editor")
-let { EntitySelectWndId, selectedEntities, markedScenes, de4workMode, sceneIdMap } = require("state.nut")
+let { EntitySelectWndId, selectedEntities, de4workMode, sceneIdMap } = require("state.nut")
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let { setTooltip } = require("components/cursors.nut")
@@ -38,7 +38,7 @@ let numSelectedEntities = Computed(function() {
   return nSel
 })
 
-function matchEntityByText(eid, text) {
+function matchEntityByText(eid, text): bool {
   if (text==null || text=="" || eid.tostring().contains(text))
     return true
   let tplName = g_entity_mgr.getEntityTemplateName(eid)
@@ -63,8 +63,10 @@ let filteredEntites = Computed(function() {
     }
   }
 
-  if (entitySortFuncCache != null)
+  if (entitySortFuncCache != null) {
+    entities = entities.slice(0)
     entities.sort(entitySortFuncCache)
+  }
   return entities
 })
 
@@ -98,11 +100,6 @@ function doSelect() {
   let eids = []
   foreach (k, v in selectionState.get()) if (v) eids.append(k)
   entity_editor?.get_instance().selectEntities(eids)
-  gui_scene.resetTimeout(0.1, function() {
-    selectedEntities.trigger()
-    selectionState.trigger()
-  })
-
 }
 
 function doLocate() {
@@ -168,7 +165,6 @@ function doSelectEid(eid, mod) {
   if (!found)
     eids.append(eid)
   entity_editor?.get_instance().selectEntities(eids)
-  gui_scene.resetTimeout(0.1, @() selectionState.trigger())
 }
 
 let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+","+").replace("+daeditor_selected","").replace("daeditor_selected+","")
@@ -203,28 +199,29 @@ function mkEntitySceneTooltip(loadType, id) {
   return null
 }
 
-function listRow(eid, idx) {
-  return watchElemState(function(sf) {
-    let isSelected = selectionState.get()?[eid]
-    let textColor = isSelected ? colors.TextDefault : colors.TextDarker
-    let color = isSelected ? colors.Active
-      : sf & S_TOP_HOVER ? colors.GridRowHover
-      : colors.GridBg[idx % colors.GridBg.len()]
 
-    let extraName = getEntityExtraName(eid)
+
+let EntityRow = StatefulComp(function(scope, eid, idx) {
+  let stateFlags = scope.Watched(0)
+  let isMarked = scope.Computed(@() selectionState.get()?[eid.get()] ?? false)
+  let isSelected = scope.Computed(@() eid.get() in selectedEntities.get())
+
+  function label() {
+    let id = eid.get()
+    let extraName = getEntityExtraName(id)
     let extra = (extraName != null) ? $"/ {extraName}" : ""
 
-    local tplName = g_entity_mgr.getEntityTemplateName(eid) ?? ""
+    let tplName = g_entity_mgr.getEntityTemplateName(id) ?? ""
     let name = removeSelectedByEditorTemplate(tplName)
     let div = (tplName != name) ? "•" : "|"
 
-    local loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(eid) ?? 0
-    local id = entity_editor?.get_instance().getEntityRecordSceneId(eid) ?? -1
+    let loadTypeVal = entity_editor?.get_instance().getEntityRecordLoadType(id) ?? 0
+    let sceneId = entity_editor?.get_instance().getEntityRecordSceneId(id) ?? -1
     local loadType = "MAIN"
     local idSeparator = ""
     local index = ""
-    if (loadTypeVal > 0 && id >= 0) {
-      local scene = sceneIdMap.get()?[id]
+    if (loadTypeVal > 0 && sceneId >= 0) {
+      let scene = sceneIdMap.get()?[sceneId]
       if (scene != null && scene.importDepth != 0) {
         loadType = getSceneLoadTypeText(scene)
         idSeparator = ":"
@@ -234,14 +231,29 @@ function listRow(eid, idx) {
       loadType = ""
     }
 
-    let tooltip = mkEntitySceneTooltip(loadTypeVal, id)
+    return {
+      watch = [eid, isSelected, isMarked, sceneIdMap]
+      rendObj = ROBJ_TEXT
+      text = $"{id}  {div}  {name} {extra}  {loadType}{idSeparator}{index}"
+      color = isMarked.get() ? colors.TextDefault : colors.TextDarker
+      margin = fsh(0.5)
+    }
+  }
+
+  return function() {
+    let id = eid.get()
+    let color = isMarked.get() ? colors.Active
+      : (stateFlags.get() & S_TOP_HOVER) ? colors.GridRowHover
+      : colors.GridBg[idx.get() % colors.GridBg.len()]
 
     return {
+      watch = [eid, idx, isMarked, stateFlags]
       rendObj = ROBJ_SOLID
       size = FLEX_H
       color
-      eid
+      eid = id
       behavior = Behaviors.Button
+      onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
 
       onClick = function(evt) {
         if (evt.shiftKey) {
@@ -254,7 +266,7 @@ function listRow(eid, idx) {
             local idx1 = -1
             local idx2 = -1
             foreach (i, filteredEid in filteredEntites.get()) {
-              if (eid == filteredEid) {
+              if (id == filteredEid) {
                 idx1 = i
                 idx2 = i
               }
@@ -284,11 +296,11 @@ function listRow(eid, idx) {
         }
         else if (evt.ctrlKey) {
           selectionState.mutate(function(value) {
-            value[eid] <- !value?[eid]
+            value[id] <- !value?[id]
           })
         }
         else {
-          applySelection(@(eid_, _cur) eid_==eid)
+          applySelection(@(eid_, _cur) eid_==id)
         }
       }
 
@@ -296,20 +308,23 @@ function listRow(eid, idx) {
         if (locateOnDoubleClick) { doLocate(); return }
         locateOnDoubleClick = true
         gui_scene.resetTimeout(0.3, @() locateOnDoubleClick = false)
-        doSelectEid(eid, evt.ctrlKey)
+        doSelectEid(id, evt.ctrlKey)
       }
 
-      onHover = tooltip != null ? @(on) setTooltip(on ? tooltip : null) : null
-
-      children = {
-        rendObj = ROBJ_TEXT
-        text = $"{eid}  {div}  {name} {extra}  {loadType}{idSeparator}{index}"
-        color = textColor
-        margin = fsh(0.5)
+      onHover = function(on) {
+        if (!on) {
+          setTooltip(null)
+          return
+        }
+        let loadType = entity_editor?.get_instance().getEntityRecordLoadType(id) ?? 0
+        let sceneId = entity_editor?.get_instance().getEntityRecordSceneId(id) ?? -1
+        setTooltip(mkEntitySceneTooltip(loadType, sceneId))
       }
+
+      children = label
     }
-  })
-}
+  }
+}, @(eid) eid)
 
 function listRowMoreLeft(num, idx) {
   return watchElemState(function(sf) {
@@ -341,7 +356,6 @@ function initEntitiesList() {
 
 entitySortState.subscribe_with_nasty_disregard_of_frp_update(function(v) {
   entitySortFuncCache = v?.func
-  selectedEntities.trigger()
   selectionState.trigger()
   initEntitiesList()
 })
@@ -366,7 +380,7 @@ function entitySceneFilterCheckbox() {
         rendObj = ROBJ_SOLID
         color = (hoverFlag.get() != 0) ? colors.Hover : colors.Interactive
         group
-        size = [pw(50), ph(50)]
+        size = const [pw(50), ph(50)]
         hplace = ALIGN_CENTER
         vplace = ALIGN_CENTER
       }
@@ -382,7 +396,7 @@ function entitySceneFilterCheckbox() {
 
       children = [
         {
-          size = [fontH(80), fontH(80)]
+          size = const [fontH(80), fontH(80)]
           rendObj = ROBJ_SOLID
           color = colors.ControlBg
 
@@ -412,12 +426,12 @@ function mkEntitySelect() {
 
   function listContent() {
     const maxVisibleItems = 500
-    let rows = filteredEntites.get().slice(0, maxVisibleItems).map(@(eid, idx) listRow(eid, idx))
+    let rows = filteredEntites.get().slice(0, maxVisibleItems).map(@(eid, idx) EntityRow(eid, idx))
     if (rows.len() < filteredEntites.get().len())
       rows.append(listRowMoreLeft(filteredEntites.get().len() - rows.len(), rows.len()))
 
     return {
-      watch = [selectionState, markedScenes, filteredEntites, filterEntitiesByMarkedScenes]
+      watch = filteredEntites
       size = FLEX_H
       flow = FLOW_VERTICAL
       children = rows

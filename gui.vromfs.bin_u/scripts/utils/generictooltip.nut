@@ -1,11 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, addListenersWithoutEnv
+from "json" import parse_json
+from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
 
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { parse_json } = require("json")
-let { getTooltipType } = require("genericTooltipTypes.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { add_event_listener, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openModalInfo, closeModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
@@ -65,7 +66,7 @@ function openGenericTooltip(obj, handler) {
   if (!tooltipId || tooltipId == "")
     return
   let params = parse_json(tooltipId)
-  if (type(params) != "table" || !("ttype" in params) || !("id" in params))
+  if (!(params instanceof Table) || !("ttype" in params) || !("id" in params))
     return
 
   let tooltipType = getTooltipType(params.ttype)

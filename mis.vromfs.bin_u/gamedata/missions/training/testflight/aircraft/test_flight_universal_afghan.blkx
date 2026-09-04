@@ -65,7 +65,7 @@
             {
               "icontype": "fighter",
               "side": "enemy",
-              "target": "flight_point01"
+              "target": "flight_point01high"
             },
             {
               "icontype": "tank",
@@ -521,7 +521,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "flight_point01": {
+    "flight_point01high": {
       "type": "Point",
       "tm": [
         [
@@ -548,7 +548,34 @@
       "objLayer": 0,
       "props": {}
     },
-    "flight_point02": {
+    "flight_point01low": {
+      "type": "Point",
+      "tm": [
+        [
+          0.722638,
+          0.0,
+          -0.691227
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.691227,
+          0.0,
+          0.722638
+        ],
+        [
+          -645.922,
+          2479.98,
+          11598.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "flight_point02high": {
       "type": "Point",
       "tm": [
         [
@@ -569,6 +596,33 @@
         [
           -2714.11,
           3880.99,
+          17488.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "flight_point02low": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.940223,
+          0.0,
+          -0.340559
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.340559,
+          0.0,
+          -0.940223
+        ],
+        [
+          -2714.11,
+          3159.86,
           17488.5
         ]
       ],
@@ -1936,7 +1990,34 @@
       ],
       "props": {}
     },
-    "flight_point03": {
+    "flight_point03low": {
+      "type": "Point",
+      "tm": [
+        [
+          0.893157,
+          0.0,
+          0.449744
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.449744,
+          0.0,
+          0.893157
+        ],
+        [
+          -5366.01,
+          3105.38,
+          14257.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "flight_point03high": {
       "type": "Point",
       "tm": [
         [
@@ -1963,7 +2044,34 @@
       "objLayer": 0,
       "props": {}
     },
-    "flight_point04": {
+    "flight_point04low": {
+      "type": "Point",
+      "tm": [
+        [
+          0.783148,
+          0.0,
+          0.621835
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.621835,
+          0.0,
+          0.783148
+        ],
+        [
+          6575.83,
+          3071.04,
+          10625.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "flight_point04high": {
       "type": "Point",
       "tm": [
         [
@@ -3014,12 +3122,12 @@
         }
       }
     },
-    "flight_way_points_01": {
+    "flight_way_points_01high": {
       "closed_waypoints": true,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
       "way": {
-        "flight_way_points_01_wp_01": {
+        "flight_way_points_01high_wp_01": {
           "type": "normal",
           "tm": [
             [
@@ -3050,7 +3158,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_01_wp_02": {
+        "flight_way_points_01high_wp_02": {
           "type": "normal",
           "tm": [
             [
@@ -3081,7 +3189,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_01_wp_03": {
+        "flight_way_points_01high_wp_03": {
           "type": "normal",
           "tm": [
             [
@@ -3113,7 +3221,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_01_wp_04": {
+        "flight_way_points_01high_wp_04": {
           "type": "normal",
           "tm": [
             [
@@ -3147,12 +3255,145 @@
         }
       }
     },
-    "flight_way_points_02": {
+    "flight_way_points_01low": {
       "closed_waypoints": true,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
       "way": {
-        "flight_way_points_02_wp_01": {
+        "flight_way_points_01low_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -8143.29,
+              2079.98,
+              24158.9
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_01low_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9387.22,
+              2079.98,
+              19418.4
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_01low_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -14.7637,
+              2079.99,
+              14060.0
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_01low_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1332.99,
+              2079.98,
+              16366.3
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "shouldKeepFormation": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "flight_way_points_02high": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "flight_way_points_02high_wp_01": {
           "type": "normal",
           "tm": [
             [
@@ -3183,7 +3424,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_02_wp_02": {
+        "flight_way_points_02high_wp_02": {
           "type": "normal",
           "tm": [
             [
@@ -3214,7 +3455,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_02_wp_03": {
+        "flight_way_points_02high_wp_03": {
           "type": "normal",
           "tm": [
             [
@@ -3245,7 +3486,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_02_wp_04": {
+        "flight_way_points_02high_wp_04": {
           "type": "normal",
           "tm": [
             [
@@ -3278,12 +3519,143 @@
         }
       }
     },
-    "flight_way_points_03": {
+    "flight_way_points_02low": {
       "closed_waypoints": true,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
       "way": {
-        "flight_way_points_03_wp_01": {
+        "flight_way_points_02low_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              3419.07,
+              3159.86,
+              16156.4
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_02low_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -7793.32,
+              3159.86,
+              23069.1
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_02low_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -9117.78,
+              3159.86,
+              18689.9
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_02low_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              1144.47,
+              3159.86,
+              12730.8
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "flight_way_points_03high": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "flight_way_points_03high_wp_01": {
           "type": "normal",
           "tm": [
             [
@@ -3314,7 +3686,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_03_wp_02": {
+        "flight_way_points_03high_wp_02": {
           "type": "normal",
           "tm": [
             [
@@ -3345,7 +3717,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_03_wp_03": {
+        "flight_way_points_03high_wp_03": {
           "type": "normal",
           "tm": [
             [
@@ -3376,7 +3748,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_03_wp_04": {
+        "flight_way_points_03high_wp_04": {
           "type": "normal",
           "tm": [
             [
@@ -3409,12 +3781,143 @@
         }
       }
     },
-    "flight_way_points_04": {
+    "flight_way_points_03low": {
       "closed_waypoints": true,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
       "way": {
-        "flight_way_points_04_wp_01": {
+        "flight_way_points_03low_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -5282.12,
+              3059.94,
+              14174.6
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_03low_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -12488.3,
+              3059.94,
+              12051.8
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_03low_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -10971.9,
+              3059.94,
+              7862.94
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_03low_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -4167.29,
+              3059.94,
+              10216.6
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "flight_way_points_04high": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "flight_way_points_04high_wp_01": {
           "type": "normal",
           "tm": [
             [
@@ -3445,7 +3948,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_04_wp_02": {
+        "flight_way_points_04high_wp_02": {
           "type": "normal",
           "tm": [
             [
@@ -3476,7 +3979,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_04_wp_03": {
+        "flight_way_points_04high_wp_03": {
           "type": "normal",
           "tm": [
             [
@@ -3507,7 +4010,7 @@
             "canUsePathFinder": false
           }
         },
-        "flight_way_points_04_wp_04": {
+        "flight_way_points_04high_wp_04": {
           "type": "normal",
           "tm": [
             [
@@ -3529,6 +4032,137 @@
               449.013,
               3835.55,
               30085.9
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        }
+      }
+    },
+    "flight_way_points_04low": {
+      "closed_waypoints": true,
+      "isShipSpline": false,
+      "shipTurnRadius": 100.0,
+      "way": {
+        "flight_way_points_04low_wp_01": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              6570.23,
+              3025.6,
+              10526.4
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_04low_wp_02": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              -54.2139,
+              3025.6,
+              6983.73
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_04low_wp_03": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              2281.77,
+              3025.6,
+              3190.28
+            ]
+          ],
+          "props": {
+            "speed": 700.0,
+            "moveType": "MOVETO_STRAIGHT",
+            "tas": false,
+            "canUsePathFinder": false
+          }
+        },
+        "flight_way_points_04low_wp_04": {
+          "type": "normal",
+          "tm": [
+            [
+              1.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              1.0
+            ],
+            [
+              8466.07,
+              3025.6,
+              6877.47
             ]
           ],
           "props": {

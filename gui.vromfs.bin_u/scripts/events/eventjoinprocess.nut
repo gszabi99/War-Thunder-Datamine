@@ -1,19 +1,17 @@
+import "%sqstd/math.nut" as stdMath
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
-let { get_time_msec } = require("dagor.time")
-let stdMath = require("%sqstd/math.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let tryOpenCaptchaHandler = require("%scripts/captcha/captchaHandler.nut")
-let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies, canJoinWithoutRequireCrafts,
-  isEventAllowedByPackage
-} = require("%scripts/events/eventInfo.nut")
+let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies, canJoinWithoutRequireCrafts, isEventAllowedByPackage } = require("%scripts/events/eventInfo.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { getUnitTypeByNewbieEventId } = require("%scripts/user/myStatsState.nut")
@@ -21,8 +19,7 @@ let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nu
 let { checkQueueAndStart, joinQueue } = require("%scripts/queue/queueManager.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
-let { checkPackageAndAskDownload, checkPackageAndAskDownloadByTimes
-} = require("%scripts/clientState/contentPacks.nut")
+let { checkPackageAndAskDownload, checkPackageAndAskDownloadByTimes } = require("%scripts/clientState/contentPacks.nut")
 let { isEventAllowedForAllSquadMembers, canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 let { disableVrModeValue } = require("%scripts/options/systemOptions.nut")

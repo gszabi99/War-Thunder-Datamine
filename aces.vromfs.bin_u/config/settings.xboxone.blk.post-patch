@@ -1,5 +1,5 @@
 "@override:texStreaming" {
-  forceMemQuotaKB:i=2355200  // 2300M
+  forceMemQuotaKB:i=1945600  // 1900M
 }
 
 "@delete:dx12" {}
@@ -61,5 +61,12 @@ dx12{
 "@override:shadows" {
   "@override:dynamicLightsShadows" {
     "@override:dynamicShadowsMaxUpdatePerFrame":i = 1
+  }
+  "@override:medium" {
+    "@override:dynamicLightsShadows" {
+      "@override:infantry" {
+        "@override:shadowQuality":i = 0
+      }
+    }
   }
 }

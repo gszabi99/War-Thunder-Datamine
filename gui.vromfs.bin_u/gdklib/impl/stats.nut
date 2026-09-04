@@ -1,8 +1,14 @@
 import "gdk.stats" as stats
 from "eventbus" import eventbus_subscribe_onehit
 
+local nextEventId = 0
+function mkEventName(baseName): string {
+  nextEventId++
+  return $"{baseName}_{nextEventId}"
+}
+
 function write_number(id, value, callback) {
-  let eventName = "xbox_stats_write_number"
+  let eventName = mkEventName("xbox_stats_write_number")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)
@@ -12,7 +18,7 @@ function write_number(id, value, callback) {
 
 
 function write_string(id, value, callback) {
-  let eventName = "xbox_stats_write_string"
+  let eventName = mkEventName("xbox_stats_write_string")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)

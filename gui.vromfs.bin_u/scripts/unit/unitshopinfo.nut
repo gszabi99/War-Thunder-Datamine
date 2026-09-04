@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/dagui_natives.nut" import shop_unit_research_status
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")

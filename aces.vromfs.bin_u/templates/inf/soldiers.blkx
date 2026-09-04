@@ -103,7 +103,6 @@
     "bipod__offsetMult": 0.0,
     "bipod__prevBodyDirYaw": 0.0,
     "bipod__prevBodyDirYawDelta": 0.0,
-    "bipod__attachedToRi": -1,
     "bipod__pitchLimit": [
       -10.0,
       20.0
@@ -134,6 +133,9 @@
     "bipod__animcharWasHidden": false,
     "bipod__adsFocused": false,
     "bipod__camOffsetK": 0.0,
+    "bipod__attachedToRi:u64": {
+      "value": -1
+    },
     "_group": [
       {
         "_tags": "render",
@@ -143,6 +145,7 @@
         "_tags": "gameClient",
         "bipod__checkPlacingInterval": 0.025,
         "bipod__nextCheckPlacingAtTime": 0.0,
+        "bipod__standStateOnMount": 0,
         "bipod__placeable": false,
         "bipod__placeCrawl": false,
         "bipod__placePos": [
@@ -768,31 +771,31 @@
         ],
         [
           20.0,
-          1.334
+          1.33
         ],
         [
           25.0,
-          1.265
+          1.26
         ],
         [
           30.0,
-          1.195
+          1.175
         ],
         [
           35.0,
-          1.16
+          1.09
         ],
         [
           40.0,
-          1.123
+          1.005
         ],
         [
           45.0,
-          1.085
+          0.92
         ],
         [
           50.0,
-          1.053
+          0.84
         ]
       ]
     },
@@ -872,23 +875,23 @@
         ],
         [
           30.0,
-          0.85
+          0.84
         ],
         [
           35.0,
-          0.825
+          0.78
         ],
         [
           40.0,
-          0.8
+          0.72
         ],
         [
           45.0,
-          0.775
+          0.66
         ],
         [
           50.0,
-          0.75
+          0.6
         ]
       ]
     },
@@ -900,31 +903,31 @@
         ],
         [
           20.0,
-          0.98
+          0.97
         ],
         [
           25.0,
-          0.95
+          0.94
         ],
         [
           30.0,
-          0.91
+          0.9
         ],
         [
           35.0,
-          0.88
+          0.85
         ],
         [
           40.0,
-          0.84
+          0.8
         ],
         [
           45.0,
-          0.81
+          0.75
         ],
         [
           50.0,
-          0.79
+          0.7
         ]
       ]
     },
@@ -1000,15 +1003,15 @@
         ],
         [
           20.0,
-          1.335
+          1.33
         ],
         [
           25.0,
-          1.265
+          1.26
         ],
         [
           40.0,
-          1.123
+          1.12
         ]
       ]
     },
@@ -1401,10 +1404,10 @@
       },
       {
         "_tags": "sound",
-        "human_mining_wall_planting__hero": "infantry/player/walker/mc_soldier/foley_mov/items/assembly/explosive_set",
-        "human_mining_wall_planting__enemy": "infantry/enemy/walker/mc_soldier/foley_mov/items/assembly/explosive_set",
-        "human_mining_wall_reassembling__hero": "infantry/player/walker/mc_soldier/foley_mov/items/assembly/barrier_set",
-        "human_mining_wall_reassembling__enemy": "infantry/enemy/walker/mc_soldier/foley_mov/items/assembly/barrier_set",
+        "human_mining_wall_planting__watched": "infantry/player/walker/mc_soldier/foley_mov/items/assembly/explosive_set",
+        "human_mining_wall_planting__other": "infantry/enemy/walker/mc_soldier/foley_mov/items/assembly/explosive_set",
+        "human_mining_wall_reassembling__watched": "infantry/player/walker/mc_soldier/foley_mov/items/assembly/barrier_set",
+        "human_mining_wall_reassembling__other": "infantry/enemy/walker/mc_soldier/foley_mov/items/assembly/barrier_set",
         "human_mining_wall_planting:SoundEvent": {},
         "human_mining_wall_reassembling:SoundEvent": {}
       }
@@ -1675,25 +1678,25 @@
       },
       "hit_dmgExplosion:object": {
         "name": "tinnitus",
-        "hero": "[pow=1]infantry/player/effects"
+        "watched": "[pow=1]infantry/player/effects"
       },
       "hit_dmgAsphyxiation:object": {
         "name": "drown",
         "options:array": {
           "drown:object": [
             {
-              "hero": "player/walker/ww2_female_soldier/voice_fx",
+              "watched": "player/walker/ww2_female_soldier/voice_fx",
               "femaleVoice": true
             },
             {
-              "hero": "player/walker/mc_soldier/voice_fx"
+              "watched": "player/walker/mc_soldier/voice_fx"
             }
           ]
         }
       },
       "shatter:object": {
-        "hero": "player/walker/ww2_soldier/hit/bullet_body",
-        "enemy": "enemy/walker/ww2_soldier/hit/bullet_body"
+        "watched": "player/walker/ww2_soldier/hit/bullet_body",
+        "other": "enemy/walker/ww2_soldier/hit/bullet_body"
       }
     }
   },
@@ -1703,10 +1706,10 @@
       "human_weapon_change_sound__weapEquipCurState": -1,
       "human_weapon_change_sound__paths:shared:object": {
         "holstering:object": {
-          "hero": "player/walker/mc_soldier/foley_mov/common/wpn_change_start"
+          "watched": "player/walker/mc_soldier/foley_mov/common/wpn_change_start"
         },
         "equiping:object": {
-          "hero": "player/walker/mc_soldier/foley_mov/common/wpn_change_end"
+          "watched": "player/walker/mc_soldier/foley_mov/common/wpn_change_end"
         }
       }
     }
@@ -1821,6 +1824,20 @@
       ]
     }
   },
+  "segmented_physics_anim_mapping": {
+    "human_anim__segmentedPhysicsAnimations:list<t>": {
+      "anim": [
+        "fly_up",
+        "climb_high",
+        "jump_down",
+        "fly_down",
+        "landing",
+        "knee",
+        "climb_mid"
+      ]
+    },
+    "human_anim__segmentedPhysAnimIdToAnimVarValue:list<i>": {}
+  },
   "base_equipped_soldier": {
     "_use": [
       "human",
@@ -1836,11 +1853,13 @@
       "base_human_anim",
       "soldier_mm_component",
       "human_lean",
-      "aim_assist_target"
+      "aim_assist_target",
+      "segmented_physics_anim_mapping"
     ],
     "entity__recreateToOnDeath": "dead_base_equipped_soldier",
     "entity__playerEntityrecreateSubTemplate": "player_human_unit",
     "human__friendlyImpulseToDamageMul": 0.0,
+    "human_segments__template": "%gameBase/gameData/units/humans/humanPhysics/segments_default.blk",
     "footstep__maxDistanceFromCameraToUpdate": 30.0,
     "footstep__offset": [
       0.0,
@@ -1851,6 +1870,7 @@
     "footstep_fx__puddle_fx": "water_splash_a_fx",
     "footstep_fx__biome_mud_fx": "footstep_mud_chunks_fx",
     "footstep_fx__biome_snow_fx": "footstep_snow_chunks_fx",
+    "human_segmented_physics": {},
     "capsule_approximation": {},
     "human_anim": {},
     "footstep": {
@@ -2406,21 +2426,22 @@
       "_hide": true
     },
     "dmgzoneVulnerable:tag": {},
-    "human_equipment__initialEquip:object": {
-      "attachable_wear_head_russian_02_item": "face",
-      "attachable_wear_ihps_helmet_item": "helmet",
-      "ihps_helmet_cover_item": "helmet_cover_attachment",
-      "helmet_flashlight_black_item": "helmet_left_attachment",
-      "m3_tactical_headsets_u_helmet_item": "helmet_headset_attachment",
-      "attachable_wear_shemagh_black_item": "scarf",
-      "attachable_wear_modular_assault_pack_w_gloves_item": "backpack",
-      "attachable_wear_hands_long_mech_tattoo_w_watches_item": "hands",
-      "attachable_wear_gloves_fingerless_item": "gloves",
-      "attachable_wear_g3_jacket_rolled_sleeves_item": "tunic",
-      "attachable_wear_lbx_armatus2_w_pouches_item": "chest_armor",
-      "attachable_wear_g3_pants_item": "pants",
-      "attachable_wear_holster_on_leg_item": "holster_on_leg",
-      "attachable_wear_zephyr_gtx_hi_tf_item": "boots"
+    "human_equipment__initialEquip:object": {},
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
     },
     "human_weap__weapTemplates:object": {
       "primary": "m4a1_gun",
@@ -2442,6 +2463,7 @@
     "human_gun_skin_list:array": {},
     "human__gunObjTexReplace:object": {},
     "human__gunObjTexSet:object": {},
+    "human__gunCamoParams:p4": {},
     "allowOnlyPrimaryWeaponDrop:tag": {},
     "human_inventory__grenadesOnInit:list<t>": {
       "_tags": "server"
@@ -2523,6 +2545,15 @@
   },
   "menu_soldier": {
     "unit__overrideSkinRank": 0,
+    "menu_soldier__rotationSpeed": 1.0,
+    "menu_soldier__rotationViscosity": 0.1,
+    "menu_soldier__baseGunDir": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "menu_soldier__targetYaw": 0.0,
+    "menu_soldier__curYaw": 0.0,
     "menuSoldier:tag": {},
     "animchar__animStateNames:object": {}
   }

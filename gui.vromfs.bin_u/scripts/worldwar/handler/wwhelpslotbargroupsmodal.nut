@@ -1,17 +1,17 @@
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_charserver_time_sec } = require("chard")
 let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
-gui_handlers.WwHelpSlotbarGroupsModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwHelpSlotbarGroupsModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/help/helpWndCustom.blk"
 
@@ -49,6 +49,7 @@ gui_handlers.WwHelpSlotbarGroupsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 }
+register_gui_handler("WwHelpSlotbarGroupsModal", WwHelpSlotbarGroupsModal)
 
 local lastSeen = null
 
@@ -60,7 +61,7 @@ function isUnseen() {
 function open() {
   lastSeen = get_charserver_time_sec()
   saveLocalAccountSettings(LAST_SEEN_SAVE_ID, lastSeen)
-  handlersManager.loadHandler(gui_handlers.WwHelpSlotbarGroupsModal)
+  handlersManager.loadHandler(WwHelpSlotbarGroupsModal)
 }
 
 return {

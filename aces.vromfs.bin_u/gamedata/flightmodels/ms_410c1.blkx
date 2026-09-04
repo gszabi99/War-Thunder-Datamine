@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/ms_410c1.blk",
   "model": "ms_410c1",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.162,
   "gearSinkRangeC": 0.056,
@@ -1802,6 +1802,10 @@
         -1.0,
         1.0
       ],
+      "trimmer_indicator": [
+        -1.0,
+        1.0
+      ],
       "clock_hour": [
         0.0,
         12.0
@@ -1818,13 +1822,17 @@
         0.0,
         360.0
       ],
+      "compass1": [
+        0.0,
+        360.0
+      ],
       "speed": [
-        27.778,
-        194.444
+        0.0,
+        277.778
       ],
       "speed_01": [
-        16.666,
-        55.555
+        0.0,
+        277.778
       ],
       "bank": [
         -8.0,
@@ -1835,7 +1843,7 @@
         0.23562
       ],
       "vario": [
-        -12.0,
+        -20.0,
         20.0
       ],
       "aviahorizon_pitch": [
@@ -1851,20 +1859,20 @@
         10000.0
       ],
       "rpm": [
-        300.0,
-        2500.0
+        0.0,
+        3000.0
       ],
       "fuel_pressure": [
         0.0,
-        10.0
+        15.0
       ],
-      "fuel1": [
+      "fuel": [
         0.0,
-        410.0
+        295.0
       ],
       "manifold_pressure": [
-        0.5263,
-        1.316
+        0.395,
+        0.987
       ],
       "oil_temperature": [
         25.0,
@@ -1872,31 +1880,31 @@
       ],
       "oil_pressure": [
         0.0,
-        100.0
+        150.0
       ],
       "water_temperature": [
-        15.0,
+        25.0,
         110.0
       ],
       "ammo_counter1": [
-        100.0,
-        0.0
+        0.0,
+        1000.0
       ],
       "ammo_counter2": [
-        1000.0,
-        0.0
+        0.0,
+        1000.0
       ],
       "ammo_counter3": [
-        1000.0,
-        0.0
+        0.0,
+        1000.0
       ],
       "ammo_counter4": [
-        1000.0,
-        0.0
+        0.0,
+        100.0
       ],
       "ammo_counter5": [
-        1000.0,
-        0.0
+        0.0,
+        100.0
       ],
       "gears_lamp": [
         0.0,
@@ -1937,7 +1945,10 @@
         "bullets": 500,
         "spread": 1.35,
         "traceOffset": 1,
-        "counterIndex": 2
+        "counterIndex": [
+          2,
+          4
+        ]
       },
       {
         "trigger": "machine gun",
@@ -1948,7 +1959,10 @@
         "dm": "mgun2_dm",
         "bullets": 500,
         "spread": 1.35,
-        "counterIndex": 3
+        "counterIndex": [
+          3,
+          5
+        ]
       },
       {
         "trigger": "machine gun",
@@ -1959,8 +1973,7 @@
         "dm": "mgun3_dm",
         "bullets": 500,
         "spread": 1.35,
-        "traceOffset": 1,
-        "counterIndex": 4
+        "traceOffset": 1
       },
       {
         "trigger": "machine gun",
@@ -1970,8 +1983,7 @@
         "shell": "emtr_shellrejection4",
         "dm": "mgun4_dm",
         "bullets": 500,
-        "spread": 1.35,
-        "counterIndex": 5
+        "spread": 1.35
       }
     ]
   },

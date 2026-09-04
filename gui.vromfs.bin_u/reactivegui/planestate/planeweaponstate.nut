@@ -1,7 +1,7 @@
+import "%rGui/interopGen.nut" as interopGen
 from "%rGui/globals/ui_library.nut" import *
 
 let { interop } = require("%rGui/globals/interop.nut")
-let interopGen = require("%rGui/interopGen.nut")
 
 let OpticAtgmSightVisible = Watched(false)
 let LaserAtgmSightVisible = Watched(false)

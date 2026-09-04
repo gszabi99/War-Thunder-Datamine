@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let activeConfig = Watched(null)
 let toBattleLocId = Computed(@() activeConfig.get()?.toBattleLocId ?? "mainmenu/toBattle")

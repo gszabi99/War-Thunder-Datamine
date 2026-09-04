@@ -1,35 +1,35 @@
+import "statsd" as statsd
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/string.nut" import stripTags
+from "sony" import requestPackageUpdateStatus
+from "guiOptions" import setGuiOptionsMode
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import ps4_initial_check_network, ps4_load_after_login, ps4_is_production_env, ps4_initial_check_settings, ps4_login
 from "%scripts/dagui_library.nut" import *
 
-let { get_disable_autorelogin_once } = require("loginState.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { stripTags } = require("%sqstd/string.nut")
-let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { requestPackageUpdateStatus } = require("sony")
-let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 eventbus_subscribe("PsnAutologin", function(_p) {
-  let loginHandlerPs4 = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandlerPs4)
+  let loginHandlerPs4 = handlersManager.findHandlerClassInScene(get_gui_handler("LoginWndHandlerPs4"))
   if (!loginHandlerPs4)
     return
   loginHandlerPs4.onOk()
 })
 
-gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
+let LoginWndHandlerPs4 = class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   isLoggingIn = false
   isPendingPackageCheck = false
@@ -114,7 +114,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
         forceHideCursor.set(false)
         let cfgName = ps4_is_production_env() ? "updater.blk" : "updater_dev.blk"
 
-        loadHandler(gui_handlers.UpdaterModal,
+        loadHandler(get_gui_handler("UpdaterModal"),
           {
             configPath = $"/app0/{targetPlatform}/{cfgName}"
             onFinishCallback = ps4_load_after_login
@@ -150,3 +150,4 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
 
   function goBack(_obj) {}
 }
+register_gui_handler("LoginWndHandlerPs4", LoginWndHandlerPs4)

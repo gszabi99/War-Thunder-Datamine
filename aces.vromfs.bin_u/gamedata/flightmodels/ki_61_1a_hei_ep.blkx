@@ -1,7 +1,7 @@
 {
   "model": "ki_61_hei",
   "fmFile": "fm/ki_61_1a_hei.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -35,14 +35,14 @@
         "hp": 15.0
       }
     },
-    "armor16": {
-      "armor1_dm": {
-        "hp": 40.0
-      }
-    },
     "armor12": {
       "armor2_dm": {
         "hp": 40.0
+      }
+    },
+    "armor16": {
+      "armor1_dm": {
+        "hp": 45.0
       }
     },
     "armor8": {
@@ -95,10 +95,12 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 55.9
+        "hp": 55.9,
+        "deadExplProb": 0.5
       },
       "fuse_dm": {
-        "hp": 44.5
+        "hp": 44.5,
+        "deadExplProb": 0.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
@@ -187,6 +189,9 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
+        "hp": 11.8
+      },
+      "oil2_dm": {
         "hp": 12.6
       },
       "water1_dm": {
@@ -198,7 +203,6 @@
     },
     "steel_pilot": {
       "pilot_dm": {
-        "fireProtectionHp": 20.0,
         "hp": 20.0
       }
     },
@@ -832,6 +836,15 @@
       },
       {
         "name": "oil1_dm",
+        "onHit": {
+          "leak_oil": 0.95
+        },
+        "onKill": {
+          "leak_oil": 1.0
+        }
+      },
+      {
+        "name": "oil2_dm",
         "onHit": {
           "leak_oil": 0.95
         },
@@ -2248,43 +2261,6 @@
       "reqModification": "ki_10in_mod24"
     }
   },
-  "default_skin": {
-    "name": "green_ep",
-    "replace_tex": [
-      {
-        "from": "ki_61_hei_a*",
-        "to": "ki_61_hei_green_ep_c*"
-      },
-      {
-        "from": "ki_61_hei_n*",
-        "to": "ki_61_hei_green_ep_n*"
-      }
-    ]
-  },
-  "default_skin_tomoe": {
-    "name": "green_ep_tomoe",
-    "replace_tex": [
-      {
-        "from": "ki_61_hei_a*",
-        "to": "ki_61_hei_green_ep_c_tomoe*"
-      },
-      {
-        "from": "ki_61_hei_n*",
-        "to": "ki_61_hei_green_ep_n*"
-      }
-    ]
-  },
-  "user_skin": {
-    "name": "ki_61_hei_green_ep",
-    "replace_tex": [
-      {
-        "from": "ki_61_hei_green_ep_c*"
-      },
-      {
-        "from": "ki_61_hei_green_ep_n*"
-      }
-    ]
-  },
   "cutting": {
     "_emtr_break_wing0_l_from": [
       -0.757069,
@@ -2381,6 +2357,43 @@
       -5.07015,
       1.32782,
       -1.16048e-7
+    ]
+  },
+  "default_skin": {
+    "name": "green_ep",
+    "replace_tex": [
+      {
+        "from": "ki_61_hei_a*",
+        "to": "ki_61_hei_green_ep_c*"
+      },
+      {
+        "from": "ki_61_hei_n*",
+        "to": "ki_61_hei_green_ep_n*"
+      }
+    ]
+  },
+  "default_skin_tomoe": {
+    "name": "green_ep_tomoe",
+    "replace_tex": [
+      {
+        "from": "ki_61_hei_a*",
+        "to": "ki_61_hei_green_ep_c_tomoe*"
+      },
+      {
+        "from": "ki_61_hei_n*",
+        "to": "ki_61_hei_green_ep_n*"
+      }
+    ]
+  },
+  "user_skin": {
+    "name": "ki_61_hei_green_ep",
+    "replace_tex": [
+      {
+        "from": "ki_61_hei_green_ep_c*"
+      },
+      {
+        "from": "ki_61_hei_green_ep_n*"
+      }
     ]
   }
 }

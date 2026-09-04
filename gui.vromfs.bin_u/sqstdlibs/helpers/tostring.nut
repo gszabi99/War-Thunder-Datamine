@@ -1,14 +1,17 @@
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let u = require("u.nut")
-let g_string = require("%sqstd/string.nut")
-let {format} = require("string")
-let math = require("math")
+import "u.nut" as u
+from "%sqstd/underscore.nut" import isDataBlock
+import "%sqstd/string.nut" as g_string
+from "string" import format
+import "math" as math
+from "types" import String, Integer, Float, Bool, Array, Table, Function
 
-let hexNumbers = "0123456789abcdef"
+let DaGuiObject = require_optional("daguiScene")?.DaGuiObject
+
+const hexNumbers = "0123456789abcdef"
 local toString 
 
 function tableKeyToString(k) {
-  if (type(k) != "string")
+  if (!(k instanceof String))
     return $"[ {toString(k) }]"
   if (g_string.isStringInteger(k) || g_string.isStringFloat(k) ||
     [ "true", "false", "null" ].contains(k))
@@ -55,10 +58,10 @@ function debugTableData(info, parameters = DEBUG_TABLE_DATA_PARAMS) {
         local val = info.getParamValue(i)
         local vType = " "
         if (val == null) { val = "null" }
-        else if (type(val)=="integer") vType = ":i"
-        else if (type(val)=="float") { vType = ":r"; val = floatToStr(val) }
-        else if (type(val)=="bool") vType = ":b"
-        else if (type(val)=="string") { vType = ":t"; val = $"'{val}'" }
+        else if (val instanceof Integer) vType = ":i"
+        else if (val instanceof Float) { vType = ":r"; val = floatToStr(val) }
+        else if (val instanceof Bool) vType = ":b"
+        else if (val instanceof String) { vType = ":t"; val = $"'{val}'" }
         else if (u.isPoint2(val)) { vType = ":p2"; val = format("%s, %s", floatToStr(val.x), floatToStr(val.y)) }
         else if (u.isPoint3(val)) { vType = ":p3"; val = format("%s, %s, %s", floatToStr(val.x), floatToStr(val.y), floatToStr(val.z)) }
         else if (u.isColor4(val)) { vType = ":c";  val = format("%d, %d, %d, %d", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a) }
@@ -82,9 +85,9 @@ function debugTableData(info, parameters = DEBUG_TABLE_DATA_PARAMS) {
       if (showBlockBrackets)
         printFn("".concat(prefix, addStr, "}"))
     }
-    else if (type(info)=="array" || type(info)=="table" || (type(info)=="instance" && needUnfoldInstances)) {
+    else if (info instanceof Array || info instanceof Table || (type(info)=="instance" && needUnfoldInstances)) {
       if (showBlockBrackets)
-        printFn("".concat(prefix, addStr, (type(info) == "array" ? "[" : "{")))
+        printFn("".concat(prefix, addStr, (info instanceof Array ? "[" : "{")))
       let addStr2 = "".concat(addStr, (showBlockBrackets? "  " : ""))
       foreach(id, data in info) {
         let dType = type(data)
@@ -102,8 +105,8 @@ function debugTableData(info, parameters = DEBUG_TABLE_DATA_PARAMS) {
             printFn("".concat(prefix,addStr2,closeBraket))
           }
           else {
-            let hasContent = (isDataBlockType && (data.paramCount() + data.blockCount()) > 0)
-              || dType=="instance" || data.len() > 0
+            let hasContent = isDataBlockType ? (data.paramCount() + data.blockCount()) > 0
+              : (dType=="instance" || data.len() > 0)
             printFn("".concat(prefix, addStr2, idText, " = ", openBraket, hasContent ? "..." : "", closeBraket))
           }
         }
@@ -119,7 +122,7 @@ function debugTableData(info, parameters = DEBUG_TABLE_DATA_PARAMS) {
           printFn("".concat(prefix,addStr2,idText," = ", data))
       }
       if (showBlockBrackets)
-        printFn("".concat(prefix, addStr, (type(info) == "array" ? "]" : "}")))
+        printFn("".concat(prefix, addStr, (info instanceof Array ? "]" : "}")))
     }
     else if (type(info)=="instance")
       printFn("".concat(prefix, addStr, toString(info, math.min(1, recursionLevel), addStr))) 
@@ -166,7 +169,7 @@ toString = function (val, recursion = 1, addStr = "") {
     }
     else if (("isToStringForDebug" in val) && u.isFunction(val?.tostring))
       return val.tostring()
-    else if ("DaGuiObject" in getroottable() && val instanceof getroottable()["DaGuiObject"])
+    else if (DaGuiObject != null && val instanceof DaGuiObject)
       return val.isValid()
         ? "DaGuiObject(tag = {0}, id = {1} )".subst(val.tag, val?.id ?? "NULL")
         : "invalid DaGuiObject"
@@ -180,7 +183,7 @@ toString = function (val, recursion = 1, addStr = "") {
           
           
           
-          if (type(v) != "function") {
+          if (!(v instanceof Function)) {
             let index = [ "float", "null" ].contains(type(idx)) ? toString(idx) : idx
             ret = "".concat(ret, "\n", addStr, "  ", index, " = ", toString(v, recursion - 1, $"{addStr}  "))
           }
@@ -191,13 +194,13 @@ toString = function (val, recursion = 1, addStr = "") {
   }
   if (val == null)
     return "null"
-  if (type(val) == "string")
+  if (val instanceof String)
     return format("\"%s\"", val)
-  if (type(val) == "float")
+  if (val instanceof Float)
     return floatToStr(val)
-  if (type(val) != "array" && type(val) != "table")
+  if (!(val instanceof Array) && !(val instanceof Table))
     return $"{val}"
-  let isArray = type(val) == "array"
+  let isArray = val instanceof Array
   local str = ""
   if (recursion > 0) {
     let iv = []

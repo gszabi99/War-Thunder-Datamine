@@ -1,14 +1,15 @@
+from "%sqstd/string.nut" import stripTags
+from "string" import format
+from "math" import abs
 from "%scripts/dagui_library.nut" import *
-let { stripTags } = require("%sqstd/string.nut")
+
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { buildDateStr } = require("%scripts/time.nut")
-let { format } = require("string")
-let { abs } = require("math")
 
-let pad1 = "1@lines_pad"
-let pad2 = "1@lines_pad"
-let interval1 = "1@lines_shop_interval"
-let interval2 = "1@lines_shop_interval"
+const pad1 = "1@lines_pad"
+const pad2 = "1@lines_pad"
+const interval1 = "1@lines_shop_interval"
+const interval2 = "1@lines_shop_interval"
 let allowToModifyed = [
   "vertical",
   "horisontal",
@@ -232,7 +233,7 @@ let ShopLines = class {
         "}")
     }
     else {
-      let lh = 0
+      const lh = 0
       offset = isMultipleArrow ? 0.1 : 0
       let arrowOffset = c0 > c1 ? -offset : offset
       lines = "".concat(lines, "tdiv { ", idString,

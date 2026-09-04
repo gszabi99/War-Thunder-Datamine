@@ -10,6 +10,7 @@
 @const switchHoverBorderOnColor  :#E5D0D0D0;
 
 @const switchBoxHeight:28@sf/@pf; @const switchBoxWidth:80@sf/@pf;
+@const switchBoxShortWidth:56@sf/@pf;
 @const switchBoxBorderSize: 3@dp;
 @const switchButtonLineHeight: 2@dp;
 
@@ -29,6 +30,16 @@ SwitchBox {
 
 SwitchBox[needSmallText=yes] {
   font:@fontSmall;
+}
+
+SwitchBox[hasShortSize=yes] {
+  padding-left: @switchBoxShortWidth;
+  padding-right: 0;
+}
+
+SwitchBox[noRightPadding=yes] {
+  padding-left: @switchBoxWidth;
+  padding-right: 0;
 }
 
 top_right_holder > SwitchBox {
@@ -56,6 +67,10 @@ SwitchSliderBg {
   padding:@switchBoxBorderSize;
   background-color:@switchBoxBgColor;
   css-hier-invalidate:yes;
+}
+
+SwitchBox[hasShortSize=yes] > SwitchSliderBg {
+  size: @switchBoxShortWidth, @switchBoxHeight;
 }
 
 SwitchSliderBgOn {

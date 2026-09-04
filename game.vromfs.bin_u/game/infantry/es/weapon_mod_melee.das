@@ -1,5 +1,4 @@
 require ecs
-require DaWeaponProps
 require PropsManager
 
 [es(tag=server, on_appear, REQUIRE=weaponMeleeMod, after=melee_weapon_created_es)]

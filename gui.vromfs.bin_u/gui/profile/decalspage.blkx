@@ -18,13 +18,27 @@
           "overlayTextColor": "active"
         },
         "tdiv": {
-          "size": "243@sf/@pf, ph",
+          "height": "ph",
           "position": "absolute",
           "left": "pw-w-1@blockInterval",
+          "CheckBox": {
+            "id": "filter_only_recieved",
+            "position": "relative",
+            "top": "(ph-h)/2",
+            "margin-right": "20@sf/@pf",
+            "btnName": "LB",
+            "text": "#mainmenu/itemReceived",
+            "value": "no",
+            "on_change_value": "onFilterOnlyRecieved",
+            "CheckBoxImg": {},
+            "ButtonImg": {}
+          },
           "EditBox": {
             "id": "filter_edit_box",
-            "width": "pw",
-            "on_change_value": "applyDecalFilter",
+            "position": "relative",
+            "width": "243@sf/@pf",
+            "top": "(ph-h)/2",
+            "on_change_value": "onChangeSearchName",
             "on_cancel_edit": "onFilterCancel",
             "text": "",
             "edit-hint": "#contacts/search_placeholder",

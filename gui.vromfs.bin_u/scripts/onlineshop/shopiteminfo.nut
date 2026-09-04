@@ -1,9 +1,8 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "dagor.http" import httpRequest
+from "auth_wt" import getPlayerToken
+from "steam" import steam_is_running
 from "%scripts/dagui_library.nut" import *
-
-let { httpRequest } = require("dagor.http")
-let { getPlayerToken } = require("auth_wt")
-let { steam_is_running } = require("steam")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let ONLINE_STORE_API_URL = getCurCircuitOverride("onlineStoreApiURL", "https://api.gaijinent.com/item_info.php")
 

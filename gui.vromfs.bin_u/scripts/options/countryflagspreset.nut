@@ -1,11 +1,13 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqstd/datablock.nut" import eachParam
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { eachParam } = require("%sqstd/datablock.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let DataBlock = require("DataBlock")
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 let countryFlagsPreset = {}
@@ -30,12 +32,12 @@ function initCountryFlagsPreset() {
     return
 
   eachParam(block, function(value, name) {
-    if (!(name in countryFlagsPreset) && type(value) == "string")
+    if (!(name in countryFlagsPreset) && value instanceof String)
       countryFlagsPreset[name] <- value
   })
 }
 
-add_event_listener("GameLocalizationChanged", @(_params) initCountryFlagsPreset(),
+add_event_listener(GAME_LOCALIZATION_CHANGED, @(_params) initCountryFlagsPreset(),
   null, g_listener_priority.CONFIG_VALIDATION)
 
 initCountryFlagsPreset()

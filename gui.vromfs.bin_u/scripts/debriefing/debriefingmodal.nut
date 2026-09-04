@@ -1,6 +1,31 @@
-from "app" import is_dev_version
-from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, get_premium_reward_wp, is_online_available, start_gui_sound, set_presence_to_player, get_session_warpoints, set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award, get_mission_progress
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "%sqstd/math.nut" as stdMath
+from "%appGlobals/ranks_common_shared.nut" import get_pve_trophy_name, get_mission_mode
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import deferOnce
+from "string" import format, split_by_chars
+from "math" import ceil, floor
+from "app" import get_game_version, get_game_version_str, is_dev_version
+from "multiplayer" import is_mplayer_host
+from "replays" import is_replay_turned_on, is_replay_saved, is_replay_present, on_save_replay, on_view_replay
+from "mission" import is_benchmark_game_mode, get_game_mode, get_cur_game_mode_name, GET_MPLAYERS_LIST
+from "guiMission" import MISSION_STATUS_RUNNING, select_mission_full, stat_get_benchmark
+from "dynamicMission" import dynamicGetLayout, dynamicGetList
+from "%sqstd/string.nut" import stripTags, capitalize
+from "blkGetters" import get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
+from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/gameTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, get_premium_reward_wp, is_online_available, start_gui_sound, set_presence_to_player, get_session_warpoints
+  , set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award, get_mission_progress
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
+from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
@@ -10,27 +35,17 @@ from "chard" import save_profile
 let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { deferOnce } = require("dagor.workcycle")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { get_pve_trophy_name, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BenchmarkResultModal } = require("%scripts/mainmenu/benchmarkResultModal.nut")
+let { MPStatistics } = require("%scripts/statistics/mpStatistics.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { toPixels, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { toPixels, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let DataBlock = require("DataBlock")
-let { format, split_by_chars } = require("string")
-let { ceil, floor } = require("math")
-let stdMath = require("%sqstd/math.nut")
 let time = require("%scripts/time.nut")
-let { get_game_version, get_game_version_str } = require("app")
-let { is_mplayer_host } = require("multiplayer")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let { updateModItem } = require("%scripts/weaponry/weaponryVisual.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
@@ -38,13 +53,10 @@ let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { setDoubleTextToButton, setColoredDoubleTextToButton,
-  placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isModResearched, getModificationByName, findAnyNotResearchedMod
-} = require("%scripts/weaponry/modificationInfo.nut")
+let { setDoubleTextToButton, setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { isModResearched, getModificationByName, findAnyNotResearchedMod } = require("%scripts/weaponry/modificationInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { needLogoutAfterSession, startLogout, checkLogoutScheduled
-} = require("%scripts/login/logout.nut")
+let { needLogoutAfterSession, startLogout, checkLogoutScheduled } = require("%scripts/login/logout.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { getBoostersEffects, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
@@ -54,66 +66,38 @@ let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nu
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { setNeedShowRate } = require("%scripts/user/suggestionRateGame.nut")
 let { sourcesConfig } = require("%scripts/debriefing/rewardSources.nut")
-let { minValuesToShowRewardPremium, maxCountryRank
-} = require("%scripts/ranks.nut")
-let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
-  gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
-  updateDebriefingResultGiftItemsInfo, setDebriefingResult, rewardsBonusTypes, getDebriefingUserLogsList
-} = require("%scripts/debriefing/debriefingFull.nut")
-let { isMissionExtrByName, selectNextAvailCampaignMission,
-  addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
+let { minValuesToShowRewardPremium, maxCountryRank } = require("%scripts/ranks.nut")
+let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull, gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById, updateDebriefingResultGiftItemsInfo, setDebriefingResult, rewardsBonusTypes, getDebriefingUserLogsList } = require("%scripts/debriefing/debriefingFull.nut")
+let { isMissionExtrByName, selectNextAvailCampaignMission, addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions,
-  guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF
-} = require("%scripts/missions/startMissionsList.nut")
+let { needCheckForVictory, guiStartMenuCampaign, guiStartMenuSingleMissions, guiStartMenuUserMissions, guiStartDynamicSummary, guiStartDynamicSummaryF } = require("%scripts/missions/startMissionsList.nut")
 let { getTournamentRewardData, getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
-let { goToBattleAction,
-  openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
+let { goToBattleAction, openLastTournamentWnd } = require("%scripts/debriefing/toBattleAction.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { havePremium, getRemainingPremiumTime } = require("%scripts/user/premium.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { hasEveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
-let { is_replay_turned_on, is_replay_saved, is_replay_present,
-  on_save_replay, on_view_replay } = require("replays")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { is_benchmark_game_mode, get_game_mode, get_cur_game_mode_name, GET_MPLAYERS_LIST
-} = require("mission")
-let { MISSION_STATUS_RUNNING, select_mission_full, stat_get_benchmark } = require("guiMission")
 let { openBattlePassWnd } = require("%scripts/battlePass/battlePassWnd.nut")
-let { dynamicGetLayout, dynamicGetList } = require("dynamicMission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { stripTags, capitalize } = require("%sqstd/string.nut")
-let { reqUnlockByClient, getFakeUnlockData, combineSimilarAwards
-} = require("%scripts/unlocks/unlocksModule.nut")
+let { reqUnlockByClient, getFakeUnlockData, combineSimilarAwards } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { sendFinishTestFlightToBq } = require("%scripts/missionBuilder/testFlightBQInfo.nut")
-let { isBattleTask, getBattleTaskById, getBattleTaskNameById
-} = require("%scripts/unlocks/battleTasksState.nut")
-let { isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
-  getBattleTaskRerollCost, canGetBattleTaskReward, canGetAnyBattleTaskReward,
-  getCurBattleTasksByGm, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask
-} = require("%scripts/unlocks/battleTasks.nut")
-let { setBattleTasksUpdateTimer, getBattleTaskView, mkUnlockConfigByBattleTask
-} = require("%scripts/unlocks/battleTasksView.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { isBattleTask, getBattleTaskById, getBattleTaskNameById } = require("%scripts/unlocks/battleTasksState.nut")
+let { isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskRerollCost, canGetBattleTaskReward, canGetAnyBattleTaskReward, getCurBattleTasksByGm, requestBattleTaskReward, rerollBattleTask, rerollSpecialTask } = require("%scripts/unlocks/battleTasks.nut")
+let { setBattleTasksUpdateTimer, getBattleTaskView, mkUnlockConfigByBattleTask } = require("%scripts/unlocks/battleTasksView.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { blendProp } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { blendProp } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
+let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
-let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk, get_game_settings_blk
-} = require("blkGetters")
-let { isInSessionRoom, sessionLobbyStatus, hasSessionInLobby, getSessionLobbyMissionData,
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, sessionLobbyStatus, hasSessionInLobby, getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { getPlayerRankByCountry, getPlayerExpByCountry, playerRankByCountries
-} = require("%scripts/user/userInfoStats.nut")
+let { getPlayerRankByCountry, getPlayerExpByCountry, playerRankByCountries } = require("%scripts/user/userInfoStats.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
@@ -124,15 +108,12 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { isCountryAvailable, unlockCountry } = require("%scripts/firstChoice/firstChoice.nut")
 let { get_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset
-} = require("%scripts/myStats.nut")
+let { isNewbieInited, getMissionsComplete, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
 let { findItemByUid, findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockIconConfig, fillUnlockBlock, buildUnlockTooltipByConfig
-} = require("%scripts/unlocks/unlocksViewModule.nut")
-let { gui_start_mainmenu, gui_start_mainmenu_reload
-} = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { getUnlockIconConfig, fillUnlockBlock, buildUnlockTooltipByConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { gui_start_mainmenu, gui_start_mainmenu_reload } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { closeCurVoicemenu } = require("%scripts/wheelmenu/voiceMessages.nut")
@@ -142,16 +123,11 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
 let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
-let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
-} = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { saveLastPlayed } = require("%scripts/globalWorldWarScripts.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { updateOperationPreviewAndDo, openOperationsOrQueues, openWWMainWnd
-} = require("%scripts/globalWorldwarUtils.nut")
+let { updateOperationPreviewAndDo, openOperationsOrQueues, openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
 let { isLastFlightWasWwBattle } = require("%scripts/worldWar/worldWarState.nut")
-let { currentCampaignId, currentCampaignMission, get_mission_settings,
-  get_mutable_mission_settings, set_mission_settings, is_user_mission, isCustomMissionFlight
-} = require("%scripts/missions/missionsStates.nut")
+let { currentCampaignId, currentCampaignMission, get_mission_settings, get_mutable_mission_settings, set_mission_settings, is_user_mission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { haveLobby } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
@@ -166,11 +142,9 @@ let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { checkNewNotificationUserlogs } = require("%scripts/userLog/userlogData.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
-let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
-} = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { MIS_PROGRESS } = require("%scripts/missions/missionProgress.nut")
 let { getBackFromReplaysFn, setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
 let { needShowTutorial } = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -307,7 +281,7 @@ function checkRemnantPremiumAccount() {
 local goDebriefingNextFunc = null
 
 function guiStartDebriefingFull(params = {}) {
-  loadHandler(gui_handlers.DebriefingModal, params)
+  loadHandler(get_gui_handler("DebriefingModal"), params)
 }
 
 function gui_start_debriefing(_) {
@@ -339,7 +313,7 @@ function gui_start_debriefing(_) {
     let title = locCurrentMissionName()
     let benchmark_data = stat_get_benchmark()
     gui_start_mainmenu()
-    loadHandler(gui_handlers.BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
+    loadHandler(BenchmarkResultModal, { title = title benchmark_data = benchmark_data })
     return
   }
   if (gm == GM_CREDITS || gm == GM_TRAINING) {
@@ -382,7 +356,7 @@ function gui_start_debriefing(_) {
 
 eventbus_subscribe("gui_start_debriefing", gui_start_debriefing)
 
-gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
+let DebriefingModal = class (MPStatistics) {
   sceneBlkName = "%gui/debriefing/debriefing.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
@@ -487,8 +461,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       this.scene.findObject("debriefing_timer").setUserData(this)
 
     this.playerStatsObj = this.scene.findObject("stat_table")
-    this.numberOfWinningPlaces = getTblValue("numberOfWinningPlaces", this.debriefingResult, -1)
-    this.pveRewardInfo = getTblValue("pveRewardInfo", this.debriefingResult)
+    this.numberOfWinningPlaces = (this.debriefingResult?.numberOfWinningPlaces ?? -1)
+    this.pveRewardInfo = this.debriefingResult?.pveRewardInfo
     this.giftItems = this.groupGiftsById(this.debriefingResult?.giftItemsInfo)
     foreach (idx, row in debriefingRows)
       if (row.show) {
@@ -519,7 +493,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         if (this.isTeamplay) {
           local myTeam = Team.A
           foreach (player in this.debriefingResult.mplayers_list)
-            if (getTblValue("isLocal", player, false)) {
+            if ((player?.isLocal ?? false)) {
               myTeam = player.team
               break
             }
@@ -644,7 +618,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     this.streakAwardsList = this.getAwardsList(this.awardsListsConfig.streaks.filter)
 
-    let wpBattleTrophy = getTblValue("wpBattleTrophy", this.debriefingResult.exp, 0)
+    let wpBattleTrophy = (this.debriefingResult.exp?.wpBattleTrophy ?? 0)
     if (wpBattleTrophy > 0)
       this.streakAwardsList.append(this.getFakeUnlockDataByWpBattleTrophy(wpBattleTrophy))
 
@@ -733,7 +707,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     local text = ""
     local color = ""
 
-    if (getTblValue("haveTeamkills", this.debriefingResult, false)) {
+    if ((this.debriefingResult?.haveTeamkills ?? false)) {
       text = loc("debriefing/noAwardsCaption")
       color = "bad"
     }
@@ -753,6 +727,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     else if (this.pveRewardInfo && this.pveRewardInfo.warnLowActivity) {
       text = loc("debriefing/noAwardsCaption/noMinActivity")
       color = "userlog"
+    }
+    else if (this.debriefingResult?.exp.kickMessage != null) {
+      let kickMessage = this.debriefingResult.exp.kickMessage
+      text = "".concat(loc("multiplayer/reason"), loc("ui/colon"),
+        colorize("activeTextColor", loc("".concat("multiplayer/", kickMessage), kickMessage)))
     }
 
     if (text == "")
@@ -803,9 +782,9 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       }
 
       let totalKey = getCountedResultId(this.totalRow, this.state, currency)
-      this.totalCurValues[currency] <- getTblValue(currency, this.totalCurValues, 0)
-      this.totalTarValues[currency] <- getTblValue(totalKey, this.debriefingResult.counted_result_by_debrState, 0)
-      this.totalCurValues[$"{currency}Teaser"] <- getTblValue($"{currency}Teaser", this.totalCurValues, 0)
+      this.totalCurValues[currency] <- (this.totalCurValues?[currency] ?? 0)
+      this.totalTarValues[currency] <- (this.debriefingResult.counted_result_by_debrState?[totalKey] ?? 0)
+      this.totalCurValues[$"{currency}Teaser"] <- (this.totalCurValues?[$"{currency}Teaser"] ?? 0)
       this.totalTarValues[$"{currency}Teaser"] <- premTeaser[currency]
     }
 
@@ -837,7 +816,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function handleActiveWager() {
-    let activeWagerData = getTblValue("activeWager", this.debriefingResult, null)
+    let activeWagerData = this.debriefingResult?.activeWager
     if (!activeWagerData)
       return
 
@@ -1127,7 +1106,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       }
     }
 
-    let layerId = "item_place_container"
+    const layerId = "item_place_container"
     local layerCfg = LayersIcon.findLayerCfg($"{trophyItem.iconStyle}_{layerId}")
     if (!layerCfg)
       layerCfg = LayersIcon.findLayerCfg(layerId)
@@ -1310,14 +1289,14 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         premMod = "modification/premExpMul"
         booster = "itemTypes/booster"
       }
-      let tblTotal = getTblValue("tblTotal", this.debriefingResult.exp, {})
+      let tblTotal = (this.debriefingResult.exp?.tblTotal ?? {})
       let bonusesTotal = []
       foreach (bonusType in [ "premAcc", "premMod", "booster" ]) {
-        let bonusExp = getTblValue($"{bonusType}Exp", tblTotal, 0)
-        let bonusWp  = getTblValue($"{bonusType}Wp",  tblTotal, 0)
+        let bonusExp = (tblTotal?[$"{bonusType}Exp"] ?? 0)
+        let bonusWp  = (tblTotal?[$"{bonusType}Wp"] ?? 0)
         if (!bonusExp && !bonusWp)
           continue
-        bonusesTotal.append("".concat(loc(getTblValue(bonusType, bonusNames, "")), loc("ui/colon"),
+        bonusesTotal.append("".concat(loc((bonusNames?[bonusType] ?? "")), loc("ui/colon"),
           Cost(bonusWp, 0, bonusExp).tostring()))
       }
       if (!u.isEmpty(bonusesTotal))
@@ -1470,7 +1449,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if ("tooltip" in row)
         rowObj.title = loc(row.tooltip)
 
-      local rowProps = getTblValue("rowProps", row, null)
+      local rowProps = row?.rowProps
       if (u.isFunction(rowProps))
         rowProps = rowProps()
 
@@ -1490,7 +1469,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       local targetValue = 0
       if (p != "value" || isInArray(row.rowType, ["wp", "exp", "gold"])) {
         let tblKey = getCountedResultId(row, this.state, p == "value" ? row.rowType : row.rewardType)
-        targetValue = getTblValue(tblKey, this.debriefingResult.counted_result_by_debrState, 0)
+        targetValue = (this.debriefingResult.counted_result_by_debrState?[tblKey] ?? 0)
       }
 
       if (targetValue == 0)
@@ -1528,7 +1507,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function getStatValue(row, name, tgtName = null) {
     if (!tgtName)
       tgtName = "base"
-    return !u.isTable(row[name]) ? row[name] : getTblValue(tgtName, row[name], null)
+    return !u.isTable(row[name]) ? row[name] : row[name]?[tgtName]
   }
 
   function updateTotal(dt) {
@@ -1560,7 +1539,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getModExp(airData) {
-    if (getTblValue("expModuleCapped", airData, false))
+    if ((airData?.expModuleCapped ?? false))
       return airData.expInvestModule
     return airData.expModsTotal 
   }
@@ -1644,12 +1623,12 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (!this.debriefingResult)
       return false
     foreach (ut in unitTypes.types) {
-      let unit = getTblValue("unit", this.getResearchUnitInfo(ut.name))
+      let unit = this.getResearchUnitInfo(ut.name)?.unit
       if (unit && !isUnitInResearch(unit))
         return true
     }
     foreach (unitId, unitData in this.debriefingResult.exp.aircrafts) {
-      let modName = getTblValue("investModuleName", unitData, "")
+      let modName = (unitData?.investModuleName ?? "")
       if (modName == "")
         continue
       let unit = getAircraftByName(unitId)
@@ -1701,7 +1680,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     local multBonus = 0
     if (this.debriefingResult.mulsList.len() > 0)
       foreach (_idx, table in this.debriefingResult.mulsList)
-        multBonus += getTblValue("exp", table, 0)
+        multBonus += (table?.exp ?? 0)
 
     itemExp = multBonus == 0 ? itemExp : itemExp * multBonus
     return itemExp
@@ -1718,7 +1697,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let unitId = unit.name
     let mod = this.getResearchModFromAirData(unit, airData)
     let diffExp = mod ? this.getModExp(airData) : 0
-    let isCompleted = mod ? getTblValue("expModuleCapped", airData, false) : false
+    let isCompleted = mod != null &&
+      ((airData?.expModuleCapped ?? false) || isModResearched(unit, mod))  
 
     let view = {
       id = unitId
@@ -1756,8 +1736,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function onEventModBought(p) {
-    let unitId = getTblValue("unitName", p, "")
-    let modId = getTblValue("modName", p, "")
+    let unitId = (p?.unitName ?? "")
+    let modId = (p?.modName ?? "")
     this.updateResearchMod(unitId, modId)
   }
 
@@ -1826,7 +1806,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
       items.append(getLeaderboardItemView(lbFieldsConfig,
         now[lbFieldsConfig.field],
-        getTblValue(lbFieldsConfig.field, lbDiff, null),
+        lbDiff?[lbFieldsConfig.field],
         itemParams))
     }
     lbWindgetsNestObj.show(true)
@@ -2405,7 +2385,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
 
     let isSingleRow = visible < 3
-    let gapMin = 1.0
+    const gapMin = 1.0
     let debrTopBarGAPMax = isSingleRow ? 3 : DEBR_MYSTATS_TOP_BAR_GAP_MAX
     let maxValue = isSingleRow ? 1 : 2
     let contentPadStr = isSingleRow ? "debrBarContentPad" : "debrPad"
@@ -2461,7 +2441,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function loadChatHistory() {
     if (!this.needPlayersTbl)
       return
-    let logText = getTblValue("chatLog", this.debriefingResult, "")
+    let logText = (this.debriefingResult?.chatLog ?? "")
     if (logText == "")
       return
     let obj = this.scene.findObject("chat_history_div")
@@ -2676,7 +2656,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     foreach (idx, tabName in this.tabsList) {
       let checkName = $"is_show_{tabName}"
       if (!(checkName in this) || this[checkName]()) {
-        let title = getTblValue(tabName, this.tabsTitles,$"#debriefing/{tabName}")
+        let title = (this.tabsTitles?[tabName] ?? $"#debriefing/{tabName}")
         view.items.append({
           id = tabName
           text = title
@@ -2730,7 +2710,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     return this.needPlayersTbl && HudBattleLog.getLength() > 0
   }
   function is_show_chat_history() {
-    return this.needPlayersTbl && getTblValue("chatLog", this.debriefingResult, "") != ""
+    return this.needPlayersTbl && (this.debriefingResult?.chatLog ?? "") != ""
   }
   function is_show_left_block() {
     return this.is_show_awards_list() || this.is_show_inventory_gift()
@@ -2776,7 +2756,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function updateScrollableObjects(tabObj, tabName, isEnable) {
-    foreach (objId, val in getTblValue(tabName, this.tabsScrollableObjs, {})) {
+    foreach (objId, val in (this.tabsScrollableObjs?[tabName] ?? {})) {
       let obj = tabObj.findObject(objId)
       if (checkObj(obj))
         obj["scrollbarShortcuts"] = isEnable ? val : "no"
@@ -3068,6 +3048,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function isToBattleActionEnabled() {
     return (this.skipAnim || this.state == debrState.done)
+      && !(needShowTutorial("toBattle", 1) || needShowTutorial("takeUnit", 1))
       && (this.gm == GM_DOMINATION) && !!(this.gameType & GT_VERSUS)
       && !isAnyQueuesActive()
       && !(g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
@@ -3152,7 +3133,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function throwBattleEndEvent() {
-    let eventId = getTblValue("eventId", this.debriefingResult)
+    let eventId = this.debriefingResult?.eventId
     if (eventId)
       broadcastEvent("EventBattleEnded", { eventId = eventId })
     broadcastEvent("BattleEnded", { battleResult = this.debriefingResult?.exp.result })
@@ -3289,7 +3270,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function getBoostersText() {
     let textsList = []
-    let activeBoosters = getTblValue("activeBoosters", this.debriefingResult, [])
+    let activeBoosters = (this.debriefingResult?.activeBoosters ?? [])
     if (activeBoosters.len() > 0)
       foreach (effectType in boosterEffectType) {
         let boostersArray = []
@@ -3306,7 +3287,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function getBoostersTotalEffects() {
-    let activeBoosters = getTblValue("activeBoosters", this.debriefingResult, [])
+    let activeBoosters = (this.debriefingResult?.activeBoosters ?? [])
     let boostersArray = []
     foreach (block in activeBoosters) {
       let item = findItemById(block.itemId)
@@ -3500,6 +3481,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   isInProgress = false
 }
+register_gui_handler("DebriefingModal", DebriefingModal)
 
 return {
   guiStartDebriefingFull

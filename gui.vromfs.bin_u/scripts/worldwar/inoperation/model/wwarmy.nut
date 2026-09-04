@@ -1,31 +1,32 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/worldWar/wwArtilleryStatus.nut" import artilleryReadyState
+from "%sqstd/datablock.nut" import getBlkValueByPath
+from "worldwar" import wwGetPlayerSide, wwGetZoneName, wwGetOperationTimeMillisec, wwGetArmyInfo, wwGetArmyOverrideIcon, wwGetLoadedArmyType
+from "math" import ceil
+from "worldwarConst" import ArmyFlags
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
+
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let DataBlock  = require("DataBlock")
-let { wwGetPlayerSide, wwGetZoneName, wwGetOperationTimeMillisec, wwGetArmyInfo,
-  wwGetArmyOverrideIcon, wwGetLoadedArmyType } = require("worldwar")
-let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { WwPathTracker } = require("%scripts/worldWar/inOperation/model/wwPathTracker.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { ceil } = require("math")
 let { getLoadedTransport } = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { ArmyFlags } = require("worldwarConst")
 let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
 let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getArmyGroupByArmy, getBattleForArmy } = require("%scripts/worldWar/worldWarState.nut")
 
-let fullWidthColunsCount = 4
-let partialWidthColunsCount = 3
+const fullWidthColunsCount = 4
+const partialWidthColunsCount = 3
 
 local WwArmy
 function getTransportedArmiesData(formation) {
@@ -767,17 +768,17 @@ WwArmy = class(WwFormation) {
 
     let unitTypeTextCode = blk?.specs.unitType ?? ""
     this.unitType = g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode).code
-    this.morale = getTblValue("morale", blk, -1)
+    this.morale = (blk?.morale ?? -1)
     this.armyIsDead = getBlkValueByPath(blk, "specs/isDead", false)
     this.deathReason = getBlkValueByPath(blk, "specs/deathReason", "")
     this.armyFlags = getBlkValueByPath(blk, "specs/flags", 0)
     this.transportType = transportTypeByTextCode?[blk?.specs.transportInfo.type ?? "TT_NONE"] ?? TT_NONE
     if (this.isTransport())
       this.loadedArmyType = blk?.loadedArmyType ?? wwGetLoadedArmyType(armyName, false)
-    this.suppliesEndMillisec = getTblValue("suppliesEndMillisec", blk, 0)
-    this.entrenchEndMillisec = getTblValue("entrenchEndMillisec", blk, 0)
-    this.stoppedAtMillisec = getTblValue("stoppedAtMillisec", blk, 0)
-    this.overrideIconId = getTblValue("iconOverride", blk, "")
+    this.suppliesEndMillisec = (blk?.suppliesEndMillisec ?? 0)
+    this.entrenchEndMillisec = (blk?.entrenchEndMillisec ?? 0)
+    this.stoppedAtMillisec = (blk?.stoppedAtMillisec ?? 0)
+    this.overrideIconId = (blk?.iconOverride ?? "")
     this.hasArtilleryAbility = blk?.specs.canArtilleryFire ?? false
     this.isSAM = this.overrideIconId == "sam_site"
     this.hasEntrenchAbility = this.armyFlags & ArmyFlags.EAF_CAN_ENTRENCH

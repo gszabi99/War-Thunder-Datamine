@@ -1,10 +1,8 @@
 require ecs
 require ecs.common
-require %game.events
 
 require %appGame.wt_events
 require strings
-require DagorConsole
 
 
 [es(tag=gameClient, on_appear)]

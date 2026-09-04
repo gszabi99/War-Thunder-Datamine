@@ -1,6 +1,11 @@
 {
   "cannon": true,
   "weaponType": 3,
+  "maxDeltaAngle": 0.28,
+  "shotFreq": 8.66,
+  "traceFreq": 4,
+  "bullets": 250,
+  "recoilMultiplier": 0.35,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -10,23 +15,18 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
+  "bEnablePause": false,
+  "bulletsCluster": 1,
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
-  "maxDeltaAngle": 0.28,
-  "shotFreq": 8.66,
-  "traceFreq": 3,
-  "bEnablePause": false,
-  "bullets": 250,
-  "bulletsCluster": 1,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
-  "recoilMultiplier": 0.35,
   "bullet": [
     {
-      "mass": 0.116,
+      "mass": 0.117,
       "caliber": 0.02,
-      "speed": 675.0,
-      "Cx": 0.52297,
+      "speed": 585.0,
+      "Cx": 0.43339,
       "maxDistance": 2000.0,
       "selfDestructionInAir": true,
       "normalizationPreset": "default",
@@ -39,7 +39,6 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "i_t",
       "shellAnimation": "video/shells_animations/i_t_shell.ivf",
-      "hitPowerMult": 10.0,
       "onHitChanceMultFire": 10.0,
       "relativeVelArmorShift": [
         200.0,
@@ -77,27 +76,14 @@
           ]
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          10.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          10.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          5.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          2.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          1.0,
-          1500.0
-        ]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.327,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "hitpower": {
         "HitPower10m": [
@@ -422,8 +408,8 @@
     {
       "mass": 0.092,
       "caliber": 0.02,
-      "speed": 785.0,
-      "Cx": 0.56789,
+      "speed": 675.0,
+      "Cx": 0.52297,
       "maxDistance": 2600.0,
       "selfDestructionInAir": true,
       "explosiveType": "ha_41",
@@ -499,16 +485,16 @@
           50.0
         ],
         "HitPower1000m": [
-          0.7,
-          1000.0
+          0.9,
+          300.0
         ],
         "HitPower1500m": [
           0.5,
-          1500.0
+          700.0
         ],
         "HitPower2000m": [
           0.1,
-          2000.0
+          1500.0
         ]
       },
       "damage": {
@@ -891,6 +877,7 @@
       "gbufferModelName": "ac_ap",
       "fuseDelayDist": 0.3,
       "explodeTreshold": 0.9,
+      "checkIntegrityAfterExplosion": true,
       "onHitChanceMultFire": 3.0,
       "relativeVelArmorShift": [
         200.0,
@@ -928,27 +915,45 @@
           ]
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          19.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          18.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          15.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          10.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          3.0,
-          1500.0
-        ]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  40.0,
+                  110.0
+                ],
+                "countPortion": 0.6
+              }
+            ]
+          }
+        }
       },
       "hitpower": {
         "HitPower10m": [
@@ -1273,10 +1278,10 @@
   "mgff_universal": {
     "bullet": [
       {
-        "mass": 0.116,
+        "mass": 0.117,
         "caliber": 0.02,
-        "speed": 675.0,
-        "Cx": 0.52297,
+        "speed": 585.0,
+        "Cx": 0.43339,
         "maxDistance": 2000.0,
         "selfDestructionInAir": true,
         "normalizationPreset": "default",
@@ -1289,7 +1294,6 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i_t",
         "shellAnimation": "video/shells_animations/i_t_shell.ivf",
-        "hitPowerMult": 10.0,
         "onHitChanceMultFire": 10.0,
         "relativeVelArmorShift": [
           200.0,
@@ -1327,27 +1331,14 @@
             ]
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            10.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            10.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            5.0,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            2.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            1.0,
-            1500.0
-          ]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -1672,8 +1663,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -1749,16 +1740,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -2114,8 +2105,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -2191,16 +2182,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -2583,6 +2574,7 @@
         "gbufferModelName": "ac_ap",
         "fuseDelayDist": 0.3,
         "explodeTreshold": 0.9,
+        "checkIntegrityAfterExplosion": true,
         "onHitChanceMultFire": 3.0,
         "relativeVelArmorShift": [
           200.0,
@@ -2620,27 +2612,45 @@
             ]
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            19.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            18.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            15.0,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            10.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            3.0,
-            1500.0
-          ]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -2968,10 +2978,12 @@
       {
         "mass": 0.117,
         "caliber": 0.02,
-        "speed": 675.0,
-        "Cx": 0.52297,
+        "speed": 600.0,
+        "Cx": 0.43294,
         "maxDistance": 2000.0,
         "selfDestructionInAir": true,
+        "explosiveType": "petn",
+        "explosiveMass": 0.0023,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -2989,13 +3001,6 @@
         "ricochetTimeToLive": 0.085,
         "fuseDelayDist": 0.2,
         "explodeTreshold": 0.1,
-        "explodeHitPower": 13.0,
-        "explodeArmorPower": 6.0,
-        "explodeRadius": [
-          0.042,
-          0.42
-        ],
-        "hitPowerMult": 1.5,
         "onHitChanceMultFire": 3.1,
         "relativeVelArmorShift": [
           200.0,
@@ -3051,31 +3056,54 @@
             1500.0
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
-          ]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.75,
+            "realShattersSplicing": 0.35,
+            "segment": [
+              {
+                "radiusScale": 1.05,
+                "penetrationScale": 1.1,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  40.0
+                ],
+                "countPortion": 0.05
+              },
+              {
+                "radiusScale": 1.05,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  40.0,
+                  140.0
+                ],
+                "countPortion": 0.9
+              },
+              {
+                "radiusScale": 1.05,
+                "penetrationScale": 0.8,
+                "damageScale": 1.0,
+                "angles": [
+                  140.0,
+                  180.0
+                ],
+                "countPortion": 0.05
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "collisions": {
           "default": {
@@ -3382,8 +3410,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -3459,16 +3487,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -3824,8 +3852,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -3901,16 +3929,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -4270,6 +4298,8 @@
         "Cx": 0.43294,
         "maxDistance": 2000.0,
         "selfDestructionInAir": true,
+        "explosiveType": "petn",
+        "explosiveMass": 0.0023,
         "normalizationPreset": "default",
         "ricochetPreset": "defaultExt",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -4287,13 +4317,6 @@
         "ricochetTimeToLive": 0.085,
         "fuseDelayDist": 0.2,
         "explodeTreshold": 0.1,
-        "explodeHitPower": 13.0,
-        "explodeArmorPower": 6.0,
-        "explodeRadius": [
-          0.042,
-          0.42
-        ],
-        "hitPowerMult": 1.5,
         "onHitChanceMultFire": 3.1,
         "relativeVelArmorShift": [
           200.0,
@@ -4349,31 +4372,54 @@
             1500.0
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
-          ]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          },
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.75,
+            "realShattersSplicing": 0.35,
+            "segment": [
+              {
+                "radiusScale": 1.05,
+                "penetrationScale": 1.1,
+                "damageScale": 1.0,
+                "angles": [
+                  0.0,
+                  40.0
+                ],
+                "countPortion": 0.05
+              },
+              {
+                "radiusScale": 1.05,
+                "penetrationScale": 1.0,
+                "damageScale": 1.0,
+                "angles": [
+                  40.0,
+                  140.0
+                ],
+                "countPortion": 0.9
+              },
+              {
+                "radiusScale": 1.05,
+                "penetrationScale": 0.8,
+                "damageScale": 1.0,
+                "angles": [
+                  140.0,
+                  180.0
+                ],
+                "countPortion": 0.05
+              }
+            ]
+          }
+        },
+        "shatterDamage": {
+          "breachConeAngle": 45.0
         },
         "collisions": {
           "default": {
@@ -4680,8 +4726,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -4757,16 +4803,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -5122,8 +5168,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -5199,16 +5245,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -5591,6 +5637,7 @@
         "gbufferModelName": "ac_ap",
         "fuseDelayDist": 0.3,
         "explodeTreshold": 0.9,
+        "checkIntegrityAfterExplosion": true,
         "onHitChanceMultFire": 3.0,
         "relativeVelArmorShift": [
           200.0,
@@ -5628,27 +5675,45 @@
             ]
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            19.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            18.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            15.0,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            10.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            3.0,
-            1500.0
-          ]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -5973,10 +6038,10 @@
   },
   "mgff_all_tracers": {
     "bullet": {
-      "mass": 0.116,
+      "mass": 0.117,
       "caliber": 0.02,
       "speed": 585.0,
-      "Cx": 0.43294,
+      "Cx": 0.43339,
       "maxDistance": 2000.0,
       "selfDestructionInAir": true,
       "normalizationPreset": "default",
@@ -5989,7 +6054,6 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "i_t",
       "shellAnimation": "video/shells_animations/i_t_shell.ivf",
-      "hitPowerMult": 10.0,
       "onHitChanceMultFire": 10.0,
       "relativeVelArmorShift": [
         200.0,
@@ -6027,27 +6091,14 @@
           ]
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          10.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          10.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          5.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          2.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          1.0,
-          1500.0
-        ]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.327,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "hitpower": {
         "HitPower10m": [
@@ -6375,8 +6426,8 @@
       {
         "mass": 0.117,
         "caliber": 0.02,
-        "speed": 675.0,
-        "Cx": 0.52297,
+        "speed": 580.0,
+        "Cx": 0.59947,
         "maxDistance": 2000.0,
         "explosiveType": "petn",
         "explosiveMass": 0.00459,
@@ -6402,6 +6453,7 @@
         "gbufferModelName": "ac_ap",
         "fuseDelayDist": 0.3,
         "explodeTreshold": 0.9,
+        "checkIntegrityAfterExplosion": true,
         "onHitChanceMultFire": 3.0,
         "relativeVelArmorShift": [
           200.0,
@@ -6439,27 +6491,45 @@
             ]
           ]
         },
-        "armorpower": {
-          "ArmorPower0m": [
-            19.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            18.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            15.0,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            10.0,
-            1000.0
-          ],
-          "ArmorPower1500m": [
-            3.0,
-            1500.0
-          ]
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -6783,8 +6853,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -6860,16 +6930,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -7225,8 +7295,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -7302,16 +7372,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {
@@ -7667,8 +7737,8 @@
       {
         "mass": 0.092,
         "caliber": 0.02,
-        "speed": 785.0,
-        "Cx": 0.56789,
+        "speed": 675.0,
+        "Cx": 0.52297,
         "maxDistance": 2600.0,
         "selfDestructionInAir": true,
         "explosiveType": "ha_41",
@@ -7744,16 +7814,16 @@
             50.0
           ],
           "HitPower1000m": [
-            0.7,
-            1000.0
+            0.9,
+            300.0
           ],
           "HitPower1500m": [
             0.5,
-            1500.0
+            700.0
           ],
           "HitPower2000m": [
             0.1,
-            2000.0
+            1500.0
           ]
         },
         "damage": {

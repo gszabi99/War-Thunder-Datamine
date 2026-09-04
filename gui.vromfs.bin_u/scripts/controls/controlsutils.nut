@@ -1,61 +1,58 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "controllerState" as controllerState
+import "DataBlock" as DataBlock
+import "vehicleModel" as vehicleModel
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "string" import format
+from "%sqstd/string.nut" import startsWith
+from "controls" import isXInputDevice, hasXInputDevice
+from "guiOptions" import get_gui_option, get_unit_option
+from "eventbus" import eventbus_subscribe
+from "%sqstd/platform.nut" import is_xbox, isPC
+from "gameplayBinding" import isInFlight
+from "%sqstd/datablock.nut" import blkOptFromPath, blkFromPath
+from "guiMission" import get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty
+from "chardResearch" import shopIsModificationEnabled
+from "blkGetters" import get_game_params_blk, get_current_mission_info
+from "globalEnv" import ControlHelpersMode
+from "mission" import is_benchmark_game_mode, get_game_mode
+from "%globalScripts/controlsAutostartConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_axis_index
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
 from "unit" import get_cur_unit_weapon_preset
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { startsWith } = require("%sqstd/string.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isXInputDevice, hasXInputDevice } = require("controls")
 let time = require("%scripts/time.nut")
-let controllerState = require("controllerState")
 let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { get_gui_option, get_unit_option } = require("guiOptions")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let {  OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE,
-  USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL,
-  USEROPT_BULLET_COUNT0
-} = require("%scripts/options/optionsExtNames.nut")
-let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
+let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { is_xbox, isPC } = require("%sqstd/platform.nut")
 let { getAircraftHelpersOptionValue, getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
-let { parseControlsPresetName, getHighestVersionControlsPreset
-} = require("%scripts/controls/controlsPresets.nut")
+let { parseControlsPresetName, getHighestVersionControlsPreset } = require("%scripts/controls/controlsPresets.nut")
 let { get_option, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let DataBlock  = require("DataBlock")
 let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
-let { TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon
-} = require("%scripts/weaponry/weaponryInfo.nut")
-let { isInFlight } = require("gameplayBinding")
+let { TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 let { hasMappedSecondaryWeaponSelector, isShortcutMapped, isAxisMappedOnMouse } = require("%scripts/controls/shortcutsUtils.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { get_game_params_blk, get_current_mission_info } = require("blkGetters")
 let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { ControlHelpersMode } = require("globalEnv")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
-let vehicleModel = require("vehicleModel")
-let { is_benchmark_game_mode, get_game_mode } = require("mission")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -165,7 +162,7 @@ local isKeyboardOrMouseConnectedBefore = false
 function gui_modal_controlsWizard() {
   if (!hasFeature("ControlsPresets"))
     return
-  loadHandler(gui_handlers.controlsWizardModalHandler)
+  loadHandler(get_gui_handler("controlsWizardModalHandler"))
 }
 
 function onControllerEvent() {
@@ -762,28 +759,6 @@ function getUnmappedControlsForCurrentMission() {
 
 eventbus_subscribe("controls.joystickDisconnected", @(_) onJoystickDisconnected())
 eventbus_subscribe("controls.joystickConnected", @(_) onJoystickConnected())
-
-local xboxInputDevicesData = persist("xboxInputDevicesData", @() { gamepads = 0, keyboards = 0, user_notified = false })
-
-if (is_xbox) {
-  let { DeviceType, register_for_devices_change } = require("%gdkLib/impl/input.nut")
-
-  register_for_devices_change(function(device_type, count) {
-    if (device_type == DeviceType.Gamepad)
-      xboxInputDevicesData.gamepads = count
-    if (device_type == DeviceType.Keyboard)
-      xboxInputDevicesData.keyboards = count
-
-    let shouldNotify = xboxInputDevicesData.gamepads == 0 && xboxInputDevicesData.keyboards == 0
-    if (shouldNotify && !xboxInputDevicesData.user_notified) {
-      xboxInputDevicesData.user_notified = true
-      add_msg_box("no_input_devices", loc("pl1/lostController"),
-        [
-          ["ok", @() xboxInputDevicesData.user_notified = false]
-        ], "ok")
-    }
-  })
-}
 
 updateExtWatched({ haveXinputDevice = hasXInputDevice() })
 

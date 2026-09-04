@@ -1,8 +1,9 @@
+import "statsd" as statsd
 from "%scripts/dagui_natives.nut" import epic_buy_item
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
-let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 

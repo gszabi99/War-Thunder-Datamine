@@ -1,30 +1,27 @@
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "mission" import get_mplayer_by_userid
+from "matching.errors" import INVALID_SQUAD_ID
+from "guiMission" import get_mission_difficulty
+from "string" import format
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { get_mplayer_by_userid } = require("mission")
-let { INVALID_SQUAD_ID } = require("matching.errors")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
-let { getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getSessionLobbyPlayersInfo
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { get_mission_difficulty } = require("guiMission")
+let { getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getSquadInfo } = require("%scripts/statistics/squadIcon.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { format } = require("string")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
-let { getDebriefingResult
-} = require("%scripts/debriefing/debriefingFull.nut")
+let { getDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { userIdStr, userName } = require("%scripts/user/profileStates.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
-let { isInFlight } = require("gameplayBinding")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let formatFloat = @(f) format("%.1f", f)

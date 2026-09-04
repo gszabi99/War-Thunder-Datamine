@@ -1,9 +1,12 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
+from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+let { WwReinforcements } = require("%scripts/worldWar/inOperation/handler/wwReinforcements.nut")
+let { WwCommanders } = require("%scripts/worldWar/inOperation/handler/wwCommanders.nut")
+let { WwArmiesList } = require("%scripts/worldWar/inOperation/handler/wwArmiesList.nut")
+let { WwAirfieldsList } = require("%scripts/worldWar/inOperation/handler/wwAirfieldsList.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { wwGetPlayerSide } = require("worldwar")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getArmiesCache } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
@@ -33,7 +36,7 @@ enumsAddTypes(g_ww_map_reinforcement_tab_type, {
     tabText = "worldwar/commanders"
     getHandler = function (placeObj) {
       return handlersManager.loadHandler(
-        gui_handlers.WwCommanders,
+        WwCommanders,
         { scene = placeObj }
       )
     }
@@ -54,7 +57,7 @@ enumsAddTypes(g_ww_map_reinforcement_tab_type, {
     }
     getHandler = function (placeObj) {
       return handlersManager.loadHandler(
-        gui_handlers.WwReinforcements,
+        WwReinforcements,
         { scene = placeObj }
       )
     }
@@ -68,7 +71,7 @@ enumsAddTypes(g_ww_map_reinforcement_tab_type, {
     tabText = "worldWar/airfieldsList"
     getHandler = function (placeObj) {
       return handlersManager.loadHandler(
-        gui_handlers.WwAirfieldsList,
+        WwAirfieldsList,
         {
           scene = placeObj
           side = wwGetPlayerSide()
@@ -98,7 +101,7 @@ enumsAddTypes(g_ww_map_reinforcement_tab_type, {
     }
     getHandler = function (placeObj) {
       return handlersManager.loadHandler(
-        gui_handlers.WwArmiesList,
+        WwArmiesList,
         {
           scene = placeObj
         }

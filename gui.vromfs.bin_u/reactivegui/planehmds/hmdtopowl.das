@@ -7,7 +7,6 @@ require FlightModelWrap
 require HeroManager
 require Unit
 require strings
-require DagorSystem
 require FlightControl
 require hud
 require WTCamera
@@ -66,10 +65,24 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
 
 def draw_central_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   ctx |> set_color(data.color)
-  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.47, rdata.pos.y + rdata.size.y * 0.5, rdata.pos.x + rdata.size.x * 0.49, rdata.pos.y + rdata.size.y * 0.5, ctx |> hdpx(data.lineWidth))
-  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.49, rdata.pos.y + rdata.size.y * 0.5, rdata.pos.x + rdata.size.x * 0.49, rdata.pos.y + rdata.size.y * 0.51, ctx |> hdpx(data.lineWidth))
-  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.53, rdata.pos.y + rdata.size.y * 0.5, rdata.pos.x + rdata.size.x * 0.51, rdata.pos.y + rdata.size.y * 0.5, ctx |> hdpx(data.lineWidth))
-  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.51, rdata.pos.y + rdata.size.y * 0.5, rdata.pos.x + rdata.size.x * 0.51, rdata.pos.y + rdata.size.y * 0.51, ctx |> hdpx(data.lineWidth))
+  let lw = ctx |> hdpx(data.lineWidth)
+  let cx = rdata.pos.x + rdata.size.x * 0.5
+  let cy = rdata.pos.y + rdata.size.y * 0.5
+  // Left horizontal + down tick
+  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.47, cy, rdata.pos.x + rdata.size.x * 0.49, cy, lw)
+  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.49, cy, rdata.pos.x + rdata.size.x * 0.49, rdata.pos.y + rdata.size.y * 0.51, lw)
+  // Right horizontal + down tick
+  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.53, cy, rdata.pos.x + rdata.size.x * 0.51, cy, lw)
+  ctx |> draw_line(rdata.pos.x + rdata.size.x * 0.51, cy, rdata.pos.x + rdata.size.x * 0.51, rdata.pos.y + rdata.size.y * 0.51, lw)
+  // Center circle with filled dot inside
+  let circR = rdata.size.x * 0.0075
+  let nSeg = 24
+  for i in range(nSeg)
+    let a0 = float(i) * 2.0 * PI / float(nSeg)
+    let a1 = float(i + 1) * 2.0 * PI / float(nSeg)
+    ctx |> draw_line(cx + cos(a0) * circR, cy + sin(a0) * circR, cx + cos(a1) * circR, cy + sin(a1) * circR, lw)
+  // Dot
+  ctx |> draw_line(cx - lw, cy, cx + lw, cy, lw * 3.0)
 
 def draw_bar_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; alt : int)
   ctx |> set_color(data.color)

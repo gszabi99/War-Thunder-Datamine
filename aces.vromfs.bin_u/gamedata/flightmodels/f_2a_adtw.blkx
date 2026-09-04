@@ -1,7 +1,7 @@
 {
   "model": "f2a_adtw",
   "fmFile": "fm/f_2a_adtw.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
   "haveCCIPForRocket": true,
@@ -3129,6 +3129,14 @@
         "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_default.blk"
       },
       {
+        "name": "f_2a_adtw_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_aim_9l.blk"
+      },
+      {
+        "name": "f_2a_adtw_aim_9m",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_aim_9m.blk"
+      },
+      {
         "name": "f_2a_adtw_aam_3",
         "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_aam_3.blk"
       },
@@ -3202,6 +3210,13 @@
       {
         "name": "f_2a_adtw_asm_2",
         "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_asm_2.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "f_2a_adtw_asm_3",
+        "blk": "gameData/FlightModels/weaponPresets/f_2a_adtw_asm_3.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
@@ -3347,42 +3362,110 @@
         "index": 1,
         "tier": 12,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_type_c_air_to_air",
-          "name": "jp_aam3_default",
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/jp_aam3_default.blk",
-            "emitter": "us_aim_9b_sidewinder_001",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_slot1",
+            "reqModification": "us_aim_9l",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_slot1",
+            "reqModification": "us_aim_9m",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "jp_aam3_default",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/jp_aam3_default.blk",
+              "emitter": "us_aim_9b_sidewinder_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
         "tier": 11,
         "order": 3,
-        "WeaponPreset": {
-          "iconType": "missile_type_c_air_to_air",
-          "name": "jp_aam3",
-          "reqModification": "jp_aam3",
-          "ShowNodes": {
-            "node": [
-              "pylon_001",
-              "launcher_aim9_003"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_slot2",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "launcher_aim9_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/jp_aam3.blk",
-            "emitter": "us_aim_9b_sidewinder_003",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_slot2",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "launcher_aim9_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "jp_aam3",
+            "reqModification": "jp_aam3",
+            "ShowNodes": {
+              "node": [
+                "pylon_001",
+                "launcher_aim9_003"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/jp_aam3.blk",
+              "emitter": "us_aim_9b_sidewinder_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 3,
@@ -3408,14 +3491,14 @@
             }
           },
           {
-            "iconType": "nar_ap_large_group_x3",
+            "iconType": "nar_ap_large",
             "name": "lau_3a",
             "ShowNodes": {
               "node": "pylon_002"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
               "emitter": "pylon_bru_55a_001",
               "external": true
             }
@@ -3498,7 +3581,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3514,7 +3597,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3531,7 +3614,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "gbu_64",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3548,7 +3631,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_62",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3564,7 +3647,7 @@
           {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
-            "reqModification": "jp_asm1",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_002"
             },
@@ -3589,6 +3672,22 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special_longrange",
+            "name": "jp_asm3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_002"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/jp_asm3.blk",
+              "emitter": "jp_asm3_missile_001",
               "bullets": 1
             }
           }
@@ -3619,14 +3718,14 @@
             }
           },
           {
-            "iconType": "nar_ap_large_group_x3",
+            "iconType": "nar_ap_large",
             "name": "lau_3a",
             "ShowNodes": {
               "node": "pylon_003"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
               "emitter": "pylon_bru_55a_002",
               "external": true
             }
@@ -3709,7 +3808,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3725,7 +3824,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3742,7 +3841,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "gbu_64",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3759,7 +3858,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_62",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3775,7 +3874,7 @@
           {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
-            "reqModification": "jp_asm1",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_003"
             },
@@ -3802,6 +3901,22 @@
               "emitter": "rl_4_launcher_002",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_air_to_earth_special_longrange",
+            "name": "jp_asm3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_003"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/jp_asm3.blk",
+              "emitter": "jp_asm3_missile_002",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -3811,14 +3926,14 @@
         "order": 9,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large_group_x3",
+            "iconType": "nar_ap_large",
             "name": "lau_3a",
             "ShowNodes": {
               "node": "pylon_004"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
               "emitter": "jp_600gal_drop_tank_001",
               "external": true
             }
@@ -3901,7 +4016,7 @@
           {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
-            "reqModification": "jp_asm1",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_004"
             },
@@ -4021,14 +4136,14 @@
         "order": 10,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large_group_x3",
+            "iconType": "nar_ap_large",
             "name": "lau_3a",
             "ShowNodes": {
               "node": "pylon_005"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
               "emitter": "jp_600gal_drop_tank_002",
               "external": true
             }
@@ -4111,7 +4226,7 @@
           {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
-            "reqModification": "jp_asm1",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_005"
             },
@@ -4191,14 +4306,14 @@
             }
           },
           {
-            "iconType": "nar_ap_large_group_x3",
+            "iconType": "nar_ap_large",
             "name": "lau_3a",
             "ShowNodes": {
               "node": "pylon_006"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
               "emitter": "pylon_bru_55a_003",
               "external": true
             }
@@ -4281,7 +4396,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -4297,7 +4412,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -4314,7 +4429,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "gbu_64",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -4331,7 +4446,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_62",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -4347,7 +4462,7 @@
           {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
-            "reqModification": "jp_asm1",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_006"
             },
@@ -4372,6 +4487,22 @@
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/jp_asm2.blk",
               "emitter": "rl_4_launcher_005",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special_longrange",
+            "name": "jp_asm3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_006"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/jp_asm3.blk",
+              "emitter": "jp_asm3_missile_005",
               "bullets": 1
             }
           }
@@ -4401,14 +4532,14 @@
             }
           },
           {
-            "iconType": "nar_ap_large_group_x3",
+            "iconType": "nar_ap_large",
             "name": "lau_3a",
             "ShowNodes": {
               "node": "pylon_007"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/ter_lau_3a_ffar_mighty_mouse.blk",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
               "emitter": "pylon_bru_55a_004",
               "external": true
             }
@@ -4491,7 +4622,7 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_38",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -4507,7 +4638,7 @@
           {
             "iconType": "guided_bomb_large_jdam",
             "name": "gbu_31",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -4524,7 +4655,7 @@
           {
             "iconType": "glide_guided_bomb_heavy_middle_jdam",
             "name": "gbu_64",
-            "reqModification": "us_gbu_31_64",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -4541,7 +4672,7 @@
           {
             "iconType": "glide_guided_bomb_middle_jdam_group_x2",
             "name": "bru_55_gbu_62",
-            "reqModification": "us_gbu_38_62",
+            "reqModification": "us_jdam",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -4557,7 +4688,7 @@
           {
             "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
-            "reqModification": "jp_asm1",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": "pylon_007"
             },
@@ -4584,6 +4715,22 @@
               "emitter": "rl_4_launcher_006",
               "bullets": 1
             }
+          },
+          {
+            "iconType": "missile_air_to_earth_special_longrange",
+            "name": "jp_asm3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_007"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/jp_asm3.blk",
+              "emitter": "jp_asm3_missile_006",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -4591,42 +4738,110 @@
         "index": 11,
         "tier": 1,
         "order": 4,
-        "WeaponPreset": {
-          "iconType": "missile_type_c_air_to_air",
-          "name": "jp_aam3",
-          "reqModification": "jp_aam3",
-          "ShowNodes": {
-            "node": [
-              "pylon_008",
-              "launcher_aim9_004"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_slot11",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": [
+                "pylon_008",
+                "launcher_aim9_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/jp_aam3.blk",
-            "emitter": "us_aim_9b_sidewinder_004",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_slot11",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_008",
+                "launcher_aim9_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "jp_aam3",
+            "reqModification": "jp_aam3",
+            "ShowNodes": {
+              "node": [
+                "pylon_008",
+                "launcher_aim9_004"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/jp_aam3.blk",
+              "emitter": "us_aim_9b_sidewinder_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 12,
         "tier": 0,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_type_c_air_to_air",
-          "name": "jp_aam3_default",
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/jp_aam3_default.blk",
-            "emitter": "us_aim_9b_sidewinder_002",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim_9l_slot12",
+            "reqModification": "us_aim_9l",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_slot12",
+            "reqModification": "us_aim_9m",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "us_aim_9b_sidewinder_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "jp_aam3_default",
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/jp_aam3_default.blk",
+              "emitter": "us_aim_9b_sidewinder_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -5575,37 +5790,37 @@
       "reqModification": "JM61A1_belt_pack",
       "tier": 2
     },
-    "jp_asm1": {
+    "asm": {
       "prevModification": "JM61A1_new_gun",
       "modClass": "weapon",
       "tier": 3
-    },
-    "jp_asm2": {
-      "reqModification": "jp_asm1",
-      "modClass": "weapon",
-      "tier": 4
     },
     "j_aaq_2_pod": {
       "modClass": "weapon",
       "tier": 1
     },
-    "us_gbu_38_62": {
+    "us_jdam": {
       "prevModification": "j_aaq_2_pod",
       "modClass": "weapon",
       "tier": 2
     },
-    "us_gbu_31_64": {
-      "reqModification": "us_gbu_38_62",
-      "modClass": "weapon",
-      "tier": 3
+    "us_aim_9l": {
+      "tier": 1,
+      "modClass": "weapon"
     },
     "us_aim_7m": {
+      "reqModification": "us_aim_9l",
       "tier": 2,
       "modClass": "weapon"
     },
-    "jp_aam3": {
+    "us_aim_9m": {
       "reqModification": "us_aim_7m",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "jp_aam3": {
+      "reqModification": "us_aim_9m",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

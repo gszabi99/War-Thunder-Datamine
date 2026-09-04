@@ -7,7 +7,6 @@ require FlightModelWrap
 require HeroManager
 require Unit
 require strings
-require DagorSystem
 require FlightControl
 require hud
 require WTCamera

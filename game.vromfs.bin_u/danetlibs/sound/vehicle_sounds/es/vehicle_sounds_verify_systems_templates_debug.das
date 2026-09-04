@@ -53,6 +53,7 @@ struct VehicleTracksSound
 struct GroundVehicleSuspensionSound
   vehicle_net_phys : VehiclePhysActor
   ground_vehicle_suspension_sound__hitToVar : float2
+  is_watched_sound : bool
   ground_vehicle_suspension_sound__path : SharedObject
   sound_tags : Object
   transform : float3x4

@@ -1,9 +1,10 @@
+from "blkGetters" import get_current_mission_info_cached
 from "%scripts/dagui_library.nut" import *
+
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isUnlockOpened, isUnlockExist } = require("%scripts/unlocks/unlocksModule.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
 
 let units = mkWatched(persist, "units", [])
 let usedUnits = mkWatched(persist, "usedUnits", {})

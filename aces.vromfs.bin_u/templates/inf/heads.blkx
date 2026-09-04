@@ -5,6 +5,7 @@
       "node_collapser"
     ],
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar__updatable": true,
     "animchar_hider__camThreshold": 0.3,
     "randomAnimStart": true,
@@ -35,7 +36,7 @@
   "attachable_head": {
     "_use": [
       "attachable_head_base",
-      "base_collres_vis_item"
+      "base_local_collres_vis_item"
     ],
     "face_anim__stateOnDeath": "disable_anim",
     "attachable_head__eyesLookDistance": [
@@ -52,215 +53,153 @@
       "name": "headgen_blank"
     }
   },
-  "attachable_wear_head_argentine_01_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_argentine_01_item",
-    "animchar__res": "head_argentine_01_char",
-    "collres__res": "head_argentine_01_collision"
+  "attachable_hair": {
+    "_use": "attachable_wear",
+    "animchar_hider__camThreshold": 0.3,
+    "item__equipToSlots:array": {
+      "slot": "hair"
+    },
+    "hideFlags:array": {
+      "hideFlag": "hair"
+    }
   },
-  "attachable_wear_head_australian_01_item": {
+  "attachable_wear_s_male_head_01_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_australian_01_item",
-    "animchar__res": "head_australian_01_char",
-    "collres__res": "head_australian_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_01_item",
+    "animchar__res": "s_male_head_01_char",
+    "collres__res": "s_male_head_01_collision"
   },
-  "attachable_wear_head_australian_02_item": {
+  "attachable_wear_s_male_head_02_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_australian_02_item",
-    "animchar__res": "head_australian_02_char",
-    "collres__res": "head_australian_02_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_02_item",
+    "animchar__res": "s_male_head_02_char",
+    "collres__res": "s_male_head_02_collision"
   },
-  "attachable_wear_head_chinese_01_item": {
+  "attachable_wear_s_male_head_05_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_chinese_01_item",
-    "animchar__res": "head_chinese_01_char",
-    "collres__res": "head_chinese_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_05_item",
+    "animchar__res": "s_male_head_05_char",
+    "collres__res": "s_male_head_05_collision"
   },
-  "attachable_wear_head_french_01_item": {
+  "attachable_wear_s_male_head_06_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_french_01_item",
-    "animchar__res": "head_french_01_char",
-    "collres__res": "head_french_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_06_item",
+    "animchar__res": "s_male_head_06_char",
+    "collres__res": "s_male_head_06_collision"
   },
-  "attachable_wear_head_french_02_item": {
+  "attachable_wear_s_male_head_07_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_french_02_item",
-    "animchar__res": "head_french_02_char",
-    "collres__res": "head_french_02_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_07_item",
+    "animchar__res": "s_male_head_07_char",
+    "collres__res": "s_male_head_07_collision"
   },
-  "attachable_wear_head_german_01_item": {
+  "attachable_wear_s_male_head_10_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_german_01_item",
-    "animchar__res": "head_german_01_char",
-    "collres__res": "head_german_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_10_item",
+    "animchar__res": "s_male_head_10_char",
+    "collres__res": "s_male_head_10_collision"
   },
-  "attachable_wear_head_german_02_item": {
+  "attachable_wear_s_male_head_14_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_german_02_item",
-    "animchar__res": "head_german_02_char",
-    "collres__res": "head_german_02_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_14_b_item",
+    "animchar__res": "s_male_head_14_b_char",
+    "collres__res": "s_male_head_14_b_collision"
   },
-  "attachable_wear_head_italian_01_item": {
+  "attachable_wear_s_male_head_15_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_italian_01_item",
-    "animchar__res": "head_italian_01_char",
-    "collres__res": "head_italian_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_15_item",
+    "animchar__res": "s_male_head_15_char",
+    "collres__res": "s_male_head_15_collision"
   },
-  "attachable_wear_head_italian_02_item": {
+  "attachable_wear_s_male_head_16_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_italian_02_item",
-    "animchar__res": "head_italian_02_char",
-    "collres__res": "head_italian_02_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_16_item",
+    "animchar__res": "s_male_head_16_char",
+    "collres__res": "s_male_head_16_collision"
   },
-  "attachable_wear_head_japanese_01_item": {
+  "attachable_wear_s_male_head_21_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_japanese_01_item",
-    "animchar__res": "head_japanese_01_char",
-    "collres__res": "head_japanese_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_21_item",
+    "animchar__res": "s_male_head_21_char",
+    "collres__res": "s_male_head_21_collision"
   },
-  "attachable_wear_head_nigerian_01_item": {
+  "attachable_wear_s_male_head_22_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_01_item",
-    "animchar__res": "head_nigerian_01_char",
-    "collres__res": "head_nigerian_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_22_item",
+    "animchar__res": "s_male_head_22_char",
+    "collres__res": "s_male_head_22_collision"
   },
-  "attachable_wear_head_nigerian_02_item": {
+  "attachable_wear_s_male_head_24_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_02_item",
-    "animchar__res": "head_nigerian_02_char",
-    "collres__res": "head_nigerian_02_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_24_b_item",
+    "animchar__res": "s_male_head_24_b_char",
+    "collres__res": "s_male_head_24_b_collision"
   },
-  "attachable_wear_head_nigerian_03_item": {
+  "attachable_wear_s_male_head_25_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_03_item",
-    "animchar__res": "head_nigerian_03_char",
-    "collres__res": "head_nigerian_03_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_25_b_item",
+    "animchar__res": "s_male_head_25_b_char",
+    "collres__res": "s_male_head_25_b_collision"
   },
-  "attachable_wear_head_nigerian_04_item": {
+  "attachable_wear_s_male_head_26_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_04_item",
-    "animchar__res": "head_nigerian_04_char",
-    "collres__res": "head_nigerian_04_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_26_b_item",
+    "animchar__res": "s_male_head_26_b_char",
+    "collres__res": "s_male_head_26_b_collision"
   },
-  "attachable_wear_head_nigerian_05_item": {
+  "attachable_wear_s_male_head_27_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_05_item",
-    "animchar__res": "head_nigerian_05_char",
-    "collres__res": "head_nigerian_05_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_27_b_item",
+    "animchar__res": "s_male_head_27_b_char",
+    "collres__res": "s_male_head_27_b_collision"
   },
-  "attachable_wear_head_nigerian_06_item": {
+  "attachable_wear_s_male_head_28_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_06_item",
-    "animchar__res": "head_nigerian_06_char",
-    "collres__res": "head_nigerian_06_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_28_b_item",
+    "animchar__res": "s_male_head_28_b_char",
+    "collres__res": "s_male_head_28_b_collision"
   },
-  "attachable_wear_head_nigerian_07_item": {
+  "attachable_wear_s_male_head_29_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_07_item",
-    "animchar__res": "head_nigerian_07_char",
-    "collres__res": "head_nigerian_07_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_29_b_item",
+    "animchar__res": "s_male_head_29_b_char",
+    "collres__res": "s_male_head_29_b_collision"
   },
-  "attachable_wear_head_nigerian_08_item": {
+  "attachable_wear_s_male_head_30_b_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_nigerian_08_item",
-    "animchar__res": "head_nigerian_08_char",
-    "collres__res": "head_nigerian_08_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_30_b_item",
+    "animchar__res": "s_male_head_30_b_char",
+    "collres__res": "s_male_head_30_b_collision"
   },
-  "attachable_wear_head_polish_01_item": {
+  "attachable_wear_s_male_head_31_e_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_polish_01_item",
-    "animchar__res": "head_polish_01_char",
-    "collres__res": "head_polish_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_31_e_item",
+    "animchar__res": "s_male_head_31_e_char",
+    "collres__res": "s_male_head_31_e_collision"
   },
-  "attachable_wear_head_russian_01_item": {
+  "attachable_wear_s_male_head_32_e_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_russian_01_item",
-    "animchar__res": "head_russian_01_char",
-    "collres__res": "head_russian_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_32_e_item",
+    "animchar__res": "s_male_head_32_e_char",
+    "collres__res": "s_male_head_32_e_collision"
   },
-  "attachable_wear_head_russian_02_item": {
+  "attachable_wear_s_male_head_33_e_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_russian_02_item",
-    "animchar__res": "head_russian_02_char",
-    "collres__res": "head_russian_02_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_33_e_item",
+    "animchar__res": "s_male_head_33_e_char",
+    "collres__res": "s_male_head_33_e_collision"
   },
-  "attachable_wear_head_swedish_01_item": {
+  "attachable_wear_s_male_head_34_e_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_swedish_01_item",
-    "animchar__res": "head_swedish_01_char",
-    "collres__res": "head_swedish_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_34_e_item",
+    "animchar__res": "s_male_head_34_e_char",
+    "collres__res": "s_male_head_34_e_collision"
   },
-  "attachable_wear_head_swedish_02_item": {
+  "attachable_wear_s_male_head_35_e_item": {
     "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_swedish_02_item",
-    "animchar__res": "head_swedish_02_char",
-    "collres__res": "head_swedish_02_collision"
-  },
-  "attachable_wear_head_turkish_01_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_turkish_01_item",
-    "animchar__res": "head_turkish_01_char",
-    "collres__res": "head_turkish_01_collision"
-  },
-  "attachable_wear_head_turkish_02_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_turkish_02_item",
-    "animchar__res": "head_turkish_02_char",
-    "collres__res": "head_turkish_02_collision"
-  },
-  "attachable_wear_head_uk_01_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_uk_01_item",
-    "animchar__res": "head_uk_01_char",
-    "collres__res": "head_uk_01_collision"
-  },
-  "attachable_wear_head_uk_02_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_uk_02_item",
-    "animchar__res": "head_uk_02_char",
-    "collres__res": "head_uk_02_collision"
-  },
-  "attachable_wear_head_ukrainian_01_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_ukrainian_01_item",
-    "animchar__res": "head_ukrainian_01_char",
-    "collres__res": "head_ukrainian_01_collision"
-  },
-  "attachable_wear_head_iraq_01_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_iraq_01_item",
-    "animchar__res": "head_iraq_01_char",
-    "collres__res": "head_iraq_01_collision"
-  },
-  "attachable_wear_head_iraq_02_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_iraq_02_item",
-    "animchar__res": "head_iraq_02_char",
-    "collres__res": "head_iraq_02_collision"
-  },
-  "attachable_wear_head_iraq_03_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_iraq_03_item",
-    "animchar__res": "head_iraq_03_char",
-    "collres__res": "head_iraq_03_collision"
-  },
-  "attachable_wear_head_iraq_04_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_iraq_04_item",
-    "animchar__res": "head_iraq_04_char",
-    "collres__res": "head_iraq_04_collision"
-  },
-  "attachable_wear_head_iraq_05_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_iraq_05_item",
-    "animchar__res": "head_iraq_05_char",
-    "collres__res": "head_iraq_05_collision"
-  },
-  "attachable_wear_head_usa_01_item": {
-    "_use": "attachable_head",
-    "item__uniqueName": "attachable_wear_head_usa_01_item",
-    "animchar__res": "head_usa_01_char",
-    "collres__res": "head_usa_01_collision"
+    "item__uniqueName": "attachable_wear_s_male_head_35_e_item",
+    "animchar__res": "s_male_head_35_e_char",
+    "collres__res": "s_male_head_35_e_collision"
   },
   "random_face": {
     "_use": [
@@ -275,10 +214,10 @@
     },
     "random_face__names:list<t>": {
       "name": [
-        "attachable_wear_head_french_01_item",
-        "attachable_wear_head_russian_02_item",
-        "attachable_wear_head_turkish_02_item",
-        "attachable_wear_head_uk_01_item"
+        "attachable_wear_s_male_head_05_item",
+        "attachable_wear_s_male_head_16_item",
+        "attachable_wear_s_male_head_21_item",
+        "attachable_wear_s_male_head_22_item"
       ]
     }
   }

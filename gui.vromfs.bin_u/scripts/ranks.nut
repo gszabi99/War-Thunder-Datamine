@@ -1,10 +1,10 @@
+from "dagor.time" import get_time_msec
+from "blkGetters" import get_warpoints_blk, get_ranks_blk
 from "%scripts/dagui_library.nut" import *
 
 require("%appGlobals/ranks_common_shared.nut")
-let { get_time_msec } = require("dagor.time")
 let { PT_STEP_STATUS } = require("%scripts/utils/pseudoThread.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 
 let maxCountryRank = Watched(0)
 

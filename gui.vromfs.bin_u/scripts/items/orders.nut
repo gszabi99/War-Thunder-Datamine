@@ -1,3 +1,15 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, removeAllListenersByEnv, subscribe_handler
+from "matching.errors" import INVALID_SQUAD_ID
+from "hudMessages" import HUD_MSG_OBJECTIVE
+from "mission" import get_mplayer_by_id, get_game_type, get_local_mplayer, get_mp_local_team
+from "dagor.debug" import debug_dump_stack
+from "string" import format
+from "replays" import is_replay_playing
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "guiMission" import get_mp_tbl_teams, get_objectives_list, OBJECTIVE_TYPE_ORDER
+from "gameplayBinding" import isInFlight
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import set_order_accepted_cb, use_order_request, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
@@ -5,30 +17,17 @@ from "%scripts/items/itemsConsts.nut" import itemType, itemsTab
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { orderUseResult, getOrderUseResultByCode } = require("%scripts/items/orderUseResult.nut")
-let { INVALID_SQUAD_ID } = require("matching.errors")
-let { HUD_MSG_OBJECTIVE } = require("hudMessages")
-let { get_mplayer_by_id, get_game_type, get_local_mplayer, get_mp_local_team } = require("mission")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { broadcastEvent, removeAllListenersByEnv, subscribe_handler
-} = require("%sqStdLibs/helpers/subscriptions.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { is_replay_playing } = require("replays")
-let { get_time_msec } = require("dagor.time")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_mp_tbl_teams, get_objectives_list, OBJECTIVE_TYPE_ORDER } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInSessionRoom, getSessionInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
-let { objectiveStatus, getObjectiveStatusByCode
-} = require("%scripts/misObjectives/objectiveStatus.nut")
+let { objectiveStatus, getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
@@ -241,7 +240,7 @@ let showActivateOrderButton = @() !isInSpectatorMode() && ordersCanBeUsed()
 
 
 
-let getTimesUsedOrderItem = @(orderItem) getTblValue(orderItem.id, timesUsedByOrderItemId, 0)
+let getTimesUsedOrderItem = @(orderItem) (timesUsedByOrderItemId?[orderItem.id] ?? 0)
 
 
 
@@ -368,8 +367,8 @@ function getCooldownTimeleft() {
   if (playerTeam == Team.Any)
     return -1
   let tblTeams = get_mp_tbl_teams()
-  let localTeamTbl = getTblValue(playerTeam - 1, tblTeams)
-  return getTblValue("orderCooldownLeft", localTeamTbl, 0)
+  let localTeamTbl = tblTeams?[playerTeam - 1]
+  return (localTeamTbl?.orderCooldownLeft ?? 0)
 }
 
 
@@ -403,8 +402,8 @@ function getStatusContent(orderObject, isHalignRight = false) {
 
 
 function updateActiveLocalOrders() {
-  let starterUid = getTblValue("userId", activeOrder.starterPlayer, null)
-  let itemId = getTblValue("id", activeOrder.orderItem, null)
+  let starterUid = activeOrder.starterPlayer?.userId
+  let itemId = activeOrder.orderItem?.id
   for (local i = activeLocalOrderIds.len() - 1; i >= 0; --i) {
     let id = activeLocalOrderIds[i]
 
@@ -420,7 +419,7 @@ function updateActiveLocalOrders() {
 
     if (id != itemId || starterUid != userIdStr.get()) {
       activeLocalOrderIds.remove(i)
-      timesUsedByOrderItemId[id] <- getTblValue(id, timesUsedByOrderItemId, 0) + 1
+      timesUsedByOrderItemId[id] <- (timesUsedByOrderItemId?[id] ?? 0) + 1
     }
   }
 }
@@ -428,10 +427,10 @@ function updateActiveLocalOrders() {
 function getActiveOrderObjective() {
   let objectives = get_objectives_list()
   foreach (objective in objectives) {
-    if (getTblValue("status", objective, 0) == 0)
+    if ((objective?.status ?? 0) == 0)
       continue
 
-    let objectiveType = getTblValue("type", objective, -1)
+    let objectiveType = (objective?.type ?? -1)
     if (objectiveType == OBJECTIVE_TYPE_ORDER)
       return objective
   }
@@ -469,7 +468,7 @@ function onOrderAccepted(useResultCode, isSilent = false) {
 }
 
 
-let getOrderId = @(orderObjective) getTblValue("id", orderObjective, -1)
+let getOrderId = @(orderObjective) (orderObjective?.id ?? -1)
 
 function activateOrder(orderItem, onComplete = null, isSilent = false) {
   isActivationProgress = true
@@ -521,12 +520,12 @@ function activateSoonExpiredOrder() {
 
 
 function getOrderStatus(orderObjective) {
-  let statusCode = getTblValue("status", orderObjective, -1)
+  let statusCode = (orderObjective?.status ?? -1)
   return getObjectiveStatusByCode(statusCode)
 }
 
 function getOrderItem(orderObjective) {
-  let objectiveId = getTblValue("objectiveId", orderObjective, null)
+  let objectiveId = orderObjective?.objectiveId
   return findItemById(objectiveId)
 }
 
@@ -556,7 +555,7 @@ function getPlayerDataById(playerId) {
 function getPlayerDataByScoreData(scoreData) {
   if (scoreData.playerId != -1)
     return getPlayerDataById(scoreData.playerId)
-  return getTblValue("playerData", scoreData, emptyPlayerData)
+  return (scoreData?.playerData ?? emptyPlayerData)
 }
 
 function getLocalPlayerData() {
@@ -608,7 +607,7 @@ function prepareStatusScores(statusScores, orderObject) {
       continue
 
     let playerData = getPlayerDataByScoreData(score)
-    if (getTblValue("userId", playerData) == userIdStr.get())
+    if (playerData?.userId == userIdStr.get())
       localPlayerIndex = idx
   }
 
@@ -634,7 +633,7 @@ function getOrderScores(orderObject) {
     addLocalPlayerScoreData(scores)
   }
 
-  let winnerScoreData = getTblValue(orderObject.orderId, winnerScoreDataByOrderId, null)
+  let winnerScoreData = winnerScoreDataByOrderId?[orderObject.orderId]
   if (scores == null || winnerScoreData == null)
     return scores
 
@@ -664,7 +663,7 @@ function getScoreTableTexts() {
     let playerData = getPlayerDataByScoreData(item)
     return {
       score = orderObject.orderType.formatScore(item.score)
-      player =  ". ".concat((getTblValue("playerIndex", item, 0) + 1), buildMplayerName(playerData))
+      player =  ". ".concat(((item?.playerIndex ?? 0) + 1), buildMplayerName(playerData))
     }
   })
 }
@@ -699,7 +698,7 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   
   
   
-  let starterId = getTblValue("starterId", orderObjective, -1)
+  let starterId = (orderObjective?.starterId ?? -1)
   if (starterId == -1 && orderObjective != null && !isForced)
     return
 
@@ -715,16 +714,16 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   activeOrder.orderType = getOrderType(orderObjective)
   activeOrder.orderStatus = getOrderStatus(orderObjective)
   activeOrder.orderItem = getOrderItem(orderObjective)
-  activeOrder.timeToSwitchTarget = getTblValue("timeToSwitchTarget", orderObjective, -1)
+  activeOrder.timeToSwitchTarget = (orderObjective?.timeToSwitchTarget ?? -1)
 
-  let objectiveStarterId = getTblValue("starterId", orderObjective, -1)
-  let orderStartId = getTblValue("id", activeOrder.starterPlayer, -1)
+  let objectiveStarterId = (orderObjective?.starterId ?? -1)
+  let orderStartId = (activeOrder.starterPlayer?.id ?? -1)
   
   if (orderStartId != objectiveStarterId || activeOrder.starterPlayer == null)
     activeOrder.starterPlayer = getPlayerDataById(objectiveStarterId)
 
-  let objectiveTargetId = getTblValue("targetId", orderObjective, -1)
-  let orderTargetId = getTblValue("id", activeOrder.targetPlayer, -1)
+  let objectiveTargetId = (orderObjective?.targetId ?? -1)
+  let orderTargetId = (activeOrder.targetPlayer?.id ?? -1)
   
   if (orderTargetId != objectiveTargetId || activeOrder.targetPlayer == null)
     activeOrder.targetPlayer = getPlayerDataById(objectiveTargetId)
@@ -860,7 +859,7 @@ function openOrdersInventory() {
   if (!orderCanBeActivated())
     return showInfoMsgBox(getWarningText(), "orders_cant_be_activated")
 
-  loadHandler(gui_handlers.OrderActivationWindow, { curTab = itemsTab.INVENTORY })
+  loadHandler(get_gui_handler("OrderActivationWindow"), { curTab = itemsTab.INVENTORY })
 }
 
 function saveOrderStatusPositionAndSize() {
@@ -897,11 +896,12 @@ function disableOrders() {
     debug_dump_stack()
     return
   }
-  ordersEnabled = false
   removeAllListenersByEnv(eventToHandlerMap)
   ordersStatusObj = null
   listenersEnabled = false
+  
   updateActiveOrder()
+  ordersEnabled = false
   timesUsedByOrderItemId.clear()
   playerDataById.clear()
   activeLocalOrderIds.clear()
@@ -1005,7 +1005,7 @@ function on_order_result_received(data) {
 }
 
 eventbus_subscribe("on_order_result_received", on_order_result_received)
-eventbus_subscribe("active_order_request_update", @(_) updateActiveOrder())
+eventbus_subscribe("active_order_request_update", @(_) ordersEnabled && updateActiveOrder())
 eventbus_subscribe("active_order_enable", @(_) enableOrdersWithoutDagui())
 
 return {

@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module bitfield_trait shared private
@@ -14,7 +12,6 @@ module bitfield_trait shared private
 require daslib/ast
 require daslib/ast_boost
 require daslib/contracts
-require daslib/strings_boost
 require daslib/templates_boost
 require daslib/macro_boost
 
@@ -27,15 +24,11 @@ def public each(argT) {
 [tag_function_macro(tag="each_bitfield_tag")]
 class EachBitfieldMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         macro_verify(call.arguments[0]._type != null, compiling_program(), call.at, "expecting argument type")
         macro_verify(call.arguments[0]._type.isBitfield, compiling_program(), call.at, "expecting a bitfield type")
         var yields : array<ExpressionPtr>
+        yields |> reserve(length(call.arguments[0]._type.argNames))
         if (call.arguments[0]._type.baseType == Type.tBitfield8) {
             for (bit in iter_range(call.arguments[0]._type.argNames)) {
                 yields |> push(qmacro_expr(${ yield $v(bitfield8(1ul << uint64(bit))); }))
@@ -76,18 +69,10 @@ def public each_bit_name(argT) {
 [tag_function_macro(tag="each_bit_name_bitfield_tag")]
 class EachBitNameBitfieldMacro : AstFunctionAnnotation {
     
-    
-    
-    
-    
-    
     def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
         macro_verify(call.arguments[0]._type != null, compiling_program(), call.at, "expecting argument type")
         macro_verify(call.arguments[0]._type.isBitfield, compiling_program(), call.at, "expecting a bitfield type")
-        var yields : array<ExpressionPtr>
-        for (name in call.arguments[0]._type.argNames) {
-            yields |> push(qmacro_expr(${ yield $v(string(name)); }))
-        }
+        var yields <- [for (name in call.arguments[0]._type.argNames); qmacro_expr(${ yield $v(string(name)); })]
         let call_name = "field`names`{call.arguments[0]._type.get_mnh}"
         var qfn = qmacro_function(call_name) {
             return <- generator<string> {

@@ -6,37 +6,59 @@ require %appGame.infantry.es.net_console_macro
 require %game.events
 
 
+def soldier_rearm_create_ammo_items(ammoTemplates : Array; ammo_count : int; hero_eid : EntityId)
+  for ammoTemplateItem in ammoTemplates
+    let ammoTemplate = ammoTemplateItem ?? ""
+    if ammoTemplate == ""
+      continue
+    for _i in range(0, ammo_count)
+      createEntity(ammoTemplate) <| $(var init : ComponentsInitializer)
+        set(init, "item__ownerEid", hero_eid)
+
 [net_console_cmd(name="soldier.rearm", hint="Restore soldier gun's ammo")]
 def soldier_rearm_cmd(ammo_count : int = 10; @net_hero hero_eid : EntityId)
-  query(hero_eid) <| $ [es] (human_weap__gunEids : EidList)
-    for gunEid in human_weap__gunEids
-      query(gunEid) <| $ [es] (gun__ammoHolders : Array)
-        for ammoHolder in gun__ammoHolders
-          let ammoTemplate = ammoHolder ?? ""
-          if ammoTemplate == ""
-            continue
-          for _i in range(0, ammo_count)
-            createEntity(ammoTemplate) <| $(var init : ComponentsInitializer)
-              set(init, "item__ownerEid", hero_eid)
+  query(hero_eid) <| $ [es] (human_weap__gunEids : EidList; human_weap__gunMods : Array)
+    for gunSlot in range(0, length(human_weap__gunEids))
+      query(human_weap__gunEids[gunSlot]) <| $ [es] (gun__ammoHolders : Array)
+        soldier_rearm_create_ammo_items(gun__ammoHolders, ammo_count, hero_eid)
 
+      let gunMods = human_weap__gunMods[gunSlot] |> get_ecs_EidList()
+      if gunMods != null
+        for gunModEid in *gunMods
+          query(gunModEid) <| $ [es] (gun__ammoItemTemplates : Array)
+            soldier_rearm_create_ammo_items(gun__ammoItemTemplates, ammo_count, hero_eid)
+
+def soldier_unarm_remove_ammo_by_holder_id(var itemContainer : EidList&; ammo_holder_id : int)
+  var index = length(itemContainer) - 1
+  while index >= 0
+    query(itemContainer[index]) <| $ [es] (ammo_holder__id : int)
+      if ammo_holder__id == ammo_holder_id
+        destroyEntity(itemContainer[index])
+        itemContainer |> erase(index)
+    index--
 
 [net_console_cmd(name="soldier.unarm", hint="Disarm soldier gun's ammo")]
 def soldier_unarm_cmd(@net_hero hero_eid : EntityId)
-  query(hero_eid) <| $ [es] (human_weap__currentGunEid : EntityId;
+  query(hero_eid) <| $ [es] (human_weap__gunEids : EidList; human_weap__gunMods : Array;
                              var itemContainer : EidList&)
-    query(human_weap__currentGunEid) <| $ [es] (gun__ammoHolders : Array)
-      let humanAmmoTemplate = gun__ammoHolders?[0] ?? ""
-      if empty(humanAmmoTemplate)
-        return
-      let humanAmmoHolderId = int(ecs_hash(humanAmmoTemplate))
-      var index = length(itemContainer) - 1
-      while index >= 0
-        query(itemContainer[index]) <| $ [es] (ammo_holder__id : int)
-          if ammo_holder__id == humanAmmoHolderId
-            destroyEntity(itemContainer[index])
-            itemContainer |> erase(index)
-        index--
-    sendEventImmediate(human_weap__currentGunEid, CmdUnloadAmmo(unloadManually = true))
+    for gunSlot in range(0, length(human_weap__gunEids))
+      let gunEid = human_weap__gunEids[gunSlot]
+      query(gunEid) <| $ [es] (gun__ammoHolders : Array)
+        let humanAmmoTemplate = gun__ammoHolders?[0] ?? ""
+        if !empty(humanAmmoTemplate)
+          soldier_unarm_remove_ammo_by_holder_id(itemContainer, int(ecs_hash(humanAmmoTemplate)))
+      sendEventImmediate(gunEid, CmdUnloadAmmo(unloadManually = true))
+
+      let gunMods = human_weap__gunMods[gunSlot] |> get_ecs_EidList()
+      if gunMods != null
+        for gunModEid in *gunMods
+          query(gunModEid) <| $ [es] (gun__ammoItemTemplates : Array)
+            for ammoItem in gun__ammoItemTemplates
+              let ammoTemplate = ammoItem ?? ""
+              if ammoTemplate == ""
+                continue
+              soldier_unarm_remove_ammo_by_holder_id(itemContainer, int(ecs_hash(ammoTemplate)))
+          sendEventImmediate(gunModEid, CmdUnloadAmmo(unloadManually = true))
 
 [net_console_cmd(name="humanphys.forceSimplifiedPhysAll", hint="0 - default, 1 for enable, 2 force disable")]
 def human_phys_simplified_phys_debug(mode = 0)

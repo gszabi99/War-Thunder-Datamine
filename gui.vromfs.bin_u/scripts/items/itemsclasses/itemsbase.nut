@@ -1,17 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "dagor.time" import get_time_msec
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import char_send_blk, wp_get_item_cost_gold, wp_get_item_cost
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/dagui_library.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { get_time_msec } = require("dagor.time")
-let { get_charserver_time_sec } = require("chard")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -69,8 +69,7 @@ let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
 let { checkLegalRestrictions, isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
-let { showGuestEmailRegistration, needShowGuestEmailRegistration
-} = require("%scripts/user/suggestionEmailRegistration.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 
 
 const ITEM_SOON_EXPIRE_SEC = 14400
@@ -267,7 +266,7 @@ let BaseItem = class {
     if (!checkObj(obj))
       return
 
-    let addItemName = getTblValue("addItemName", params, true)
+    let addItemName = (params?.addItemName ?? true)
     let imageData = this.allowBigPicture ? this.getBigIcon() : this.getIcon(addItemName)
     if (!imageData)
       return
@@ -368,21 +367,21 @@ let BaseItem = class {
   shouldShowAmount = @(count) count > 1 || count == 0 || this.transferAmount > 0
 
   function getViewData(params = {}) {
-    let openedPicture = getTblValue("openedPicture", params, false)
-    let bigPicture = getTblValue("bigPicture", params, false)
-    let addItemName = getTblValue("addItemName", params, true)
+    let openedPicture = (params?.openedPicture ?? false)
+    let bigPicture = (params?.bigPicture ?? false)
+    let addItemName = (params?.addItemName ?? true)
     let res = {
       layered_image = params?.overrideLayeredImage
         ?? (openedPicture ? (bigPicture ? this.getOpenedBigIcon() : this.getOpenedIcon()) : bigPicture ? this.getBigIcon() : this.getIcon(addItemName))
-      enableBackground = getTblValue("enableBackground", params, true)
+      enableBackground = (params?.enableBackground ?? true)
     }
 
-    if (getTblValue("showTooltip", params, true))
+    if ((params?.showTooltip ?? true))
       res.tooltipId <- this.isInventoryItem && this.uids && this.uids.len()
                        ? getTooltipType("INVENTORY").getTooltipId(this.uids[0])
                        : getTooltipType("ITEM").getTooltipId(this.id, { isDisguised = this.isDisguised })
 
-    if (getTblValue("showPrice", params, true))
+    if ((params?.showPrice ?? true))
       res.price <- this.getCost().getTextAccordingToBalance()
 
     foreach (paramName, value in params)
@@ -392,7 +391,7 @@ let BaseItem = class {
     if ((this.hasCraftTimer() && (params?.hasCraftTimer ?? true)) || craftTimerText)
       res.craftTime <- craftTimerText ?? this.getCraftTimeTextShort()
 
-    if (this.hasTimer() && getTblValue("hasTimer", params, true))
+    if (this.hasTimer() && (params?.hasTimer ?? true))
       res.expireTime <- this.getTimeLeftText()
 
     if (this.isRare() && (params?.showRarity ?? true))
@@ -407,11 +406,11 @@ let BaseItem = class {
     if (this.isActive())
       res.active <- true
 
-    res.hasButton <- getTblValue("hasButton", params, true)
-    res.onClick <- getTblValue("onClick", params, null)
+    res.hasButton <- (params?.hasButton ?? true)
+    res.onClick <- params?.onClick
     res.hasFocusBorder <- params?.hasFocusBorder ?? true
 
-    if (getTblValue("contentIcon", params, true))
+    if ((params?.contentIcon ?? true))
       res.contentIconData <- this.getContentIconData()
 
     res.isPrizeUnitBought <- this?.isPrizeUnitBought() ?? false
@@ -421,7 +420,7 @@ let BaseItem = class {
   
   
   function getSubstitutionViewData(res, params) {
-    if (getTblValue("showAction", params, true)) {
+    if ((params?.showAction ?? true)) {
       let mainActionData = params?.overrideMainActionData ?? this.getMainActionData(true, params)
       res.isInactive <- (params?.showButtonInactiveIfNeed ?? false)
         && (mainActionData?.isInactive ?? false)
@@ -447,7 +446,7 @@ let BaseItem = class {
       if (isSelfAmount && this.transferAmount > 0)
         res.isInTransfer <- true
     }
-    if (getTblValue("showSellAmount", params, false)) {
+    if ((params?.showSellAmount ?? false)) {
       let sellAmount = this.getSellAmount()
       if (sellAmount > 1)
         res.amount <- $"{sellAmount}{additionalTextInAmmount}"
@@ -491,7 +490,7 @@ let BaseItem = class {
   function _requestBuy(params = {}) {
     let blk = DataBlock()
     blk["name"] = this.id
-    blk["count"] = getTblValue("count", params, this.getSellAmount())
+    blk["count"] = (params?.count ?? this.getSellAmount())
     blk["cost"] = params.cost
     blk["costGold"] = params.costGold
 
@@ -727,9 +726,9 @@ let BaseItem = class {
     let limitData = this.getLimitData()
     foreach (name in ["Global", "PersonalTotal", "PersonalAtTime"]) {
       let limitName = format("limit%s", name)
-      let limitValue = getTblValue(limitName, this, 0)
+      let limitValue = (this?[limitName] ?? 0)
       let countName = format("count%s", name)
-      let countValue = getTblValue(countName, limitData, 0)
+      let countValue = (limitData?[countName] ?? 0)
       if (0 < limitValue && limitValue <= countValue) {
         data.result = false
         data.reason = loc(format("items/limitDescription/maxedOut/limit%s", name))

@@ -1,25 +1,25 @@
+import "%rGui/missileSalvoTimer.nut" as missileSalvoTimer
+import "%rGui/agmAim.nut" as agmAim
+from "%rGui/style/screenState.nut" import bw, bh, rw, rh
+from "%rGui/airHudElems.nut" import turretAngles, sight, paramsTable, targetSize, launchDistanceMax, compassElem, lockSight
+  , rangeFinder, vertSpeed, agmLaunchZone, detectAlly
+from "%rGui/airState.nut" import TargetPodMask, EmptyMask, SightMask, HudColor, HudParamColor, AlertColorHigh, IsRangefinderEnabled
+  , MfdColor, IsMfdEnabled
+from "%rGui/radar.nut" import radarHud, radarIndication
+from "%rGui/radarState.nut" import isCollapsedRadarInReplay
+from "%rGui/hudState.nut" import isPlayingReplay
+from "%rGui/radarComponent.nut" import maxLabelWidth, maxLabelHeight
+from "%rGui/twsState.nut" import IsMlwsLwsHudVisible, IsTwsDamaged
+from "%rGui/airHudComponents.nut" import twsElement
+from "%rGui/airSight.nut" import laserPointComponent, laserDesignatorComponent, laserDesignatorStatusComponent, agmTrackZoneComponent, agmTrackerStatusComponent, gunDirection
+from "%rGui/options/options.nut" import crosshairColorOpt
 from "%rGui/globals/ui_library.nut" import *
-let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
-let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax, compassElem,
-  lockSight, rangeFinder, vertSpeed, agmLaunchZone, detectAlly } = require("%rGui/airHudElems.nut")
-let { TargetPodMask, EmptyMask, SightMask, HudColor, HudParamColor, AlertColorHigh, IsRangefinderEnabled,
-  MfdColor, IsMfdEnabled } = require("%rGui/airState.nut")
-let missileSalvoTimer = require("%rGui/missileSalvoTimer.nut")
-let { radarHud, radarIndication } = require("%rGui/radar.nut")
-let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
-let { isPlayingReplay } = require("%rGui/hudState.nut")
-let { maxLabelWidth, maxLabelHeight } = require("%rGui/radarComponent.nut")
-let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("%rGui/twsState.nut")
-let { twsElement } = require("%rGui/airHudComponents.nut")
-let { laserPointComponent, laserDesignatorComponent, laserDesignatorStatusComponent,
-  agmTrackZoneComponent, agmTrackerStatusComponent, gunDirection } = require("%rGui/airSight.nut")
-let { crosshairColorOpt } = require("%rGui/options/options.nut")
-let agmAim = require("%rGui/agmAim.nut")
+
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 
-let aircraftSight = @(width, height) function() {
-  let paramsTableWidth = hdpx(330)
-  let paramsTableHeight = hdpx(22)
+function aircraftSight(width, height) {
+  const paramsTableWidth = hdpx(330)
+  const paramsTableHeight = hdpx(22)
   let tablePos = Computed(@() [max(bw.get(), sw(50) - hdpx(500)), sh(50) - hdpx(100)])
 
   let aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask, EmptyMask,
@@ -30,7 +30,7 @@ let aircraftSight = @(width, height) function() {
   let compassSize = [hdpx(420), hdpx(40)]
   let compassPos = [sw(50) - 0.5 * compassSize[0], sh(15)]
 
-  let radarSize = sh(28)
+  const radarSize = sh(28)
   let radarPosWatched = Computed(@()
   isPlayingReplay.get() ?
   [
@@ -61,7 +61,7 @@ let aircraftSight = @(width, height) function() {
   ])
   )
 
-  return {
+  return @() {
     watch = [IsRangefinderEnabled, isCollapsedRadarInReplay, radarPosWatched, IsTwsDamaged]
     size = [width, height]
     children = [
@@ -83,7 +83,7 @@ let aircraftSight = @(width, height) function() {
   }
 }
 
-let helicopterSight = @(width, height) function() {
+function helicopterSight(width, height) {
   let compassSize = [hdpx(420), hdpx(40)]
   let compassPos = [sw(50) - 0.5 * compassSize[0], sh(15)]
 
@@ -105,8 +105,8 @@ let helicopterSight = @(width, height) function() {
       bh.get() + 0.5 * (rh.get() * 0.98 - twsSize[0])
     ])
 
-  let paramsTableHeightHeli = hdpx(28)
-  let paramsSightTableWidth = hdpx(270)
+  const paramsTableHeightHeli = hdpx(28)
+  const paramsSightTableWidth = hdpx(270)
   let positionParamsSightTable = Watched([sw(50) - hdpx(250) - hdpx(200), hdpx(480)])
 
   let helicopterSightParamsTable = paramsTable(SightMask, EmptyMask, EmptyMask,
@@ -114,7 +114,7 @@ let helicopterSight = @(width, height) function() {
     positionParamsSightTable,
     hdpx(3))
 
-  return {
+  return @() {
     watch = [HudParamColor, isCollapsedRadarInReplay, radarPosWatched, IsTwsDamaged, IsMfdEnabled]
     size = [width, height]
     children = [

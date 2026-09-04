@@ -1,34 +1,26 @@
+from "%sqStdLibs/helpers/u.nut" import isDataBlock, appendOnce
+from "dagor.workcycle" import resetTimeout
+from "dagor.time" import get_time_msec
+from "%sqstd/json.nut" import saveJson
+from "json" import object_to_json_string
+from "io" import file
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "dagor.fs" import mkpath
+from "console" import register_command
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "language" import getLocalLanguage
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
+from "%scripts/webRPC.nut" import webRpcRegister
+from "types" import Table, Array
 
-let { resetTimeout } = require("dagor.workcycle")
-let { get_time_msec } = require("dagor.time")
-let { saveJson } = require("%sqstd/json.nut")
-let { object_to_json_string } = require("json")
-let { file } = require("io")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
-let { mkpath } = require("dagor.fs")
-let { register_command } = require("console")
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { isDataBlock, appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getLocalLanguage } = require("language")
-let { doesLocTextExist } = require("dagor.localize")
 let buildWeaponsLoc = require("%scripts/exportInfo/weaponsLocExporter.nut")
 let { get_bullets_locId_by_caliber } = require("%scripts/options/optionsStorage.nut")
-let {
-  getUnitWeapons,
-  getUnitPresets,
-  getWeaponsByTypes,
-  getPresetWeapons,
-  getWeaponBlkParams
-} = require("%scripts/weaponry/weaponryPresets.nut")
-let {
-  getBulletsSearchName,
-  getModificationBulletsEffect
-} = require("%scripts/weaponry/bulletsInfo.nut")
+let { getUnitWeapons, getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getBulletsSearchName, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { buildBulletsData } = require("%scripts/weaponry/bulletsVisual.nut")
 let { getMaxArmorPiercing } = require("%scripts/weaponry/dmgModel.nut")
 let { getWeaponNameByBlkPath, isCaliberCannon } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -359,7 +351,7 @@ function makePenetrationData(data) {
     }
 
   let rawCumulativeDamage = data?.cumulativeDamage ?? 0
-  let cumulativeDamage = type(rawCumulativeDamage) == "table"
+  let cumulativeDamage = rawCumulativeDamage instanceof Table
     ? (rawCumulativeDamage?.armorPower ?? 0)
     : rawCumulativeDamage
   if (cumulativeDamage > 0) {
@@ -390,7 +382,7 @@ function makeGuiArmorpowerPenetrationData(guiArmorpower) {
   let rows = []
   let appendRow = function(value) {
     let v = normalizeValue(value)
-    if (type(v) == "array" && v.len() >= 4)
+    if (v instanceof Array && v.len() >= 4)
       rows.append({
         distance = v[3]
         values = {
@@ -401,10 +393,10 @@ function makeGuiArmorpowerPenetrationData(guiArmorpower) {
       })
   }
 
-  if (type(guiArmorpower) == "table")
+  if (guiArmorpower instanceof Table)
     foreach (_key, value in guiArmorpower)
       appendRow(value)
-  else if (type(guiArmorpower) == "array")
+  else if (guiArmorpower instanceof Array)
     foreach (value in guiArmorpower)
       appendRow(value)
   else
@@ -444,7 +436,7 @@ function mergePenetrationData(baseData, extraData) {
 }
 
 function makePenetrationDataFromParamsArray(paramsArray) {
-  if (type(paramsArray) != "array")
+  if (!(paramsArray instanceof Array))
     return makePenetrationData(paramsArray)
 
   local res = null
@@ -1149,7 +1141,7 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
       addProjectileRef(projectilesDb, key, raw)
 
     local ttxForBullet = null
-    if (type(calcResult) == "array")
+    if (calcResult instanceof Array)
       ttxForBullet = (idx < calcResult.len()) ? calcResult[idx] : null
     else if (calcResult != null)
       ttxForBullet = calcResult
@@ -1510,4 +1502,4 @@ function debug_build_weapons_db_async(onlyUnitName = "") {
 register_command(debug_build_weapons_db_one, "debug.build_weapons_db_one")
 register_command(debug_build_weapons_db_async, "debug.build_weapons_db_async")
 
-web_rpc.register_handler("exportWeaponsInfo", build_weapons_db_async)
+webRpcRegister("exportWeaponsInfo", build_weapons_db_async)

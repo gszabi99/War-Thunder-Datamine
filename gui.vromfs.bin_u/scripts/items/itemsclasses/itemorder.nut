@@ -1,24 +1,21 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqstd/datablock.nut" import convertBlk
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_order_award_mode } = require("%scripts/items/orderAwardMode.nut")
 let { orderUseResult } = require("%scripts/items/orderUseResult.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
-let { getOrderActivateInfoText, getTimesUsedOrderItem, isOrderItemActive, activateOrder,
-  orderCanBeActivated, checkCurrentMission
-} = require("%scripts/items/orders.nut")
+let { getOrderActivateInfoText, getTimesUsedOrderItem, isOrderItemActive, activateOrder, orderCanBeActivated, checkCurrentMission } = require("%scripts/items/orders.nut")
 
 let Order = class (BaseItem) {
   static iType = itemType.ORDER
@@ -124,12 +121,12 @@ let Order = class (BaseItem) {
 
   function initMissionOrderParams(blk) {
     
-    this.onlyIssuerTeam = getTblValue("onlyIssuerTeam", blk, false)
-    this.timeTotal = getTblValue("timeTotal", blk, 0)
-    this.cooldown = getTblValue("cooldown", blk, 0)
-    this.cooldownOtherTeam = getTblValue("cooldownOtherTeam", blk, 0)
-    this.delayFromStart = getTblValue("delayFromStart", blk, 0)
-    this.awardOnCancel = getTblValue("awardOnCancel", blk, false)
+    this.onlyIssuerTeam = (blk?.onlyIssuerTeam ?? false)
+    this.timeTotal = (blk?.timeTotal ?? 0)
+    this.cooldown = (blk?.cooldown ?? 0)
+    this.cooldownOtherTeam = (blk?.cooldownOtherTeam ?? 0)
+    this.delayFromStart = (blk?.delayFromStart ?? 0)
+    this.awardOnCancel = (blk?.awardOnCancel ?? false)
     this.awardWpByDifficulty = this.parseP3byDifficulty(blk?.awardWp)
     this.awardXpByDifficulty = this.parseP3byDifficulty(blk?.awardXp)
     this.awardGoldByDifficulty = this.parseP3byDifficulty(blk?.awardGold)
@@ -157,7 +154,7 @@ let Order = class (BaseItem) {
 
 
   function checkMission(missionName) {
-    let missionRestriction = getTblValue("missionRestriction", this.typeParams, null)
+    let missionRestriction = this.typeParams?.missionRestriction
     if (missionRestriction == null)
       return true 
     if (u.isTable(missionRestriction))
@@ -174,7 +171,7 @@ let Order = class (BaseItem) {
 
   function checkMissionRestriction(restrictionElement, missionName) {
     if (restrictionElement?.type == "missionPostfix") {
-      let missionPostfix = getTblValue("postfix", restrictionElement, null)
+      let missionPostfix = restrictionElement?.postfix
       if (missionPostfix == null)
         return true
       let stringIndex = missionName.len() - missionPostfix.len()
@@ -260,9 +257,9 @@ let Order = class (BaseItem) {
 
   function parseP3byDifficulty(point) {
     return {
-      [g_difficulty.ARCADE] = getTblValue("x", point, 0),
-      [g_difficulty.REALISTIC] = getTblValue("y", point, 0),
-      [g_difficulty.SIMULATOR] = getTblValue("z", point, 0)
+      [g_difficulty.ARCADE] = (point?.x ?? 0),
+      [g_difficulty.REALISTIC] = (point?.y ?? 0),
+      [g_difficulty.SIMULATOR] = (point?.z ?? 0)
     }
   }
 

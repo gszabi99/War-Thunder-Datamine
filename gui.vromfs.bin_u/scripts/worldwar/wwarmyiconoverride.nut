@@ -1,6 +1,6 @@
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings, getSettingsArray
+from "%appGlobals/worldWar/wwArtilleryStatus.nut" import artilleryReadyState
 from "%scripts/dagui_library.nut" import *
-let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
-let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 
 let suffix = {
   UT_GROUND = "LoadedGround"

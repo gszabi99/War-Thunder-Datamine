@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_global_variables = false
 options indenting = 4
 options strict_smart_pointers = true
@@ -57,6 +55,16 @@ let private {
 def JVNull {
     
     return new JsonValue(value <- JsValue(_null = null))
+}
+
+var private g_json_null_sentinel : JsonValue?
+
+def json_null_sentinel : JsonValue ? {
+    
+    if (g_json_null_sentinel == null) {
+        g_json_null_sentinel = JVNull()
+    }
+    return g_json_null_sentinel
 }
 
 def JV(v : string) {
@@ -175,7 +183,7 @@ def private next(var text : iterator<int>; var character, line, row : int&) : bo
     return false
 }
 
-def private _lexer(var stext : string implicit) {
+def private _lexer(var stext : string implicit) {  
     
     return <- generator<TokenAt> {
         var tin : iterator<int>
@@ -190,9 +198,7 @@ def private _lexer(var stext : string implicit) {
             while (is_white_space(ahead) && next(tin, ahead, line, row)) {
                 pass
             }
-            if (empty(tin)) {
-                return false
-            }
+            if (empty(tin)) return false
             if (ahead == '[' || ahead == ']' || ahead == '{' || ahead == '}' || ahead == ':' || ahead == ',') {
                 yield TokenAt(value = Token(_symbol = ahead), line = line, row = row)
                 next(tin, ahead)
@@ -386,12 +392,10 @@ def private expect_symbol(var itv : iterator<TokenAt>; var ahead : TokenAt; sym 
     }
 }
 
-def private parse_value(var itv : iterator<TokenAt>; var error : string&) : JsonValue? {
+def private parse_value(var itv : iterator<TokenAt>; var error : string&) : JsonValue? {  
     
     var ahead : TokenAt
-    if (!next(itv, ahead)) {
-        return null
-    }
+    if (!next(itv, ahead)) return null
     if (ahead.value is _symbol) {
         let sym = ahead.value as _symbol
         if (sym == ']') {
@@ -403,16 +407,14 @@ def private parse_value(var itv : iterator<TokenAt>; var error : string&) : Json
             while (!empty(itv)) {
                 var value = parse_value(itv, error)
                 if (value == null) {
-                    if (error |> starts_with("unexpected ]") && length(arr) == 0) {
+                    if (error |> starts_with("unexpected ]") && empty(arr)) {
                         error = ""
                         return JV(arr)
                     }
                     return null
                 }
                 push(arr, value)
-                if (!expect_token(itv, ahead, Token_symbol, error)) {
-                    return null
-                }
+                if (!expect_token(itv, ahead, Token_symbol, error)) return null
                 let sepsym = ahead.value as _symbol
                 if (sepsym == ']') {
                     break;
@@ -430,28 +432,22 @@ def private parse_value(var itv : iterator<TokenAt>; var error : string&) : Json
             var tab : table<string; JsonValue?>;
             while (!empty(itv)) {
                 if (!expect_token(itv, ahead, Token_string, error)) {
-                    if ((ahead.value is _symbol) && (ahead.value as _symbol) == '}' && length(tab) == 0) {
+                    if ((ahead.value is _symbol) && (ahead.value as _symbol) == '}' && empty(tab)) {
                         error = "";
                         return JV(tab);
                     }
                     return null;
                 }
                 let key = ahead.value as _string;
-                if (!expect_symbol(itv, ahead, ':', error)) {
-                    return null;
-                }
+                if (!expect_symbol(itv, ahead, ':', error)) return null;
                 var value = parse_value(itv, error);
-                if (value == null) {
-                    return null;
-                }
+                if (value == null) return null;
                 if (!allow_duplicate_keys && key_exists(tab, key)) {
                     error = "duplicate key {key} at {ahead.line}:{ahead.row}";
                     return null;
                 }
                 tab |> insert(key, value);
-                if (!expect_token(itv, ahead, Token_symbol, error)) {
-                    return null;
-                }
+                if (!expect_token(itv, ahead, Token_symbol, error)) return null;
                 let sepsym = ahead.value as _symbol;
                 if (sepsym == '}') {
                     break;
@@ -550,7 +546,7 @@ def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; dept
     } elif (jsv.value is _longint) {
         write(writer, jsv.value as _longint)
     } elif (jsv.value is _array) {
-        if (length(jsv.value as _array) == 0) {
+        if (empty(jsv.value as _array)) {
             write(writer, "[]")
         } else {
             write(writer, "[\n")
@@ -569,19 +565,13 @@ def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; dept
             write(writer, "]")
         }
     } elif (jsv.value is _object) {
-        if (length(jsv.value as _object) == 0) {
+        if (empty(jsv.value as _object)) {
             write(writer, "\{\}")
         } else {
             write(writer, "\{\n")
             var first = true
             for (elemK, elemV in keys(jsv.value as _object), values(jsv.value as _object)) {
-                if (no_empty_arrays) {
-                    if (elemV.value is _array) {
-                        if (length(elemV.value as _array) == 0) {
-                            continue
-                        }
-                    }
-                }
+                if (no_empty_arrays && elemV.value is _array && empty(elemV.value as _array)) continue
                 if (first) {
                     first = false
                 } else {
@@ -610,6 +600,7 @@ def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; dept
     }
 }
 
+[temp_string_result]
 def write_json(val : JsonValue?) : string {
     
     let st = build_string() $(var writer) {
@@ -618,18 +609,101 @@ def write_json(val : JsonValue?) : string {
     return st
 }
 
-def write_json(val : JsonValue?#) : string {
-    
-    unsafe {
-        return write_json(reinterpret<JsonValue?> val)
+def private write_value_compact(var writer : StringBuilderWriter; jsv : JsonValue?) {
+    if (jsv == null) {
+        write(writer, "null")
+    } elif (jsv.value is _string) {
+        write(writer, "\"")
+        write_escape_string(writer, jsv.value as _string)
+        write(writer, "\"")
+    } elif (jsv.value is _number) {
+        if (no_trailing_zeros) {
+            write(writer, fmt(":.17f", jsv.value as _number) |> rtrim("0") |> rtrim("."))
+        } else {
+            write(writer, jsv.value as _number)
+        }
+    } elif (jsv.value is _longint) {
+        write(writer, jsv.value as _longint)
+    } elif (jsv.value is _array) {
+        write(writer, "[")
+        var first = true
+        for (elem in jsv.value as _array) {
+            if (first) {
+                first = false
+            } else {
+                write(writer, ", ")
+            }
+            write_value_compact(writer, elem)
+        }
+        write(writer, "]")
+    } elif (jsv.value is _object) {
+        write(writer, "\{")
+        var first = true
+        for (elemK, elemV in keys(jsv.value as _object), values(jsv.value as _object)) {
+            if (no_empty_arrays && elemV.value is _array && empty(elemV.value as _array)) {
+                continue
+            }
+            if (first) {
+                first = false
+            } else {
+                write(writer, ", ")
+            }
+            write(writer, "\"")
+            write_escape_string(writer, elemK)
+            write(writer, "\": ")
+            write_value_compact(writer, elemV)
+        }
+        write(writer, "\}")
+    } elif (jsv.value is _bool) {
+        write(writer, (jsv.value as _bool) ? "true" : "false")
+    } elif (jsv.value is _null) {
+        write(writer, "null")
+    } else {
+        panic("unexpected {jsv}")
     }
 }
 
-def try_fixing_broken_json(var bad : string) {
+[temp_string_result]
+def write_json_compact(val : JsonValue?) : string {
+    
+    
+    let st = build_string() $(var writer) {
+        write_value_compact(writer, val)
+    }
+    return st
+}
+
+def write_json(val : JsonValue?#) : string {
+    
+    unsafe {
+        return write_json(reinterpret<JsonValue?>(val))
+    }
+}
+
+def delete_json(var jsv : JsonValue?) {
+    
+    if (jsv == null || jsv == g_json_null_sentinel) return
+    unsafe { delete jsv; }
+}
+
+def update(var obj : JsonValue?; key : string; var jsv : JsonValue?) {
+    
+    if (obj == null || !(obj.value is _object)) return
     
     
     
+    if (jsv == null || jsv == g_json_null_sentinel) {
+        jsv = JVNull()
+    }
     
+    
+    if (key_exists(obj.value as _object, key) && (obj.value as _object)[key] != jsv) {
+        delete_json((obj.value as _object)[key])
+    }
+    (obj.value as _object) |> insert(key, jsv)
+}
+
+def try_fixing_broken_json(var bad : string) {  
     
     return build_string() $(writer) {
         peek_data(bad) $(str) {
@@ -658,9 +732,7 @@ def try_fixing_broken_json(var bad : string) {
                     writer |> write_char(int(str[i]));
                     i ++;
                 }
-                if (i >= lstr) {
-                    break;
-                }
+                if (i >= lstr) break  
                 
                 writer |> write_char('"')
                 i ++

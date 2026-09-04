@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_aot = true
 options strict_smart_pointers = true
 
@@ -15,7 +13,9 @@ module jobque_boost shared public
 
 
 
+
 require jobque public
+require math
 
 require daslib/rtti
 require daslib/ast
@@ -27,19 +27,11 @@ require daslib/templates_boost
 [tag_function(new_job_tag)]
 def new_job(var l : lambda) {
     
-    
-    
-    
-    
     invoke(l)   
 }
 
 [tag_function(new_job_tag)]
 def new_thread(var l : lambda) {
-    
-    
-    
-    
     
     invoke(l)   
 }
@@ -62,8 +54,8 @@ class private NewJobMacro : AstFunctionAnnotation {
         var stype_ptr = stype
         var sttype = new TypeDecl(at = call.at, baseType = Type.tStructure, structType = stype_ptr)
         for (fld in stype.fields) {
-            fld._type.flags &= ~(TypeDeclFlags.constant)
-            fld.flags &= ~(FieldDeclarationFlags.capturedConstant)
+            fld._type.flags.constant = false
+            fld.flags.capturedConstant = false
         }
         var pclone = make_clone_structure(stype_ptr)
         let const_clone = pclone.arguments[1]._type.flags.constant
@@ -75,13 +67,13 @@ class private NewJobMacro : AstFunctionAnnotation {
         ftype.argTypes |> emplace_new <| clone_type(sttype)
         ftype.argTypes |> emplace <| sttype
         if (const_clone) {
-            ftype.argTypes[1].flags |= TypeDeclFlags.constant
+            ftype.argTypes[1].flags.constant = true
         }
         
         var ncall = new ExprCall(at = call.at, name := "{call.name}_invoke")
         ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
         ncall.arguments |> emplace_new <| new ExprAddr(at = call.at, target := "clone", funcType <- ftype)
-        ncall.arguments |> emplace_new <| new ExprConstInt(at = call.at, value = int(mks._type.sizeOf))
+        ncall.arguments |> emplace_new <| new ExprConstInt(at = call.at, value = mks._type.sizeOf)
         return <- ncall
     }
 }
@@ -90,7 +82,7 @@ def gather(ch : Channel?; blk : block<(arg : auto(TT)#) : void>) {
     
     
     _builtin_channel_gather(ch) $(var data : void?) {
-        invoke(blk, *(unsafe(reinterpret<TT?#> data)))
+        invoke(blk, *(unsafe(reinterpret<TT?#>(data))))
     }
 }
 
@@ -98,7 +90,7 @@ def gather_ex(ch : Channel?; blk : block<(arg : auto(TT)#; info : TypeInfo const
     
     
     _builtin_channel_gather_ex(ch) $(var data : void?; info : TypeInfo const?; var ctx : Context) {
-        invoke(blk, *(unsafe(reinterpret<TT?#> data)), info, ctx)
+        invoke(blk, *(unsafe(reinterpret<TT?#>(data))), info, ctx)
     }
 }
 
@@ -106,7 +98,7 @@ def gather_and_forward(ch, toCh : Channel?; blk : block<(arg : auto(TT)#) : void
     
     
     _builtin_channel_gather_and_forward(ch, toCh) $(var data : void?) {
-        invoke(blk, *(unsafe(reinterpret<TT?#> data)))
+        invoke(blk, *(unsafe(reinterpret<TT?#>(data))))
     }
 }
 
@@ -114,7 +106,7 @@ def peek(ch : Channel?; blk : block<(arg : auto(TT)#) : void>) {
     
     
     _builtin_channel_peek(ch) $(var data : void?) {
-        invoke(blk, *(unsafe(reinterpret<TT?#> data)))
+        invoke(blk, *(unsafe(reinterpret<TT?#>(data))))
     }
 }
 
@@ -129,13 +121,9 @@ def for_each(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
         _builtin_channel_pop(channel) $(vd) {
             void_data = vd
         }
-        if (void_data == null) {
-            break
-        }
-        unsafe {
-            let typed_data = reinterpret<TT?#> void_data
-            invoke(blk, *typed_data)
-        }
+        if (void_data == null) break
+        let typed_data = unsafe(reinterpret<TT?#>(void_data))
+        invoke(blk, *typed_data)
     }
 }
 
@@ -149,13 +137,11 @@ def for_each_clone(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
         _builtin_channel_pop(channel) $(vd) {
             if (vd != null) {
                 any = true
-                temp := *(unsafe(reinterpret<TT -# -& -const?#> vd))
+                temp := *(unsafe(reinterpret<TT -# -& -const?#>(vd)))
             }
         }
-        if (!any) {
-            break
-        }
-        invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
+        if (!any) break
+        invoke(blk, unsafe(reinterpret<TT -& -const#>(temp)))
         delete temp
     }
 }
@@ -167,14 +153,10 @@ def pop_one(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
     _builtin_channel_pop(channel) $(vd) {
         void_data = vd
     }
-    if (void_data == null) {
-        return false
-    }
-    unsafe {
-        let typed_data = reinterpret<TT?#> void_data
-        invoke(blk, *typed_data)
-        return true
-    }
+    if (void_data == null) return false
+    let typed_data = unsafe(reinterpret<TT?#>(void_data))
+    invoke(blk, *typed_data)
+    return true
 }
 
 def pop_and_clone_one(channel : Channel?; blk : block<(res : auto(TT)#) : void>) {
@@ -184,13 +166,11 @@ def pop_and_clone_one(channel : Channel?; blk : block<(res : auto(TT)#) : void>)
     _builtin_channel_pop(channel) $(vd) {
         if (vd != null) {
             any = true
-            temp := *(unsafe(reinterpret<TT -# -& -const?#> vd))
+            temp := *(unsafe(reinterpret<TT -# -& -const?#>(vd)))
         }
     }
-    if (!any) {
-        return false
-    }
-    invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
+    if (!any) return false
+    invoke(blk, unsafe(reinterpret<TT -& -const#>(temp)))
     delete temp
     return true
 }
@@ -200,7 +180,7 @@ def try_pop(channel : Channel?; blk : block<(res : auto(TT)#) : void>) : bool {
     
     var result = false
     result = _builtin_channel_try_pop(channel) $(data) {
-        invoke(blk, *(unsafe(reinterpret<TT?#> data)))
+        invoke(blk, *(unsafe(reinterpret<TT?#>(data))))
     }
     return result
 }
@@ -211,12 +191,10 @@ def try_pop_clone(channel : Channel?; blk : block<(res : auto(TT)#) : void>) : b
     var temp : TT -# -& -const
     var any = false
     any = _builtin_channel_try_pop(channel) $(data) {
-        temp := *(unsafe(reinterpret<TT -# -& -const?#> data))
+        temp := *(unsafe(reinterpret<TT -# -& -const?#>(data)))
     }
-    if (!any) {
-        return false
-    }
-    invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
+    if (!any) return false
+    invoke(blk, unsafe(reinterpret<TT -& -const#>(temp)))
     delete temp
     return true
 }
@@ -226,7 +204,7 @@ def pop_with_timeout(channel : Channel?; timeout_ms : int; blk : block<(res : au
     
     var result = false
     result = _builtin_channel_pop_with_timeout(channel, timeout_ms) $(data) {
-        invoke(blk, *(unsafe(reinterpret<TT?#> data)))
+        invoke(blk, *(unsafe(reinterpret<TT?#>(data))))
     }
     return result
 }
@@ -237,12 +215,10 @@ def pop_with_timeout_clone(channel : Channel?; timeout_ms : int; blk : block<(re
     var temp : TT -# -& -const
     var any = false
     any = _builtin_channel_pop_with_timeout(channel, timeout_ms) $(data) {
-        temp := *(unsafe(reinterpret<TT -# -& -const?#> data))
+        temp := *(unsafe(reinterpret<TT -# -& -const?#>(data)))
     }
-    if (!any) {
-        return false
-    }
-    invoke(blk, unsafe(reinterpret<TT -& -const#> temp))
+    if (!any) return false
+    invoke(blk, unsafe(reinterpret<TT -& -const#>(temp)))
     delete temp
     return true
 }
@@ -262,6 +238,7 @@ def push(channel : Channel?; data : auto?) {
 def push_batch_clone(channel : Channel?; data : array<auto(TT)>) {
     
     var heap_data : array<TT?>
+    heap_data |> reserve(length(data))
     for (d in data) {
         var tt = new TT
         *tt := d
@@ -296,7 +273,7 @@ def get(box : LockBox?; blk : block<(res : auto(TT)#) : void>) {
     var res = false
     _builtin_lockbox_get(box) $(void_data) {
         if (void_data != null) {
-            let typed_data = unsafe(reinterpret<TT?#> void_data)
+            let typed_data = unsafe(reinterpret<TT?#>(void_data))
             invoke(blk, *typed_data)
             res = true
         }
@@ -308,13 +285,13 @@ def update(box : LockBox?; blk : block<(var res : auto(TT)#) : void>) {
     
     _builtin_lockbox_update(box, unsafe(reinterpret<TypeInfo?>(typeinfo rtti_typeinfo(type<TT? -#>)))) $(var void_data : void?) {
         if (void_data != null) {
-            var typed_data = unsafe(reinterpret<TT?#> void_data)
+            var typed_data = unsafe(reinterpret<TT?#>(void_data))
             invoke(blk, *typed_data)
             return void_data
         } else {
             var heap_data = new TT
             invoke(blk, *heap_data)
-            return unsafe(reinterpret<void?> heap_data)
+            return unsafe(reinterpret<void?>(heap_data))
         }
     }
 }
@@ -324,7 +301,7 @@ def clear(box : LockBox?; type_ : auto(TT)) {
     
     _builtin_lockbox_update(box, unsafe(reinterpret<TypeInfo?>(typeinfo rtti_typeinfo(type<TT? -#>)))) $(var void_data : void?) : void? {
         if (void_data != null) {
-            var typed_data = unsafe(reinterpret<TT -const?> void_data)
+            var typed_data = unsafe(reinterpret<TT -const?>(void_data))
             unsafe {
                 delete typed_data
             }
@@ -345,12 +322,41 @@ def grab(box : LockBox?; blk : block<(var res : auto(TT)) : void>) : bool {
     var res = false
     _builtin_lockbox_grab(box) $(void_data) {
         if (void_data != null) {
-            var typed_data = unsafe(reinterpret<TT -const?> void_data)
+            var typed_data = unsafe(reinterpret<TT -const?>(void_data))
             invoke(blk, *typed_data)
             res = true
         }
     }
     return res
+}
+
+def publish(box : SeqBox?; value : auto(TT)) : bool {
+    
+    
+    
+    
+    
+    concept_assert(typeinfo is_pod(type<TT>) && typeinfo is_raw(type<TT>),
+        "SeqBox payload must be raw POD - the value is copied byte-wise, heap references would dangle")
+    concept_assert(typeinfo sizeof(type<TT>) <= SEQ_BOX_PAYLOAD, "SeqBox payload is at most 64 bytes")
+    return _builtin_seq_box_publish(box, unsafe(addr<void?>(value)), typeinfo sizeof(type<TT>))
+}
+
+def read(box : SeqBox?; blk : block<(value : auto(TT)) : void>) : bool {
+    
+    
+    
+    
+    
+    concept_assert(typeinfo is_pod(type<TT>) && typeinfo is_raw(type<TT>),
+        "SeqBox payload must be raw POD - the value is copied byte-wise, heap references would dangle")
+    concept_assert(typeinfo sizeof(type<TT>) <= SEQ_BOX_PAYLOAD, "SeqBox payload is at most 64 bytes")
+    var value : TT = default<TT>
+    if (!_builtin_seq_box_read(box, unsafe(addr<void?>(value)), typeinfo sizeof(type<TT>))) {
+        return false
+    }
+    invoke(blk, value)
+    return true
 }
 
 [template(tinfo), deprecated(message="use `each_clone` instead")]
@@ -365,11 +371,9 @@ def each(var channel : Channel?; tinfo : auto(TT)) {
                 _builtin_channel_pop(channel) $(vd) {
                     void_data = vd
                 }
-                if (void_data == null) {
-                    break
-                }
+                if (void_data == null) break
                 unsafe {
-                    yield *reinterpret<TT?#> void_data
+                    yield *reinterpret<TT?#>(void_data)
                 }
             }
             return false
@@ -392,13 +396,11 @@ def each_clone(var channel : Channel?; tinfo : auto(TT)) {
                 _builtin_channel_pop(channel) $(vd) {
                     if (vd != null) {
                         any = true
-                        temp := *(unsafe(reinterpret<TT -# -& -const?#> vd))
+                        temp := *(unsafe(reinterpret<TT -# -& -const?#>(vd)))
                     }
                 }
-                if (!any) {
-                    break
-                }
-                yield unsafe(reinterpret<TT -& -const#> temp)
+                if (!any) break
+                yield unsafe(reinterpret<TT -& -const#>(temp))
                 delete temp
             }
             return false
@@ -410,12 +412,9 @@ def each_clone(var channel : Channel?; tinfo : auto(TT)) {
 
 
 
-
-
-
 require daslib/archive
 
-def push(stream : Stream?; var data : array<uint8>) {
+def push(stream : Stream?; data : array<uint8>) {
     
     
     _builtin_stream_push(stream, data)
@@ -426,7 +425,7 @@ def push(stream : Stream?; data : array<uint8> const#) {
     _builtin_stream_push(stream, data)
 }
 
-def push_batch(stream : Stream?; var data : array<array<uint8>>) {
+def push_batch(stream : Stream?; data : array<array<uint8>>) {
     
     _builtin_stream_push_batch(stream, data)
 }
@@ -473,7 +472,7 @@ def pop_archive(stream : Stream?; blk : block<(var value : auto(TT)&) : void>) :
     var any = false
     var value : TT -# -& -const
     _builtin_stream_pop(stream) $(bytes : array<uint8># -const) {
-        if (length(bytes) > 0) {
+        if (!empty(bytes)) {
             any = true
             mem_archive_load(bytes, value)
         }
@@ -544,15 +543,9 @@ def done(var status : JobStatus?&) {
 
 def _parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job_begin : int; job_end : int; var wg : JobStatus?) : void>) {
     
-    
-    
-    
-    
     let total = range_end - range_begin
-    if (total <= 0 || num_jobs <= 0) {
-        return
-    }
-    let actual_jobs = num_jobs < total ? num_jobs : total
+    if (total <= 0 || num_jobs <= 0) return
+    let actual_jobs = min(num_jobs, total)
     let chunk = total / actual_jobs
     let remainder = total % actual_jobs
     with_wait_group(actual_jobs) $(wg) {
@@ -564,10 +557,15 @@ def _parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job
             offset = job_end
             invoke(blk, job_begin, job_end, wg)
         }
+        
+        
+        while (!wg.isReady) {
+            break if (!jobque_try_run_one())
+        }
     }
 }
 
-[tag_function(tag_parallel_for)]
+[tag_function(tag_parallel_for), unused_argument(range_begin, range_end, num_jobs, blk)]
 def parallel_for(range_begin, range_end : int; num_jobs : int; blk : block<(job_begin : int; job_end : int; var wg : JobStatus?) : void>) {
     
 }
@@ -591,21 +589,131 @@ class private ParallelForJobMacro : AstFunctionAnnotation {
     }
 }
 
+[tag_function(tag_team_parallel_for), unused_argument(num_jobs)]
+def team_parallel_for(range_begin, range_end : int; num_jobs : int; var l : lambda<(job_begin : int; job_end : int) : void>) {
+    
+    invoke(l, range_begin, range_end)   
+}
+
+[tag_function(tag_team_parallel_for_indexed), unused_argument(num_jobs)]
+def team_parallel_for_indexed(range_begin, range_end : int; num_jobs : int; var l : lambda<(slot : int; job_begin : int; job_end : int) : void>) {
+    
+    invoke(l, 0, range_begin, range_end)   
+}
+
+[tag_function(tag_team_parallel_stages)]
+def team_parallel_stages(stages : array<int3>; var l : lambda<(stage : int; job_begin : int; job_end : int) : void>) {
+    
+    var idx = 0
+    for (s in stages) {
+        
+        
+        if (s.y > s.x) {
+            invoke(l, idx, s.x, s.y)
+        }
+        idx++
+    }
+}
+
+[tag_function_macro(tag="tag_team_parallel_stages")]
+class private TeamParallelStagesMacro : AstFunctionAnnotation {
+    
+    
+    def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
+        macro_verify(call.arguments[1] is ExprAscend, compiling_program(), call.at, "expecting lambda declaration, ExprAscend")
+        var asc = call.arguments[1] as ExprAscend
+        macro_verify(asc.subexpr is ExprMakeStruct, compiling_program(), call.at, "expecting lambda declaration, ExprMakeStruct")
+        var mks = asc.subexpr as ExprMakeStruct
+        macro_verify(!(mks._type == null || mks._type.baseType != Type.tStructure), compiling_program(), call.at, "expecting lambda declaration, not a structure")
+        
+        var stype <- clone_structure(mks._type.structType)
+        stype.name := "{stype.name}_team_stages_clone"
+        var stype_ptr = stype
+        var sttype = new TypeDecl(at = call.at, baseType = Type.tStructure, structType = stype_ptr)
+        for (fld in stype.fields) {
+            fld._type.flags.constant = false
+            fld.flags.capturedConstant = false
+        }
+        var pclone = make_clone_structure(stype_ptr)
+        let const_clone = pclone.arguments[1]._type.flags.constant
+        compiling_module() |> add_function(pclone)
+        compiling_module() |> add_structure(stype)
+        
+        var ftype = new TypeDecl(at = call.at, baseType = Type.tFunction)
+        ftype.firstType = new TypeDecl(at = call.at, baseType = Type.tVoid)
+        ftype.argTypes |> emplace_new <| clone_type(sttype)
+        ftype.argTypes |> emplace <| sttype
+        if (const_clone) {
+            ftype.argTypes[1].flags.constant = true
+        }
+        
+        var ncall = new ExprCall(at = call.at, name := "team_parallel_stages_invoke")
+        ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
+        ncall.arguments |> emplace_new <| clone_expression(call.arguments[1])
+        ncall.arguments |> emplace_new <| new ExprAddr(at = call.at, target := "clone", funcType <- ftype)
+        ncall.arguments |> emplace_new <| new ExprConstInt(at = call.at, value = mks._type.sizeOf)
+        return <- ncall
+    }
+}
+
+[tag_function_macro(tag="tag_team_parallel_for")]
+class private TeamParallelForMacro : AstFunctionAnnotation {
+    
+    
+    function_name : string = "team_parallel_for_invoke"
+    def override transform(var call : ExprCallFunc?; var errors : das_string) : ExpressionPtr {
+        macro_verify(call.arguments[3] is ExprAscend, compiling_program(), call.at, "expecting lambda declaration, ExprAscend")
+        var asc = call.arguments[3] as ExprAscend
+        macro_verify(asc.subexpr is ExprMakeStruct, compiling_program(), call.at, "expecting lambda declaration, ExprMakeStruct")
+        var mks = asc.subexpr as ExprMakeStruct
+        macro_verify(!(mks._type == null || mks._type.baseType != Type.tStructure), compiling_program(), call.at, "expecting lambda declaration, not a structure")
+        
+        var stype <- clone_structure(mks._type.structType)
+        stype.name := "{stype.name}_team_pfor_clone"
+        var stype_ptr = stype
+        var sttype = new TypeDecl(at = call.at, baseType = Type.tStructure, structType = stype_ptr)
+        for (fld in stype.fields) {
+            fld._type.flags.constant = false
+            fld.flags.capturedConstant = false
+        }
+        var pclone = make_clone_structure(stype_ptr)
+        let const_clone = pclone.arguments[1]._type.flags.constant
+        compiling_module() |> add_function(pclone)
+        compiling_module() |> add_structure(stype)
+        
+        var ftype = new TypeDecl(at = call.at, baseType = Type.tFunction)
+        ftype.firstType = new TypeDecl(at = call.at, baseType = Type.tVoid)
+        ftype.argTypes |> emplace_new <| clone_type(sttype)
+        ftype.argTypes |> emplace <| sttype
+        if (const_clone) {
+            ftype.argTypes[1].flags.constant = true
+        }
+        
+        var ncall = new ExprCall(at = call.at, name := function_name)
+        ncall.arguments |> emplace_new <| clone_expression(call.arguments[0])
+        ncall.arguments |> emplace_new <| clone_expression(call.arguments[1])
+        ncall.arguments |> emplace_new <| clone_expression(call.arguments[2])
+        ncall.arguments |> emplace_new <| clone_expression(call.arguments[3])
+        ncall.arguments |> emplace_new <| new ExprAddr(at = call.at, target := "clone", funcType <- ftype)
+        ncall.arguments |> emplace_new <| new ExprConstInt(at = call.at, value = mks._type.sizeOf)
+        return <- ncall
+    }
+}
+
+[tag_function_macro(tag="tag_team_parallel_for_indexed")]
+class private TeamParallelForIndexedMacro : TeamParallelForMacro {
+    
+    
+    override function_name : string = "team_parallel_for_indexed_invoke"
+}
+
 def _parallel_for_each(arr : array<auto(TT)>; num_jobs : int; blk : block<(job_begin : int; job_end : int; var wg : JobStatus?) : void>) {
-    
-    
-    
-    
-    
     
     _parallel_for(0, length(arr), num_jobs, blk)
 }
 
 [tag_function(tag_parallel_for_each)]
 def parallel_for_each(arr : array<auto(TT)>; num_jobs : int; blk : block<(job_begin : int; job_end : int; var wg : JobStatus?) : void>) {
-    
-    
-    
     
     pass
 }
@@ -619,10 +727,6 @@ class private ParallelForEachJobMacro : ParallelForJobMacro {
 
 def _parallel_map(arr : array<auto(TT)>; num_jobs : int; var results_channel : Channel?; blk : block<(job_begin : int; job_end : int; var ch : Channel?; var wg : JobStatus?) : void>) {
     
-    
-    
-    
-    
     _parallel_for(0, length(arr), num_jobs) $(job_begin, job_end, wg) {
         invoke(blk, job_begin, job_end, results_channel, wg)
     }
@@ -630,9 +734,6 @@ def _parallel_map(arr : array<auto(TT)>; num_jobs : int; var results_channel : C
 
 [tag_function(tag_parallel_map)]
 def parallel_map(arr : array<auto(TT)>; num_jobs : int; var results_channel : Channel?; blk : block<(job_begin : int; job_end : int; var ch : Channel?; var wg : JobStatus?) : void>) {
-    
-    
-    
     
     pass
 }
@@ -668,6 +769,12 @@ def public capture_jobque_stream(var s : Stream?) : Stream? {
     return s
 }
 
+def public capture_jobque_seq_box(var box : SeqBox?) : SeqBox? {
+    
+    box |> add_ref
+    return box
+}
+
 def public release_capture_jobque_channel(ch : Channel?) {
     
     if (ch != null) {
@@ -696,25 +803,23 @@ def public release_capture_jobque_stream(s : Stream?) {
     }
 }
 
+def public release_capture_jobque_seq_box(box : SeqBox?) {
+    
+    
+    
+    if (box != null) {
+        panic("SeqBox has not been released. missing box|>seq_box_release")
+    }
+}
+
 
 [macro_function]
 def private isPtrToJQ(typ : TypeDeclPtr; jqt : string) : bool {
-    if (!typ.isPointer) {
-        return false
-    }
-    if (typ.firstType == null) {
-        return false
-    }
-    if (!typ.firstType.isHandle) {
-        return false
-    }
-    if (typ.firstType.annotation._module.name != "jobque") {
-        return false
-    }
-    if (typ.firstType.annotation.name != jqt) {
-        return false
-    }
-    return true
+    if (!typ.isPointer
+            || typ.firstType == null
+            || !typ.firstType.isHandle
+            || typ.firstType.annotation._module.name != "jobque") return false
+    return typ.firstType.annotation.name == jqt
 }
 
 [capture_macro(name=channel_and_status_capture_macro)]
@@ -746,20 +851,14 @@ class private ChannelAndStatusCapture : AstCaptureMacro {
             return <- make_capture_call(expr, "jobque_boost::capture_jobque_job_status")
         } elif (typ |> isPtrToJQ("LockBox")) {
             return <- make_capture_call(expr, "jobque_boost::capture_jobque_lock_box")
-        } elif (typ |> isPtrToJQ("Stream")) {
-            return <- make_capture_call(expr, "jobque_boost::capture_jobque_stream")
-        }
+        } elif (typ |> isPtrToJQ("SeqBox")) {
+            return <- make_capture_call(expr, "jobque_boost::capture_jobque_seq_box")
+        } elif (typ |> isPtrToJQ("Stream")) return <- make_capture_call(expr, "jobque_boost::capture_jobque_stream")
         return null
     }
     def override captureFunction(prog : Program?; mod : Module?; var lcs : Structure?; var fun : FunctionPtr) : void {
         
-        
-        
-        
-        
-        if (fun.flags._generator) {
-            return
-        }
+        if (fun.flags._generator) return
         for (fld in lcs.fields) {
             if (fld._type |> isPtrToJQ("Channel")) {
                 var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_channel")
@@ -769,6 +868,9 @@ class private ChannelAndStatusCapture : AstCaptureMacro {
                 (fun.body as ExprBlock).finalList |> emplace(pCall)
             } elif (fld._type |> isPtrToJQ("LockBox")) {
                 var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_lock_box")
+                (fun.body as ExprBlock).finalList |> emplace(pCall)
+            } elif (fld._type |> isPtrToJQ("SeqBox")) {
+                var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_seq_box")
                 (fun.body as ExprBlock).finalList |> emplace(pCall)
             } elif (fld._type |> isPtrToJQ("Stream")) {
                 var pCall = make_release_call(fld, "jobque_boost::release_capture_jobque_stream")

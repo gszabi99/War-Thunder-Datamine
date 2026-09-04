@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "types" import Function
 
 let colors = require("%rGui/style/colors.nut")
 
@@ -11,7 +12,7 @@ let images = {
 
 
 let moduleIconConstructor = function (params) {
-  let iconPath = type(params.icon) == "function"
+  let iconPath = params.icon instanceof Function
     ? @() params.icon(params.iconWatch.get())
     : @() params.icon
   return @(color) @() {

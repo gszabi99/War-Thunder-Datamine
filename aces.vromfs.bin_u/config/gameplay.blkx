@@ -60,6 +60,8 @@
   "saclosMissileRequestedAccelMult": 0.25,
   "saclosMissileRequestedAccelToOmegaMult": 50.0,
   "missileMaxTicksPerFrame": 15,
+  "ammoCookOffFinsGainFrequency": 0.2,
+  "ammoCookOffFinsNormalizedGainAmplitude": 1.0,
   "resyncSaclosGuidanceParams": true,
   "smoothGuidedMissilesResyncOnClient": true,
   "smoothGuidedMissilesResyncPosTimeConst": 2.0,
@@ -8311,8 +8313,8 @@
     "aircraftRadarCrossSectionAspectMultFront": 1.0,
     "aircraftRadarCrossSectionAspectMultSide": 1.2,
     "aircraftRadarCrossSectionAspectMultRear": 1.0,
-    "airframeRadarCrossSectionSourcesMask": 1,
-    "propellersRadarCrossSectionSourcesMask": 2,
+    "airframeRadarCrossSectionSourcesMask": 32768,
+    "propellersRadarCrossSectionSourcesMask": 65536,
     "radarDetectRockets": true,
     "radarDetectBombs": true,
     "radarErrorSpeed": 0.15,
@@ -8582,8 +8584,8 @@
     },
     "Radar": {
       "ecmSourceMask": [
-        4,
-        8
+        131072,
+        262144
       ]
     }
   },
@@ -8864,6 +8866,9 @@
   "lws": {
     "spotDetectionRadius": 10.0
   },
+  "mlws": {
+    "scanPeriod": 0.1
+  },
   "accelControl": {
     "useVelocityFrameRefMatrix": true
   },
@@ -8913,7 +8918,7 @@
     "extendTraceUpwards": false,
     "sceneMultiRayCast": true,
     "traceDownType": "cross",
-    "impulseBasedAircraftToSceneCollisionWithCollisionObjects": false,
+    "impulseBasedAircraftToSceneCollisionWithCollisionObjects": true,
     "impulseBasedAircraftGearToSceneCollision": false,
     "collisionObjectsContinuousCollisionMoveMin": 2.0,
     "isSimulatedRendinstCollisionCheat": false,
@@ -8972,6 +8977,7 @@
     "forceTransmissionDamageLevelAfterShaftCut": 3,
     "forceTransmissionDamageLevelAfterPropeller": 3,
     "oilPressureOilLevelPower": 0.5,
+    "engineThermalDegradationRateMult": 1.0,
     "airBalloonDamageLeakIntensity": 0.0003,
     "damagedPropClMult": 0.4,
     "damagedPropCdMult": 3.0,
@@ -9966,8 +9972,8 @@
           },
           "mosquito_fb_mk6": {
             "addModification": "mosquitofb_mbc",
-            "addWeapon": "mosquito_fb_mk6_2x500lbs",
-            "forceWeapon": "mosquito_fb_mk6_2x500lbs"
+            "addWeapon": "mosquito_fb_mk6_500lbs",
+            "forceWeapon": "mosquito_fb_mk6_500lbs"
           },
           "mosquito_tr_mk33": {
             "addModification": "beaufighter_tsc",
@@ -11362,8 +11368,8 @@
           },
           "mosquito_fb_mk6": {
             "addModification": "mosquitofb_mbc",
-            "addWeapon": "mosquito_fb_mk6_2x500lbs",
-            "forceWeapon": "mosquito_fb_mk6_2x500lbs"
+            "addWeapon": "mosquito_fb_mk6_500lbs",
+            "forceWeapon": "mosquito_fb_mk6_500lbs"
           },
           "mosquito_tr_mk33": {
             "addModification": "beaufighter_tsc",

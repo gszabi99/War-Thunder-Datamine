@@ -1,16 +1,19 @@
+from "hudActionBar" import getOwnerUnitName
+from "replays" import is_replay_playing
+from "mission" import get_game_type
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
-let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getOwnerUnitName } = require("hudActionBar")
-let { is_replay_playing } = require("replays")
-let { get_game_type } = require("mission")
 let { mkActionBarAir } = require("%scripts/hud/hudActionBar.nut")
 let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 
-gui_handlers.HudAir <- class (HudWithWeaponSelector) {
+let HudAir = class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudAir.blk"
   function initScreen() {
     base.initScreen()
@@ -43,7 +46,8 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
     showObjById("hud_tactical_map_bg", isVisible, this.scene)
   }
 }
+register_gui_handler("HudAir", HudAir)
 
 return {
-  HudAir = gui_handlers.HudAir
+  HudAir
 }

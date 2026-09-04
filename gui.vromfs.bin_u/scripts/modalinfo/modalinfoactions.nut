@@ -1,13 +1,13 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.workcycle" import defer
+from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 
-let { defer } = require("dagor.workcycle")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { eventbus_send} = require("eventbus")
 
 
 function doAction(obj, curEdiff) {
@@ -26,9 +26,9 @@ function doAction(obj, curEdiff) {
 
   else if (destination == "analysis") {
     if (get_cur_gui_scene().isInAct())
-      defer(@() handlersManager.animatedSwitchScene(@() handlersManager.loadHandler(gui_handlers.ProtectionAnalysis, { unit = unit })))
+      defer(@() handlersManager.animatedSwitchScene(@() handlersManager.loadHandler(get_gui_handler("ProtectionAnalysis"), { unit = unit })))
     else
-      handlersManager.animatedSwitchScene(@() handlersManager.loadHandler(gui_handlers.ProtectionAnalysis, { unit = unit }))
+      handlersManager.animatedSwitchScene(@() handlersManager.loadHandler(get_gui_handler("ProtectionAnalysis"), { unit = unit }))
   }
   else if (destination == "trajectory") {
     let ammoName = obj?.id ?? ""

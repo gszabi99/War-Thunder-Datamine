@@ -5,7 +5,6 @@ require math.base
 require math.random
 require DagorSystem
 require Mission
-require DagorDebug3D
 require DagorMath
 require math
 require math.base

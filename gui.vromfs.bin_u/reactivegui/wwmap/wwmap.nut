@@ -1,34 +1,32 @@
+import "%rGui/wwMap/wwMapZonesBackground.nut" as mkMapZonesBackground
+from "%rGui/wwMap/wwArmyStates.nut" import getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy, newPartOfArmyPath
+from "%rGui/wwMap/wwOperationStates.nut" import isOperationPausedWatch
+from "%rGui/wwMap/wwMapZonesData.nut" import updateHoveredZone, getZoneByPoint, updateSelectedRearZone
+from "%rGui/wwMap/wwMapZonesEdges.nut" import mkMapZonesEdges, mkMapHoveredZone
+from "%rGui/wwMap/wwMapFrontLine.nut" import mkMapFrontLine
+from "%rGui/wwMap/wwMapZoneNames.nut" import mkMapZoneNames
+from "%rGui/wwMap/wwMapSectorSprites.nut" import mkSectorSprites
+from "%rGui/wwMap/wwAirfields.nut" import mkAirfields
+from "%rGui/wwMap/wwArmies.nut" import mkArmies
+from "%rGui/wwMap/wwBattles.nut" import battles
+from "%rGui/wwMap/wwBattlesMessages.nut" import mkBattlesMessages
+from "%rGui/wwMap/wwArtilleryStrikes.nut" import artilleryStrikes
+from "%rGui/wwMap/wwSAMVisualizations.nut" import samVisualizations
+from "%rGui/wwMap/wwBattlesStates.nut" import getBattleByPoint, updateHoveredBattle, updateSelectedBattle, hoveredBattle
+from "%rGui/wwMap/wwAirfieldsStates.nut" import getAirfieldByPoint, updateHoveredAirfield, updateSelectedAirfield, selectedAirfield
+from "%rGui/wwMap/wwActionsLayer.nut" import actionsLayer
+from "%rGui/wwMap/wwActionManager.nut" import haveActiveAction, doAction, moveArmy, sendAircraft
+from "%rGui/wwMap/wwConfigurationInit.nut" import configurationLoaded, initConfiguration, invalidateConfiguration
+from "%rGui/wwMap/wwOperationConfiguration.nut" import holderBounds, activeAreaBounds, getOperationMapImage, convertPointerCoords, convertPointerToMapCoords, getMapCellByCoords
+from "%rGui/wwMap/wwMapStates.nut" import startUpdates, stopUpdates, cursorPosition, isShiftPressed
+from "%rGui/wwMap/wwMapUtils.nut" import sendToDagui
+from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor
+from "%appGlobals/worldWar/wwMapHoverState.nut" import isMapHovered
+from "dagor.workcycle" import deferOnce
 from "%rGui/globals/ui_library.nut" import *
 
-let { getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy, newPartOfArmyPath } = require("%rGui/wwMap/wwArmyStates.nut")
-let { isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
-let { updateHoveredZone, getZoneByPoint, updateSelectedRearZone } = require("%rGui/wwMap/wwMapZonesData.nut")
-let mkMapZonesBackground = require("%rGui/wwMap/wwMapZonesBackground.nut")
-let { mkMapZonesEdges, mkMapHoveredZone } = require("%rGui/wwMap/wwMapZonesEdges.nut")
-let { mkMapFrontLine } = require("%rGui/wwMap/wwMapFrontLine.nut")
-let { mkMapZoneNames } = require("%rGui/wwMap/wwMapZoneNames.nut")
-let { mkSectorSprites } = require("%rGui/wwMap/wwMapSectorSprites.nut")
-let { mkAirfields } = require("%rGui/wwMap/wwAirfields.nut")
-let { mkArmies } = require("%rGui/wwMap/wwArmies.nut")
-let { battles } = require("%rGui/wwMap/wwBattles.nut")
-let { mkBattlesMessages } = require("%rGui/wwMap/wwBattlesMessages.nut")
-let { artilleryStrikes } = require("%rGui/wwMap/wwArtilleryStrikes.nut")
-let { samVisualizations } = require("%rGui/wwMap/wwSAMVisualizations.nut")
-let { getBattleByPoint, updateHoveredBattle, updateSelectedBattle, hoveredBattle } = require("%rGui/wwMap/wwBattlesStates.nut")
-let { getAirfieldByPoint, updateHoveredAirfield, updateSelectedAirfield, selectedAirfield } = require("%rGui/wwMap/wwAirfieldsStates.nut")
-let { actionsLayer } = require("%rGui/wwMap/wwActionsLayer.nut")
-let { haveActiveAction, doAction, moveArmy, sendAircraft } = require("%rGui/wwMap/wwActionManager.nut")
-let { configurationLoaded, initConfiguration, invalidateConfiguration } = require("%rGui/wwMap/wwConfigurationInit.nut")
-let { holderBounds, activeAreaBounds, getOperationMapImage, convertPointerCoords, convertPointerToMapCoords,
-  getMapCellByCoords } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { startUpdates, stopUpdates, cursorPosition, isShiftPressed } = require("%rGui/wwMap/wwMapStates.nut")
-let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
-let { mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
-let { deferOnce } = require("dagor.workcycle")
-let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
-
-let backgroundColor = 0xFF1B2226
-let transparentColor = 0x00000000
+const backgroundColor = 0xFF1B2226
+const transparentColor = 0x00000000
 let cursorPositionRT = Watched(null)
 
 let clearAllHovers = @() sendToDagui("ww.clearHovers")
@@ -149,7 +147,7 @@ function processPointerPress(evt, areaBounds) {
 let mapFOW = @() {
   watch = isOperationPausedWatch
   rendObj = ROBJ_SOLID
-  size = flex()
+  size = FLEX
   color = isOperationPausedWatch.get() ? Color(0, 0, 0, 64) : transparentColor
 }
 

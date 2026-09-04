@@ -77,6 +77,7 @@ def init_human_anim_states(evt : Event;
                            var human_anim__comboStateFullBodyWalk : int&;
                            var human_anim__comboStateFullBodyRun : int&;
                            var human_anim__comboStateFullBodyCrouch : int&;
+                           var human_anim__comboStateClimbTrajectory : int&;
                            var human_anim__comboStateDead : int&)
   assume animGraph = *animchar.animGraph
   human_anim__lowerStateStand = animGraph |> anim_graph_getStateIdx("lower_stand")
@@ -132,6 +133,7 @@ def init_human_anim_states(evt : Event;
   human_anim__comboStateFullBodyWalk = animGraph |> anim_graph_getStateIdx("full_body_walk")
   human_anim__comboStateFullBodyRun = animGraph |> anim_graph_getStateIdx("full_body_run")
   human_anim__comboStateFullBodyCrouch = animGraph |> anim_graph_getStateIdx("full_body_crouch")
+  human_anim__comboStateClimbTrajectory = animGraph |> anim_graph_getStateIdx("climb_trajectory")
   human_anim__comboStateDead = animGraph |> anim_graph_getStateIdx("dead")
 
 
@@ -188,6 +190,7 @@ def updateState(eid : EntityId;
                         human_anim__comboStateSwimOnWater : int;
                         human_anim__comboStateSwimUnderWater : int;
                         human_anim__comboStateClimbHigh : int;
+                        human_anim__comboStateClimbTrajectory : int;
                         human_anim__comboStateClimbLadder : int;
                         human_anim__comboStateUseMortar : int;
                         human_anim__comboStateClimbOverObstacle : int;
@@ -216,12 +219,16 @@ def updateState(eid : EntityId;
       res.lower = human_anim__comboStateFastClimb
       return
     if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u
-      if is_fpv && human_net_phys.phys.currentState.standState == HUStandState.ESS_CLIMB_THROUGH
-        res.upper = human_anim__upperStateFireReady
-        res.lower = human_anim__lowerStateStand
+      if human_net_phys.phys.segPhysState.currSeg >= 0
+        res.upper = human_anim__comboStateClimbTrajectory
+        res.lower = human_anim__comboStateClimbTrajectory
       else
-        res.upper = human_anim__comboStateClimbHigh
-        res.lower = human_anim__comboStateClimbHigh
+        if is_fpv && human_net_phys.phys.currentState.standState == HUStandState.ESS_CLIMB_THROUGH
+          res.upper = human_anim__upperStateFireReady
+          res.lower = human_anim__lowerStateStand
+        else
+          res.upper = human_anim__comboStateClimbHigh
+          res.lower = human_anim__comboStateClimbHigh
       return
     if (state_flags & uint(HumanAnimStateFlags.Ladder)) != 0u
       res.upper = human_anim__comboStateClimbLadder
@@ -416,9 +423,10 @@ def init_human_anim_vars(evt : Event;
                          var human_anim__crawlContinuousRotationVarId : int&;
                          var human_anim__leanSpineRotateVarId : int&;
                          var human_anim__gunLengthCompensationVarId : int&;
-                         var human_anim__fullBodyRootRotateVarId : int&;
+                         var human_anim__climbStageVarId : int&;
                          var human_anim__rotateLeftElbowVarId : int&;
                          var human_anim__rotateRightElbowVarId : int&;
+                         var human_anim__climbTrajBlendParamVarId : int&;
                          var human_anim__bodyDirVarId : int&)
   human_anim__gunPitchVarId = phys_vars |> registerVar("aim_pitch", 0.f)
   human_anim__persCourseVarId = phys_vars |> registerVar("pers_course", 0.f)
@@ -449,9 +457,10 @@ def init_human_anim_vars(evt : Event;
   human_anim__crawlContinuousRotationVarId = phys_vars |> registerVar("is_continuous_crawl_rotating", 0.0)
   human_anim__leanSpineRotateVarId = phys_vars |> registerVar("torso_lean_rotate", 0.0)
   human_anim__gunLengthCompensationVarId = phys_vars |> registerVar("gun_length_compensation", 0.0)
-  human_anim__fullBodyRootRotateVarId = phys_vars |> registerVar("full_body_root_rotate", 0.0)
+  human_anim__climbStageVarId = phys_vars |> registerVar("climb_stage", 0.0)
   human_anim__rotateLeftElbowVarId = phys_vars |> registerVar("rotate_left_elbow", 0.0)
   human_anim__rotateRightElbowVarId = phys_vars |> registerVar("rotate_right_elbow", 0.0)
+  human_anim__climbTrajBlendParamVarId = phys_vars |> registerVar("climb_trajectory_blend_param", 0.0)
 
 
 def private calc_head_pitch_yaw(state : HumanPhysState)
@@ -695,7 +704,7 @@ def init_human_idle_upper_anim_state(evt : Event;
 def human_anim_idling_state(evt : Event; agent_dangers__hasTraceableDangers : bool; var human_anim__isIdling : bool&)
   human_anim__isIdling = !agent_dangers__hasTraceableDangers
 
-[es(REQUIRE_NOT=(animchar__actOnDemand, menuSoldier), after=human_weap_update_es, parallel_for=1)]
+[es(REQUIRE_NOT=(animchar__actOnDemand, menuSoldier, animchar__lockAnimStateChange), after=human_weap_update_es, parallel_for=1)]
 def human_anim_es(info : ParallelUpdateFrameDelayed;
                   ragdoll : PhysRagdoll const?;
                   human_anim__climbHeights : Array;
@@ -1040,7 +1049,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   if human_weap__mortarMode
     stateUpperBody = HumanStateUpperBody.E_USE_MORTAR
 
-  if isClimbing
+  if phys.segPhysState.currSeg < 0 && isClimbing
     let posHt = human_net_phys__climbToPos.y - unitTm[3].y
     var startPt = float2(0.0, 1.0)
     var endPt = float2(0.0, 1.0)
@@ -1399,6 +1408,81 @@ def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
                                 previousWeapState != HUWeaponEquipState.EES_EQUIPED)
   if finishedChangingWeapon
     phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)
+
+
+def private human_anim_get_segphys_anim_index(human_anim__segmentedPhysicsAnimations : StringList;
+                                              animation_name : string)
+  for i in range(0, length(human_anim__segmentedPhysicsAnimations))
+    if animation_name == human_anim__segmentedPhysicsAnimations[i]
+      return i
+  return -1
+
+[es(tag=gameClient, on_appear, on_event=EventSegPhysLoaded, after=init_animchar_and_precompute_for_human_es)]
+def human_anim_init_segphys_anim_remap_es(evt : Event;
+                                          human_net_phys : HumanActor;
+                                          human_anim__segmentedPhysicsAnimations : StringList;
+                                          var human_anim__segmentedPhysAnimIdToAnimVarValue : IntList&)
+  assume phys = human_net_phys.phys
+
+  let animCount = human_phys_get_segphys_num_anims(phys)
+  human_anim__segmentedPhysAnimIdToAnimVarValue |> clear()
+  for animId in range(0, animCount)
+    let animName = human_phys_get_segphys_anim_name(phys, animId)
+    let animVarValue = human_anim_get_segphys_anim_index(human_anim__segmentedPhysicsAnimations, animName)
+    human_anim__segmentedPhysAnimIdToAnimVarValue |> push(animVarValue)
+
+def private human_anim_get_segphys_anim_var_value(human_anim__segmentedPhysAnimIdToAnimVarValue : IntList;
+                                                  anim_id : int)
+  if anim_id >= 0 && anim_id < length(human_anim__segmentedPhysAnimIdToAnimVarValue)
+    return human_anim__segmentedPhysAnimIdToAnimVarValue[anim_id]
+  return -1
+
+[es(on_event=CmdUnitUpdateTransformComponent, before=human_save_tm)]
+def human_anim_update_climb_animation_es(info : Event;
+                                         var human_net_phys : HumanActor;
+                                         human_net_phys__isClimbing : bool;
+                                         human_anim__climbStageVarId : int;
+                                         human_anim__climbProgressVarId : int;
+                                         human_anim__climbTrajBlendParamVarId : int;
+                                         human_anim__segmentedPhysAnimIdToAnimVarValue : IntList;
+                                         var phys_vars : PhysVars)
+  assume phys = human_net_phys.phys
+  if phys.segPhysState.currSeg >= 0 && human_net_phys__isClimbing
+    let interpK = get_phys_interpk_clamped(phys, get_sync_time())
+
+    phys_vars |> setVar(human_anim__climbTrajBlendParamVarId, phys.segPhysState.blendTrajParam)
+
+    let prevAnimId = human_phys_get_segphys_anim_id(phys, phys.segPhysState.prevSeg)
+    let currAnimId = human_phys_get_segphys_anim_id(phys, phys.segPhysState.currSeg)
+    let prevAnimVarValue = human_anim_get_segphys_anim_var_value(human_anim__segmentedPhysAnimIdToAnimVarValue, prevAnimId)
+    let currAnimVarValue = human_anim_get_segphys_anim_var_value(human_anim__segmentedPhysAnimIdToAnimVarValue, currAnimId)
+
+    var transitionK = -1.f
+    if phys.segPhysState.currSeg != phys.segPhysState.prevSeg
+      transitionK = safediv(phys.segPhysState.prevDuration - phys.segPhysState.prevTime, phys.segPhysState.prevDuration - phys.segPhysState.prevTime + phys.segPhysState.currTime)
+
+    let prevProgress = safediv(phys.segPhysState.prevTime, phys.segPhysState.prevDuration)
+    let currProgress = safediv(phys.segPhysState.currTime, phys.segPhysState.currDuration)
+
+    if transitionK < 0.f && currAnimVarValue >= 0
+      
+      let interpolatedProgress = lerp(prevProgress, currProgress, interpK)
+      phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
+      phys_vars |> setVar(human_anim__climbStageVarId, float(currAnimVarValue))
+    else
+      
+      if interpK < transitionK && prevAnimVarValue >= 0
+        
+        let interpParam = transitionK < 1e-3 ? 0.f : interpK / transitionK
+        let interpolatedProgress = lerp(prevProgress, 1.f, interpParam)
+        phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
+        phys_vars |> setVar(human_anim__climbStageVarId, float(prevAnimVarValue))
+      elif currAnimVarValue >= 0
+        
+        let interpParam = transitionK < 1e-3 ? interpK : interpK - interpK / transitionK
+        let interpolatedProgress = lerp(0.f, currProgress, interpParam)
+        phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
+        phys_vars |> setVar(human_anim__climbStageVarId, float(currAnimVarValue))
 
 
 [es(tag=gameClient, after=human_anim_es)]

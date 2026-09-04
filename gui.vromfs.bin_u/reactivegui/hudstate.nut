@@ -1,22 +1,20 @@
+import "%rGui/interopGen.nut" as interopGet
+from "%rGui/hudSpectatorState.nut" import isSpectatorMode
+from "%rGui/hud/hudPartVisibleState.nut" import isDmgPanelVisible
+from "%sqstd/underscore.nut" import isEqual
+from "gameplayBinding" import isDmgIndicatorVisible
+from "eventbus" import eventbus_subscribe
+from "hudState" import getHudGuiState, HudGuiState
 from "%rGui/globals/ui_library.nut" import *
-
-let { isEqual } = require("%sqstd/underscore.nut")
-let cross_call = require("%rGui/globals/cross_call.nut")
-let interopGet = require("%rGui/interopGen.nut")
-let { isDmgIndicatorVisible } = require("gameplayBinding")
-let { eventbus_subscribe } = require("eventbus")
-let { getHudGuiState, HudGuiState } = require("hudState")
-let { isDmgPanelVisible } = require("%rGui/hud/hudPartVisibleState.nut")
 
 let isInKillerCam = @() getHudGuiState() == HudGuiState.GUI_STATE_KILLER_CAMERA
 
 let hudState = {
   unitType = ""
   playerArmyForHud = -1
-  isSpectatorMode = cross_call.isPlayerDedicatedSpectator()
   isPlayingReplay = false
   isVisibleDmgIndicator = isDmgIndicatorVisible()
-  tacticalMapStates = { size = [0, 0], pos = [0, 0] }
+  tacticalMapStates = { size = const [0, 0], pos = const [0, 0] }
   missionProgressHeight = 0
   hasTarget = false
   canZoom = false
@@ -27,6 +25,7 @@ let hudState = {
   isThermalSightActive = false
   isMissionProgressVisible = false
 }.map(@(val, key) mkWatched(persist, key, val))
+hudState.isSpectatorMode <- isSpectatorMode
 
 let { isInKillerCamera, isVisibleDmgIndicator } = hudState
 let needShowDmgIndicator = Computed(@() isVisibleDmgIndicator.get() && !isInKillerCamera.get() && isDmgPanelVisible.get())
@@ -37,7 +36,6 @@ eventbus_subscribe("updateTacticalMapStates", function(v) {
     hudState.tacticalMapStates.set(v)
 })
 eventbus_subscribe("updateMissionProgressHeight", @(v) hudState.missionProgressHeight.set(v))
-eventbus_subscribe("updateIsSpectatorMode", @(v) hudState.isSpectatorMode.set(v))
 eventbus_subscribe("hud_gui_state_changed",
   @(_) isInKillerCamera.set(isInKillerCam()))
 

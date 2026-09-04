@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/u.nut" import search
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { search } = require("%sqStdLibs/helpers/u.nut")
-let { itemsList, inventory, shopItemById, itemsByItemdefId, generatorsCollection
-} = require("%scripts/items/itemsManagerState.nut")
+let { itemsList, inventory, shopItemById, itemsByItemdefId, generatorsCollection } = require("%scripts/items/itemsManagerState.nut")
 let { checkInventoryUpdate, checkUpdateList } = require("%scripts/items/itemsManagerChecks.nut")
 let { checkAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
 let { getItemsFromList } = require("%scripts/items/itemsManagerGetters.nut")

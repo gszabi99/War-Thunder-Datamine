@@ -70,6 +70,12 @@
           "killOutOfBattleArea": true,
           "area": "battle_area",
           "team": "A"
+        },
+        "unitRespawnAfterTime": {
+          "time_to_respawn": 5.0,
+          "object_name": "hummvy",
+          "place_to_respawn": "hummvy_spawn",
+          "cycle_respawn": true
         }
       },
       "else_actions": {}
@@ -574,10 +580,6 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "modification": [
-          "tank_tool_kit",
-          "manual_extinguisher"
-        ],
         "crewSkillK": 0.0,
         "applyAllMods": false,
         "props": {
@@ -770,6 +772,33 @@
           -1.65381,
           29.6376,
           -57.0251
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "hummvy_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          0.0193125,
+          0.0,
+          0.999814
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          -0.999814,
+          0.0,
+          0.0193125
+        ],
+        [
+          -28.4,
+          29.917,
+          -23.6
         ]
       ],
       "objLayer": 0,

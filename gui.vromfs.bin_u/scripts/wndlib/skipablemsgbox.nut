@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, getSelectedChild, findChild, findChildIndex
-} = require("%sqDagui/daguiUtil.nut")
+} = require("%scripts/sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
+let SkipableMsgBox = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/weaponry/skipableMsgBox.blk"
 
@@ -94,3 +95,6 @@ gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
       call_for_handler(this.parentHandler, this.onStartPressed)
   }
 }
+register_gui_handler("SkipableMsgBox", SkipableMsgBox)
+
+return { SkipableMsgBox }

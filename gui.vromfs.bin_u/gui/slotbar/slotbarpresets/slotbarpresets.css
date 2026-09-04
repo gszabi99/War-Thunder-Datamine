@@ -1,0 +1,175 @@
+@const presetTabHeight: 1@bottomMenuPanelHeight - 1@blockInterval;
+@const editPresetsItemHeight: 50@sf/@pf;
+@const hoverButtonHeight: (32*@sf/@pf) \ 1;
+
+presetTab {
+  height: 1@presetTabHeight;
+  padding: 1@bigButtonTextPadding, 0;
+  background-color :@transparent;
+  css-hier-invalidate :yes;
+  total-input-transparent :yes;
+  input-transparent :yes;
+}
+
+presetTab:hover {
+  background-color:@menuButtonColorHover;
+}
+presetTab:pushed,
+presetTab[chosen=yes],
+presetTab[isPresetSelected=yes] {
+  background-color:@listboxSelOptionColor;
+}
+
+presetTab textareaNoTab {
+  valign: center;
+  position: relative;
+  hideEmptyText: yes;
+}
+
+presetTab:hover > textareaNoTab {
+  color: @menuButtonTextColorHover;
+}
+
+presetTab:pushed > textareaNoTab[presetName=yes],
+presetTab[chosen=yes] > textareaNoTab[presetName=yes],
+presetTab[selected=yes] > textareaNoTab[presetName=yes] {
+  color: @activeTextColor;
+}
+
+presetTab > blockSeparator {
+  pos: pw, 50%ph-50%h;
+  position: absolute;
+  margin: 0;
+}
+
+readyState > img {
+  bgcolor: @minorTextColor;
+}
+
+readyState > textareaNoTab {
+  color: @minorTextColor;
+}
+
+readyState:hover > img {
+  bgcolor: @activeTextColor;
+}
+
+readyState:hover > textareaNoTab {
+  color: @activeTextColor;
+}
+
+addNewPresetComp[state=ready] > readyState,
+addNewPresetComp[state=edit] > editState {
+  display: show;
+}
+
+addNewPresetComp[state=ready] > editState,
+addNewPresetComp[state=edit] > readyState {
+  display: hide;
+}
+
+addNewPresetComp > editState > hoverButton,
+presetTab[editPresets=yes] hoverButton {
+  valign: center;
+  margin: 0;
+  bgcolor: @buttonColor;
+  height: 1@hoverButtonHeight;
+}
+
+addNewPresetComp > editState > hoverButton:hover,
+presetTab[editPresets=yes] hoverButton:hover {
+  bgcolor: @buttonColorHover;
+}
+
+addNewPresetComp > editState > hoverButton > icon,
+presetTab[editPresets=yes] hoverButton > icon {
+  valign: center;
+  halign: center;
+  background-svg-size: 20@sf/@pf, 20@sf/@pf;
+  size: 20@sf/@pf, 20@sf/@pf;
+}
+
+
+presetTab[editPresets=yes] {
+  width: pw;
+  height: 1@editPresetsItemHeight;
+  padding: 0;
+
+  behaviour:button;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+  interactive:yes;
+}
+
+presetTab[editPresets=yes] > blockSeparator {
+  pos: 0, ph-h;
+  position: absolute;
+  margin: 0;
+  size: pw, 1@sf/@pf;
+}
+
+presetTab[isPresetSelected=yes] > readyState > actions > hoverButton[isRemoveButton=yes],
+presetTab[cantRemovePreset=yes] > readyState > actions > hoverButton[isRemoveButton=yes] {
+  display: hide;
+}
+
+presetTab[editPresets=yes]:hover > readyState > actions {
+  display: show;
+}
+
+presetTab[editPresets=yes][state=ready] > readyState {
+  display: show;
+}
+
+presetTab[editPresets=yes][state=remove] > dragAnchor,
+presetTab[editPresets=yes][state=rename] > dragAnchor,
+presetTab[editPresets=yes][state=remove] > dragAnchorImg,
+presetTab[editPresets=yes][state=rename] > dragAnchorImg {
+  display: hide;
+}
+
+presetTab[editPresets=yes][state=remove] > removeState {
+  display: show;
+}
+
+presetTab[editPresets=yes][state=rename] > renameState {
+  display: show;
+}
+
+presetTab[editPresets=yes] > dragAnchor {
+  shortcutActivate: "J:A | J:RT";
+  cursor: drag-n-drop;
+}
+
+[show_console_buttons=yes] presetTab[editPresets=yes] > dragAnchor {
+  cursor: "";
+}
+
+[show_console_buttons=yes] presetTab[editPresets=yes] > dragAnchor:hover {
+  pos: 0, 0;
+  size: pw, ph;
+}
+
+[swap_ab=yes] presetTab[editPresets=yes] > dragAnchor {
+  shortcutActivate: "J:B | J:RT";
+}
+
+presetTab[editPresets=yes][dragDisabled=yes] > dragAnchor {
+  enable: no;
+}
+
+presetTab[editPresets=yes] > dragAnchorImg {
+  bgcolor: @white;
+}
+
+presetTab[editPresets=yes][dragDisabled=yes] > dragAnchorImg {
+  bgcolor: #566270;
+}
+
+presetTab[editPresets=yes][buttonsDisabled=yes] hoverButton {
+  enable: no;
+}
+
+presetsList[isDragProcess=yes] presetTab {
+  mouse-pointer-centering: 3, 50;
+}

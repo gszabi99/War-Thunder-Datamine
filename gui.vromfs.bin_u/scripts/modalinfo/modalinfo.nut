@@ -1,11 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.workcycle" import setInterval, clearTimer
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
-let { setInterval, clearTimer } = require("dagor.workcycle")
+
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
 
 const MODAL_INFO_HOLDER_PATH = "%gui/modalInfo/modalInfoHolder.blk"
 
@@ -160,8 +161,8 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSid
   if (preferredSide == "center") {
     let posX = mainObjLft - (infoObjWdh - mainObjWdh) / 2
     let posY = mainObjTop - nestObjTop > nestObjBtm - mainObjBtm
-      ? mainObjTop - infoObjHgt
-      : mainObjBtm
+      ? max(nestObjTop, mainObjTop - infoObjHgt)
+      : min(nestObjBtm - infoObjHgt, mainObjBtm)
     let infoWndPos = [ clamp(posX + offsetX, nestObjLft, maxX), posY ]
 
     modalInfoObjBounds.update(infoWndPos[0], infoWndPos[1])
@@ -298,6 +299,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params, isCursorIn
   let offsetX = tooltipType.modalOffsetX != "" ? to_pixels(tooltipType.modalOffsetX) : 0
   let offsetY = tooltipType.modalOffsetY != "" ? to_pixels(tooltipType.modalOffsetY) : 0
   infoWnd["pos"] = getInfoWndPosition(initiatorBounds, infoWndBounds, prefSide, offsetX, offsetY)
+  broadcastEvent("ModalInfoPositioned", { infoWnd })
   local fakeInitiator = null
   if (infoWndHolder != null) {
     fakeInitiator = infoWndHolder.findObject("fakeInitiator")

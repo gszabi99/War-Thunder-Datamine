@@ -77,6 +77,13 @@ enum CONTROL_HELP_PATTERN {
   ARM
 }
 
+enum HELP_CONTENT_SET {
+  MISSION
+  LOADING
+  CONTROLS
+  MISSION_WINDOW
+}
+
 enum AxisDirection {
   X,
   Y
@@ -121,6 +128,7 @@ return {
   GAMEPAD_AXIS
   MOUSE_AXIS
   CONTROL_HELP_PATTERN
+  HELP_CONTENT_SET
   AxisDirection
   ConflictGroups
 

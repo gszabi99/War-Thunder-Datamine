@@ -1,12 +1,12 @@
+from "%globalScripts/modeXrayLib.nut" import getInfoBlk
+from "blkGetters" import get_unittags_blk
+from "hangar" import DM_VIEWER_XRAY
 from "%scripts/dagui_library.nut" import *
 
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { get_unittags_blk } = require("blkGetters")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { DM_VIEWER_XRAY } = require("hangar")
-let { getInfoBlk } = require("%globalScripts/modeXrayLib.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let unitEngineCache = {}

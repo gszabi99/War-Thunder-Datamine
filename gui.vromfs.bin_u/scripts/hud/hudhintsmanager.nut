@@ -1,32 +1,31 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isNull
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "chard" import get_charserver_time_sec
+from "dagor.time" import get_time_msec
+from "hudState" import getHudUnitType
+from "gameplayBinding" import isInFlight
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "mission" import get_game_mode
+from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_natives.nut" import set_hint_options_by_blk, disable_hint, set_option_hint_enabled
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/timeBar.nut" import g_time_bar
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isNull } = require("%sqStdLibs/helpers/u.nut")
-let { get_charserver_time_sec } = require("chard")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
-let { get_time_msec } = require("dagor.time")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let DaguiSceneTimers = require("%sqDagui/timer/daguiSceneTimers.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
+let DaguiSceneTimers = require("%scripts/sqDagui/timer/daguiSceneTimers.nut")
 let { getHudElementAabb, dmPanelStatesAabb } = require("%scripts/hud/hudElementsAabb.nut")
-let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { isInFlight } = require("gameplayBinding")
-let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime,
-  getHintByShowEvent, g_hud_hints
-} = require("%scripts/hud/hudHints.nut")
-let { register_command } = require("console")
-let { eventbus_subscribe } = require("eventbus")
+let { getHintSeenCount, increaseHintShowCount, resetHintShowCount, getHintSeenTime, getHintByShowEvent, g_hud_hints } = require("%scripts/hud/hudHints.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
-let { get_game_mode } = require("mission")
-let { deferOnce } = require("dagor.workcycle")
 
 const TIMERS_CHECK_INTEVAL = 0.25
 

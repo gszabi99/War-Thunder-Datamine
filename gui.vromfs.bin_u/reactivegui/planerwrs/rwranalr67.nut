@@ -1,11 +1,13 @@
+from "%rGui/twsState.nut" import rwrTargetsTriggers, CurrentTime
+from "%rGui/planeRwrs/rwrAnAlr67ThreatsLibrary.nut" import settings
 from "%rGui/globals/ui_library.nut" import *
 
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let {ThreatType, settings} = require("%rGui/planeRwrs/rwrAnAlr67ThreatsLibrary.nut")
+let { ThreatType } = require("%rGui/planeRwrs/rwrAnAlr67ThreatsLibrary.nut")
 
-let color = Color(10, 202, 10, 250)
-let backgroundColor = Color(0, 0, 0, 255)
+const color = Color(10, 202, 10, 250)
+const backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -18,13 +20,13 @@ let styleText = {
   fontSize = getFontDefHt("hud") * 2.0
 }
 
-let outerCircle = 0.8
-let middleCircle = 0.55
-let innerCircle = 0.15
+const outerCircle = 0.8
+const middleCircle = 0.55
+const innerCircle = 0.15
 
-let nonLethalThreatsRadius = (1.0 + outerCircle) * 0.5
-let lethalThreatsRadius = (outerCircle + middleCircle) * 0.5
-let criticalThreatsRadius = (middleCircle + innerCircle) * 0.5
+const nonLethalThreatsRadius = (1.0 + outerCircle) * 0.5
+const lethalThreatsRadius = (outerCircle + middleCircle) * 0.5
+const criticalThreatsRadius = (middleCircle + innerCircle) * 0.5
 
 function calcRwrTargetRadius(target, directionGroup) {
   if (target.launch)
@@ -48,7 +50,7 @@ function calcRwrTargetRadius(target, directionGroup) {
     return nonLethalThreatsRadius
 }
 
-let iconRadiusBaseRel = 0.2
+const iconRadiusBaseRel = 0.2
 
 function createRwrTarget(index, settingsIn, objectStyle) {
   let target = rwrTargets[rwrTargetsOrder[index]]
@@ -140,7 +142,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
         color = backgroundColor
         fillColor = backgroundColor
         lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
-        size = flex()
+        size = FLEX
         commands = backgroundCommands
       }
     if (iconCommands != null)
@@ -149,7 +151,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
         color = color
         fillColor = 0
         lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
-        size = flex()
+        size = FLEX
         commands = iconCommands
       }
   }
@@ -158,9 +160,9 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 
   return @() {
     watch = attackOpacityRwr,
-    size = flex(),
+    size = FLEX,
     opacity = attackOpacityRwr.get(),
-    pos = [pw(50), ph(50)]
+    pos = const [pw(50), ph(50)]
     children = [
       background,
       targetType,
@@ -172,7 +174,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -188,7 +190,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

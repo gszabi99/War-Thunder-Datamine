@@ -1,7 +1,7 @@
+from "mission" import get_game_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
-
-let { get_game_mode } = require("mission")
 
 function isGameModeCoop(gm) {
   return gm == -1 || gm == GM_SINGLE_MISSION || gm == GM_BUILDER

@@ -1,26 +1,56 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "console" import register_command
+from "hangar" import hangar_force_reload_model
+from "chard" import getCustomWpnPresetBlk, charSendBlk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let { register_command } = require("console")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
-let { hangar_force_reload_model } = require("hangar")
 let { initUnitCustomPresetsWeapons } = require("%scripts/unit/initUnitWeapons.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getCustomWpnPresetBlk, charSendBlk } = require("chard")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponToFakeBulletMask, updateSecondaryBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let customPresetsConfigByUnit = mkWatched(persist, "customPresetsConfigByUnit", {})
 let customPresetsByUnit = mkWatched(persist, "customPresetsByUnit", {})
 let { addTask } = require("%scripts/tasker.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+
+
+
+let debugPresetsOverride = {}
+function setDebugPresetsOverride(unitName, presets) {
+  debugPresetsOverride[unitName] <- presets
+}
+function clearDebugPresetsOverride(unitName) {
+  debugPresetsOverride.$rawdelete(unitName)
+}
+
+function convertPresetToBlk(preset) {
+  let presetBlk = DataBlock()
+  presetBlk["name"] = preset.customNameText ?? ""
+  foreach (tier in preset.tiers) {
+    let weaponBlk = presetBlk.addNewBlock("Weapon")
+    weaponBlk["preset"] = tier.presetId
+    weaponBlk["slot"] = tier.slot
+  }
+  return presetBlk
+}
+
+function buildDebugPresetsBlk(presets) {
+  let blk = DataBlock()
+  foreach (idx, preset in presets)
+    blk.addBlock($"custom{idx}").setFrom(convertPresetToBlk(preset))
+  return blk
+}
 
 function loadCustomPresets(unitName) {
   if (!isProfileReceived.get())
     return
 
   let blk = DataBlock()
-  let customPresets = getCustomWpnPresetBlk(-1, unitName)
+  let customPresets = unitName in debugPresetsOverride
+    ? buildDebugPresetsBlk(debugPresetsOverride[unitName])
+    : getCustomWpnPresetBlk(-1, unitName)
   if (customPresets != null)
     blk.setFrom(customPresets)
   customPresetsConfigByUnit.mutate(@(val) val[unitName] <- blk)
@@ -55,17 +85,6 @@ function getCustomPresetsConfig(unit) {
     loadCustomPresets(unit.name)
 
   return customPresetsConfigByUnit.get()?[unit.name] ?? []
-}
-
-function convertPresetToBlk(preset) {
-  let presetBlk = DataBlock()
-  presetBlk["name"] = preset.customNameText ?? ""
-  foreach (tier in preset.tiers) {
-    let weaponBlk = presetBlk.addNewBlock("Weapon")
-    weaponBlk["preset"] = tier.presetId
-    weaponBlk["slot"] = tier.slot
-  }
-  return presetBlk
 }
 
 function convertInfantryWeaponsPresetToBlk(preset) {
@@ -192,5 +211,7 @@ return {
   getCustomPresetByPresetBlk
   convertPresetToBlk
   isPresetChanged
+  invalidateUnitCache
+  setDebugPresetsOverride
+  clearDebugPresetsOverride
 }
-

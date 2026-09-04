@@ -1,9 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { get_time_msec } = require("dagor.time")
 let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 

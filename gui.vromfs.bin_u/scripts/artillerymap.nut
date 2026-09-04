@@ -1,34 +1,36 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import find_in_array
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "blkGetters" import get_current_mission_info_cached
+from "controls" import isXInputDevice
+from "eventbus" import eventbus_subscribe
+from "math" import round
+from "string" import format
+from "guiArtillery" import getArtilleryDispersion, callArtillery, onArtilleryClose, artilleryCancel, getMapRelativePlayerPos, getArtilleryRange
+from "hudActionBar" import getActionBarItems
+from "hudActionBarConst" import EII_ARTILLERY_TARGET
+from "%sqstd/string.nut" import stripTags
+from "guiMission" import get_mission_difficulty_int, get_current_mission_desc
+from "gameplayBinding" import isInFlight
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "app" import is_dev_version
 
-let { get_current_mission_info_cached } = require("blkGetters")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isXInputDevice } = require("controls")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { round } = require("math")
-let { format } = require("string")
-let { getArtilleryDispersion, callArtillery, onArtilleryClose, artilleryCancel,
-  getMapRelativePlayerPos, getArtilleryRange } = require("guiArtillery")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getActionBarItems } = require("hudActionBar")
 let { getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
-let { EII_ARTILLERY_TARGET } = require("hudActionBarConst")
-let { stripTags } = require("%sqstd/string.nut")
-let { get_mission_difficulty_int, get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { isInFlight } = require("gameplayBinding")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let DataBlock = require("DataBlock")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 
 enum POINTING_DEVICE {
@@ -36,7 +38,7 @@ enum POINTING_DEVICE {
   TOUCHSCREEN
 }
 
-gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
+let ArtilleryMap = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/artilleryMap.blk"
   shouldBlurSceneBg = true
   shouldOpenCenteredToCameraInVr = true
@@ -306,7 +308,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
       local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", stripTags(name), (name.len() > 2) ? "@fontTiny" : "@fontMedium");
 
       if (shortcut.dev[k] == STD_MOUSE_DEVICE_ID) {
-        let mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s'; }"
+        const mouseBtnImg = "controlsHelpMouseBtn { background-image:t='#ui/gameuiskin#%s'; }"
         if (shortcut.btn[k] == 0)
           buttonFrame = format(mouseBtnImg, "mouse_left");
         else if (shortcut.btn[k] == 1)
@@ -408,15 +410,16 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doQuitDelayed()
   }
 }
+register_gui_handler("ArtilleryMap", ArtilleryMap)
 
 function guiStartArtilleryMap(params = {}) {
-  handlersManager.loadHandler(gui_handlers.ArtilleryMap,
+  handlersManager.loadHandler(ArtilleryMap,
   {
     mapSizeMeters = params?.mapSizeMeters ?? 1400
-    isSuperArtillery = getTblValue("useCustomSuperArtillery", params, false)
-    superStrikeRadius = getTblValue("artilleryStrikeRadius", params, 0.0),
-    iconSuperArtilleryZone = "".concat("#ui/gameuiskin#", getTblValue("iconSuperArtilleryZoneName", params, "")),
-    iconSuperArtilleryTarget = "".concat("#ui/gameuiskin#", getTblValue("iconSuperArtilleryTargetName", params, ""))
+    isSuperArtillery = (params?.useCustomSuperArtillery ?? false)
+    superStrikeRadius = (params?.artilleryStrikeRadius ?? 0.0),
+    iconSuperArtilleryZone = "".concat("#ui/gameuiskin#", (params?.iconSuperArtilleryZoneName ?? "")),
+    iconSuperArtilleryTarget = "".concat("#ui/gameuiskin#", (params?.iconSuperArtilleryTargetName ?? ""))
   })
 }
 
@@ -424,6 +427,8 @@ eventbus_subscribe("artilleryMapOpen", @(p) isInFlight() ? guiStartArtilleryMap(
 eventbus_subscribe("artilleryMapClose", @(_) broadcastEvent("CloseArtilleryRequest"))
 eventbus_subscribe("artilleryCallByShortcut", function(_) {
   let handler = handlersManager.getActiveBaseHandler()
-  if (handler && (handler instanceof gui_handlers.ArtilleryMap))
+  if (handler && (handler instanceof ArtilleryMap))
     handler.onApplyByShortcut()
 })
+
+return { ArtilleryMap }

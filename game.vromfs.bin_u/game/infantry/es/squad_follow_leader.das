@@ -2,7 +2,6 @@ require ecs
 require app
 require math.base
 require DagorMath
-require DagorDebug3D
 require %game.events
 
 require %appGame.wt_events
@@ -238,9 +237,9 @@ def squad_follow_leader_update_es(info : ParallelUpdateFrameDelayed;
                   return
                 assume cover = covers.list[cover_id]
                 assume cdesc = covers.coverDescs[cover_id]
-                let numSlots = cover_num_slots(cdesc)
+                let numSlots = cdesc.numSlots
                 for i in range(0, numSlots)
-                  if cover_slot_at(covers, cdesc, i).numUsed > 0
+                  if cover_slot(covers, cdesc, i).numUsed > 0
                     continue
                   let coverSlotPos = get_cover_slot_pos(cover, cdesc, covers, i)
                   let coverDistSq = distance_sq(lastPos.xyz, coverSlotPos)

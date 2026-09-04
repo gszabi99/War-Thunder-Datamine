@@ -7,8 +7,6 @@ require net
 require human_net_speech.modules.human_net_speech_request_common
 require math
 require math.base
-require DagorSystem
-require %game.utils.net_utils
 
 require %appGame.wt_events
 

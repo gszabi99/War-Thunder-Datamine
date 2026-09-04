@@ -1,17 +1,18 @@
+import "DataBlock" as DataBlock
+from "%sqstd/underscore.nut" import isArray
+from "%sqstd/string.nut" import utf8ToLower
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
 let { openSelectionWindow } = require("%scripts/selectionWindow.nut")
 let { getUnlocksByTypeInBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buildConditionsConfig, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockImageConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isArray } = require("%sqstd/underscore.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
 
 const ACHIEVEMENTS_SLOTS_COUNT = 10
 const ACHIEV_HUNTER_EDIT_CONTAINER_ID = "achiev_hunter_container_edit"

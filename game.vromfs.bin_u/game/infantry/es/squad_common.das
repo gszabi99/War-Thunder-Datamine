@@ -4,7 +4,6 @@ require pathfinder
 require DngWalkerai
 require math
 require math.base
-require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 
 struct SquadPos

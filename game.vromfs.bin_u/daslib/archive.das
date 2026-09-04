@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers
 
 module archive shared private
@@ -44,8 +42,7 @@ class public MemSerializer : Serializer {
     }
     def getCopyOfData : array<uint8> {
         
-        var cdata := data
-        return <- cdata
+        return clone_to_move(data)
     }
     def getLastError {
         
@@ -58,6 +55,9 @@ class public MemSerializer : Serializer {
     def override write(bytes : void? implicit; size : int) : bool {
         
         let pos = length(data)
+        
+        
+        unsafe(data |> scratch_ensure_capacity(pos + size))
         data |> resize_no_init(pos + size)
         unsafe {
             memcpy(addr(data[pos]), bytes, size)
@@ -69,7 +69,9 @@ class public MemSerializer : Serializer {
         let newOffset = readOffset + size
         let maxOffset = length(data)
         if (newOffset > maxOffset) {
-            error("reading past the end of stream")
+            
+            
+            self->error("reading past the end of stream")   
             readOffset = maxOffset
             return false
         }
@@ -158,7 +160,7 @@ def public serialize(var arch : Archive; var value : float4x4) {
 def public serialize(var arch : Archive; var value : auto(TT)&) {
     
     if (arch.reading) {
-        delete value
+        unsafe { delete value; }
     }
     apply(value) $ [unused_argument(name)] (name : string; field) {
         arch |> _::serialize(field)
@@ -169,7 +171,7 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 def public serialize(var arch : Archive; var value : auto(TT)&) {
     
     if (arch.reading) {
-        delete value
+        unsafe { delete value; }
     }
     apply(value) $ [unused_argument(name)] (name : string; field) {
         arch |> _::serialize(field)
@@ -180,12 +182,10 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 def public serialize(var arch : Archive; var value : auto(TT)&) {
     
     if (arch.reading) {
-        delete value
+        unsafe { delete value; }
         var index : int
         arch |> read_raw(index)
-        unsafe {
-            value |> set_variant_index(index)
-        }
+        unsafe(value |> set_variant_index(index))
     } else {
         var index = variant_index(value)
         arch |> write_raw(index)
@@ -197,7 +197,8 @@ def public serialize(var arch : Archive; var value : auto(TT)&) {
 
 def public serialize(var arch : Archive; var value : auto(TT)[]) {
     
-    static_if (typeinfo is_workhorse(type<TT>) && typeinfo is_raw(type<TT>)) {
+    
+    static_if (typeinfo is_raw(type<TT>) && (typeinfo is_workhorse(type<TT>) || typeinfo is_dim(type<TT>))) {
         let sz = typeinfo sizeof(value)
         if (arch.reading) {
             arch.stream->read(unsafe(addr(value)), sz)
@@ -211,116 +212,6 @@ def public serialize(var arch : Archive; var value : auto(TT)[]) {
     }
 }
 
-def public serialize(var arch : Archive; var value : auto(TT)[][]) {
-    
-    static_if (typeinfo is_raw(type<TT>)) {
-        let sz = typeinfo sizeof(value)
-        if (arch.reading) {
-            arch.stream->read(unsafe(addr(value)), sz)
-        } else {
-            arch.stream->write(unsafe(addr(value)), sz)
-        }
-    } else {
-        for (a in value) {
-            for (element in a) {
-                arch |> _::serialize(element)
-            }
-        }
-    }
-}
-
-def public serialize(var arch : Archive; var value : auto(TT)[][][]) {
-    
-    static_if (typeinfo is_raw(type<TT>)) {
-        let sz = typeinfo sizeof(value)
-        if (arch.reading) {
-            arch.stream->read(unsafe(addr(value)), sz)
-        } else {
-            arch.stream->write(unsafe(addr(value)), sz)
-        }
-    } else {
-        for (a in value) {
-            for (b in a) {
-                for (element in b) {
-                    arch |> _::serialize(element)
-                }
-            }
-        }
-    }
-}
-
-def public serialize(var arch : Archive; var value : auto(TT)[][][][]) {
-    
-    static_if (typeinfo is_raw(type<TT>)) {
-        let sz = typeinfo sizeof(value)
-        if (arch.reading) {
-            arch.stream->read(unsafe(addr(value)), sz)
-        } else {
-            arch.stream->write(unsafe(addr(value)), sz)
-        }
-    } else {
-        for (a in value) {
-            for (b in a) {
-                for (c in b) {
-                    for (element in c) {
-                        arch |> _::serialize(element)
-                    }
-                }
-            }
-        }
-    }
-}
-
-def public serialize(var arch : Archive; var value : auto(TT)[][][][][]) {
-    
-    static_if (typeinfo is_raw(type<TT>)) {
-        let sz = typeinfo sizeof(value)
-        if (arch.reading) {
-            arch.stream->read(unsafe(addr(value)), sz)
-        } else {
-            arch.stream->write(unsafe(addr(value)), sz)
-        }
-    } else {
-        for (a in value) {
-            for (b in a) {
-                for (c in b) {
-                    for (d in c) {
-                        for (element in d) {
-                            arch |> _::serialize(element)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-def public serialize(var arch : Archive; var value : auto(TT)[][][][][][]) {
-    
-    static_if (typeinfo is_raw(type<TT>)) {
-        let sz = typeinfo sizeof(value)
-        if (arch.reading) {
-            arch.stream->read(unsafe(addr(value)), sz)
-        } else {
-            arch.stream->write(unsafe(addr(value)), sz)
-        }
-    } else {
-        for (a in value) {
-            for (b in a) {
-                for (c in b) {
-                    for (d in c) {
-                        for (e in d) {
-                            for (element in e) {
-                                arch |> _::serialize(element)
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
 def public serialize(var arch : Archive; var value : array<auto(TT)>) {
     
     if (arch.reading) {
@@ -330,14 +221,14 @@ def public serialize(var arch : Archive; var value : array<auto(TT)>) {
         }
         arch |> read_raw(len)
         static_if (typeinfo is_workhorse(type<TT>) && typeinfo is_raw(type<TT>)) {
+            value |> reserve(len)   
             value |> resize_no_init(len)
             if (len > 0) {
                 arch.stream->read(unsafe(addr(value[0])), len * typeinfo sizeof(type<TT>))
             }
         } else {
-            unsafe {
-                value |> resize(len)
-            }
+            value |> reserve(len)
+            unsafe(value |> resize(len))
             for (element in value) {
                 arch |> _::serialize(element)
             }
@@ -362,7 +253,7 @@ def public serialize(var arch : Archive; var value : table<auto(KT); auto(VT)>) 
     if (arch.reading) {
         var len : int
         arch |> read_raw(len)
-        delete value
+        unsafe { delete value; }
         for (_ in range(len)) {
             var k : KT -const -& -#
             arch |> _::serialize(k)
@@ -390,7 +281,7 @@ def public serialize(var arch : Archive; var value : string&) {
                 tbuf |> resize_no_init(len + 1)                         
                 arch.stream->read(addr(tbuf[0]), len)
                 tbuf[len] = 0u8
-                value = clone_string(reinterpret<string#> addr(tbuf[0]))
+                value = clone_string(reinterpret<string#>(addr(tbuf[0])))
                 delete tbuf
             } else {
                 value = ""
@@ -399,7 +290,7 @@ def public serialize(var arch : Archive; var value : string&) {
             var len = length(value)
             arch |> write_raw(len)
             if (len > 0) {
-                arch.stream->write(reinterpret<void?> value, len)
+                arch.stream->write(reinterpret<void?>(value), len)
             }
         }
     }

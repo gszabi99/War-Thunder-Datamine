@@ -1,7 +1,6 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+from "%rGui/hudChatState.nut" import inputChatVisible
 from "%rGui/globals/ui_library.nut" import *
-
-let extWatched = require("%rGui/globals/extWatched.nut")
-let { inputChatVisible } = require("%rGui/hudChatState.nut")
 
 let haveXinputDevice = extWatched("haveXinputDevice", false) 
 let showConsoleButtons = extWatched("showConsoleButtons", false)

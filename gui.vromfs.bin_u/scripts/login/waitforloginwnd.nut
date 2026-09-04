@@ -1,12 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { hasLoginState } = require("%scripts/login/loginStates.nut")
 
-gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
+let WaitForLoginWnd = class (BaseGuiHandler) {
   sceneBlkName = "%gui/login/waitForLoginWnd.blk"
   isInitialized = false
   isBgVisible = true
@@ -51,3 +51,6 @@ gui_handlers.WaitForLoginWnd <- class (BaseGuiHandler) {
     this.updateVisibility()
   }
 }
+register_gui_handler("WaitForLoginWnd", WaitForLoginWnd)
+
+return { WaitForLoginWnd }

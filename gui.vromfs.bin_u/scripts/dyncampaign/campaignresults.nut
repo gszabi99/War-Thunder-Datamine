@@ -1,16 +1,17 @@
+import "DataBlock" as DataBlock
+from "dynamicMission" import dynamicGetVisual
 from "%scripts/dagui_natives.nut" import get_session_warpoints
 from "%scripts/dagui_library.nut" import *
 from "guiMission" import MISSION_STATUS_SUCCESS
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { dynamicGetVisual } = require("dynamicMission")
-let DataBlock = require("DataBlock")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
 
-gui_handlers.CampaignResults <- class (gui_handlers.BaseGuiHandlerWT) {
+let CampaignResults = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/debriefingCamp.blk"
 
   loses = ["fighters", "bombers", "tanks", "infantry", "ships", "artillery"]
@@ -49,19 +50,20 @@ gui_handlers.CampaignResults <- class (gui_handlers.BaseGuiHandlerWT) {
 
   }
   function onSelect() {
-    log("gui_handlers.CampaignResults onSelect")
+    log("CampaignResults onSelect")
     this.save()
   }
   function afterSave() {
-    log("gui_handlers.CampaignResults afterSave")
+    log("CampaignResults afterSave")
     this.goForward(gui_start_mainmenu)
   }
   function onBack() {
-    log("gui_handlers.CampaignResults goBack")
+    log("CampaignResults goBack")
     this.goBack()
   }
 }
+register_gui_handler("CampaignResults", CampaignResults)
 
 return {
-  guiStartDynamicResults = @() handlersManager.loadHandler(gui_handlers.CampaignResults)
+  guiStartDynamicResults = @() handlersManager.loadHandler(CampaignResults)
 }

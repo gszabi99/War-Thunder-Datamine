@@ -1,14 +1,14 @@
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwMapUtils.nut" import selectColorBySide
+from "%rGui/wwMap/wwMapStates.nut" import zonesSides, zonesConnectedToRear
+from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds
+from "%rGui/wwMap/wwMapZonesData.nut" import getZones
+from "%appGlobals/worldWar/wwMapFilters.nut" import isShowZonesFilter
 from "%rGui/globals/ui_library.nut" import *
 
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
-let { selectColorBySide } = require("%rGui/wwMap/wwMapUtils.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { zonesSides, zonesConnectedToRear } = require("%rGui/wwMap/wwMapStates.nut")
-let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { isShowZonesFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
-let transparentColor = 0x00000000
+const transparentColor = 0x00000000
 
 function getBackgroundParams(zoneSide, rearForTeam, zoneConnectedToRear) {
   if (zoneSide == zoneSideType.SIDE_NONE)
@@ -45,7 +45,7 @@ let mkMapZoneBackground = @(zoneData) function() {
     commands = [command]
     children = isRounded ? {
       rendObj = ROBJ_IMAGE
-      size = flex()
+      size = FLEX
       image = Picture($"{getSettings("imageZoneRounded")}:{hdpx(218)}:{hdpx(207)}")
       color = Color(0, 0, 0, 26)
     } : null

@@ -1,7 +1,8 @@
+import "DataBlock" as DataBlock
+from "unitCustomization" import exit_ship_flags_mode
+from "chard" import charSendBlk
 from "%scripts/dagui_library.nut" import *
-let { exit_ship_flags_mode } = require("unitCustomization")
-let { charSendBlk } = require("chard")
-let DataBlock = require("DataBlock")
+
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")

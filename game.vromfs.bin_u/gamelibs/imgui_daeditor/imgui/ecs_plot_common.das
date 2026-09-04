@@ -11,13 +11,15 @@ struct PlotEntry
   name        : string
   comp_idx    : int
   dim         : int
+  row_idx     : int
+  rows        : int  
   eid         : uint
   slot        : uint  
   scale_min   : float
   scale_max   : float
   fit         : bool
   hidden      : bool
-  is_int      : bool
+  type_name   : string  
   edit_val      : float
   committed_val : float
   values      : array<float>
@@ -44,6 +46,7 @@ struct PlotWindow
   ts_write_idx     : int
   ts_count         : int
   plot_duration    : float
+  edit_plot_duration : float  
   prev_n_entries   : int
   win_size_init    : bool
   timestamps       : array<float>
@@ -51,4 +54,9 @@ struct PlotWindow
   toolbar_eid       : uint
   toolbar_slot      : uint
   toolbar_slot_mode : bool  
+  shared_y          : bool  
+  shared_fit        : bool
+  shared_scale_min  : float
+  shared_scale_max  : float
+  fit_widget_x      : float 
   dirty             : bool

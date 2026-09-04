@@ -1,48 +1,44 @@
-from "%scripts/dagui_library.nut" import *
-from "%scripts/teamsConsts.nut" import Team
+import "DataBlock" as DataBlock
+import "base64" as base64
+import "%sqstd/ecs.nut" as ecs
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, DEFAULT_HANDLER, broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import search, isEqual, isArray, isDataBlock, isEmpty
+from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank
+from "%sqstd/datablock.nut" import convertBlk
+from "mission" import set_game_mode, get_game_mode, get_game_type
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "gameplayBinding" import isInFlight
+from "guiOptions" import getCdBaseDifficulty, get_cd_preset
+from "multiplayer" import get_mp_session_id_str
+from "dynamicMission" import isDynamicWon
+from "net" import EventOnConnectedToServer
+from "dagor.debug" import debug_dump_stack
+from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
+from "%globalScripts/playerStateConsts.nut" import *
+from "%scripts/teamsConsts.nut" import Team
 from "%scripts/options/optionsConsts.nut" import misCountries
 from "%scripts/controls/controlsConsts.nut" import optionControlType
+from "types" import Array, Table, String
 
-let { addListenersWithoutEnv, DEFAULT_HANDLER, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { search, isEqual, isArray, isDataBlock, isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { set_game_mode, get_game_mode, get_game_type } = require("mission")
-let { deferOnce } = require("dagor.workcycle")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { isInFlight } = require("gameplayBinding")
-let { getCdBaseDifficulty, get_cd_preset } = require("guiOptions")
-let { get_mp_session_id_str } = require("multiplayer")
-let { isDynamicWon } = require("dynamicMission")
-let DataBlock = require("DataBlock")
-let base64 = require("base64")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
+let { getLeaderUid, getOnlineMembersCount, getSquadMembersDataForContact, isInSquad } = require("%scripts/squads/squadState.nut")
+let { getSidesList, getTeamName } = require("%scripts/events/eventTeamsInfo.nut")
+let { eventRequiresTicket, hasEventTicket } = require("%scripts/events/eventTickets.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let ecs = require("%sqstd/ecs.nut")
-let { EventOnConnectedToServer } = require("net")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { MatchingRoomExtraParams = null } = require_optional("dasevents")
 let { set_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { matchingApiFunc, matchingRpcSubscribe, checkMatchingError } = require("%scripts/matching/api.nut")
 let { gen_rnd_password, get_array_by_bit_value } = require("%scripts/utils_sa.nut")
-let { SessionLobbyState, sessionLobbyStatus, getSessionLobbyGameMode, isInSessionRoom, getSessionInfo,
-  getSessionLobbyMissionData, updateSessionLobbyPlayersInfo, isMeSessionLobbyRoomOwner, isInSessionLobbyEventRoom,
-  resetSessionLobbyPlayersInfo, isInJoiningGame, hasSessionInLobby, getSessionLobbyMyState, isWaitForQueueRoom,
-  getSessionLobbyChatRoomPassword, canJoinSession, isRoomInSession, isSessionStartedInRoom, getMembersCount,
-  isMemberHost, isUserMission, getSessionLobbyPublicParam, getSessionLobbyPassword, isSessionCreatedByPlayer
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { haveLobby, getAvailableTeamOfRoom, getRoomTeamData,
-  canSetReadyInLobby, canChangeTeamInLobby, canBeSpectator, getRoomUnitTypesMask, getRoomEvent,
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { getRoomMemberPublicParam, isRoomMemberOperator, isRoomMemberInSession
-} = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { setMemberAttributes, roomSetReadyState, setRoomAttributes, roomSetPassword,
-  requestLeaveRoom, roomStartSession, requestDestroyRoom
-} = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
+let { SessionLobbyState, sessionLobbyStatus, getSessionLobbyGameMode, isInSessionRoom, getSessionInfo, getSessionLobbyMissionData, updateSessionLobbyPlayersInfo, isMeSessionLobbyRoomOwner, isInSessionLobbyEventRoom, resetSessionLobbyPlayersInfo, isInJoiningGame, hasSessionInLobby, getSessionLobbyMyState, isWaitForQueueRoom, getSessionLobbyChatRoomPassword, canJoinSession, isRoomInSession, isSessionStartedInRoom, getMembersCount, isMemberHost, isUserMission, getSessionLobbyPublicParam, getSessionLobbyPassword, isSessionCreatedByPlayer } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { haveLobby, getAvailableTeamOfRoom, getRoomTeamData, canSetReadyInLobby, canChangeTeamInLobby, canBeSpectator, getRoomUnitTypesMask, getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getRoomMemberPublicParam, isRoomMemberOperator, isRoomMemberInSession } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { setMemberAttributes, roomSetReadyState, setRoomAttributes, roomSetPassword, requestLeaveRoom, roomStartSession, requestDestroyRoom } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getStats, getMissionsComplete } = require("%scripts/myStats.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -50,11 +46,8 @@ let { userIdInt64, userName, isMyUserId } = require("%scripts/user/profileStates
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { updateIconPlayersInfo } = require("%scripts/statistics/squadIcon.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { getSessionLobbyMissionName, getUrlOrFileMissionMetaInfo
-} = require("%scripts/missions/missionsUtilsModule.nut")
-let { updateOverrideSlotbar, resetSlotbarOverrided, getSlotbarOverrideCountriesByMissionName
-} = require("%scripts/slotbar/slotbarOverride.nut")
+let { getSessionLobbyMissionName, getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
+let { updateOverrideSlotbar, resetSlotbarOverrided, getSlotbarOverrideCountriesByMissionName } = require("%scripts/slotbar/slotbarOverride.nut")
 let { addRecentContacts } = require("%scripts/contacts/contactsManager.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -62,15 +55,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { isRemoteMissionVar, is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
-let { USEROPT_SESSION_PASSWORD, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_DISPLAY_MY_REAL_NICK,
-  OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_SESSION_PASSWORD, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { registerOption, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 let { needActualizeQueueData, actualizeQueueData, queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
+let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 
 
 
@@ -196,7 +187,7 @@ function syncMyInfo(newInfo, cb = @(_) null) {
       if (key in SessionLobbyState._syncedMyInfo) {
         if (SessionLobbyState._syncedMyInfo[key] == value)
           continue
-        if (type(value) == "array" || type(value) == "table")
+        if (value instanceof Array || value instanceof Table)
           if (isEqual(SessionLobbyState._syncedMyInfo[key], value))
             continue
       }
@@ -231,10 +222,10 @@ function updateMemberHostParams(member = null) {
 }
 
 function getSquadId() {
-  let squadId = g_squad_manager.getLeaderUid()
+  let squadId = getLeaderUid()
   if (getSessionLobbyGameMode() != GM_SKIRMISH)
     return null
-  return g_squad_manager.isInSquad() && squadId != ""
+  return isInSquad() && squadId != ""
     ? squadId.tointeger()
     : userIdInt64.get()
 }
@@ -426,8 +417,8 @@ function updateCrsSettings() {
   }
 
   SessionLobbyState.crsSetTeamTo = Team.none
-  foreach (team in events.getSidesList()) {
-    let players = getSessionInfo()?[events.getTeamName(team)].players
+  foreach (team in getSidesList()) {
+    let players = getSessionInfo()?[getTeamName(team)].players
     if (!isArray(players))
       continue
 
@@ -457,8 +448,8 @@ function initMyParamsByMemberInfo(me = null) {
 }
 
 function addTeamsInfoToSettings(v_settings, teamDataA, teamDataB) {
-  v_settings[events.getTeamName(Team.A)] <- teamDataA
-  v_settings[events.getTeamName(Team.B)] <- teamDataB
+  v_settings[getTeamName(Team.A)] <- teamDataA
+  v_settings[getTeamName(Team.B)] <- teamDataB
 }
 
 function fillTeamsInfo(v_settings, _misBlk) {
@@ -532,7 +523,7 @@ function setExternalSessionId(extId) {
 }
 
 function setSettings(v_settings, notify = false, checkEqual = true) {
-  if (type(v_settings) == "array") {
+  if (v_settings instanceof Array) {
     log("v_settings param, public info, is array, instead of table")
     debug_dump_stack()
     return
@@ -580,12 +571,12 @@ function checkDynamicSettings(silent = false, v_settings = null) {
     silent = true 
 
   local changed = false
-  let wasHidden = getTblValue("hidden", v_settings, false)
-  v_settings.hidden <- getTblValue("coop", v_settings, false)
-    || (isRoomInSession.get() && !getTblValue("allowJIP", v_settings, true))
+  let wasHidden = (v_settings?.hidden ?? false)
+  v_settings.hidden <- (v_settings?.coop ?? false)
+    || (isRoomInSession.get() && !(v_settings?.allowJIP ?? true))
   changed = changed || (wasHidden != v_settings.hidden) 
 
-  let wasPassword = getTblValue("hasPassword", v_settings, false)
+  let wasPassword = (v_settings?.hasPassword ?? false)
   v_settings.hasPassword <- SessionLobbyState.password != ""
   changed = changed || (wasPassword != v_settings.hasPassword)
 
@@ -594,7 +585,7 @@ function checkDynamicSettings(silent = false, v_settings = null) {
 }
 
 function changeRoomPassword(v_password) {
-  if (type(v_password) != "string" || SessionLobbyState.password == v_password)
+  if (!(v_password instanceof String) || SessionLobbyState.password == v_password)
     return
 
   if (isMeSessionLobbyRoomOwner.get() && sessionLobbyStatus.get() != lobbyStates.NOT_IN_ROOM && sessionLobbyStatus.get() != lobbyStates.CREATING_ROOM) {
@@ -639,17 +630,17 @@ function guiStartMpLobby() {
     backFromLobby = { eventbusName = "guiStartSkirmish" }
   else {
     let lastEvent = getRoomEvent()
-    if (lastEvent && events.eventRequiresTicket(lastEvent) && events.getEventActiveTicket(lastEvent) == null) {
+    if (lastEvent && eventRequiresTicket(lastEvent) && !hasEventTicket(lastEvent)) {
       gui_start_mainmenu()
       return
     }
   }
 
   isRemoteMissionVar.set(false)
-  loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
+  loadHandler(get_gui_handler("MPLobby"), { backSceneParams = backFromLobby })
 }
 
-let joiningGameWaitBox = @() loadHandler(gui_handlers.JoiningGameWaitBox)
+let joiningGameWaitBox = @() loadHandler(get_gui_handler("JoiningGameWaitBox"))
 
 function switchStatus(v_status) {
   if (sessionLobbyStatus.get() == v_status)
@@ -677,7 +668,7 @@ function switchStatus(v_status) {
       destroySessionScripted("on leave room while joining session")
   }
   if (sessionLobbyStatus.get() == lobbyStates.JOINING_SESSION)
-    addRecentContacts(g_squad_manager.getSquadMembersDataForContact())
+    addRecentContacts(getSquadMembersDataForContact())
 
   let curState = getSessionLobbyMyState()
   let newState = updateMyState()
@@ -732,7 +723,7 @@ function prepareSettings(missionSettings) {
     if (key == "mission")
       continue
     local value = findParam(key, missionSettings, mission)
-    if (type(v) == "array" && type(value) != "array")
+    if (v instanceof Array && !(value instanceof Array))
       value = [value]
     _settings[key] <- value 
   }
@@ -741,7 +732,7 @@ function prepareSettings(missionSettings) {
   foreach (key, _v in allowed_mission_settings.mission) {
     local value = findParam(key, mission, missionSettings)
     if (key == "postfix")
-      value = getTblValue(key, missionSettings)
+      value = missionSettings?[key]
     if (value == null)
       continue
 
@@ -750,9 +741,9 @@ function prepareSettings(missionSettings) {
 
   _settings.mission.keepOwnUnits <- mission?.editSlotbar.keepOwnUnits ?? true
   _settings.creator <- userName.get()
-  _settings.mission.originalMissionName <- getTblValue("name", _settings.mission, "")
+  _settings.mission.originalMissionName <- (_settings.mission?.name ?? "")
   if ("postfix" in _settings.mission && _settings.mission.postfix) {
-    let ending = "_tm"
+    const ending = "_tm"
     local nameNoTm = _settings.mission.name
     if (nameNoTm.len() > ending.len() && nameNoTm.slice(nameNoTm.len() - ending.len()) == ending)
       nameNoTm = nameNoTm.slice(0, nameNoTm.len() - ending.len())
@@ -765,20 +756,20 @@ function prepareSettings(missionSettings) {
     _settings.mission._gameMode <- get_game_mode()
   if (!("_gameType" in _settings.mission))
     _settings.mission._gameType <- get_game_type()
-  if (getTblValue("coop", _settings) == null)
+  if (_settings?.coop == null)
     _settings.coop <- isGameModeCoop(_settings.mission._gameMode)
   if (("difficulty" in _settings.mission) && _settings.mission.difficulty == "custom")
     _settings.mission.custDifficulty <- get_cd_preset(DIFFICULTY_CUSTOM)
 
   
-  let countriesType = getTblValue("countriesType", missionSettings, misCountries.ALL)
+  let countriesType = (missionSettings?.countriesType ?? misCountries.ALL)
   local fullCountriesList = getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
   if (!fullCountriesList.len())
     fullCountriesList = clone shopCountriesList
   foreach (name in ["country_allies", "country_axis"]) {
     local countries = null
     if (countriesType == misCountries.BY_MISSION) {
-      countries = getTblValue(name, _settings, [])
+      countries = (_settings?[name] ?? [])
       for (local i = countries.len() - 1; i >= 0; i--) {
         countries[i] = validateMissionCountry(countries[i], fullCountriesList)
         if (!countries[i])
@@ -787,7 +778,7 @@ function prepareSettings(missionSettings) {
     }
     else if (countriesType == misCountries.SYMMETRIC || countriesType == misCountries.CUSTOM) {
       let bitMaskKey = (countriesType == misCountries.SYMMETRIC) ? "country_allies" : name
-      countries = get_array_by_bit_value(getTblValue($"{bitMaskKey}_bitmask", missionSettings, 0), shopCountriesList)
+      countries = get_array_by_bit_value((missionSettings?[$"{bitMaskKey}_bitmask"] ?? 0), shopCountriesList)
     }
     _settings[name] <- (countries && countries.len()) ? countries : fullCountriesList
   }
@@ -925,7 +916,7 @@ function setRoomInSession(newIsInSession) {
 function onSettingsChanged(p) {
   if (SessionLobbyState.roomId != p.roomId)
     return
-  let set = getTblValue("public", p)
+  let set = p?.public
   if (!set)
     return
 
@@ -984,7 +975,7 @@ function onMemberInfoUpdate(params) {
     isMeSessionLobbyRoomOwner.set(isRoomMemberOperator(member))
     SessionLobbyState.isInLobbySession = isRoomMemberInSession(member)
     initMyParamsByMemberInfo(member)
-    let ready = getTblValue("ready", getTblValue("public", member, {}), null)
+    let ready = (member?.public ?? {})?.ready
     if (!hasSessionInLobby() && ready != null && ready != SessionLobbyState.isReady)
       updateReadyAndSyncMyInfo(ready)
     else if (SessionLobbyState.needJoinSessionAfterMyInfoApply)
@@ -1079,7 +1070,7 @@ function startSession() {
 
 function checkAutoStart() {
   if (isMeSessionLobbyRoomOwner.get() && !SessionLobbyState.isRoomByQueue && !haveLobby() && SessionLobbyState.roomUpdated
-      && g_squad_manager.getOnlineMembersCount() <= getMembersCount())
+      && getOnlineMembersCount() <= getMembersCount())
     startSession()
 }
 
@@ -1106,7 +1097,7 @@ function afterRoomUpdate(params) {
 }
 
 function sessionLobbyHostCb(res) {
-  if ((type(res) == "table") && ("errCode" in res)) {
+  if ((res instanceof Table) && ("errCode" in res)) {
     local errorCode;
     if (res.errCode == 0) {
       if (get_game_mode() == GM_DOMINATION)

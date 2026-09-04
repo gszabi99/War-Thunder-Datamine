@@ -1,14 +1,14 @@
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/platform.nut" import is_android
+from "controls" import hasXInputDevice
 from "%scripts/dagui_natives.nut" import is_steam_big_picture, set_dagui_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { is_android } = require("%sqstd/platform.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { hasXInputDevice } = require("controls")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ENABLE_CONSOLE_MODE } = require("%scripts/options/optionsExtNames.nut")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)

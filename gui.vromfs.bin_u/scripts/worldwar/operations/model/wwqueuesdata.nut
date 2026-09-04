@@ -1,7 +1,7 @@
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueType.nut" import g_queue_type
 
-let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")

@@ -1,12 +1,14 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "string" import format
+from "matching.errors" import SERVER_ERROR_PLAYER_BANNED
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { format } = require("string")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getBannedMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
-let { SERVER_ERROR_PLAYER_BANNED } = require("matching.errors")
 
 let errCodeToStringMap = {
   [YU2_TIMEOUT] = "80130182",
@@ -68,7 +70,7 @@ function get_error_data(header, error_code) {
     errCode = null
     text = null
   }
-  if (type(error_code) != "string") {
+  if (!(error_code instanceof String)) {
     error_code = error_code & 0xFFFFFFFF 
 
     res.errCode = error_code_tostring(error_code)

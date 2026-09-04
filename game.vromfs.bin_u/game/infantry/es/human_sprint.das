@@ -1,7 +1,6 @@
 require ecs
 require DagorMath
 require DngHuman
-require %game.player_events
 require %game.events
 require math.base
 

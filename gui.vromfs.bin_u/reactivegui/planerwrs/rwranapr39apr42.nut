@@ -1,13 +1,13 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, CurrentTime
 from "%rGui/globals/ui_library.nut" import *
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
-
-let gridColor = Color(10, 202, 10, 250)
-let targetColor = Color(250, 250, 10, 250)
-let ownShipColor = Color(0, 250, 250, 250)
-let backgroundColor = Color(0, 0, 0, 255)
+const gridColor = Color(10, 202, 10, 250)
+const targetColor = Color(250, 250, 10, 250)
+const ownShipColor = Color(0, 250, 250, 250)
+const backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -24,8 +24,8 @@ let gridCommands = [ [VECTOR_ELLIPSE, 0, 0, 100.0, 100.0] ]
 
 function createGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     color = gridColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -41,8 +41,8 @@ let ownShipCommands = [
 
 function createOwnShip(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     color = ownShipColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
@@ -76,7 +76,7 @@ function createRwrTarget(index, settings, objectStyle) {
       styleText.__merge({
         rendObj = ROBJ_TEXT
         pos = [pw(target.x * 100.0 * targetRadiusRel), ph((target.y * targetRadiusRel - targetIconSizeRel) * 100.0)]
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = objectStyle.fontScale * styleText.fontSize
@@ -94,7 +94,7 @@ function createRwrTarget(index, settings, objectStyle) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * objectStyle.lineWidthScale
       fillColor = 0
-      size = flex()
+      size = FLEX
       commands = [
         [ VECTOR_POLY,
           (target.x * targetRadiusRel - targetAttackIconSizeRel) * 100.0,
@@ -120,7 +120,7 @@ function createRwrTarget(index, settings, objectStyle) {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * objectStyle.lineWidthScale * 3.0
     fillColor = backgroundColor
-    size = flex()
+    size = FLEX
     commands = [
       [ VECTOR_RECTANGLE,
         (target.x * targetRadiusRel - backGroundSizeRel) * 100.0,
@@ -164,18 +164,18 @@ function createRwrTarget(index, settings, objectStyle) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * objectStyle.lineWidthScale * newTargetLineWidthMult.get()
         fillColor = 0
-        size = flex()
+        size = FLEX
         commands = commands
       }
     }
   }
 
   return @() {
-    size = flex()
+    size = FLEX
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = const [pw(50), ph(50)]
+        size = FLEX
         children = [
           background,
           icon,
@@ -284,7 +284,7 @@ let settings = Computed(function() {
 let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -302,7 +302,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

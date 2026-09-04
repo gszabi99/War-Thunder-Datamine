@@ -1,28 +1,28 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers, RwrSignalHoldTimeInv, CurrentTime
+from "%rGui/planeState/planeFlyState.nut" import Speed, CompassValue, Altitude
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/planeState/planeToolsState.nut" import RadarTargetDist
+from "%rGui/radarState.nut" import IsRadarVisible, IsRadarEmitting, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax, Azimuth
+  , Elevation, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, metrToFeet, metrToNavMile
+from "string" import format
+from "math" import sin, cos, abs, floor
+from "%sqstd/math_ex.nut" import degToRad, radToDeg
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-let { sin, cos, abs, floor } = require("math")
-let { degToRad, radToDeg } = require("%sqstd/math_ex.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrSignalHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
 
-let { Speed, CompassValue, Altitude } = require("%rGui/planeState/planeFlyState.nut")
-let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
-let { RadarTargetDist } = require("%rGui/planeState/planeToolsState.nut")
 
-let { IsRadarVisible, IsRadarEmitting, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax,
-  Azimuth, Elevation, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax } = require("%rGui/radarState.nut")
 
-let { mpsToKnots, metrToFeet, metrToNavMile} = require("%rGui/planeIlses/ilsConstants.nut")
-
-let backGroundColor = Color(0, 0, 0, 255)
-let gridColor = Color(0, 0, 255, 255)
-let gridColorInner = Color(0, 255, 0, 255)
-let radarScanSectorColor = Color(255, 255, 255, 255)
-let iconColor = Color(255, 0, 0, 255)
-let iconBorderColor = Color(255, 255, 255, 255)
-let textColor = Color(255, 255, 255, 255)
+const backGroundColor = Color(0, 0, 0, 255)
+const gridColor = Color(0, 0, 255, 255)
+const gridColorInner = Color(0, 255, 0, 255)
+const radarScanSectorColor = Color(255, 255, 255, 255)
+const iconColor = Color(255, 0, 0, 255)
+const iconBorderColor = Color(255, 255, 255, 255)
+const textColor = Color(255, 255, 255, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -36,16 +36,16 @@ let styleText = {
   lineWidth = baseLineWidth
 }
 
-let gridFontVarSizeMult = 2.0
-let gridFontSizeMult = gridFontVarSizeMult * 0.75
+const gridFontVarSizeMult = 2.0
+const gridFontSizeMult = gridFontVarSizeMult * 0.75
 
 function createRwrGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = gridColor,
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
@@ -56,7 +56,7 @@ function createRwrGrid(gridStyle) {
         ]
       },
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = gridColorInner,
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
@@ -71,12 +71,12 @@ function createRwrGrid(gridStyle) {
 
 function createRwrGridMarks(gridStyle, settings) {
   return {
-    size = flex(),
+    size = FLEX,
     children = [
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [ph(0), ph(90)]
-        size = flex()
+        pos = const [ph(0), ph(90)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult
@@ -108,7 +108,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 
   let iconSizeMult = 0.15 * objectStyle.scale
 
-  let targetTypeFontSizeMult = 2.0
+  const targetTypeFontSizeMult = 2.0
   local targetTypeText = styleText.__merge({
     rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
@@ -130,7 +130,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * (1 + 5) * objectStyle.lineWidthScale
     fillColor = backGroundColor
-    size = flex()
+    size = FLEX
     commands = [
       [ VECTOR_POLY,
         target.x * targetRadiusRel * 100.0,
@@ -148,7 +148,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   let icon = @() {
     watch = ageOpacity
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = iconColor
     opacity = ageOpacity.get()
     fillColor = iconColor
@@ -168,7 +168,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 
   let iconBorder = @() {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = iconBorderColor
     fillColor = 0
     lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
@@ -206,7 +206,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 
   let attack = target.track || target.launch ? @() {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = iconBorderColor
     fillColor = 0
     lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
@@ -224,8 +224,8 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   let launchOpacityRwr = Computed(@() target.launch && ((CurrentTime.get() * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0)
   return @() {
     watch = launchOpacityRwr
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     opacity = launchOpacityRwr.get()
     children = [
       background,
@@ -237,7 +237,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   }
 }
 
-let elevation5DegInRad = degToRad(5.0)
+const elevation5DegInRad = degToRad(5.0)
 
 let AzimuthAbs = Computed(@() AzimuthMin.get() * (1.0 - Azimuth.get()) + AzimuthMax.get() * Azimuth.get() )
 
@@ -248,13 +248,13 @@ let ElevationAbs = Computed(@() ElevationMin.get() * (1.0 - Elevation.get()) + E
 function createRadarScanSector(gridStyle) {
   return @() {
     watch = [IsRadarVisible, IsRadarEmitting],
-    size = flex(),
+    size = FLEX,
     children = IsRadarVisible.get() && IsRadarEmitting.get() ? [
       @() {
         rendObj = ROBJ_VECTOR_CANVAS,
         watch = [ElevationMin, ElevationMax, ElevationScale]
-        pos = [pw(50), ph(50)],
-        size = flex(),
+        pos = const [pw(50), ph(50)],
+        size = FLEX,
         color = radarScanSectorColor,
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
         fillColor = 0,
@@ -267,13 +267,13 @@ function createRadarScanSector(gridStyle) {
       },
       @() {
         watch = RadarTargetDist
-        size = flex()
+        size = FLEX
         children = RadarTargetDist.get() > 0 ? [
           @() {
             rendObj = ROBJ_VECTOR_CANVAS,
             watch = [AzimuthAbs, ElevationAbs, ElevationScale]
-            pos = [pw(50), ph(50)],
-            size = flex(),
+            pos = const [pw(50), ph(50)],
+            size = FLEX,
             color = radarScanSectorColor,
             lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
             fillColor = 0,
@@ -287,8 +287,8 @@ function createRadarScanSector(gridStyle) {
           @() {
             rendObj = ROBJ_VECTOR_CANVAS,
             watch = [ScanAzimuthMin, ScanAzimuthMax]
-            pos = [pw(50), ph(50)],
-            size = flex(),
+            pos = const [pw(50), ph(50)],
+            size = FLEX,
             color = radarScanSectorColor,
             lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
             fillColor = 0,
@@ -301,8 +301,8 @@ function createRadarScanSector(gridStyle) {
           @() {
             rendObj = ROBJ_VECTOR_CANVAS,
             watch = [ScanElevationMin, ScanElevationMax, ElevationScale]
-            pos = [pw(50), ph(50)],
-            size = flex(),
+            pos = const [pw(50), ph(50)],
+            size = FLEX,
             color = radarScanSectorColor,
             lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
             fillColor = radarScanSectorColor,
@@ -546,7 +546,7 @@ let settings = Computed(function() {
 function rwrGridMarksComponent(gridStyle) {
   return @() {
     watch = settings
-    size = flex()
+    size = FLEX
     children = createRwrGridMarks(gridStyle, settings.get())
   }
 }
@@ -554,7 +554,7 @@ function rwrGridMarksComponent(gridStyle) {
 function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -569,7 +569,7 @@ function scope(scale, style) {
         size = const [pw(100), ph(100)],
         children = [
           {
-            size = flex(),
+            size = FLEX,
             children = [
               rwrTargetsComponent(style.object),
               createRwrGrid(style.grid),
@@ -580,8 +580,8 @@ function scope(scale, style) {
             styleText.__merge({
               watch = Speed
               rendObj = ROBJ_TEXT
-              pos = [pw(-90), ph(-115)]
-              size = flex()
+              pos = const [pw(-90), ph(-115)]
+              size = FLEX
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
@@ -589,8 +589,8 @@ function scope(scale, style) {
             }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-75), ph(-115)]
-            size = flex()
+            pos = const [pw(-75), ph(-115)]
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -600,8 +600,8 @@ function scope(scale, style) {
             styleText.__merge({
               watch = CompassValue
               rendObj = ROBJ_TEXT
-              pos = [pw(0), ph(-115)]
-              size = flex()
+              pos = const [pw(0), ph(-115)]
+              size = FLEX
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
@@ -611,8 +611,8 @@ function scope(scale, style) {
             styleText.__merge({
               watch = Altitude
               rendObj = ROBJ_TEXT
-              pos = [pw(85), ph(-115)]
-              size = flex()
+              pos = const [pw(85), ph(-115)]
+              size = FLEX
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
@@ -620,8 +620,8 @@ function scope(scale, style) {
             }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(110), ph(-115)]
-            size = flex()
+            pos = const [pw(110), ph(-115)]
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -629,8 +629,8 @@ function scope(scale, style) {
           }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-87), ph(110)]
-            size = flex()
+            pos = const [pw(-87), ph(110)]
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -640,8 +640,8 @@ function scope(scale, style) {
             styleText.__merge({
               watch = ChaffsCount
               rendObj = ROBJ_TEXT
-              pos = [pw(-75), ph(110)]
-              size = flex()
+              pos = const [pw(-75), ph(110)]
+              size = FLEX
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
@@ -649,8 +649,8 @@ function scope(scale, style) {
             }),
           styleText.__merge({
             rendObj = ROBJ_TEXT
-            pos = [pw(-87), ph(125)]
-            size = flex()
+            pos = const [pw(-87), ph(125)]
+            size = FLEX
             halign = ALIGN_CENTER
             valign = ALIGN_CENTER
             fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -660,8 +660,8 @@ function scope(scale, style) {
             styleText.__merge({
               watch = FlaresCount
               rendObj = ROBJ_TEXT
-              pos = [pw(-75), ph(125)]
-              size = flex()
+              pos = const [pw(-75), ph(125)]
+              size = FLEX
               halign = ALIGN_CENTER
               valign = ALIGN_CENTER
               fontSize = style.grid.fontScale * styleText.fontSize * gridFontVarSizeMult
@@ -674,7 +674,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

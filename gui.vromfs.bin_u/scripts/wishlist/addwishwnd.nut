@@ -1,20 +1,22 @@
+from "chard" import getMaxWishListSize, getMaxWishListCommentSize
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { getCurrentWishListSize, requestAddToWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { getMaxWishListSize, getMaxWishListCommentSize } = require("chard")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { getCurrentWishListSize, requestAddToWishlist, isWishlistFull, canAddUnitToWishlist
+} = require("%scripts/wishlist/wishlistManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-let { format } = require("string")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName} = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 
-let class WishListHandler (gui_handlers.BaseGuiHandlerWT) {
+class WishListHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/wishlist/addWish.tpl"
   unit = null
@@ -81,9 +83,25 @@ let class WishListHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.WishListHandler <- WishListHandler
+register_gui_handler("WishListHandler", WishListHandler)
 let addToWishlist = @(unit) handlersManager.loadHandler(WishListHandler, { unit })
+
+function tryAddToWishlist(unit) {
+  if (isWishlistFull())
+    return showInfoMsgBox(colorize("activeTextColor", loc("wishlist/wishlist_full")))
+  addToWishlist(unit)
+}
+
+function updateWishlistButton(parentObj, unit, btnId = "btn_add_to_wishlist") {
+  if (unit == null)
+    return
+  let btnObj = showObjById(btnId, canAddUnitToWishlist(unit), parentObj)
+  if (btnObj != null)
+    btnObj["status"] = isWishlistFull() ? "red" : ""
+}
 
 return {
   addToWishlist
+  tryAddToWishlist
+  updateWishlistButton
 }

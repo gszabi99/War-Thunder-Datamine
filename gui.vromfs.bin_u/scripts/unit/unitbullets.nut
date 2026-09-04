@@ -1,16 +1,16 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "string" import format
+from "math" import floor
+from "unitCalculcation" import calculate_tank_bullet_parameters
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { blkOptFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
-let { getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData,
-  getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { format } = require("string")
-let { floor } = require("math")
+let { getBulletSetNameByBulletName, getBulletsSearchName, getBulletsSetData, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getUnitWeaponry } = require("%scripts/weaponry/weaponryInfo.nut")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let uintModificationsCache = {}

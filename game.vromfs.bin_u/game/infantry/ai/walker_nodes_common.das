@@ -4,14 +4,11 @@ require ecs
 require app
 require math.base
 require %appGame.infantry.es.battle_area_common
-require RendInst
 require DagorMath
-require DagorMathUtils
 require inventory
 require DngWalkerai
 require pathfinder
 require %appGame.infantry.es.human_reload_common
-require %appGame.infantry.es.loc_squad_common
 require Grid
 
 

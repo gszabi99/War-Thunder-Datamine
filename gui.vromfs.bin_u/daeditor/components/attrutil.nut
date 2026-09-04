@@ -5,13 +5,14 @@ from "%sqstd/string.nut" import tostring_r
 from "console" import command
 from "%darg/ui_imports.nut" import *
 from "%sqstd/ecs.nut" import *
+from "types" import String
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
 let rexInt = regexp(@"[\+\-]?[0-9]+")
-let tofloat = @(v) v.tofloat()
-let tointeger = @(v) v.tointeger()
-let isStrInt = @(v) rexInt.match(strip(v))
-let isStrFloat = @(v) rexFloat.match(strip(v))
-function isStrBool(text){
+let tofloat = @(v): float v.tofloat()
+let tointeger = @(v): int v.tointeger()
+let isStrInt = @(v: string) rexInt.match(strip(v))
+let isStrFloat = @(v: string) rexFloat.match(strip(v))
+function isStrBool(text: string): bool {
   let s = strip(text)
   return (s == "true" || s == "1" || s == "false" || s == "0")
 }
@@ -35,7 +36,7 @@ function isValueTextValid(comp_type, text) {
     let fields = text.split(",")
     if (fields.len()!=nFields[0])
       return false
-    return fields.reduce(@(a,b) (type(a) == "string" ? nFields[1](a) : a) && nFields[1](b))
+    return fields.reduce(@(a,b) (a instanceof String ? nFields[1](a) : a) && nFields[1](b))
   }
   return false
 }
@@ -144,7 +145,7 @@ let map_class_to_str = {
   },
 }
 
-function instance_to_str(v, max_cvstr_len, compValToString_){
+function instance_to_str(v, max_cvstr_len, compValToString_): string {
   function objToStr(o){
     local s = format("[%d]={", o.len())
     foreach (val in o) {
@@ -188,7 +189,7 @@ function instance_to_str(v, max_cvstr_len, compValToString_){
   return res
 }
 
-function compValToString(v, max_cvstr_len = 80){
+function compValToString(v, max_cvstr_len = 80): string {
   let compValToString_ = callee()
   return type(v) == "instance"
     ? instance_to_str(v, max_cvstr_len, compValToString_)
@@ -200,18 +201,20 @@ function isCompReadOnly(eid, comp_name){
   return object?.isReadOnly() ?? false
 }
 
-function getValFromObj(eid, comp_name, path=null){
-  local object = _dbg_get_comp_val_inspect(eid, comp_name)
-  object = object?.getAll() ?? object
+
+function valueAtPath(object, path) {
   local res = object
   foreach (key in (path ?? [])) {
-    if (key in res) {
-      res = res[key]
-    }
-    else
+    if (key not in res)
       break
+    res = res[key]
   }
   return res
+}
+
+function getValFromObj(eid, comp_name, path=null){
+  let object = _dbg_get_comp_val_inspect(eid, comp_name)
+  return valueAtPath(object?.getAll() ?? object, path)
 }
 
 function setValToObj(eid, comp_name, path, val){
@@ -243,6 +246,7 @@ function updateComp(eid, comp_name){
 
 let exports = {
   isCompReadOnly
+  valueAtPath
   getValFromObj
   setValToObj
   isValueTextValid

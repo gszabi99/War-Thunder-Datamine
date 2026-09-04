@@ -1,6 +1,6 @@
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
-let { get_time_msec } = require("dagor.time")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 const TIMER_PREVENT_JITTER_OFFSET_MS = 100
 

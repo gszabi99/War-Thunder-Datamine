@@ -1,12 +1,16 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_natives.nut" import shop_get_country_excess_exp, shop_get_researchable_unit_name, is_era_available, shop_reset_researchable_unit, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { researchUnitNotification } = require("%scripts/researches/finishedResearches.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { ShopMenuHandler } = require("%scripts/shop/shop.nut")
 let { Cost } = require("%scripts/money.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let { research, flushExcessExpToUnit, CheckFeatureLockAction, checkFeatureLock } = require("%scripts/unit/unitActions.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
@@ -15,15 +19,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
-  getUnitReqExp, getUnitExp, getUnitCost
-} = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitReqExp, getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
-let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched,
-  isPrevUnitBought
-} = require("%scripts/unit/unitStatus.nut")
-let { get_ranks_blk } = require("blkGetters")
+let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched, isPrevUnitBought } = require("%scripts/unit/unitStatus.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { GuiBox } = require("%scripts/guiBox.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
@@ -31,7 +30,7 @@ let { RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
-gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
+let ShopCheckResearch = class (ShopMenuHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/shop/shopCheckResearch.tpl"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -153,7 +152,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
   function updateCurResearchingUnit() {
     let curUnitName = shop_get_researchable_unit_name(this.unitCountry, this.unitType)
-    if (curUnitName == getTblValue("name", this.curResearchingUnit, ""))
+    if (curUnitName == (this.curResearchingUnit?.name ?? ""))
       return
 
     this.curResearchingUnit = getAircraftByName(curUnitName)
@@ -173,7 +172,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     local unit = null
     foreach (newUnit in getAllUnits())
       if (!this.unitCountry || this.unitCountry == getUnitCountry(newUnit))
-        if (getTblValue("rank", newUnit, 0) > getTblValue("rank", unit, 0))
+        if ((newUnit?.rank ?? 0) > (unit?.rank ?? 0))
           if (this.unitType == getEsUnitType(newUnit)
               && !isUnitSpecial(newUnit)
               && canBuyUnit(newUnit)
@@ -280,7 +279,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function getDefaultUnitInGroup(unitGroup) {
-    let unitsList = getTblValue("airsGroup", unitGroup)
+    let unitsList = unitGroup?.airsGroup
     if (!unitsList)
       return null
 
@@ -293,7 +292,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       else if (!res && (canBuyUnit(unit) || canBuyUnitOnline(unit)))
         res = unit
 
-    return res || getTblValue(0, unitsList)
+    return res || unitsList?[0]
   }
 
   function updateButtons() {
@@ -462,21 +461,21 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   function onCloseShop() {
     this.destroyGroupChoose()
     let curResName = shop_get_researchable_unit_name(this.unitCountry, this.unitType)
-    if (getTblValue("name", this.lastResearchUnit, "") != curResName)
+    if ((this.lastResearchUnit?.name ?? "") != curResName)
       this.setUnitOnResearch(getAircraftByName(curResName))
 
-    gui_handlers.BaseGuiHandlerWT.goBack.call(this)
+    BaseGuiHandlerWT.goBack.call(this)
   }
 
   goBack = @() this.onTryCloseShop()
 
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
-    let closedHandler = getTblValue("handler", params, null)
+    let closedHandler = params?.handler
     if (!closedHandler)
       return
 
-    if (closedHandler.getclass() == gui_handlers.researchUnitNotification) {
+    if (closedHandler.getclass() == researchUnitNotification) {
       this.showResearchUnitTutorial()
       this.selectRequiredUnit()
       this.showRankRestrictionMsgBox()
@@ -492,3 +491,6 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
       howResearched = "earned_exp" })
   }
 }
+register_gui_handler("ShopCheckResearch", ShopCheckResearch)
+
+return { ShopCheckResearch }

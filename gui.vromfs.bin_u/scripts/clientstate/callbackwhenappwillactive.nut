@@ -1,7 +1,8 @@
+from "steam" import steam_is_overlay_active
 from "%scripts/dagui_natives.nut" import periodic_task_register, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
-let { steam_is_overlay_active } = require("steam")
+
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 
 const FREQUENCY_APP_STATE_UPDATE_SEC = 1

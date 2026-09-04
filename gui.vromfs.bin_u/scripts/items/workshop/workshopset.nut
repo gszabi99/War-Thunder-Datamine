@@ -1,18 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "string" import format
+from "%sqstd/string.nut" import startsWith
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "types" import Integer
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let DataBlock  = require("DataBlock")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let workshopCraftTree = require("workshopCraftTree.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let workshopCraftTree = require("%scripts/items/workshop/workshopCraftTree.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
@@ -154,7 +154,7 @@ local WorkshopSet = class {
 
     for (local i = 0; i < itemsBlk.paramCount(); i++) {
       let itemdef = itemsBlk.getParamValue(i)
-      if (type(itemdef) != "integer")
+      if (!(itemdef instanceof Integer))
         continue
 
       if (itemsBlk.getParamName(i) == "alwaysVisibleItem")

@@ -1,7 +1,7 @@
 {
   "model": "a6m6c",
   "fmFile": "fm/a6m6c.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_radial_big_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": [
@@ -2387,6 +2387,19 @@
         "reqModification": "g4m_12in_mod30"
       },
       {
+        "name": "a6m6_2x60_1x250",
+        "blk": "gameData/FlightModels/weaponPresets/a6m6_2x60_1x250.blk",
+        "reqModification": [
+          "g4m_12in_mod30",
+          "a6m_9in_mod30"
+        ]
+      },
+      {
+        "name": "a6m6_bombs_mod50",
+        "blk": "gameData/FlightModels/weaponPresets/a6m6_bombs_mod50.blk",
+        "reqModification": "13in_mod35"
+      },
+      {
         "name": "A6M6c_10x9kg_rockets",
         "blk": "gameData/FlightModels/weaponPresets/a6m6_10x9kg_rockets.blk",
         "reqModification": "n1k_5in_mod15"
@@ -2444,6 +2457,11 @@
     },
     "g4m_12in_mod30": {
       "reqModification": "a6m_9in_mod30",
+      "modClass": "weapon",
+      "tier": 4
+    },
+    "13in_mod35": {
+      "reqModification": "g4m_12in_mod30",
       "modClass": "weapon",
       "tier": 4
     }

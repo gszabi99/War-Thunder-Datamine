@@ -1,12 +1,14 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
+
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName, reUnitLocNameSeparators } = require("%scripts/unit/unitInfo.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }
 let searchTokensCache = {}
@@ -78,7 +80,7 @@ function isUnitLocNameMatchSearchStr(unit, searchStr) {
   return isTokensMatch(tokens, searchToken) || unit.name == searchStr
 }
 
-add_event_listener("GameLocalizationChanged", @(_p) rebuildCache(),
+add_event_listener(GAME_LOCALIZATION_CHANGED, @(_p) rebuildCache(),
   null, g_listener_priority.CONFIG_VALIDATION)
 
 add_event_listener("SignOut", @(_p) clearCache(),

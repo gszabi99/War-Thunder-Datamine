@@ -1,6 +1,6 @@
-let { currentLanguageW } = require("language.nut")
-let { getDecimalFormat, getShortTextFromNum } = require("%sqstd/textFormatByLang.nut")
-let { langWithCommaDelimiters, getCurLangShortName } = require("%scripts/langUtils/language.nut")
+from "%sqstd/textFormatByLang.nut" import getDecimalFormat, getShortTextFromNum
+
+let { langWithCommaDelimiters, getCurLangShortName, currentLanguageW } = require("%scripts/langUtils/language.nut")
 
 let curLangFunctions = {}
 function updateByLang(lang) {
@@ -17,7 +17,7 @@ function floatToText(value, digits = 2) {
   let curLoc = getCurLangShortName()
   let delimiter = langWithCommaDelimiters.contains(curLoc) ? "," : "."
 
-  let startPosition = 2 
+  const startPosition = 2 
   let valueDecimals = (value % 1).tostring().slice(startPosition, startPosition + digits)
   return "".concat(value.tointeger(), delimiter, valueDecimals)
 }

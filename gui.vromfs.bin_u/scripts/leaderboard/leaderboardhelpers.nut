@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
+from "types" import String
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { requestLeaderboardData, convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
@@ -22,7 +24,7 @@ let defaultRequest = {
 
 function checkLbRowVisibility(row, params = {}) {
   
-  if (getTblValue("ownProfileOnly", row, false) && !getTblValue("isOwnStats", params, false))
+  if ((row?.ownProfileOnly ?? false) && !(params?.isOwnStats ?? false))
     return false
 
   
@@ -30,7 +32,7 @@ function checkLbRowVisibility(row, params = {}) {
     return false
 
   
-  let lbMode = getTblValue("lbMode", params)
+  let lbMode = params?.lbMode
   if (!row.isVisibleByLbModeName(lbMode))
     return false
 
@@ -202,9 +204,9 @@ function getLbDiff(a, b) {
   foreach (fieldId, fieldValue in a) {
     if (fieldId == "_id")
       continue
-    if (type(fieldValue) == "string")
+    if (fieldValue instanceof String)
       continue
-    let compareToValue = getTblValue(fieldId, b, 0)
+    let compareToValue = (b?[fieldId] ?? 0)
     if (fieldValue != compareToValue)
       res[fieldId] <- fieldValue - compareToValue
   }
@@ -227,9 +229,9 @@ function getLeaderboardItemView(lbCategory, lb_value, lb_value_diff = null, para
   view.name <- lbCategory.headerTooltip
   view.icon <- lbCategory.headerImage
 
-  view.width  <- getTblValue("width",  params)
-  view.pos    <- getTblValue("pos",    params)
-  view.margin <- getTblValue("margin", params)
+  view.width  <- params?.width
+  view.pos    <- params?.pos
+  view.margin <- params?.margin
 
   if (lb_value_diff) {
     view.progress <- {

@@ -1,12 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sonyLib/webApi.nut" as psn
+import "statsd" as statsd
+from "string" import format, split_by_chars
+from "dagor.random" import rnd
 from "%scripts/dagui_natives.nut" import ps4_get_account_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import ps4_activity_feed
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format, split_by_chars } = require("string")
-let { rnd } = require("dagor.random")
-let psn = require("%sonyLib/webApi.nut")
-let statsd = require("statsd")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { getLocalizedTextWithAbbreviation } = require("%scripts/langUtils/localization.nut")
@@ -99,7 +99,7 @@ return function(config, customFeedParams) {
     statsd.send_counter("sq.activityfeed", 1, tags)
   }
 
-  let locId = getTblValue("locId", config, "")
+  let locId = (config?.locId ?? "")
   if (locId == "" && u.isEmpty(customFeedParams?.captions)) {
     sendStat({ action = "abort", reason = "no_loc_id" })
     log("ps4PostActivityFeed, Not found locId in config")

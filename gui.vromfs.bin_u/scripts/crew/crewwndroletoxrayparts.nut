@@ -1,7 +1,8 @@
+import "regexp2" as regexp2
+from "%sqstd/datablock.nut" import eachBlock
 from "%scripts/dagui_library.nut" import *
+
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let regexp2 = require("regexp2")
 
 let tankRolesToParts = {
   driver = ["engine_dm", "transmission_dm"]

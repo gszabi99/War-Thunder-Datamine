@@ -1,13 +1,14 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor
+from "worldwar" import wwSetCurrActionType, wwGetCurrActionType, wwArtillerySetAttackRadius, wwArtilleryGetAttackRadius, wwGetUnloadArmyFromTransportError, wwGetLoadArmyToTransportError
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_send_operation_request, ww_find_army_name_by_coordinates
 from "%scripts/dagui_library.nut" import *
-let DataBlock = require("DataBlock")
-let { wwSetCurrActionType, wwGetCurrActionType, wwArtillerySetAttackRadius, wwArtilleryGetAttackRadius,
-  wwGetUnloadArmyFromTransportError, wwGetLoadArmyToTransportError } = require("worldwar")
+
 let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 

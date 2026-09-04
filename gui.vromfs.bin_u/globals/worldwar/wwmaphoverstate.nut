@@ -1,6 +1,7 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+import "%globalScripts/sharedWatched.nut" as sharedWatched
+
 let isMapHovered = sharedWatched("isMapHovered", @() false)
 
-return {
+return freeze({
   isMapHovered
-}
+})

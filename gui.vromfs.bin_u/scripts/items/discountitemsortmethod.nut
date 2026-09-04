@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "%scripts/dagui_library.nut" import *
 
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let discountPostfixArray = ["_premium", ""]
@@ -140,28 +140,19 @@ function sortDiscountDescriptionItems(items, sortData) {
   if (sortData == null)
     return
   items.sort(function (item1, item2) {
-    if (item1.category != item2.category) {
-      let catSortData1 = sortData[item1.category]
-      let catSortData2 = sortData[item2.category]
-      if (catSortData1.categoryIndex != catSortData2.categoryIndex)
-        return catSortData1.categoryIndex < catSortData2.categoryIndex ? 1 : -1
-      return 0
-    }
+    if (item1.category != item2.category)
+      return sortData[item1.category].categoryIndex <=> sortData[item2.category].categoryIndex
+
     let isTypeAircraft1 = item1.type == "aircraft"
     let isTypeAircraft2 = item2.type == "aircraft"
     if (isTypeAircraft1 != isTypeAircraft2)
       return isTypeAircraft1 ? -1 : 1
-    if (isTypeAircraft1) {
-      if (item1.aircraftSortIndex != item2.aircraftSortIndex)
-        return item1.aircraftSortIndex > item2.aircraftSortIndex ? 1 : -1
-      return 0
-    }
+    if (isTypeAircraft1)
+      return item1.aircraftSortIndex <=> item2.aircraftSortIndex
     let paramsOrder = sortData[item1.category].paramsOrder
     let index1 = find_in_array(paramsOrder, item1.paramName)
     let index2 = find_in_array(paramsOrder, item2.paramName)
-    if (index1 != index2)
-      return index1 > index2 ? 1 : -1
-    return 0
+    return index1 <=> index2
   })
 }
 

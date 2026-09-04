@@ -1,15 +1,18 @@
+from "dagor.random" import frnd, rnd
+from "hudMessages" import HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_DEATH_REASON
+from "guiMission" import GO_WIN, MISSION_CAPTURING_ZONE, get_player_army_for_hud
+from "console" import register_command
+from "mission" import get_local_mplayer
+from "json" import object_to_json_string
+from "%globalScripts/deathReasonConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
+from "%globalScripts/expEventConsts.nut" import *
 
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { frnd, rnd } = require("dagor.random")
-let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_DEATH_REASON } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { GO_WIN, MISSION_CAPTURING_ZONE, get_player_army_for_hud } = require("guiMission")
-let { register_command } = require("console")
 let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
-let { get_local_mplayer } = require("mission")
-let { object_to_json_string } = require("json")
 
 local dbg_msg_obj_counter = 0
 function hud_message_objective_debug(show = true, alwaysShow = false) {

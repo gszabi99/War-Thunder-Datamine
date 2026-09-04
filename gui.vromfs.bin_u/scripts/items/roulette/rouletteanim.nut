@@ -1,14 +1,13 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "dagor.random" import frnd
+from "%sqstd/math.nut" import lerp, fabs
+from "%sqstd/cubicBezierSolver.nut" import solveCubicBezier
+from "json" import parse_json
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
 
-let { frnd } = require("dagor.random")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { lerp, fabs } = require("%sqstd/math.nut")
-let { solveCubicBezier } = require("%sqstd/cubicBezierSolver.nut")
-let { parse_json } = require("json")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-
-let CHANCE_TO_STOP_ON_BORDER = 0.5
+const CHANCE_TO_STOP_ON_BORDER = 0.5
 
 enum ANIM_ACTION {
   START

@@ -1,6 +1,6 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+from "eventbus" import subscribe, send
 from "%rGui/globals/ui_library.nut" import *
-let { subscribe, send } = require("eventbus")
-let extWatched = require("%rGui/globals/extWatched.nut")
 
 let versions = mkWatched(persist, "versions", [])
 let chosenPatchnoteContent = mkWatched(persist, "chosenPatchnoteContent", { title = "", text = "" })

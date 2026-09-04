@@ -1,20 +1,22 @@
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "string" import format
+from "dagor.random" import rnd
+from "dagor.time" import get_time_msec
+from "dagor.localize" import doesLocTextExist
+from "mission" import get_game_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { format } = require("string")
-let { rnd } = require("dagor.random")
-let stdMath = require("%sqstd/math.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { get_time_msec } = require("dagor.time")
-let { doesLocTextExist } = require("dagor.localize")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { get_game_mode } = require("mission")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getRoomUnitTypesMask, getRoomRequiredUnitTypesMask } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getMissionAllowedUnittypesMask } = require("%scripts/missions/missionsUtils.nut")
 
@@ -236,8 +238,8 @@ function getAllTips() {
 let invalidateTips = @() isTipsValid = false
 
 addListenersWithoutEnv({
-  SignOut = @(_) invalidateTips()
-  GameLocalizationChanged = @(_) invalidateTips()
+  SignOut = @(_) invalidateTips(),
+  [GAME_LOCALIZATION_CHANGED] = @(_) invalidateTips(),
   LoginComplete = @(_) invalidateTips()
   ProfileReceived = @(_) invalidateTips()
 }, g_listener_priority.DEFAULT_HANDLER)

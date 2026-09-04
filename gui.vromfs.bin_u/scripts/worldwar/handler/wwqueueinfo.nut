@@ -1,11 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueType.nut" import g_queue_type
 
-
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -13,7 +13,7 @@ let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 let { updateQueueInfoByType } = require("%scripts/queue/queueInfo.nut")
 
-gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwQueueInfo = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/worldWar/wwQueueInfo.tpl"
@@ -127,20 +127,23 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!battleQueueInfo)
       return loc("ui/hyphen")
 
-    let teamData = getTblValue(teamName, battleQueueInfo, null)
+    let teamData = battleQueueInfo?[teamName]
     if (field == "playersInClans") {
       local clanPlayerCount = 0
-      let clanPlayers = getTblValue(field, teamData, [])
+      let clanPlayers = (teamData?[field] ?? [])
       foreach (clanPlayerData in clanPlayers)
-        clanPlayerCount += getTblValue("count", clanPlayerData, 0)
+        clanPlayerCount += (clanPlayerData?.count ?? 0)
 
       return clanPlayerCount.tostring()
     }
     else if (field == "playersOther") {
-      let count = getTblValue(field, teamData, 0)
+      let count = (teamData?[field] ?? 0)
       return count.tostring()
     }
 
     return "0"
   }
 }
+register_gui_handler("WwQueueInfo", WwQueueInfo)
+
+return { WwQueueInfo }

@@ -6,7 +6,6 @@ require WTInput
 require DngHuman
 require %game.events
 require %game.input.input_events
-require %appGame.infantry.es.multiple_guns_slot_common
 require %appGame.infantry.es.grenade_thrower_common
 require %appGame.infantry.es.human_weap_common
 require %appGame.infantry.input.human_context_command_point_common
@@ -50,10 +49,7 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
                                  isInVehicle : bool = false;
                                  human_vehicle__occupiedSeatEid : EntityId = INVALID_ENTITY_ID;
                                  human_weap__grenadeThrower : EntityId;
-                                 multiple_guns_slots__gunsEids : EidList;
-                                 multiple_guns_slots__active : BoolList;
-                                 multiple_guns_slots__wantedGunEid : EidList;
-                                 multiple_guns_slots__lastVisibleGunIndex : IntList;
+                                 human_weap__gunMods : Array;
                                  input__enabled : bool = true;
                                  var human_net_phys : HumanActor&;
                                  var human_input__lastWeaponChangeInput : float&)
@@ -107,18 +103,31 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
         let launcherSlot = find_index(human_weap__gunEids, tactical_phone__droneLauncher)
         if launcherSlot >= 0
           cycleFromSlot = launcherSlot
+
+      let curGunModEids = get_ecs_EidList(human_weap__gunMods[cur_weap])
+      if curGunModEids != null
+        var hasMod = false
+        var curModActive = false
+        for gunMod in *curGunModEids
+          query(gunMod) <| $ [es] (weapon_mod__wantActiveState : bool)
+            hasMod = true
+            curModActive = weapon_mod__wantActiveState
+        if hasMod && ((!curModActive && forward) || (curModActive && !forward))
+          sendEvent(human__eid, CmdWeapModToggle(slotId = int(cur_weap)))
+          return
+
       for i in range(int(HUWeaponSlots.EWS_SECONDARY), int(HUWeaponSlots.EWS_NUM))
         let slot = get_weapon_slot_at(cycleFromSlot, forward, i)
         if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(int(slot))
           continue
         let weapon = human_weap__gunEids[int(slot)]
-        if !!weapon && slot != (HUWeaponSlots EWS_GRENADE) && !has(weapon, "multiple_guns_slot_gun_hidden")
+        if !!weapon && slot != (HUWeaponSlots EWS_GRENADE) && slot != (HUWeaponSlots EWS_SPECIAL)
           if has(weapon, "drone_launcher")
             sendEvent(weapon, EventTakeDroneLauncherOrDroneTacticalPhone(atTime = time, weaponSlot = int(slot)))
             return
-          if slot == (HUWeaponSlots.EWS_SPECIAL) && can_switch_to_multiple_guns_slot(weapon, int(slot), multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
-            return
           set_weapon_slot(time, weapon, slot, ct, last_change_time)
+          if !forward
+            sendEvent(human__eid, CmdWeapModActivate(slotId = int(slot), activate = true))
           return
   elif action == int(ShortcutEventId.ID_HUMAN_GRENADE_NEXT) && !forbidSwitching
     if bipod__enabled
@@ -127,46 +136,20 @@ def human_weapon_switch_input_es(evt : EventOnKeyDown;
     if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(int(slot))
       return
     let weapon = human_weap__gunEids[int(slot)]
+    if !weapon || weapon != human_weap__grenadeThrower
+      return
     if slot != HUWeaponSlots(cur_weap)
-      if can_switch_to_multiple_guns_slot(weapon, int(slot), multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
-        if weapon == human_weap__grenadeThrower
-          grenade_thrower_select_current_grenade(eid, human_weap__grenadeThrower)
-          return
+      if grenade_thrower_select_current_grenade(eid, weapon)
         set_weapon_slot(time, weapon, slot, ct, last_change_time)
     else
-      if weapon == human_weap__grenadeThrower
-        query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__grenadeTypesCount : int;
-                                                     var grenade_thrower__currentGrenadeTypeIndex : int&)
-          if grenade_thrower__currentGrenadeTypeIndex == grenade_thrower__grenadeTypesCount - 1
-            if try_request_multiple_guns_slot_equip_next_gun(eid, weapon, cur_weap, cur_weap, multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__wantedGunEid, multiple_guns_slots__lastVisibleGunIndex)
-              grenade_thrower__currentGrenadeTypeIndex = 0
-            return
-          grenade_thrower_select_next_grenade(eid, human_weap__grenadeThrower)
-        return
-      if can_multiple_guns_slot_equip_next_gun(weapon, cur_weap, cur_weap, multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__wantedGunEid, multiple_guns_slots__lastVisibleGunIndex)
-        let nextInventoryGun = get_multiple_guns_slot_next_visible_gun(cur_weap, multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
-        if nextInventoryGun == human_weap__grenadeThrower
-          grenade_thrower_select_current_grenade(eid, human_weap__grenadeThrower)
-          return
-        send_net_event(eid, RequestMultipleGunsSlotEquipNextGun(slot = cur_weap))
-  elif action == int(ShortcutEventId.ID_HUMAN_SPECIAL_2)
-    if bipod__enabled
-      return
-    let slot = HUWeaponSlots.EWS_SPECIAL
-    if isPassenger && !is_gun_slot_allowed_to_hold_gun_in_hatch(int(slot))
-      return
-    let weapon = human_weap__gunEids[int(slot)]
-    if slot != HUWeaponSlots(cur_weap)
-      if can_switch_to_multiple_guns_slot(weapon, int(slot), multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__lastVisibleGunIndex)
-        set_weapon_slot(time, weapon, slot, ct, last_change_time)
-    else
-      try_request_multiple_guns_slot_equip_next_gun(eid, weapon, cur_weap, cur_weap, multiple_guns_slots__gunsEids, multiple_guns_slots__active, multiple_guns_slots__wantedGunEid, multiple_guns_slots__lastVisibleGunIndex)
+      grenade_thrower_select_next_grenade(eid, weapon)
 
 
 [es(tag=input, REQUIRE=controlledHero, on_appear, track=human_vehicle__occupiedSeatEid)]
 def human_weapon_passenger_slot_correction_es(evt : Event;
                                               human_vehicle__occupiedSeatEid : EntityId;
                                               human_weap__gunEids : EidList;
+                                              human_weap__grenadeThrower : EntityId;
                                               var human_net_phys : HumanActor&;
                                               var human_input__lastWeaponChangeInput : float&)
   var isPassenger = false
@@ -182,9 +165,16 @@ def human_weapon_passenger_slot_correction_es(evt : Event;
     if !is_gun_slot_allowed_to_hold_gun_in_hatch(i)
       continue
     let weapon = human_weap__gunEids[i]
-    if !!weapon && !has(weapon, "multiple_guns_slot_gun_hidden")
-      set_weapon_slot(time, weapon, HUWeaponSlots(i), ct, human_input__lastWeaponChangeInput)
-      return
+    if !weapon || i == int(HUWeaponSlots.EWS_SPECIAL)
+      continue
+    if i == int(HUWeaponSlots.EWS_GRENADE) && weapon == human_weap__grenadeThrower
+      var hasGrenades = false
+      query(weapon) <| $ [es] (grenade_thrower__grenadeTypesCount : int)
+        hasGrenades = grenade_thrower__grenadeTypesCount > 0
+      if !hasGrenades
+        continue
+    set_weapon_slot(time, weapon, HUWeaponSlots(i), ct, human_input__lastWeaponChangeInput)
+    return
 
 
 [es(tag=gameClient)]

@@ -1,12 +1,13 @@
+from "eventbus" import eventbus_subscribe
+from "string" import format
+from "colorCorrector" import getRgbStrFromHsv
 from "%scripts/dagui_natives.nut" import get_show_destroyed_parts, get_option_xray_kill
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { format } = require("string")
-let { getRgbStrFromHsv } = require("colorCorrector")
 
 local hudEnemyDamage = null
 hudEnemyDamage = {
@@ -235,8 +236,8 @@ hudEnemyDamage = {
     if (is_multiplayer() || this.lastTargetKilled)
       return
 
-    let unitId      = getTblValue("unitId", params)
-    let unitVersion = getTblValue("unitVersion", params)
+    let unitId      = params?.unitId
+    let unitVersion = params?.unitVersion
     if (unitId == null || unitId != this.lastTargetId || unitVersion != this.lastTargetVersion)
       return
 

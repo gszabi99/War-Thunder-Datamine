@@ -1,15 +1,14 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import add_rta_localization
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cacheDecor, addDecorToCache, getSingleDecor } = require("%scripts/customization/addDecorToCache.nut")
-let { decoratorCache, liveDecoratorsCache, waitingItemdefs
-} = require("%scripts/customization/decoratorCache.nut")
+let { decoratorCache, liveDecoratorsCache, waitingItemdefs } = require("%scripts/customization/decoratorCache.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { Decorator } = require("%scripts/customization/decorator.nut")
 let { getDecorTypeBlk } = require("%scripts/customization/decoratorTypeUtils.nut")
@@ -120,13 +119,12 @@ function getDecoratorById(decorId) {
   return null
 }
 
-
-function buildLiveDecoratorFromResource(resource, resourceType, itemDef, params) {
+function buildLiveDecoratorFromResource(resource, resourceType, itemDef, unitId = null) {
   if (!resource || !resourceType)
     return
 
-  let decoratorId = (params?.unitId != null && resourceType == "skin")
-    ? getSkinId(params.unitId, resource)
+  let decoratorId = (unitId != null && resourceType == "skin")
+    ? getSkinId(unitId, resource)
     : resource
   if (decoratorId in liveDecoratorsCache)
     return
@@ -198,6 +196,7 @@ addListenersWithoutEnv({
   ItemsShopUpdate = onEventItemsShopUpdate
   LoginComplete = @(_) invalidateCache()
   SignOut = @(_) invalidateCache()
+  BlksDataStorageLoaded = @(_) invalidateCache()
   HangarModelLoaded = @(_) invalidateFlagCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 

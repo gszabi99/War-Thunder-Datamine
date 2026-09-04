@@ -1,13 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadMemberState
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { getEventDifficulty } = require("%scripts/events/eventsState.nut")
+let { getEDiffByEvent } = require("%scripts/events/eventTeamsInfo.nut")
+let { getLeaderGameModeId, getMemberData, getPlayerStatusInMySquad } = require("%scripts/squads/squadState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { contactsPlayers } = require("%scripts/contacts/contactsListState.nut")
 let { requestUsersInfo, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -80,7 +80,7 @@ function fillContactTooltip(obj, contact, handler) {
     ? ""
     : loc("war_thunder_nickname", { name = getPlayerName(contact.name) })
 
-  let squadStatus = g_squad_manager.getPlayerStatusInMySquad(contact.uid)
+  let squadStatus = getPlayerStatusInMySquad(contact.uid)
   let squadLeaderTxt = squadStatus == squadMemberState.SQUAD_LEADER
     ? " ".concat(loc("ui/bullet"), loc("status/squad_leader"))
     : ""
@@ -94,7 +94,7 @@ function fillContactTooltip(obj, contact, handler) {
     ? userInfo.background
     : "profile_header_default"
 
-  let memberData = g_squad_manager.getMemberData(contact.uid)
+  let memberData = getMemberData(contact.uid)
   let presenceStatus = memberData?.presenceStatus
   let presenceType = getByPresenceParams(presenceStatus)
   let battleOrSquadStatusTxt = getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, { presenceType, presenceStatus })
@@ -121,9 +121,9 @@ function fillContactTooltip(obj, contact, handler) {
   if (squadStatus != squadMemberState.NOT_IN_SQUAD && squadStatus != squadMemberState.SQUAD_MEMBER_OFFLINE) {
     if (memberData) {
       let memberDataAirs = memberData?.crewAirs[memberData.country] ?? []
-      let gm = getGameModeById(g_squad_manager.getLeaderGameModeId())
+      let gm = getGameModeById(getLeaderGameModeId())
       let event = getGameModeEvent(gm)
-      let ediff = events.getEDiffByEvent(event)
+      let ediff = getEDiffByEvent(event)
       view.unitList <- []
       view.hasUnitList = memberDataAirs.len() != 0
 
@@ -153,7 +153,7 @@ function fillContactTooltip(obj, contact, handler) {
         if (memberDataAirs.len() != 0) {
           let battleType = get_battle_type_by_ediff(ediff)
           let fonticon = getFontIconByBattleType(battleType)
-          let difficulty = events.getEventDifficulty(event)
+          let difficulty = getEventDifficulty(event)
           let diffName = nbsp.join([ fonticon, difficulty.getLocName() ], true)
           view.hint <- $"{loc("shop/all_info_relevant_to_current_game_mode")}: {diffName}"
         }

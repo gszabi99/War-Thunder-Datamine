@@ -1,13 +1,13 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 let { getInventoryList, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 let { exchangeSeveralRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const GENERIC_ITEM_GENERATOR_ID = 299030
 const SINGLE_GENERATOR_ID_OFFSET = 20

@@ -1,9 +1,9 @@
+from "reactiveGuiCommand" import reloadDargUiScript
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "graphicsOptions" import onRendererSettingsChange
 
-let { reloadDargUiScript } = require("reactiveGuiCommand")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 local isRequestedReloadScene = false
 local isRequestedOnSceneSwitch = false

@@ -1,31 +1,27 @@
+import "DataBlock" as DataBlock
+import "statsd" as statsd
+from "%sqStdLibs/helpers/u.nut" import isDataBlock, isString, isEmpty, search
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
+from "blkGetters" import get_personal_unlocks_blk, get_proposed_personal_unlocks_blk
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
+from "types" import Integer
 
-let { eventbus_subscribe } = require("eventbus")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { isDataBlock, isString, isEmpty, search } = require("%sqStdLibs/helpers/u.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
 let { getUtcDays } = require("%scripts/time.nut")
-let statsd = require("statsd")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { loadConditionsFromBlk } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { updateTimeParamsFromBlk, EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
-} = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
+let { updateTimeParamsFromBlk, EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { isBattleTask, getBattleTaskById, currentTasksArray, activeTasksArray,
-  proposedTasksArray, getDifficultyTypeByTask, isMediumTaskComplete,
-  isEasyTaskComplete, isHardTaskIncomplete
-} = require("%scripts/unlocks/battleTasksState.nut")
+let { isBattleTask, getBattleTaskById, currentTasksArray, activeTasksArray, proposedTasksArray, getDifficultyTypeByTask, isMediumTaskComplete, isEasyTaskComplete, isHardTaskIncomplete } = require("%scripts/unlocks/battleTasksState.nut")
 let { checkWarbondsOverLimit } = require("%scripts/warbonds/warbondsManager.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
@@ -180,7 +176,7 @@ function isTaskForGM(task, gameModeId) {
   let conditions = loadConditionsFromBlk(modes.top(), task)
 
   foreach (condition in conditions) {
-    let values = getTblValue("values", condition)
+    let values = condition?.values
     if (isEmpty(values))
       continue
     if (isInArray(gameModeId, values))
@@ -262,7 +258,7 @@ function getBattleTasksOrderedByDiff() {
 }
 
 function isUserlogForBattleTasksGroup(body) {
-  let unlockId = getTblValue("unlockId", body)
+  let unlockId = body?.unlockId
   if (unlockId == null)
     return true
 
@@ -301,7 +297,7 @@ function loadSeenTasksData(forceLoad = false) {
     for (local i = 0; i < blk.paramCount(); ++i) {
       let id = blk.getParamName(i)
       let value = blk.getParamValue(i)
-      if (type(value) == "integer")
+      if (value instanceof Integer)
         seenTasks[id] <- max(value, seenTasks?[id] ?? 0)
     }
 
@@ -405,7 +401,7 @@ function checkNewSpecialTasks() {
   let battleTasksArray = proposedTasksArray.filter(@(t) isSpecialBattleTask(t))
   if (battleTasksArray.len() == 0)
     return
-  loadHandler(gui_handlers.BattleTasksSelectNewTaskWnd, { battleTasksArray })
+  loadHandler(get_gui_handler("BattleTasksSelectNewTaskWnd"), { battleTasksArray })
 }
 
 function updateCompleteTaskWatched() {
@@ -544,7 +540,7 @@ addListenersWithoutEnv({
 
   
   function BattleTasksShowAll(params) {
-    showAllTasks = getTblValue("showAllTasksValue", params, false)
+    showAllTasks = (params?.showAllTasksValue ?? false)
     updateTasksData()
   }
 }, DEFAULT_HANDLER)

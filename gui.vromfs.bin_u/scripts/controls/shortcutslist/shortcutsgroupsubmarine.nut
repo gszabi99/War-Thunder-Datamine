@@ -1,13 +1,11 @@
+from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_SUBMARINE, OPTION_AIM_ACCELERATION_DELAY_SUBMARINE, OPTION_MOUSE_Z_SUBMARINE_MULT
+from "controls" import ActionGroup, hasXInputDevice
 from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
-let { get_option_multiplier, set_option_multiplier,
-  OPTION_AIM_TIME_NONLINEARITY_SUBMARINE, OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,
-  OPTION_MOUSE_Z_SUBMARINE_MULT
-} = require("gameOptions")
+
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { ActionGroup, hasXInputDevice } = require("controls")
 let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_INVERTY_SUBMARINE } = require("%scripts/options/optionsExtNames.nut")
 

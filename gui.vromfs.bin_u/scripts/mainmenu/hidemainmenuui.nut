@@ -1,7 +1,7 @@
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { eventbus_subscribe } = require("eventbus")
 let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 

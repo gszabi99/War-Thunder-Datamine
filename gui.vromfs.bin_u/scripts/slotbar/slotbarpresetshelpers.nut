@@ -1,28 +1,31 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "%scripts/dagui_natives.nut" import wp_get_repair_cost
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSelectedCrews, ignoreTransactions } = require("%scripts/slotbar/slotbarStateData.nut")
 let { initSelectedCrews, reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getCrewsList, invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { slotbarPresetsByCountry, getCurrentPresetIdx, isSlotbarPresetsLoading
-} = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { slotbarPresetsByCountry, getCurrentPresetIdx, isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { CONFIG_VALIDATION, DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
-function createPresetTemplate(presetIdx) {
+let getDefaultPresetName = @(presetIdx) loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
+
+function createPresetTemplate(presetIdx, newPresetName = null) {
   return {
     units = []
     crews = []
     crewInSlots = []
     orderedUnits = []
     selected = -1
-    title = loc("shop/slotbarPresets/item", { number = presetIdx + 1 })
+    title = newPresetName ?? getDefaultPresetName(presetIdx)
     gameModeId = ""
 
     unitTypesMask = 0
@@ -209,6 +212,7 @@ addListenersWithoutEnv({
 
 return {
   createPresetTemplate
+  getDefaultPresetName
   checkCanHaveEmptyPresets
   reorderUnitsInPreset
   updatePresetInfo

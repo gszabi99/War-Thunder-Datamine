@@ -1,11 +1,14 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+import "DataBlock" as DataBlock
+from "string" import format
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import player_have_attachable, player_have_decal, warbonds_can_buy_battle_task, warbond_get_type_by_name, get_warbond_item_bought_count_with_amount, char_send_blk, get_warbond_item_bought_count_with_name
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/shopItemConsts.nut" import *
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { isHardTaskIncomplete } = require("%scripts/unlocks/battleTasksState.nut")
-let DataBlock = require("DataBlock")
 let { Balance } = require("%scripts/money.nut")
-let { format } = require("string")
 let { getPurchaseLimitWb } = require("%scripts/warbonds/warbondShopState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getFullUnlockDescByName, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
@@ -13,7 +16,6 @@ let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getUnitTypeText, image_for_air, getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
@@ -127,7 +129,7 @@ let warBondAwardType = {
 
   function getTypeByBlk(blk) {
     let typeInt = warbond_get_type_by_name(blk?.type ?? "invalid")
-    return getTblValue(typeInt, this, this[EWBAT_INVALID])
+    return (this?[typeInt] ?? this[EWBAT_INVALID])
   }
 }
 
@@ -159,7 +161,7 @@ enums.addTypes(warBondAwardType, {
       if (!unit)
         return ""
 
-      let blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
+      const blockFormat = "rankUpList { halign:t='center'; holdTooltipChildren:t='yes'; %s }"
       return format(blockFormat, buildUnitSlot(unit.name, unit, {
         status = isUnitBought(unit) ? "owned" : "canBuy",
         showAsTrophyContent = true

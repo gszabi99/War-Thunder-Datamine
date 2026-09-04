@@ -1,7 +1,7 @@
 {
   "model": "j_15t",
   "fmFile": "fm/j_15t.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.38,
   "gearSinkRangeC": 0.62,
   "haveCCIPForRocket": true,
@@ -18,32 +18,32 @@
   "ilsJ15t": true,
   "ilsHasRadarHud": true,
   "rwrIndicator": "L-150",
-  "hmdShelZoom": true,
+  "hmdTkxGen1": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
-    -70.0,
-    -35.0,
-    65.0
+    -40.0,
+    -50.0,
+    50.0
   ],
   "helmetDesignatorZone1": [
-    -35.0,
-    -35.0,
-    65.0
+    -20.0,
+    -30.0,
+    50.0
   ],
   "helmetDesignatorZone2": [
     0.0,
-    -35.0,
-    65.0
+    -15.0,
+    50.0
   ],
   "helmetDesignatorZone3": [
-    35.0,
-    -35.0,
-    65.0
+    20.0,
+    -30.0,
+    50.0
   ],
   "helmetDesignatorZone4": [
-    70.0,
-    -35.0,
-    65.0
+    40.0,
+    -50.0,
+    50.0
   ],
   "tpsCameraOffset": [
     -3.0,
@@ -3484,7 +3484,7 @@
     "maxDisbalance": 1500.0,
     "HideNodes": {
       "node": [
-        "pylon_7",
+        "pl_8_pylon_1",
         "pylon_5_gdj_1a",
         "pylon_5_bomb",
         "pylon_5_pfx10",
@@ -3599,7 +3599,7 @@
         "pylon_6_gdj_1a",
         "pylon_6_pfx10",
         "pylon_6_pl12_launcher",
-        "pylon_8"
+        "pl_8_pylon_2"
       ]
     },
     "HideDmParts": {
@@ -3680,7 +3680,13 @@
         "order": 13,
         "WeaponPreset": {
           "iconType": "missile_type_b_air_to_air",
-          "name": "pl8b_default",
+          "name": "pl8b_default_slot1",
+          "HideNodes": {
+            "node": "pylon_7"
+          },
+          "ShowNodes": {
+            "node": "pl_8_pylon_1"
+          },
           "Weapon": {
             "trigger": "aam",
             "blk": "gameData/Weapons/rocketGuns/cn_pl8b_default.blk",
@@ -3996,14 +4002,14 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/type_90_cn_hf7.blk",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
                 "emitter": "pylon_3_pbs_pylon_001_b8m_001",
                 "external": true,
                 "order": 7
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/type_90_cn_hf7.blk",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
                 "emitter": "pylon_3_pbs_pylon_001_b8m_002",
                 "external": true,
                 "order": 9
@@ -6269,14 +6275,14 @@
             "Weapon": [
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/type_90_cn_hf7.blk",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
                 "emitter": "pylon_4_pbs_pylon_001_b8m_001",
                 "external": true,
                 "order": 8
               },
               {
                 "trigger": "rockets",
-                "blk": "gameData/Weapons/containers/type_90_cn_hf7.blk",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
                 "emitter": "pylon_4_pbs_pylon_001_b8m_002",
                 "external": true,
                 "order": 10
@@ -6855,7 +6861,13 @@
         "order": 14,
         "WeaponPreset": {
           "iconType": "missile_type_b_air_to_air",
-          "name": "pl8b_default",
+          "name": "pl8b_default_slot12",
+          "HideNodes": {
+            "node": "pylon_8"
+          },
+          "ShowNodes": {
+            "node": "pl_8_pylon_2"
+          },
           "Weapon": {
             "trigger": "aam",
             "blk": "gameData/Weapons/rocketGuns/cn_pl8b_default.blk",

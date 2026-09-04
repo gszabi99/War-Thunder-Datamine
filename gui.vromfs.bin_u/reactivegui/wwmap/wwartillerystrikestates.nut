@@ -1,11 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%rGui/wwMap/wwArmyStates.nut" import selectedArmy, getArmyByName
+from "%rGui/wwMap/wwArtilleryUtils.nut" import isSAM
+from "worldwar" import wwGetArtilleryStrikes, wwGetCurrActionType, wwArtilleryGetAttackRadius
 from "%rGui/globals/ui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { wwGetArtilleryStrikes, wwGetCurrActionType, wwArtilleryGetAttackRadius } = require("worldwar")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { actionType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { selectedArmy, getArmyByName } = require("%rGui/wwMap/wwArmyStates.nut")
-let { isSAM } = require("%rGui/wwMap/wwArtilleryUtils.nut")
 
 let artilleryStrikesInfo = Watched([])
 let samStrikesInfo = Watched([])

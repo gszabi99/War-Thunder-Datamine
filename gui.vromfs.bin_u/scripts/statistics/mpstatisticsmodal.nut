@@ -1,24 +1,26 @@
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "mission" import get_game_type
+from "guiMission" import MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL, quit_to_debriefing, interrupt_multiplayer, quit_mission_after_complete, get_mission_status
+from "scriptRespondent" import registerRespondent
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_multiplayer_time_left
 from "%scripts/dagui_library.nut" import *
 from "gameplayBinding" import closeIngameGui, inFlightMenu, setMuteSoundInFlightMenu
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { MPStatistics } = require("%scripts/statistics/mpStatistics.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_game_type } = require("mission")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL, quit_to_debriefing,
-  interrupt_multiplayer, quit_mission_after_complete, get_mission_status} = require("guiMission")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
-let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
+let { create_ObjMoveToOBj } = require("%scripts/sqDagui/guiBhv/bhvAnim.nut")
 let { showActivateOrderButton, orderCanBeActivated } = require("%scripts/items/orders.nut")
-let { registerRespondent } = require("scriptRespondent")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { updateReplayMatchingPlayersInfoFromMplayerList } = require("%scripts/replays/replayMetadata.nut")
 
-let MPStatisticsModal = class (gui_handlers.MPStatistics) {
+let MPStatisticsModal = class (MPStatistics) {
   sceneBlkName = "%gui/mpStatistics.blk"
   sceneNavBlkName = "%gui/navMpStat.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -119,7 +121,7 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
     if (this.isFromGame)
       closeIngameGui()
     else
-      gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+      BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function onApply() {
@@ -184,11 +186,11 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
   }
 }
 
-gui_handlers.MPStatisticsModal <- MPStatisticsModal
+register_gui_handler("MPStatisticsModal", MPStatisticsModal)
 
 registerRespondent("is_mpstatscreen_active", function is_mpstatscreen_active() { 
   if (!isLoggedIn.get())
     return false
   let curHandler = handlersManager.getActiveBaseHandler()
-  return curHandler != null && (curHandler instanceof gui_handlers.MPStatisticsModal)
+  return curHandler != null && (curHandler instanceof MPStatisticsModal)
 })

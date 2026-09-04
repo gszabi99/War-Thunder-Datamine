@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -9,7 +10,7 @@ let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
 let { RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 
-gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
+let researchUnitNotification = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/researchedModifications.blk"
 
@@ -22,7 +23,7 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let unitName = getTblValue(RESEARCHED_UNIT_FOR_CHECK, this.researchBlock)
+    let unitName = this.researchBlock?[RESEARCHED_UNIT_FOR_CHECK]
     this.unit = getAircraftByName(unitName)
     if (!this.unit) {
       this.goBack()
@@ -99,3 +100,6 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
     })
   }
 }
+register_gui_handler("researchUnitNotification", researchUnitNotification)
+
+return { researchUnitNotification }

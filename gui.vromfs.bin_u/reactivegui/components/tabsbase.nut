@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "types" import Function
 
 function defTab(tab_item, is_current, handler) {
   let grp = ElemGroup()
@@ -64,7 +65,7 @@ function tabs(holder = defHolder, tab = defTab) {
       return tab(item, item.id == params.currentTab, @() params.onChange(item))
     })
 
-    let result = (type(holder) == "function") ? holder(params) : holder
+    let result = (holder instanceof Function) ? holder(params) : holder
     result.children <- children
     return result
   }

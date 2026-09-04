@@ -1,22 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/string.nut" import split
+from "blkGetters" import get_price_blk
 from "%scripts/dagui_natives.nut" import get_warbond_curr_stage_name
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%globalScripts/shopItemConsts.nut" import *
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { Warbond } = require("%scripts/warbonds/warbond.nut")
-let { split } = require("%sqstd/string.nut")
-let { get_price_blk } = require("blkGetters")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
 let { FULL_ID_SEPARATOR, maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 const OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
@@ -109,7 +109,7 @@ function openWarbondsShop(params = {}) {
   if (!isWarbondsShopAvailable())
     return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
-  handlersManager.loadHandler(gui_handlers.WarbondsShop, params)
+  handlersManager.loadHandler(get_gui_handler("WarbondsShop"), params)
 }
 
 function isWarbondsShopButtonVisible() {
@@ -167,7 +167,7 @@ addListenersWithoutEnv({
 seenWarbondsShop.setListGetter(@() getUnseenAwardIds())
 seenWarbondsShop.setCompatibilityLoadData(function() {
    let res = {}
-   let savePath = "seen/warbond_shop_award"
+   const savePath = "seen/warbond_shop_award"
    let blk = loadLocalByAccount(savePath)
    if (!u.isDataBlock(blk))
      return res

@@ -1,7 +1,6 @@
 module team_common shared
 require ecs
 require app
-require DagorSystem
 require DagorRandom
 
 let TEAM_UNASSIGNED = -1

@@ -1,5 +1,6 @@
 <<#radiobutton>>
 RadioButton {
+  <<#id>>id:t='<<id>>'<</id>>
   tooltip:t='<<tooltip>>'
   text:t='<<text>>'
 

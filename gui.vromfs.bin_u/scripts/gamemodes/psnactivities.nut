@@ -1,6 +1,6 @@
+from "%sqstd/underscore.nut" import invert
 from "%scripts/dagui_library.nut" import *
 
-let { invert } = require("%sqstd/underscore.nut")
 let { setCurrentGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 let activityToGameMode = {
@@ -34,5 +34,4 @@ return {
   getActivityByGameMode
   switchGameModeByGameIntent
 }
-
 

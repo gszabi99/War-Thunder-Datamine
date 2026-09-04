@@ -1,42 +1,41 @@
+import "DataBlock" as DataBlock
+from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, getPartType, getPartNameLocText, getPartNameDescLocText
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "console" import register_command
+from "string" import format
+from "math" import round
+from "hangar" import hangar_get_current_unit_name, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY, DM_VIEWER_CREW, hangar_get_dm_viewer_parts_count, set_xray_parts_filter
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "%sqstd/string.nut" import cutPrefix
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_game_params_blk, get_unittags_blk
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { register_command } = require("console")
-let { S_UNDEFINED, getPartType, getPartNameLocText } = require("%globalScripts/modeXrayLib.nut")
-let { GAMEPAD_ENTER_SHORTCUT }  = require("%scripts/controls/rawShortcuts.nut")
+
+let { GAMEPAD_ENTER_SHORTCUT } = require("%scripts/controls/rawShortcuts.nut")
 let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let DataBlock = require("DataBlock")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let { round } = require("math")
-let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY,
-  DM_VIEWER_CREW, hangar_get_dm_viewer_parts_count, set_xray_parts_filter } = require("hangar")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 let { checkUnitModsUpdate, checkSecondaryWeaponModsRecount } = require("%scripts/unit/unitChecks.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { get_game_params_blk, get_unittags_blk } = require("blkGetters")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { get_option, set_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_XRAY_FILTER_TANK, USEROPT_XRAY_FILTER_SHIP, USEROPT_XRAY_FILTER_AIR } = require("%scripts/options/optionsExtNames.nut")
 let { openPopupFilter, RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode } = require("modeXrayUtils.nut")
+let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode } = require("%scripts/dmViewer/modeXrayUtils.nut")
 
 
 
@@ -50,6 +49,8 @@ let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode } = require
 const XRAY_FILTER_OBJ_PREFIX = "xray_filter_"
 
 const MAX_VIEW_MODE_TUTOR_SHOWS = 2
+
+let armorHintParams = ["thickness", "effective_thickness", "angle", "normal_angle"]
 
 let extHintIconByPartType = {
   ammo_turret = "#ui/gameuiskin#icon_weapons_relocation_in_progress.svg"
@@ -127,6 +128,9 @@ function getXrayFilterOption() {
 
   if (unit.isShipOrBoat())
     return get_option(USEROPT_XRAY_FILTER_SHIP, { unitName })
+
+  if ((unit.isAir() || unit.isHelicopter()) && hasFeature("DmViewerXrayFilterAircraft"))
+    return get_option(USEROPT_XRAY_FILTER_AIR, { unitName })
 
   return null
 }
@@ -491,8 +495,7 @@ dmViewer = {
     obj = handler.scene.findObject("filter_nest")
     if (obj?.isValid()) {
       let xrayFilterOption = getXrayFilterOption()
-      let isShowOption = this.isDmModeValidForXrayView() && isTankOrShip
-        && (xrayFilterOption?.values.len() ?? 0) > 0
+      let isShowOption = this.isDmModeValidForXrayView() && (xrayFilterOption?.values.len() ?? 0) > 0
       obj.show(isShowOption)
       if (isShowOption) {
         if (obj.childrenCount() == 0) {
@@ -601,12 +604,19 @@ dmViewer = {
     local needUpdatePos = false
     local needUpdateContent = false
 
-    if (this.isDmModeValidForXrayView() || (params?.weapon_item_desc ?? false))
+    let partName = params?.name ?? ""
+    let partType = this.isDmModeValidForXrayView() ? getPartType(partName, this.xrayRemap) : partName
+
+    if (this.isDmModeValidForXrayView() || (params?.weapon_item_desc ?? false)) {
       
-      needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
+      let prev = this.prevHintParams
+      needUpdateContent = ((params?.name ?? true) != (prev?.name ?? false))
+        || (partType == "armor"
+          && armorHintParams.findindex(@(key) params?[key] != prev?[key]) != null)
+    }
     else
       foreach (key, val in params)
-        if (val != getTblValue(key, this.prevHintParams)) {
+        if (val != this.prevHintParams?[key]) {
           if (key == "posX" || key == "posY")
             needUpdatePos = true
           else
@@ -623,9 +633,6 @@ dmViewer = {
     if (needUpdatePos && !needUpdateContent)
       return this.placeHint(obj)
 
-    let partName = params?.name ?? ""
-    let partType = this.isDmModeValidForXrayView() ? getPartType(partName, this.xrayRemap) : partName
-
     let isVisible = partType != ""
     obj.show(isVisible)
     if (!isVisible)
@@ -633,7 +640,7 @@ dmViewer = {
 
     let handler = handlersManager.getActiveBaseHandler()
     local info = { title = "", desc = [] }
-    let isUseCache = this.isDmModeValidForXrayView() && !dmViewerStorage.isDebugMode
+    let isUseCache = this.isDmModeValidForXrayView() && !dmViewerStorage.isDebugMode && partType != "armor"
 
     if (isUseCache && (partName in this.xrayDescriptionCache))
       info = this.xrayDescriptionCache[partName]
@@ -698,6 +705,7 @@ dmViewer = {
   function getPartTooltipInfo(partType, params) {
     let res = {
       title       = ""
+      shortDesc   = ""
       desc        = []
       extDesc     = ""
       extIcon     = ""
@@ -720,7 +728,7 @@ dmViewer = {
 
     if (params?.weapon_item_desc ?? false)
       return this.getDescriptionWeaponItem(params)
-    else if (viewMode == DM_VIEWER_ARMOR)
+    else if (viewMode == DM_VIEWER_ARMOR || (this.isDmModeValidForXrayView(viewMode) && partType == "armor"))
       res.desc = this.getDescriptionInArmorMode(params)
     else if (this.isDmModeValidForXrayView(viewMode)) {
       let supportPlaneName = this.unitBlk?.supportPlane.supportPlaneClass
@@ -749,6 +757,7 @@ dmViewer = {
 
     let titleLocId = overrideTitle != "" ? overrideTitle : partLocId
     res.title = getPartNameLocText(titleLocId, this.simUnitType)
+    res.shortDesc = getPartNameDescLocText(titleLocId)
 
     return res
   }
@@ -798,10 +807,10 @@ dmViewer = {
   function getDescriptionInArmorMode(params) {
     let desc = []
 
-    let solid = getTblValue("solid", params)
-    let variableThickness = getTblValue("variable_thickness", params)
-    let thickness = getTblValue("thickness", params)
-    let effectiveThickness = getTblValue("effective_thickness", params)
+    let solid = params?.solid
+    let variableThickness = params?.variable_thickness
+    let thickness = params?.thickness ?? 0.0
+    let effectiveThickness = params?.effective_thickness
 
     if (solid && variableThickness) {
       desc.append(loc("armor_class/variable_thickness_armor"))
@@ -812,12 +821,12 @@ dmViewer = {
         colorize("activeTextColor", thicknessStr), nbsp, loc("measureUnits/mm")))
     }
 
-    let normalAngleValue = getTblValue("normal_angle", params, null)
+    let normalAngleValue = params?.normal_angle
     if (normalAngleValue != null)
       desc.append("".concat(loc("armor_class/normal_angle"), nbsp,
         (normalAngleValue + 0.5).tointeger(), nbsp, loc("measureUnits/deg")))
 
-    let angleValue = getTblValue("angle", params, null)
+    let angleValue = params?.angle
     if (angleValue != null)
       desc.append("".concat(loc("armor_class/impact_angle"), nbsp, round(angleValue), nbsp, loc("measureUnits/deg")))
 
@@ -900,6 +909,7 @@ dmViewer = {
 
   onEventGameLocalizationChanged = @(_p) this.resetXrayCache()
   onEventModificationChanged = @(_p) this.resetXrayCache()
+  onEventDebugXrayModeChange = @(_p) this.resetXrayCache()
   onEventMainMenuReturn = @(_p) this.restoreSavedViewMode()
   function onEventSignOut(_p) {
     dmViewerStorage.viewModeForRestore = null

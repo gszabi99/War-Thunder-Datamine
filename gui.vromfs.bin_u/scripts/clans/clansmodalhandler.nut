@@ -1,30 +1,31 @@
+import "DataBlock" as DataBlock
+from "%sqstd/underscore.nut" import isDataBlock, isFunction
+from "string" import format
+from "%sqstd/datablock.nut" import getBlkValueByPath, convertBlk
+from "%sqstd/string.nut" import clearBorderSymbols, cutPrefix, trim
+from "%sqstd/math.nut" import floor
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import clan_get_current_season_info, ps4_is_ugc_enabled, ps4_show_ugc_restriction, clan_get_requested_clan_id, clan_get_my_clan_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow, buildTableRowNoPad
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
+from "types" import String
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { clanPageModal } = require("%scripts/clans/clanPageModal.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let { isDataBlock, isFunction } = require("%sqstd/underscore.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getBlkValueByPath, convertBlk } = require("%sqstd/datablock.nut")
-let { clearBorderSymbols, cutPrefix, trim } = require("%sqstd/string.nut")
-let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage
-} = require("%scripts/clans/clanTablesConfig.nut")
+let { countSizeInItems } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { getClanTableSortFields, getClanTableFieldsByPage, getClanTableHelpLinksByPage } = require("%scripts/clans/clanTablesConfig.nut")
 let time = require("%scripts/time.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
-let { floor } = require("%sqstd/math.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { get_game_settings_blk } = require("blkGetters")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { openCreateClanWnd } = require("%scripts/clans/modify/createClanModalHandler.nut")
 let { openClanSeasonInfoWnd } = require("%scripts/clans/clanSeasonInfoModal.nut")
@@ -42,13 +43,11 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 
-let { isClanSeasonsEnabled, getShowInSquadronStatistics, getClanCurrentSeasonName,
-  getClanCurrentSeasonEndDate, getClanSeasonFirstPrizePlacesRewards
-} = require("%scripts/clans/clanSeasons.nut")
+let { isClanSeasonsEnabled, getShowInSquadronStatistics, getClanCurrentSeasonName, getClanCurrentSeasonEndDate, getClanSeasonFirstPrizePlacesRewards } = require("%scripts/clans/clanSeasons.nut")
 
 
-let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
-let CLAN_LEADERBOARD_FILTER_ID = "clan/leaderboard_filter"
+const CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
+const CLAN_LEADERBOARD_FILTER_ID = "clan/leaderboard_filter"
 
 local leaderboardFilterArray = [
   {
@@ -65,7 +64,7 @@ local leaderboardFilterArray = [
   }
 ]
 
-gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
+let ClansModalHandler = class (clanPageModal) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/clans/ClansModal.blk"
   pages          = ["clans_search", "clans_leaderboards", "my_clan"]
@@ -551,7 +550,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       if (this.isColForDisplay(item))
         rowData.append(this.getItemCell(item, rowBlk, rowName))
 
-    assert(type(rowBlk._id) == "string", $"leaderboards receive _id type {type(rowBlk._id)}, instead of string on clan_request_page_of_leaderboard")
+    assert(rowBlk._id instanceof String, $"leaderboards receive _id type {type(rowBlk._id)}, instead of string on clan_request_page_of_leaderboard")
     return buildTableRow(rowName, rowData, rowIdx % 2 != 0, highlightRow ? "mainPlayer:t='yes';" : "")
   }
 
@@ -595,7 +594,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let colName = column.id
     if (this.curPage != "clans_leaderboards" || colName.len() < ranked_column_prefix.len()
       || colName.slice(0, ranked_column_prefix.len()) != ranked_column_prefix) {
-      let showByFeature = getTblValue("showByFeature", column, null)
+      let showByFeature = column?.showByFeature
       if (showByFeature != null && !hasFeature(showByFeature))
         return false
 
@@ -876,7 +875,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       rowData.append({
         needText = false,
         rawParam = "".concat("text { text-align:t='right'; text:t='",
-          Cost(0, getTblValue($"place{i}Gold", rewards, 0)).tostring(),
+          Cost(0, (rewards?[$"place{i}Gold"] ?? 0)).tostring(),
           "'; size:t='pw,ph'; style:t='re-type:textarea; behaviour:textarea;'; }"),
         active = false
       })
@@ -893,7 +892,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -944,3 +943,6 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
 
   getCurClan = @() this.curClanInfo?.id
 }
+register_gui_handler("ClansModalHandler", ClansModalHandler)
+
+return { ClansModalHandler }

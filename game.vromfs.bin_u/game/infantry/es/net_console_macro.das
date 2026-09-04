@@ -3,7 +3,7 @@ module net_console_macro shared
 
 require daslib/ast_boost
 require daslib/templates_boost
-require rtti
+require daslib/rtti
 require ecs.macro_common
 
 require ecs public

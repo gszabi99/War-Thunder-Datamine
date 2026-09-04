@@ -1,7 +1,7 @@
 {
   "model": "saab_f35_wdns",
   "fmFile": "fm/saab_f35_wdns.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "standardExhaustFxType": "jet_exhaust",
   "afterburnerExhaustFxType": "jet_afterburner_exhaust",
   "startExhaustFxType": "jet_start_exhaust",
@@ -2829,6 +2829,10 @@
       {
         "name": "saab_f35_wdns_mk82sn",
         "blk": "gameData/FlightModels/weaponPresets/saab_f35_wdns_mk82sn.blk"
+      },
+      {
+        "name": "saab_f35_wdns_alq_162",
+        "blk": "gameData/FlightModels/weaponPresets/saab_f35_wdns_alq_162.blk"
       }
     ]
   },
@@ -2946,8 +2950,34 @@
       },
       {
         "index": 1,
-        "tier": 10,
+        "tier": 11,
         "order": 1,
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "alq_162_l",
+          "reqModification": "saab_f35_alq_162",
+          "ShowNodes": {
+            "node": "alq_162_l"
+          },
+          "Weapon": {
+            "trigger": "countermeasures",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_chaff_large.blk",
+            "emitter": "emtr_flare3",
+            "bullets": 55,
+            "bulletsCartridge": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 11,
+            "preset": "alq_162_r"
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 10,
+        "order": 3,
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
@@ -3068,9 +3098,9 @@
         ]
       },
       {
-        "index": 2,
+        "index": 3,
         "tier": 9,
-        "order": 3,
+        "order": 5,
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
@@ -3154,9 +3184,9 @@
         ]
       },
       {
-        "index": 3,
+        "index": 4,
         "tier": 8,
-        "order": 5,
+        "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3241,9 +3271,9 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 7,
-        "order": 7,
+        "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3327,7 +3357,7 @@
           },
           {
             "iconType": "ptb",
-            "name": "ptb_slot4",
+            "name": "ptb_slot5",
             "showInWeaponMenu": true,
             "ShowNodes": {
               "node": "rakkaps_pylon1"
@@ -3341,19 +3371,19 @@
               "emitter": "sw_510l_drop_tank_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": false
             },
             "DependentWeaponPreset": {
-              "slot": 6,
-              "preset": "ptb_slot6"
+              "slot": 7,
+              "preset": "ptb_slot7"
             }
           }
         ]
       },
       {
-        "index": 5,
+        "index": 6,
         "tier": 6,
-        "order": 9,
+        "order": 11,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3374,12 +3404,12 @@
             },
             "BannedWeaponPreset": [
               {
-                "slot": 4,
-                "preset": "ptb_slot4"
+                "slot": 5,
+                "preset": "ptb_slot5"
               },
               {
-                "slot": 6,
-                "preset": "ptb_slot6"
+                "slot": 7,
+                "preset": "ptb_slot7"
               }
             ]
           },
@@ -3401,12 +3431,12 @@
             },
             "BannedWeaponPreset": [
               {
-                "slot": 4,
-                "preset": "ptb_slot4"
+                "slot": 5,
+                "preset": "ptb_slot5"
               },
               {
-                "slot": 6,
-                "preset": "ptb_slot6"
+                "slot": 7,
+                "preset": "ptb_slot7"
               }
             ]
           },
@@ -3428,21 +3458,21 @@
             },
             "BannedWeaponPreset": [
               {
-                "slot": 4,
-                "preset": "ptb_slot4"
+                "slot": 5,
+                "preset": "ptb_slot5"
               },
               {
-                "slot": 6,
-                "preset": "ptb_slot6"
+                "slot": 7,
+                "preset": "ptb_slot7"
               }
             ]
           }
         ]
       },
       {
-        "index": 6,
+        "index": 7,
         "tier": 5,
-        "order": 8,
+        "order": 10,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3526,7 +3556,7 @@
           },
           {
             "iconType": "ptb",
-            "name": "ptb_slot6",
+            "name": "ptb_slot7",
             "showInWeaponMenu": true,
             "ShowNodes": {
               "node": "rakkaps_pylon2"
@@ -3540,19 +3570,19 @@
               "emitter": "sw_510l_drop_tank_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": false
             },
             "DependentWeaponPreset": {
-              "slot": 4,
-              "preset": "ptb_slot4"
+              "slot": 5,
+              "preset": "ptb_slot5"
             }
           }
         ]
       },
       {
-        "index": 7,
+        "index": 8,
         "tier": 4,
-        "order": 6,
+        "order": 8,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3637,9 +3667,9 @@
         ]
       },
       {
-        "index": 8,
+        "index": 9,
         "tier": 3,
-        "order": 4,
+        "order": 6,
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
@@ -3723,9 +3753,9 @@
         ]
       },
       {
-        "index": 9,
+        "index": 10,
         "tier": 2,
-        "order": 2,
+        "order": 4,
         "WeaponPreset": [
           {
             "iconType": "missile_air_to_air",
@@ -3844,6 +3874,32 @@
             }
           }
         ]
+      },
+      {
+        "index": 11,
+        "tier": 1,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "alq_162_r",
+          "reqModification": "saab_f35_alq_162",
+          "ShowNodes": {
+            "node": "alq_162_r"
+          },
+          "Weapon": {
+            "trigger": "countermeasures",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_only_chaff_large.blk",
+            "emitter": "emtr_flare4",
+            "bullets": 55,
+            "bulletsCartridge": 1,
+            "external": true,
+            "separate": true
+          },
+          "DependentWeaponPreset": {
+            "slot": 1,
+            "preset": "alq_162_l"
+          }
+        }
       }
     ]
   },
@@ -4201,10 +4257,15 @@
       "tier": 1,
       "turn_it_off": false,
       "invertEnableLogic": false,
-      "group": "mi-24_EVU"
+      "group": "countermeasures"
+    },
+    "saab_f35_alq_162": {
+      "reqModification": "countermeasures_belt_pack",
+      "modClass": "armor",
+      "tier": 2
     },
     "g_suit": {
-      "prevModification": "countermeasures_belt_pack",
+      "prevModification": "saab_f35_alq_162",
       "tier": 3,
       "modClass": "armor"
     },

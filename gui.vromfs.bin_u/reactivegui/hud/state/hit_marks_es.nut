@@ -1,13 +1,12 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
-
-let { HitResult, DamageType } = require("%rGui/hud/humanSquad/humanEnums.nut")
-let { get_time_msec } = require("dagor.time")
-let { setTimeout } = require("dagor.workcycle")
-let { EventAnyEntityDied, CmdShowHitMark } = require("dasevents")
-let { watchedHeroEid } = require("%rGui/hud/state/watched_hero.nut")
-let { isBipodEnabled, isBipodAdsFocused } = require("%rGui/hud/state/human_bipod_es.nut")
-let { localTeam } = require("%rGui/missionState.nut")
+from "%rGui/hud/humanSquad/humanEnums.nut" import HitResult, DamageType
+from "%rGui/hud/state/watched_hero.nut" import watchedHeroEid
+from "%rGui/hud/state/human_bipod_es.nut" import isBipodEnabled, isBipodAdsFocused
+from "%rGui/missionState.nut" import localTeam
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout
+from "dasevents" import EventAnyEntityDied, CmdShowHitMark
+from "%rGui/globals/ui_library.nut" import *
 
 let showWorldKillMark = Watched(false)
 

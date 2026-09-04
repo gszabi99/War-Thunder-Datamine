@@ -1,10 +1,8 @@
+import "math" as math
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/planeRwrs/rwrAnApr39Components.nut" import color, baseLineWidth, rwrTargetsComponent
+from "%sqstd/math_ex.nut" import degToRad
 from "%rGui/globals/ui_library.nut" import *
-
-let math = require("math")
-let { degToRad } = require("%sqstd/math_ex.nut")
-let { FlaresCount, ChaffsCount} = require("%rGui/airState.nut")
-
-let { color, baseLineWidth, rwrTargetsComponent } = require("%rGui/planeRwrs/rwrAnApr39Components.nut")
 
 function makeGridCommands() {
   let commands = [
@@ -13,7 +11,7 @@ function makeGridCommands() {
     [VECTOR_LINE, -5, 0, 5, 0],
     [VECTOR_LINE, 0, -5, 0, 5]  ]
   local azimuthMarkIndex =  0
-  let middleMarkLen = 0.05
+  const middleMarkLen = 0.05
   for (local az = 0.0; az < 360.0; az += 30) {
     let sinAz = math.sin(degToRad(az))
     let cosAz = math.cos(degToRad(az))
@@ -37,8 +35,8 @@ let gridCommands = makeGridCommands()
 
 function createGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -60,11 +58,11 @@ function scope(scale, style) {
 }
 
 let buttons = {
-  size = flex()
+  size = FLEX
   children = [
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(-63), ph(-50)]
+      pos = const [pw(-63), ph(-50)]
       size = const [pw(20), ph(12)]
       color = color
       halign = ALIGN_CENTER
@@ -80,7 +78,7 @@ let buttons = {
       }
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(-63), ph(-18)]
+      pos = const [pw(-63), ph(-18)]
       size = const [pw(22), ph(12)]
       color = color
       halign = ALIGN_CENTER
@@ -96,7 +94,7 @@ let buttons = {
       }
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(-63), ph(17)]
+      pos = const [pw(-63), ph(17)]
       size = const [pw(22), ph(12)]
       color = color
       halign = ALIGN_CENTER
@@ -112,7 +110,7 @@ let buttons = {
       }
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(-63), ph(52)]
+      pos = const [pw(-63), ph(52)]
       size = const [pw(22), ph(12)]
       color = color
       halign = ALIGN_CENTER
@@ -128,7 +126,7 @@ let buttons = {
       }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(-63), ph(88)]
+      pos = const [pw(-63), ph(88)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -137,7 +135,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(-22), ph(-58)]
+      pos = const [pw(-22), ph(-58)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -146,7 +144,7 @@ let buttons = {
     }
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(-1), ph(-62)]
+      pos = const [pw(-1), ph(-62)]
       size = const [pw(28), ph(12)]
       color = color
       halign = ALIGN_CENTER
@@ -162,7 +160,7 @@ let buttons = {
       }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(76), ph(-58)]
+      pos = const [pw(76), ph(-58)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -171,7 +169,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(108), ph(-58)]
+      pos = const [pw(108), ph(-58)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -180,7 +178,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(130), ph(-58)]
+      pos = const [pw(130), ph(-58)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -189,7 +187,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(147), ph(-22)]
+      pos = const [pw(147), ph(-22)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -198,7 +196,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(147), ph(-15)]
+      pos = const [pw(147), ph(-15)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -207,7 +205,7 @@ let buttons = {
     }
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(149), ph(-7)]
+      pos = const [pw(149), ph(-7)]
       size = const [pw(15), ph(12)]
       borderColor = color
       borderWidth = baseLineWidth
@@ -226,7 +224,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(147), ph(12)]
+      pos = const [pw(147), ph(12)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -235,7 +233,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(147), ph(20)]
+      pos = const [pw(147), ph(20)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -244,7 +242,7 @@ let buttons = {
     }
     {
       rendObj = ROBJ_FRAME
-      pos = [pw(149), ph(28)]
+      pos = const [pw(149), ph(28)]
       size = const [pw(15), ph(12)]
       borderColor = color
       borderWidth = baseLineWidth
@@ -263,7 +261,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(155), ph(85)]
+      pos = const [pw(155), ph(85)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -272,7 +270,7 @@ let buttons = {
     }
     {
       size = SIZE_TO_CONTENT
-      pos = [pw(147), ph(93)]
+      pos = const [pw(147), ph(93)]
       rendObj = ROBJ_TEXT
       color = color
       font = Fonts.ah64
@@ -285,7 +283,7 @@ let buttons = {
 let chaff = {
   rendObj = ROBJ_FRAME
   size = const [pw(25), ph(20)]
-  pos = [pw(-20), ph(90)]
+  pos = const [pw(-20), ph(90)]
   borderColor = color
   borderWidth = baseLineWidth
   borderRadius = hdpx(10)
@@ -314,7 +312,7 @@ let chaff = {
 let flare = {
   rendObj = ROBJ_FRAME
   size = const [pw(25), ph(20)]
-  pos = [pw(20), ph(90)]
+  pos = const [pw(20), ph(90)]
   borderColor = color
   borderWidth = baseLineWidth
   borderRadius = hdpx(10)
@@ -340,7 +338,7 @@ let flare = {
   ]
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

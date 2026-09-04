@@ -1,13 +1,13 @@
+import "%rGui/components/focusBorder.nut" as focusBorder
 from "%rGui/globals/ui_library.nut" import *
 
 let textInput = require("%rGui/components/textInputBase.nut")
 let colors = require("%rGui/style/colors.nut")
-let focusBorder = require("%rGui/components/focusBorder.nut")
 
 
 let hudFrame = @(inputObj, group, sf) {
   rendObj = ROBJ_BOX
-  size = [flex(), fpx(30) + 2 * (dp() + fpx(3))]
+  size = [FLEX, fpx(30) + 2 * (dp() + fpx(3))]
   fillColor = colors.menu.textInputBgColor
   borderColor = colors.menu.textInputBorderColor
   borderWidth = const [hdpx(1), hdpx(1), hdpx(2), hdpx(1)]

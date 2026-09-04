@@ -1,6 +1,5 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
-
-let u = require("%sqStdLibs/helpers/u.nut")
 
 const ANY_CHANGED_ID = "___ANY___"
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10

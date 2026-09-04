@@ -1,5 +1,7 @@
-let {getTexReplaceString, getTexSetString} = require("%globalScripts/iconRender/itemTexReplace.nut")
-let { Color4 } = require("dagor.math")
+from "dagor.math" import Color4
+from "types" import Table, Array
+
+let { getTexReplaceString, getTexSetString } = require("%globalScripts/iconRender/itemTexReplace.nut")
 
 
 
@@ -57,7 +59,7 @@ let { Color4 } = require("dagor.math")
 
 
 
-let RENDER_PARAMS = @"ui/gameuiskin#render{
+const RENDER_PARAMS = @"ui/gameuiskin#render{
   itemName:t={itemName};animchar:t={animchar};autocrop:b=false;
   yaw:r={yaw};pitch:r={pitch};roll:r={roll};
   w:i={width};h:i={height};offset:p2={offset_x},{offset_y};scale:r={scale};
@@ -82,7 +84,7 @@ let RENDER_PARAMS = @"ui/gameuiskin#render{
   sharpening:r={sharpening}
 }.render"
 
-let ATTACHMENT_PARAMS = @"a{idx}{
+const ATTACHMENT_PARAMS = @"a{idx}{
   animchar:t={animchar};
   slot:t={slot};
   scale:r={scale};
@@ -95,7 +97,7 @@ let ATTACHMENT_PARAMS = @"a{idx}{
   {objTexReplaceRules}
 }"
 
-let DECORATOR_PARAMS = @"a{
+const DECORATOR_PARAMS = @"a{
   relativeTm:m={tmatrixString};
   animchar:t={animchar};
   parentNode:t={nodeName};
@@ -109,12 +111,12 @@ let getTMatrixString = @(m)
 
 function getShaderColorsString(item) {
   let { shaderColors = null } = item
-  if (shaderColors == null || type(shaderColors) != "table")
+  if (shaderColors == null || !(shaderColors instanceof Table))
     return ""
   let list = []
   list.append("shaderColors{")
   foreach (name, value in shaderColors){
-    if (type(value) == "array" && value.len() > 3)
+    if (value instanceof Array && value.len() > 3)
       list.append($"{name}:p4={value[0]},{value[1]},{value[2]},{value[3]};")
   }
   list.append("}")
@@ -129,7 +131,8 @@ let transparentTxt = getColor4String(Color4(0,0,0,0))
 let whiteTxt = getColor4String(Color4(255, 255, 255, 255))
 
 function iconWidget(item, params = {}) {
-  let { iconName = "" } = item
+  
+  let iconName = item?.iconName ?? ""
   if (iconName == "")
     return ""
 
@@ -179,9 +182,12 @@ function iconWidget(item, params = {}) {
       
       continue
     }
-    haveActiveAttachments = haveActiveAttachments || active
 
-    let { animchar = null, slot = -1, scale = itemScale, attachType = null } = attachment
+    let { animchar = null, slot = -1, scale = itemScale, attachType = null, fadeMainIcon = false
+    } = attachment
+
+    haveActiveAttachments = haveActiveAttachments || (active && fadeMainIcon)
+
 
     let attAttachType = attachType != null ? $"attachType:t={attachType};" : ""
 
@@ -190,7 +196,8 @@ function iconWidget(item, params = {}) {
 
     let attOutlineColor = active ? outlineColor : outlineColorInactive
     let attSilhouetteColor = active ? silhouetteColor : silhouetteColorInactive
-    let attrShading = attachment?.shading ?? iconAttachmentShading
+    
+    let attrShading = attachment?.shading ?? iconAttachmentShading ?? "same"
     let attrObjTexReplaceRules = getTexReplaceString(attachment)
 
     attachments.append(ATTACHMENT_PARAMS.subst({
@@ -220,7 +227,6 @@ function iconWidget(item, params = {}) {
   let hideNodesTex = hideNodes.map(@(node) $"node:t={node};")
   let paintColorParam = paintColor ? $"paintColor:p4={getPoint4String(paintColor)}" : ""
   let needEnableRTRender = forceRealTimeRenderIcon == "" || itemTemplate == forceRealTimeRenderIcon
-  
   let ssaa = item?.ssaaX && item?.ssaaY ? $"ssaaX:i={item.ssaaX};ssaaY:i={item.ssaaY};" : ""
 
   return RENDER_PARAMS.subst({

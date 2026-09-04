@@ -1,22 +1,22 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "app" import APP_ID
+from "string" import format
+from "console" import register_command
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setInterval, clearTimer
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/contacts/contactsConsts.nut" import getMaxContactsByGroup
+from "types" import String
 
-let contactsClient = require("contactsClient.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { APP_ID } = require("app")
-let { format } = require("string")
+let contactsClient = require("%scripts/contacts/contactsClient.nut")
 let { updateContactsGroups } = require("%scripts/contacts/contactsManager.nut")
-let { predefinedContactsGroupToWtGroup, updateContactsListFromContactsServer
-} = require("%scripts/contacts/contactsListState.nut")
-let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
-} = require("%scripts/matching/api.nut")
-let { register_command } = require("console")
-let { get_time_msec } = require("dagor.time")
+let { predefinedContactsGroupToWtGroup, updateContactsListFromContactsServer } = require("%scripts/contacts/contactsListState.nut")
+let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { chooseRandom } = require("%sqstd/rand.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { setInterval, clearTimer } = require("dagor.workcycle")
 let { addFriendInvite, addFriendsInvites } = require("%scripts/invites/invites.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
@@ -69,7 +69,7 @@ function updatePresencesByList(presences) {
     }
     if ((p?.nick ?? "") != "")
       player.name <- p.nick
-    if (type(player.uid) != "string") {
+    if (!(player.uid instanceof String)) {
       let message = $"on_presences_update cant update presence for player /*presence = {toString(p)}, playerData = {toString(player)}*/"
       script_net_assert_once("on_presences_update_error", message)
       continue

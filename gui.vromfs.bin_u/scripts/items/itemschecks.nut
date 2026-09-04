@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "types" import Integer
 
 let { itemsTab, itemType } = require("%scripts/items/itemsConsts.nut")
 
@@ -7,7 +8,7 @@ let itemTypeFeatures = {
   [itemType.ORDER] = "Orders",
 }
 
-let isItemdefId = @(id) type(id) == "integer"
+let isItemdefId = @(id) id instanceof Integer
 
 function isItemVisible(item, shopTab) {
   return shopTab == itemsTab.SHOP ? item.isCanBuy() && (!item.isDevItem || hasFeature("devItemShop"))

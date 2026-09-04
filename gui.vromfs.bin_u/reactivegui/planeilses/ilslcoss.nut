@@ -1,40 +1,40 @@
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease, BombingMode, RadarTargetDist, AimLockValid
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth
+from "%rGui/planeState/planeFlyState.nut" import Roll, Tangage
+from "%rGui/radarState.nut" import DistanceMax, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDist, Azimuth, Elevation
+from "%rGui/rocketAamAimState.nut" import GuidanceLockState
+from "%rGui/planeIlses/ilsAVQ7.nut" import AVQ7CCRP
+from "%sqstd/math.nut" import cos, sin, PI, acos, asin
+from "dagor.math" import cvt
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode, RadarTargetDist, AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { cos, sin, PI, acos, asin } = require("%sqstd/math.nut")
-let { cvt } = require("dagor.math")
-let { Roll, Tangage } = require("%rGui/planeState/planeFlyState.nut")
-let { DistanceMax, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDist, Azimuth, Elevation }= require("%rGui/radarState.nut")
-let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { AVQ7CCRP } = require("%rGui/planeIlses/ilsAVQ7.nut")
+let { AimLockPos } = require("%rGui/planeState/planeToolsState.nut")
 
 let LCOSSRollMark = @() {
   watch = IlsColor
-  size = flex()
+  size = FLEX
   children = [
     {
-      pos = [pw(46), pw(27)]
+      pos = const [pw(46), pw(27)]
       size = [baseLineWidth * 4 * IlsLineScale.get(), baseLineWidth * 4 * IlsLineScale.get()]
       rendObj = ROBJ_SOLID
       color = IlsColor.get()
     },
     {
-      pos = [pw(51), pw(27)]
+      pos = const [pw(51), pw(27)]
       size = [baseLineWidth * 4 * IlsLineScale.get(), baseLineWidth * 4 * IlsLineScale.get()]
       rendObj = ROBJ_SOLID
       color = IlsColor.get()
     },
     {
-      pos = [pw(26), pw(48.5)]
+      pos = const [pw(26), pw(48.5)]
       size = [baseLineWidth * 4 * IlsLineScale.get(), baseLineWidth * 4 * IlsLineScale.get()]
       rendObj = ROBJ_SOLID
       color = IlsColor.get()
     },
     {
-      pos = [pw(71), pw(49)]
+      pos = const [pw(71), pw(49)]
       size = [baseLineWidth * 4 * IlsLineScale.get(), baseLineWidth * 4 * IlsLineScale.get()]
       rendObj = ROBJ_SOLID
       color = IlsColor.get()
@@ -51,7 +51,7 @@ let LCOSSRollMark = @() {
 let LCOSSCrosshair = @() {
   watch = IlsColor
   size = const [pw(20), ph(20)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -76,7 +76,7 @@ let LCOSSRadarRangeMark = @() {
   watch = [RadarDistAngle, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
   size = const [pw(17), ph(17)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * 3 * IlsLineScale.get()
@@ -89,7 +89,7 @@ let LCOSSRadarRangeMark = @() {
 let LCOSSRadarRangeVis =  Computed(@() RadarTargetDist.get() > 0.0 || BombingMode.get())
 let LCOSSRadarRange = @() {
   watch = LCOSSRadarRangeVis
-  size = flex()
+  size = FLEX
   children = LCOSSRadarRangeVis.get() ? [LCOSSRadarRangeMark] : null
 }
 
@@ -145,7 +145,7 @@ let ASG23MainReticle = @(){
   ]
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = IlsColor.get()
@@ -169,7 +169,7 @@ let ASG23MainReticle = @(){
 let ASGRightScale = @() {
   watch = IlsColor
   size = const [pw(4), ph(32)]
-  pos = [pw(25), ph(-16)]
+  pos = const [pw(25), ph(-16)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
@@ -189,7 +189,7 @@ let ASGRightScale = @() {
 let ASGLeftScale = @() {
   watch = IlsColor
   size = const [pw(4), ph(32)]
-  pos = [pw(-29), ph(-16)]
+  pos = const [pw(-29), ph(-16)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get() * 1.5
@@ -213,7 +213,7 @@ let DistMarkAngle = Computed(@() 180 - (BombingMode.get() && TimeBeforeBombRelea
  (isAAMMode.get() && AamLaunchZoneDistMax.get() > 0.0 ? cvt(AamLaunchZoneDist.get(), AamLaunchZoneDistMin.get(), 2.0 * AamLaunchZoneDistMax.get(), 0, 270).tointeger() : (RadarTargetDist.get() / (DistanceMax.get() * 1000.0) * 270.0).tointeger()))))
 let ASG23Distance = @() {
   watch = [RadarTargetValid, BombingMode]
-  size = flex()
+  size = FLEX
   children = RadarTargetValid.get() || BombingMode.get() ? [
     @() {
       watch = [IlsColor, DistMarkAngle]
@@ -235,7 +235,7 @@ let CourseYawPos = Computed(@() displayCCRP.get() ? 0 : (-100.0 + Azimuth.get() 
 let CoursePitchPos = Computed(@() displayCCRP.get() ? (Tangage.get() * 30.0).tointeger() : (-100.0 + Elevation.get() * 200.0).tointeger())
 let ASG23Course = @(width) @() {
   watch = [RadarTargetValid, displayCCRP]
-  size = flex()
+  size = FLEX
   children = RadarTargetValid.get() || displayCCRP.get() ? [
     @(){
       watch = [CourseYawPos, displayCCRP]

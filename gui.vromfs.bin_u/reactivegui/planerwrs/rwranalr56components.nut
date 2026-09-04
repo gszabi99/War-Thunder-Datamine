@@ -1,11 +1,13 @@
+from "%rGui/twsState.nut" import rwrTargetsTriggers, RwrNewTargetHoldTimeInv, CurrentTime
+from "%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut" import settings
 from "%rGui/globals/ui_library.nut" import *
 
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder, RwrNewTargetHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let {ThreatType, settings} = require("%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut")
+let { ThreatType } = require("%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut")
 
-let color = Color(10, 202, 10, 250)
-let backgroundColor = Color(0, 0, 0, 255)
+const color = Color(10, 202, 10, 250)
+const backgroundColor = Color(0, 0, 0, 255)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -22,7 +24,7 @@ function calcRwrTargetRadius(target) {
   return 0.2 + target.rangeRel * 0.8
 }
 
-let iconRadiusBaseRel = 0.2
+const iconRadiusBaseRel = 0.2
 
 function createRwrTarget(index, settingsIn, objectStyle) {
   let target = rwrTargets[rwrTargetsOrder[index]]
@@ -59,12 +61,11 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   if (directionGroup != null && directionGroup?.type == ThreatType.AI) {
     if (!target.launch && !target.priority)
       background = @() {
-        watch = newTargetFontSizeMultRwr
         color = backgroundColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
         fillColor = backgroundColor
-        size = flex()
+        size = FLEX
         commands = [
           [ VECTOR_POLY,
             target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
@@ -80,7 +81,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
       fillColor = 0
-      size = flex()
+      size = FLEX
       commands = [
         [ VECTOR_LINE,
           target.x * targetRadiusRel * 100.0 - 0.50 * iconRadiusRel * 100.0,
@@ -105,12 +106,11 @@ function createRwrTarget(index, settingsIn, objectStyle) {
      ]
     if (!target.priority)
       background = @() {
-        watch = newTargetFontSizeMultRwr
         color = backgroundColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
         fillColor = backgroundColor
-        size = flex()
+        size = FLEX
         commands = launchCommands
       }
     launch = @() {
@@ -120,7 +120,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
       fillColor = 0
-      size = flex()
+      size = FLEX
       commands = launchCommands
     }
   }
@@ -143,8 +143,8 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale
       fillColor = backgroundColor
-      size = flex()
-      pos = [pw(0), ph(0)]
+      size = FLEX
+      pos = const [pw(0), ph(0)]
       commands = priorityCommands
     }
     priority = @() {
@@ -152,15 +152,15 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
       fillColor = 0
-      size = flex()
-      pos = [pw(0), ph(0)]
+      size = FLEX
+      pos = const [pw(0), ph(0)]
       commands = priorityCommands
     }
   }
 
   return @() {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     children = [
       background,
       targetType,
@@ -174,7 +174,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }

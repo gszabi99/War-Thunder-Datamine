@@ -1,25 +1,27 @@
+import "%rGui/shipStateModule.nut" as shipMainPanel
+import "%rGui/hudLogs.nut" as hudLogs
+import "%rGui/chat/voiceChat.nut" as voiceChat
+import "%rGui/shipFireControl.nut" as fireControl
+import "%rGui/shipObstacleRangefinder.nut" as shipObstacleRf
+import "%rGui/rocketAamAim.nut" as aamAim
+from "%rGui/activeOrder.nut" import activeOrderComps
+from "%rGui/style/screenState.nut" import safeAreaSizeHud
+from "%rGui/hudState.nut" import missionProgressHeight, isSpectatorMode, isPlayingReplay
+from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
+from "%rGui/shipHitNotification.nut" import hitNotifications
 from "%rGui/globals/ui_library.nut" import *
 
-let { activeOrderComps }= require("%rGui/activeOrder.nut")
-let shipMainPanel = require("%rGui/shipStateModule.nut")
-let hudLogs = require("%rGui/hudLogs.nut")
-let voiceChat = require("%rGui/chat/voiceChat.nut")
-let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let fireControl = require("%rGui/shipFireControl.nut")
-let { missionProgressHeight, isSpectatorMode, isPlayingReplay } = require("%rGui/hudState.nut")
 let shipHudComponents = require("%rGui/shipHudComponents.nut")
 let { radarComponent } = shipHudComponents
 
 
 
-let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
-let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
-let aamAim = require("%rGui/rocketAamAim.nut")
-let { hitNotifications } = require("%rGui/shipHitNotification.nut")
+
+
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 
-let greenColor = Color(10, 202, 10, 250)
-let redColor = Color(255, 35, 30, 255)
+const greenColor = Color(10, 202, 10, 250)
+const redColor = Color(255, 35, 30, 255)
 let colorWacthed = Watched(greenColor)
 let colorAlertWatched = Watched(redColor)
 
@@ -41,7 +43,7 @@ let shipHud = @() {
 }
 
 return @(){
-  size = flex()
+  size = FLEX
   watch = isPlayingReplay
   children = isPlayingReplay.get() ? [
     sensorViewIndicators
@@ -52,6 +54,8 @@ return @(){
     actionBarTopPanel
     fireControl
     radarComponent
+
+
 
 
 

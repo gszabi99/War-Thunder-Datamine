@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "hudState" import is_hud_visible
 
-let { eventbus_subscribe } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 let isHudVisible = Watched(is_hud_visible())

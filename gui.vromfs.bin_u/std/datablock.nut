@@ -1,4 +1,5 @@
 import "DataBlock" as DataBlock
+from "types" import Table, Array
 from "underscore.nut" import isFunction, isDataBlock
 
 
@@ -6,12 +7,12 @@ from "underscore.nut" import isFunction, isDataBlock
 
 
 function fillBlock(id, block, data, arrayKey = "array") {
-  if (type(data) == "array") {
+  if (data instanceof Array) {
     let newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
     foreach (v in data)
       fillBlock(v?.label ?? arrayKey, newBl, v)
   }
-  else if (type(data) == "table") {
+  else if (data instanceof Table) {
     let newBl = id == arrayKey? block.addNewBlock(id) : block.addBlock(id)
     foreach (key, val in data)
       fillBlock(key, newBl, val)
@@ -73,7 +74,7 @@ function copyParamsToTable(db, table = null) {
   return table
 }
 
-function blk2SquirrelObjNoArrays(blk){
+function blk2SquirrelObjNoArrays(blk): table {
   let res = {}
   for (local i=0; i<blk.paramCount(); i++){
     let paramName = blk.getParamName(i)
@@ -91,7 +92,7 @@ function blk2SquirrelObjNoArrays(blk){
 }
 
 
-function blk2SquirrelObj(blk){
+function blk2SquirrelObj(blk): table {
   let res = {}
   for (local i=0; i<blk.blockCount(); i++){
     let block = blk.getBlock(i)
@@ -112,29 +113,27 @@ function blk2SquirrelObj(blk){
 
 local normalizeConvertedBlk
 normalizeConvertedBlk = function(obj){
-  let t = type(obj)
-  if (t == "array" && obj.len()==1) {
+  if (obj instanceof Array && obj.len()==1) {
     return normalizeConvertedBlk(obj[0])
   }
-  else if (t == "table") {
+  else if (obj instanceof Table) {
     let r = {}
     foreach(k, v in obj)
       r[k] <- normalizeConvertedBlk(v)
     return r
   }
-  else if (t=="array") {
+  else if (obj instanceof Array) {
     return obj.map(normalizeConvertedBlk)
   }
   return obj
 }
 
 function normalizeAndFlattenConvertedBlk(obj){
-  let t = type(obj)
-  if (t == "array" && obj.len()==1) {
+  if (obj instanceof Array && obj.len()==1) {
     let el = obj[0]
-    if (type(el)=="table" && el.len()==1){
+    if (el instanceof Table && el.len()==1){
       foreach(v in el){
-        return (type(v)=="array") 
+        return (v instanceof Array) 
           ? v.map(normalizeAndFlattenConvertedBlk)
           : el.map(normalizeAndFlattenConvertedBlk)
       }
@@ -142,13 +141,13 @@ function normalizeAndFlattenConvertedBlk(obj){
     else
       return normalizeAndFlattenConvertedBlk(el)
   }
-  else if (t == "table") {
+  else if (obj instanceof Table) {
     let r = {}
     foreach(k, v in obj)
-      r[k] <- normalizeConvertedBlk(v)
+      r[k] <- normalizeAndFlattenConvertedBlk(v)
     return r
   }
-  else if (t=="array") {
+  else if (obj instanceof Array) {
     return obj.map(normalizeAndFlattenConvertedBlk)
   }
   return obj
@@ -157,7 +156,7 @@ function normalizeAndFlattenConvertedBlk(obj){
 let convertBlkFlat = @(blk) normalizeAndFlattenConvertedBlk(blk2SquirrelObj(blk))
 let convertBlk = @(blk) normalizeConvertedBlk(blk2SquirrelObj(blk))
 
-function getParamsListByName(blk, name){
+function getParamsListByName(blk, name): array {
   let res = []
   for (local j = 0; j < blk.paramCount(); j++) {
     if (blk.getParamName(j)!=name)

@@ -1,10 +1,11 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-gui_handlers.commentModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let commentModalHandler = class (BaseGuiHandlerWT) {
   function initScreen() {
     if (this.titleText && this.titleText.len())
       this.scene.findObject("comment_wnd_title").setValue(this.titleText)
@@ -46,9 +47,10 @@ gui_handlers.commentModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/commentModal.blk"
 }
+register_gui_handler("commentModalHandler", commentModalHandler)
 
 function openCommentModal(owner = null, titleText = null, buttonText = null, callbackFunc = null, isCommentRequired = false) {
-  loadHandler(gui_handlers.commentModalHandler, {
+  loadHandler(commentModalHandler, {
     titleText = titleText
     buttonText = buttonText
     callbackFunc = callbackFunc

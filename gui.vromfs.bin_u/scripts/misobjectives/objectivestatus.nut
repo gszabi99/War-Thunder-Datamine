@@ -1,7 +1,6 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "guiMission" import MISSION_OBJECTIVE_STATUS_DELAYED, MISSION_OBJECTIVE_STATUS_IN_PROGRESS, MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED
 from "%scripts/dagui_library.nut" import *
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { MISSION_OBJECTIVE_STATUS_DELAYED, MISSION_OBJECTIVE_STATUS_IN_PROGRESS,
-  MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED} = require("guiMission")
 
 let objectiveStatus = {
   types = []

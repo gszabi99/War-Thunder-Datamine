@@ -1,19 +1,20 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "dagor.debug" import fatal
+from "blkGetters" import get_shop_blk
 from "%scripts/dagui_library.nut" import *
+from "types" import Integer
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { format } = require("string")
-let { fatal } = require("dagor.debug")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
-let { get_shop_blk } = require("blkGetters")
 
 function getReqAirPosInArray(reqName, arr) {
   foreach (r, row in arr)
     foreach (c, item in row)
-      if (item && type(item) != "integer" && reqName == item.name)
+      if (item && !(item instanceof Integer) && reqName == item.name)
         return [r, c]
   return null
 }
@@ -176,7 +177,7 @@ function getBranchesTbl(rangeData) {
 
   let addCount = {}
   let brIdxTbl = {}
-  let rankK = 0.0 
+  const rankK = 0.0 
 
   local maxCountId = rangeData.len() - 1
   for (local i = rangeData.len() - 1; i >= 0; i--) {
@@ -304,7 +305,7 @@ function getReqAirs(page) {
     for (local j = page.tree[i].len() - 1; j >= 0; j--) {
       if (page.tree[i][j] == null)
         continue
-      if (type(page.tree[i][j]) == "integer")
+      if (page.tree[i][j] instanceof Integer)
         page.tree[i][j] = null
       else {
         let air = page.tree[i][j]
@@ -334,7 +335,7 @@ function fillLinesInPage(page) {
     for (local j = branchsCount - 1; j >= 0; j--) {
       if (page.tree[i][j] == null)
         continue
-      if (type(page.tree[i][j]) == "integer") {
+      if (page.tree[i][j] instanceof Integer) {
         page.tree[i][j] = null
         continue
       }

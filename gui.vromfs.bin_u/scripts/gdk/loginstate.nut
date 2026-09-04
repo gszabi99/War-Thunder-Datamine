@@ -1,10 +1,12 @@
+import "%gdkLib/impl/relationships.nut" as relationships
+from "auth_wt" import login_live
+from "%gdkLib/impl/user.nut" import is_any_user_active
+from "%gdkLib/crossnetwork.nut" import init_crossnetwork
+from "eventbus" import eventbus_subscribe_onehit
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
+
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_LOGIN] ")
-let {login_live} = require("auth_wt")
-let {is_any_user_active} = require("%gdkLib/impl/user.nut")
-let relationships = require("%gdkLib/impl/relationships.nut")
-let {init_crossnetwork} = require("%gdkLib/crossnetwork.nut")
-let {eventbus_subscribe_onehit} = require("eventbus")
 
 
 function update_relationships(fire_events, callback) {

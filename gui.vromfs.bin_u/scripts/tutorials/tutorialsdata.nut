@@ -1,20 +1,20 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "string" import format
+from "guiMission" import get_meta_missions_info_by_chapters, select_mission
+from "mission" import set_game_mode, get_game_mode
+from "blkGetters" import get_pve_awards_blk
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_meta_missions_info_by_chapters, select_mission } = require("guiMission")
-let { set_game_mode, get_game_mode } = require("mission")
 let { getUnlockRewardCostByName, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { get_pve_awards_blk } = require("blkGetters")
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
@@ -185,7 +185,7 @@ function saveTutorialToCheckReward(mission) {
   let dataBlk = rBlk?[get_game_mode_name(GM_TRAINING)]
   let misDataBlk = dataBlk?[missionName]
   let resource = misDataBlk?.decal
-  let resourceType = "decal"
+  const resourceType = "decal"
   let isResourceUnlocked = getDecoratorByResource(resource, resourceType)?.isUnlocked() ?? false
 
   tutorialRewardData.set({

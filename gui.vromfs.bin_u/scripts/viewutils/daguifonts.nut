@@ -1,7 +1,6 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "fonts" as fonts
 from "%scripts/dagui_library.nut" import *
-
-let fonts = require("fonts")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let fontsList = {
   defaults = [

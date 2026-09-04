@@ -1,7 +1,6 @@
+import "%rGui/interopGen.nut" as interopGen
+from "console" import register_command
 from "%rGui/globals/ui_library.nut" import *
-
-let interopGen = require("%rGui/interopGen.nut")
-let { register_command } = require("console")
 
 let crewState = {
   totalCrewCount = Watched(0)

@@ -1,11 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "guiOptions" import setGuiOptionsMode
+from "mission" import set_game_mode, get_game_mode, get_mp_local_team
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let { getRoomById } = require("%scripts/chat/chatRooms.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { getRoomById } = require("%scripts/chat/chatStorage.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { VehiclesWindow, updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
+let { MRoomPlayersListWidget } = require("%scripts/matchingRooms/mRoomPlayersListWidget.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
@@ -16,17 +22,9 @@ let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { setGuiOptionsMode } = require("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { set_game_mode, get_game_mode, get_mp_local_team } = require("mission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { isInSessionRoom, sessionLobbyStatus, isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner,
-  isRoomInSession, getSessionLobbyTeam, getSessionLobbyIsSpectator, getSessionLobbyIsReady,
-  getIsInLobbySession, getIsSpectatorSelectLocked, hasSessionInLobby, canJoinSession, isUserCanChangeReadyInLobby,
-  canChangeSessionLobbySettings, canStartLobbySession, getSessionLobbyCurRoomEdiff, getSessionLobbyMissionParam,
-  getSessionLobbyPublicParam, getSessionInfo, getSessionLobbyGameMode, getSessionLobbyChatRoomPassword,
-  getSessionLobbyMaxMembersCount, getSessionLobbyRoomId
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, sessionLobbyStatus, isInSessionLobbyEventRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyTeam, getSessionLobbyIsSpectator, getSessionLobbyIsReady, getIsInLobbySession, getIsSpectatorSelectLocked, hasSessionInLobby, canJoinSession, isUserCanChangeReadyInLobby, canChangeSessionLobbySettings, canStartLobbySession, getSessionLobbyCurRoomEdiff, getSessionLobbyMissionParam, getSessionLobbyPublicParam, getSessionInfo, getSessionLobbyGameMode, getSessionLobbyChatRoomPassword, getSessionLobbyMaxMembersCount, getSessionLobbyRoomId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
@@ -35,18 +33,11 @@ let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
-let { getRoomEvent, getRoomSpecialRules, getSessionLobbyLockedCountryData, getRoomMGameMode,
-  getRoomMaxDisbalance, canChangeTeamInLobby, canBeSpectator, getLobbyRandomTeam, getRoomActiveTimers,
-  getMembersCountByTeams
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getRoomEvent, getRoomSpecialRules, getSessionLobbyLockedCountryData, getRoomMGameMode, getRoomMaxDisbalance, canChangeTeamInLobby, canBeSpectator, getLobbyRandomTeam, getRoomActiveTimers, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getRoomMembersReadyStatus } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
-let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator, leaveSessionRoom,
-  tryJoinSession, startSession
-} = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator, leaveSessionRoom, tryJoinSession, startSession } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
@@ -56,7 +47,7 @@ function getLobbyChatRoomId() {
 }
 
 
-gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("MPLobby", class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/mpLobby/mpLobby.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   handlerLocId = "multiplayer/lobby"
@@ -89,7 +80,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.initTeams()
 
-    this.playersListWidgetWeak = gui_handlers.MRoomPlayersListWidget.create({
+    this.playersListWidgetWeak = MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_tables_place")
       teams = this.tableTeams
       onPlayerSelectCb = Callback(this.refreshPlayerInfo, this)
@@ -291,7 +282,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     airObj.show(showAirItem)
 
     if (showAirItem) {
-      let airName = getTblValue(player.country, player.selAirs, "")
+      let airName = (player.selAirs?[player.country] ?? "")
       let air = getAircraftByName(airName)
       if (!air) {
         airObj.show(false)
@@ -576,7 +567,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onVehiclesInfo(_obj) {
-    loadHandler(gui_handlers.VehiclesWindow, {
+    loadHandler(VehiclesWindow, {
       teamDataByTeamName = getSessionInfo()
       roomSpecialRules = getRoomSpecialRules()
     })
@@ -596,4 +587,4 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     this.viewPlayer.frame = userInfo.frame
     this.updatePlayerInfo(this.viewPlayer)
   }
-}
+})

@@ -5,7 +5,7 @@ let WND_PARAMS = {
   children = null
   onClick = null 
 
-  size = flex()
+  size = FLEX
   behavior = Behaviors.Button
   stopMouse = true
   stopHotkeys = true
@@ -50,7 +50,7 @@ function hideAllModalWindows() {
 let modalWindowsComponent = @() {
   watch = modalWindowsGeneration
   zOrder = Layers.Upper
-  size = flex()
+  size = FLEX
   children = modalWindows
 }
 

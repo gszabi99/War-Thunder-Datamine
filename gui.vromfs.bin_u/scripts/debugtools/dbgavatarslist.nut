@@ -1,20 +1,20 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "dagor.fs" as dagor_fs
+import "%sqstd/math.nut" as stdMath
+from "dagor.math" import Point2
+from "string" import format
+from "math" import fabs
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let DataBlock  = require("DataBlock")
-let { Point2 } = require("dagor.math")
-let { format } = require("string")
-let { fabs } = require("math")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let stdPath = require("%sqstd/path.nut")
 let avatars = require("%scripts/user/avatars.nut")
-let dagor_fs = require("dagor.fs")
-let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
 
 enum avatarPlace { 
   IN_GAME         = 0x01
@@ -29,14 +29,14 @@ function debugAvatars(filePath) {
   if (!blk.tryLoad(filePath))
     return $"Failed to load avatars config from {filePath}"
 
-  handlersManager.loadHandler(gui_handlers.DbgAvatars, { savePath = filePath, configBlk = blk })
+  handlersManager.loadHandler(get_gui_handler("DbgAvatars"), { savePath = filePath, configBlk = blk })
   return "Done"
 }
 
 register_command(@() debugAvatars("../develop/gameBase/config/avatars.blk"), "debug.avatars")
 register_command(debugAvatars, "debug.avatars_by_file_path")
 
-gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
+let DbgAvatars = class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/debugTools/dbgAvatars.tpl"
 
@@ -104,8 +104,8 @@ gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
     foreach (name in mainList)
       this.addAvatarConfig(name, avatarPlace.IN_GAME, this.mainAvatarConfig.getIconPath(name))
 
-    let fileMask = "*"
-    let guiPath = "../develop/gui/"
+    const fileMask = "*"
+    const guiPath = "../develop/gui/"
     let dirs = {
       ["menu/images/images/avatars"] = avatarPlace.IN_MAIN_FOLDER,
       ["menu/pkg_dev/images/images/avatars"] = avatarPlace.IN_PKG_DEV,
@@ -342,3 +342,4 @@ gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
     this.onSelAvatarSizeChange()
   }
 }
+register_gui_handler("DbgAvatars", DbgAvatars)

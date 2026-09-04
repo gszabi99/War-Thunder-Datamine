@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "hangar" import hangar_current_preset_changed
 from "%scripts/dagui_library.nut" import *
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { hangar_current_preset_changed } = require("hangar")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 

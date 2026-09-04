@@ -18,8 +18,8 @@ shopItem {
 
   <<#isTooltipByHold>>
   tooltipId:t='<<tooltipId>>'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
+  on_hover:t='gcb.delayedTooltipHover'
+  on_unhover:t='gcb.delayedTooltipHover'
   <</isTooltipByHold>>
 
   slotPlate {
@@ -49,10 +49,6 @@ shopItem {
   <<#isElite>>
   eliteIcon {}
   <</isElite>>
-
-  <<#hasTalismanIcon>>
-  talismanIcon {}
-  <</hasTalismanIcon>>
 
   topline {
     shopItemText {
@@ -92,6 +88,12 @@ shopItem {
     <</bottomLineText>>
   }
 
+  focus_border{}
+
+  <<#hasTalismanIcon>>
+  talismanIcon {}
+  <</hasTalismanIcon>>
+
   <<^isTooltipByHold>>
   tooltipObj {
     tooltipId:t='<<tooltipId>>'
@@ -101,6 +103,4 @@ shopItem {
   }
   title:t='$tooltipObj'
   <</isTooltipByHold>>
-
-  focus_border{}
 }

@@ -1,16 +1,15 @@
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/underscore.nut" import isDataBlock
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
 
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
-let regexp2 = require("regexp2")
 let { cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const CUSTOM_NICKS_SAVE_ID = "contacts/custom_nicks"
 const CUSTOM_NICK_MARKER = "*"

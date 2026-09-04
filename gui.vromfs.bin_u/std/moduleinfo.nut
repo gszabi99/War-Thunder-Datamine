@@ -1,4 +1,5 @@
 import "math" as math
+from "types" import String, Integer, Float, Bool, Array, Table, Function, Class
 
 let log = require("%sqstd/log.nut")().log
 
@@ -22,7 +23,7 @@ let typesByTypechecks ={
   [0x00010000] = "weakref",
   [0x00020000] = "outer", 
 }
-function mkAssertStr(x, argname, verbose=false){
+function mkAssertStr(x, argname, verbose=false): string {
   if (verbose)
     log("type", x, "argname", argname)
   if (x < 0 || argname == null)
@@ -36,7 +37,7 @@ function mkAssertStr(x, argname, verbose=false){
   return $"  assert(type({argname}) in {typestr}, @() $\"type of argument should be one of: {infostr}\")"
 }
 
-function typeCheckArrToStringCheck(mask, arguments, indentStr="  ", verbose = false) {
+function typeCheckArrToStringCheck(mask, arguments, indentStr="  ", verbose = false): string {
   return $"\n{indentStr}".join(mask.map(@(x, i) mkAssertStr(x, arguments?[i], verbose)).filter(@(v) v!=""))
 }
 
@@ -61,7 +62,7 @@ let valuesByTypechecks ={
   [0x00020000] = "outer", 
 }
 
-function typeBitsToStringFirst(x) {
+function typeBitsToStringFirst(x): string {
   if (x==null || x < 0)
     return "null"
   return (valuesByTypechecks.filter(@(_, bits) (x & bits)!=0)).values()?[0] ?? "null"
@@ -69,11 +70,22 @@ function typeBitsToStringFirst(x) {
 
 let def_params_names = ["a", "b", "c", "d", "e"].extend(array(10).map(@(_, i) $"var_{i+5}"))
 
+function defaultValueStr(v): string {
+  if (v instanceof String) {
+    let esc = v.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+    return $"\"{esc}\""
+  }
+  if (v instanceof Integer || v instanceof Float || v instanceof Bool) return v.tostring()
+  if (v instanceof Array) return "[]"
+  if (v instanceof Table) return "{}"
+  return "null"
+}
+
 const INDENT_SYM = "  "
 
-function mkFunStubStr(func, name=null, indent = 0, verbose=false, manualModInfo=null){
+function mkFunStubStr(func, name=null, indent = 0, verbose=false, manualModInfo=null): string {
   let infos = func.getfuncinfos()
-  let {paramscheck, typecheck, varargs, return_type_mask, pure, doc} = infos
+  let {typecheck, varargs, return_type_mask, pure, doc} = infos
 
   let indentStr = "".join(array(indent, INDENT_SYM))
   local retValueStr = manualModInfo?[name].returnStr ?? ""
@@ -85,30 +97,49 @@ function mkFunStubStr(func, name=null, indent = 0, verbose=false, manualModInfo=
     let ret_comment = $" //return_type_mask={return_type_mask}, ret_types={", ".join(all_ret_types.map(@(v) typesByTypechecks?[v] ?? "unknown_return_type"))}"
     retValueStr = "".concat($"\n{indentStr}{INDENT_SYM}return ", return_type_mask==-1 ? "null" : valuesByTypechecks?[first_ret_type_from_mask] ?? "null", ret_comment, $"\n{indentStr}")
   }
-  let argumentsNames = manualModInfo?[name].arguments ?? def_params_names
+  let manualArgs = manualModInfo?[name].arguments
   name = name ?? infos.name
   name = name!=null ? $" {name}" : ""
   name = pure ? "".concat(" [pure]", name) : name
   if ((typecheck?.len() ?? 0) > 0)
     typecheck.remove(0)
-  let actParams = paramscheck == 0
-    ? paramscheck
-    : paramscheck > 0
-      ? paramscheck-1
-      : ((-paramscheck)-1)
-  let varargs_str = !varargs || paramscheck > 0
-    ? ""
-    : paramscheck < -1
-      ? ", ..."
-      : "..."
-  let args = array(math.max(actParams, typecheck?.len() ?? 0)).map(@(_, i) argumentsNames[i])
-  let defined_args = args.map(function(arg, i){
-    let isOptional = paramscheck < 0 && i >= actParams && varargs != ""
-    return isOptional
-      ? $"{arg} = {typeBitsToStringFirst(typecheck[i])}"
-      : arg
-  })
-  let args_string = "{0}{1}".subst(", ".join(defined_args), varargs_str)
+
+  
+  
+  local args, args_string
+  if (infos.native) {
+    let paramscheck = infos.paramscheck
+    let argumentsNames = manualArgs ?? def_params_names
+    let actParams = paramscheck == 0
+      ? paramscheck
+      : paramscheck > 0
+        ? paramscheck-1
+        : ((-paramscheck)-1)
+    let varargs_str = !varargs || paramscheck > 0
+      ? ""
+      : paramscheck < -1
+        ? ", ..."
+        : "..."
+    args = array(math.max(actParams, typecheck?.len() ?? 0)).map(@(_, i) argumentsNames[i])
+    let defined_args = args.map(function(arg, i){
+      let isOptional = paramscheck < 0 && i >= actParams && varargs_str != ""
+      return isOptional
+        ? $"{arg} = {typeBitsToStringFirst(typecheck[i])}"
+        : arg
+    })
+    args_string = "{0}{1}".subst(", ".join(defined_args), varargs_str)
+  }
+  else {
+    let argumentsNames = manualArgs ?? infos.parameters.slice(1)
+    let nRequired = math.max(infos.required_params - 1, 0)
+    let varargs_str = !varargs ? "" : argumentsNames.len() > 0 ? ", ..." : "..."
+    let defparams = infos.defparams
+    args = array(argumentsNames.len()).map(@(_, i) argumentsNames[i])
+    let defined_args = args.map(@(arg, i) i < nRequired
+      ? arg
+      : $"{arg} = {defaultValueStr(defparams?[i - nRequired])}")
+    args_string = "{0}{1}".subst(", ".join(defined_args), varargs_str)
+  }
   if (verbose)
     log(name, args, infos)
   let typechecks = typecheck!=null ? typeCheckArrToStringCheck(typecheck, args, indentStr, verbose) : ""
@@ -122,22 +153,22 @@ function mkFunStubStr(func, name=null, indent = 0, verbose=false, manualModInfo=
         ? $"{funcname} \{\n{docstr}{indentStr}{typechecks}{retValueStr}\}"
         : $"{funcname} \{\n{docstr}{indentStr}{typechecks}\n{indentStr}\}"
 }
-function topairs(val) {
+function topairs(val): array {
   let sorted = []
   foreach (k, v in val)
     sorted.append([k, v])
   sorted.sort(@(pairA, pairB) pairA[0] <=> pairB[0])
   return sorted
 }
-function mkStubStr(val, name=null, indent=0, verbose = false, manualModInfo=null){
+function mkStubStr(val, name=null, indent=0, verbose = false, manualModInfo=null): string {
   let typ = type(val)
   let indentStr = "".join(array(indent, INDENT_SYM))
   let mkStubSt = callee()
   if (["string", "float", "integer", "bool"].contains(typ))
     return name == null ? val.tostring() : $"{indentStr}{name} = {val.tostring()}"
-  if (typ=="function")
+  if (val instanceof Function)
     return  $"{indentStr}{mkFunStubStr(val, name, indent, verbose, manualModInfo)}"
-  if (typ=="table"){
+  if (val instanceof Table){
     let res = [name!=null ? $"{indentStr}{name} = \{" : $"{indentStr}\{"]
     let sorted = topairs(val)
     foreach(pair in sorted){
@@ -147,7 +178,7 @@ function mkStubStr(val, name=null, indent=0, verbose = false, manualModInfo=null
     res.append($"{indentStr}\}")
     return "\n".join(res)
   }
-  if (typ=="class"){
+  if (val instanceof Class){
     let res = [name==null ? $"{indentStr}class\{" : $"{indentStr}{name} = class\{"]
     let sorted = topairs(val)
     foreach(pair in sorted){
@@ -157,7 +188,7 @@ function mkStubStr(val, name=null, indent=0, verbose = false, manualModInfo=null
     res.append($"{indentStr}\}")
     return "\n".join(res)
   }
-  if (typ == "array") {
+  if (val instanceof Array) {
     if (name=="argv")
       return $"{indentStr}argv = []"
     return name == null
@@ -167,7 +198,7 @@ function mkStubStr(val, name=null, indent=0, verbose = false, manualModInfo=null
   return name == null ? $"\"{typ}\"" : $"{indentStr}{name} = \"{typ}\""
 }
 
-let mkModuleStub = @(nm) mkStubStr(require(nm), nm)
+let mkModuleStub = @(nm): string mkStubStr(require(nm), nm)
 
 
 return freeze({

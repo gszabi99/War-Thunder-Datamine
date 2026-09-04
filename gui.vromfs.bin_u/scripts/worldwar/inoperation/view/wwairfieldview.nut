@@ -1,10 +1,10 @@
+from "worldwar" import wwGetZoneName, wwGetPlayerSide
+from "math" import ceil
 from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { wwGetZoneName, wwGetPlayerSide } = require("worldwar")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { ceil } = require("math")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
 

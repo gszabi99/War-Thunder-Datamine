@@ -1,8 +1,9 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsGetCachedType, enumsAddTypes
 from "%scripts/dagui_natives.nut" import get_hud_game_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
+from "%globalScripts/hudNativeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
-
-let { enumsGetCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
 let g_hud_vis_mode = {
   types = []

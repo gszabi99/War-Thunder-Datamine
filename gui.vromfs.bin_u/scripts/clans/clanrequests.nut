@@ -1,12 +1,12 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import char_send_clan_oneway_blk, clan_get_my_clan_id, clan_get_admin_editor_mode, clan_request_log, clan_get_clan_log, clan_request_membership_request, clan_get_my_clan_name, clan_get_requested_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { g_clan_log_type } = require("%scripts/clans/clanLogType.nut")
 let time = require("%scripts/time.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { getMyClanName } = require("%scripts/user/clanName.nut")

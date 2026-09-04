@@ -12,7 +12,7 @@ import "math" as math
 
 
 
-function debounce(func, delay_s, delay_s_max = null){
+function debounce(func, delay_s: number, delay_s_max: number|null = null): function {
   let storage = { func = @() null }
   let action = @() storage.func()
   function debounced(...) {
@@ -30,7 +30,7 @@ function debounce(func, delay_s, delay_s_max = null){
 
 
 
-function debounceImmediate(func, delay_s){
+function debounceImmediate(func, delay_s: number): function {
   local isActionAllowed = true
   function allowAction() { isActionAllowed = true }
   function debounced(...) {
@@ -51,34 +51,35 @@ function debounceImmediate(func, delay_s){
 
 
 let defThrottleOptions = {leading = true, trailing=false}
-function throttle(func, delay_s, options=defThrottleOptions){
+function throttle(func, delay_s: number, options=defThrottleOptions): function {
   let leading = options?.leading ?? defThrottleOptions.leading
   let trailing = options?.trailing ?? defThrottleOptions.trailing
-  local needCallByTimer = false 
   assert(leading || trailing, "throttle should be called with at least one front call leading or trailing")
-  local curAction = null
-  function throttled(...){
-    let doWait = curAction != null
-    curAction = @() func.acall([null].extend(vargv))
-    if (doWait) {
-      needCallByTimer = !trailing
+  local isWaiting = false
+  local pendingAction = null
+  function onWindowEnd(){
+    if (trailing && pendingAction != null) {
+      let action = pendingAction
+      pendingAction = null
+      setTimeout(delay_s, onWindowEnd)
+      action()
       return
     }
-    function clearThrottled(){
-      if (trailing)
-        curAction()
-      else if (needCallByTimer) {
-        needCallByTimer = false
-        curAction()
-        setTimeout(delay_s, clearThrottled)
-        return
-      }
-      curAction = null
+    pendingAction = null
+    isWaiting = false
+  }
+  function throttled(...){
+    let action = @() func.acall([null].extend(vargv))
+    if (isWaiting) {
+      pendingAction = action
+      return
     }
-    if (leading){
-      curAction()
-    }
-    setTimeout(delay_s, clearThrottled)
+    isWaiting = true
+    setTimeout(delay_s, onWindowEnd)
+    if (leading)
+      action()
+    else
+      pendingAction = action
   }
   return throttled
 }

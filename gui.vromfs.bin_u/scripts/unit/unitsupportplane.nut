@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 let { getFullUnitBlk, getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 

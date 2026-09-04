@@ -6,11 +6,9 @@ require RendInst
 require PhysMat
 require math.base
 require DagorMath
-require DagorMathUtils
 require DagorConsole
 require DagorSystem
 require %appGame.infantry.ai.ai_recons_common
-require %appGame.infantry.ai.ai_covers_common
 require strings
 
 def make_scene_recons_filename(scene_name : string)
@@ -869,7 +867,7 @@ def private generate_recon_for_cover(var covers : CoversComponent&; cover_id : i
   
   
 
-  let numSlots = cover_num_slots(desc)
+  let numSlots = desc.numSlots
   let sidesNum = numSlots > 1 ? 2 : 1
 
   for slotSide in range(sidesNum)
@@ -880,7 +878,7 @@ def private generate_recon_for_cover(var covers : CoversComponent&; cover_id : i
     
     
 
-    assume coverSlot = cover_slot_at(covers, desc, slotIdx)
+    assume coverSlot = cover_slot(covers, desc, slotIdx)
     let slotPos = coverSlot.pos - cover.dir * 0.5
     let slotDir = cover.dir
 
@@ -1038,8 +1036,8 @@ def private recons_generate_from_covers(var tctx : TraceReconCtx&; var gctx : Re
         if gctx.around
           assume cover = covers.list[coverIndex]
           assume desc = covers.coverDescs[coverIndex]
-          let numSlots = cover_num_slots(desc)
-          let coverPos = cover_slot_at(covers, desc, numSlots / 2).pos - cover.dir * 0.5
+          let numSlots = desc.numSlots
+          let coverPos = cover_slot(covers, desc, numSlots / 2).pos - cover.dir * 0.5
           let distSq = distance_sq(gctx.aroundPos, coverPos)
           if distSq < gctx.aroundRadSq
             gen = true
@@ -1055,7 +1053,7 @@ def private recons_generate_from_covers(var tctx : TraceReconCtx&; var gctx : Re
   gctx.fails += tctx.skipped_count
   return result
 
-def private recons_generate_from_ri_extra(var tctx : TraceReconCtx&; var gctx : ReconsGenCtx&)
+def private recons_generate_from_ri_extra(tctx : TraceReconCtx&; gctx : ReconsGenCtx&)
   print("{tctx.aim_mat_id} {gctx.iters}")
   logrgen("Skipped generation from RI extra")
   return true

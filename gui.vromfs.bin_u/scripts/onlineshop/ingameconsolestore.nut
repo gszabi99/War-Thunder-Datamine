@@ -1,23 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "math" import ceil
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let mkHoverHoldAction = require("%sqDagui/timer/mkHoverHoldAction.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { show_obj, getObjValidIndex, move_mouse_on_child_by_value, move_mouse_on_obj
-} = require("%sqDagui/daguiUtil.nut")
+let mkHoverHoldAction = require("%scripts/sqDagui/timer/mkHoverHoldAction.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { show_obj, getObjValidIndex, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { setWidthAndPosForItemNameElements } = require("%scripts/items/itemVisual.nut")
 
-gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
+let IngameConsoleStore = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/itemsShop.blk"
 
@@ -134,7 +136,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initNavigation() {
     let handler = handlersManager.loadHandler(
-      gui_handlers.navigationPanel,
+      navigationPanel,
       { scene                  = this.scene.findObject("control_navigation")
         onSelectCb             = Callback(this.doNavigateToSection, this)
         onClickCb              = Callback(this.onItemClickCb, this)
@@ -287,7 +289,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     let id = buttonObj?.holderId
     if (id == null)
       return
-    let item = getTblValue(id.tointeger(), this.itemsList)
+    let item = this.itemsList?[id.tointeger()]
     this.onShowDetails(item)
   }
 
@@ -323,9 +325,9 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     let collapseBtnWidth = $"1@cIco+2*({this.headerOffsetX})"
     let leftPos = this.isNavCollapsed ? collapseBtnWidth : "0"
     let nawWidth = this.isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
-    let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
-    let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
-    let mainBlockHeight = "@rh-2@frameHeaderHeight-1@fontHeightMedium-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
+    const itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    const itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
+    const mainBlockHeight = "@rh-2@frameHeaderHeight-1@fontHeightMedium-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
     let itemsCountX = max(to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
       / max(1, to_pixels(itemWidthWithSpace)), 1)
     let itemsCountY = max(to_pixels(mainBlockHeight)
@@ -612,7 +614,10 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventBeforeStartShowroom(_params) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
 }
+register_gui_handler("IngameConsoleStore", IngameConsoleStore)
+
+return { IngameConsoleStore }

@@ -1,18 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "dagor.time" import get_time_msec
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { request_matching } = require("%scripts/matching/api.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { reqFirstUnitTypeChoice } = require("%scripts/firstChoice/firstChoice.nut")
-let { get_time_msec } = require("dagor.time")
-let { isInFlight } = require("gameplayBinding")
 let { userName } = require("%scripts/user/profileStates.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
+let { getMembers, isInSquad, isSquadLeader } = require("%scripts/squads/squadState.nut")
+let { getEvent } = require("%scripts/events/eventsState.nut")
+let { getAvailableTeams, getMembersInfo, getMembersTeamsData } = require("%scripts/events/eventUnitsAvail.nut")
+let { brInfoByGamemodeId, recentBrGameModeId, recentBrSourceGameModeId, recentBR, recentBRData } = require("%scripts/battleRatingState.nut")
 let { getCurrentGameMode, getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { hasOptionsInitialized } = require("%scripts/options/initOptionsState.nut")
 
@@ -20,14 +21,6 @@ const MATCHING_REQUEST_LIFETIME = 30000
 local lastRequestTimeMsec = 0
 local isUpdating = false
 local userData = null
-
-let brInfoByGamemodeId = mkWatched(persist, "brInfoByGamemodeId", {})
-let recentBrGameModeId = mkWatched(persist, "recentBrGameModeId", "")
-let recentBrSourceGameModeId = mkWatched(persist, "recentBrSourceGameModeId", null)
-let recentBR = Computed(@() brInfoByGamemodeId.get()?[recentBrSourceGameModeId.get()].br ?? 0)
-let recentBRData = Computed(@() brInfoByGamemodeId.get()?[recentBrSourceGameModeId.get()].brData)
-
-recentBR.subscribe(@(_) broadcastEvent("BattleRatingChanged"))
 
 function calcSquadMrank(brData) {
   if (!brData)
@@ -62,7 +55,7 @@ function getBRDataByMrankDiff(diff = 3) {
 }
 
 function calcBattleRating(brData) {
-  if (g_squad_manager.isInSquad())
+  if (isInSquad())
     return calcSquadBattleRating(brData)
 
   let name = userName.get()
@@ -71,7 +64,7 @@ function calcBattleRating(brData) {
   return myData?[0] == null ? 0 : calcBattleRatingFromRank(myData[0].mrank)
 }
 
-function getCrafts(data, country = null) {
+function getCrafts(data, country = null, ediff = null) {
   let crafts = []
   let craftData = data?.crewAirs?[country ?? data?.country ?? ""]
   if (craftData == null)
@@ -79,16 +72,17 @@ function getCrafts(data, country = null) {
 
   let brokenAirs = data?.brokenAirs ?? []
   foreach (name in craftData) {
-     let craft = getAircraftByName(name)
-     if (craft == null || isInArray(name, brokenAirs))
-       continue
+    let craft = getAircraftByName(name)
+    if (craft == null || isInArray(name, brokenAirs))
+      continue
 
-     crafts.append({
-       name = name
-       craftType = craft.expClass.expClassName
-       mrank = craft.getEconomicRank(getCurrentGameModeEdiff())
-       rank = craft?.rank ?? -1
-     })
+    crafts.append({
+      name = name
+      craftType = craft.expClass.expClassName
+      unitTypeCode = craft.expClass.unitTypeCode
+      mrank = craft.getEconomicRank(ediff ?? getCurrentGameModeEdiff())
+      rank = craft?.rank ?? -1
+    })
   }
 
   return crafts
@@ -116,12 +110,12 @@ function setBattleRating(recentUserData, brData) {
 function getBestCountryData(event) {
   if (!event)
     return null
-  let teams = events.getAvailableTeams(event)
-  let membersTeams = events.getMembersTeamsData(event, null, teams)
+  let teams = getAvailableTeams(event)
+  let membersTeams = getMembersTeamsData(event, null, teams)
   if (!membersTeams)
     return null
 
-  return events.getMembersInfo(membersTeams.teamsData)
+  return getMembersInfo(membersTeams)
 }
 
 function getUserData() {
@@ -131,9 +125,9 @@ function getUserData() {
 
   let players = []
 
-  if (g_squad_manager.isSquadLeader()) {
-    let countryData = getBestCountryData(events.getEvent(recentBrGameModeId.get()))
-    foreach (member in g_squad_manager.getMembers()) {
+  if (isSquadLeader()) {
+    let countryData = getBestCountryData(getEvent(recentBrGameModeId.get()))
+    foreach (member in getMembers()) {
       if (!member.online || member.country == "")
         continue
 
@@ -223,7 +217,7 @@ function updateBattleRatingDelayed() {
 }
 
 function updateLeaderRatingDelayed(_p) {
-  if (g_squad_manager.isSquadLeader())
+  if (isSquadLeader())
     updateBattleRatingDelayed()
 }
 

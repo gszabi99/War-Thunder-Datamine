@@ -1,9 +1,8 @@
+import "%sonyLib/webApi.nut" as psn
+import "statsd" as statsd
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_library.nut" import *
-
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let psn = require("%sonyLib/webApi.nut")
-let statsd = require("statsd")
-let { debug_dump_stack } = require("dagor.debug")
 
 let create = @(data, onFinishCb) psn.send(
   psn.gameSessionManager.create(data),

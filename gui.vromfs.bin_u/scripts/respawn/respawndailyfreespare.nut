@@ -1,9 +1,10 @@
+from "guiRespawn" import getNumFreeSparesPerDay
 from "%scripts/dagui_library.nut" import *
+
 let { hasDailyFreeSpares, getDailyFreeSparesLeftCount } = require("%scripts/respawn/respawnState.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { getTooltipType, addTooltipTypes  } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
-let { getNumFreeSparesPerDay } = require("guiRespawn")
 
 const DAILY_FREE_SPARE_UID = "daily_free_spare"
 

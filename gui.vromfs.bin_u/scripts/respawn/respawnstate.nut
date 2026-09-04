@@ -1,15 +1,14 @@
+from "%appGlobals/ranks_common_shared.nut" import get_unit_spawn_score_weapon_mul, get_spawn_score_type_mul
+from "guiRespawn" import getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask, getBrokenSlotsMask, getDisabledByMatchingSlotsMask, getNumFreeSparesUsed, getNumFreeSparesPerDay
+from "%sqstd/math.nut" import is_bit_set
+from "mission" import get_game_mode
+from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { getWasReadySlotsMask, getSpareSlotsMask, getDisabledSlotsMask,
-  getBrokenSlotsMask, getDisabledByMatchingSlotsMask, getNumFreeSparesUsed, getNumFreeSparesPerDay
-} = require("guiRespawn")
-let { is_bit_set } = require("%sqstd/math.nut")
-let { get_game_mode } = require("mission")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { get_unit_spawn_score_weapon_mul, get_spawn_score_type_mul } = require("%appGlobals/ranks_common_shared.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { registerRespondent } = require("scriptRespondent")
 
 let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInCountry)
 
@@ -87,4 +86,3 @@ return {
   getDailyFreeSparesLeftCount
   canUseOnlyDailyFreeSpares
 }
-

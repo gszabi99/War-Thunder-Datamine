@@ -2,7 +2,6 @@ options gen2
 
 module aot_cpp private
 
-require daslib/fio
 require strings
 
 require daslib/match
@@ -17,9 +16,16 @@ require daslib/aot_constants
 options strict_smart_pointers = false
 options unsafe_table_lookup = false
 
+
+
+
+
+
+
+options stack = 1_048_576
+
 def aotFieldName(name : string) : string {
     var result = replace(name, "`", "__");
-    
     
     if (is_cpp_keyword(result) || result == "DELETE") {
         result = "_f_" + result;
@@ -42,15 +48,13 @@ def aotModuleName(pm : Module?) {
 
 def isSequencialMask(fields : dasvector`uint8) {
     for (i in range(1, length(fields))) {
-        if (int(fields[i - 1]) + 1 != int(fields[i])) {
-            return false;
-        }
+        if (int(fields[i - 1]) + 1 != int(fields[i])) return false;
     }
     return true;
 }
 
 
-def das_to_cppString(t : Type) {
+def das_to_cppString(t : Type) {   
     match (t) {
         if (Type.anyArgument) { return "vec4f"; }
         if (Type.tVoid) { return "void"; }
@@ -78,6 +82,29 @@ def das_to_cppString(t : Type) {
         if (Type.tFloat2) { return "float2"; }
         if (Type.tFloat3) { return "float3"; }
         if (Type.tFloat4) { return "float4"; }
+        if (Type.tFloat16) { return "float16_t"; }
+        if (Type.tHalf2) { return "half2"; }
+        if (Type.tHalf3) { return "half3"; }
+        if (Type.tHalf4) { return "half4"; }
+        if (Type.tHalf8) { return "half8"; }
+        if (Type.tShort2) { return "short2"; }
+        if (Type.tShort3) { return "short3"; }
+        if (Type.tShort4) { return "short4"; }
+        if (Type.tShort8) { return "short8"; }
+        if (Type.tUShort2) { return "ushort2"; }
+        if (Type.tUShort3) { return "ushort3"; }
+        if (Type.tUShort4) { return "ushort4"; }
+        if (Type.tUShort8) { return "ushort8"; }
+        if (Type.tByte2) { return "byte2"; }
+        if (Type.tByte3) { return "byte3"; }
+        if (Type.tByte4) { return "byte4"; }
+        if (Type.tByte8) { return "byte8"; }
+        if (Type.tByte16) { return "byte16"; }
+        if (Type.tUByte2) { return "ubyte2"; }
+        if (Type.tUByte3) { return "ubyte3"; }
+        if (Type.tUByte4) { return "ubyte4"; }
+        if (Type.tUByte8) { return "ubyte8"; }
+        if (Type.tUByte16) { return "ubyte16"; }
         if (Type.tDouble) { return "double"; }
         if (Type.tRange) { return "range"; }
         if (Type.tURange) { return "urange"; }
@@ -88,11 +115,12 @@ def das_to_cppString(t : Type) {
         if (Type.tLambda) { return "Lambda"; }
         if (Type.tTuple) { return "Tuple"; }
         if (Type.tVariant) { return "Variant"; }
-        if (_) { panic("Missed type {t}"); return ""; }
     }
+    panic("Missed type {t}")
+    return ""
 }
 
-def das_to_cppCTypeString(t : Type) {
+def das_to_cppCTypeString(t : Type) {   
     match (t) {
         if (Type.autoinfer) { return "autoinfer"; }
         if (Type.alias) { return "alias"; }
@@ -132,6 +160,29 @@ def das_to_cppCTypeString(t : Type) {
         if (Type.tFloat2) { return "tFloat2"; }
         if (Type.tFloat3) { return "tFloat3"; }
         if (Type.tFloat4) { return "tFloat4"; }
+        if (Type.tFloat16) { return "tFloat16"; }
+        if (Type.tHalf2) { return "tHalf2"; }
+        if (Type.tHalf3) { return "tHalf3"; }
+        if (Type.tHalf4) { return "tHalf4"; }
+        if (Type.tHalf8) { return "tHalf8"; }
+        if (Type.tShort2) { return "tShort2"; }
+        if (Type.tShort3) { return "tShort3"; }
+        if (Type.tShort4) { return "tShort4"; }
+        if (Type.tShort8) { return "tShort8"; }
+        if (Type.tUShort2) { return "tUShort2"; }
+        if (Type.tUShort3) { return "tUShort3"; }
+        if (Type.tUShort4) { return "tUShort4"; }
+        if (Type.tUShort8) { return "tUShort8"; }
+        if (Type.tByte2) { return "tByte2"; }
+        if (Type.tByte3) { return "tByte3"; }
+        if (Type.tByte4) { return "tByte4"; }
+        if (Type.tByte8) { return "tByte8"; }
+        if (Type.tByte16) { return "tByte16"; }
+        if (Type.tUByte2) { return "tUByte2"; }
+        if (Type.tUByte3) { return "tUByte3"; }
+        if (Type.tUByte4) { return "tUByte4"; }
+        if (Type.tUByte8) { return "tUByte8"; }
+        if (Type.tUByte16) { return "tUByte16"; }
         if (Type.tDouble) { return "tDouble"; }
         if (Type.tRange) { return "tRange"; }
         if (Type.tURange) { return "tURange"; }
@@ -143,37 +194,26 @@ def das_to_cppCTypeString(t : Type) {
         if (Type.tTuple) { return "tTuple"; }
         if (Type.tVariant) { return "tVariant"; }
         if (Type.tHandle) { return "tHandle"; }
-        if (_) { panic("Missed type {t}"); return ""; }
     }
+    panic("Missed type {t}")
+    return ""
 }
 
 
 
 def isConstRedundantForCpp(typeDecl : TypeDeclPtr) {
-    if (!empty(typeDecl.dim)) { return false; }
-    if (typeDecl.isVectorType) { return true; }
+    if (typeDecl.baseType == Type.tFixedArray) return false;
+    if (typeDecl.isVectorType) return true;
     match (typeDecl.baseType) {
-        if (Type.tBool) { return true; }
-        if (Type.tInt8) { return true; }
-        if (Type.tUInt8) { return true; }
-        if (Type.tInt16) { return true; }
-        if (Type.tUInt16) { return true; }
-        if (Type.tInt64) { return true; }
-        if (Type.tUInt64) { return true; }
-        if (Type.tInt) { return true; }
-        if (Type.tUInt) { return true; }
-        if (Type.tFloat) { return true; }
-        if (Type.tDouble) { return true; }
-        if (Type.tEnumeration) { return true; }
-        if (Type.tEnumeration8) { return true; }
-        if (Type.tEnumeration16) { return true; }
-        if (Type.tEnumeration64) { return true; }
-        if (Type.tBitfield) { return true; }
-        if (Type.tBitfield8) { return true; }
-        if (Type.tBitfield16) { return true; }
-        if (Type.tBitfield64) { return true; }
-        if (_) { return false; }
+        if (Type.tBool || Type.tInt8 || Type.tUInt8 || Type.tInt16 || Type.tUInt16 ||
+            Type.tInt64 || Type.tUInt64 || Type.tInt || Type.tUInt ||
+            Type.tFloat || Type.tDouble ||
+            Type.tEnumeration || Type.tEnumeration8 || Type.tEnumeration16 || Type.tEnumeration64 ||
+            Type.tBitfield || Type.tBitfield8 || Type.tBitfield16 || Type.tBitfield64) {
+            return true
+        }
     }
+    return false
 }
 
 
@@ -223,14 +263,14 @@ def hex_char(var Ch : int) {
     }
 }
 
-def aotSuffixNameEx(funcName : das_string; suffix : string) {
-    return aotSuffixNameEx(string(funcName), suffix);
+def aotSuffixNameEx(funcName : das_string; suffix : string; force : bool = false) {
+    return aotSuffixNameEx(string(funcName), suffix, force);
 }
 
-def aotSuffixNameEx(funcName : string; suffix : string) {
-    var prefix = is_cpp_keyword(funcName);
+def aotSuffixNameEx(funcName : string; suffix : string; force : bool = false) {
+    var prefix = force || is_cpp_keyword(funcName);
 
-    let name = build_string() $(var writer) {
+    let name = build_string() $(var writer) {   
         for (ch in funcName) {
             if (is_alnum(ch) || ch == '_') {
                 writer |> write_char(ch);
@@ -273,26 +313,63 @@ def aotSuffixNameEx(funcName : string; suffix : string) {
     return prefix ? (suffix + name) : name;
 }
 
+
+var private g_struct_enum_collide : table<string>
+
+def private structEnumNsKey(moduleName : string; name : string) : string {
+    return "{moduleName}::{name}";
+}
+
+def private structEnumNsKey(pm : Module?; name : string) : string {
+    return structEnumNsKey(aotModuleName(pm), name);
+}
+
+def buildStructEnumCollisions(program : ProgramPtr) {
+    g_struct_enum_collide |> clear();
+    program.get_ptr() |> for_each_module_no_order($(pm) {
+        var enumNames : table<string>;
+        pm |> for_each_enumeration($(penum) {
+            enumNames |> insert(string(penum.name));
+        });
+        if (!empty(enumNames)) {
+            pm |> for_each_structure($(ps) {
+                if (enumNames |> key_exists(string(ps.name))) {
+                    g_struct_enum_collide |> insert(structEnumNsKey(pm, string(ps.name)));
+                }
+            });
+        }
+        delete enumNames;
+    });
+}
+
 def aotStructName(st : Structure?) {
     
-    
-    
-    return aotSuffixNameEx(st.name, "_S");
+    let collide = g_struct_enum_collide |> key_exists(structEnumNsKey(st._module, string(st.name)));
+    return aotSuffixNameEx(st.name, "_S", collide);
 }
 
 def aotEnumName(enu : Enumeration?) {
     
-    return aotSuffixNameEx(enu.name, "_E");
+    let collide = g_struct_enum_collide |> key_exists(structEnumNsKey(enu._module, string(enu.name)));
+    return aotSuffixNameEx(enu.name, "_E", collide);
 }
 
 def aotEnumValueName(name : das_string) {
-    
     
     return aotSuffixNameEx(name, "_V");
 }
 
 
-def describeCppTypeEx(typeDecl : TypeDeclPtr;
+def fa_element(t : TypeDeclPtr) {
+    
+    var e = clone_type(t)
+    while (e.baseType == Type.tFixedArray && e.firstType != null) {
+        e = clone_type(e.firstType)
+    }
+    return e
+}
+
+def describeCppTypeEx(typeDecl : TypeDeclPtr;   
                       in_cfg : DescribeConfig;
                       useAlias : CpptUseAlias) {
     var cfg := in_cfg
@@ -307,11 +384,11 @@ def describeCppTypeEx(typeDecl : TypeDeclPtr;
     }
     let baseType = typeDecl.baseType;
 
-    return build_string() $(writer) {
-        for (_ in range(length(typeDecl.dim))) {
-            write(writer, "TDim<");
-        }
-        if (useAlias == CpptUseAlias.yes && typeDecl.flags.aotAlias && !typeDecl.alias.empty()) {
+    return build_string() $(writer) {   
+        if (baseType == Type.tFixedArray && typeDecl.firstType != null) {
+            
+            write(writer, "TDim<{describeCppTypeEx(typeDecl.firstType,DescribeConfig(cross_platform=cfg.cross_platform),useAlias)},{typeDecl.fixedDim}>")
+        } elif (useAlias == CpptUseAlias.yes && typeDecl.flags.aotAlias && !typeDecl.alias.empty()) {
             write(writer, "{typeDecl.alias}");
         } elif (baseType == Type.alias) {
             write(writer, "DAS_COMMENT(alias)");
@@ -324,6 +401,17 @@ def describeCppTypeEx(typeDecl : TypeDeclPtr;
         } elif (baseType == Type.tHandle) {
             let handle_name = string(typeDecl.annotation.cppName.empty() ? typeDecl.annotation.name : typeDecl.annotation.cppName)
             write(writer, "{handle_name}")
+        } elif (baseType == Type.tDistinct) {
+            
+            let dname = typeDecl.annotation != null ? string(typeDecl.annotation.name) : "?"
+            if (typeDecl.annotation != null && !typeDecl.annotation.cppName.empty()) {
+                write(writer, "DAS_COMMENT(distinct {dname}) {typeDecl.annotation.cppName}")
+            } elif (typeDecl.firstType != null) {
+                let under = describeCppTypeEx(typeDecl.firstType, DescribeConfig(skip_const = true, cross_platform = cfg.cross_platform), useAlias)
+                write(writer, "DAS_COMMENT(distinct {dname}) {under}")
+            } else {
+                write(writer, "DAS_COMMENT(unspecified distinct)")
+            }
         } elif (baseType == Type.tArray) {
             if (typeDecl.firstType != null) {
                 let cpp_typeDecl = describeCppTypeEx(typeDecl.firstType, DescribeConfig(cross_platform = cfg.cross_platform), useAlias);
@@ -346,8 +434,10 @@ def describeCppTypeEx(typeDecl : TypeDeclPtr;
                 ._fold()) |> join(",")
             if (cfg.cross_platform) {
                 write(writer, "AutoTuple<{types}>")
+            } elif (types |> empty()) {
+                write(writer, "TTuple<{typeDecl.tupleSize}>")
             } else {
-                write(writer, "TTuple<{int(typeDecl.tupleSize)},{types}>")
+                write(writer, "TTuple<{typeDecl.tupleSize},{types}>")
             }
         } elif (baseType == Type.tVariant) {
             let types = (each(typeDecl.argTypes)
@@ -356,15 +446,18 @@ def describeCppTypeEx(typeDecl : TypeDeclPtr;
                 ._fold()) |> join(",")
             if (cfg.cross_platform) {
                 write(writer, "AutoVariant<{types}>");
+            } elif (types |> empty()) {     
+                write(writer, "TVariant<{typeDecl.variantSize},{typeDecl.variantAlign}>")
             } else {
-                write(writer, "TVariant<{int(typeDecl.variantSize)},{int(typeDecl.variantAlign)},{types}>")
+                write(writer, "TVariant<{typeDecl.variantSize},{typeDecl.variantAlign},{types}>")
             }
         } elif (baseType == Type.tStructure) {
             if (typeDecl.structType != null) {
+                
                 if (typeDecl.structType._module.name.empty()) {
-                    write(writer, "{aotStructName(typeDecl.structType)}")
+                    write(writer, "struct {aotStructName(typeDecl.structType)}")
                 } else {
-                    write(writer, "{aotModuleName(typeDecl.structType._module)}::{aotStructName(typeDecl.structType)}")
+                    write(writer, "struct {aotModuleName(typeDecl.structType._module)}::{aotStructName(typeDecl.structType)}")
                 }
             } else {
                 write(writer, "DAS_COMMENT(unspecified structure) ");
@@ -408,12 +501,12 @@ def describeCppTypeEx(typeDecl : TypeDeclPtr;
                 write(writer, "Sequence")
             }
         } elif (baseType == Type.tBlock || baseType == Type.tFunction || baseType == Type.tLambda) {
-            let maybe_const = !typeDecl.flags.constant && typeDecl.baseType == Type.tBlock ? "const " : ""
+            let maybe_const = !typeDecl.flags.constant && baseType == Type.tBlock ? "const " : ""
             var type_name = "void"
             if (typeDecl.firstType != null) {
                 type_name = describeCppTypeEx(typeDecl.firstType, DescribeConfig(redundant_const = true, cross_platform = cfg.cross_platform), useAlias)
             }
-            let extra_comma = length(typeDecl.argTypes) != 0 ? "," : "";
+            let extra_comma = !empty(typeDecl.argTypes) ? "," : "";
             let arg_types = (each(typeDecl.argTypes)
                 ._select(describeCppTypeEx(_, DescribeConfig(redundant_const = true, cross_platform = cfg.cross_platform), useAlias))
                 .to_array()
@@ -422,17 +515,11 @@ def describeCppTypeEx(typeDecl : TypeDeclPtr;
         } else {
             write(writer, das_to_cppString(baseType));
         }
-        
-        
-        let dim_count = length(typeDecl.dim)
-        for (i in 0..dim_count) {
-            write(writer, ",{typeDecl.dim[dim_count - 1 - i]}>")
-        }
-
-        if (cfg.skip_const == false && typeDecl.flags.constant) {
+        if (!cfg.skip_const && typeDecl.flags.constant) {
             write(writer, " const ");
         }
-        if (typeDecl.flags.ref && cfg.skip_ref == false) {
+        
+        if (typeDecl.flags.ref && !cfg.skip_ref) {
             if (cfg.substitute_ref) {
                 write(writer, " *");
             } else {
@@ -448,6 +535,33 @@ def public describeCppType(typeDecl : TypeDeclPtr;
     return describeCppTypeEx(typeDecl, cfg, CpptUseAlias.no);
 }
 
+
+
+def stackNewName(expr : ExpressionPtr) : string {
+    return "_stack_new_{expr.at.line:d}_{expr.at.column:d}";
+}
+
+
+def stackNewPointeeType(expr : ExpressionPtr; cross_platform : bool) : string {
+    if (expr is ExprNew) {
+        return describeCppType((expr as ExprNew).typeexpr, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+    }
+    return describeCppType((expr as ExprAscend).subexpr._type, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+}
+
+def expectsLocalTemp(expr : ExprMakeLocal?) : bool {
+    if (!expr.makeFlags.doesNotNeedSp && expr.stackTop != 0u) {
+        if (expr is ExprMakeStruct) {
+            let mks = expr as ExprMakeStruct
+            if (mks.makeType.baseType == Type.tHandle
+                    && !mks.makeType.isRefType
+                    && mks.constructor == null) return false
+        }
+        return true
+    }
+    return false
+}
+
 class NoAotMarker : AstVisitor {
     
     @do_not_delete func : Function? <- null;
@@ -455,7 +569,7 @@ class NoAotMarker : AstVisitor {
     
     def override preVisitTypeDecl(typeDecl : TypeDeclPtr) {
         if (func != null && !typeDecl.canAot) {
-            func.flags |= FunctionFlags.noAot
+            func.flags.noAot = true
         }
     }
     
@@ -470,7 +584,7 @@ class NoAotMarker : AstVisitor {
     
     def override preVisitExpression(expr : ExpressionPtr) {
         if (func != null && expr._type != null && !expr._type.canAot) {
-            func.flags |= FunctionFlags.noAot
+            func.flags.noAot = true
         }
     }
     
@@ -479,8 +593,17 @@ class NoAotMarker : AstVisitor {
             if (!empty(call.arguments) && call.arguments[0] is ExprMakeBlock) {
                 let mkb = call.arguments[0] as ExprMakeBlock;
                 var blk = mkb._block as ExprBlock;
-                blk.blockFlags |= ExprBlockFlags.aotSkipMakeBlock;
+                blk.blockFlags.aotSkipMakeBlock = true;
             }
+        }
+    }
+    
+    
+    
+    def override preVisitExprQuote(expr : ExprQuote?) {
+        if (func != null && !func.flags.noAot) {
+            func.flags.noAot = true
+            to_log(LOG_ERROR, "{describe(expr.at)}: quote( ) survived to AOT with aot_macros enabled - daslib/quote lowering did not run; require daslib/templates_boost (or daslib/quote) in the module containing the quote. Function '{func.name}' excluded from AOT.\n")
         }
     }
 };
@@ -502,7 +625,7 @@ class public PrologueMarker : AstVisitor {
         if (func != null && func.flags.hasMakeBlock) {
             let blk = expr._block as ExprBlock;
             if (!blk.blockFlags.aotSkipMakeBlock) {
-                func.flags |= FunctionFlags.aotNeedPrologue;
+                func.flags.aotNeedPrologue = true;
             }
         }
     }
@@ -527,6 +650,10 @@ class UseTypeMarker : AstVisitor {
         mark(variable._type);
     }
     def override preVisitExprBlockArgument(expr_blk : ExprBlock?; variable : VariablePtr; lastArg : bool) {
+        mark(variable._type);
+    }
+    def override preVisitGlobalLetVariable(variable : Variable?; lastArg : bool) {
+        
         mark(variable._type);
     }
     def mark(decl : TypeDeclPtr) {
@@ -611,10 +738,53 @@ class public DebugVarCache {
 }
 
 
+def private writeAnnotationArgInit(var sb : StringBuilderWriter; arg : AnnotationArgumentInfo) {
+    if (arg.basicType == Type.tBool) {
+        write(sb, "AnnotationArgumentInfo(\"{arg.name}\", {arg.bValue})")
+    } elif (arg.basicType == Type.tString) {
+        write(sb, "AnnotationArgumentInfo(\"{arg.name}\", \"{escape(arg.sValue)}\")")
+    } elif (arg.basicType == Type.tInt) {
+        write(sb, "AnnotationArgumentInfo(\"{arg.name}\", {arg.iValue})")
+    } elif (arg.basicType == Type.tFloat) {
+        write(sb, "AnnotationArgumentInfo(\"{arg.name}\", {to_cpp_float(arg.fValue)})")
+    }
+}
+
+
+def private writeAnnotationList(var writer : StringBuilderWriter?; info; baseName : string) {
+    if (info.annotation_count == 0u) return ;
+    for (ai in range(int(info.annotation_count))) {
+        unsafe {
+            let ann & = get_annotation(*info, ai)
+            if (ann.count > 0u) {
+                let annArgs = build_string() $(var sb) {
+                    for (gi in range(int(ann.count))) {
+                        if (gi != 0) { write(sb, ", "); }
+                        writeAnnotationArgInit(sb, get_annotation_argument(ann, gi))
+                    }
+                }
+                write(*writer, "AnnotationArgumentInfo {baseName}_ann_{ai}_args[{int(ann.count)}] = \{ {annArgs} \};\n")
+            }
+        }
+    }
+    let anns = build_string() $(var sb) {
+        for (ai in range(int(info.annotation_count))) {
+            if (ai != 0) { write(sb, ", "); }
+            unsafe {
+                let ann & = get_annotation(*info, ai)
+                let argsRef = ann.count > 0u ? "{baseName}_ann_{ai}_args" : "nullptr"
+                write(sb, "AnnotationInfo(\"{ann.name}\", \"{ann.module_name}\", {argsRef}, {int(ann.count)}u)")
+            }
+        }
+    }
+    write(*writer, "AnnotationInfo {baseName}_ann[{int(info.annotation_count)}] = \{ {anns} \};\n")
+}
+
 class public AotDebugInfoHelper {
     
     private info2Name  = new DebugVarCache()
     private info2TypeName = new DebugVarCache()
+    private annInfoNames : table<string; string>    
     helper : DebugInfoHelper? = new DebugInfoHelper(uninitialized)
     cross_platform : bool = false
     def operator delete {
@@ -660,26 +830,27 @@ class public AotDebugInfoHelper {
     def str() {
         return build_string() $(var writer) {
             verify(info2Name.empty() && info2TypeName.empty())
-            helper |> debug_helper_iter_structs($(name, ti) {
+            helper |> debug_helper_iter_structs($(_name, ti) {
                 write(writer, "extern StructInfo {structInfoName(ti)};\n");
             });
-            helper |> debug_helper_iter_types($(name, ti){
+            helper |> debug_helper_iter_types($(_name, ti){
                 write(writer, "extern TypeInfo {typeInfoName(ti)};\n");
             })
             write(writer, "\n");
-            helper |> debug_helper_iter_enums($(name, ti){
+            writeHandledAnnotations(unsafe(addr(writer)));
+            helper |> debug_helper_iter_enums($(_name, ti){
                 describeCppEnumInfoValues(unsafe(addr(writer)), ti);
                 write(writer, "EnumInfo {enumInfoName(ti)} = \{ {describeCppEnumInfo(ti)} \};\n");
             })
-            helper |> debug_helper_iter_structs($(name, ti){
+            helper |> debug_helper_iter_structs($(_name, ti){
                 describeCppStructInfoFields(unsafe(addr(writer)), ti);
                 write(writer, "StructInfo {structInfoName(ti)} = \{{describeCppStructInfo(ti)} \};\n");
             })
-            helper |> debug_helper_iter_funcs($(name, ti){
+            helper |> debug_helper_iter_funcs($(_name, ti){
                 describeCppFuncInfoFields(unsafe(addr(writer)), ti);
                 write(writer, "FuncInfo {funcInfoName(ti)} = \{{describeCppFuncInfo(ti)} \};\n");
             })
-            helper |> debug_helper_iter_types($(name, ti){
+            helper |> debug_helper_iter_types($(_name, ti){
                 assume wr = unsafe(addr(writer))
                 writeDim(wr, ti);
                 writeArgTypes(wr, ti);
@@ -689,7 +860,7 @@ class public AotDebugInfoHelper {
             write(writer, "\n");
             write(writer, "static void resolveTypeInfoAnnotations()\n\{\n");
             write(writer, "    vector<TypeInfo> annotations = \{")
-            helper |> debug_helper_iter_types($(name, ti) {
+            helper |> debug_helper_iter_types($(_name, ti) {
                 if (ti._type == Type.tHandle) {
                     write(writer, "{typeInfoName(ti)}, ");
                 }
@@ -698,21 +869,60 @@ class public AotDebugInfoHelper {
             write(writer, "    for (auto& ann : annotations) \{\n")
             write(writer, "        ann.resolveAnnotation();\n")
             write(writer, "    \}\n")
-            helper |> debug_helper_iter_structs($(name, si) {
-                if (si.fields == null) { return ; }
-                for (fi in range(si.count)) {
-                    let fld & = unsafe(si.fields[fi])
-                    if (fld.annotation_arguments == null) { continue; }
-                    if (length(*fld.annotation_arguments) == 0) { continue; }
-                    write(writer, "    {structInfoName(si)}_field_{fi}.annotation_arguments = &{structInfoName(si)}_field_{fi}_ann;\n")
-                }
-            })
             write(writer, "\}\n\n")
             info2Name.clear();
             info2TypeName.clear();
+            annInfoNames |> clear()
         }
     }
 
+
+    def registerHandledAnnotation(var writer : StringBuilderWriter?; info : TypeInfo?) {
+        if (info._type != Type.tHandle) return ;
+        let ann = info.annotation
+        let key = "{ann._module.name}::{ann.name}"
+        if (annInfoNames |> key_exists(key)) return ;
+        let ident = "__handled_ann_{length(annInfoNames)}"
+        annInfoNames[key] = ident
+        write(*writer, "AnnotationInfo {ident} = \{ \"{ann.name}\", \"{ann._module.name}\", nullptr, 0u \};\n")
+    }
+
+    
+    def writeHandledAnnotations(var writer : StringBuilderWriter?) {
+        helper |> debug_helper_iter_types($(_name, ti) {
+            registerHandledAnnotation(writer, ti);
+        })
+        helper |> debug_helper_iter_structs($(_name, si) {
+            if (si.fields == null) return ;
+            for (fi in range(si.count)) {
+                registerHandledAnnotation(writer, unsafe(si.fields[fi]));
+            }
+        })
+        helper |> debug_helper_iter_funcs($(_name, fni) {
+            if (fni.fields == null) return ;
+            for (fi in range(fni.count)) {
+                registerHandledAnnotation(writer, unsafe(fni.fields[fi]));
+            }
+        })
+    }
+
+    def annInfoRef(info : TypeInfo?) : string {
+        let ann = info.annotation
+        return "&" + annInfoNames.get_value("{ann._module.name}::{ann.name}")
+    }
+
+    def writeVarAnnotationArgs(var writer : StringBuilderWriter?; fld : VarInfo?; arrName : string) {
+        if (fld.annotation_argument_count == 0u) return ;
+        let annArgs = build_string() $(var sb) {
+            for (ai in range(int(fld.annotation_argument_count))) {
+                if (ai != 0) { write(sb, ", "); }
+                unsafe {
+                    writeAnnotationArgInit(sb, get_annotation_argument(*fld, ai))
+                }
+            }
+        }
+        write(*writer, "AnnotationArgumentInfo {arrName}[{int(fld.annotation_argument_count)}] = \{ {annArgs} \};\n")
+    }
 
     def describeCppVarInfo(struct_name : string; info : VarInfo?; suffix : string) {
         return build_string() $(writer) {
@@ -734,6 +944,7 @@ class public AotDebugInfoHelper {
         }
     }
     def describeCppStructInfoFields(var writer : StringBuilderWriter?; info : StructInfo?) {
+        writeAnnotationList(writer, info, structInfoName(info));
         if (info.fields == null) return ;
         for (fi in range(info.count)) {
             let suffix = "_var_{info.hash:d}";
@@ -741,31 +952,13 @@ class public AotDebugInfoHelper {
             writeDim(writer, fld, suffix);
             writeArgTypes(writer, fld, suffix);
             writeArgNames(writer, fld, suffix);
-            let prefix = (info.module_name |> length() > 0) ? "{info.module_name}::" : "";
+            let prefix = (info.module_name |> !empty(info.module_name)) ? "{info.module_name}::" : "";
+            writeVarAnnotationArgs(writer, fld, "{structInfoName(info)}_field_{fi}_ann");
+            let fldAnnRef = fld.annotation_argument_count > 0u ? ", {structInfoName(info)}_field_{fi}_ann, {int(fld.annotation_argument_count)}u" : ""
             
-            
-            write(*writer, "VarInfo {structInfoName(info)}_field_{fi} =  \{ {describeCppVarInfo(prefix + aotSuffixNameEx(info.name, "_S"), fld,suffix)} \};\n");
-            if (fld.annotation_arguments != null) {
-                if (length(*fld.annotation_arguments) > 0) {
-                    let annArgs = build_string() $(var sb) {
-                        var first = true
-                        for (arg in *fld.annotation_arguments) {
-                            if (!first) { write(sb, ", "); }
-                            first = false
-                            if (arg.basicType == Type.tBool) {
-                                write(sb, "AnnotationArgument(\"{arg.name}\", {arg.bValue})")
-                            } elif (arg.basicType == Type.tString) {
-                                write(sb, "AnnotationArgument(\"{arg.name}\", string(\"{arg.sValue}\"))")
-                            } elif (arg.basicType == Type.tInt) {
-                                write(sb, "AnnotationArgument(\"{arg.name}\", {arg.iValue})")
-                            } elif (arg.basicType == Type.tFloat) {
-                                write(sb, "AnnotationArgument(\"{arg.name}\", {arg.fValue}f)")
-                            }
-                        }
-                    }
-                    write(*writer, "static AnnotationArguments {structInfoName(info)}_field_{fi}_ann = \{ {annArgs} \};\n")
-                }
-            }
+            let structCppName = aotSuffixNameEx(info.name, "_S",
+                g_struct_enum_collide |> key_exists(structEnumNsKey(info.module_name, info.name)))
+            write(*writer, "VarInfo {structInfoName(info)}_field_{fi} =  \{ {describeCppVarInfo(prefix + structCppName, fld,suffix)}{fldAnnRef} \};\n");
         }
         let fields = (each(range(info.count))
             ._select("&{structInfoName(info)}_field_{_}")
@@ -783,10 +976,12 @@ class public AotDebugInfoHelper {
                 write(writer, "nullptr, ")
             }
             let info_size = cross_platform ? "TypeSize<{helper |> debug_helper_find_struct_cppname(info)}>::size" : "{info.size:d}";
-            write(writer, "{info.count:d}, {info_size}, UINT64_C(0x{info.init_mnh:x}), nullptr, UINT64_C(0x{info.hash:x}), {info.firstGcField:d}")
+            let annRef = info.annotation_count > 0u ? "{structInfoName(info)}_ann" : "nullptr";
+            write(writer, "{info.count:d}, {info_size}, UINT64_C(0x{info.init_mnh:x}), {annRef}, {int(info.annotation_count)}u, UINT64_C(0x{info.hash:x}), {info.firstGcField:d}")
         }
     }
     def describeCppFuncInfoFields(var writer : StringBuilderWriter?; info : FuncInfo?) {
+        writeAnnotationList(writer, info, funcInfoName(info));
         if (info.fields == null) return ;
         for (fi in range(info.count)) {
             let suffix = "_var_{info.hash:d}";
@@ -794,7 +989,9 @@ class public AotDebugInfoHelper {
             writeDim(writer, fld, suffix);
             writeArgTypes(writer, fld, suffix);
             writeArgNames(writer, fld, suffix);
-            write(*writer, "VarInfo {funcInfoName(info)}_field_{fi} =  \{ {describeCppVarFuncInfo(string(info.name), fld,suffix)} \};\n");
+            writeVarAnnotationArgs(writer, fld, "{funcInfoName(info)}_field_{fi}_ann");
+            let fldAnnRef = fld.annotation_argument_count > 0u ? ", {funcInfoName(info)}_field_{fi}_ann, {int(fld.annotation_argument_count)}u" : ""
+            write(*writer, "VarInfo {funcInfoName(info)}_field_{fi} =  \{ {describeCppVarFuncInfo(info.name, fld,suffix)}{fldAnnRef} \};\n");
         }
 
         let fields = (each(range(info.count))
@@ -812,21 +1009,37 @@ class public AotDebugInfoHelper {
                 write(writer, "nullptr, ")
             }
             write(writer, "{info.count:d}, {info.stackSize:d}, &{typeInfoName(info.result)}, nullptr,0,UINT64_C(0x{info.hash:x}), 0x{info.flags:x}");
+            if (info.annotation_count > 0u) {
+                write(writer, ", {funcInfoName(info)}_ann, {int(info.annotation_count)}u");
+            }
         }
     }
     def describeCppEnumInfoValues(var writer : StringBuilderWriter?; einfo : EnumInfo?) {
         for (v in range(einfo.count)) {
             let val = unsafe(einfo.fields[v]);
-            write(*writer, "EnumValueInfo {enumInfoName(einfo)}_value_{v} = \{ \"{val.name}\", {val.value} \};\n")
+            
+            let bits = uint64(val.value)
+            var cppLit : string
+            if (bits == 0x8000000000000000ul) {
+                cppLit = "(-INT64_C(0x7fffffffffffffff) - INT64_C(1))"
+            } elif (val.value < 0l) {
+                let absBits = uint64(-val.value)
+                cppLit = "-INT64_C(0x{absBits:x})"
+            } else {
+                cppLit = "INT64_C(0x{bits:x})"
+            }
+            write(*writer, "EnumValueInfo {enumInfoName(einfo)}_value_{v} = \{ \"{val.name}\", {cppLit} \};\n")
         }
         let enum_vals = (each(range(einfo.count))
             ._select("&{enumInfoName(einfo)}_value_{_}")
             .to_array()
             ._fold()) |> join(", ")
         write(*writer, "EnumValueInfo * {enumInfoName(einfo)}_values [] = \{ {enum_vals} \};\n");
+        writeAnnotationList(writer, einfo, enumInfoName(einfo));
     }
     def describeCppEnumInfo(info : EnumInfo?) {
-        return "\"{info.name}\", \"{info.module_name}\", {enumInfoName(info)}_values, {info.count:d}, UINT64_C(0x{info.hash:x})";
+        let annRef = info.annotation_count > 0u ? ", {enumInfoName(info)}_ann, {int(info.annotation_count)}u" : "";
+        return "\"{info.name}\", \"{info.module_name}\", {enumInfoName(info)}_values, {info.count:d}, UINT64_C(0x{info.hash:x}), {info.flags:d}{annRef}";
     }
     def describeCppTypeInfo(info : TypeInfo?; suffix : string = "") {
         return build_string() $(writer) {
@@ -849,20 +1062,8 @@ class public AotDebugInfoHelper {
             }
             write_sep();
             if (info._type == Type.tHandle) {
-                let ann_ptr : void? = info.annotation_or_name
-                let int_ptr = unsafe(reinterpret<uint64>(ann_ptr));
-                if ((int_ptr & uint64(1)) != uint64(0)) {
-                    let tname = unsafe(reinterpret<string>(int_ptr ^ uint64(1)));  
-                    write(writer, "DAS_MAKE_ANNOTATION(\"{tname}\")");
-                } else {
-                    
-                    
-                    
-                    
-                    write(writer, "DAS_MAKE_ANNOTATION(\"~{info.annotation_or_name._module.name}::{info.annotation_or_name.name}\")");
-                }
+                write(writer, annInfoRef(info));
             } else {
-                assert(info._type != Type.tHandle);
                 write(writer, "nullptr");
             }
             write_sep();
@@ -914,7 +1115,7 @@ class public AotDebugInfoHelper {
 
 def public isLocalVec(vtype : TypeDeclPtr) {
     
-    return empty(vtype.dim) && vtype.isVectorType && !vtype.flags.ref;
+    return vtype.isVectorType && !vtype.flags.ref;
 }
 
 def public describeLocalCppType(var writer : StringBuilderWriter?; vtype : TypeDeclPtr; cross_platform : bool; substituteRef : CpptSubstitureRef = CpptSubstitureRef.yes; skipConst : CpptSkipConst = CpptSkipConst.no) {
@@ -945,6 +1146,14 @@ def public aotFuncName(func : Function?) {
     } else {
         return "{aotSuffixNameEx(func.name,"_Func")}";
     }
+}
+
+def private isBlockLet(variable : VariablePtr) : bool {
+    if (!variable._type.isGoodBlockType) {
+        return false
+    }
+    assert(variable.init != null && variable.init is ExprMakeBlock, "block local must be initialized with a make block expression")
+    return true
 }
 
 class public BlockVariableCollector : AstVisitor {
@@ -1005,17 +1214,17 @@ class public BlockVariableCollector : AstVisitor {
         }
         return blk;
     }
-    def getFinalBlock() {
+    def getFinalBlock() : ExprBlock? {
         for (i in range(length(stack))) {
-            let blk = stack[length(stack) - i - 1];
-            if (length(blk.finalList) != 0) return blk;
+            var blk = stack[length(stack) - i - 1];
+            if (!empty(blk.finalList)) return blk;
             if (blk.blockFlags.isClosure) return null;
         }
         return null;
     }
-    def getTopBlock() {
+    def getTopBlock() : ExprBlock? {
         for (i in range(length(stack))) {
-            let blk = stack[length(stack) - i - 1];
+            var blk = stack[length(stack) - i - 1];
             if (blk.blockFlags.isClosure) return blk;
         }
         return stack[0];
@@ -1023,6 +1232,9 @@ class public BlockVariableCollector : AstVisitor {
     def override preVisitExprLetVariable(let_var : ExprLet?; var variable : VariablePtr; last : bool) {
         var bfinal = getFinalBlock()
         if (bfinal != null) {
+            if (isBlockLet(variable)) {
+                blockLets[bfinal] |> push(variable);
+            }
             bfinal = getTopBlock();
             variables[bfinal] |> push(variable);
             moved |> insert(variable);
@@ -1031,7 +1243,7 @@ class public BlockVariableCollector : AstVisitor {
     }
 
     def handleExpr(var expr : ExprMakeLocal?) {
-        let need_insert = !expr.makeFlags.doesNotNeedSp && expr.stackTop != 0u;
+        let need_insert = expectsLocalTemp(expr);
         if (need_insert) {
             let blk = getCurrentBlock();
             localTemps[blk] |> push(expr);
@@ -1055,6 +1267,20 @@ class public BlockVariableCollector : AstVisitor {
         handleExpr(expr)
     }
 
+    def override preVisitExprNew(var expr : ExprNew?) {
+        if (expr.allocate_on_stack) {
+            let blk = getCurrentBlock();
+            stackNew[blk] |> push(expr);
+        }
+    }
+
+    def override preVisitExprAscend(var expr : ExprAscend?) {
+        if (expr.ascendFlags.allocate_on_stack && !expr.ascendFlags.needTypeInfo) {
+            let blk = getCurrentBlock();
+            stackNew[blk] |> push(expr);
+        }
+    }
+
     def override preVisitExprCall(var expr : ExprCall?) {
         let need_insert = !expr.doesNotNeedSp && expr.stackTop != 0u;
         if (need_insert) {
@@ -1076,7 +1302,9 @@ class public BlockVariableCollector : AstVisitor {
 
     @do_not_delete stack :      array<ExprBlock?>
     @do_not_delete variables :  table<ExprBlock?, array<Variable?>>
+    @do_not_delete blockLets :  table<ExprBlock?, array<Variable?>>
     @do_not_delete localTemps : table<ExprBlock?, array<Expression?>>
+    @do_not_delete stackNew :   table<ExprBlock?, array<Expression?>>
 
     rename : table<Variable?, string>
     moved : table<Variable?>
@@ -1144,7 +1372,6 @@ class public CppAot : AstVisitor {
 
 
 
-
     adapter : VisitorAdapter ?
 
     def str() {
@@ -1174,6 +1401,7 @@ class public CppAot : AstVisitor {
     prologue : bool = false;
     solidContext : bool = false;
     cross_platform : bool = false;
+    fastMath : bool = false;       
     aot_filter_function : string;  
 
     cachedTi = new DebugVarCache()
@@ -1288,7 +1516,7 @@ class public CppAot : AstVisitor {
         ss |> string_builder_clear();
         write(*ss, "\n");
         prog.getThisModule |> for_each_module_function($(var fn : FunctionPtr) {
-            if (!fn.flags.builtIn && !fn.flags.noAot) {
+            if (!fn.flags.builtIn && !fn.flags.noAot && !fn.moreFlags.isTemplate) {
                 write(*ss, "{describeCppFunc(fn,collector,cross_platform)};\n");
             }
         });
@@ -1342,12 +1570,14 @@ class public CppAot : AstVisitor {
 
     def override canVisitFunction(fun : Function?) {
         if (fun.flags.noAot) return false;
-        if (fun.moreFlags.isTemplate) return false;
-        return true;
+        return !fun.moreFlags.isTemplate;
     }
     def override preVisitFunction(fn : FunctionPtr) {
         if (!empty(aot_filter_function) && (fn.name == aot_filter_function || aotFuncName(fn) == aot_filter_function)) {
             write(*ss, "\n/*<<AOT_FUNC_BEGIN>>*/");
+        }
+        if (fastMath) {
+            write(*ss, "\nDAS_FAST_MATH_PUSH");  
         }
         write(*ss, "\ninline ");
         describeLocalCppType(ss, fn.result, cross_platform, CpptSubstitureRef.no, CpptSkipConst.yes);
@@ -1396,6 +1626,9 @@ class public CppAot : AstVisitor {
         } else {
             write(*ss, "\n");
         }
+        if (fastMath) {
+            write(*ss, "DAS_FAST_MATH_POP\n");
+        }
         if (!empty(aot_filter_function) && (fn.name == aot_filter_function || aotFuncName(fn) == aot_filter_function)) {
             write(*ss, "/*<<AOT_FUNC_END>>*/\n");
         }
@@ -1424,12 +1657,14 @@ class public CppAot : AstVisitor {
     }
     def override preVisitExprBlock(var blk : ExprBlock?) {
         push(scopes, blk);
-        blk.blockFlags |= ExprBlockFlags.finallyBeforeBody;
+        blk.blockFlags.finallyBeforeBody = true;
         write(*ss, "\{\n");
         tab ++;
         
         assume vars = collector.variables[blk];
         for (variable in vars) {
+            
+            continue if (isBlockLet(variable))
             write(*ss, "{tabs()}");
             describeVarLocalCppType(ss, variable._type, cross_platform);
             let varname = collector.getVarName(variable);
@@ -1456,6 +1691,46 @@ class public CppAot : AstVisitor {
                 write(*ss, " {tempName}; {tempName};\n");
             }
         }
+        
+        
+        
+        collector.stackNew.get(blk) $(news) {
+            for (nw in news) {
+                let nm = stackNewName(nw);
+                write(*ss, "{tabs()}{stackNewPointeeType(nw, cross_platform)} {nm}; {nm};\n");
+            }
+        }
+        
+        collector.blockLets.get(blk) $(blets) {
+            for (variable in blets) {
+                emitBlockLet(variable);
+            }
+        }
+    }
+    def emitBlockLet(var variable : VariablePtr) {
+        let varname = collector.getVarName(variable);
+        let constRef = (variable._type.flags.constant &&
+                       variable._type.isRefType &&
+                       !variable._type.flags.ref)
+        let cvname = constRef ? varname + "_ConstRef" : varname;
+        var mkb = variable.init as ExprMakeBlock;
+        var mblk = mkb._block as ExprBlock;
+        mblk.blockFlags.aotSkipMakeBlock = true;
+        write(*ss, "{tabs()}auto {cvname}_TempFunctor = ");
+        visit_expression(variable.init, adapter);
+        write(*ss, ";\n{tabs()}");
+        mblk.blockFlags.aotSkipMakeBlock = false;
+        mkb.aotFunctorName := cvname + "_TempFunctor";
+        write(*ss, "auto {cvname} = ");
+        visit_expression(variable.init, adapter);
+        write(*ss, ";\n");
+        if (constRef) {
+            write(*ss, tabs());
+            describeLocalCppType(ss, variable._type, cross_platform);
+            write(*ss, " & {varname} = {cvname};\n");
+        }
+        mkb.aotFunctorName := cvname;
+        mblk.blockFlags.aotSkipMakeBlock = true;
     }
     def override preVisitExprBlockArgumentInit(blk : ExprBlock?; variable : VariablePtr; init : ExpressionPtr) {
         write(*ss, "\n#if 0\n");
@@ -1475,8 +1750,8 @@ class public CppAot : AstVisitor {
     def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
         tab --;
         write(*ss, "{tabs()}\}")
-        blk.blockFlags &= ~ExprBlockFlags.finallyBeforeBody
-        blk.blockFlags &= ~ExprBlockFlags.finallyDisabled
+        blk.blockFlags.finallyBeforeBody = false
+        blk.blockFlags.finallyDisabled = false
         scopes |> pop();
         return blk;
     }
@@ -1499,17 +1774,14 @@ class public CppAot : AstVisitor {
     }
 
     def override preVisitExprLetVariable(let_ : ExprLet?; var variable : VariablePtr; last : bool) {
-        let vname = collector.getVarName(variable);
-        if (variable.init != null && variable.init is ExprMakeBlock) {
-            var mkb = variable.init as ExprMakeBlock;
-            var blk = mkb._block as ExprBlock;
-            blk.blockFlags |= ExprBlockFlags.aotSkipMakeBlock;
-            write(*ss, "auto {vname}_TempFunctor = ");
-            visit_expression(variable.init, adapter);
-            write(*ss, ";\n{tabs()}");
-            blk.blockFlags &= ~ExprBlockFlags.aotSkipMakeBlock;
-            mkb.aotFunctorName := vname + "_TempFunctor";
+        if (isBlockLet(variable)) {
+            if (!collector.isMoved(variable)) {
+                emitBlockLet(variable);
+                write(*ss, tabs());
+            }
+            return
         }
+        let vname = collector.getVarName(variable);
         if (!collector.isMoved(variable)) {
             describeVarLocalCppType(ss, variable._type, cross_platform);
             write(*ss, " ");
@@ -1521,7 +1793,10 @@ class public CppAot : AstVisitor {
         if (variable.init != null) {
             write(*ss, cvname);
         } elif (variable._type.canInitWithZero) {
-            let init_val = isLocalVec(variable._type) ? "v_zero()" : "0";
+            var init_val = isLocalVec(variable._type) ? "v_zero()" : "0";
+            if (variable._type.baseType == Type.tFloat16) {
+                init_val = "float16_t(0.f)";   
+            }
             write(*ss, "{cvname} = {init_val}");
         } else {
             if (!collector.isMoved(variable)) {
@@ -1532,7 +1807,7 @@ class public CppAot : AstVisitor {
     }
     def override visitExprLetVariable(let_ : ExprLet?; variable : VariablePtr; last : bool) {
         if (!last) write(*ss, "; ");
-        if (!collector.isMoved(variable)) {
+        if (!collector.isMoved(variable) && !isBlockLet(variable)) {
             if (variable._type.flags.constant && variable._type.isRefType && !variable._type.flags.ref) {
                 let vname = collector.getVarName(variable);
                 write(*ss, ";\n{tabs()}");
@@ -1544,16 +1819,18 @@ class public CppAot : AstVisitor {
             var mkb = variable.init as ExprMakeBlock;
             
             mkb.aotFunctorName := ""
+            (mkb._block as ExprBlock).blockFlags.aotSkipMakeBlock = false;
         }
         return variable;
     }
     def override preVisitExprLetVariableInit(let_ : ExprLet?; variable : VariablePtr; expr : ExpressionPtr) {
+        return if (isBlockLet(variable))   
         if (variable.flags.init_via_move && variable.init is ExprMakeBlock) {
             write(*ss, " = ");
         } elif (variable.flags.init_via_move) {
             let vname = collector.getVarName(variable);
             var cvname = vname;
-            if (variable._type.flags.constant && variable._type.isRefType) {
+            if (variable._type.flags.constant && variable._type.isRefType && !variable._type.flags.ref) {
                 cvname += "_ConstRef";
             }
             write(*ss, "; das_zero({cvname}); das_move({cvname}, ");
@@ -1594,6 +1871,7 @@ class public CppAot : AstVisitor {
         }
     }
     def override visitExprLetVariableInit(let_ : ExprLet?; variable : VariablePtr; expr : ExpressionPtr) {
+        return expr if (isBlockLet(variable))
         if (expr._type.isString) {
             write(*ss, ")");
         }
@@ -1688,6 +1966,13 @@ class public CppAot : AstVisitor {
         return that;
     }
 
+    def override visitExprQuote(var that : ExprQuote?) : ExpressionPtr {
+        
+        
+        write(*ss, "\n#error quote( ) was not lowered (daslib/quote) at {describe(that.at)}\n")
+        return that;
+    }
+
     def outPolicy(decl : TypeDeclPtr) {
         if (decl.baseType != Type.tHandle){
             write(*ss, "SimPolicy<{das_to_cppString(decl.baseType)}>");
@@ -1696,10 +1981,13 @@ class public CppAot : AstVisitor {
         }
     }
     def isOpPolicy1(that : ExprOp1?) {
-        if (is_alpha(first_character(that.op))) {
-            return true;
-        }
+        if (is_alpha(first_character(that.op))) return true;
         return that.subexpr._type.isPolicyType;
+    }
+    
+    
+    def isF16Op1(that : ExprOp1?) {
+        return that._type.baseType == Type.tFloat16 || (that._type.isVectorType && that._type.vectorBaseType == Type.tFloat16);
     }
     def override preVisitExprOp1(var that : ExprOp1?) {
         if (!that.func.flags.builtIn || that.func.flags.callBased) {
@@ -1709,8 +1997,15 @@ class public CppAot : AstVisitor {
             CallFunc_preVisit(that);
             CallFunc_preVisitCallArg(that, that.subexpr, true);
         } elif (isOpPolicy1(that)) {
+            if (isF16Op1(that)) {
+                let cfg = DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform)
+                write(*ss, "cast<{describeCppType(that._type, cfg)}>::to(");
+            }
             outPolicy(that.subexpr._type);
             write(*ss, "::{opPolicyName(that)}(");
+            if (that.subexpr._type.baseType == Type.tFloat16) {
+                write(*ss, "cast<float16_t>::from(");
+            }
         } else {
             if (that.op != "+++" && that.op != "---") {
                 write(*ss, that.op);
@@ -1725,8 +2020,14 @@ class public CppAot : AstVisitor {
             CallFunc_visitCallArg(that, that.subexpr, true);
             CallFunc_visit(that);
             that.arguments.clear();
-        } elif (isOpPolicy1(that)){
+        } elif (isOpPolicy1(that)) {
+            if (that.subexpr._type.baseType == Type.tFloat16) {
+                write(*ss, ")");
+            }
             write(*ss, ",*__context__,nullptr)");
+            if (isF16Op1(that)) {
+                write(*ss, ")");
+            }
         } else {
             if (that.op == "+++" || that.op == "---") {
                 peek(that.op) $(op) {
@@ -1745,10 +2046,10 @@ class public CppAot : AstVisitor {
                 that.right._type.baseType == Type.tBool && that.right._type.isSimpleType);
     }
     def isOpPolicy2(that : ExprOp2?) {
-        if (is_alpha(first_character(that.op))) return true;
-        if (that.op == "/" || that.op == "%") return true;
-        if (that.op == "<<<" || that.op == ">>>" || that.op == "<<<=" || that.op == ">>>=") return true;
-        if (that.op == "<<" || that.op == ">>" || that.op == "<<=" || that.op == ">>=") return true;
+        if (is_alpha(first_character(that.op))
+                || that.op == "/" || that.op == "%"
+                || that.op == "<<<" || that.op == ">>>" || that.op == "<<<=" || that.op == ">>>="
+                || that.op == "<<" || that.op == ">>" || that.op == "<<=" || that.op == ">>=") return true;
         return that._type.isPolicyType || that.left._type.isPolicyType || that.right._type.isPolicyType;
     }
     def opPolicyBase(that : ExprOp2?) {
@@ -1797,7 +2098,8 @@ class public CppAot : AstVisitor {
             }
             outPolicy(pt);
             write(*ss, "::{opPolicyName(that)}(");
-            if (isRefPolicyOp(that) && (pt.isVectorType || pt.isString)) {
+            
+            if (isRefPolicyOp(that) && (pt.isVectorType || pt.isString || pt.baseType == Type.tFloat16)) {
                 write(*ss, "(char *)&(");
             } elif (policyArgNeedCast(pt, that.left._type)) {
                 let cfg = DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform)
@@ -1824,7 +2126,7 @@ class public CppAot : AstVisitor {
             CallFunc_preVisitCallArg(that, that.right, true);
         } elif (isOpPolicy2(that)) {
             assume pt = opPolicyBase(that);
-            if (isRefPolicyOp(that) && (pt.isVectorType || pt.isString)) {
+            if (isRefPolicyOp(that) && (pt.isVectorType || pt.isString || pt.baseType == Type.tFloat16)) {
                 write(*ss, ")");
             } elif (policyArgNeedCast(pt, that.left._type)) {
                 if (that.left._type.isRefType) {
@@ -2019,7 +2321,8 @@ class public CppAot : AstVisitor {
             ._fold()) |> join(",")
     }
 
-    def get_variant_field(field_type : TypeDeclPtr; index : int; is_pointer : bool = false) {
+    def get_variant_field(in_field_type : TypeDeclPtr; index : int; is_pointer : bool = false) {
+        let field_type = fa_element(in_field_type)
         let type_str = describeCppType(field_type.argTypes[index], DescribeConfig(cross_platform = cross_platform));
         let maybe_ptr = is_pointer ? "_ptr" : "";
         if (cross_platform) {
@@ -2123,7 +2426,8 @@ class public CppAot : AstVisitor {
         return field;
     }
 
-    def get_tuple_field(field_type : TypeDeclPtr; index : int; is_pointer : bool = false) {
+    def get_tuple_field(in_field_type : TypeDeclPtr; index : int; is_pointer : bool = false) {
+        let field_type = fa_element(in_field_type)
         let field_tp = describeCppType(field_type.argTypes[index], DescribeConfig(cross_platform = cross_platform));
         let maybe_ptr = is_pointer ? "_ptr" : "";
         if (cross_platform) {
@@ -2148,11 +2452,17 @@ class public CppAot : AstVisitor {
         } elif (field_type.isHandle) {
             if (field._type.isString) {
                 
+                
+                
                 if (field.value._type.flags.constant) {
-                    write(*ss, "((const char * const)(");
+                    write(*ss, "((char *)(const char *)(");
                 } else {
                     write(*ss, "(({describeCppType(field._type, DescribeConfig(cross_platform=cross_platform))})(");
                 }
+            }
+            if (field._type.flags.isNativeDim) {
+                
+                write(*ss, "das_reinterpret<{describeCppType(field._type, DescribeConfig(skip_ref=true,cross_platform=cross_platform))}>::pass(");
             }
             aot_previsit_get_field(field_type.annotation, ss, string(field.name));
         } elif (field_type.baseType == Type.tPointer) {
@@ -2160,10 +2470,13 @@ class public CppAot : AstVisitor {
                 if (field._type.isString) {
                     
                     if (field.value._type.flags.constant) {
-                        write(*ss, "((const char * const)(");
+                        write(*ss, "((char *)(const char *)(");
                     } else {
                         write(*ss, "(({describeCppType(field._type, DescribeConfig(cross_platform=cross_platform))})(");
                     }
+                }
+                if (field._type.flags.isNativeDim) {
+                    write(*ss, "das_reinterpret<{describeCppType(field._type, DescribeConfig(skip_ref=true,cross_platform=cross_platform))}>::pass(");
                 }
                 aot_previsit_get_field_ptr(field_type.firstType.annotation, ss, string(field.name));
             } elif (field.value._type.firstType.isTuple) {
@@ -2186,12 +2499,18 @@ class public CppAot : AstVisitor {
             if (field._type.isString) {
                 write(*ss, "))");
             }
+            if (field._type.flags.isNativeDim) {
+                write(*ss, ")");
+            }
         } elif (field.value._type.baseType == Type.tPointer) {
             if (field.value._type.firstType.isHandle) {
                 aot_type_ann_get_field_ptr(field.value._type.firstType.annotation, ss, string(field.name));
                 write(*ss, " /*{field.name}*/");
                 if (field._type.isString) {
                     write(*ss, "))")
+                }
+                if (field._type.flags.isNativeDim) {
+                    write(*ss, ")");
                 }
             } elif (field.value._type.firstType.isTuple) {
                 write(*ss, ")");
@@ -2213,13 +2532,13 @@ class public CppAot : AstVisitor {
         if (expr._type.flags.aotAlias) {
             write(*ss, "das_alias<{expr._type.alias}>::from(");
         }
-        if (!(!expr.subexpr._type.dim |> empty() || expr.subexpr._type.isGoodArrayType || expr.subexpr._type.isGoodTableType)) {
+        if (!(expr.subexpr._type.baseType == Type.tFixedArray || expr.subexpr._type.isGoodArrayType || expr.subexpr._type.isGoodTableType)) {
             let type_str = describeCppType(expr.subexpr._type, DescribeConfig(skip_ref = true, cross_platform = cross_platform));
             write(*ss, "das_index<{type_str}>::at(");
         }
     }
     def override preVisitExprAtIndex(var expr : ExprAt?; index : ExpressionPtr) {
-        if (!expr.subexpr._type.dim |> empty() || expr.subexpr._type.isGoodArrayType || expr.subexpr._type.isGoodTableType) {
+        if (expr.subexpr._type.baseType == Type.tFixedArray || expr.subexpr._type.isGoodArrayType || expr.subexpr._type.isGoodTableType) {
             if (expr.subexpr._type.flags.isNativeDim) {
                 write(*ss, "[");
             } else {
@@ -2245,7 +2564,7 @@ class public CppAot : AstVisitor {
     def override preVisitExprSafeAt(expr : ExprSafeAt?) {
         let isPtr : bool = expr.subexpr._type.isPointer;
         assume seT = isPtr ? expr.subexpr._type.firstType : expr.subexpr._type;
-        if ((!seT.dim |> empty() || seT.isGoodArrayType || seT.isGoodTableType)) {
+        if ((seT.baseType == Type.tFixedArray || seT.isGoodArrayType || seT.isGoodTableType)) {
             let type_str = describeCppType(seT, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform))
             write(*ss, "{type_str}::safe_index(");
         } elif (isPtr && !seT.isVectorType) {
@@ -2350,8 +2669,16 @@ class public CppAot : AstVisitor {
         return c;
     }
 
-    def to_cpp_double(val : double) {
-        return "{val:.17e}";
+    def to_cpp_double(val : double) : string {
+        
+        if (val == DBL_MIN) return "DBL_MIN"
+        if (val == -DBL_MIN) return "(-DBL_MIN)"
+        if (val == DBL_MAX) return "DBL_MAX"
+        if (val == -DBL_MAX) return "(-DBL_MAX)"
+        if (val != val) return "((double)NAN)"        
+        if (val > DBL_MAX) return "((double)INFINITY)"
+        if (val < -DBL_MAX) return "((double)(-INFINITY))"
+        return "{val:.17e}"
     }
 
     def writeOutDouble(val : double) {
@@ -2366,6 +2693,12 @@ class public CppAot : AstVisitor {
     }
     def override visitExprConstFloat(var c : ExprConstFloat?) : ExpressionPtr {
         writeOutFloat(c.getValue);
+        return c;
+    }
+    def override visitExprConstFloat16(var c : ExprConstFloat16?) : ExpressionPtr {
+        write(*ss, "float16_t(");
+        writeOutFloat(float(c.value));
+        write(*ss, ")");
         return c;
     }
     def override visitExprConstString(var c : ExprConstString?) : ExpressionPtr {
@@ -2555,7 +2888,27 @@ class public CppAot : AstVisitor {
         return ifte;
     }
 
+    def is_lattice_elem(t : Type) : bool {
+        return t == Type.tFloat16 || t == Type.tInt16 || t == Type.tUInt16 || t == Type.tInt8 || t == Type.tUInt8
+    }
     def override preVisitExprSwizzle(expr : ExprSwizzle?) {
+        assume srcT = expr.value._type
+        if (srcT.isVectorType && is_lattice_elem(srcT.vectorBaseType)) {
+            
+            
+            let et = das_to_cppString(srcT.vectorBaseType)
+            let type_str = describeCppType(expr._type, DescribeConfig(skip_ref = true, cross_platform = cross_platform))
+            if (expr._type.flags.ref) {
+                write(*ss, "das_swizzle_ref_small<{type_str},{et},{int(expr.fields[0])}>::swizzle(")
+            } else {
+                let field_str = (each(expr.fields)
+                    ._select("{_:d}")
+                    .to_array()
+                    ._fold()) |> join(",")
+                write(*ss, "das_swizzle_small<{type_str},{et},{field_str}>::swizzle(")
+            }
+            return
+        }
         if (expr._type.flags.ref) {
             let type_str = describeCppType(expr._type, DescribeConfig(skip_ref = true, cross_platform = cross_platform));
             let value_str = describeCppType(expr.value._type, DescribeConfig(skip_ref = true, cross_platform = cross_platform));
@@ -2594,6 +2947,11 @@ class public CppAot : AstVisitor {
     def override visitExprSwizzle(var expr : ExprSwizzle?) : ExpressionPtr {
         if (expr.value._type.flags.aotAlias) {
             write(*ss, ")");
+        }
+        assume srcT = expr.value._type
+        if (srcT.isVectorType && is_lattice_elem(srcT.vectorBaseType)) {
+            write(*ss, ")");
+            return expr;
         }
         if (expr._type.flags.ref) {
             write(*ss, ")");
@@ -2709,15 +3067,23 @@ class public CppAot : AstVisitor {
         return tc;
     }
 
+    def isDistinctDeref(ptr2ref : ExprPtr2Ref?) {
+        
+        return ptr2ref.subexpr._type != null && ptr2ref.subexpr._type.baseType == Type.tDistinct
+    }
     def override preVisitExprPtr2Ref(ptr2ref : ExprPtr2Ref?) {
-        if (ptr2ref.unsafeDeref) {
+        if (isDistinctDeref(ptr2ref)) {
+            write(*ss, "(");
+        } elif (ptr2ref.unsafeDeref) {
             write(*ss, "(*(");
         } else {
             write(*ss, "das_deref(__context__,");
         }
     }
     def override visitExprPtr2Ref(var ptr2ref : ExprPtr2Ref?) : ExpressionPtr {
-        if (ptr2ref.unsafeDeref) {
+        if (isDistinctDeref(ptr2ref)) {
+            write(*ss, ")");
+        } elif (ptr2ref.unsafeDeref) {
             write(*ss, "))");
         } else {
             write(*ss, ",__FILE__,__LINE__)");
@@ -2783,6 +3149,14 @@ class public CppAot : AstVisitor {
     }
 
     def override preVisitExprAscend(expr : ExprAscend?) {
+        if (expr.ascendFlags.allocate_on_stack && !expr.ascendFlags.needTypeInfo
+                && expr._type.firstType.baseType != Type.tHandle) {
+            
+            let type_str = describeCppType(expr._type.firstType, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+            let subexpr_str = describeCppType(expr.subexpr._type, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+            write(*ss, "das_ascend_stack<{type_str},{subexpr_str}>::make({stackNewName(expr)},");
+            return
+        }
         let info : TypeInfo?  = (expr.ascendFlags.needTypeInfo
                                 ? helper.helper |> make_type_info(null, expr.subexpr._type)
                                 : null);
@@ -2806,21 +3180,28 @@ class public CppAot : AstVisitor {
     }
 
     def override preVisitExprNew(enew : ExprNew?) {
-        if (!enew._type.dim |> empty()) {
-            if (enew._type.firstType.isHandle) {
-                let type_str = describeCppType(enew._type.firstType, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
-                write(*ss, "das_new_dim_handle<{type_str},{enew._type.dim[0]},{enew._type.flags.smartPtr}");
+        if (enew.allocate_on_stack) {
+            
+            
+            let nm = stackNewName(enew);
+            write(*ss, "(memset((void*)&{nm},0,sizeof({nm})), &{nm}");
+            return
+        }
+        if (enew._type.baseType == Type.tFixedArray) {
+            let ptrType = fa_element(enew._type)   
+            if (ptrType.firstType.isHandle) {
+                let type_str = describeCppType(ptrType.firstType, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+                write(*ss, "das_new_dim_handle<{type_str},{enew._type.fixedDim},{ptrType.flags.smartPtr}");
                 if (enew.initializer) {
                     panic("internal error. initializer for enew is not supported");
                 } else {
                     write(*ss, ">::make(__context__");
                 }
             } else {
-                let type_str = describeCppType(enew._type.firstType, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
-                write(*ss, "das_new_dim<{type_str},{enew._type.dim[0]}");
+                let type_str = describeCppType(ptrType.firstType, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+                write(*ss, "das_new_dim<{type_str},{enew._type.fixedDim}");
                 if (enew.initializer) {
                     write(*ss, ">::make_and_init(__context__,[&]() \{ return ");
-                        
                     CallFunc_preVisit(enew);
                 } else {
                     write(*ss, ">::make(__context__");
@@ -2879,7 +3260,7 @@ class public CppAot : AstVisitor {
     }
 
     def needTempSrc(expr : ExprMakeLocal?) {
-        return !expr.makeFlags.doesNotNeedSp && expr.stackTop != 0u;
+        return expectsLocalTemp(expr);
     }
     def mkvName(expr : ExprMakeVariant?) {
         if (needTempSrc(expr)) {
@@ -2900,22 +3281,24 @@ class public CppAot : AstVisitor {
         }
     }
     def override preVisitExprMakeVariantField(expr : ExprMakeVariant?; index : int; decl : MakeFieldDeclPtr; last : bool) {
-        let variantIndex = find_argument_index(expr._type, string(decl.name));
+        let variantType = fa_element(expr._type)   
+        let variantIndex = find_argument_index(variantType, string(decl.name));
         if (variantIndex == -1) {
             panic("should not infer otherwise");
         }
-        let type_str = describeCppType(expr._type.argTypes[variantIndex], DescribeConfig(cross_platform = cross_platform));
-        write(*ss, "{tabs()}{get_variant_field(expr._type, variantIndex)}::set(");
+        let type_str = describeCppType(variantType.argTypes[variantIndex], DescribeConfig(cross_platform = cross_platform));
+        write(*ss, "{tabs()}{get_variant_field(variantType, variantIndex)}::set(");
         write(*ss, "{mkvName(expr)}");
         if (length(expr.variants) != 1) write(*ss, "({index},__context__)");
         write(*ss, ") = ");
-        if (expr._type.argTypes[variantIndex].isPointer && decl.value._type.isPointer && expr._type.argTypes[variantIndex].firstType != null && decl.value._type.firstType != null && !is_same_type(expr._type.argTypes[variantIndex].firstType, decl.value._type.firstType, false, false, false, false)) {
+        if (variantType.argTypes[variantIndex].isPointer && decl.value._type.isPointer && variantType.argTypes[variantIndex].firstType != null && decl.value._type.firstType != null && !is_same_type(variantType.argTypes[variantIndex].firstType, decl.value._type.firstType, false, false, false, false)) {
             write(*ss, "das_auto_cast<{type_str}>::cast(");
         }
     }
     def override visitExprMakeVariantField(expr : ExprMakeVariant?; index : int; decl : MakeFieldDeclPtr; last : bool) {
-        let variantIndex = find_argument_index(expr._type, string(decl.name))
-        if (expr._type.argTypes[variantIndex].isPointer && decl.value._type.isPointer && expr._type.argTypes[variantIndex].firstType != null && decl.value._type.firstType != null && !is_same_type(expr._type.argTypes[variantIndex].firstType, decl.value._type.firstType, false, false, false, false)) {
+        let variantType = fa_element(expr._type)
+        let variantIndex = find_argument_index(variantType, string(decl.name))
+        if (variantType.argTypes[variantIndex].isPointer && decl.value._type.isPointer && variantType.argTypes[variantIndex].firstType != null && decl.value._type.firstType != null && !is_same_type(variantType.argTypes[variantIndex].firstType, decl.value._type.firstType, false, false, false, false)) {
             write(*ss, ")");
         }
         write(*ss, ";\n");
@@ -2950,7 +3333,7 @@ class public CppAot : AstVisitor {
         tab ++;
         if (!expr.makeStructFlags.isNewHandle) {
             if (!needTempSrc(expr)) {
-                let expr_type = describeCppType(expr._type, DescribeConfig(skip_ref = true, cross_platform = cross_platform));
+                let expr_type = describeCppType(expr._type, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
                 write(*ss, "{tabs()}{expr_type} {mksName(expr)}");
                 if (expr.constructor != null) {
                     write(*ss, " = ");
@@ -2990,15 +3373,16 @@ class public CppAot : AstVisitor {
         }
     }
     def override preVisitExprMakeStructField(expr : ExprMakeStruct?; index : int; decl : MakeFieldDeclPtr; last : bool) {
+        let mkType = fa_element(expr.makeType)   
         write(*ss, "{tabs()}");
         write(*ss, "{decl.flags.moveSemantics ? "das_move((" : "das_copy(("}");
-        if (expr.makeType.baseType == Type.tHandle) {
-            aot_previsit_get_field(expr.makeType.annotation, ss, string(decl.name));
+        if (mkType.baseType == Type.tHandle) {
+            aot_previsit_get_field(mkType.annotation, ss, string(decl.name));
         }
         write(*ss, "{mksName(expr)}");
         if (length(expr.structs) != 1) write(*ss, "({index},__context__)");
-        if (expr.makeType.baseType == Type.tHandle) {
-            aot_visit_get_field(expr.makeType.annotation, ss, string(decl.name));
+        if (mkType.baseType == Type.tHandle) {
+            aot_visit_get_field(mkType.annotation, ss, string(decl.name));
             write(*ss, " /*{decl.name}*/");
         } else {
             write(*ss, ".{aotFieldName(string(decl.name))}");
@@ -3045,8 +3429,14 @@ class public CppAot : AstVisitor {
         if (!needTempSrc(expr)) {
             write(*ss, "{tabs()}{describeCppType(expr._type,DescribeConfig(skip_ref=true,cross_platform=cross_platform))} {mkaName(expr)};\n");
         }
-        if (!expr.makeFlags.initAllFields) {
+        if (!expr.makeFlags.initAllFields || expr.makeArrayOnHeap) {
             write(*ss, "{tabs()}das_zero({mkaName(expr)});\n");
+        }
+        if (expr.makeArrayOnHeap) {
+            
+            
+            let elem_str = describeCppType(expr.recordType, DescribeConfig(skip_ref = true, skip_const = true, cross_platform = cross_platform));
+            write(*ss, "{tabs()}builtin_array_resize({mkaName(expr)},{length(expr.values)},sizeof({elem_str}),__context__,nullptr);\n");
         }
     }
     def override preVisitExprMakeArrayIndex(expr : ExprMakeArray?; index : int; init : ExpressionPtr; last : bool) {
@@ -3178,7 +3568,7 @@ class public CppAot : AstVisitor {
     }
 
 
-    def override preVisitExprLooksLikeCall(var call : ExprLooksLikeCall?) {
+    def override preVisitExprLooksLikeCall(var call : ExprLooksLikeCall?) {   
         if (isInvokeWithTemp(call)) {
             write(*ss, "({makeLocalTempName(call)} = (");
         }
@@ -3274,7 +3664,7 @@ class public CppAot : AstVisitor {
         }
     }
     def override canVisitExprLooksLikeCallArgument(call : ExprLooksLikeCall?; arg : ExpressionPtr; last : bool) {
-        if (length(call.arguments) >= 1 && call.arguments[0] == arg &&  call is ExprInvoke) {
+        if (!empty(call.arguments) && call.arguments[0] == arg &&  call is ExprInvoke) {
             let inv = call as ExprInvoke;
             if (inv.isInvokeMethod) return false;
         }
@@ -3330,45 +3720,31 @@ class public CppAot : AstVisitor {
     }
 
     def policyArgNeedCast(polType : TypeDeclPtr; argType : TypeDeclPtr) {
-        if (argType.isVectorType) {
-            return false;
-        }
+        if (argType.isVectorType) return false;
         if (!polType.isHandle) {
-            if (polType.isVecPolicyType && argType.isVecPolicyType) {
-                return false;
-            }
+            
+            
+            if (polType.isVecPolicyType && argType.isVecPolicyType && argType.baseType != Type.tFloat16) return false;
         }
-        if (!polType.isPolicyType) {
-            return false;
-        }
-        return true;
+        return polType.isPolicyType;
     }
     def policyResultNeedCast(polType : TypeDeclPtr; resType : TypeDeclPtr) {
-        if (resType.isVoid) {
-            return false;
-        }
-        if (!resType.isPolicyType) {
-            return false;
-        }
+        if (resType.isVoid || !resType.isPolicyType) return false;
+        
+        
+        if (resType.isVectorType && is_lattice_elem(resType.vectorBaseType)) return true;
         return policyArgNeedCast(polType, resType);
     }
     def isPolicyBasedCall(call : ExprCall?) {
         let bif = call.func as BuiltInFunction;
-        if (call.arguments |> empty() && call.func.result.baseType == Type.tHandle) {
-            
-            return false;
-        } elif (bif.flags.policyBased) {
-            return true;
-        } else {
-            return false;
-        }
+        
+        if (call.arguments |> empty() && call.func.result.baseType == Type.tHandle) return false;
+        return bif.flags.policyBased;
     }
     def isPolicyBasedCallFunc(call : ExprCallFunc?) {
         if (call.func.flags.builtIn) {
             let bif = call.func as BuiltInFunction;
-            if (bif.flags.policyBased) {
-                return true;
-            }
+            if (bif.flags.policyBased) return true;
         }
         return false;
     }
@@ -3381,15 +3757,10 @@ class public CppAot : AstVisitor {
             if (func.flags.callBased) {
                 panic("we should not be here. call-based calls handled elsewhere");
             }
-            if (length(bif.cppName) == 0) {
-                return true;
-            }
-            return false;
+            return empty(bif.cppName);
         }
-        if (func.flags.noAot) return true;
-        if (func.flags.aotHybrid) return true;
-        if (func._module == program.getThisModule) return false;
-        return true;
+        if (func.flags.noAot || func.flags.aotHybrid) return true;
+        return func._module != program.getThisModule;
     }
     def needsArgPassType(argType : TypeDeclPtr) {
         return !argType.flags.constant && !argType.isGoodBlockType;
@@ -3398,9 +3769,7 @@ class public CppAot : AstVisitor {
         if (expr is ExprMakeBlock) {
             let mkblk = expr as ExprMakeBlock;
             let blk = mkblk._block as ExprBlock;
-            if (blk.blockFlags.aotSkipMakeBlock) {
-                return false;
-            }
+            if (blk.blockFlags.aotSkipMakeBlock) return false;
         }
         return needsArgPassType(expr._type);
     }
@@ -3418,7 +3787,7 @@ class public CppAot : AstVisitor {
         }
         return false;
     }
-    def CallFunc_preVisit(call : ExprCallFunc?) {
+    def CallFunc_preVisit(call : ExprCallFunc?) {   
         if (call.func.moreFlags.propertyFunction) {     
             if (call.func.result.flags.aotAlias) {
                 write(*ss, "das_alias<{call.func.result.alias}>::from(");
@@ -3480,7 +3849,7 @@ class public CppAot : AstVisitor {
                 }
                 assume mangledName = call.func |> get_mangled_name();
                 let hash = call.func.getMangledNameHash;
-                if (length(call.arguments) >= 1) {
+                if (!empty(call.arguments)) {
                     write(*ss, "<");
                     for (arg in call.func.arguments) {
                         write(*ss, "{describeCppType(arg._type,DescribeConfig(cross_platform=cross_platform))}");
@@ -3516,22 +3885,21 @@ class public CppAot : AstVisitor {
         return argType.isVoidPointer ^^ passType.isVoidPointer;
     }
     def needStringCast(func : Function?; arg : TypeDeclPtr) {
-        return func.moreFlags.needStringCast && arg.isString && !arg.flags.ref;
+        return arg.isString && !arg.flags.ref;
     }
     def CallFunc_preVisitCallArg(call : ExprCallFunc?; arg : ExpressionPtr; is_last : bool) {
         if (call.func.moreFlags.propertyFunction) return ;  
         var argIndex = 0;
         for (it in range(length(call.arguments))) {
-            if (call.arguments[it] == arg) {
-                break;
-            }
+            if (call.arguments[it] == arg) break;
             argIndex++;
         }
         assert(argIndex != length(call.arguments));
         write(*ss, "{get_aot_arg_prefix(call.func, call, argIndex)}");
         assume argType = call.arguments[argIndex]._type;
         assume funArgType = call.func.arguments[argIndex]._type;
-        if (funArgType.isAotAlias) {
+        
+        if (call.func.flags.builtIn && funArgType.isAotAlias) {
             if (funArgType.alias |> empty()) {
                 let fun_t_str = describeCppTypeEx(funArgType, DescribeConfig(skip_ref = true, redundant_const = true, cross_platform = cross_platform), CpptUseAlias.yes);
                 write(*ss, "das_reinterpret<{fun_t_str}>::pass(");
@@ -3557,7 +3925,7 @@ class public CppAot : AstVisitor {
         if (isPolicyBasedCallFunc(call) && policyArgNeedCast(call.func.result, argType)) {
             write(*ss, "cast<{describeCppType(argType,DescribeConfig(skip_ref=true,skip_const=true,cross_platform=cross_platform))}>::from(");
         }
-        if (needStringCast(call.func, argType)) {
+        if (needStringCast(call.func, funArgType)) {
             write(*ss, "(das_string_cast(");
         }
     }
@@ -3565,9 +3933,7 @@ class public CppAot : AstVisitor {
         if (call.func.moreFlags.propertyFunction) return ;  
         var argIndex = 0;
         for (it in range(length(call.arguments))) {
-            if (call.arguments[it] == arg) {
-                break;
-            }
+            if (call.arguments[it] == arg) break;
             argIndex++;
         }
 
@@ -3594,7 +3960,7 @@ class public CppAot : AstVisitor {
         if (!call.func.flags.noPointerCast && needPtrCast(funArgType, arg._type, arg)) {
             write(*ss, ")");
         }
-        if (funArgType.isAotAlias) write(*ss, ")");
+        if (call.func.flags.builtIn && funArgType.isAotAlias) write(*ss, ")");
         write(*ss, "{get_aot_arg_suffix(call.func, call, argIndex)}");
         if (!last) {
             write(*ss, ",");
@@ -3680,9 +4046,7 @@ class public CppAot : AstVisitor {
         write(*ss, "{tabs()}");
     }
     def isCountOrUCount(expr : ExpressionPtr) {
-        if (!(isExprCallFunc(expr))) {
-            return false;
-        }
+        if (!(isExprCallFunc(expr))) return false;
         assume call = unsafe(reinterpret<ExprCallFunc?>(expr));
         return call.func != null && call.func.flags.builtIn && call.func._module.name == "$" && (call.name == "count" || call.name == "ucount");
     }
@@ -3690,9 +4054,7 @@ class public CppAot : AstVisitor {
         var idx = 0;
         let idxs = length(ffor.sources);
         for (id in range(idxs)) {
-            if (ffor.sources[id] == that) {
-                break;
-            }
+            if (ffor.sources[id] == that) break;
             idx++
         }
         assume src = ffor.sources[idx];
@@ -3702,16 +4064,16 @@ class public CppAot : AstVisitor {
             write(*ss, "{tabs()}das_iterator_{(unsafe(reinterpret<ExprCallFunc?>(src))).func.name} DAS_COMMENT(");
         } else {
             let type_str = describeCppType(src._type, DescribeConfig(substitute_ref = true, skip_ref = true, cross_platform = cross_platform));
-            write(*ss, "{tabs()}das_iterator<{type_str}> {forSrcName(variable.name)}(");
+            
+            
+            write(*ss, "{tabs()}das_iterator<{type_str}> {forSrcName(variable.name)}((");
         }
     }
     def override visitExprForSource(ffor : ExprFor?; that : ExpressionPtr; last : bool) {
         var idx = 0;
         let idxs = length(ffor.sources);
         for (id in range(idxs)) {
-            if (ffor.sources[id] == that) {
-                break;
-            }
+            if (ffor.sources[id] == that) break;
             idx++
         }
         assume src = ffor.sources[idx];
@@ -3722,11 +4084,13 @@ class public CppAot : AstVisitor {
             visit_expression(pCall.arguments[0], adapter);
             write(*ss, ",");
             visit_expression(pCall.arguments[1], adapter);
+            write(*ss, ");\n");
+        } else {
+            write(*ss, "));\n");   
         }
-        write(*ss, ");\n");
 
         
-        let skipTC : bool = variable._type.isString && !variable._type.flags.ref;
+        let skipTC : bool = !variable._type.flags.ref
         let cfg = DescribeConfig(substitute_ref = true, skip_const = skipTC, cross_platform = cross_platform)
         let type_str = describeCppType(variable._type, cfg);
         write(*ss, "{tabs()}{type_str} {collector.getVarName(variable)};\n");
@@ -3751,25 +4115,39 @@ class public CppAot : AstVisitor {
 };
 
 
+def private aotEmitStruct(ps : Structure?;
+                          emitSet : table<Structure?>;
+                          var visited : table<Structure?>;
+                          program : ProgramPtr;
+                          adapter : VisitorAdapter?) {
+    
+    if (visited |> key_exists(ps)) return ;
+    visited |> insert(ps);
+    for (fld in ps.fields) {
+        let ft = fld._type
+        if (ft.baseType == Type.tStructure && ft.structType != null && emitSet |> key_exists(ft.structType)) {
+            aotEmitStruct(ft.structType, emitSet, visited, program, adapter);
+        }
+    }
+    program |> visit_structure(ps, adapter);
+}
+
 def public dumpDependencies(program : ProgramPtr; var aotVisitor : CppAot?) {
     
+    buildStructEnumCollisions(program);
     let utm = new UseTypeMarker();
     make_visitor(*utm) $(adapter) {
         visit(program, adapter);
     }
     let remUS = program._options  |> find_arg("remove_unused_symbols") ?as tBool ?? true;
     program.get_ptr() |> for_each_module_no_order($(pm) {
-        if (pm.moduleFlags.fromExtraDependency) {
-            return ;
-        }
+        if (pm.moduleFlags.fromExtraDependency) return ;
         pm |> for_each_structure($(ps) {
             write(*aotVisitor.ss, "namespace {aotModuleName(ps._module)} \{ struct {aotStructName(ps)}; \};\n");
         });
     });
     program.get_ptr() |> for_each_module_no_order($(pm) {
-        if (pm == program.getThisModule || pm.moduleFlags.fromExtraDependency) {
-            return ;
-        }
+        if (pm == program.getThisModule || pm.moduleFlags.fromExtraDependency) return ;
         pm |> for_each_enumeration($(penum) {
             if (!remUS || utm.useEnums |> key_exists(penum)) {
                 program |> visit_enumeration(penum, aotVisitor.adapter)
@@ -3777,11 +4155,19 @@ def public dumpDependencies(program : ProgramPtr; var aotVisitor : CppAot?) {
                 write(*aotVisitor.ss, "// unused enumeration {penum.name}\n");
             }
         });
+        
+        var emitSet : table<Structure?>;
         pm |> for_each_structure($(ps) {
             if (!remUS || utm.useStructs |> key_exists(ps)) {
-                program |> visit_structure(ps, aotVisitor.adapter);
+                emitSet |> insert(ps);
             } else {
                 write(*aotVisitor.ss, "// unused structure {ps.name}\n");
+            }
+        });
+        var visited : table<Structure?>;
+        pm |> for_each_structure($(ps) {
+            if (emitSet |> key_exists(ps)) {
+                aotEmitStruct(ps, emitSet, visited, program, aotVisitor.adapter);
             }
         });
     })
@@ -3798,8 +4184,7 @@ class ArgsConverter : AstVisitor {
 
     def override canVisitFunction(fun : Function?) {
         if (fun.flags.noAot) return false;
-        if (fun.moreFlags.isTemplate) return false;
-        return true;
+        return !fun.moreFlags.isTemplate;
     }
 
     def override preVisitFunction(fn : FunctionPtr) {
@@ -3863,10 +4248,8 @@ def collectUsedFunctions(modules : array<Module?>; totalFunctions : int; this_mo
     fnn.reserve(totalFunctions);
     for (pm in modules) {
         pm |> for_each_module_function($(pfun) {
-            if (!all_modules && pfun._module != this_module) {
-                return ;
-            }
-            if (pfun.index < 0 || !pfun.flags.used) return ;
+            if ((!all_modules && pfun._module != this_module)
+                    || pfun.index < 0 || !pfun.flags.used) return ;
             if (!is_all) {
                 if (pfun.flags.builtIn || pfun.flags.noAot) return ;
             }
@@ -3932,7 +4315,7 @@ def registerAotCpp(var logs : StringBuilderWriter?; program : ProgramPtr; var co
     }
 }
 
-def public setAotHashes(program : ProgramPtr; var ctx : Context) {
+def public setAotHashes(program : ProgramPtr; ctx : Context) {
     
     
     var fni = 0;
@@ -4002,6 +4385,7 @@ def public getRequiredModulesFor(program : ProgramPtr) {
 
 def public compile_and_simulate(input : string, var access; var mg : ModuleGroup?, cop, blk) {
     
+    let wasInAot = is_in_aot()
     set_aot();
     compile_file(input, access, mg, cop) $(ok; var program : smart_ptr<Program>; issues) {
         if (!ok) {
@@ -4016,11 +4400,30 @@ def public compile_and_simulate(input : string, var access; var mg : ModuleGroup
             blk(program, pctx)
         }
     }
+    if (!wasInAot) reset_aot()
 }
 
 
+def public fail_on_aot_emit_error(program : ProgramPtr) {
+    
+    if (!program.flags.macroException && !program.flags.failToCompile) {
+        return
+    }
+    for (err in program.errors) {
+        var msg = "{describe(err.at)}: error[{int(err.cerr)}]: {err.what}"
+        if (!empty(err.extra)) {
+            msg += " -- {err.extra}"
+        }
+        if (!empty(err.fixme)) {
+            msg += " -- {err.fixme}"
+        }
+        to_log(LOG_ERROR, "{msg}\n")
+    }
+    panic("AOT codegen failed: {length(program.errors)} codegen error(s) during emission (see log)")
+}
+
 [export]
-def public run_aot(prog : Program?; var pctx : Context?; cop : CodeOfPolicies) : string {
+def public run_aot(prog : Program?; var pctx : Context?; cop : CodeOfPolicies) : string {   
     
     let program <- unsafe(reinterpret<ProgramPtr>(prog));
     return build_string() $(writer) {
@@ -4077,20 +4480,23 @@ def public run_aot(prog : Program?; var pctx : Context?; cop : CodeOfPolicies) :
                                                     program.getDebugger,
                                             solidContext = program.policies.solid_context ||
                                                     (program._options |> find_arg("solid_context") ?as tBool ?? false),
-                                            cross_platform = cop.cross_platform)
-                cpp_aot.helper.helper.rtti = program._options  |> find_arg("rtti") ?as tBool ?? false;
+                                            cross_platform = cop.cross_platform,
+                                            fastMath = program._options |> find_arg("fast_math") ?as tBool ?? program.policies.fast_math)
                 cpp_aot.helper.cross_platform = cop.cross_platform;
                 make_visitor(*cpp_aot) $(adapter) {
                     cpp_aot.adapter := adapter
                     dumpDependencies(program, cpp_aot);
                     visit(program, cpp_aot.adapter, true)
                 }
-                write(writer, "{cpp_aot.str()}");
+                if (!program.flags.macroException && !program.flags.failToCompile) {
+                    write(writer, "{cpp_aot.str()}");
+                }
                 unsafe {
                     delete cpp_aot.helper.helper
                     delete cpp_aot.collector
                     delete cpp_aot
                 }
+                fail_on_aot_emit_error(program)
             }
             registerAotCpp(unsafe(addr(writer)), program, *pctx, cop.cross_platform, false);
             write(writer, "\n");
@@ -4121,9 +4527,7 @@ def public run_aot_function(prog : Program?; var pctx : Context?; cop : CodeOfPo
     let program <- unsafe(reinterpret<ProgramPtr>(prog));
     return build_string() $(writer) {
         let (modules_str, noAotModule) = getRequiredModulesFor(program)
-        if ((program._options |> find_arg("no_aot") ?as tBool ?? false) || noAotModule) {
-            return
-        }
+        if ((program._options |> find_arg("no_aot") ?as tBool ?? false) || noAotModule) return
         build_string() $(tmp_writer) {
             let marker_vis = new NoAotMarker();
             make_visitor(*marker_vis) $(adapter_marker) {
@@ -4155,20 +4559,26 @@ def public run_aot_function(prog : Program?; var pctx : Context?; cop : CodeOfPo
                                         solidContext = program.policies.solid_context ||
                                                 (program._options |> find_arg("solid_context") ?as tBool ?? false),
                                         cross_platform = cop.cross_platform,
+                                        fastMath = program._options |> find_arg("fast_math") ?as tBool ?? program.policies.fast_math,
                                         aot_filter_function = func_name)
-            cpp_aot.helper.helper.rtti = program._options  |> find_arg("rtti") ?as tBool ?? false;
             cpp_aot.helper.cross_platform = cop.cross_platform;
             make_visitor(*cpp_aot) $(adapter) {
                 cpp_aot.adapter := adapter
                 dumpDependencies(program, cpp_aot);
                 visit(program, cpp_aot.adapter, true)
             }
-            let full_output = cpp_aot.str()
+            
+            
+            var full_output = ""
+            if (!program.flags.macroException && !program.flags.failToCompile) {
+                full_output = cpp_aot.str()
+            }
             unsafe {
                 delete cpp_aot.helper.helper
                 delete cpp_aot.collector
                 delete cpp_aot
             }
+            fail_on_aot_emit_error(program)
             
             let begin_pos = find(full_output, AOT_FUNC_BEGIN)
             if (begin_pos >= 0) {
@@ -4182,7 +4592,7 @@ def public run_aot_function(prog : Program?; var pctx : Context?; cop : CodeOfPo
     }
 }
 
-[export]
+[export, unused_argument(paranoid_validation), unused_argument(cross_platform)]
 def public aot(input : string; paranoid_validation : bool, cross_platform : bool; cop : CodeOfPolicies) : string {
     
     var result = "";

@@ -1,9 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%globalScripts/chardConsts.nut" import *
 from "%scripts/dagui_natives.nut" import inventory_get_transfer_items_by_state
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import deferOnce
+
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 local sendingList = {}
 

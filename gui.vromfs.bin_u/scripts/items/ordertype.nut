@@ -1,12 +1,13 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%sqStdLibs/helpers/u.nut" import isArray, isTable, isString
+from "string" import format
+from "%sqstd/math.nut" import number_of_set_bits, round
+from "mission" import get_mplayer_by_userid, get_mp_local_team
 from "%scripts/dagui_library.nut" import *
-let { isArray, isTable, isString } = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+from "%globalScripts/unitTypeConsts.nut" import *
+
 let time = require("%scripts/time.nut")
-let { number_of_set_bits, round } = require("%sqstd/math.nut")
-let { getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType
-} = require("%scripts/unit/unitClassType.nut")
-let { get_mplayer_by_userid, get_mp_local_team } = require("mission")
+let { getUnitClassTypesFromCodeMask, getUnitClassTypesByEsUnitType } = require("%scripts/unit/unitClassType.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 
@@ -80,7 +81,7 @@ let orderTypes = {
 
     
     function getScoreHeaderText() {
-      let locPrefix = "items/order/scoreTable/scoreHeader/"
+      const locPrefix = "items/order/scoreTable/scoreHeader/"
       return loc($"{locPrefix}{this.name}" , loc($"{locPrefix}default"))
     }
 

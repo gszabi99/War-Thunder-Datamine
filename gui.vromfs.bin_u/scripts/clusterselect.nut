@@ -1,8 +1,9 @@
+from "%sqstd/math.nut" import is_bit_set
 from "%scripts/dagui_library.nut" import *
+
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { show_obj } = require("%sqDagui/daguiUtil.nut")
+let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 
 function isAutoSelected(clusterOpt) {

@@ -1,4 +1,4 @@
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 
 let wwArmyMoveStateType = {
   types = []

@@ -1,9 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import get_items_count_for_limits_result, get_items_count_for_limits
 from "%scripts/dagui_library.nut" import *
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
-let { get_time_msec } = require("dagor.time")
+
 let { addTask } = require("%scripts/tasker.nut")
 
 

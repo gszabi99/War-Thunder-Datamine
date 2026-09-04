@@ -1,14 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
-gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
+let EditBoxHandler = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/editBoxWindow.blk"
   okFunc = null
@@ -132,5 +132,6 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
       call_for_handler(this.owner, this.cancelFunc)
   }
 }
+register_gui_handler("EditBoxHandler", EditBoxHandler)
 
-return @(params) params?.okFunc ? loadHandler(gui_handlers.EditBoxHandler, params) : null
+return @(params) params?.okFunc ? loadHandler(EditBoxHandler, params) : null

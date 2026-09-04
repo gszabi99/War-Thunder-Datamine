@@ -1,34 +1,33 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%rGui/planeRwrs/rwrAnApr25.nut" as rwrAnApr25
+import "%rGui/planeRwrs/rwrAnAps109.nut" as rwrAnAps109
+import "%rGui/planeRwrs/rwrAnAlr45.nut" as rwrAnAlr45
+import "%rGui/planeRwrs/rwrAnAlr46.nut" as rwrAnAlr46
+import "%rGui/planeRwrs/rwrAnAlr46MfdF5Th.nut" as rwrAnAlr46MfdF5Th
+import "%rGui/planeRwrs/rwrAnAlr56.nut" as rwrAnAlr56
+import "%rGui/planeRwrs/rwrTews.nut" as rwrTews
+import "%rGui/planeRwrs/rwrTewsMfd.nut" as rwrTewsMfd
+import "%rGui/planeRwrs/rwrAnAlr67.nut" as rwrAnAlr67
+import "%rGui/planeRwrs/rwrAnAlr67Mfd.nut" as rwrAnAlr67Mfd
+import "%rGui/planeRwrs/rwrAri23333.nut" as rwrAri23333
+import "%rGui/planeRwrs/rwrAri18228.nut" as rwrAri18228
+import "%rGui/planeRwrs/rwrAri18241.nut" as rwrAri18241
+import "%rGui/planeRwrs/rwrAnApr39.nut" as rwrAnApr39
+import "%rGui/planeRwrs/rwrAnApr39Mfd.nut" as rwrAnApr39Mfd
+import "%rGui/planeRwrs/rwrAnApr39MfdAh1Z.nut" as rwrAnApr39MfdAh1Z
+import "%rGui/planeRwrs/rwrAnApr39Apr42.nut" as rwrAnApr39Apr42
+import "%rGui/planeRwrs/rwrServal.nut" as rwrServal
+import "%rGui/planeRwrs/rwrSpectra.nut" as rwrSpectra
+import "%rGui/planeRwrs/rwrAr830.nut" as rwrAr830
+import "%rGui/planeRwrs/rwrL150Mig.nut" as rwrL150Mig
+import "%rGui/planeRwrs/rwrL150Su30.nut" as rwrL150Su30
+import "%rGui/planeRwrs/rwrDass.nut" as rwrDass
+import "%rGui/planeRwrs/rwrL150Ka52.nut" as rwrL150Ka52
+from "%rGui/tws.nut" import tws
+from "%rGui/planeRwrs/rwrAr830Extra.nut" import rwrAr830Extra, jas39ERwrScreen
 from "%rGui/globals/ui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-
-let {tws} = require("%rGui/tws.nut")
-
-let rwrAnApr25 = require("%rGui/planeRwrs/rwrAnApr25.nut")
-let rwrAnAps109 = require("%rGui/planeRwrs/rwrAnAps109.nut")
-let rwrAnAlr45 = require("%rGui/planeRwrs/rwrAnAlr45.nut")
-let rwrAnAlr46 = require("%rGui/planeRwrs/rwrAnAlr46.nut")
-let rwrAnAlr46MfdF5Th = require("%rGui/planeRwrs/rwrAnAlr46MfdF5Th.nut")
-let rwrAnAlr56 = require("%rGui/planeRwrs/rwrAnAlr56.nut")
-let rwrTews = require("%rGui/planeRwrs/rwrTews.nut")
-let rwrTewsMfd = require("%rGui/planeRwrs/rwrTewsMfd.nut")
-let rwrAnAlr67 = require("%rGui/planeRwrs/rwrAnAlr67.nut")
-let rwrAnAlr67Mfd = require("%rGui/planeRwrs/rwrAnAlr67Mfd.nut")
-let rwrAri23333 = require("%rGui/planeRwrs/rwrAri23333.nut")
-let rwrAri18228 = require("%rGui/planeRwrs/rwrAri18228.nut")
-let rwrAri18241 = require("%rGui/planeRwrs/rwrAri18241.nut")
-let rwrAnApr39 = require("%rGui/planeRwrs/rwrAnApr39.nut")
-let rwrAnApr39Mfd = require("%rGui/planeRwrs/rwrAnApr39Mfd.nut")
-let rwrAnApr39MfdAh1Z = require("%rGui/planeRwrs/rwrAnApr39MfdAh1Z.nut")
-let rwrAnApr39Apr42 = require("%rGui/planeRwrs/rwrAnApr39Apr42.nut")
-let rwrServal = require("%rGui/planeRwrs/rwrServal.nut")
-let rwrSpectra = require("%rGui/planeRwrs/rwrSpectra.nut")
-let rwrAr830 = require("%rGui/planeRwrs/rwrAr830.nut")
-let { rwrAr830Extra, jas39ERwrScreen } = require("%rGui/planeRwrs/rwrAr830Extra.nut")
-let rwrL150 = require("%rGui/planeRwrs/rwrL150.nut")
-let rwrL150Su30 = require("%rGui/planeRwrs/rwrL150Su30.nut")
-let rwrDass = require("%rGui/planeRwrs/rwrDass.nut")
-let rwrL150Ka52 = require("%rGui/planeRwrs/rwrL150Ka52.nut")
+let rwrL150 = require("%rGui/planeRwrs/rwrL150.nut").tws
 
 function loadStyleBlock(styleBlock, blk, defStyleBlock) {
   styleBlock.scale = blk.getReal("scale", defStyleBlock.scale)
@@ -89,7 +88,7 @@ function rwrSettingUpd(mfd_blk, rwr_type) {
   })
 }
 
-let function rwrDefault(posWatched, sizeWatched, colorWatched, scaleDef, backHide, fontSizeMult) {
+function rwrDefault(posWatched, sizeWatched, colorWatched, scaleDef, backHide, fontSizeMult) {
   return tws({
     colorWatched = colorWatched,
     posWatched = posWatched,
@@ -130,6 +129,7 @@ let rwrs = {
   ["Ar830Extra"] = rwrAr830Extra,
   ["jas39ERwrScreen"] = jas39ERwrScreen,
   ["L-150"] = rwrL150,
+  ["L-150 MIG"] = rwrL150Mig,
   ["L-150 Su-30"] = rwrL150Su30,
   ["DASS"] = rwrDass,
   ["L-150 Ka-52"] = rwrL150Ka52
@@ -145,7 +145,7 @@ let planeRwr = @(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scal
   }
 }
 
-let function planeRwrSwitcher(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scale, fontSizeMult) {
+function planeRwrSwitcher(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scale, fontSizeMult) {
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP

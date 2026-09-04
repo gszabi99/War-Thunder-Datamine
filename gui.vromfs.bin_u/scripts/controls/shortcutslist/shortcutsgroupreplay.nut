@@ -1,9 +1,9 @@
+from "%sqstd/platform.nut" import is_windows
+from "blkGetters" import get_settings_blk
 from "%scripts/dagui_library.nut" import *
-let { is_windows } = require("%sqstd/platform.nut")
+
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_FREE_CAMERA_INERTIA, USEROPT_REPLAY_CAMERA_WIGGLE, USEROPT_FREE_CAMERA_ZOOM_SPEED
-} = require("%scripts/options/optionsExtNames.nut")
-let { get_settings_blk } = require("blkGetters")
+let { USEROPT_FREE_CAMERA_INERTIA, USEROPT_REPLAY_CAMERA_WIGGLE, USEROPT_FREE_CAMERA_ZOOM_SPEED } = require("%scripts/options/optionsExtNames.nut")
 
 let isExperimentalCameraTrack = @() get_settings_blk()?.debug?.experimentalCameraTrack ?? false
 
@@ -81,6 +81,10 @@ return [
   }
   {
     id = "ID_REPLAY_TOGGLE_SENSOR_VIEW"
+    checkAssign = false
+  }
+  {
+    id = "ID_REPLAY_SELECT_SENSOR_VIEW_TARGET"
     checkAssign = false
   }
   {

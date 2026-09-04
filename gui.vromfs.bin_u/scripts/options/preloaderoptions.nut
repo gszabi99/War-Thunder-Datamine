@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/underscore.nut" import isDataBlock
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { getCurLoadingBgData } = require("%scripts/loading/loadingBgData.nut")
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const BANNED_SCREENS_SAVE_ID = "preloaderOptions/bannedScreens"
 
@@ -58,8 +58,8 @@ function isLoadingScreenBanned(screenId) {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) invalidateCache()
-  GameLocalizationChanged = @(_p) invalidateCache()
+  SignOut = @(_p) invalidateCache(),
+  [GAME_LOCALIZATION_CHANGED] = @(_p) invalidateCache()
 })
 
 return {

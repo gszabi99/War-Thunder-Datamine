@@ -1,27 +1,26 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "guiMission" import get_meta_mission_info_by_name
+from "%sqstd/string.nut" import trim, utf8ToUpper
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { EventRewardsWnd } = require("%scripts/events/eventRewardsWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged,
-  getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor,
-  getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
+let { DAY, getTourParams, getTourCommonViewParams, getOverlayTextColor, isTourStateChanged, getTourActiveTicket, getEventByDay, getEventMission, isRewardsAvailable, setSchedulerTimeColor, getMatchingEventId, fetchLbData } = require("%scripts/events/eSport.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needShowOverrideSlotbar, isLeaderboardsAvailable, getEventEconomicName
-} = require("%scripts/events/eventInfo.nut")
+let { needShowOverrideSlotbar, isLeaderboardsAvailable, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setModalBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -53,7 +52,7 @@ function getActiveTicketTxt(event) {
     : ""
 }
 
-local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
+local ESportTournament = class (BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/events/eSportTournamentModal.tpl"
   slotbarActions       = []
@@ -125,7 +124,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < daysNum ; i++) {
       let event = getEventByDay(this.tournament.id, i)
       let countries = event?.mission_decl.editSlotbar.map(@(v)
-        type(v) == "table" ? v : null).filter(@(v) v)
+        v instanceof Table ? v : null).filter(@(v) v)
       if (countries == null)
         continue
 
@@ -389,7 +388,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     })
 
   function onReward() {
-    gui_handlers.EventRewardsWnd.open([{
+    EventRewardsWnd.open([{
         header = loc("tournaments/rewards")
         event = this.curEvent
         tourId = this.tournament.id
@@ -466,6 +465,6 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ESportTournament <- ESportTournament
+register_gui_handler("ESportTournament", ESportTournament)
 
 return @(params) handlersManager.loadHandler(ESportTournament, params)

@@ -1,5 +1,6 @@
+from "dagor.fs" import read_text_from_file
 
-let { read_text_from_file } = require("dagor.fs")
+
 let f = read_text_from_file("%globalScripts/version.txt")
 local version = -1
 foreach (l in f.split("\n")) {

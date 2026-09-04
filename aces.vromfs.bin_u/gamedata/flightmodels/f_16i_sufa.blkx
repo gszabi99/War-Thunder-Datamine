@@ -1,7 +1,7 @@
 {
   "model": "f_16i_sufa",
   "fmFile": "fm/f_16i_sufa.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
@@ -18,7 +18,7 @@
   "laserDesignator": true,
   "ilsElbit967": true,
   "mfdCamLitening2": true,
-  "hmdF16c": true,
+  "hmdJhmcsGen1": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -3490,6 +3490,43 @@
       "nvIndex": 2,
       "name": "GBU15V2"
     },
+    "TV2": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -29.0,
+        29.0,
+        -29.0,
+        29.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "DELILAH"
+    },
+    "TV3": {
+      "pos": [
+        2.6,
+        -0.15,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -29.0,
+        29.0,
+        -29.0,
+        29.0
+      ],
+      "opticType": "tv",
+      "turretNo": 1,
+      "name": "DELILAH_IR",
+      "nvIndex": 2
+    },
     "Target": {
       "pos": [
         1.0,
@@ -3605,6 +3642,14 @@
       {
         "name": "f_16i_sufa_gbu_15v1",
         "blk": "gameData/FlightModels/weaponPresets/f_16i_sufa_gbu_15v1.blk"
+      },
+      {
+        "name": "f_16i_sufa_delilah",
+        "blk": "gameData/FlightModels/weaponPresets/f_16i_sufa_delilah.blk"
+      },
+      {
+        "name": "f_16i_sufa_delilah_ir",
+        "blk": "gameData/FlightModels/weaponPresets/f_16i_sufa_delilah_ir.blk"
       },
       {
         "name": "f_16i_sufa_gbu_31",
@@ -4283,6 +4328,66 @@
                 0.0,
                 0.1
               ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_red_x59",
+            "name": "delilah",
+            "reqModification": "is_delilah",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_green_x59",
+            "name": "delilah_ir",
+            "reqModification": "is_delilah_ir",
+            "ShowNodes": {
+              "node": [
+                "pylon2",
+                "pylon2_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah_ir.blk",
+              "emitter": "bomb_2000lb_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
             }
           },
           {
@@ -4642,6 +4747,62 @@
             }
           },
           {
+            "iconType": "guided_bomb_red_x59",
+            "name": "delilah",
+            "reqModification": "is_delilah",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_green_x59",
+            "name": "delilah_ir",
+            "reqModification": "is_delilah_ir",
+            "ShowNodes": {
+              "node": [
+                "pylon4",
+                "pylon4_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah_ir.blk",
+              "emitter": "bomb_2000lb_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
             "iconType": "guided_bomb_red",
             "name": "il_spice_1000_slot4",
             "reqModification": "il_spice_250_1000",
@@ -4739,25 +4900,40 @@
         "tier": 6,
         "order": 9,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "ptb",
-          "name": "ptb",
-          "showInWeaponMenu": true,
-          "ShowNodes": {
-            "node": "pylon_ptb"
+        "WeaponPreset": [
+          {
+            "iconType": "ptb",
+            "name": "ptb",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon_ptb"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_300_gal_fuse_f_16_blok_10.blk",
+              "emitter": "us_300gal_drop_tank",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "ShowDmParts": {
-            "node": "tank8_dm"
-          },
-          "Weapon": {
-            "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/us_300_gal_fuse_f_16_blok_10.blk",
-            "emitter": "us_300gal_drop_tank",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "rls",
+            "name": "is_asw_55_pod",
+            "ShowNodes": {
+              "node": "pylon_ptb"
+            },
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/is_asw_55_pod.blk",
+              "emitter": "us_300gal_drop_tank",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 7,
@@ -5053,6 +5229,62 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_red_x59",
+            "name": "delilah",
+            "reqModification": "is_delilah",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "pylon5_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_green_x59",
+            "name": "delilah_ir",
+            "reqModification": "is_delilah_ir",
+            "ShowNodes": {
+              "node": [
+                "pylon5",
+                "pylon5_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah_ir.blk",
+              "emitter": "bomb_2000lb_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
             }
           },
           {
@@ -5413,6 +5645,66 @@
                 0.0,
                 0.1
               ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_red_x59",
+            "name": "delilah",
+            "reqModification": "is_delilah",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_green_x59",
+            "name": "delilah_ir",
+            "reqModification": "is_delilah_ir",
+            "ShowNodes": {
+              "node": [
+                "pylon6",
+                "pylon6_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah_ir.blk",
+              "emitter": "bomb_2000lb_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
             }
           },
           {
@@ -6819,6 +7111,11 @@
       "modClass": "weapon",
       "tier": 2
     },
+    "us_gbu_15v1": {
+      "modClass": "weapon",
+      "tier": 3,
+      "prevModification": "us_gbu_laser"
+    },
     "M60_air_targets": {},
     "M60_armor_targets": {},
     "M60_stealth": {},
@@ -6829,10 +7126,16 @@
       "reqModification": "M60_belt_pack",
       "tier": 2
     },
-    "us_gbu_15v1": {
+    "is_delilah": {
+      "prevModification": "M60_new_gun",
+      "reqModification": "us_gbu_15v1",
       "modClass": "weapon",
-      "tier": 3,
-      "prevModification": "us_gbu_laser"
+      "tier": 3
+    },
+    "is_delilah_ir": {
+      "reqModification": "is_delilah",
+      "modClass": "weapon",
+      "tier": 4
     },
     "us_aim_9l": {
       "tier": 1,

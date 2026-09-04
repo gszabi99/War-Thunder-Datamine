@@ -1,8 +1,10 @@
 {
   "model": "sea_venom_faw20",
   "fmFile": "fm/sea_venom_faw20.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gyroSight": true,
+  "gearSinkRangeLR": 0.123,
+  "gearSinkRangeC": 0.143,
   "radarCScope": true,
   "type": "typeFighter",
   "paratrooper": "ally",
@@ -160,6 +162,9 @@
     "dural5": {
       "radar_dm": {
         "hp": 35.0
+      },
+      "cockpit_control1_dm": {
+        "hp": 60.0
       }
     },
     "protected_controls": {
@@ -842,6 +847,31 @@
       },
       {
         "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
+      },
+      {
+        "name": "cockpit_control1_dm",
         "onHit": [
           {
             "damage": 200.0,
@@ -2467,13 +2497,40 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "sea_venom_faw20_default",
-      "blk": "gameData/FlightModels/weaponPresets/sea_venom_faw20_default.blk",
-      "tags": {
-        "free": true
+    "preset": [
+      {
+        "name": "sea_venom_faw20_default",
+        "blk": "gameData/FlightModels/weaponPresets/sea_venom_faw20_default.blk",
+        "tags": {
+          "free": true
+        }
+      },
+      {
+        "name": "sea_venom_faw20_rp3_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/sea_venom_faw20_rp3_rockets.blk",
+        "reqModification": "gloster_rc",
+        "weaponConfig": {
+          "Weapon": [
+            {
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3_2.blk",
+              "tier": {
+                "idx": 5,
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group"
+              }
+            },
+            {
+              "blk": "gameData/Weapons/rocketGuns/uk_rp3.blk",
+              "tier": {
+                "idx": 7,
+                "amountPerTier": 4.0,
+                "iconType": "rockets_he_small_group"
+              }
+            }
+          ]
+        }
       }
-    }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -2671,6 +2728,10 @@
     "hispano_mk5_new_gun": {
       "reqModification": "hispano_belt_pack",
       "tier": 3
+    },
+    "gloster_rc": {
+      "prevModification": "hispano_mk5_new_gun",
+      "tier": 4
     }
   },
   "user_skin": {

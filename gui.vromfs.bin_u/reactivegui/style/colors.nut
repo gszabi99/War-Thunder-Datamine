@@ -83,8 +83,8 @@ colors.hud <- {
   infantryHudDisabledColor = 0x77777777
 }
 
-let inactiveDMColor = Color(45, 55, 63, 80)
-let alertDMColor = Color(221, 17, 17)
+const inactiveDMColor = Color(45, 55, 63, 80)
+const alertDMColor = Color(221, 17, 17)
 colors.hud.damageModule <- {
   active = Color(255, 255, 255)
   alert = alertDMColor

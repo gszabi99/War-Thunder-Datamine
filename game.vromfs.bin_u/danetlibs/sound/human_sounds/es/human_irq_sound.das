@@ -3,6 +3,7 @@ require ecs
 require ecs.safe
 require soundHash
 require soundEvent
+require DagorSystem
 require sound_utils.modules.sound_utils_events
 require sound_utils.modules.sound_player_common
 require human_sounds.modules.human_sounds_events
@@ -37,19 +38,11 @@ def human_irq_sound(evt : CmdSoundIrq;
 def human_irq_sound_voicefx(evt : CmdSoundVoicefxIrq;
                             eid : EntityId;
                             sound_preset__isLoaded : bool;
-                            var sound_event_group : SoundEventGroup&;
-                            @shared_comp human_voice_sound__path : Object;
-                            @shared_comp human_voice_sound__irqs : Object;
-                            human_speech__locale : string = "";
-                            is_watched_sound : bool;
-                            sound_tags : Object;
-                            transform : float3x4)
+                            @shared_comp human_voice_sound__irqs : Object)
   if sound_preset__isLoaded
     let desc = get_desc(human_voice_sound__irqs, evt.irq)
-    if desc == null
-      return
-    let phrase = desc?.phrase ?? ""
-    if !empty(phrase)
+    if desc != null
+      let phrase = desc?.phrase ?? ""
+      if empty(phrase)
+        logerr("phrase expected in human_voice_sound__irqs, eid={eid}, irq={evt.irq}, desc={*desc}, template={getEntityTemplateName(eid)}")
       sendEvent(eid, CmdHumanVoiceEffect(phrase = phrase))
-    else
-      play_voice(evt.irq, human_voice_sound__path, human_voice_sound__irqs, sound_tags, is_watched_sound, transform[3], sound_hash(""), sound_event_group, human_speech__locale)

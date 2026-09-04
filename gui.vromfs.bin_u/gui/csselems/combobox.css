@@ -352,3 +352,8 @@ tr[optionHeight=double] > td > ComboBox:expanded option[shown-option=yes] {
 tr[optionHeight=oneAndHalf] > td > ComboBox:expanded option[shown-option=yes] {
   size:pw,1.5@comboOptContainerHeight;
 }
+
+ComboBox.invertIconsOnHover > listBox > option:hover > optionImg,
+ComboBox.invertIconsOnHover > listBox > option:current > optionImg {
+  background-color:@comboExpandedHoverTextColor;
+}

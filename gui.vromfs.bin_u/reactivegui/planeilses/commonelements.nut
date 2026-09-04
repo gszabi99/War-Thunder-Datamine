@@ -1,21 +1,22 @@
+import "string" as string
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety, TimeBeforeBombRelease, AimLocked
+  , TargetPos, TargetPosValid, RocketMode, CannonMode, RadarTargetPosValid
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth, metrToFeet
+from "%rGui/planeState/planeFlyState.nut" import Aos, Tangage, Roll, BarAltitude, Altitude
+from "%rGui/rocketAamAimState.nut" import GuidanceLockState
+from "%rGui/radarState.nut" import Irst, TargetsTrigger, Azimuth
+from "%rGui/planeState/planeWeaponState.nut" import BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, IlsLineScale, BombingMode, BombCCIPMode, DistToSafety,
-      TimeBeforeBombRelease, AimLocked, TargetPos, TargetPosValid,
-      RocketMode, CannonMode, RadarTargetPosValid } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { Aos, Tangage, Roll, BarAltitude, Altitude } = require("%rGui/planeState/planeFlyState.nut")
-let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { Irst, targets, TargetsTrigger, Azimuth } = require("%rGui/radarState.nut")
-let string = require("string")
-let { BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
+let { targets } = require("%rGui/radarState.nut")
+let { RADAR_TAGET_TYPE_TARGET } = require("guiRadar").RadarTargetType
 
 let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT_STANDBY)
 
 function flyDirection(width, height, isLockedFlyPath = false) {
   return @() {
-    watch = IlsColor
+    watch = [IlsColor, BombCCIPMode, BombingMode, IlsLineScale]
     size = [width * 0.1, height * 0.1]
     pos = [width * 0.5, height * (BombCCIPMode.get() || BombingMode.get() || isLockedFlyPath ? 0.5 : 0.3)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -64,7 +65,7 @@ let cancelBombVisible = Computed(@() DistToSafety.get() <= 0.0)
 function cancelBombing(posY, size) {
   return @() {
     watch = cancelBombVisible
-    size = flex()
+    size = FLEX
     children = cancelBombVisible.get() ?
       @() {
         watch = IlsColor
@@ -88,7 +89,7 @@ function cancelBombing(posY, size) {
 
 function bombFallingLine() {
   return @() {
-    watch = IlsColor
+    watch = [IlsColor, IlsLineScale]
     size = [baseLineWidth * IlsLineScale.get(), ph(65)]
     rendObj = ROBJ_SOLID
     color = IlsColor.get()
@@ -101,7 +102,7 @@ let lowerCueShow = Computed(@() AimLocked.get() && TimeBeforeBombRelease.get() >
 function lowerSolutionCue(height, posX) {
   return @() {
     watch = lowerCueShow
-    size = flex()
+    size = FLEX
     children = lowerCueShow.get() ?
       @() {
         watch = [IlsColor, lowerCuePos]
@@ -120,7 +121,7 @@ let shimadzuRoll = @(width) {
   pos = [pw(42.5), ph(width)]
   children = @() {
     watch = IlsColor
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -189,7 +190,7 @@ function ShimadzuAlt(height, generateFunc) {
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let aimMark = @() {
   watch = [TargetPosValid, CCIPMode]
-  size = flex()
+  size = FLEX
   children = TargetPosValid.get() ?
     @() {
       watch = IlsColor
@@ -231,7 +232,7 @@ let ASPAirSymbol = @() {
 }
 
 let ASPAirSymbolWrap = {
-  size = flex()
+  size = FLEX
   children = ASPAirSymbol
   behavior = Behaviors.RtPropUpdate
   update = @() {
@@ -249,6 +250,8 @@ let targetsComponent = function(createTargetDistFunc) {
     for (local i = 0; i < targets.len(); ++i) {
       if (!targets[i])
         continue
+      else if (targets[i].targetType != RADAR_TAGET_TYPE_TARGET)
+        continue
       else if (targets[i].signalRel < 0.01)
         continue
       targetsRes.append(createTargetDistFunc(i))
@@ -257,20 +260,20 @@ let targetsComponent = function(createTargetDistFunc) {
   }
 
   return @() {
-    size = flex()
+    size = FLEX
     children = Irst.get() && RadarTargetPosValid.get() ? null : getTargets()
-    watch = TargetsTrigger
+    watch = [TargetsTrigger, Irst, RadarTargetPosValid]
   }
 }
 
 function ASPLaunchPermitted(is_ru, l_pos, h_pos, is_cn = false) {
   return @() {
     watch = GuidanceLockState
-    size = flex()
+    size = FLEX
     children = (GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING ?
       @() {
         watch = IlsColor
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_TEXT
         pos = [pw(l_pos), ph(h_pos)]
         color = IlsColor.get()
@@ -297,7 +300,7 @@ let SUMAltVis = Computed(@() Altitude.get() * metrToFeet < 4995)
 function SUMAltitude(font_size, posiiton = [pw(60), ph(25)]) {
   return @() {
     watch = SUMAltVis
-    size = flex()
+    size = FLEX
     pos = posiiton
     children = SUMAltVis.get() ? [
       @() {
@@ -338,11 +341,11 @@ function getBulletImpactLineCommand() {
 
 let bulletsImpactLine = @() {
   watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
-  size = flex()
+  size = FLEX
   children = BulletImpactLineEnable.get() && !CCIPMode.get() && !isAAMMode.get() ? @() {
     watch = [BulletImpactPoints1, BulletImpactPoints2, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = getBulletImpactLineCommand()

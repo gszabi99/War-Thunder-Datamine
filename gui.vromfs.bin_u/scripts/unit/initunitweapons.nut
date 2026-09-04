@@ -1,12 +1,13 @@
+from "%sqStdLibs/helpers/u.nut" import isDataBlock, isString, appendOnce
+from "string" import split_by_chars
+from "%sqstd/datablock.nut" import eachBlock, eachParam
+from "blkGetters" import get_wpcost_blk, get_modifications_blk
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let { split_by_chars } = require("string")
-let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
 let { isModClassExpendable } = require("%scripts/weaponry/modificationInfo.nut")
-let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { getWeaponsByTypes } = require("%scripts/weaponry/weaponryPresets.nut")
-let { get_wpcost_blk, get_modifications_blk } = require("blkGetters")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isConsoleClientFullyDownloaded } = require("%scripts/clientState/contentState.nut")
 let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
@@ -67,12 +68,15 @@ function initCustomPresetParams(unit, weapon) {
   local bombsNbr = 0
   local massPerSecValue = defaultCommonPresetMassPerSec
   local hasPresetWeapons = false
+  let brokenTiers = []
   foreach (w in (weapon?.weaponsBlk ? weapon.weaponsBlk % "Weapon" : [])) {
     let pWeapons = (weapons?.custom_presets ? weapons.custom_presets % "slot" : [])
       .findvalue(@(v) v.index == w.slot)?[w.preset]
     hasPresetWeapons = hasPresetWeapons || (pWeapons?.paramCount() ?? 0) > 0
-    if (!pWeapons)
+    if (!pWeapons) {
+      brokenTiers.append({ slot = w.slot, preset = w.preset })
       continue
+    }
 
     eachParam(pWeapons, function(count, name) {
       let blk = weapons?[name]
@@ -85,6 +89,8 @@ function initCustomPresetParams(unit, weapon) {
         bombsNbr += (blk?.totalBombCount ?? 0) * count
     })
   }
+  if (brokenTiers.len())
+    weapon.brokenTiers <- brokenTiers
 
   initPresetParams(weapon)
   weapon.bombsNbr <- bombsNbr

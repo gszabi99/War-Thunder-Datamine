@@ -24,7 +24,7 @@
   "useSimpleDeathConditionsAndEffects": false,
   "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
-  "onRadarAs": "tracked",
+  "onRadarAs": "ifv",
   "moveType": "vehicle",
   "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
@@ -2112,9 +2112,36 @@
       "part": [
         "driver_dm",
         "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
         "commander_dm",
+        "machine_gunner_dm",
+        "machine_gunner_01_dm",
+        "machine_gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
+        "loader_01_dm",
+        "loader_02_dm",
         "radio_station_dm",
-        "fire_control_system_dm"
+        "driver_controls_dm",
+        "fire_control_system_dm",
+        "drive_turret_v_dm",
+        "drive_turret_h_dm",
+        "drive_turret_v_01_dm",
+        "drive_turret_h_01_dm",
+        "drive_turret_v_02_dm",
+        "drive_turret_h_02_dm",
+        "ammo_turret_07_dm",
+        "ammo_turret_08_dm"
       ],
       "effect": [
         {
@@ -4013,7 +4040,6 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
-        "rangefinderDmPart": "fire_control_system_dm",
         "distanceError": [
           1.0,
           1.0,
@@ -4055,6 +4081,7 @@
           0.5
         ],
         "rcostAddParam": 0.98,
+        "rangefinderDmPart": "fire_control_system_dm",
         "sensors": {
           "sensor": [
             {

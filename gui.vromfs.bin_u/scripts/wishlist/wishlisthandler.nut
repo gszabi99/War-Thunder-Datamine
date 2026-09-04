@@ -1,16 +1,20 @@
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "string" import format
+from "chard" import getWishList, getMaxWishListSize
+from "dagor.workcycle" import setTimeout, clearTimer
+from "url" import get_url_for_purchase
+from "steam" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { format } = require("string")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let { getWishList, getMaxWishListSize } = require("chard")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { requestRemoveFromWishlist } = require("%scripts/wishlist/wishlistManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
@@ -21,7 +25,6 @@ let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/wishlist/wishlistFilter.nut")
 let { fillAirInfo } = require("%scripts/airInfo.nut")
@@ -34,13 +37,11 @@ let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
-let { get_url_for_purchase } = require("url")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { is_console, isXBoxPlayerName, isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { steam_is_running } = require("steam")
 let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
@@ -205,7 +206,7 @@ function createUnitViewData(unitData, idx, friendUid) {
   }
 }
 
-let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
+class WishListWnd (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/wishlist/wishlist.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -548,7 +549,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
       return
 
     switchProfileCountry(getUnitCountry(unit))
-    gui_handlers.ShopViewWnd.open({
+    get_gui_handler("ShopViewWnd")?.open({
       curAirName = unit.name
       forceUnitType = unit.unitType
       needHighlight = true
@@ -582,7 +583,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventBeforeStartShowroom(_p) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, get_gui_handler("MainMenu"))
   }
 
   function updateUnitsDiscounts() {
@@ -624,7 +625,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.WishListWnd <- WishListWnd
+register_gui_handler("WishListWnd", WishListWnd)
 
 return {
   openWishlist = @(params = {}) handlersManager.loadHandler(WishListWnd, params)

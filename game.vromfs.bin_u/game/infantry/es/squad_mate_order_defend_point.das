@@ -4,7 +4,6 @@ require %appGame.wt_events
 require %appGame.infantry.es.loc_squad_common
 require human_net_speech.modules.human_net_speech_request_common
 
-require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 
 [es(tag=server)]

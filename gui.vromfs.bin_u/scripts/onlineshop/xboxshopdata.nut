@@ -1,18 +1,18 @@
+import "DataBlock" as DataBlock
+import "statsd" as statsd
+from "%sqstd/platform.nut" import is_gdk
+from "%gdkLib/impl/store.nut" import gather_products_list
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
-let statsd = require("statsd")
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
-let { gather_products_list } = require("%gdkLib/impl/store.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 

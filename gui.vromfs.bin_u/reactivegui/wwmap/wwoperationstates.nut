@@ -1,7 +1,8 @@
+from "%appGlobals/worldWar/wwOperationState.nut" import isOperationPaused
+from "worldwar" import wwGetPlayerSide
 from "%rGui/globals/ui_library.nut" import *
-let { wwGetPlayerSide } = require("worldwar")
+
 let { zoneSideTypeStr } = require("%rGui/wwMap/wwMapTypes.nut")
-let { isOperationPaused } = require("%appGlobals/worldWar/wwOperationState.nut")
 
 let isOperationPausedWatch = Watched(false)
 

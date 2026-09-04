@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToHours, hoursToString } = require("%scripts/time.nut")
-let { get_charserver_time_sec } = require("chard")
 
 let battleTaskDifficulty = {
   types = []

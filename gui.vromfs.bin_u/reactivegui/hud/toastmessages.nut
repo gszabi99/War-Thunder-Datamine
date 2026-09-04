@@ -1,6 +1,6 @@
+from "dagor.workcycle" import setTimeout
+from "%sqstd/underscore.nut" import isArray
 from "%rGui/globals/ui_library.nut" import *
-let { setTimeout } = require("dagor.workcycle")
-let { isArray } = require("%sqstd/underscore.nut")
 
 const MAX_SHOWING_MESSAGES = 6
 const MESSAGE_SHOW_TIMEOUT = 4

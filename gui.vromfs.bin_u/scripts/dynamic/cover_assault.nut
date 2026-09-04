@@ -1,20 +1,16 @@
+from "dagor.math" import Point3
+from "%sqstd/math.nut" import sqrt
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt, mgSetBool, mgGetEnemySide
+  , mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt
+  , getDistancePerMinute, getAircraftCost, getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgSetDistToAction, getAircraftDescription
+  , gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
+from "blkGetters" import get_warpoints_blk
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { sqrt } = require("%sqstd/math.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
-  mgSetBool, mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits,
-  mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute,
-  getAircraftCost, getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgSetDistToAction,
-  getAircraftDescription, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate,
-  mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
-} = require("dynamicMission")
-let { get_warpoints_blk } = require("blkGetters")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
-  let mission_preset_name = "cover_gattack_preset01"
+  const mission_preset_name = "cover_gattack_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()

@@ -126,14 +126,28 @@
   "attachable_tunic": {
     "_use": [
       "attachable_wear",
-      "attachable_scaled_item"
+      "attachable_scaled_item",
+      "node_collapser"
     ],
     "animchar_hider__camThreshold": 0.01,
+    "animchar_node_collapser__camThreshold": 0.35,
     "item__equipToSlots:array": {
       "slot": "tunic"
     },
     "bipodDontHideAttach:tag": {},
-    "bipodDontHideAttachButChildren:tag": {}
+    "bipodDontHideAttachButChildren:tag": {},
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine": "Bip01 Pelvis",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
+      }
+    }
   },
   "attachable_wear_ger_m15_bluse_w_equip_item": {
     "_use": "attachable_tunic",

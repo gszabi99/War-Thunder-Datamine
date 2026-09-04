@@ -1,7 +1,7 @@
 {
   "model": "j_11b",
   "fmFile": "fm/j_11b.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.38,
   "gearSinkRangeC": 0.22,
   "gyroSight": true,
@@ -28,32 +28,32 @@
   ],
   "ilsJ8HK": true,
   "chinaLang": true,
-  "hmdShelZoom": true,
+  "hmdTkxGen1": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
-    -70.0,
-    -35.0,
-    65.0
+    -40.0,
+    -50.0,
+    50.0
   ],
   "helmetDesignatorZone1": [
-    -35.0,
-    -35.0,
-    65.0
+    -20.0,
+    -30.0,
+    50.0
   ],
   "helmetDesignatorZone2": [
     0.0,
-    -35.0,
-    65.0
+    -15.0,
+    50.0
   ],
   "helmetDesignatorZone3": [
-    35.0,
-    -35.0,
-    65.0
+    20.0,
+    -30.0,
+    50.0
   ],
   "helmetDesignatorZone4": [
-    70.0,
-    -35.0,
-    65.0
+    40.0,
+    -50.0,
+    50.0
   ],
   "rwrIndicator": "TEWS MFD",
   "mfdCamTads": true,
@@ -3223,6 +3223,10 @@
         "blk": "gameData/FlightModels/weaponPresets/j_11b_b8m.blk"
       },
       {
+        "name": "j_11b_hf20_ap",
+        "blk": "gameData/FlightModels/weaponPresets/j_11b_hf20_ap.blk"
+      },
+      {
         "name": "j_11b_b13l",
         "blk": "gameData/FlightModels/weaponPresets/j_11b_b13l.blk"
       },
@@ -3731,7 +3735,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_green",
+            "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot2",
             "reqModification": "cn_ls_6_250_ir",
             "ShowNodes": {
@@ -3848,6 +3852,20 @@
             }
           },
           {
+            "iconType": "nar_ap_large",
+            "name": "type90_ap_slot3",
+            "ShowNodes": {
+              "node": "j_11b_pylon7_1"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
+              "emitter": "b8m_001",
+              "external": true,
+              "order": 3
+            }
+          },
+          {
             "iconType": "nar_he_special",
             "name": "s13_slot3",
             "ShowNodes": {
@@ -3957,6 +3975,42 @@
                 "trigger": "rockets",
                 "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
                 "emitter": "b8m_004",
+                "external": true,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "type90_ap_slot3_x2",
+            "ShowNodes": {
+              "node": [
+                "j_11b_pylon6_1",
+                "j_11b_pylon9_1"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
+                "emitter": "b8m_003",
+                "emitterOffset": [
+                  0.2,
+                  -0.03,
+                  -0.01
+                ],
+                "external": true,
+                "order": 3
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
+                "emitter": "b8m_004",
+                "emitterOffset": [
+                  0.2,
+                  -0.03,
+                  0.01
+                ],
                 "external": true,
                 "order": 5
               }
@@ -4497,7 +4551,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_green",
+            "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot3",
             "reqModification": "cn_ls_6_250_ir",
             "ShowNodes": {
@@ -5490,6 +5544,20 @@
             }
           },
           {
+            "iconType": "nar_ap_large",
+            "name": "type90_ap_slot8",
+            "ShowNodes": {
+              "node": "j_11b_pylon6_2"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
+              "emitter": "b8m_002",
+              "external": true,
+              "order": 4
+            }
+          },
+          {
             "iconType": "nar_he_special",
             "name": "s13_slot8",
             "ShowNodes": {
@@ -5599,6 +5667,42 @@
                 "trigger": "rockets",
                 "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
                 "emitter": "b8m_005",
+                "external": true,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "nar_ap_large_group",
+            "name": "type90_ap_slot8_x2",
+            "ShowNodes": {
+              "node": [
+                "j_11b_pylon6_2",
+                "j_11b_pylon9_2"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
+                "emitter": "b8m_006",
+                "emitterOffset": [
+                  0.2,
+                  -0.03,
+                  -0.01
+                ],
+                "external": true,
+                "order": 4
+              },
+              {
+                "trigger": "rockets",
+                "blk": "gameData/Weapons/containers/ch_hf20_type90_ap.blk",
+                "emitter": "b8m_005",
+                "emitterOffset": [
+                  0.2,
+                  -0.03,
+                  0.01
+                ],
                 "external": true,
                 "order": 6
               }
@@ -6139,7 +6243,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_green",
+            "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot8",
             "reqModification": "cn_ls_6_250_ir",
             "ShowNodes": {
@@ -6353,7 +6457,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_green",
+            "iconType": "glide_guided_bomb_middle_ljdam",
             "name": "ls6_250_ir_slot9",
             "reqModification": "cn_ls_6_250_ir",
             "ShowNodes": {

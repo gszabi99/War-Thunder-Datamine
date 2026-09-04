@@ -19,10 +19,10 @@ isBombPlantingAvailable.subscribe(@(v) g_hud_event_manager.onHudEvent( v
 ))
 
 
-let defPlantedBombInfo = freeze({
+const defPlantedBombInfo = {
   curPlantedExplosionAtTime = -1.0
   curPlantedExplosionDelay = -1.0
-})
+}
 
 let plantedBombInfo = Watched(defPlantedBombInfo)
 plantedBombInfo.subscribe(@(v) g_hud_event_manager.onHudEvent("plantedBombInProgress", v))
@@ -92,11 +92,11 @@ showReassembleWallTip.subscribe(@(v) g_hud_event_manager.onHudEvent( v
 ))
 
 
-let defaultReassembleWallInfo = freeze({
+const defaultReassembleWallInfo = {
   isReassemblingWall = false
   reassemblingEndTime = 0.0
   reassemblingTotalTime = 0.0
-})
+}
 let reassemblingWallInfo = Watched(defaultReassembleWallInfo)
 reassemblingWallInfo.subscribe(@(v) g_hud_event_manager.onHudEvent("buildingWallInProgress", v))
 

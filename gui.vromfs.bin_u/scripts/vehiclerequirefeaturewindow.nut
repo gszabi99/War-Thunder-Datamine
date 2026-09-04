@@ -1,28 +1,29 @@
+from "string" import format
+from "math" import floor
+from "%sqstd/string.nut" import cutPrefix, capitalize
+from "steam" import steam_is_overlay_active
 from "%scripts/dagui_natives.nut" import is_online_available, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { floor } = require("math")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { cutPrefix, capitalize } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
 let { CheckFeatureLockAction } = require("%scripts/unit/unitActions.nut")
 let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { steam_is_overlay_active } = require("steam")
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
-gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("VehicleRequireFeatureWindow", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   featureLockAction = CheckFeatureLockAction.BUY
   purchaseAvailable = true
@@ -172,7 +173,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function getDiscountValue(entitlementItem) {
-    return getTblValue("goldDiscount", entitlementItem, 0)
+    return (entitlementItem?.goldDiscount ?? 0)
   }
 
   function onEventModalWndDestroy(params) {
@@ -180,4 +181,4 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
     if (this.isSceneActiveNoModals())
       move_mouse_on_child_by_value(this.getObj("items_list"))
   }
-}
+})

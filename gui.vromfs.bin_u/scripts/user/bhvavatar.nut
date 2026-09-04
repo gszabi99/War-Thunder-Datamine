@@ -1,7 +1,7 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%sqDagui/guiBhv/guiBhvUtils.nut" import isDebugLogBhvAttach
-let { format } = require("string")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 const SHARPEN_SMALL_ICONS = 1.25
 const MAX_SMALL_ICON_SIZE_MUL = 8
@@ -9,15 +9,13 @@ const MAX_SMALL_ICON_SIZE_MUL = 8
 local getIconPath = @(icon) icon
 local getConfig = @() null
 
-let class BhvAvatar {
+class BhvAvatar {
   eventMask    = EV_ON_CMD
   valuePID     = dagui_propid_add_name_id("value")
   isFullPID    = dagui_propid_add_name_id("isFull")
   hasImageWithFullPathPID = dagui_propid_add_name_id("hasImageWithFullPath")
 
   function onAttach(obj) {
-    if (isDebugLogBhvAttach())
-      log($"[DEBUG_ATTACH] BhvAvatar {obj?.value}")
     this.setIsFull(obj, obj?.isFull == "yes")
     if (obj?.value)
       this.setStringValue(obj, this.validateStrValue(obj.value))

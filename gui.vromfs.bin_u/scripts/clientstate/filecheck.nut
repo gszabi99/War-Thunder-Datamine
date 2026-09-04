@@ -1,7 +1,7 @@
+import "regexp2" as regexp2
 from "%scripts/dagui_natives.nut" import web_vromfs_is_file_prefetched, web_vromfs_prefetch_file
 from "%scripts/dagui_library.nut" import *
-
-let regexp2 = require("regexp2")
+from "types" import String
 
 let removeImgPostfixRegexpList = [
   regexp2("\\?P1$")
@@ -33,7 +33,7 @@ function isAllBlkImagesPrefetched(blk) {
   local res = true
   foreach (tag in ["background-image", "foreground-image"])
     foreach (img in (blk % tag))
-      if (type(img) == "string")
+      if (img instanceof String)
         if (!isImagePrefetched(img))
           res = false
 

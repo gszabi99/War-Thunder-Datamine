@@ -13,7 +13,6 @@ require PropsManager
 require Weapon
 require Grid
 
-require DagorDebug3D
 
 
 [es(tag=server, no_order)]
@@ -258,13 +257,8 @@ def ai_listening_on_grenade_es(evt : Event;
 def ai_listening_on_shot_es(evt : EventShot; gun__owner : EntityId; gun__curShellId : PropsId; gun_sound_mods__suppressor : float = 0.f)
   var ignoreShot = false
   shell_entity_get_props(gun__curShellId) <| $(entProps : ShellEntityTypeProps)
-    static_if typeinfo(builtin_function_exists @@ < (arg0 : ShellEntityTypeProps) : bool > _::shell_entity_props_isEmpty_templName)
-      if !shell_entity_props_isEmpty_templName(entProps)
-        ignoreShot = true
-    else
-      let templName = entProps.templName
-      if !(templName == "")
-        ignoreShot = true
+    if !shell_entity_props_isEmpty_templName(entProps)
+      ignoreShot = true
   if ignoreShot
     return
 

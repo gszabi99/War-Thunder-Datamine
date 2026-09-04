@@ -1,0 +1,123 @@
+{
+  "root": {
+    "behavior": "button",
+    "on_click": "goBack",
+    "not-input-transparent": "yes",
+    "tdiv": {
+      "id": "wndFrame",
+      "position": "absolute",
+      "width": "587@sf/@pf",
+      "flow": "vertical",
+      "background-color": "#e6191e26",
+      "border": "yes",
+      "border-color": "@frameBorderColor",
+      "border-offset": "@dp",
+      "css-hier-invalidate": "yes",
+      "tdiv": {
+        "id": "content",
+        "position": "relative",
+        "flow": "vertical",
+        "size": "pw, fh",
+        "css-hier-invalidate": "yes",
+        "tdiv": {
+          "position": "relative",
+          "width": "pw",
+          "max-height": "10@editPresetsItemHeight",
+          "overflow-y": "auto",
+          "css-hier-invalidate": "yes",
+          "presetsList": {
+            "id": "presetsList",
+            "behavior": "ActivateSelect",
+            "canSelectNone": "yes",
+            "navigatorShortcuts": "yes",
+            "showSelect": "no",
+            "position": "relative",
+            "flow": "vertical",
+            "width": "pw",
+            "css-hier-invalidate": "yes",
+            "on_click": "onPresetItemClick",
+            "on_select": "onPresetItemClick",
+            "move-only-hover": "yes",
+            "isClicksAvailable": "yes"
+          }
+        },
+        "addNewPresetComp": {
+          "id": "addNewPresetComp",
+          "position": "relative",
+          "size": "pw, 1@editPresetsItemHeight",
+          "bgcolor": "#1C222A",
+          "css-hier-invalidate": "yes",
+          "state": "ready",
+          "readyState": {
+            "behavior": "button",
+            "size": "pw, ph",
+            "on_click": "onAddNewPresetClick",
+            "css-hier-invalidate": "yes",
+            "interactive": "yes",
+            "focusBtnName": "A",
+            "img": {
+              "margin-left": "1@blockInterval",
+              "valign": "center",
+              "background-image": "#ui/gameuiskin#preset_add_new.svg",
+              "background-svg-size": "1@hoverButtonHeight - 3@blockInterval, 1@hoverButtonHeight - 3@blockInterval",
+              "background-position": "1.5@blockInterval",
+              "size": "1@hoverButtonHeight, 1@hoverButtonHeight",
+              "input-transparent": "yes",
+              "css-hier-invalidate": "yes"
+            },
+            "textareaNoTab": {
+              "margin-left": "1@blockInterval",
+              "valign": "center",
+              "text": "#presets/edit/add",
+              "input-transparent": "yes",
+              "css-hier-invalidate": "yes"
+            }
+          },
+          "editState": {
+            "size": "pw, ph",
+            "css-hier-invalidate": "yes",
+            "hoverButton": [
+              {
+                "margin-left": "2.5@blockInterval",
+                "on_click": "onConfirmAddingNewPreset",
+                "icon": {
+                  "background-image": "#ui/gameuiskin#preset_add_confirm.svg"
+                }
+              },
+              {
+                "margin-left": "1.5@blockInterval",
+                "on_click": "onCancelAddingNewPreset",
+                "icon": {
+                  "background-image": "#ui/gameuiskin#preset_add_cancel.svg"
+                }
+              }
+            ],
+            "EditBox": {
+              "id": "addNewPresetEditBox",
+              "width": "fw",
+              "valign": "center",
+              "margin": "3@blockInterval, 0, 3@blockInterval, 0",
+              "max-len": "16",
+              "text": "",
+              "on_cancel_edit": "onAddNewPresetEditCancelEdit",
+              "on_unhover": "onEditBoxUnhover",
+              "on_activate": "onConfirmAddingNewPreset"
+            }
+          }
+        }
+      }
+    },
+    "Button_text": {
+      "id": "btnClose",
+      "position": "absolute",
+      "text": "#shop/slotbarPresets/button",
+      "reduceMinimalWidth": "yes",
+      "noMargin": "yes",
+      "on_click": "goBack"
+    },
+    "DummyButton": {
+      "btnName": "B",
+      "on_click": "goBack"
+    }
+  }
+}

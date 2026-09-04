@@ -1,7 +1,6 @@
+from "%appGlobals/login/loginState.nut" import isAuthorized, isLoginRequired
+from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
-
-let { defer } = require("dagor.workcycle")
-let { isAuthorized, isLoginRequired } = require("%appGlobals/login/loginState.nut")
 
 
 let PT_STEP_STATUS = {

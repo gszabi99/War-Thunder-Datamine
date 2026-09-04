@@ -1,9 +1,10 @@
+module F18cockpit_common
+
 require darg
 require math
 require strings
 require app
 require hud
-require DagorSystem
 require DagorMath
 require DagorStdGuiRender
 require Plane
@@ -17,7 +18,6 @@ require FlightControl
 require Weapon
 require WTCamera
 require GuidanceLock
-require %game.utils.utils_common
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require %rGui.utils.helpers_common

@@ -1,5 +1,5 @@
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-let { isInFlight } = require("gameplayBinding")
 
 function backToMainScene() {
   if (isInFlight())
@@ -8,4 +8,3 @@ function backToMainScene() {
 }
 
 return backToMainScene
-

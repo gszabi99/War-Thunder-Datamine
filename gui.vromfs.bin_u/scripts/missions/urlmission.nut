@@ -1,7 +1,6 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-
-let DataBlock = require("DataBlock")
 
 let UrlMission = class {
   name = ""

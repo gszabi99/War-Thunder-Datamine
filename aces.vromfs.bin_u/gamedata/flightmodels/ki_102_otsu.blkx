@@ -1,7 +1,7 @@
 {
   "model": "ki_102_otsu",
   "fmFile": "fm/ki_102_otsu.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_piston_radial_big_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -126,10 +126,12 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 95.5
+        "hp": 95.5,
+        "deadExplProb": 0.5
       },
       "fuse2_dm": {
-        "hp": 83.8
+        "hp": 83.8,
+        "deadExplProb": 0.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
@@ -262,7 +264,6 @@
         "hp": 20.0
       },
       "pilot_dm": {
-        "fireProtectionHp": 20.0,
         "hp": 20.0
       }
     },

@@ -1,11 +1,8 @@
+from "%rGui/missionState.nut" import scoreLimit, localTeam, ticketsTeamA, ticketsTeamB
+from "%rGui/hud/scoreboard/hudElemsPkg.nut" import mkTeamProgress, mkTeamCapPoint
+from "%rGui/hud/capZones/capZonesState.nut" import startPollingZonesState, stopPollingZonesState, capZones
+from "console" import register_command
 from "%rGui/globals/ui_library.nut" import *
-
-let { scoreLimit, localTeam, ticketsTeamA, ticketsTeamB } = require("%rGui/missionState.nut")
-let { mkTeamProgress, mkTeamCapPoint } = require("%rGui/hud/scoreboard/hudElemsPkg.nut")
-let { startPollingZonesState, stopPollingZonesState, capZones
-} = require("%rGui/hud/capZones/capZonesState.nut")
-let { register_command } = require("console")
-
 
 const ANIM_TRIGGER_ALLY = "main_anim_ally"
 const ANIM_TRIGGER_ENEMY = "main_anim_enemy"
@@ -35,12 +32,12 @@ return function mkBattleHud() {
     ? ticketsTeamA.get()
     : ticketsTeamB.get())
 
-  localTeamTicketsW.subscribe(@(score) score > 0 && anim_start(ANIM_TRIGGER_ALLY))
-  enemyTeamTicketsW.subscribe(@(score) score > 0 && anim_start(ANIM_TRIGGER_ENEMY))
+  let onAllyTickets = @(score) score > 0 && anim_start(ANIM_TRIGGER_ALLY)
+  let onEnemyTickets = @(score) score > 0 && anim_start(ANIM_TRIGGER_ENEMY)
 
   return {
     key = {}
-    size = [hdpx(420), SIZE_TO_CONTENT]
+    size = const [hdpx(420), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     gap = hdpx(4)
     valign = ALIGN_CENTER
@@ -50,7 +47,15 @@ return function mkBattleHud() {
       mkCaptureZones()
       mkTeamProgress(false, enemyTeamTicketsW, scoreLimit, ANIM_TRIGGER_ENEMY)
     ]
-    onAttach = startPollingZonesState
-    onDetach = stopPollingZonesState
+    onAttach = function() {
+      localTeamTicketsW.subscribe(onAllyTickets)
+      enemyTeamTicketsW.subscribe(onEnemyTickets)
+      startPollingZonesState()
+    }
+    onDetach = function() {
+      localTeamTicketsW.unsubscribe(onAllyTickets)
+      enemyTeamTicketsW.unsubscribe(onEnemyTickets)
+      stopPollingZonesState()
+    }
   }
 }

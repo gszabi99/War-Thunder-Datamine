@@ -1,19 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqstd/datablock.nut" import getBlkValueByPath
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_tournament_info_blk, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
-let DataBlock  = require("DataBlock")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText,
-  getConditionText } = require("%scripts/events/eventRewards.nut")
+let { haveRewards, getBaseVictoryReward, getSortedRewardsByConditions, getRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
 let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
-let { get_charserver_time_sec } = require("chard")
 let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
@@ -113,13 +111,13 @@ let Ticket = class (BaseItem) {
     if (!iconTable)
       iconTable = this.getIconTableForEvent(null)
 
-    let unitTypeLayer = getTblValue("unitType", this.customLayers) ? $"_{this.customLayers.unitType}" : iconTable.unitType
+    let unitTypeLayer = this.customLayers?.unitType ? $"_{this.customLayers.unitType}" : iconTable.unitType
     let insertLayersArrayCfg = []
     insertLayersArrayCfg.append(this._getUnitTypeLayer(unitTypeLayer, small))
-    insertLayersArrayCfg.append(this._getDifficultyLayer(getTblValue("diffCode", this.customLayers) || iconTable.diffCode, small))
-    insertLayersArrayCfg.append(this._getTournamentModeLayer(getTblValue("mode", this.customLayers) || iconTable.mode, small))
-    insertLayersArrayCfg.append(this._getTournamentTypeLayer(getTblValue("type", this.customLayers) || iconTable.type, small))
-    insertLayersArrayCfg.append(addItemName ? this._getNameLayer(getTblValue("name", iconTable), small) : null)
+    insertLayersArrayCfg.append(this._getDifficultyLayer(this.customLayers?.diffCode || iconTable.diffCode, small))
+    insertLayersArrayCfg.append(this._getTournamentModeLayer(this.customLayers?.mode || iconTable.mode, small))
+    insertLayersArrayCfg.append(this._getTournamentTypeLayer(this.customLayers?.type || iconTable.type, small))
+    insertLayersArrayCfg.append(addItemName ? this._getNameLayer(iconTable?.name, small) : null)
 
     return LayersIcon.genInsertedDataFromLayer(this._getBackground(small), insertLayersArrayCfg)
   }
@@ -164,11 +162,11 @@ let Ticket = class (BaseItem) {
     if (!event)
       return null
 
-    if (getTblValue("clans_only", event, false))
+    if ((event?.clans_only ?? false))
       return "clan"
     if (events.getMaxTeamSize(event) == 1)
       return "pvp"
-    if (getTblValue("squads_only", event, false))
+    if ((event?.squads_only ?? false))
       return "squad"
 
     return "team"
@@ -246,7 +244,7 @@ let Ticket = class (BaseItem) {
     let sessions = blk?.sessions
     if (sessions != null) {
       foreach (session in sessions % "data") {
-        let timeExpired = getTblValue("timeExpired", session, 0)
+        let timeExpired = (session?.timeExpired ?? 0)
         let timeDelta = timeExpired - curTime
         if (timeDelta <= 0)
           continue

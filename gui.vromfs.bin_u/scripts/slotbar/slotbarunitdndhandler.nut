@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import get_crew_count
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
@@ -13,7 +14,7 @@ let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelper
 
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 
-let class SlotbarUnitDnD (gui_handlers.BaseGuiHandlerWT) {
+class SlotbarUnitDnD (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarUnitDnDControls.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -124,7 +125,7 @@ let class SlotbarUnitDnD (gui_handlers.BaseGuiHandlerWT) {
   onCrewBlockHover = @(_obj) null
 }
 
-gui_handlers.SlotbarUnitDnD <- SlotbarUnitDnD
+register_gui_handler("SlotbarUnitDnD", SlotbarUnitDnD)
 
 return {
   startSlotbarUnitDnD = @(params) handlersManager.loadHandler(SlotbarUnitDnD, params)

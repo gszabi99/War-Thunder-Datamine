@@ -1,9 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqstd/math.nut" as stdMath
+import "%scripts/time.nut" as time
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode
+from "string" import split_by_chars
+from "%sqstd/datablock.nut" import eachBlock
+from "unitCustomization" import get_skins_for_unit
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_wpcost_blk, get_warpoints_blk, get_unittags_blk, get_modifications_blk, get_ranks_blk
 from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, clan_get_unit_open_cost_gold, wp_get_repair_cost, shop_is_aircraft_purchased, remove_calculate_modification_effect_jobs, shop_is_unit_rented, shop_get_spawn_score, shop_is_player_has_unit
+from "%globalScripts/unitTypeConsts.nut" import *
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import get_tomoe_unit_icon
-import "%sqstd/math.nut" as stdMath
-import "%scripts/time.nut" as time
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { get_unit_icon_by_unit, getUnitCountry, getUnitExp } = require("%scripts/unit/unitInfo.nut")
@@ -11,44 +19,33 @@ let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmoniz
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { split_by_chars } = require("string")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { isString, isArray, isTable, isFunction } = u
 let contentPreview = require("%scripts/customization/contentPreview.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { targetPlatform, canSpendRealMoney } = require("%scripts/clientState/platform.nut")
-let { getLastWeapon, isWeaponEnabled,
-  isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, isWeaponEnabled, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
 let { unitClassType, getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getDefaultPresetId } = require("%scripts/weaponry/weaponryPresets.nut")
-let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers,
-  getWeaponImage
-} = require("%scripts/unit/initUnitWeapons.nut")
+let { initUnitWeapons, initWeaponryUpgrades, initUnitModifications, initUnitWeaponsContainers, getWeaponImage } = require("%scripts/unit/initUnitWeapons.nut")
 let { getWeaponryCustomPresets } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let { isPromUnit } = require("%scripts/unit/remainingTimeUnit.nut")
-let { get_skins_for_unit } = require("unitCustomization")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { get_charserver_time_sec } = require("chard")
 let { isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { hasCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { get_wpcost_blk, get_warpoints_blk, get_unittags_blk,
-  get_modifications_blk, get_ranks_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitInResearch, isUnitBroken, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 let { addUnitNewsId } = require("%scripts/unit/unitNews.nut")
 let { addUnitEventId, hasUnitEvent } = require("%scripts/unit/unitEvents.nut")
 
-let MOD_TIERS_COUNT = 4
+const MOD_TIERS_COUNT = 4
 
 let unitIntParams = [ "costGold", "rank", "reqExp",
   "repairCost", "repairTimeHrsArcade", "repairTimeHrsHistorical", "repairTimeHrsSimulation",
@@ -488,7 +485,7 @@ local Unit = class {
     return this.previewSkinId
   }
 
-  getSpawnScore = @(weaponName = null) shop_get_spawn_score(this.name, weaponName || getLastWeapon(this.name), getUnitLastBullets(this), false, false)
+  getSpawnScore = @(weaponName = null) shop_get_spawn_score(this.name, weaponName || getLastWeapon(this.name), getUnitLastBullets(this), { addWeaponMul = false, addBulletMul = false })
 
   function getMinimumSpawnScore() {
     local res = -1
@@ -534,8 +531,13 @@ local Unit = class {
 
     this.nvdSights = {}
     eachBlock(getFullUnitBlk(this.name)?.modifications, function(mode, modeName) {
-      this.nvdSights[modeName] <- []
-      eachBlock(mode?.effects.nightVision, @(_, name) this.nvdSights[modeName].append(name), this) 
+      if (mode?.effects.nightVision != null) {
+        this.nvdSights[modeName] <- []
+        eachBlock(
+          mode.effects.nightVision,
+          @(part, name) this.nvdSights[modeName].append({ name, resolution = part.resolution?.x ?? 0 }),
+          this) 
+      }
     }, this)
   }
 
@@ -613,8 +615,13 @@ local Unit = class {
 
     return this.modifications
   }
+
+  isEmpty =@() !this.name.len()
+  _typeof = @() "Unit"
 }
 
-u.registerClass("Unit", Unit, @(u1, u2) u1.name == u2.name, @(unit) !unit.name.len())
+Unit.isEqual <- function(other) {
+  return other instanceof Unit && this.name == other.name
+}
 
 return Unit

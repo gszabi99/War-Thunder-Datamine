@@ -1,30 +1,35 @@
+import "DataBlock" as DataBlock
+import "sony.social" as psnSocial
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "app" import APP_ID
+from "url" import encode_uri_component
+from "mission" import get_local_mplayer
+from "%gdkLib/impl/user.nut" import show_profile_card
+from "dagor.workcycle" import setTimeout
+from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
+
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox,
-  isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox, isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let psnSocial = require("sony.social")
 let { fillProfileSummary, getPlayerStatsFromBlk, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
-let { APP_ID } = require("app")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
-let { encode_uri_component } = require("url")
-let { get_local_mplayer } = require("mission")
-let { show_profile_card } = require("%gdkLib/impl/user.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setTimeout } = require("dagor.workcycle")
 let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
@@ -57,7 +62,7 @@ function setCurrentWndDifficulty(mode = 0) {
   saveLocalByAccount("wnd/diffMode", mode)
 }
 
-gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let UserCardHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/profile/userCard.tpl"
   isOwnStats = false
@@ -169,7 +174,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     else if ("id" in this.player) {
       this.taskId = req_player_public_statinfo_by_player_id(this.player.id)
-      let selfPlayerId = getTblValue("uid", get_local_mplayer())
+      let selfPlayerId = get_local_mplayer()?.uid
       if (selfPlayerId != null && selfPlayerId == this.player.id)
         this.isMyPage = true
       else
@@ -498,9 +503,9 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBlacklistBan() {
-    let clanTag = getTblValue("clanTag", this.player, "")
-    let playerName = getTblValue("name", this.player, "")
-    let userId = getTblValue("uid", this.player, "")
+    let clanTag = (this.player?.clanTag ?? "")
+    let playerName = (this.player?.name ?? "")
+    let userId = (this.player?.uid ?? "")
 
     gui_modal_ban({ name = playerName, uid = userId, clanTag = clanTag })
   }
@@ -598,7 +603,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onLeaderboard() {
     let userId = (this.player?.uid ?? "-1").tointeger()
     if (userId >= 0)
-      loadHandler(gui_handlers.LeaderboardWindow, { userId })
+      loadHandler(LeaderboardWindow, { userId })
   }
 
   function fillShowcaseMid(terseInfo, userStats) {
@@ -720,3 +725,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onShowcaseCustomFunc(_obj) {}
 
 }
+register_gui_handler("UserCardHandler", UserCardHandler)
+
+return { UserCardHandler }

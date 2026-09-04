@@ -3,7 +3,6 @@ require ecs.common
 require math
 require math.base
 require DagorMath
-require DagorRandom
 require Grid
 require DngWalkerai
 require PropsManager

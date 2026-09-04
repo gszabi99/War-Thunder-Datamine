@@ -5,7 +5,6 @@ require DngHuman
 require DagorConsole
 require DagorDebug3D
 require Weapon
-require %game.utils.net_utils
 require %appGame.infantry.es.net_console_macro
 
 

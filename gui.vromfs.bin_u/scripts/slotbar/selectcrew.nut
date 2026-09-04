@@ -1,13 +1,16 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_natives.nut" import get_crew_count, get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { toPixels, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { toPixels, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -16,8 +19,7 @@ let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText
-} = require("%scripts/slotbar/slotbarView.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getBestTrainedCrewIdxForUnit, getFirstEmptyCrewSlot } = require("%scripts/slotbar/slotbarStateData.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
@@ -27,7 +29,7 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-
+let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 
 const CREWS_COUNT_TO_USE_REPLACE_HINT = 3
@@ -41,10 +43,10 @@ function getObjPosInSafeArea(obj) {
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
 
-let useNewUnitSetLogic = @() false
+let useNewUnitSetLogic = @() userIdInt64.get() % 2 != 0
 
 
-gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/shop/shopTakeAircraft.blk"
 
@@ -92,7 +94,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       let tdObj = this.unitObj.getParent()
       let tdPos = getObjPosInSafeArea(tdObj)
 
-      gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
+      ActionsList.removeActionsListFromObject(tdObj)
 
       tdClone = tdObj.getClone(this.scene, this)
       tdClone.pos = $"{tdPos[0]}, {tdPos[1]}"
@@ -178,7 +180,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
   createSlotbarHandler = @(params) this.isSelectByGroups
     ? slotbarWidget.create(params)
-    : gui_handlers.SlotbarWidget.create(params)
+    : SlotbarWidget.create(params)
 
   function updateObjectsPositions(tdClone, headerObj) {
     let rootSize = this.guiScene.getRoot().getSize()
@@ -339,7 +341,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       return null
 
     let countryCrews = getCrewsListByCountry(this.country)
-    if (countryCrews.len() == CREWS_COUNT_TO_USE_REPLACE_HINT)
+    if (countryCrews.len() < CREWS_COUNT_TO_USE_REPLACE_HINT)
       return null
 
     let curEdiff = this.getCurrentEdiff()
@@ -437,4 +439,4 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   function isHandlerUnitInSlotbar() {
     return !this.isSelectByGroups && isUnitInSlotbar(this.unit)
   }
-}
+})

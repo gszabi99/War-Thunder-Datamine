@@ -1,11 +1,12 @@
+import "DataBlock" as DataBlock
+from "vehicleModel" import getUnitFileName
+from "eventbus" import eventbus_subscribe
+from "%sqstd/datablock.nut" import blkFromPath
+from "string" import split_by_chars
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
-let { getUnitFileName } = require("vehicleModel")
-let { eventbus_subscribe } = require("eventbus")
-let DataBlock = require("DataBlock")
-let { blkFromPath } = require("%sqstd/datablock.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { split_by_chars } = require("string")
 
 let cache = {}
 let cacheUnitsBlk = {}

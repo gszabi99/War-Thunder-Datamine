@@ -1,7 +1,8 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
+from "types" import String, Function, Array, Table
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 let BaseGuiBox = require("%globalScripts/guiGeom/guiBox.nut").GuiBox
 
 let GuiBox = class (BaseGuiBox) {
@@ -41,11 +42,11 @@ function getBlockFromObjData(objData, scene = null, defOnClick = null, defOnDrag
   else
     obj = objData?.obj ?? objData
 
-  if (type(obj) == "string")
+  if (obj instanceof String)
     obj = checkObj(scene) ? scene.findObject(obj) : null
-  else if (type(obj) == "function")
+  else if (obj instanceof Function)
     obj = obj()
-  if (type(obj) == "array") {
+  if (obj instanceof Array) {
     for (local i = 0; i < obj.len(); i++) {
       let block = getBlockFromObjData(obj[i], scene)
       if (!block)
@@ -56,7 +57,7 @@ function getBlockFromObjData(objData, scene = null, defOnClick = null, defOnDrag
         res.box.addBox(block.box)
     }
   }
-  else if (type(obj) == "table") {
+  else if (obj instanceof Table) {
     if (("box" in obj) && obj.box)
       res = clone obj
   }
@@ -104,17 +105,17 @@ function createHighlight(scene, objDataArray, handler = null, params = null) {
   
   
   let guiScene = scene.getScene()
-  let sizeIncMul = getTblValue("sizeIncMul", params, _sizeIncMul)
-  let sizeIncAdd = getTblValue("sizeIncAdd", params, _sizeIncAdd)
+  let sizeIncMul = (params?.sizeIncMul ?? _sizeIncMul)
+  let sizeIncAdd = (params?.sizeIncAdd ?? _sizeIncAdd)
   let isFullscreen = params?.isFullscreen ?? _isFullscreen
   let rootBox = GuiBox().setFromDaguiObj(isFullscreen ? guiScene.getRoot() : scene)
   let rootPosCompensation = [ -rootBox.c1[0], -rootBox.c1[1] ]
-  let defOnClick = getTblValue("onClick", params, null)
+  let defOnClick = params?.onClick
   let view = {
-    id = getTblValue("id", params, _id)
+    id = (params?.id ?? _id)
     isFullscreen = isFullscreen
-    lightBlock = getTblValue("lightBlock", params, _lightBlock)
-    darkBlock = getTblValue("darkBlock", params, _darkBlock)
+    lightBlock = (params?.lightBlock ?? _lightBlock)
+    darkBlock = (params?.darkBlock ?? _darkBlock)
     lightBlocks = []
     darkBlocks = []
   }
@@ -132,8 +133,8 @@ function createHighlight(scene, objDataArray, handler = null, params = null) {
 
     block.box.incSize(sizeIncAdd, sizeIncMul)
     block.box.incPos(rootPosCompensation)
-    block.onClick <- getTblValue("onClick", block) || defOnClick
-    block.onDragStart <- getTblValue("onDragStart", block)
+    block.onClick <- block?.onClick || defOnClick
+    block.onDragStart <- block?.onDragStart
     view.lightBlocks.append(blockToView(block))
 
     for (local i = darkBoxes.len() - 1; i >= 0; i--) {

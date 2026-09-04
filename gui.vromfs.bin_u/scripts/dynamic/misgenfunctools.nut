@@ -1,9 +1,7 @@
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgGetPlayerSide, mgFullLogs, rndRangeInt, getAnyFighter, getAircraftCost, mgReplace, getPlaneWpDiv
+  , getPlaneWpAdd, getMissionCost, getZeroWpAddCoef, getRepairCostMult
 from "math" import clamp, sqrt, max
-
-let { debug_dump_stack } = require("dagor.debug")
-let { mgGetPlayerSide, mgFullLogs, rndRangeInt, getAnyFighter, getAircraftCost, mgReplace,
-  getPlaneWpDiv, getPlaneWpAdd, getMissionCost, getZeroWpAddCoef, getRepairCostMult
-} = require("dynamicMission")
 
 function getEnemyPlaneByWpCost(playerPlaneCost, enemySide) {
   let planeWpDiv = getPlaneWpDiv()

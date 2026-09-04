@@ -1,9 +1,10 @@
+from "%sqstd/math.nut" import is_bit_set
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { setPopupMenuPosAndAlign, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { setPopupMenuPosAndAlign, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
@@ -23,7 +24,7 @@ function getAutoClusterName(opt) {
     loc("ui/parentheses/space", { text = ", ".join(defaultClusters) }))
 }
 
-let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
+class ClustersMenuWnd (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
@@ -86,7 +87,7 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ClustersMenuWnd <- ClustersMenuWnd
+register_gui_handler("ClustersMenuWnd", ClustersMenuWnd)
 
 function openClustersMenuWnd(alignObj, params = {}) {
   let { align = ALIGN.TOP, callbackOnClose = null } = params

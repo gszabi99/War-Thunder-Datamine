@@ -1,9 +1,7 @@
 require ecs
-require net
 require DngHuman
 require HumanPhys
 require %game.player_events
-require %game.events
 
 
 [es(tag=server, track=possessedByPlr, REQUIRE_NOT=deadEntity)]
@@ -56,7 +54,5 @@ def bot_weapon_reset_when_switching_from_drone(evt : EventPlayerControlledUnitCh
                                    var human_net_phys : HumanActor&)
       if beh_tree__enabled
         let primarySlotId = int(HUWeaponSlots.EWS_PRIMARY)
-        let specialSlotId = int(HUWeaponSlots.EWS_SPECIAL)
-        send_net_event(drone__owner, RequestMultipleGunsSlotSelectGun(gunEid = INVALID_ENTITY_ID, slot = specialSlotId))
         human_net_phys.phys.producedCT |> set_chosen_weapon(HUWeaponSlots.EWS_PRIMARY)
         human_weap__currentGunSlot = primarySlotId

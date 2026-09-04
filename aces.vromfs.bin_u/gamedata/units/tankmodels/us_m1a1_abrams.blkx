@@ -70,8 +70,9 @@
         "armorThickness": 12.7
       },
       "gun_mask_01_dm": {
-        "armorThickness": 38.1,
-        "createSecondaryShatters": false
+        "armorThickness": 20.0,
+        "createSecondaryShatters": false,
+        "variableThickness": true
       },
       "gun_mask_02_dm": {
         "armorThickness": 50.8
@@ -218,17 +219,19 @@
         "armorThickness": 20.0
       },
       "superstructure_back_dm": {
-        "armorThickness": 31.75
+        "armorThickness": 31.75,
+        "variableThickness": true
       },
       "body_front_dm": {
-        "armorThickness": 19.0
+        "armorThickness": 19.0,
+        "variableThickness": true
       },
       "body_back_dm": {
         "armorThickness": 6.35,
         "armorClass": "tank_structural_steel"
       },
       "body_bottom_dm": {
-        "armorThickness": 25.0,
+        "armorThickness": 12.7,
         "variableThickness": true
       },
       "body_top_dm": {
@@ -280,7 +283,8 @@
       },
       "turret_02_front_dm": {
         "armorThickness": 31.75,
-        "createSecondaryShatters": false
+        "createSecondaryShatters": false,
+        "variableThickness": true
       },
       "turret_03_bottom_dm": {
         "armorThickness": 31.75
@@ -334,7 +338,8 @@
         "armorThickness": 23.4
       },
       "turret_09_side_dm": {
-        "armorThickness": 60.4
+        "armorThickness": 60.4,
+        "variableThickness": true
       }
     },
     "side_skirts": {
@@ -411,7 +416,8 @@
       },
       "turret_top_dm": {
         "armorThickness": 25.4,
-        "armorClass": "CHA_tank"
+        "armorClass": "CHA_tank",
+        "variableThickness": true
       },
       "turret_01_top_dm": {
         "armorThickness": 12.7,
@@ -438,7 +444,8 @@
       },
       "turret_commander_dm": {
         "armorThickness": 25.4,
-        "armorClass": "CHA_tank"
+        "armorClass": "CHA_tank",
+        "variableThickness": true
       },
       "gun_barrel_armor_dm": {
         "armorThickness": 25.4
@@ -555,6 +562,7 @@
       "ex_armor_r_09_dm": {},
       "ex_armor_l_09_dm": {},
       "ex_decor_l_01_dm": {},
+      "ex_decor_06_dm": {},
       "ex_decor_r_01_dm": {},
       "ex_decor_l_03_dm": {},
       "ex_decor_r_03_dm": {}
@@ -757,6 +765,14 @@
         "armorThrough": 15.0,
         "fireParamsPreset": "hydraulic_internal"
       },
+      "turret_hydraulics_01_dm": {
+        "hp": 250.0,
+        "armorThrough": 15.0
+      },
+      "turret_hydraulics_02_dm": {
+        "hp": 250.0,
+        "armorThrough": 15.0
+      },
       "radiator_dm": {
         "hp": 50.0,
         "armorThrough": 5.0
@@ -773,8 +789,8 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "electronic_equipment_dm": {
-        "hp": 60.0,
+      "auxiliary_power_unit": {
+        "hp": 50.0,
         "armorThrough": 3.0
       },
       "electronic_equipment_01_dm": {
@@ -788,6 +804,10 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "power_system_01_dm": {
+        "hp": 60.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1862,7 +1882,13 @@
           "fuel_tank_exterior_r_01_dm",
           "fuel_tank_exterior_r_02_dm",
           "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_exterior_l_02_dm",
+          "fuel_tank_exterior_r_03_dm",
+          "fuel_tank_exterior_r_04_dm",
+          "fuel_tank_exterior_l_03_dm",
+          "fuel_tank_exterior_l_04_dm",
+          "fuel_tank_exterior_r_05_dm",
+          "fuel_tank_exterior_l_05_dm"
         ],
         "onHit": [
           {
@@ -2160,13 +2186,16 @@
         "armorArrayText": {
           "layer": [
             {
-              "dmPart": "turret_02_front_dm"
+              "dmPart": "turret_02_front_dm",
+              "xrayTextThickness": 32.0
             },
             {
-              "dmPart": "composite_armor_hull_01_dm"
+              "dmPart": "composite_armor_hull_01_dm",
+              "xrayTextThickness": 360.0
             },
             {
-              "dmPart": "turret_02_top_dm"
+              "dmPart": "turret_02_top_dm",
+              "xrayTextThickness": 101.0
             }
           ]
         }
@@ -2227,13 +2256,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "gun_mask_01_dm"
+            "dmPart": "gun_mask_01_dm",
+            "xrayTextThickness": 20.0
           },
           {
-            "dmPart": "composite_armor_turret_01_dm"
+            "dmPart": "composite_armor_turret_01_dm",
+            "xrayTextThickness": 400.0
           },
           {
-            "dmPart": "gun_mask_03_dm"
+            "dmPart": "gun_mask_03_dm",
+            "xrayTextThickness": 38.0
           }
         ]
       }
@@ -2243,13 +2275,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "turret_front_dm"
+            "dmPart": "turret_front_dm",
+            "xrayTextThickness": 38.0
           },
           {
-            "dmPart": "composite_armor_turret_02_dm"
+            "dmPart": "composite_armor_turret_02_dm",
+            "xrayTextThickness": 580.0
           },
           {
-            "dmPart": "turret_03_side_dm"
+            "dmPart": "turret_03_side_dm",
+            "xrayTextThickness": 63.0
           }
         ]
       }
@@ -2259,13 +2294,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "turret_front_dm"
+            "dmPart": "turret_front_dm",
+            "xrayTextThickness": 38.0
           },
           {
-            "dmPart": "composite_armor_turret_03_dm"
+            "dmPart": "composite_armor_turret_03_dm",
+            "xrayTextThickness": 610.0
           },
           {
-            "dmPart": "turret_03_side_dm"
+            "dmPart": "turret_03_side_dm",
+            "xrayTextThickness": 63.0
           }
         ]
       }
@@ -2275,13 +2313,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "turret_side_dm"
+            "dmPart": "turret_side_dm",
+            "xrayTextThickness": 19.0
           },
           {
-            "dmPart": "composite_armor_turret_04_dm"
+            "dmPart": "composite_armor_turret_04_dm",
+            "xrayTextThickness": 64.0
           },
           {
-            "dmPart": "turret_01_side_dm"
+            "dmPart": "turret_03_side_dm",
+            "xrayTextThickness": 63.0
           }
         ]
       }
@@ -2291,13 +2332,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "turret_side_dm"
+            "dmPart": "turret_side_dm",
+            "xrayTextThickness": 19.0
           },
           {
-            "dmPart": "composite_armor_turret_05_dm"
+            "dmPart": "composite_armor_turret_05_dm",
+            "xrayTextThickness": 64.0
           },
           {
-            "dmPart": "turret_01_side_dm"
+            "dmPart": "turret_03_side_dm",
+            "xrayTextThickness": 63.0
           }
         ]
       }
@@ -2307,13 +2351,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "turret_06_side_dm"
+            "dmPart": "turret_06_side_dm",
+            "xrayTextThickness": 6.0
           },
           {
-            "dmPart": "composite_armor_turret_06_dm"
+            "dmPart": "composite_armor_turret_06_dm",
+            "xrayTextThickness": 440.0
           },
           {
-            "dmPart": "turret_03_front_dm"
+            "dmPart": "turret_03_front_dm",
+            "xrayTextThickness": 12.0
           }
         ]
       }
@@ -2323,13 +2370,16 @@
       "armorArrayText": {
         "layer": [
           {
-            "dmPart": "turret_06_side_dm"
+            "dmPart": "turret_06_side_dm",
+            "xrayTextThickness": 6.0
           },
           {
-            "dmPart": "composite_armor_turret_07_dm"
+            "dmPart": "composite_armor_turret_07_dm",
+            "xrayTextThickness": 440.0
           },
           {
-            "dmPart": "turret_03_front_dm"
+            "dmPart": "turret_03_front_dm",
+            "xrayTextThickness": 12.0
           }
         ]
       }
@@ -2341,39 +2391,30 @@
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [
-        "loader_dm",
+        "driver_dm",
         "gunner_dm",
-        "commander_dm",
-        "machine_gunner_dm",
         "gunner_01_dm",
         "gunner_02_dm",
+        "commander_dm",
+        "machine_gunner_dm",
+        "machine_gunner_01_dm",
+        "machine_gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
-        "cannon_breech_dm",
         "radio_station_dm",
-        "drive_turret_v_dm",
-        "drive_turret_h_dm",
-        "drive_turret_v_01_dm",
-        "drive_turret_h_01_dm",
-        "drive_turret_v_02_dm",
-        "drive_turret_h_02_dm"
-      ],
-      "effect": [
-        {
-          "conditionDamageType": "explosion",
-          "conditionDamage": 1.0,
-          "pressure": true
-        },
-        {
-          "conditionDamageType": "shatter",
-          "conditionDamage": 1.0,
-          "pressure": true
-        }
-      ]
-    },
-    "closed_control_compartment": {
-      "part": [
-        "driver_dm",
+        "driver_controls_dm",
+        "fire_control_system_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
@@ -2738,7 +2779,9 @@
       "trackStartOffset": 0.08
     },
     "collisionProps": {
-      "cls_turret": "convex_hull",
+      "cls_turret_01": "convex_hull",
+      "cls_turret_02": "convex_hull",
+      "cls_turret_03": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
@@ -2882,6 +2925,13 @@
       "rotation": 1.5,
       "collisionNode": "cls_turret_01"
     }
+  },
+  "copyCollResMatrixToVehiclePhys": {
+    "node": [
+      "cls_turret_01",
+      "cls_turret_02",
+      "cls_turret_03"
+    ]
   },
   "unitFx": {
     "event": [

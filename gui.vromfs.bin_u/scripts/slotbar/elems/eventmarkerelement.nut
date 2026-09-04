@@ -1,13 +1,13 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { hasUnitEvent, getUnitEventId, getEventUnitsData } = require("%scripts/unit/unitEvents.nut")
 let { unitNews } = require("%scripts/changelog/changeLogState.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")

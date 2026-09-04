@@ -1,5 +1,5 @@
+from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
-let { get_ranks_blk } = require("blkGetters")
 
 local startMissionInsteadOfQueue = null
 

@@ -1,7 +1,7 @@
 {
   "model": "f_16xl",
   "fmFile": "fm/f_16xl.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.178,
   "gearSinkRangeC": 0.164,
@@ -2871,6 +2871,14 @@
       {
         "name": "f_16xl_agm_65b",
         "blk": "gameData/FlightModels/weaponPresets/f_16xl_agm_65b.blk"
+      },
+      {
+        "name": "f_16xl_video_agm_65b",
+        "blk": "gameData/FlightModels/weaponPresets/f_16xl_video_agm_65b.blk"
+      },
+      {
+        "name": "f_16xl_video_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/f_16xl_video_mk82.blk"
       }
     ]
   },
@@ -3084,10 +3092,16 @@
               "slot": 12,
               "preset": "ptb_slot12"
             },
-            "BannedWeaponPreset": {
-              "slot": 4,
-              "preset": "agm_65b"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "agm_65b"
+              },
+              {
+                "slot": 10,
+                "preset": "agm_65b"
+              }
+            ]
           }
         ]
       },
@@ -3619,10 +3633,16 @@
               "slot": 2,
               "preset": "ptb_slot2"
             },
-            "BannedWeaponPreset": {
-              "slot": 10,
-              "preset": "agm_65b"
-            }
+            "BannedWeaponPreset": [
+              {
+                "slot": 10,
+                "preset": "agm_65b"
+              },
+              {
+                "slot": 4,
+                "preset": "agm_65b"
+              }
+            ]
           }
         ]
       },

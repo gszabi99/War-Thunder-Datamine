@@ -1,13 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "string" import split_by_chars
+from "%sqstd/string.nut" import startsWith, cutPrefix
+from "guiMission" import get_num_attempts_left
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { split_by_chars } = require("string")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { startsWith, cutPrefix } = require("%sqstd/string.nut")
-let { get_num_attempts_left } = require("guiMission")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
 
@@ -46,14 +47,14 @@ enumsAddTypes(g_hint_tag, {
   TIMER = {
     typeName = "@"
     getViewSlices = function(_tagName, params) {
-      let total = (getTblValue("time", params, 0) + 0.5).tointeger()
-      let offset = getTblValue("timeoffset", params, 0)
+      let total = ((params?.time ?? 0) + 0.5).tointeger()
+      let offset = (params?.timeoffset ?? 0)
       return [{
                timer = {
                  incFactor = total ? 360.0 / total : 0
                  angle = (offset && total) ? (360 * offset / total).tointeger() : 0
-                 hideWhenStopped = getTblValue("hideWhenStopped", params, false)
-                 timerOffsetX = getTblValue("timerOffsetX", params)
+                 hideWhenStopped = (params?.hideWhenStopped ?? false)
+                 timerOffsetX = params?.timerOffsetX
                }
              }]
     }
@@ -212,12 +213,12 @@ g_hints.getHintSlices <- function getHintSlices(text, params = {}) {
   let rows = split_by_chars(text, "\n")
   let isWrapInRowAllowed = params?.isWrapInRowAllowed ?? false
   let view = {
-    id = getTblValue("id", params)
-    style = getTblValue("style", params, "")
-    isOrderPopup = getTblValue("isOrderPopup", params, false)
+    id = params?.id
+    style = (params?.style ?? "")
+    isOrderPopup = (params?.isOrderPopup ?? false)
     isWrapInRowAllowed = isWrapInRowAllowed
-    flowAlign = getTblValue("flowAlign", params, "center")
-    animation = getTblValue("animation", params)
+    flowAlign = (params?.flowAlign ?? "center")
+    animation = params?.animation
     isVerticalAlignText = params?.isVerticalAlignText ?? false
     topImages = params?.topImages
     hasBackdrop = !!params?.hasBackdrop
@@ -404,8 +405,19 @@ g_hints.splitRowToPieces <- function splitRowToPieces(row, needProtectSplitLinks
 }
 
 
-::cross_call_api.getHintConfig <- @(text, params)
-  g_hints.getHintSlices(text, { needConfig = true }.__update(params))
+
+
+eventbus_subscribe("hints.requestConfig", function(msg) {
+  let skipDeviceIds = {}
+  foreach (id in msg?.skipDeviceIds ?? [])
+    skipDeviceIds[id] <- true
+  let view = g_hints.getHintSlices(msg.text, { needConfig = true, skipDeviceIds })
+  eventbus_send("hints.configResponse", { key = msg.key, rows = view?.rows ?? [] })
+})
+
+
+
+eventbus_send("hints.providerReady", {})
 
 return freeze({
   g_hints

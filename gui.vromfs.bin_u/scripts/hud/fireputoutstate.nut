@@ -3,11 +3,11 @@ from "%scripts/dagui_library.nut" import *
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
-let def = freeze({
+const def = {
   isPuttingOut = false
   firePutOutFullTime = 0.0
   firePutOutElapsedTime = 0.0
-})
+}
 let fireUsageInfoWatch = Watched(def)
 fireUsageInfoWatch.subscribe(@(v) g_hud_event_manager.onHudEvent("firePutOutInProgress", v))
 

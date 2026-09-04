@@ -1,8 +1,7 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%scripts/dagui_natives.nut" import get_replay_status, get_replay_version, start_replay
 from "%scripts/dagui_library.nut" import *
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-
+from "%scripts/webRPC.nut" import webRpcRegister
 
 function replay_status(_params) {
   return {
@@ -17,8 +16,8 @@ function replay_start(params) {
     return replay_status(null)
 
   let startPosition = params?.position ?? 0
-  let url = getTblValue("url", params)
-  let timeline = !!getTblValue("timeline", params)
+  let url = params?.url
+  let timeline = !!params?.timeline
 
   if (!url) {
     script_net_assert_once("null replay url", "NULL replay url in rpc.replay_start params")
@@ -29,5 +28,5 @@ function replay_start(params) {
   return { status = "processed", version = get_replay_version() }
 }
 
-web_rpc.register_handler("replay_status", replay_status)
-web_rpc.register_handler("replay_start", replay_start)
+webRpcRegister("replay_status", replay_status)
+webRpcRegister("replay_start", replay_start)

@@ -1,3 +1,7 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "guiMission" import select_training_mission, get_meta_mission_info_by_name
+from "unlocks" import getUnlockTypeById
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
@@ -6,24 +10,16 @@ let { Cost } = require("%scripts/money.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { getUnlockCost, isUnlockOpened
-} = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
-  USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY,
-  USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS, USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_MODIFICATIONS, USEROPT_LOAD_FUEL_AMOUNT } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isTestFlightAvailable } = require("%scripts/unit/unitStatus.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
-let DataBlock = require("DataBlock")
-let { getUnlockTypeById } = require("unlocks")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
@@ -147,7 +143,7 @@ let Smoke = class (BaseItem) {
     foreach (idx, val in defaultValues)
       set_gui_option_in_mode(idx, val, OPTIONS_MODE_TRAINING)
 
-    let misName = "aerobatic_smoke_preview"
+    const misName = "aerobatic_smoke_preview"
     let misBlkBase = get_meta_mission_info_by_name(misName)
     if (!misBlkBase)
       return script_net_assert_once("Wrong testflight mission",

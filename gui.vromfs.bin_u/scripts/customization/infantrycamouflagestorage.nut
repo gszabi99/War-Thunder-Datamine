@@ -1,17 +1,17 @@
+import "DataBlock" as DataBlock
+from "%globalScripts/dataBlockExt.nut" import copyFromDataBlock, setBlkValueByPath
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "dagor.fs" import scan_folder
+from "%sqstd/datablock.nut" import blkFromPath, eachBlock
+from "dagor.random" import frnd
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { scan_folder } = require("dagor.fs")
 let { generateListTree, getBranchDataByPath } = require("%scripts/utils/listTreeUtils.nut")
-let { blkFromPath, eachBlock } = require("%sqstd/datablock.nut")
-let { copyFromDataBlock, setBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { convertFromTemplateName } = require("%scripts/customization/infantryCamouflageUtils.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { frnd } = require("dagor.random")
-let DataBlock = require("DataBlock")
-let { get_charserver_time_sec } = require("chard")
 let seenList = require("%scripts/seen/seenList.nut")
 
 const SKINS_DEEP_IN_TREE = 5
@@ -19,8 +19,8 @@ const SKINS_DEEP_IN_TREE = 5
 local cachedSkinFileList = null
 local skinListTree = null
 let branchesNeedMerge = ["infantry_equipment__teamSkins"]
-let pathToSaveData = "infantry_skins/selected_skins"
-let pathToSaveDataByWeapon = "infantry_skins/units"
+const pathToSaveData = "infantry_skins/selected_skins"
+const pathToSaveDataByWeapon = "infantry_skins/units"
 local internalSkinsSeenList = null
 
 const DEFAULT_SKINS = {
@@ -92,7 +92,7 @@ function getSaveDataByWeapon(unitName) {
 
 function getInfantrySkinsLocationsList() {
   if (cachedSkinFileList == null) {
-    let pathToConfigs = "%gameBase/templates/infantry_skins/"
+    const pathToConfigs = "%gameBase/templates/infantry_skins/"
     cachedSkinFileList = scan_folder({ root = pathToConfigs, vromfs = true, realfs = true, recursive = false, files_suffix = "*.blk" })
     
 
@@ -150,6 +150,12 @@ function getInfantrySkinsTree() {
     let locationFilesList = getInfantrySkinsLocationsList()
     foreach (fileName in locationFilesList) {
       let blk = blkFromPath(fileName)
+      local isNotPlayerSkins = false
+      eachBlock (blk,
+        @(b) isNotPlayerSkins = (b?["isNotPlayerSkins"] ?? false) || isNotPlayerSkins
+      )
+      if (isNotPlayerSkins)
+        continue
       insertAdditionalButtons(blk, SKINS_DEEP_IN_TREE)
       addSkinsFromBlk(blk)
     }

@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "chard" import getProfileCountry, setProfileCountry
 from "%scripts/dagui_library.nut" import *
-let { getProfileCountry, setProfileCountry } = require("chard")
-let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let profileCountrySq = mkWatched(persist, "profileCountrySq", isProfileReceived.get()
   ? (getProfileCountry() ?? "country_0")

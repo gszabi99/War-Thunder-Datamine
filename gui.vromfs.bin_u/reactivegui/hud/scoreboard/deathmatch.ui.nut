@@ -1,10 +1,8 @@
+import "%rGui/style/teamColors.nut" as teamColors
+from "%rGui/missionState.nut" import localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit, deathPenaltyMul, ctaDeathTicketPenalty
+from "%sqstd/math.nut" import ceil, floor
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
-
-let { ceil, floor } = require("%sqstd/math.nut")
-let { localTeam, ticketsTeamA, ticketsTeamB, timeLeft, scoreLimit,
-  deathPenaltyMul, ctaDeathTicketPenalty } = require("%rGui/missionState.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
 let scoresForOneKill = Computed(@() deathPenaltyMul.get() * ctaDeathTicketPenalty.get())
 let countKillsToWin = Computed(@() scoresForOneKill.get() == 0
@@ -50,7 +48,7 @@ function getScoreObj(teamName) {
     children = [
       @() {
         watch = teamColors
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         commands = scoreParams.poly
         color = teamColors.get()[scoreParams.color]
@@ -79,7 +77,7 @@ return @() {
       children = [
       {
         size = const [hdpx(92), hdpx(46)]
-        pos = [0, -hdpx(8)]
+        pos = const [0, -hdpx(8)]
         rendObj = ROBJ_VECTOR_CANVAS
         commands = [ [VECTOR_POLY, 0, 0, 100, 0, 90, 100, 10, 100] ]
         fillColor = 0x8C364854

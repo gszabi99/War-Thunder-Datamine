@@ -1,9 +1,9 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent
+from "chard" import getWishList, getMaxWishListSize, charSendBlk
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
-let { getWishList, getMaxWishListSize, charSendBlk } = require("chard")
-let { addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local wishlist = null
 
@@ -26,6 +26,9 @@ function isWishlistFull() {
     updateWishList()
   return wishlist.len() >= getMaxWishListSize()
 }
+
+let canAddUnitToWishlist = @(unit) unit != null && hasFeature("Wishlist")
+  && !unit.isSlave() && !hasInWishlist(unit.name) && !unit.isBought()
 
 let invalidateWishList = @() wishlist = null
 
@@ -53,6 +56,7 @@ addListenersWithoutEnv({ProfileUpdated = @(_p) invalidateWishList()}, CONFIG_VAL
 return {
   hasInWishlist
   isWishlistFull
+  canAddUnitToWishlist
   requestAddToWishlist
   requestRemoveFromWishlist
   getCurrentWishListSize

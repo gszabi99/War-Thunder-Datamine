@@ -1,22 +1,23 @@
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { getCollectionsList } = require("%scripts/collections/collections.nut")
 let { updateDecoratorDescription } = require("%scripts/customization/decoratorDescription.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getObjValidIndex, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { getObjValidIndex, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { askPurchaseDecorator, askConsumeDecoratorCoupon,
-  findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
+let { askPurchaseDecorator, askConsumeDecoratorCoupon, findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { canGetDecoratorFromTrophy } = require("%scripts/items/itemsManagerGetters.nut")
 
 const IS_ONLY_UNCOMPLETED_SAVE_ID = "collections/isOnlyUncompleted"
 
-local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local CollectionsHandler = class (BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/collections/collectionsPage.blk"
 
@@ -240,7 +241,7 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventBeforeStartShowroom(_p) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, get_gui_handler("MainMenu"))
   }
 
   function onBuyDecorator() {
@@ -302,7 +303,7 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   onEventCollectionsCacheInvalidate = @(_) this.updateCollectionsList()
 }
 
-gui_handlers.CollectionsHandler <- CollectionsHandler
+register_gui_handler("CollectionsHandler", CollectionsHandler)
 
 return {
   openCollectionsPage = @(params = {}) handlersManager.loadHandler(CollectionsHandler, params)

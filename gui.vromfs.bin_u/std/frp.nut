@@ -1,26 +1,26 @@
 from "frp" import Computed, Watched, FRP_INITIAL, set_subscriber_validation,
   make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred
+from "types" import Table, Array, String, Function
 
 function WatchedImmediate(...) {
   let w = Watched.acall([this].extend(vargv))
-  w.setDeferred(false)
+  w.setImmediate(true)
   return w
 }
 
 function ComputedImmediate(...) {
   let c = Computed.acall([this].extend(vargv))
-  c.setDeferred(false)
+  c.setImmediate(true)
   return c
 }
 
-let isComputed = @(v) type(v)=="instance" && v instanceof Computed
-let isWatched = @(v) type(v)=="instance" && v instanceof Watched
-let isObservable = @(v) isWatched(v) || isComputed(v)
+let isComputed = @(v) v instanceof Computed
+let isObservable = @(v) v instanceof Watched 
 
 function watchedTable2TableOfWatched(state, fieldsList = null) {
   assert(isObservable(state), "state has to be Watched")
   let list = fieldsList ?? state.get()
-  assert(type(list) == "table", "fieldsList should be provided as table")
+  assert(list instanceof Table, "fieldsList should be provided as table")
   return list.map(@(_, key) Computed(@() state.get()[key]))
 }
 
@@ -38,7 +38,7 @@ function watchedTable2TableOfWatched(state, fieldsList = null) {
 
 function mkLatestByTriggerStream(triggerObservable) {
   return function mkLatestStream(defValue = null, name = null){
-    let isTable = type(defValue) == "table"
+    let isTable = defValue instanceof Table
     local next_value = defValue
     let res = Watched(defValue)
     function updateFunc(...) {
@@ -46,8 +46,7 @@ function mkLatestByTriggerStream(triggerObservable) {
       triggerObservable.unsubscribe(updateFunc)
       res.set(next_value)
       if (next_value == oldValue){
-        let resType = type(next_value)
-        if (resType == "table" || resType == "array"){
+        if (next_value instanceof Table || next_value instanceof Array){
           res.trigger()
         }
       }
@@ -173,7 +172,7 @@ function mkTriggerableLatestWatchedSetAndStorage(triggerableObservable) {
       }.__update(mkCombined==MK_COMBINED_STATE ? {state} : {set = observableEidsSet})
     }
     else {
-      assert(type(key)=="string", @() $"key should be null or string, but got {type(key)}")
+      assert(key instanceof String, @() $"key should be null or string, but got {type(key)}")
       return {
         [$"{key}GetWatched"] = getWatchedByEid,
         [$"{key}UpdateEid"] = updateEidProps,
@@ -191,9 +190,25 @@ function WatchedRo(val) {
   return w
 }
 
+function subscribeAndInit(callback, observable) {
+  assert(callback instanceof Function, "First argument of subscribeAndInit has to be Function")
+  assert(isObservable(observable), "Second argument of subscribeAndInit has to be Observable")
+  observable.subscribe(callback)
+  callback(observable.get())
+}
 
-function getWatcheds(func) {
-  assert(type(func) == "function")
+function subscribeList(callback, ...) {
+  assert(callback instanceof Function, "First argument of subscribeList has to be Function")
+  foreach (val in vargv)
+    assert(isObservable(val), @() $"All arguments of subscribeList have to be Observable, but got {type(val)}")
+
+  let cb = @(_) callback()
+  foreach (val in vargv)
+    val.subscribe(cb)
+}
+
+function getWatcheds(func): array {
+  assert(func instanceof Function)
   let num = func.getfuncinfos().freevars
   let res = []
   for (local i=0; i< num; i++) {
@@ -219,9 +234,10 @@ return freeze({
   recalc_all_computed_values
   gather_graph_stats
   update_deferred
+  subscribeAndInit
+  subscribeList
   WatchedRo
   isObservable
   isComputed
-  isWatched
   getWatcheds
 })

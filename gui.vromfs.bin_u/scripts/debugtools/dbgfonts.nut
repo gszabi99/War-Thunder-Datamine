@@ -1,9 +1,9 @@
+import "fonts" as fonts
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
 
 
-let fonts = require("fonts")
-let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let g_font = require("%scripts/options/fonts.nut")

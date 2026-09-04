@@ -1,7 +1,7 @@
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 
-let { isInFlight } = require("gameplayBinding")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { CONTROL_HELP_PATTERN } = require("%scripts/controls/controlsConsts.nut")

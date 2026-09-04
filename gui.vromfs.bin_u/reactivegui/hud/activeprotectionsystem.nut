@@ -1,10 +1,11 @@
+from "%rGui/hud/tankState.nut" import activeProtectionSystemModulesCount
+from "%sqstd/math.nut" import PI, cos, sin, fabs
 from "%rGui/globals/ui_library.nut" import *
 
-let { activeProtectionSystemModulesCount, activeProtectionSystemModules } = require("%rGui/hud/tankState.nut")
+let { activeProtectionSystemModules } = require("%rGui/hud/tankState.nut")
 let colors = require("%rGui/style/colors.nut")
-let { PI, cos, sin, fabs } = require("%sqstd/math.nut")
 
-let greenColor = Color(10, 202, 10, 250)
+const greenColor = Color(10, 202, 10, 250)
 
 function createModule(module) {
   let { horAnglesX, horAnglesY, shotCountRemain, shotCount, timeToReady } = module
@@ -17,8 +18,8 @@ function createModule(module) {
     let angel = (horAnglesX.get() - 90.0 + sectorSize * 0.5) * PI / 180.0
     return {
       rendObj = ROBJ_VECTOR_CANVAS
-      watch = [horAnglesX, horAnglesX, shotCountRemain, shotCount]
-      size = flex()
+      watch = [horAnglesX, horAnglesY, shotCountRemain, shotCount, timeToReady]
+      size = FLEX
       fillColor = colors.transparent
       color
       lineWidth = hdpx(2) * LINE_WIDTH

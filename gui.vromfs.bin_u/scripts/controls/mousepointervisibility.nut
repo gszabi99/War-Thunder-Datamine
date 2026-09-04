@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
 

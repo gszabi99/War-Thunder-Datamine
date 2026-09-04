@@ -1,21 +1,31 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get_researchable_unit_name, shop_get_aircraft_hp, wp_get_repair_cost, clan_get_researching_unit, is_era_available, set_char_cb, is_mouse_last_time_used
-from "%scripts/mainConsts.nut" import SEEN
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "dagor.workcycle" import defer
+from "dagor.time" import get_time_msec
+from "string" import format, split_by_chars
+from "math" import ceil, floor, abs
+from "hangar" import hangar_get_current_unit_name
+from "%sqstd/string.nut" import cutPrefix
+from "chard" import getDestinationRPUnitType, charSendBlk, getTopUnitsInfo
+from "blkGetters" import get_ranks_blk
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get_researchable_unit_name, shop_get_aircraft_hp, wp_get_repair_cost, clan_get_researching_unit, is_era_available
+  , set_char_cb, is_mouse_last_time_used
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 
-let { defer } = require("dagor.workcycle")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
-let { format, split_by_chars } = require("string")
-let { ceil, floor, abs } = require("math")
-let { hangar_get_current_unit_name } = require("hangar")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { findChildIndex, move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { findChildIndex, move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
@@ -24,36 +34,25 @@ let { buy, research, buyUnit } = require("%scripts/unit/unitActions.nut")
 let { topMenuHandler, topMenuShopActive, unitToShowInShop } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText, expNewNationBonusDailyBattleCount
-} = require("shopUnitCellFill.nut")
-let { ShopLines } = require("shopLines.nut")
+let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, initCell, getUnitRankText, expNewNationBonusDailyBattleCount } = require("%scripts/shop/shopUnitCellFill.nut")
+let { ShopLines } = require("%scripts/shop/shopLines.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
-let { hasMarkerByUnitName, getUnlockIdByUnitName,
-  getUnlockIdsByArmyId } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode
-} = require("%scripts/shop/shopDifficulty.nut")
+let { hasMarkerByUnitName, getUnlockIdByUnitName, getUnlockIdsByArmyId } = require("%scripts/unlocks/unlockMarkers.nut")
+let { getShopDiffMode, storeShopDiffMode, isAutoDiff, getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { getDestinationRPUnitType, charSendBlk, getTopUnitsInfo } = require("chard")
-let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, setShopDevMode, getShopDevModeOptions } = require("%scripts/debugTools/dbgShop.nut")
-let { getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
-  getUnitName, getPrevUnit
-} = require("%scripts/unit/unitInfo.nut")
+let { getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName, getPrevUnit } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched
-} = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift, isUnitBought, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { checkForResearch, updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
-let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let { showUnitGoods, showUnitsSharedGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -67,7 +66,6 @@ let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
@@ -149,7 +147,7 @@ let armyDataByPageName = {
 
 
 
-gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let ShopMenuHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopInclude.blk"
   sceneNavBlkName = "%gui/shop/shopNav.blk"
@@ -921,7 +919,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let x = "".concat($"{treeData.sectionsPos[s]}@shop_width", isLeft ? "" : extraLeft)
       let w = "".concat($"{treeData.sectionsPos[s + 1] - treeData.sectionsPos[s]}@shop_width", isLeft ? extraLeft : "", isRight ? extraRight : "")
 
-      let isResearchable = getTblValue(s, treeData.sectionsResearchable)
+      let isResearchable = treeData.sectionsResearchable?[s]
       let title = isResearchable ? "#shop/section/researchable" : "#shop/section/premium"
 
       view.plates.append({ title = title, x = x, w = w, hasExpandBtn = s == 0 ? "yes" : null})
@@ -988,7 +986,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         let isLeft = s == 0
         let isRight = s == sectionsTotal - 1
-        let isResearchable = getTblValue(s, treeData.sectionsResearchable)
+        let isResearchable = treeData.sectionsResearchable?[s]
         let tierType = tierUnlocked || !isResearchable ? "unlocked" : "locked"
         let x = "".concat($"{pX}@shop_width", isLeft ? "" : extraLeft)
         let w = "".concat($"{pW}@shop_width", isLeft ? extraLeft : "", isRight ? $" + {this.extraWidth}" : "")
@@ -1399,15 +1397,15 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getDefaultUnitInGroup(unitGroup) {
-    let airsList = getTblValue("airsGroup", unitGroup)
-    return getTblValue(0, airsList)
+    let airsList = unitGroup?.airsGroup
+    return airsList?[0]
   }
 
   function getItemBlockFromShopTree(itemName) {
     let tree = this.getCurTreeData().tree
     for (local i = 0; i < tree.len(); ++i)
       for (local j = 0; j < tree[i].len(); ++j) {
-        let name = getTblValue("name", tree[i][j])
+        let name = tree[i][j]?.name
         if (!name)
           continue
 
@@ -2011,7 +2009,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitRepaired(params) {
-    let unit = getTblValue("unit", params)
+    let unit = params?.unit
 
     if (this.checkBrokenListStatus(unit))
       this.checkUnitItemAndUpdate(unit)
@@ -2022,23 +2020,23 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventSparePurchased(params) {
     if (!this.scene.isEnabled() || !this.scene.isVisible())
       return
-    this.checkUnitItemAndUpdate(getTblValue("unit", params))
+    this.checkUnitItemAndUpdate(params?.unit)
   }
 
   function onEventModificationPurchased(params) {
     if (!this.scene.isEnabled() || !this.scene.isVisible())
       return
-    this.checkUnitItemAndUpdate(getTblValue("unit", params))
+    this.checkUnitItemAndUpdate(params?.unit)
   }
 
   function onEventAllModificationsPurchased(params) {
     if (!this.scene.isEnabled() || !this.scene.isVisible())
       return
-    this.checkUnitItemAndUpdate(getTblValue("unit", params))
+    this.checkUnitItemAndUpdate(params?.unit)
   }
 
   function onEventUpdateResearchingUnit(params) {
-    let unitName = getTblValue("unitName", params, shop_get_researchable_unit_name(this.curCountry, this.getCurPageEsUnitType()))
+    let unitName = (params?.unitName ?? shop_get_researchable_unit_name(this.curCountry, this.getCurPageEsUnitType()))
     this.checkUnitItemAndUpdate(getAircraftByName(unitName))
   }
 
@@ -2072,8 +2070,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene))
       return
 
-    let prevUnitName = getTblValue("prevUnitName", params)
-    let unitName = getTblValue("unitName", params)
+    let prevUnitName = params?.prevUnitName
+    let unitName = params?.unitName
 
     if (prevUnitName && prevUnitName != unitName)
       this.checkUnitItemAndUpdate(getAircraftByName(prevUnitName))
@@ -2096,7 +2094,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    if (getTblValue("receivedFromTrophy", params, false) && unit.isVisibleInShop()) {
+    if ((params?.receivedFromTrophy ?? false) && unit.isVisibleInShop()) {
       this.doWhenActiveOnce("fullReloadAircraftsList")
       return
     }
@@ -2209,7 +2207,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventCrewTakeUnit(params) {
     foreach (param in ["unit", "prevUnit"]) {
-      let unit = getTblValue(param, params)
+      let unit = params?[param]
       if (!unit)
         continue
       this.doWhenActive(@() this.checkUnitItemAndUpdate(unit))
@@ -2411,7 +2409,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let value = obj.getValue()
-    let item = getTblValue(value, this.showModeList)
+    let item = this.showModeList?[value]
     if (!item)
       return
 
@@ -2477,7 +2475,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           if (!this.shopResearchMode) {
             let hasObjective = isUnitGroup(unit)
               ? unit.airsGroup.findindex((@(groupUnit) hasMarkerByUnitName(groupUnit.name, curEdiff))) != null
-              : u.isUnit(unit) && hasMarkerByUnitName(unit.name, curEdiff)
+              : u.isOfClass(unit, "Unit") && hasMarkerByUnitName(unit.name, curEdiff)
             unitObj.findObject("unlockMarker")["isActive"] = hasObjective ? "yes" : "no"
           }
         }
@@ -2760,3 +2758,6 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     setNationBonusMarkState(this.curCountry, this.curPage, obj.getValue())
   }
 }
+register_gui_handler("ShopMenuHandler", ShopMenuHandler)
+
+return { ShopMenuHandler }

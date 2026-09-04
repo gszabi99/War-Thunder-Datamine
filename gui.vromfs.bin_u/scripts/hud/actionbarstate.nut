@@ -1,7 +1,7 @@
+from "frp" import FRP_INITIAL
+from "hudActionBar" import getActionBarItems
 from "%scripts/dagui_library.nut" import *
-
-let { FRP_INITIAL } = require("frp")
-let { getActionBarItems } = require("hudActionBar")
+from "types" import Table
 
 let actionBar = Watched([])
 
@@ -24,7 +24,7 @@ function secondActionIsEqual(abInfoA, abInfoB) {
     let b = abInfoB[i]
     if (type(a) != type(b))
       return false
-    if (type(a) != "table")
+    if (!(a instanceof Table))
       return a == b
 
     foreach (k, v in a)
@@ -37,7 +37,7 @@ function secondActionIsEqual(abInfoA, abInfoB) {
 function actionIsEqual(a, b) {
   if (type(a) != type(b))
     return false
-  if (type(a) != "table")
+  if (!(a instanceof Table))
     return a == b
 
   foreach (k, v in a) {

@@ -16,16 +16,17 @@ from "%scripts/teams.nut" import g_team
 
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { getRoomMembersInfoList } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { setMpTable, buildMpTable, updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
-gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
+let MRoomPlayersListWidget = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/playersList.tpl"
@@ -46,11 +47,11 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   static TEAM_TBL_PREFIX = "players_table_"
 
   static function create(config) {
-    if (!getTblValue("teams", config) || !checkObj(getTblValue("scene", config))) {
+    if (!config?.teams || !checkObj(config?.scene)) {
       assert(false, "cant create playersListWidget - no teams or scene")
       return null
     }
-    return handlersManager.loadHandler(gui_handlers.MRoomPlayersListWidget, config)
+    return handlersManager.loadHandler(get_gui_handler("MRoomPlayersListWidget"), config)
   }
 
   function getSceneTplView() {
@@ -91,7 +92,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSelectedPlayer() {
     let objTbl = this.getFocusedTeamTableObj()
-    return objTbl && getTblValue(objTbl.getValue(), getTblValue(this.focusedTeam, this.playersInTeamTables))
+    return objTbl && this.playersInTeamTables?[this.focusedTeam]?[objTbl.getValue()]
   }
 
   function getSelectedRowPos() {
@@ -151,7 +152,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateFocusedTeamByObj(obj) {
-    this.focusedTeam = getTblValue(getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX), g_team, this.focusedTeam)
+    this.focusedTeam = (g_team?[getObjIdByPrefix(obj, this.TEAM_TBL_PREFIX)] ?? this.focusedTeam)
   }
 
   function onTableClick(obj) {
@@ -216,3 +217,6 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       move_mouse_on_child(this.scene.getChild(0), 0)
   }
 }
+register_gui_handler("MRoomPlayersListWidget", MRoomPlayersListWidget)
+
+return { MRoomPlayersListWidget }

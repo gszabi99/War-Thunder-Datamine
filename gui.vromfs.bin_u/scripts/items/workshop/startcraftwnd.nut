@@ -1,12 +1,13 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 
-let class startCraftWnd (gui_handlers.BaseGuiHandlerWT) {
+class startCraftWnd (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
 
@@ -28,6 +29,6 @@ let class startCraftWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.startCraftWnd <- startCraftWnd
+register_gui_handler("startCraftWnd", startCraftWnd)
 
 return @(params) handlersManager.loadHandler(startCraftWnd, params)

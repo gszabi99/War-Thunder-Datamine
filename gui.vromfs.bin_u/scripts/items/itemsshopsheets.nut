@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqStdLibs/helpers/enums.nut" as enums
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")

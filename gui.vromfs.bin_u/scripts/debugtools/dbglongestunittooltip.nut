@@ -1,11 +1,11 @@
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { fillAirInfo } = require("%scripts/airInfo.nut")
 
@@ -119,10 +119,10 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
       this.fillUnitInfo(unit)
   }
 }
-gui_handlers.dbgLongestUnitTooltip <- dbgLongestUnitTooltip
+register_gui_handler("dbgLongestUnitTooltip", dbgLongestUnitTooltip)
 
 function debug_open_longest_unit_tooltips() {
-  handlersManager.loadHandler(gui_handlers.dbgLongestUnitTooltip)
+  handlersManager.loadHandler(dbgLongestUnitTooltip)
 }
 
 register_command(debug_open_longest_unit_tooltips, "debug.open_longest_unit_tooltips")

@@ -1,8 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "hudMessages" import subscribeHudEvents
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { subscribeHudEvents } = require("hudMessages")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let g_hud_event_manager = {
   subscribers = {}

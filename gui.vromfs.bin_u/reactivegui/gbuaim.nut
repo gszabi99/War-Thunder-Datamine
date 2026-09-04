@@ -1,7 +1,7 @@
+from "%rGui/opticWeaponAim.nut" import opticWeaponAim
 from "%rGui/globals/ui_library.nut" import *
 
 let aimState = require("%rGui/guidedBombsAimState.nut")
-let { opticWeaponAim } = require("%rGui/opticWeaponAim.nut")
 
 let dummyTargetName = Watched("")
 let dummyBool = Watched(false)

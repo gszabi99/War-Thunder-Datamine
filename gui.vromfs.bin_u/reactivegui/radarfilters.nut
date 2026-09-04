@@ -1,16 +1,14 @@
+from "%rGui/hudState.nut" import isUnitAlive, isUnitDelayed, playerUnitName, unitType
+from "%rGui/globalState.nut" import isInFlight
+from "%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut" import aaMenuCfg
+from "%appGlobals/hud/hudState.nut" import savedRadarFilters, AAComplexRadarFiltersSaveSlotName
+from "%rGui/radarState.nut" import IsRadarHasFilters, IsEsm
+from "guiRadar" import canEnterAAComplexMenu, RadarCompositeSubfilter
+from "radarGuiControls" import RadarTargetsIffFilterMask, GenericSourceType, sendIffFilterToRadars
+from "eventbus" import eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
-let { canEnterAAComplexMenu, RadarCompositeSubfilter } = require("guiRadar")
-let { isUnitAlive, isUnitDelayed, playerUnitName, unitType } = require("%rGui/hudState.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
-let { savedRadarFilters, AAComplexRadarFiltersSaveSlotName } = require("%appGlobals/hud/hudState.nut")
-let { RadarTargetsIffFilterMask, GenericSourceType, sendIffFilterToRadars
-} = require("radarGuiControls")
-let { IFFFilter, typeFilter, genericSourceFilter, rangeFilter, ESMModeTypeFilter,
-  targetsFilterConfig, iffOnlyFilter, defaultFilters, esmFilter
-} = require("%rGui/radarFiltersConfig.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { IsRadarHasFilters, IsEsm } = require("%rGui/radarState.nut")
+
+let { IFFFilter, typeFilter, genericSourceFilter, rangeFilter, ESMModeTypeFilter, targetsFilterConfig, iffOnlyFilter, defaultFilters, esmFilter } = require("%rGui/radarFiltersConfig.nut")
 
 let filterPresets = [
   {

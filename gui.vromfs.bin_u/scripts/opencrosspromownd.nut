@@ -1,12 +1,13 @@
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 
 let supportedComLanguages = ["en", "ru", "pl", "de", "cz", "fr", "es", "pt", "ko", "zh"]
 
-let class CrossPromoWnd (gui_handlers.BaseGuiHandlerWT) {
+class CrossPromoWnd (BaseGuiHandlerWT) {
   sceneTplName = "%gui/crossPromoWnd.tpl"
   wndType = handlerType.MODAL
 
@@ -25,6 +26,6 @@ let class CrossPromoWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.CrossPromoWnd <- CrossPromoWnd
+register_gui_handler("CrossPromoWnd", CrossPromoWnd)
 
 return @(bannerSrc) handlersManager.loadHandler(CrossPromoWnd, { bannerSrc })

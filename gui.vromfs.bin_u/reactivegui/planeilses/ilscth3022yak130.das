@@ -1,6 +1,5 @@
-require %rGui.planeIlses.ilsCth3022
+require %rGui.planeIlses.ilsCth3022_common
 
-require DagorMath
 require DagorStdGuiRender
 require darg
 require math

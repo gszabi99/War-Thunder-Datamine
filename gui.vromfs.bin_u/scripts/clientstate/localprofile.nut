@@ -1,18 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "scriptRespondent" import registerRespondent
+from "dagor.debug" import debug_dump_stack
+from "blkGetters" import get_local_custom_settings_blk, get_common_local_settings_blk, get_local_unit_settings_blk
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { registerRespondent } = require("scriptRespondent")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let DataBlock = require("DataBlock")
-let { get_local_custom_settings_blk, get_common_local_settings_blk, get_local_unit_settings_blk
-} = require("blkGetters")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 const EATT_UNKNOWN = -1
 const NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED = "need_show_msg_graphic_aa_settings_was_modified"
@@ -27,6 +26,7 @@ function onUpdateProfile(taskId, action, transactionType) {
   eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
 }
 
+
 let onRefreshProfileOnLogin = @() broadcastEvent("RefreshProfileOnLogin")
 
 registerRespondent("onUpdateProfile", onUpdateProfile) 
@@ -38,6 +38,7 @@ eventbus_subscribe("onUpdateProfile", function(msg) {
 })
 
 eventbus_subscribe("onRefreshProfileOnLogin", @(_) onRefreshProfileOnLogin())
+registerRespondent("onBlksDataStorageLoaded", @() broadcastEvent("BlksDataStorageLoaded"))
 
 
 function saveLocalAccountSettings(path, value) {

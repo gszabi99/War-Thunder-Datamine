@@ -1,34 +1,23 @@
+from "%sqstd/platform.nut" import isPC
+from "globalEnv" import ControlHelpersMode
+from "gameparams" import get_game_params
+from "gameOptions" import get_option_multiplier, set_option_multiplier, get_option_int, set_option_int, OPTION_MOUSE_JOYSTICK_DEADZONE, OPTION_MOUSE_JOYSTICK_SCREENSIZE, OPTION_MOUSE_JOYSTICK_SENSITIVITY
+  , OPTION_MOUSE_JOYSTICK_SCREENPLACE, OPTION_MOUSE_AILERON_AILERON_FACTOR, OPTION_MOUSE_AILERON_RUDDER_FACTOR, OPTION_CAMERA_SPEED, OPTION_AIM_TIME_NONLINEARITY_AIR, OPTION_AIM_ACCELERATION_DELAY_AIR, OPTION_MOUSE_Z_MULT
+  , OPTION_MOUSE_JOYSTICK_MODE
+from "controls" import ActionGroup, hasXInputDevice, isXInputDevice
+from "controlsOptions" import set_option_mouse_joystick_square, get_option_mouse_joystick_square
 from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
 
-let { isPC } = require("%sqstd/platform.nut")
-let { ControlHelpersMode } = require("globalEnv")
-let { get_game_params } = require("gameparams")
-let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
-  OPTION_MOUSE_JOYSTICK_DEADZONE, OPTION_MOUSE_JOYSTICK_SCREENSIZE,
-  OPTION_MOUSE_JOYSTICK_SENSITIVITY, OPTION_MOUSE_JOYSTICK_SCREENPLACE,
-  OPTION_MOUSE_AILERON_AILERON_FACTOR, OPTION_MOUSE_AILERON_RUDDER_FACTOR,
-  OPTION_CAMERA_SPEED, OPTION_AIM_TIME_NONLINEARITY_AIR,
-  OPTION_AIM_ACCELERATION_DELAY_AIR, OPTION_MOUSE_Z_MULT,
-  OPTION_MOUSE_JOYSTICK_MODE
-} = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
-let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
-  USEROPT_AUTOTRIM, USEROPT_AILERONS_MULTIPLIER, USEROPT_ELEVATOR_MULTIPLIER,
-  USEROPT_RUDDER_MULTIPLIER, USEROPT_INVERTX, USEROPT_INVERTY, USEROPT_JOYFX, USEROPT_FORCE_GAIN,
-  USEROPT_GUNNER_VIEW_SENSE, USEROPT_GUNNER_VIEW_ZOOM_SENS, USEROPT_GUNNER_INVERTY,
-  USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL,
-  USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM, USEROPT_AILERONS_MULTIPLIER, USEROPT_ELEVATOR_MULTIPLIER, USEROPT_RUDDER_MULTIPLIER, USEROPT_INVERTX, USEROPT_INVERTY, USEROPT_JOYFX, USEROPT_FORCE_GAIN, USEROPT_GUNNER_VIEW_SENSE, USEROPT_GUNNER_VIEW_ZOOM_SENS, USEROPT_GUNNER_INVERTY, USEROPT_INVERTCAMERAY, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_FLAPS_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY } = require("%scripts/options/optionsExtNames.nut")
 let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
-let { set_option_mouse_joystick_square, get_option_mouse_joystick_square } = require("controlsOptions")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM) != 0
 let needFullGunnerSettings = @() isPlatformSony || isPlatformXbox
@@ -455,6 +444,11 @@ return [
   }
   {
     id = "ID_COUNTERMEASURES_CHAFF"
+    checkAssign = false
+    needShowInHelp = true
+  }
+  {
+    id = "ID_COUNTERMEASURES_TOWED_DECOY"
     checkAssign = false
     needShowInHelp = true
   }

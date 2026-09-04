@@ -1,15 +1,17 @@
+from "gpuBenchmark" import getGpuName
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalSharedSettings, loadLocalSharedSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { canShowGpuBenchmark } = require("%scripts/options/systemOptions.nut")
-let { getGpuName } = require("gpuBenchmark")
+let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
 const GPU_BENCHMARK_SEEN_SAVE_ID = "gpuBenchmark/seen"
 const GPU_BENCHMARK_GPU_SAVE_ID = "gpuBenchmark/gpuName"
 
+let skipGpuBenchmark = getFromSettingsBlk("debug/skipGpuBenchmark", false)
+
 function needShowGpuBenchmark() {
-  if (!canShowGpuBenchmark())
+  if (skipGpuBenchmark || !canShowGpuBenchmark())
     return false
 
   let currentGpuName = getGpuName()

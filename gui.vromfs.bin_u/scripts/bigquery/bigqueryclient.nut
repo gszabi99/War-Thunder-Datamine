@@ -1,22 +1,24 @@
+
 #strict
 #allow-root-table
 
+import "ww_leaderboard" as ww_leaderboard
+from "chard" import save_common_local_settings
+from "%sqstd/platform.nut" import platformId
+from "dagor.time" import get_local_unixtime, ref_time_ticks
+from "dagor.random" import rnd, get_rnd_seed, set_rnd_seed
+from "string" import format
+from "json" import object_to_json_string
+from "auth_wt" import getDistr
+from "sysinfo" import get_user_system_info
+from "blkGetters" import get_settings_blk, get_common_local_settings_blk
+from "steam" import steam_is_running, steam_get_my_id
+from "soundModCheck" import is_sound_mods_enabled
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
-
-let { save_common_local_settings } = require("chard")
-let { platformId } = require("%sqstd/platform.nut")
-let ww_leaderboard = require("ww_leaderboard")
-let { get_local_unixtime, ref_time_ticks } = require("dagor.time")
-let { rnd, get_rnd_seed, set_rnd_seed }    = require("dagor.random")
-let { format               } = require("string")
-let { object_to_json_string} = require("json")
-let { getDistr             } = require("auth_wt")
-let { get_user_system_info } = require("sysinfo")
+from "types" import String, Integer
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { get_settings_blk, get_common_local_settings_blk } = require("blkGetters")
-let { steam_is_running, steam_get_my_id } = require("steam")
 
 local bqStat = persist("bqStat", @() { sendStartOnce = false })
 
@@ -29,7 +31,7 @@ function get_distr() {
   let config = get_settings_blk()
   distr = config?.distr ?? config?.originalConfigBlk.distr
 
-  return (type(distr) == "string" && distr.len() > 0) ? distr : ""
+  return (distr instanceof String && distr.len() > 0) ? distr : ""
 }
 
 
@@ -75,6 +77,9 @@ function add_user_info(table) {
   if (epic_is_running())
     table.epic <- true
 
+  if (is_sound_mods_enabled())
+    table.soundMod <- true
+
   if (is_dev_version())
     table.dev <- true
 }
@@ -117,14 +122,14 @@ function bqSendNoAuth(event, start = false) {
   local blk = get_common_local_settings_blk()
   local save = false
 
-  if ("uniqueId" not in blk || type(blk.uniqueId) != "string" || blk.uniqueId.len() < 16) {
+  if ("uniqueId" not in blk || !(blk.uniqueId instanceof String) || blk.uniqueId.len() < 16) {
     blk.uniqueId <- generate_unique_id()
     if (blk.uniqueId.len() < 16)
       logerr("BQ CLIENT bqSendNoAuth: uniqueId has small count of chars")
     save = true
   }
 
-  if ("runCount" not in blk || type(blk.runCount) != "integer" || blk.runCount < 0) {
+  if ("runCount" not in blk || !(blk.runCount instanceof Integer) || blk.runCount < 0) {
     blk.runCount <- 0;
     save = true
   }

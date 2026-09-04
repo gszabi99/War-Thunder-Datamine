@@ -1,6 +1,7 @@
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import ww_preview_operation, ww_stop_preview
 from "%scripts/dagui_library.nut" import *
-let { get_time_msec } = require("dagor.time")
+
 let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 

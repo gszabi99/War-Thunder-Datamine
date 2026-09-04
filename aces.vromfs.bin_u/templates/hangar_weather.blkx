@@ -1,0 +1,160 @@
+{
+  "weather_hangar_halloween": {
+    "_use": "skies_settings",
+    "sky_atmosphere__mie_height": [
+      4.8,
+      4.8
+    ],
+    "sky_atmosphere__mie_scale": [
+      3.0,
+      3.0
+    ],
+    "sky_atmosphere__rayleigh_scale": [
+      0.88,
+      0.88
+    ],
+    "sky_atmosphere__mie2_thickness": [
+      200.0,
+      200.0
+    ],
+    "sky_atmosphere__mie2_scale": [
+      6.0,
+      6.0
+    ],
+    "sky_atmosphere__mie2_altitude": [
+      150.0,
+      150.0
+    ],
+    "sky_atmosphere__atmosphere_scale": 0.5,
+    "sky_atmosphere__min_ground_offset": 27.0,
+    "sky_settings__haze_min_angle": 0.0,
+    "clouds_form__extinction": [
+      0.8,
+      0.8
+    ],
+    "clouds_form__turbulenceStrength": [
+      1.0,
+      1.0
+    ],
+    "clouds_form__shapeNoiseScale": 8,
+    "clouds_form__turbulenceFreq": 9,
+    "clouds_rendering__back_eccentricity": 0.1,
+    "clouds_rendering__forward_eccentricity_weight": 0.1,
+    "clouds_rendering__erosion_noise_size": 62.8,
+    "clouds_rendering__ms_contribution": 0.1,
+    "clouds_rendering__ms_attenuation": 0.075,
+    "clouds_rendering__erosionWindSpeed": 0.5,
+    "clouds_settings__competitive_advantage": true,
+    "strata_clouds__amount": [
+      1.0,
+      1.0
+    ],
+    "clouds_form__layers:array": {
+      "clouds_form__layers:object": [
+        {
+          "startAt": [
+            -0.012275,
+            -0.012275
+          ],
+          "thickness": [
+            2.7,
+            2.7
+          ],
+          "density": [
+            1.5,
+            1.5
+          ],
+          "clouds_type": [
+            0.9,
+            0.9
+          ],
+          "clouds_type_variance": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "startAt": [
+            4.0,
+            4.0
+          ],
+          "thickness": [
+            16.0,
+            16.0
+          ],
+          "density": [
+            0.5,
+            0.5
+          ],
+          "clouds_type": [
+            0.5,
+            0.5
+          ],
+          "clouds_type_variance": [
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "clouds_weather_gen__layers:array": {
+      "clouds_weather_gen__layers:object": [
+        {
+          "coverage": [
+            0.6,
+            0.6
+          ],
+          "freq": [
+            5.0,
+            5.0
+          ],
+          "seed": [
+            1275.0,
+            1275.0
+          ]
+        },
+        {
+          "coverage": [
+            0.6,
+            0.6
+          ],
+          "freq": [
+            2.0,
+            2.0
+          ],
+          "seed": [
+            15.0,
+            15.0
+          ]
+        }
+      ]
+    }
+  },
+  "weather_hangar_halloween_day": {
+    "_use": "weather_hangar_halloween"
+  },
+  "weather_hangar_halloween_night": {
+    "_use": "weather_hangar_halloween"
+  },
+  "weather_hangar_halloween_compatibility": {
+    "level__weatherChoice:object": {
+      "weather_hangar_halloween_night:object": {
+        "weight": 1.0,
+        "level__timeVec:array": {
+          "level__timeVec": 23.5
+        }
+      }
+    },
+    "_group": {
+      "_tags": "compatibility",
+      "level__weatherChoiceOverride:object": {
+        "weather_hangar_halloween_day:object": {
+          "weight": 1.0,
+          "level__timeVec:array": {
+            "level__timeVec": 11.3
+          }
+        }
+      }
+    }
+  }
+}

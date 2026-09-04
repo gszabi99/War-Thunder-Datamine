@@ -1,10 +1,11 @@
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%sqstd/math.nut" import calcPercent
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
+from "types" import Integer
 
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { calcPercent } = require("%sqstd/math.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { get_charserver_time_sec } = require("chard")
 let { isAvailableBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 const DISCOUNT_BUNDLES_TIMER_ID = "timer_discount_bundles_update"
@@ -30,12 +31,13 @@ function updateDiscountUnitsBundles(bundlesShopInfoV) {
     if (unitsList.len() == 0)
       continue
 
-    let discountTillInt = type(discount_till) == "integer" ? discount_till : 0  
-    let timeLeft = discountTillInt - curTime
-    if (timeLeft <= 0)
-      continue
-
-    minTimeLeft = min(minTimeLeft ?? timeLeft, timeLeft)
+    
+    if (discount_till instanceof Integer) {
+      let timeLeft = discount_till - curTime
+      if (timeLeft <= 0)
+        continue
+      minTimeLeft = min(minTimeLeft ?? timeLeft, timeLeft)
+    }
     foreach (unitName in unitsList) {
       let unit = getAircraftByName(unitName)
       if (unit == null || !isAvailableBuyUnitOnline(unit) || !unit.isVisibleInShop() || unit.isBought())

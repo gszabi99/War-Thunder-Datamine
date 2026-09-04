@@ -18,11 +18,11 @@ imgButton {
   <</tooltipId>>
   <<#tooltipId>><<#isTooltipByHold>>
     tooltipId:t='<<tooltipId>>'
-    on_pushed = "::gcb.delayedTooltipPush"
-    on_hold_start = "::gcb.delayedTooltipHoldStart"
-    on_hold_stop = "::gcb.delayedTooltipHoldStop"
-    on_hover:t='::gcb.delayedTooltipHover'
-    on_unhover:t='::gcb.delayedTooltipHover'
+    on_pushed = "gcb.delayedTooltipPush"
+    on_hold_start = "gcb.delayedTooltipHoldStart"
+    on_hold_stop = "gcb.delayedTooltipHoldStop"
+    on_hover:t='gcb.delayedTooltipHover'
+    on_unhover:t='gcb.delayedTooltipHover'
   <</isTooltipByHold>><</tooltipId>>
 
   <<#unlocked>> unlocked:t='yes'; <</unlocked>>

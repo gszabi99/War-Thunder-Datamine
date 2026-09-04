@@ -1,10 +1,9 @@
+import "console" as console
+from "%sqStdLibs/helpers/subscriptions.nut" import setDebugLoggingParams, debugLoggingEnable
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 
 let sqdebugger = require_optional("sqdebugger")
-let console = require("console")
-let { setDebugLoggingParams, debugLoggingEnable
-} = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
 
 function initEventBroadcastLogging() {
   setDebugLoggingParams(log, get_time_msec, toString)

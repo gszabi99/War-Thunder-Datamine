@@ -1,11 +1,10 @@
+import "%rGui/planeRwrs/rwrAnAlr46Components.nut" as rwrTargetsComponent
 from "%rGui/globals/ui_library.nut" import *
 
-let rwrTargetsComponent = require("%rGui/planeRwrs/rwrAnAlr46Components.nut")
-
-let color = Color(10, 202, 10, 250)
-let backgroundColor = Color(0, 0, 0, 255)
+const color = Color(10, 202, 10, 250)
+const backgroundColor = Color(0, 0, 0, 255)
 let baseLineWidth = LINE_WIDTH * 0.5
-let iconRadiusBaseRel = 0.15
+const iconRadiusBaseRel = 0.15
 let styleText = {
   color = color
   font = Fonts.hud
@@ -38,7 +37,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

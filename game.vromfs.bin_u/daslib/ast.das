@@ -92,7 +92,7 @@ def describe(prog : smart_ptr<Program>) {
 
 [generic]
 def get_mangled_name(decl : ExprBlock?) {
-    return get_mangled_name(unsafe(reinterpret<ExprBlock?> decl))
+    return get_mangled_name(unsafe(reinterpret<ExprBlock?>(decl)))
 }
 
 [macro_interface]
@@ -109,10 +109,6 @@ class AstFunctionAnnotation {
     def abstract isCompatible(var func : FunctionPtr; var types : VectorTypeDeclPtr; decl : AnnotationDeclaration; var errors : das_string) : bool
     def abstract isSpecialized : bool
     def abstract appendToMangledName(func : FunctionPtr; decl : AnnotationDeclaration; var mangledName : das_string) : void
-    
-    
-    
-    
     
     def abstract isAppliedToGeneric : bool
 }
@@ -567,6 +563,9 @@ class AstVisitor {
     def abstract preVisitExprConstInt16(expr : ExprConstInt16?) : void
     def abstract visitExprConstInt16(expr : ExprConstInt16?) : ExpressionPtr
 
+    def abstract preVisitExprConstFloat16(expr : ExprConstFloat16?) : void
+    def abstract visitExprConstFloat16(expr : ExprConstFloat16?) : ExpressionPtr
+
     def abstract preVisitExprConstInt64(expr : ExprConstInt64?) : void
     def abstract visitExprConstInt64(expr : ExprConstInt64?) : ExpressionPtr
 
@@ -953,6 +952,18 @@ def add_new_dirty_infer_macro(name : string; var someClassPtr) {
 }
 
 [macro_function]
+def add_new_pre_infer_macro(name : string; var someClassPtr) {
+    var ann = make_pass_macro(name, someClassPtr)
+    this_module() |> add_pre_infer_macro(ann)
+}
+
+[macro_function]
+def add_new_post_infer_macro(name : string; var someClassPtr) {
+    var ann = make_pass_macro(name, someClassPtr)
+    this_module() |> add_post_infer_macro(ann)
+}
+
+[macro_function]
 def add_new_lint_macro(name : string; var someClassPtr) {
     var ann = make_pass_macro(name, someClassPtr)
     this_module() |> add_lint_macro(ann)
@@ -974,7 +985,7 @@ def add_new_optimization_macro(name : string; var someClassPtr) {
 def find_module(prog : smart_ptr<Program>; name : string) : Module? {
     var rm : Module?
     program_for_each_module(prog) $(mod) {
-        if (string(mod.name) == name) {
+        if (mod.name == name) {
             rm = mod
         }
     }

@@ -1,11 +1,10 @@
+from "%rGui/wwMap/wwBattlesStates.nut" import battlesInfo, hoveredBattle, getBattleIconData, getBattleState
+from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords, activeAreaBounds
+from "%appGlobals/worldWar/wwMapFilters.nut" import isShowBattlesFilter
+from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
 
-let { floor } = require("math")
-let { battlesInfo, hoveredBattle, getBattleIconData, getBattleState } = require("%rGui/wwMap/wwBattlesStates.nut")
-let { convertToRelativeMapCoords, activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { isShowBattlesFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
-
-let function mkBattleIcon(battleInfo, areaBounds) {
+function mkBattleIcon(battleInfo, areaBounds) {
   return function() {
     let battleStatus = getBattleState(battleInfo)
     if(battleStatus == "Ended")

@@ -587,7 +587,7 @@ fouldata =
       "^spierdalaj",
       "^splooge",
       "^std",
-      "^cucchia cazzi",
+      "^succhiacazzi",
       "^suckmy",
       "^suka",
       "^syokubutuningen"

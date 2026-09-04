@@ -4,7 +4,6 @@ require DagorRandom
 require math
 require math.base
 require %appGame.infantry.es.squad_common
-require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 require %appGame.infantry.ai.ai_covers_common
 

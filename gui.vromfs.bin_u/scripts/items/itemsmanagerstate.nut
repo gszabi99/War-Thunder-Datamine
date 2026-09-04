@@ -1,5 +1,7 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/shopItemConsts.nut" import *
 from "%scripts/dagui_natives.nut" import item_get_type_id_by_type_name
+from "types" import String
 
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut")
@@ -35,7 +37,7 @@ local extInventoryUpdateTime = 0
 local shouldCheckAutoConsume = false
 
 function getInventoryItemType(blkType) {
-  if (type(blkType) == "string") {
+  if (blkType instanceof String) {
     if (blkType in inventoryItemTypeByTag)
       return inventoryItemTypeByTag[blkType]
 

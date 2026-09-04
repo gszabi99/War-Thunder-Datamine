@@ -1,10 +1,9 @@
-from "%scripts/dagui_library.nut" import *
 import "%globalScripts/ecs.nut" as ecs
+from "%globalScripts/debugTools/subscribeDedicLogerr.nut" import enableDedicLogerr, subscribeDedicLogerr
+from "dagor.workcycle" import resetTimeout
+from "dagor.system" import DBGLEVEL
+from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
-
-let { enableDedicLogerr, subscribeDedicLogerr } = require("%globalScripts/debugTools/subscribeDedicLogerr.nut")
-let { resetTimeout } = require("dagor.workcycle")
-let { DBGLEVEL } = require("dagor.system")
 
 subscribeDedicLogerr(function(text) {
   logerr($"[DEDICATED]: {text}")

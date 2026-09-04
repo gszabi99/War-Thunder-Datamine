@@ -40,6 +40,9 @@ enum CtrlsInGui {
   CTRL_IN_UNLIM_CTRL_MENU     = 0x00020000,
   CTRL_IN_AA_COMPLEX_MENU     = 0x00040000,
 
+
+
+
   
   CTRL_ALLOW_NONE             = 0x00000000,
   CTRL_ALLOW_FULL             = 0x00000FFF,
@@ -73,6 +76,7 @@ enum DargWidgets {
   , TANK_SIGHT_SETTINGS
   , WORLDWAR_MAP
   , BULLETS_GRAPH
+  , BULLETS_PENETRATION
 };
 
 enum AirParamsMain {
@@ -107,7 +111,8 @@ enum AirParamsMain {
   MACHINE_GUN =       28,
   CANNON_ADDITIONAL = 29,
   IRCM =              30,
-  RATE_OF_FIRE =      31
+  RATE_OF_FIRE =      31,
+  TOWED_DECOYS =      32
 };
 
 enum AirParamsSecondary {

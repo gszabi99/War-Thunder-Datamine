@@ -1,15 +1,14 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCountries, getCountryOverride, getCountryStyle, setCountryOverride, setCountryStyle,
-  countryDisplayStyle, getUseOperatorFlagsInBattle, setUseOperatorFlagsInBattle,
-  resetCountriesStyles } = require("%scripts/countries/countriesCustomization.nut")
+let { getCountries, getCountryOverride, getCountryStyle, setCountryOverride, setCountryStyle, countryDisplayStyle, getUseOperatorFlagsInBattle, setUseOperatorFlagsInBattle, resetCountriesStyles } = require("%scripts/countries/countriesCustomization.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 let prohibitedForSelectionCountries = [
@@ -22,7 +21,7 @@ let prohibitedForSelectionCountries = [
   "country_south_vietnam_navy",
 ]
 
-gui_handlers.ChooseCountryView <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("ChooseCountryView", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/countries/chooseCountryView.blk"
 
@@ -175,4 +174,4 @@ gui_handlers.ChooseCountryView <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillCountryFlags()
     this.hasChanges = true
   }
-}
+})

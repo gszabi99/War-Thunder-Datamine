@@ -1,14 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_name, sync_handler_simulate_signal, clan_get_my_role, clan_get_role_rights, clan_get_admin_editor_mode, clan_request_change_member_role
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
@@ -32,7 +34,7 @@ function guiStartChangeRoleWnd(contact, clanData) {
     rank = getClanMemberRank(clanData, contact.name)
   }
 
-  loadHandler(gui_handlers.clanChangeRoleModal,
+  loadHandler(get_gui_handler("clanChangeRoleModal"),
     {
       changeRolePlayer = changeRolePlayer,
       owner = this,
@@ -40,7 +42,7 @@ function guiStartChangeRoleWnd(contact, clanData) {
     })
 }
 
-gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanChangeRoleModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanChangeRoleWindow.blk"
   changeRolePlayer = null
@@ -101,8 +103,8 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function sortRoles(role1, role2) {
-    let rank1 = getTblValue("rank", role1, -1)
-    let rank2 = getTblValue("rank", role2, -1)
+    let rank1 = (role1?.rank ?? -1)
+    let rank2 = (role2?.rank ?? -1)
     if (rank1 != rank2)
       return rank1 > rank2 ? 1 : -1
     return 0
@@ -135,6 +137,7 @@ gui_handlers.clanChangeRoleModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.goBack()
   }
 }
+register_gui_handler("clanChangeRoleModal", clanChangeRoleModal)
 
 return {
   guiStartChangeRoleWnd

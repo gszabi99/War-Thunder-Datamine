@@ -1,30 +1,32 @@
+import "soundDevice" as soundDevice
+from "%globalScripts/shipHitIconsConsts.nut" import IS_SHIP_HIT_NOTIFICATIONS_VISIBLE
+from "unit" import get_player_unit_name
+from "graphicsOptions" import isHdrEnabled
+from "vr" import is_stereo_mode
+from "%sqstd/platform.nut" import is_xboxone_X, is_ps5_pro, isPC, is_android, is_gdk
+from "guiMission" import get_mission_difficulty_int, get_mission_difficulty
+from "radarOptions" import get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
+from "gameplayBinding" import isInFlight
+from "crosshair" import can_add_tank_alt_crosshair, get_user_alt_crosshairs
 from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_compatibility_mode
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
-let { get_player_unit_name } = require("unit")
-let { isHdrEnabled } = require("graphicsOptions")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
-let soundDevice = require("soundDevice")
-let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
-let { is_xboxone_X, is_ps5_pro, isPC, is_android, is_gdk } = require("%sqstd/platform.nut")
 let { canSetVSyncMode } = require("%scripts/options/consoleSettings.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
-let { get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values } = require("radarOptions")
 let { canSwitchGameLocalization } = require("%scripts/langUtils/language.nut")
 let { hasCustomLocalizationFlag } = require("%scripts/langUtils/customLocalization.nut")
-let { isInFlight } = require("gameplayBinding")
-let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
 let { getIsConsoleModeForceEnabled, showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -317,9 +319,7 @@ let getMainOptions = function() {
       [USEROPT_GAMEPAD_ENGINE_DEADZONE, "spinner"],
       [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", isPlatformSony],
       [USEROPT_USE_CONTROLLER_LIGHT, "spinner", isPlatformSony && hasFeature("ControllerLight")],
-
-
-
+      [USEROPT_ENABLE_HUMAN_AIM_ASSIST, "spinner", showConsoleButtons.get()],
       ["options/header/replaysAndSpectatorMode", null, hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
       [USEROPT_AUTOSAVE_REPLAYS, "spinner", !isInFlight() && hasFeature("ClientReplay")],
       [USEROPT_HUE_SPECTATOR_ALLY, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],

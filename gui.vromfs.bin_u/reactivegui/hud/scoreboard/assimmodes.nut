@@ -1,6 +1,6 @@
+from "%rGui/missionState.nut" import timeLeft, missionProgressAttackShip, missionProgressDefendShip, localTeam
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
-let { timeLeft, missionProgressAttackShip, missionProgressDefendShip, localTeam } = require("%rGui/missionState.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 
 let mainBlockDefFontStyles = {
   fontSize = hdpx(20)
@@ -11,7 +11,7 @@ let mainBlockDefFontStyles = {
 
 let timerComp = {
   size = const [hdpx(52), hdpx(19)]
-  pos = [0, -hdpx(9)]
+  pos = const [0, -hdpx(9)]
   hplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
   commands = [ [VECTOR_POLY, 8, 49, 0, 0, 100, 0, 92, 49, 84, 100, 16, 100] ]

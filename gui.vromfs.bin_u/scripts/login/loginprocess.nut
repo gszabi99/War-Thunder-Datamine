@@ -1,16 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted, isProfileReceived
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/onlineStageConsts.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 from "dagor.workcycle" import deferOnce
+
 let { LOGIN_PROCESS } = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted, isProfileReceived
-} = require("%appGlobals/login/loginState.nut")
 let { setCurLoginProcess, getCurLoginProcess } = require("%scripts/login/loginStates.nut")
-let { loadLoginHandler, addLoginState, onProfileReceived
-} = require("%scripts/login/loginManager.nut")
+let { loadLoginHandler, addLoginState, onProfileReceived } = require("%scripts/login/loginManager.nut")
 let { initLoginPseudoThreadsConfig } = require("%scripts/login/loginPseudoThreadsConfig.nut")
 
 enum LOGIN_PROGRESS {
@@ -32,7 +32,7 @@ eventbus_subscribe("online_init_stage_finished",  function(evt){
     addLoginState(matchingStageToLoginState[stage])
 })
 
-let class LoginProcess {
+class LoginProcess {
   curProgress = LOGIN_PROGRESS.NOT_STARTED
 
   constructor(shouldCheckScriptsReload) {

@@ -1,3 +1,4 @@
+from "math" import floor
 from "%scripts/dagui_library.nut" import *
 
 let { activeUnlocks, getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
@@ -6,9 +7,8 @@ let { basicUnlock, premiumUnlock, hasBattlePass } = require("%scripts/battlePass
 let { getRangeTextByPoint2 } = require("%scripts/unlocks/unlocksConditions.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
-let { floor } = require("math")
 
-let expStatId = "battlepass_exp"
+const expStatId = "battlepass_exp"
 
 const LOGIN_UNLOCK_ID = "battlepass_login_streak_1"
 

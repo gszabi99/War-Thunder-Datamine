@@ -1,12 +1,15 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+import "%sqstd/math.nut" as stdMath
 from "%scripts/dagui_natives.nut" import clan_get_role_name, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
-let enums = require("%sqStdLibs/helpers/enums.nut")
+from "types" import String
+
 let time = require("%scripts/time.nut")
-let stdMath = require("%sqstd/math.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
+let { colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 
 function getStandartTooltip(lbDataType, value) {
   let shortText = lbDataType.getShortTextByValue(value)
@@ -30,7 +33,7 @@ let lbDataType = {
 enums.addTypes(lbDataType, {
   NUM = {
     function getFullTextByValue(value, allowNegative = false) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
@@ -39,7 +42,7 @@ enums.addTypes(lbDataType, {
     }
 
     function getShortTextByValue(value, allowNegative = false) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
@@ -48,14 +51,14 @@ enums.addTypes(lbDataType, {
     }
 
     function getPrimaryTooltipText(value, allowNegative = false) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_integer_safe(value)
 
       return (allowNegative || value >= 0) ? getStandartTooltip(this, value) : ""
     }
 
     function getAdditionalTooltipPartValueText(value, hideIfZero) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_integer_safe(value)
 
       return hideIfZero
@@ -66,7 +69,7 @@ enums.addTypes(lbDataType, {
 
   FLOAT = {
     function getFullTextByValue(value, allowNegative = false) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_float_safe(value)
 
       return (!allowNegative && value < 0)
@@ -128,7 +131,7 @@ enums.addTypes(lbDataType, {
 
   PLACE = {
     function getFullTextByValue(value, allowNegative = false) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
@@ -137,7 +140,7 @@ enums.addTypes(lbDataType, {
     }
 
     function getPrimaryTooltipText(value, allowNegative = false) {
-      if (type(value) == "string")
+      if (value instanceof String)
         value = to_integer_safe(value)
 
       return (!allowNegative && value < 0)
@@ -174,7 +177,7 @@ enums.addTypes(lbDataType, {
   NICK = {
     function getFullTextByValue(value, _allowNegative = false) {
       let contact = getContactByName(value)
-      return getCustomNick(contact) ?? getPlayerName(value.tostring())
+      return getCustomNick(contact) ?? colorizeWhitePsnIcon(getPlayerName(value.tostring()))
     }
   }
 

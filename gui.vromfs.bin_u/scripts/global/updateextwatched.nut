@@ -1,6 +1,5 @@
-from "%scripts/dagui_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
+from "eventbus" import eventbus_send
+from "nestdb" import ndbWrite, ndbRead, ndbExists
 
 function update(config) {
   local hasValueChanged = false

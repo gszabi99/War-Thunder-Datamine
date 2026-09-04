@@ -1,7 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/ranks_common_shared.nut" import get_ds_ut_name_unit_type
 from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
@@ -9,7 +10,6 @@ let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomSta
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { get_ds_ut_name_unit_type } = require("%appGlobals/ranks_common_shared.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 let NumSpawnsByUnitType = class (RuleBase) {

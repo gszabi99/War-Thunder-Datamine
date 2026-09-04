@@ -56,6 +56,8 @@ let country_names = fixed_array<string>("australia",
 
 let operator_country_names = fixed_array<string>("south_africa",
                                   "hungary",
+                                  "thailand",
+                                  "benelux",
                                   "finland")
 
 [es(tag=sound, on_event=(EventEntityCreated, EventComponentsAppear))]

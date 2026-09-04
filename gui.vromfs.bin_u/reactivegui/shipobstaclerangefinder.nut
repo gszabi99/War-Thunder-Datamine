@@ -1,9 +1,9 @@
+from "%rGui/shipState.nut" import obstacleIsNear, distanceToObstacle, obstacleAngle
+from "%rGui/options/optionsMeasureUnits.nut" import measureUnitsNames
+from "%sqstd/math.nut" import cos, sin, PI, abs
 from "%rGui/globals/ui_library.nut" import *
 
-let { obstacleIsNear, distanceToObstacle, obstacleAngle } = require("%rGui/shipState.nut")
 let { alert } = require("%rGui/style/colors.nut").hud.damageModule
-let { cos, sin, PI, abs } = require("%sqstd/math.nut")
-let { measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 
 let showCollideWarning = Computed(@() distanceToObstacle.get() < 0)
 
@@ -11,19 +11,19 @@ let textToShow = Computed(@() (showCollideWarning.get() ? loc("hud_ship_collide_
        loc("hud_ship_depth_on_course_warning"))
 )
 
-let criticalDistance = 50.0
-let redGlowColor = Color(221, 17, 17, 50)
-let yellowGlowColor = Color(255, 176, 37, 250)
-let warningColor = Color(255, 176, 37)
+const criticalDistance = 50.0
+const redGlowColor = Color(221, 17, 17, 50)
+const yellowGlowColor = Color(255, 176, 37, 250)
+const warningColor = Color(255, 176, 37)
 
-let obstacleMarkRadius = sh(20)
+const obstacleMarkRadius = sh(20)
 
-let landIconWidth = hdpxi(35)
-let landIconHeight = hdpxi(30)
-let deepBgWidth = hdpxi(200)
-let deepBgHeight = hdpxi(80)
-let distanceBgWidth = hdpxi(50)
-let distanceBgHeight = hdpxi(25)
+const landIconWidth = hdpxi(35)
+const landIconHeight = hdpxi(30)
+const deepBgWidth = hdpxi(200)
+const deepBgHeight = hdpxi(80)
+const distanceBgWidth = hdpxi(50)
+const distanceBgHeight = hdpxi(25)
 
 let land_icon = Picture($"ui/gameuiskin#land_icon.svg:{landIconWidth}:{landIconHeight}:P")
 let deep_bg = Picture($"ui/gameuiskin#deep_bg.svg:{deepBgWidth}:{deepBgHeight}:P")
@@ -36,7 +36,7 @@ let obstacleDistance = {
   children = [
      @() {
       watch = distanceToObstacle
-      size = [distanceBgWidth, distanceBgHeight]
+      size = const [distanceBgWidth, distanceBgHeight]
       rendObj = ROBJ_IMAGE
       image = bg_distance
       color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
@@ -60,7 +60,7 @@ let obstacleDirection = {
   children = [
     @() {
       watch = [distanceToObstacle, obstacleAngle]
-      size = [deepBgWidth, deepBgHeight]
+      size = const [deepBgWidth, deepBgHeight]
       rendObj = ROBJ_IMAGE
       image = deep_bg
       color = distanceToObstacle.get() > criticalDistance ? warningColor : alert
@@ -70,7 +70,7 @@ let obstacleDirection = {
       }
     }
     {
-      size = [landIconWidth, landIconHeight]
+      size = const [landIconWidth, landIconHeight]
       rendObj = ROBJ_IMAGE
       image = land_icon
     }
@@ -98,7 +98,7 @@ let obstacleDirectionMark = {
 
 let obstacleWarningText = @() {
   watch = [textToShow, distanceToObstacle]
-  pos = [0, hdpx(170)]
+  pos = const [0, hdpx(170)]
   rendObj = ROBJ_TEXT
   font = Fonts.big_text
   fontFxColor = distanceToObstacle.get() > criticalDistance ? yellowGlowColor : redGlowColor
@@ -111,7 +111,7 @@ let obstacleWarningText = @() {
 
 return @() {
   watch = obstacleIsNear
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   children = !obstacleIsNear.get() ? null
     : [obstacleWarningText, obstacleDirectionMark]

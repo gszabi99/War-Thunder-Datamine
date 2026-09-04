@@ -1,11 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "string" import format
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import GAME_EVENT_TYPE
 
-let { format } = require("string")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
 
@@ -33,7 +33,7 @@ function fetchRowFromUserlog(event) {
 
   foreach (logObj in userLogs) {
     let eventEconomicName = getEventEconomicName(event)
-    if (getTblValue("eventId", logObj) != eventEconomicName)
+    if (logObj?.eventId != eventEconomicName)
       continue
 
     let leaderbordRow = logObj?.tournamentResult.newStat

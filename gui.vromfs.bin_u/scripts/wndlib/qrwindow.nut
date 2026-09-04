@@ -1,15 +1,15 @@
+from "%sqstd/qrCode.nut" import generateQrBlocks
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { generateQrBlocks } = require("%sqstd/qrCode.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { requestAuthenticatedUrl, getUrlWithQrRedirect } = require("%scripts/onlineShop/url.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 let mulArr = @(arr, mul) $"{arr[0] * mul}, {arr[1] * mul}"
 
@@ -133,7 +133,7 @@ local class qrWindow (BaseGuiHandler) {
   }
 }
 
-gui_handlers.qrWindow <- qrWindow
+register_gui_handler("qrWindow", qrWindow)
 
 eventbus_subscribe("updateQrCodeUrlData", function(urlConfig) {
   let handler = handlersManager.findHandlerClassInScene(qrWindow)

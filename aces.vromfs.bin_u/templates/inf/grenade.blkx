@@ -38,10 +38,6 @@
     "grenade_thrower_tilt__leanMult": 30.0,
     "grenade_thrower_tilt__offsetMult": -0.08
   },
-  "multiple_guns_slot_gun": {
-    "multiple_guns_slot_gun__slot": -1,
-    "multiple_guns_slot_gun:tag": {}
-  },
   "vog_25m_grenade_shell": {
     "animchar__res": "gp_34_ammo_char",
     "collres__res": "gp_34_ammo_collision",
@@ -168,7 +164,6 @@
     "_use": [
       "dng_gun",
       "slot_attachable",
-      "multiple_guns_slot_gun",
       "grenade_thrower_tilt"
     ],
     "_tracked": [
@@ -183,7 +178,6 @@
     ],
     "gun__visible": true,
     "gun__wasVisible": false,
-    "multiple_guns_slot_gun__slot": 4,
     "gun__blk": "gameData/weapons/grenade_thrower.blk",
     "item__template": "",
     "item__proto": "gameData/weapons/grenade_thrower.blk",
@@ -1104,8 +1098,8 @@
     "_group": [
       {
         "_tags": "sound",
-        "shell_appear_sound__hero": "infantry/player/weapon/grenade_flash/throw",
-        "shell_appear_sound__enemy": "infantry/enemy/weapon/grenade_flash/throw"
+        "shell_appear_sound__watched": "infantry/player/weapon/grenade_flash/throw",
+        "shell_appear_sound__other": "infantry/enemy/weapon/grenade_flash/throw"
       },
       {
         "_tags": "sound",

@@ -1,5 +1,5 @@
-let { processHypenationsCN, processHypenationsJP } = require("dagor.localize")
-let { getLocalLanguage } = require("language")
+from "dagor.localize" import processHypenationsCN, processHypenationsJP
+from "language" import getLocalLanguage
 
 return function wordHyphenation(text, language = null) {
   let lang = (language ?? getLocalLanguage()).tolower()

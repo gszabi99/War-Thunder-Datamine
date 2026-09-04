@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { getEvent } = require("%scripts/events/eventsState.nut")
+let { isEventSymmetricTeams } = require("%scripts/events/eventTeamsInfo.nut")
+let { getSlotbarRank } = require("%scripts/slotbar/slotbarRank.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { isEventForClan, isTeamSizeBalancedEvent, isNoneBalancedEvent } = require("%scripts/events/eventInfo.nut")
 
 function getQueueEvent(queue) {
-  return events.getEvent(queue.name)
+  return getEvent(queue.name)
 }
 
 function isClanQueue(queue) {
@@ -47,7 +48,7 @@ function getMyRankInQueue(queue) {
     return -1
 
   let country = getQueueCountry(queue)
-  return events.getSlotbarRank(event, country,
+  return getSlotbarRank(event, country,
     getQueueSlots(queue)?[country] ?? 0)
 }
 
@@ -60,14 +61,14 @@ function updateQueueInfoByType(queueType, successCb, errorCb = null, needAllQueu
 }
 
 function getQueuePreferredViewClass(queue) {
-  let defaultHandler = gui_handlers.QiHandlerByTeams
+  let defaultHandler = get_gui_handler("QiHandlerByTeams")
   let event = getQueueEvent(queue)
   if (!event)
     return defaultHandler
   if (!isEventForClan(event) && (isTeamSizeBalancedEvent(event) || isNoneBalancedEvent(event)))
-    return gui_handlers.QiHandlerTeamBalanced
-  if (!isEventForClan(event) && events.isEventSymmetricTeams(event))
-    return gui_handlers.QiHandlerByCountries
+    return get_gui_handler("QiHandlerTeamBalanced")
+  if (!isEventForClan(event) && isEventSymmetricTeams(event))
+    return get_gui_handler("QiHandlerByCountries")
   return defaultHandler
 }
 

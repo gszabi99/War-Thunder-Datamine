@@ -16,6 +16,7 @@ require level
 require %appGame.wt_events
 require GuiOptions
 require WTBallistics
+require app
 
 struct ShellParam
   name : string
@@ -27,6 +28,7 @@ struct ShellParam
   len : float
   blkName : string
   presetName : string
+  unitName : string
   customCart : string
   hideNodes : array<string>
   roll : float
@@ -38,6 +40,7 @@ struct ShellParam
 
 let maxCnt = 14
 let maxBulletCnt = 8
+let maxShellCntExpo = 4
 
 let minimalCaliber = 0.019
 let maxShotFreq = 50.
@@ -85,7 +88,7 @@ def check_container(container_blk : DataBlock&; var weapon_blk_name : string&; v
   let childBlkName = container_blk |> datablock_getStr("blk", "")
   weapon_blk_name = clone_string(childBlkName)
   if trigger_no == int(WeaponTriggerType.ROCKETS_TRIGGER) || trigger_no == int(WeaponTriggerType.AGM_TRIGGER)
-    var containerMesh = container_blk |> datablock_getStr("mesh", "")
+    let containerMesh = container_blk |> datablock_getStr("mesh", "")
     if childBlkName != ""
       var res = false
       using() <| $(var nextBlk : DataBlock)
@@ -107,6 +110,54 @@ def check_container(container_blk : DataBlock&; var weapon_blk_name : string&; v
       return res
   return false
 
+def read_weapon_blk(blk : DataBlock&; blk_name : string; trigger_no : int; preset_name : string;
+                    var air_weapon : array<ShellParam>&; var ground_weapon : array<ShellParam>&)
+  let useDeployed = blk |> datablock_getBool("demonstrateDeployedMesh", false)
+  let mesh = useDeployed ? blk |> datablock_getStr("mesh_deployed", blk |> datablock_getStr("mesh", "")) : blk |> datablock_getStr("mesh", "")
+  if mesh == "" || mesh == "empty_mesh"
+    return
+  let rocketBlk = blk |> datablock_get_block_by_name("rocket")
+  var caliber = -1.
+  var leng = -1.
+  var mass = -1.
+  var bulletName = ""
+  if rocketBlk != null
+    caliber = rocketBlk |> datablock_getReal("caliber", -1.0)
+    leng = rocketBlk |> datablock_getReal("length", -1.0)
+    mass = rocketBlk |> datablock_getReal("mass", -1.0)
+    bulletName = rocketBlk |> datablock_getStr("bulletName", "")
+  else
+    let bombBlk = blk |> datablock_get_block_by_name("bomb")
+    if bombBlk != null
+      caliber = bombBlk |> datablock_getReal("caliber", -1.0)
+      leng = bombBlk |> datablock_getReal("length", -1.0)
+      mass = bombBlk |> datablock_getReal("mass", -1.0)
+    else
+      let torpedoBlk = blk |> datablock_get_block_by_name("torpedo")
+      if torpedoBlk != null
+        caliber = torpedoBlk |> datablock_getReal("caliber", -1.0)
+        leng = torpedoBlk |> datablock_getReal("length", -1.0)
+        mass = torpedoBlk |> datablock_getReal("mass", -1.0)
+  let customCart = blk |> datablock_getStr("bombCart", "")
+  let roll = blk |> datablock_getReal("rollForDemonstration", 0.)
+  let offset = blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
+  if trigger_no == int(WeaponTriggerType.AAM_TRIGGER)
+    var prio = 0
+    if rocketBlk != null
+      prio = get_aam_priotity(*rocketBlk)
+    if check_same_shell(air_weapon, mesh, bulletName) == -1
+      air_weapon.emplace(ShellParam(name = clone_string(mesh), bulletName = clone_string(bulletName), prio = prio, mass = mass, caliber = caliber,
+      len = leng, blkName = clone_string(blk_name), customCart = clone_string(customCart),
+      roll = roll, offset = offset, presetName = clone_string(preset_name)))
+  else
+    if check_same_shell(ground_weapon, mesh, bulletName) == -1
+      let priority = get_prio_by_trigger(trigger_no)
+      var hideNodes : array<string>
+      check_broken_cap(blk, hideNodes)
+      ground_weapon.emplace(ShellParam(name = clone_string(mesh), bulletName = clone_string(bulletName), prio = priority, mass = mass, caliber = caliber,
+      len = leng, blkName = clone_string(blk_name), customCart = clone_string(customCart), hideNodes <- hideNodes, roll = roll,
+      offset = offset, presetName = clone_string(preset_name)))
+
 def read_weapon_preset(preset_blk : DataBlock&; var air_weapon : array<ShellParam>&; var ground_weapon : array<ShellParam>&; preset_name : string)
   let weaponBlockId = preset_blk |> datablock_getNameId("Weapon")
   for weapon_i in 0u..preset_blk.blockCount
@@ -114,68 +165,25 @@ def read_weapon_preset(preset_blk : DataBlock&; var air_weapon : array<ShellPara
     if *weaponBlk |> datablock_getBlockNameId() != weaponBlockId
       continue
     if weaponBlk != null
-      var blkName = *weaponBlk |> datablock_getStr("blk", "")
+      let blkName = *weaponBlk |> datablock_getStr("blk", "")
       if blkName == ""
         continue
       let trigger = *weaponBlk |> datablock_getStr("trigger", "")
       let triggerNo = get_trigger_no_by_name(trigger)
-      using() <| $(var blk : DataBlock)
-        if datablock_load(blk, blkName)
-          if blk |> datablock_getBool("fuelTankGun", false) || blk |> datablock_getBool("boosterGun", false)
+      datablock_load_cached(blkName) <| $(blk : DataBlock)
+        if blk |> datablock_getBool("fuelTankGun", false) || blk |> datablock_getBool("boosterGun", false)
+          return
+        if blk |> datablock_getBool("container", false)
+          var newBlkName = ""
+          if check_container(blk, newBlkName, ground_weapon, triggerNo, preset_name)
+            return 
+          if newBlkName != ""
+            datablock_load_cached(newBlkName) <| $(containedBlk : DataBlock)
+              read_weapon_blk(containedBlk, newBlkName, triggerNo, preset_name, air_weapon, ground_weapon)
             return
-          if blk |> datablock_getBool("container", false)
-            var newBlkName = ""
-            if check_container(blk, newBlkName, ground_weapon, triggerNo, preset_name)
-              return 
-            if newBlkName != ""
-              blkName = newBlkName
-              datablock_load(blk, blkName)
-          elif blk |> datablock_getBool("dontDemonstrate", false)
-            return
-          let useDeployed = blk |> datablock_getBool("demonstrateDeployedMesh", false)
-          let mesh = useDeployed ? blk |> datablock_getStr("mesh_deployed", blk |> datablock_getStr("mesh", "")) : blk |> datablock_getStr("mesh", "")
-          if mesh != "" && mesh != "empty_mesh"
-            let rocketBlk = blk |> datablock_get_block_by_name("rocket")
-            var caliber = -1.
-            var leng = -1.
-            var mass = -1.
-            var bulletName = ""
-            if rocketBlk != null
-              caliber = rocketBlk |> datablock_getReal("caliber", -1.0)
-              leng = rocketBlk |> datablock_getReal("length", -1.0)
-              mass = rocketBlk |> datablock_getReal("mass", -1.0)
-              bulletName = rocketBlk |> datablock_getStr("bulletName", "")
-            else
-              let bombBlk = blk |> datablock_get_block_by_name("bomb")
-              if bombBlk != null
-                caliber = bombBlk |> datablock_getReal("caliber", -1.0)
-                leng = bombBlk |> datablock_getReal("length", -1.0)
-                mass = bombBlk |> datablock_getReal("mass", -1.0)
-              else
-                let torpedoBlk = blk |> datablock_get_block_by_name("torpedo")
-                if torpedoBlk != null
-                  caliber = torpedoBlk |> datablock_getReal("caliber", -1.0)
-                  leng = torpedoBlk |> datablock_getReal("length", -1.0)
-                  mass = torpedoBlk |> datablock_getReal("mass", -1.0)
-            let customCart = blk |> datablock_getStr("bombCart", "")
-            let roll = blk |> datablock_getReal("rollForDemonstration", 0.)
-            let offset = blk |> datablock_getPoint3("offsetForDemonstration", float3(0.))
-            if triggerNo == int(WeaponTriggerType.AAM_TRIGGER)
-              var prio = 0
-              if rocketBlk != null
-                prio = get_aam_priotity(*rocketBlk)
-              if check_same_shell(air_weapon, mesh, bulletName) == -1
-                air_weapon.emplace(ShellParam(name = clone_string(mesh), bulletName = clone_string(bulletName), prio = prio, mass = mass, caliber = caliber,
-                len = leng, blkName = clone_string(blkName), customCart = clone_string(customCart),
-                roll = roll, offset = offset, presetName = clone_string(preset_name)))
-            else
-              if check_same_shell(ground_weapon, mesh, bulletName) == -1
-                let priority = get_prio_by_trigger(triggerNo)
-                var hideNodes : array<string>
-                check_broken_cap(blk, hideNodes)
-                ground_weapon.emplace(ShellParam(name = clone_string(mesh), bulletName = clone_string(bulletName), prio = priority, mass = mass, caliber = caliber,
-                len = leng, blkName = clone_string(blkName), customCart = clone_string(customCart), hideNodes <- hideNodes, roll = roll,
-                offset = offset, presetName = clone_string(preset_name)))
+        elif blk |> datablock_getBool("dontDemonstrate", false)
+          return
+        read_weapon_blk(blk, blkName, triggerNo, preset_name, air_weapon, ground_weapon)
 
 def create_list_of_demonstrated_shell(unit_blk : DataBlock&; var air_weapon : array<ShellParam>&; var ground_weapon : array<ShellParam>&)
   let weaponSlotsBlk = unit_blk |> datablock_get_block_by_name("WeaponSlots")
@@ -209,6 +217,7 @@ def spawn_shell(shell : ShellParam&; var tm : float3x4; for_tank : bool)
     set(init, "demonstrated_shell__blk", shell.blkName)
     set(init, "demonstrated_shell__presetName", shell.presetName)
     set(init, "demonstrated_shell__bulletType", shell.bulletType)
+    set(init, "demonstrated_shell__unitName", shell.unitName)
     set(init, "simpleObject__hideNodes", shell.hideNodes)
     set(init, "demonstrated_shell__cart", shell.customCart)
     set(init, "demonstrated_shell__offset", shell.offset)
@@ -225,13 +234,11 @@ def sort_shells(var shells : array<ShellParam>&)
     return a.prio > b.prio
 
 
-def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : int; dist : float; ang_step : float)
+def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : int; dist : float; ang_step : float; is_pair_demonstration : bool = true)
   let startAng = 0.12 * PI
-  let isPairDemonstration = true
-
   let offset = total % 2 == 0 ? 0.5 : 0.
   var rotTm = IDENT_TM
-  if isPairDemonstration
+  if is_pair_demonstration
     for j in 0..2
       var tm = utm
       tm[1] = float3(0., 1., 0.)
@@ -246,7 +253,7 @@ def set_shell_on_pos(shell : ShellParam&; utm : float3x4&; pos : int; total : in
   else
     var tm = utm
     tm[1] = float3(0., 1., 0.)
-    tm[0] = cross(tm[2], tm[1])
+    tm[0] = cross(tm[1], tm[2])
     tm[2] = cross(tm[0], tm[1])
     let posI = (pos + 1) / 2 * (pos % 2 == 1 ? -1 : 1)
     rotyTM((float(posI) + offset) * ang_step, rotTm)
@@ -267,6 +274,13 @@ def is_need_extend_radius(weapon : array<ShellParam>&)
       prevIsBig = false
   return false
 
+def is_in_weaponry_menu()
+  var isInMenu = false
+  find_query() <| $ [es] (hangar__isInWeaponryMenu : bool)
+    isInMenu = hangar__isInWeaponryMenu
+    return true
+  return isInMenu
+
 [es(tag=hangar, REQUIRE=unit_tag__aircraft)]
 def init_demonstrated_shells(evt : CmdInitComponent;
                              unit__ref : UnitRef;
@@ -276,6 +290,8 @@ def init_demonstrated_shells(evt : CmdInitComponent;
   if unit__playerId < 0
     return
   if !guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_SHOW_DEMONSTRATED_SHELL", true)
+    return
+  if is_in_weaponry_menu()
     return
   assume unitBlk = *evt.modelBlk
   init_demonstrated_shells_impl(unitBlk, unit__ref)
@@ -288,7 +304,6 @@ def init_demonstrated_shells_impl(blk : DataBlock&;
     return
   var airWeapon : array<ShellParam>
   var groundWeapon : array<ShellParam>
-  let isPairDemonstration = true
   create_list_of_demonstrated_shell(blk, airWeapon, groundWeapon)
   sort_shells(airWeapon)
   sort_shells(groundWeapon)
@@ -297,11 +312,12 @@ def init_demonstrated_shells_impl(blk : DataBlock&;
 
   let angleStep = blk |> datablock_getReal("shellsAngleStep", 10.8) * DEG_TO_RAD
   let airWeaponOffset = blk |> datablock_getReal("airWeaponCircleOffset", 5.)
+  let groundWpnAddOffset = blk |> datablock_getReal("gndWeaponCircleAddOffset", 0.)
 
   let minRad = is_need_extend_radius(groundWeapon) ? 12. : 7.
   let awCnt = min(length(airWeapon), maxCnt)
-  let groundWeaponDist = max(minRad, unit.boundingBox.boxMax.x * 1.1) 
-  let airWeaponDist = length(groundWeapon) > 0 ? (max(minRad, unit.boundingBox.boxMax.x * 1.1) + airWeaponOffset) : groundWeaponDist
+  let groundWeaponDist = max(minRad, unit.boundingBox.boxMax.x * 1.1) + groundWpnAddOffset 
+  let airWeaponDist = length(groundWeapon) > 0 ? (groundWeaponDist + airWeaponOffset) : groundWeaponDist
   for shell, i in airWeapon, range(0, length(airWeapon))
     set_shell_on_pos(shell, unit.unitTm, i, awCnt, airWeaponDist, angleStep)
   let gwCnt = min(length(groundWeapon), maxCnt)
@@ -405,30 +421,30 @@ def on_shell_cart_appear(evt : Event;
       shell_transform[3] = newPosition + demonstrated_shell__caliber * cart_transform[1] * verticalOffset - offset * cart_transform[0]
       shell_transform[3] = shell_transform * demonstrated_shell__offset
 
-[es(REQUIRE=demonstrated_shell)]
-def on_weaponry_wnd_toggle(evt : EventToggleWeaponryWnd;
-                           var simpleObject__visible : bool&)
-  simpleObject__visible = !evt.isOpen
-
 [es(tag=hangar)]
-def on_demonstrated_shell_option_toggle(evt : EventToggleDemonstratedShellOpt;
-                                        unit__ref : UnitRef;
-                                        unit__playerId : int)
+def on_demonstrated_shell_visible_update(evt : EventUpdateDemonstratedShellVisible;
+                                         unit__ref : UnitRef;
+                                         unit__playerId : int)
   if unit__playerId < 0
     return
+  var isVisible = is_shell_demonstration_enabled() && !is_in_weaponry_menu()
+  if isVisible
+    if unit__ref.unit.isFlightModelWrap
+      isVisible = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_SHOW_DEMONSTRATED_SHELL", true)
+    elif unit__ref.unit.isTank
+      isVisible = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_SHOW_DEMONSTRATED_SHELL_TANK", true)
   var found = false
   query() <| $ [es(REQUIRE=demonstrated_shell)] (var simpleObject__visible : bool&)
-    simpleObject__visible = evt.enable
+    simpleObject__visible = isVisible
     found = true
-  if !found && evt.enable
-    if !is_shell_demonstration_enabled()
-      return
+  if !found && isVisible
     using() <| $(var blk : DataBlock)
       if unit__ref.unit.isFlightModelWrap
         if datablock_load(blk, "gameData/flightModels/{unit__ref.unit.props.fileName}.blk")
           init_demonstrated_shells_impl(blk, unit__ref)
-      elif unit__ref.unit.isTank && datablock_load(blk, "gameData/units/{unit__ref.unit.props.fileName}.blk")
-        init_demonstrated_tank_bullets_impl(blk, unit__ref)
+      elif unit__ref.unit.isTank
+        if datablock_load(blk, "gameData/units/{unit__ref.unit.props.fileName}.blk")
+          init_demonstrated_tank_bullets_impl(blk, unit__ref.unit.modBlk, unit__ref.unit.unitTm, unit__ref.unit.boundingBox.boxMax, true)
 
 def check_same_bullet(var list : array<ShellParam>&; check_name : string)
   return find_index_if(list) <| $(p) : bool
@@ -495,7 +511,7 @@ def get_modification_list(unit_blk : DataBlock&; var mods : array<string>&)
 
 def create_bullet_list_from_preset(preset_blk : DataBlock&; var bullets : array<ShellParam>&; modList : array<string>)
   datablock_for_each_block(preset_blk, "Weapon") <| $(weaponBlk)
-    var blkName = weaponBlk |> datablock_getStr("blk", "")
+    let blkName = weaponBlk |> datablock_getStr("blk", "")
     if blkName == ""
       return
     let triggerGr = weaponBlk |> datablock_getStr("triggerGroup", "primary")
@@ -551,35 +567,55 @@ def sort_bullets(var bullets : array<ShellParam>&)
 def init_demonstrated_tank_bullets(evt : CmdInitComponent;
                                    unit__ref : UnitRef;
                                    unit__playerId : int)
-  if !is_shell_demonstration_enabled()
+  if !is_shell_demonstration_enabled() || is_in_weaponry_menu()
     return
   if unit__playerId < 0
     return
   if !guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_SHOW_DEMONSTRATED_SHELL_TANK", true)
     return
   assume unitBlk = *evt.modelBlk
-  init_demonstrated_tank_bullets_impl(unitBlk, unit__ref)
+  init_demonstrated_tank_bullets_impl(unitBlk, unit__ref.unit.modBlk, unit__ref.unit.unitTm, unit__ref.unit.boundingBox.boxMax, true)
+
 
 def init_demonstrated_tank_bullets_impl(blk : DataBlock&;
-                                        unit__ref : UnitRef)
+                                        mod_blk : DataBlock const?;
+                                        transform : float3x4;
+                                        bbox_max : float3;
+                                        is_left_handed : bool;
+                                        side_mult : float = 2.5;
+                                        unit_name : string = "")
   var bulletList : array<ShellParam>
-  let modBlk = unit__ref.unit.modBlk
-  let isModified = modBlk != null && *modBlk |> datablock_block_exists("commonWeapons")
-  create_list_of_demonstrated_bullets(isModified ? *modBlk : blk, blk, bulletList)
+  let isModified = mod_blk != null && *mod_blk |> datablock_block_exists("commonWeapons")
+  create_list_of_demonstrated_bullets(isModified ? *mod_blk : blk, blk, bulletList)
   if bulletList |> length() <= 0
     return
   sort_bullets(bulletList)
-  let unit = unit__ref.unit
-  let unitPos = unit.pos
   let cnt = min(length(bulletList), maxBulletCnt)
   let offset = 1.0
   for bullet, i in bulletList, range(0, cnt)
-    var tm = unit.unitTm
-    tm[3] = tm[3] + tm[2] * unit.boundingBox.boxMax.z * 2.5 + float(i - cnt / 2) * offset * cross(tm[2], float3(0., 1., 0.))
+    bullet.unitName = clone_string(unit_name)
+    var tm = transform
+    let side = is_left_handed ? 1. : -1.
+    tm[3] = tm[3] + tm[2] * bbox_max.z * side_mult * side + float(i - cnt / 2) * offset * cross(tm[2], float3(0., 1., 0.))
     tm[0] = tm[2]
     tm[2] = cross(tm[0], tm[1])
     spawn_shell(bullet, tm, true)
     choose_bullet_target(bullet.penetration, bullet.caliber, bullet.bulletType, tm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 def choose_bullet_target(penetration : float; caliber : float; bullet_type : string; transform : float3x4)
   query() <| $ [es] (bullet_targets_params : Array)
@@ -617,3 +653,38 @@ def bullet_targets_on_appear(evt : Event;
   rotyTM(targetsRotation, rotTm)
   transform = transform * rotTm
   drop_object_on_ground_normal(transform, true, 1.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

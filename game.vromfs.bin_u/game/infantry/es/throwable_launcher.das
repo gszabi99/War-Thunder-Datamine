@@ -121,7 +121,7 @@ def throwable_launcher_local_item_replace_mode_lerp_init(evt : Event;
                                                          var throwable_launcher_throw__localItemReplaceMode : int&)
   throwable_launcher_throw__localItemReplaceMode = int(ThrowableLauncherLocalItemReplaceMode.TLLIRM_LERP)
 
-[es(tag=server, track=itemContainer, on_appear, after=multiple_guns_slot_fill_inventory_gun_items)]
+[es(tag=server, track=itemContainer, on_appear)]
 def throwable_launcher_count_items_in_inventory(evt : Event;
                                                 eid : EntityId;
                                                 itemContainer : EidList)
@@ -365,16 +365,6 @@ def throwable_launcher_start_throw_server(evt : RequestThrowableLauncherStartThr
                                    false,
                                    evt.atTime,
                                    currentTime)
-
-[es(REQUIRE=(throwable_launcher_hide_on_zero_items, multiple_guns_slot_gun), track=throwable_launcher__itemsCount)]
-def throwable_launcher_hide_on_zero_items(evt : Event;
-                                          eid : EntityId;
-                                          throwable_launcher__itemsCount : int;
-                                          multiple_guns_slot_gun_hidden : Tag const?)
-  if multiple_guns_slot_gun_hidden != null && throwable_launcher__itemsCount > 0
-    removeSubTemplate(eid, "multiple_guns_slot_gun_hidden")
-  elif multiple_guns_slot_gun_hidden == null && throwable_launcher__itemsCount <= 0
-    addSubTemplate(eid, "multiple_guns_slot_gun_hidden")
 
 [es(tag=gameClient, REQUIRE=throwable_launcher_switch_to_other_weapon_on_zero_items, track=throwable_launcher_anim__throwInProgress)]
 def throwable_launcher_switch_to_other_weapon_on_zero_items(evt : Event;

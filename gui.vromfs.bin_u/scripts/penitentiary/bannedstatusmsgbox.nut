@@ -1,8 +1,8 @@
+import "penalty" as penalty
+from "eventbus" import eventbus_send, eventbus_subscribe
 from "%scripts/dagui_natives.nut" import is_decals_disabled
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let penalty = require("penalty")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { leaveAllQueuesSilent } = require("%scripts/queue/queueManager.nut")
 let { getBannedMessage } = require("%scripts/penitentiary/penaltyMessages.nut")

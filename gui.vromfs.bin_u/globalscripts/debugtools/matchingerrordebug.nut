@@ -1,13 +1,15 @@
-let { format } =  require("string")
-let { register_command } = require("console")
-let mErrors = require("matching.errors")
+import "matching.errors" as mErrors
+from "string" import format
+from "console" import register_command
+from "types" import Integer, String
+
 let { console_print } = require("%globalScripts/logs.nut")
-let { hexStringToInt } =  require("%sqstd/string.nut")
+let { hexStringToInt } = require("%sqstd/string.nut")
 
 register_command(function() {
   let res = []
   foreach(id, v in mErrors)
-    if (type(v) == "integer")
+    if (v instanceof Integer)
       res.append({ id, v = v & 0xFFFFFFFF })
   return console_print("\n".join(
     res.sort(@(a, b) a.v <=> b.v)
@@ -15,8 +17,8 @@ register_command(function() {
 }, "matching.errorsList")
 
 register_command(function(value) {
-  local intValue = type(value) == "integer" ? value
-    : type(value) == "string" ? hexStringToInt(value)
+  local intValue = value instanceof Integer ? value
+    : value instanceof String ? hexStringToInt(value)
     : null
   if (intValue == null)
     return console_print("need integer or string param")

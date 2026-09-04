@@ -1,7 +1,7 @@
+from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_natives.nut" import get_dyncampaign_b64blk
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
@@ -15,7 +15,7 @@ function onRoomJoinCb(resp) {
   foreach (member in (roomState.room?.members ?? []))
     addRoomMember(member)
 
-  if (getTblValue("connect_on_join", roomState.room?.public)) {
+  if (roomState.room?.public?.connect_on_join) {
     log("room with auto-connect feature")
     roomState.isSelfReady = true
     onSelfReady()
@@ -105,7 +105,7 @@ function fetchRoomsList(params, cb) {
   matchingApiFunc("mrooms.fetch_rooms_digest2",
     function (resp) {
       if (checkMatchingError(resp, false)) {
-        foreach (room in getTblValue("digest", resp, [])) {
+        foreach (room in (resp?.digest ?? [])) {
           let hasPassword = room?.public.hasPassword
           if (hasPassword != null)
             room.hasPassword <- hasPassword

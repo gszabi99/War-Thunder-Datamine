@@ -1,9 +1,7 @@
 require ecs
 require ecs.safe
-require DagorMath
 require AnimV20
 require DagorSystem
-require DagorMath
 require GeomNodeTree
 require %appGame.infantry.es.animchar.attach_common
 require %game.events

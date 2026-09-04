@@ -1,3 +1,7 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isPoint3
+from "math" import pow
+from "string" import format
 from "%scripts/dagui_natives.nut" import char_send_blk, get_cur_rank_info, get_current_wager_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -5,14 +9,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { pow } = require("math")
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
-let { isPoint3 } = require("%sqStdLibs/helpers/u.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues,
-} = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockMainCondDesc, getUnlockCondsDesc, getLocForBitValues } = require("%scripts/unlocks/unlocksState.nut")
 let { getFullUnlockCondsDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { get_gui_balance } = require("%scripts/user/balance.nut")
@@ -100,9 +99,9 @@ let Wager = class (BaseItem) {
   constructor(blk, invBlk = null, slotData = null) {
     base.constructor(blk, invBlk, slotData)
     if (this.isActive()) {
-      this.numWins = getTblValue("numWins", invBlk, 0)
-      this.numBattles = getTblValue("numBattles", invBlk, 0)
-      this.curWager = getTblValue("wager", invBlk, 0)
+      this.numWins = (invBlk?.numWins ?? 0)
+      this.numBattles = (invBlk?.numBattles ?? 0)
+      this.curWager = (invBlk?.wager ?? 0)
     }
     this.iconStyle = blk?.iconStyle ?? blk?.type ?? this.id
     this._initWagerParams(blk?.wagerParams)
@@ -127,7 +126,7 @@ let Wager = class (BaseItem) {
     if (blk?.win != null)
       this.winConditions = loadConditionsFromBlk(blk.win)
     this.winParamsData = this.createWinParamsData(blk?.winParams)
-    this.isGoldWager = getTblValue("goldWager", blk, false)
+    this.isGoldWager = (blk?.goldWager ?? false)
   }
 
   function getRewardDataTypeByName(name) {
@@ -199,7 +198,7 @@ let Wager = class (BaseItem) {
 
   
   function createRewardData(blk) {
-    if (blk == null || getTblValue("param", blk, 0) == 0)
+    if (blk == null || (blk?.param ?? 0) == 0)
       return {}
     let res = {
       winCount = blk.param
@@ -208,7 +207,7 @@ let Wager = class (BaseItem) {
     }
     foreach (rewardDataType in this.rewardDataTypes) {
       let rewardDataTypeName = rewardDataType.name
-      let p3 = getTblValue(rewardDataTypeName, blk, null)
+      let p3 = blk?[rewardDataTypeName]
       if (!isPoint3(p3))
         continue
       if (p3.x == 0 && p3.y == 0 && p3.z == 0)
@@ -319,7 +318,7 @@ let Wager = class (BaseItem) {
 
   function getDescription(customParams = {}) {
     let desc = []
-    let customNumWins = getTblValue("numWins", customParams, this.numWins)
+    let customNumWins = (customParams?.numWins ?? this.numWins)
 
     if (this.isActive())
       desc.append(loc("items/wager/numWins", { numWins = customNumWins, maxWins = this.maxWins }))
@@ -330,7 +329,7 @@ let Wager = class (BaseItem) {
       if (this.numBattles == null)
         desc.append(loc("items/wager/maxFails", { maxFails = this.maxFails }))
       else {
-        let customNumFails = getTblValue("numFails", customParams, this.numBattles - customNumWins)
+        let customNumFails = (customParams?.numFails ?? this.numBattles - customNumWins)
         desc.append(loc("items/wager/numFails", {
           numFails = customNumFails
           maxFails = this.maxFails
@@ -358,7 +357,7 @@ let Wager = class (BaseItem) {
       desc.append(expireText)
 
     if (this.winConditions != null && this.winConditions.len() > 0
-        && getTblValue("showLongMarkupPart", customParams, true)) {
+        && (customParams?.showLongMarkupPart ?? true)) {
       desc.append(colorize("grayOptionColor", loc("items/wager/winConditions")),
         getFullUnlockCondsDesc(this.winConditions, null, null, this.winCondParams),
         colorize("grayOptionColor", loc("items/wager/winConditions/caption")))
@@ -376,7 +375,7 @@ let Wager = class (BaseItem) {
       let mainCond = getMainProgressCondition(this.winConditions)
       let modeType = mainCond && mainCond.modeType
       this._needLongMarkup = (modeType == "unlocks" || modeType == "char_unlocks")
-                        && getTblValue("typeLocIDWithoutValue", mainCond) == null
+                        && mainCond?.typeLocIDWithoutValue == null
     }
     else
       this._needLongMarkup = false

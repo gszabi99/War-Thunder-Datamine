@@ -1,5 +1,5 @@
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe } = require("eventbus")
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
 
 eventbus_subscribe("wwEvent", @(p) broadcastEvent($"WW{p.eventName}", p))
 

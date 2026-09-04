@@ -1,11 +1,13 @@
+from "string" import format
+from "url" import shell_launch
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
-let { shell_launch } = require("url")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let unitActions = require("%scripts/unit/unitActions.nut")
@@ -15,12 +17,9 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { openLinkWithSource } = require("%scripts/web/webActionsForPromo.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { showGuestEmailRegistration, needShowGuestEmailRegistration
-} = require("%scripts/user/suggestionEmailRegistration.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction,
-  gatherPromoActionsParamsData
-} = require("%scripts/promo/promo.nut")
+let { isPromoLinkVisible, getPromoLinkBtnText, launchPromoAction, gatherPromoActionsParamsData } = require("%scripts/promo/promo.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getUnitName, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
@@ -33,7 +32,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
-gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let ShowUnlockHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
   sceneNavBlkName = "%gui/showUnlockTakeAirNavBar.blk"
@@ -54,9 +53,9 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
     this.scene.findObject("award_name").setValue(this.config.name)
 
-    if (getTblValue("type", this.config, -1) == UNLOCKABLE_AIRCRAFT || "unitName" in this.config) {
-      let id = getTblValue("id", this.config)
-      let unitName = getTblValue("unitName", this.config, id)
+    if ((this.config?.type ?? -1) == UNLOCKABLE_AIRCRAFT || "unitName" in this.config) {
+      let id = this.config?.id
+      let unitName = (this.config?.unitName ?? id)
       this.unit = getAircraftByName(unitName)
       this.updateUnitItem()
     }
@@ -81,7 +80,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateTexts() {
-    let desc = getTblValue("desc", this.config)
+    let desc = this.config?.desc
     if (desc) {
       let descObj = this.scene.findObject("award_desc")
       if (checkObj(descObj)) {
@@ -92,7 +91,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let rewardText = getTblValue("rewardText", this.config, "")
+    let rewardText = (this.config?.rewardText ?? "")
     if (rewardText != "") {
       let rewObj = this.scene.findObject("award_reward")
       if (checkObj(rewObj))
@@ -222,7 +221,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (getTblValue("type", this.config) == "regionalPromoPopup")
+    if (this.config?.type == "regionalPromoPopup")
       sendBqEvent("CLIENT_POPUP_1", "promo_popup_click", {
         id = this.config?.id ?? this.config?.link ?? this.config?.popupImage ?? -1
       })
@@ -263,7 +262,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOk() {
-    let onOkFunc = getTblValue("onOkFunc", this.config)
+    let onOkFunc = this.config?.onOkFunc
     if (onOkFunc)
       onOkFunc()
     this.goBack()
@@ -307,3 +306,6 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUseDecorator() {}
 }
+register_gui_handler("ShowUnlockHandler", ShowUnlockHandler)
+
+return { ShowUnlockHandler }

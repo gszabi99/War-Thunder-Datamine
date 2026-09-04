@@ -1,11 +1,11 @@
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "chard" import get_charserver_time_sec
+from "%sqstd/underscore.nut" import isDataBlock
+from "%sqstd/datablock.nut" import convertBlk
+
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { get_charserver_time_sec } = require("chard")
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const SAVE_ID = "unlock_progress_snapshots"
 

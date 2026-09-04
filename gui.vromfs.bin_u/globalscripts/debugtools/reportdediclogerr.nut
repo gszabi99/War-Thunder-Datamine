@@ -1,8 +1,9 @@
-from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
+from "dagor.debug" import register_logerr_monitor, clear_logerr_interceptors
+from "%globalScripts/logs.nut" import *
+
 let logDL = log_with_prefix("[LOGERR] ")
 let { mkEventDedicLogerr, CmdEnableDedicatedLogger } = require("dedicLogerrSqEvents.nut")
-let { register_logerr_monitor, clear_logerr_interceptors } = require("dagor.debug")
 
 const INVALID_CONNECTION_ID = -1
 local hasPermission = @(_playerId) true

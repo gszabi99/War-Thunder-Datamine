@@ -1,16 +1,14 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+import "%sqStdLibs/helpers/u.nut" as u
+import "string" as string
+import "math" as math
+from "%rGui/twsState.nut" import rwrTargetsTriggers, CurrentTime
+from "%sqstd/math_ex.nut" import degToRad, radToDeg
 from "%rGui/globals/ui_library.nut" import *
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
+let { rwrTargets } = require("%rGui/twsState.nut")
 
-let string = require("string")
-let math = require("math")
-let { degToRad, radToDeg } = require("%sqstd/math_ex.nut")
-
-let u = require("%sqStdLibs/helpers/u.nut")
-
-let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
-
-let color = Color(10, 202, 10, 250)
+const color = Color(10, 202, 10, 250)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -23,7 +21,7 @@ let styleText = {
   fontSize = getFontDefHt("hud")
 }
 
-let gridRadius = 1.00
+const gridRadius = 1.00
 
 function makePolarGridCommands() {
   let commands = [
@@ -40,7 +38,7 @@ let polarGridCommands = makePolarGridCommands()
 
 function createPolarGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
+    pos = const [pw(50), ph(50)]
     size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
@@ -103,7 +101,7 @@ function createRwrTarget(index, settings, objectStyle) {
     styleText.__merge({
       rendObj = ROBJ_TEXT
       pos = [pw(target.x * 110.0), ph(target.y * 110.0)]
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       fontSize = objectStyle.fontScale * styleText.fontSize
@@ -119,18 +117,18 @@ function createRwrTarget(index, settings, objectStyle) {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 5 * objectStyle.lineWidthScale
     fillColor = 0
-    size = flex()
+    size = FLEX
     commands = [
       [ VECTOR_LINE, target.x * targetRadiusRel * 100.0, target.y * targetRadiusRel * 100.0, target.x * 100.0, target.y * 100.0]
     ]
   }
 
   return @() {
-    size = flex()
+    size = FLEX
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = const [pw(50), ph(50)]
+        size = FLEX
         children = [
           azimuth
         ]
@@ -146,8 +144,8 @@ function createTargetsList(settings, objectStyle) {
     styleText.__merge({
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
-      pos = [pw(-75), ph(-78)]
-      size = flex()
+      pos = const [pw(-75), ph(-78)]
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_TOP
       fontSize = objectStyle.fontScale * styleText.fontSize * 1.5
@@ -449,7 +447,7 @@ let settings = Computed(function() {
 function rwrTargetsListComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = createTargetsList(settings.get(), objectStyle)
   }
 }
@@ -457,7 +455,7 @@ function rwrTargetsListComponent(objectStyle) {
 function rwrTargetsComponent(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -469,7 +467,7 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(140), ph(130)]
+        pos = const [pw(140), ph(130)]
         size = const [pw(100), ph(180)]
         children = [
           createTabularGrid(style.grid),
@@ -477,7 +475,7 @@ function scope(scale, style) {
         ]
       }
       {
-        pos = [pw(-30), ph(20)]
+        pos = const [pw(-30), ph(20)]
         size = const [pw(70), ph(70)]
         children = [
           createPolarGrid(style.grid),
@@ -488,7 +486,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

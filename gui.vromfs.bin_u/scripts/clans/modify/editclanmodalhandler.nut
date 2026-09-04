@@ -1,12 +1,14 @@
+from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ModifyClanModalHandler } = require("%scripts/clans/modify/modifyClanModalHandler.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { stripClanTagDecorators, checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
@@ -17,7 +19,7 @@ let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
-gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler) {
+let EditClanModalhandler = class (ModifyClanModalHandler) {
   owner = null
 
   isMyClan = false
@@ -265,9 +267,10 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     })
   }
 }
+register_gui_handler("EditClanModalhandler", EditClanModalhandler)
 
 let openEditClanWnd = @(clanData, owner) loadHandler(
-  gui_handlers.EditClanModalhandler, { clanData, owner })
+  EditClanModalhandler, { clanData, owner })
 
 return {
   openEditClanWnd

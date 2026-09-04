@@ -1,7 +1,6 @@
 require ecs
 require soundEvent
 require %appGame.infantry.es.team_common
-require DagorConsole
 
 [es(tag=sound, on_event=EventOnHumanSpeak)]
 def human_speech_set_params(evt : Event;

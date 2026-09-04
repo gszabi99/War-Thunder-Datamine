@@ -1,18 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format, split_by_chars
+from "%sqstd/datablock.nut" import copyParamsToTable, eachParam
+from "unitCustomization" import get_decal_tex
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_natives.nut" import has_entitlement
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
-let { format, split_by_chars } = require("string")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
-let { copyParamsToTable, eachParam } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { get_decal_tex } = require("unitCustomization")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
@@ -21,7 +22,6 @@ let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decorato
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { doesLocTextExist } = require("dagor.localize")
 let { getCountryOverride } = require("%scripts/countries/countriesCustomization.nut")
 
 

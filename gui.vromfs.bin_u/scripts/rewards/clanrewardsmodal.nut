@@ -1,16 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "json" import object_to_json_string
+from "%sqstd/string.nut" import cutPrefix
+from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, char_send_custom_action, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let DataBlock = require("DataBlock")
-let { object_to_json_string } = require("json")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { get_warpoints_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
@@ -36,7 +38,7 @@ function isRewardVisible (medal, clanData) {
   return false
 }
 
-gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanRewardsModal = class (BaseGuiHandlerWT) {
   wndType            = handlerType.MODAL
   sceneTplName       = "%gui/rewards/clanRewardsModal.tpl"
   rewards            = null
@@ -141,10 +143,11 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     checkBoxObj.setValue(!checkBoxObj.getValue())
   }
 }
+register_gui_handler("clanRewardsModal", clanRewardsModal)
 
 return {
   open = function(params = null) {
-    handlersManager.loadHandler(gui_handlers.clanRewardsModal, params)
+    handlersManager.loadHandler(clanRewardsModal, params)
   }
   isRewardVisible = isRewardVisible
 }

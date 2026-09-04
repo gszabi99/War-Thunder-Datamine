@@ -1,8 +1,8 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+from "eventbus" import subscribe, send, eventbus_subscribe, eventbus_send
+from "dagor.workcycle" import resetTimeout
+from "hudActionBar" import getActionBarItems
 from "%rGui/globals/ui_library.nut" import *
-let { subscribe, send, eventbus_subscribe, eventbus_send} = require("eventbus")
-let { resetTimeout } = require("dagor.workcycle")
-let { getActionBarItems } = require("hudActionBar")
-let extWatched = require("%rGui/globals/extWatched.nut")
 
 let isActionBarCollapsed = Watched(false)
 let isActionBarCollapsable = Watched(false)

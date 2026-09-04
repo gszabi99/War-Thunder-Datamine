@@ -1,32 +1,61 @@
+import "regexp2" as regexp2
+import "DataBlock" as DataBlock
+from "math" import min, max, abs, round, sin, PI
+from "string" import format
+from "blkGetters" import get_unittags_blk, get_game_params_blk
+from "dagor.localize" import loc, doesLocTextExist
 from "%globalScripts/logs.nut" import *
-let { min, max, abs, round, sin, PI } = require("math")
-let { format } = require("string")
-let regexp2 = require("regexp2")
-let DataBlock = require("DataBlock")
-let { get_unittags_blk } = require("blkGetters")
-let { loc, doesLocTextExist } = require("dagor.localize")
+from "dagor.math" import Point2, IPoint2
+from "%sqstd/underscore.nut" import isEqual, tablesCombine, unique
+from "types" import Float
+
 let { round_by_value } = require("%sqstd/math.nut")
 let { utf8Capitalize, utf8ToLower, toIntegerSafe } = require("%sqstd/string.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { fileName } = require("%sqstd/path.nut")
-let { isEqual, isFloat, isPoint2, isIPoint2, unique, appendOnce, tablesCombine } = require("%sqStdLibs/helpers/u.nut")
 
 
 
 
 
 
-let KGF_TO_NEWTON = 9.807
+const KGF_TO_NEWTON = 9.807
+
+let tankDriverSightParts = ["optic_body_dm", "optic_body_01_dm"]
+
+const FIRST_NVD_GENERATION = 1
+const SECOND_NVD_GENERATION = 2
+const THIRD_NVD_GENERATION = 3
+const NVD_RESOLUTION_TO_GEN = [
+  { res = 500, gen = FIRST_NVD_GENERATION },
+  { res = 800, gen = SECOND_NVD_GENERATION },
+  { res = 1200, gen = THIRD_NVD_GENERATION }
+]
+
+function getNVDSightGen(resolution) {
+  for (local i = NVD_RESOLUTION_TO_GEN.len() - 1; i >= 0; i--)
+    if (resolution >= NVD_RESOLUTION_TO_GEN[i].res)
+      return NVD_RESOLUTION_TO_GEN[i].gen
+  return FIRST_NVD_GENERATION
+}
+
+function getNVDSightSystemText(sightName) {
+  if (sightName.contains("Thermal"))
+    return loc("modification/thermal_vision_system")
+  if (sightName.contains("Ir"))
+    return loc("modification/night_vision_system")
+  return ""
+}
 
 
 
-let S_UNDEFINED = ""
-let S_AIRCRAFT = "aircraft"
-let S_HELICOPTER = "helicopter"
-let S_TANK = "tank"
-let S_SHIP = "ship"
-let S_BOAT = "boat"
-let S_SUBMARINE = "submarine"
+const S_UNDEFINED = ""
+const S_AIRCRAFT = "aircraft"
+const S_HELICOPTER = "helicopter"
+const S_TANK = "tank"
+const S_SHIP = "ship"
+const S_BOAT = "boat"
+const S_SUBMARINE = "submarine"
 
 
 
@@ -72,6 +101,18 @@ function getPartNameLocText(partType, simUnitType) {
   return partType
 }
 
+function getPartNameDescLocText(partType) {
+  local res = ""
+  let checkKeys = [ partType ]
+  foreach (key in checkKeys) {
+    let locId = $"{key}/desc"
+    res = doesLocTextExist(locId) ? loc(locId) : ""
+    if (res != "")
+      return utf8Capitalize(res)
+  }
+  return res
+}
+
 function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, propsBlk) {
   let nameLocId = "/".concat(locKeyPrefix, propsBlk?.nameLocId ?? fileName(blkFilePath).slice(0, -4))
   return doesLocTextExist(nameLocId) ? loc(nameLocId) : (propsBlk?.name ?? nameLocId)
@@ -79,24 +120,25 @@ function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, propsBlk) {
 
 function trimBetween(source, from, to, strict = true) {
   local beginIndex = source.indexof(from) ?? -1
-  let endIndex = source.indexof(to) ?? -1
+  local endIndex = source.indexof(to) ?? -1
   if (strict && (beginIndex == -1 || endIndex == -1 || beginIndex >= endIndex))
     return null
   if (beginIndex == -1)
     beginIndex = 0
   beginIndex += from.len()
   if (endIndex == -1)
-    beginIndex = source.len()
+    endIndex = source.len()
   return source.slice(beginIndex, endIndex)
 }
 
 
 
-let nbsp = "\u00A0"
+const nbsp = "\u00A0"
 let colon = loc("ui/colon")
 let comma = loc("ui/comma")
 let mdash = loc("ui/mdash")
 let bullet = loc("ui/bullet")
+let space = loc("ui/space", " ")
 
 let unitsDeg = loc("measureUnits/deg")
 let unitsSec = loc("measureUnits/seconds")
@@ -166,6 +208,13 @@ function getFirstFound(sourceBlkArray, getter, defValue = null) {
       break
   }
   return result ?? defValue
+}
+
+function appendEqualOnce(arr, v) {
+  foreach (obj in arr)
+    if (isEqual(obj, v))
+      return
+  arr.append(v)
 }
 
 let extractIndexFromDmPartName = @(partName) rePartIdx.multiExtract("\\1", partName)?[0].tointeger() ?? -1
@@ -278,7 +327,7 @@ function mkTankCrewMemberDesc(partType, params, commonData) {
 
 
 
-let AFTERBURNER_CHAMBER = 3
+const AFTERBURNER_CHAMBER = 3
 
 let getEngineModelName = @(infoBlk) infoBlk?.model ? loc($"engine_model/{infoBlk.model}") : ""
 
@@ -410,7 +459,8 @@ function mkEngineDesc(_partType, params, commonData) {
             if (engineType == "inline" || engineType == "radial") {
               if (throttleBoost > 1) {
                 powerMax = horsePowerValue
-                powerTakeoff = horsePowerValue * throttleBoost * afterburnerBoost
+                
+                powerTakeoff = horsePowerValue * throttleBoost * max(afterburnerBoost, 1.0)
               }
               else
                 powerTakeoff = horsePowerValue
@@ -478,7 +528,7 @@ function mkEngineDesc(_partType, params, commonData) {
 }
 
 function mkTransmissionDesc(_partType, _params, commonData) {
-  let { unitBlk, getProp_maxSpeed, toStr_speed } = commonData
+  let { unitBlk, getProp_maxSpeed, toStr_speed, getXrayDevMode } = commonData
   let desc = []
   let info = unitBlk?.VehiclePhys.mechanics
   if (info != null) {
@@ -489,18 +539,28 @@ function mkTransmissionDesc(_partType, _params, commonData) {
 
     let maxSpeed = getProp_maxSpeed(commonData)
     if (maxSpeed != 0 && info?.gearRatios) {
+      let devMode = !!getXrayDevMode()
+      let gearRatios = info.gearRatios % "ratio"
+      gearRatios.sort(@(a, b) abs(b) <=> abs(a))
+
       local gearsF = 0
       local gearsB = 0
       local ratioF = 0
       local ratioB = 0
-      foreach (gear in (info.gearRatios % "ratio")) {
+      let gearsForward = []
+      let gearsBackward = []
+      foreach (gear in gearRatios) {
         if (gear > 0) {
           gearsF++
           ratioF = ratioF ? min(ratioF, gear) : gear
+          if (devMode)
+            gearsForward.append(gear)
         }
         else if (gear < 0) {
           gearsB++
           ratioB = ratioB ? min(ratioB, -gear) : -gear
+          if (devMode)
+            gearsBackward.append(-gear)
         }
       }
       let maxSpeedF = maxSpeed
@@ -513,6 +573,22 @@ function mkTransmissionDesc(_partType, _params, commonData) {
         desc.append("".concat(loc("xray/transmission/maxSpeed/backward"), colon,
           toStr_speed(maxSpeedB), comma, loc("xray/transmission/gears"),
           colon, gearsB))
+
+      if (devMode && ratioF) {
+        let speedPerRatio = maxSpeedF * ratioF
+        foreach (group in [
+          { ratios = gearsForward,  label = "xray/transmission/forwardGears" }
+          { ratios = gearsBackward, label = "xray/transmission/backwardGears" }
+        ]) {
+          if (!group.ratios.len())
+            continue
+          desc.append({ value = loc(group.label, ""), isDevParam = true })
+          foreach (idx, ratio in group.ratios)
+            desc.append({ value = "".concat(idx + 1, colon, loc("xray/transmission/gearRatio", ""), space, mdash, space,
+              format("%.3f", ratio), comma, loc("info/max_speed"), space, mdash, space, toStr_speed(speedPerRatio / ratio))
+              isDevParam = true })
+        }
+      }
     }
   }
   return  { desc }
@@ -552,7 +628,7 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
       return weapon
   }
   foreach (weapon in unitWeaponsList) {
-    if (isIPoint2(weapon?.emitterGenRange)) {
+    if (weapon?.emitterGenRange instanceof IPoint2) {
       let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       foreach (linkKeyFmt in partLinkSourcesGenFmt)
@@ -573,7 +649,7 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
   if (weaponPartName.startswith("auxiliary_caliber_turret")) {
     let turretIdx = extractIndexFromDmPartName(weaponPartName)
     foreach (weapon in unitWeaponsList)
-      if (weapon?.turret.head.startswith("auxiliary_caliber_turret") && isIPoint2(weapon?.emitterGenRange)) {
+      if (weapon?.turret.head.startswith("auxiliary_caliber_turret") && weapon?.emitterGenRange instanceof IPoint2) {
         let turretStartIdx = extractIndexFromDmPartName(weapon.turret.head)
         let rangeLen = abs(weapon.emitterGenRange.x - weapon.emitterGenRange.y) + 1
         if (turretIdx >= turretStartIdx && turretIdx < turretStartIdx + rangeLen)
@@ -601,7 +677,8 @@ function getWeaponStatusImpl(weaponPartName, weaponInfoBlk, commonData) {
       }
 
     let isSecondary = !isPrimary && !isMachinegun
-    return { isPrimary = isPrimary, isSecondary = isSecondary, isMachinegun = isMachinegun }
+    let isCoaxial = weaponInfoBlk?.triggerGroup == "coaxial"
+    return { isPrimary, isSecondary, isMachinegun, isCoaxial }
   }
   if (simUnitType == S_BOAT || simUnitType == S_SHIP) {
     let isPrimaryName       = weaponPartName.startswith("main")
@@ -612,13 +689,14 @@ function getWeaponStatusImpl(weaponPartName, weaponInfoBlk, commonData) {
     return {
       isPrimary     = isPrimaryTrigger   || (isPrimaryName   && !isSecondaryTrigger && !isMachinegun)
       isSecondary   = isSecondaryTrigger || (isSecondaryName && !isPrimaryTrigger && !isMachinegun)
-      isMachinegun  = isMachinegun
+      isMachinegun
+      isCoaxial = false
     }
   }
   if (simUnitType == S_AIRCRAFT || simUnitType == S_HELICOPTER)
-    return { isPrimary = true, isSecondary = false, isMachinegun = false }
+    return { isPrimary = true, isSecondary = false, isMachinegun = false, isCoaxial = false }
 
-  return { isPrimary = true, isSecondary = false, isMachinegun = false }
+  return { isPrimary = true, isSecondary = false, isMachinegun = false, isCoaxial = false }
 }
 
 function getWeaponStatus(weaponPartName, weaponInfoBlk, commonData) {
@@ -631,8 +709,27 @@ function getWeaponStatus(weaponPartName, weaponInfoBlk, commonData) {
   return unitDataCache.weapStatus[cacheId]
 }
 
+function getLowBatteryGuidanceSpeedDesc(weaponInfoBlk, axisParam, commonData) {
+  let desc = []
+  let { simUnitType, getXrayDevMode } = commonData
+  if (!getXrayDevMode())
+    return desc
+
+  if (simUnitType == S_TANK) {
+    let overrideSpdValue = weaponInfoBlk?[axisParam.lowBatteryGuidanceSpdParam] ?? -1
+    let lowBatterySpeed = overrideSpdValue >= 0 ? overrideSpdValue
+      : (get_game_params_blk()?.yawPitchSpeedLowBattery[axisParam.axisName] ?? 0)
+    if (lowBatterySpeed) {
+      let lowBatteryLocKey = $"xray/turnTurretSpeed/lowBattery/{axisParam.axisName == "x" ? "yaw" : "pitch"}"
+      desc.append("".concat(loc(lowBatteryLocKey, ""), colon,
+        format("%.1f", lowBatterySpeed), unitsDegPerSec))
+    }
+  }
+  return desc
+}
+
 function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, needAxisX, needAxisY) {
-  let { simUnitType, getUnitWeaponsList
+  let { simUnitType, getUnitWeaponsList, getXrayDevMode
     getProp_tankMainTurretSpeedYaw, getProp_tankMainTurretSpeedYawTop,
     getProp_tankMainTurretSpeedPitch, getProp_tankMainTurretSpeedPitchTop,
     getMul_shipTurretMainSpeedYaw, getMul_shipTurretAuxSpeedYaw, getMul_shipTurretAaSpeedYaw,
@@ -641,13 +738,19 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
   let desc = []
   let needSingleAxis = !needAxisX || !needAxisY
   let status = getWeaponStatus(weaponPartName, weaponInfoBlk, commonData)
-  if (!needSingleAxis && simUnitType == S_TANK && !status.isPrimary && !status.isSecondary)
-    return desc
+  let showTurretInfoForMachinegun = (status.isMachinegun || status.isCoaxial) && !!getXrayDevMode()
+  if (!needSingleAxis && simUnitType == S_TANK && !status.isPrimary && !status.isSecondary
+    && !showTurretInfoForMachinegun)
+      return desc
+
+  
+  
+  let isDevOnlyTurretInfo = !needSingleAxis && showTurretInfoForMachinegun
 
   let isInverted = weaponInfoBlk?.invertedLimitsInViewer ?? false
   let isSwaped = weaponInfoBlk?.swapLimitsInViewer ?? false
-  let verticalLabel = "shop/angleVerticalGuidance"
-  let horizontalLabel = "shop/angleHorizontalGuidance"
+  const verticalLabel = "shop/angleVerticalGuidance"
+  const horizontalLabel = "shop/angleHorizontalGuidance"
 
   foreach (g in [
     { need = needAxisX, angles = weaponInfoBlk?.limits.yaw,   label = isInverted ? verticalLabel   : horizontalLabel, canSwap = true  }
@@ -660,19 +763,24 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
     let needSwap = isSwaped && g.canSwap
     let degX = needSwap ? abs(y) * getSign(x) : x
     let degY = needSwap ? abs(x) * getSign(y) : y
-    desc.append(" ".concat(loc(g.label), mkAnglesRangeText(degX, degY, true, false)))
+    let angleText = " ".concat(loc(g.label), mkAnglesRangeText(degX, degY, true, false))
+    desc.append(isDevOnlyTurretInfo ? { value = angleText, isDevParam = true } : angleText)
   }
 
-  if (needSingleAxis || status.isPrimary || [S_SHIP, S_BOAT].contains(simUnitType)) {
+  let showTurretSpeedInfo = needSingleAxis || status.isPrimary || showTurretInfoForMachinegun
+    || [S_SHIP, S_BOAT].contains(simUnitType)
+  if (showTurretSpeedInfo) {
     foreach (a in [
-      { need = needAxisX, blkName = "speedYaw",
+      { need = needAxisX, guidanceSpdParam = "speedYaw",
         modifName = "turnTurretSpeed",
+        lowBatteryGuidanceSpdParam = "yawSpdLowBattery", axisName = "x",
         getTankMainTurretSpeed = getProp_tankMainTurretSpeedYaw
         getTankTopVal = getProp_tankMainTurretSpeedYawTop,
         getShipMul = [ getMul_shipTurretMainSpeedYaw, getMul_shipTurretAuxSpeedYaw, getMul_shipTurretAaSpeedYaw ]
       },
-      { need = needAxisY, blkName = "speedPitch",
+      { need = needAxisY, guidanceSpdParam = "speedPitch",
         modifName = "turnTurretSpeedPitch",
+        lowBatteryGuidanceSpdParam = "pitchSpdLowBattery", axisName = "y",
         getTankMainTurretSpeed = getProp_tankMainTurretSpeedPitch
         getTankTopVal = getProp_tankMainTurretSpeedPitchTop,
         getShipMul = [ getMul_shipTurretMainSpeedPitch, getMul_shipTurretAuxSpeedPitch, getMul_shipTurretAaSpeedPitch ]
@@ -685,19 +793,24 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
       local speedMul = 1
       if (simUnitType == S_TANK) {
         let mainTurretSpeed = a.getTankMainTurretSpeed(commonData)
-        let value = weaponInfoBlk?[a.blkName] ?? 0
-        let unitWeaponsList = getUnitWeaponsList(commonData)
-        let mainTurretValue = unitWeaponsList[0]?[a.blkName] ?? 0
-        if (mainTurretValue != 0)
-          speedMul = value / mainTurretValue
-        speed = mainTurretSpeed * speedMul
+        if (status.isCoaxial)
+          
+          speed = mainTurretSpeed
+        else {
+          let value = weaponInfoBlk?[a.guidanceSpdParam] ?? 0
+          let unitWeaponsList = getUnitWeaponsList(commonData)
+          let mainTurretValue = unitWeaponsList[0]?[a.guidanceSpdParam] ?? 0
+          if (mainTurretValue != 0)
+            speedMul = value / mainTurretValue
+          speed = mainTurretSpeed * speedMul
+        }
       }
       else if ([S_SHIP, S_BOAT].contains(simUnitType)) {
         let getMul = status.isPrimary ? a.getShipMul[0]
           : status.isSecondary  ? a.getShipMul[1]
           : status.isMachinegun ? a.getShipMul[2]
           : @(_) 1.0
-        let baseSpeed = weaponInfoBlk?[a.blkName] ?? 0
+        let baseSpeed = weaponInfoBlk?[a.guidanceSpdParam] ?? 0
         let mul = getMul(commonData)
         speed = baseSpeed * mul
       }
@@ -710,7 +823,10 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
           if (topVal > speed)
             res.topValue <- "".concat(format("%.1f", topVal), unitsDegPerSec)
         }
+        if (isDevOnlyTurretInfo)
+          res.isDevParam <- true
         desc.append(res)
+        desc.extend(getLowBatteryGuidanceSpeedDesc(weaponInfoBlk, a, commonData))
       }
     }
   }
@@ -873,9 +989,9 @@ let haveFirstStageShells = @(unitBlk, trigger)
   getAmmoStowageBlockByParam(unitBlk, trigger, "firstStage") ?? false
 
 function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData) {
-  let { unitBlk, crewId, simUnitType, getUnitWeaponsList,
-    getProp_tankReloadTime, getProp_tankReloadTimeTop,
-    getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef, getProp_shipReloadTimeAaDef
+  let { unitBlk, crewId, simUnitType, getUnitWeaponsList, getProp_tankReloadTime,
+    getProp_tankReloadTimeTop, getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef,
+    getProp_shipReloadTimeAaDef, getXrayDevMode
   } = commonData
 
   local shotFreqRPM = 0.0 
@@ -919,6 +1035,8 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
           topValue = getProp_tankReloadTimeTop(commonData)
       }
     }
+    else if (status.isMachinegun && !!getXrayDevMode())
+      reloadTimeS = getGunReloadTimeMax(weaponInfoBlk) ?? 0
   }
   else if (simUnitType == S_BOAT || simUnitType == S_SHIP) {
     if (isCartridge) {
@@ -1011,6 +1129,107 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
   return desc
 }
 
+function getAmmoStowageBlockByTrigger(unitBlk, trigger) {
+  if (!unitBlk?.ammoStowages || !trigger)
+    return null
+
+  let ammoCount = unitBlk.ammoStowages.blockCount()
+  for (local i = 0; i < ammoCount; i++) {
+    let ammo = unitBlk.ammoStowages.getBlock(i)
+    if ((ammo % "weaponTrigger").findvalue(@(t) t == trigger))
+      return ammo
+  }
+  return null
+}
+
+let toStr_secTrimmed = @(v) (v % 1) ? format("%.1f", v) : format("%d", v)
+
+
+
+
+
+function getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData) {
+  let { unitBlk, simUnitType, getProp_tankReloadTime, getProp_tankReloadTimeTop, getXrayDevMode }
+    = commonData
+  let desc = []
+  if (!getXrayDevMode())
+    return desc
+
+  if (simUnitType == S_TANK) {
+    let trigger = weaponInfoBlk?.trigger
+    if (!haveFirstStageShells(unitBlk, trigger))
+      return desc
+
+    let ammoStowage = getAmmoStowageBlockByTrigger(unitBlk, trigger)
+    let replenishmentDelay = ammoStowage?.replenishmentDelay ?? 0
+    let replenishmentTime = ammoStowage?.replenishmentTime ?? 0
+    if (replenishmentDelay)
+      desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_delay", ""), colon,
+        toStr_secTrimmed(replenishmentDelay), unitsSec)
+        isDevParam = true })
+    if (replenishmentTime)
+      desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_time", ""), colon,
+        toStr_secTrimmed(replenishmentTime), unitsSec)
+        isDevParam = true })
+
+    let reloadTime = getProp_tankReloadTime(commonData)
+    if (reloadTime) {
+      let reloadTimeMult = getAmmoStowageReloadTimeMult(unitBlk, trigger)
+      let reserveReloadTime = round_by_value(reloadTime * reloadTimeMult, 0.1)
+      let reserveTopValue = round_by_value(getProp_tankReloadTimeTop(commonData) * reloadTimeMult, 0.1)
+      let res = {
+        value = "".concat(loc("xray/ammo/first_stage/reload_time_when_empty", ""), colon,
+          toStr_secTrimmed(reserveReloadTime), unitsSec)
+        isDevParam = true
+      }
+      if (reserveTopValue != 0 && reserveTopValue < reserveReloadTime)
+        res.topValue <- " ".concat(toStr_secTrimmed(reserveTopValue), unitsSec)
+      desc.append(res)
+    }
+  }
+
+  return desc
+}
+
+let xraySimUnitTypesWithCompartments = [S_TANK, S_SHIP, S_BOAT]
+
+let isPressureEffect = @(effectBlk) effectBlk?.pressure || effectBlk?.pressureOpen
+
+function findCompartmentLabels(unitBlk, partName) {
+  let compLabels = []
+
+  let metaPartsBlk = unitBlk?.MetaParts
+  for (local i = 0; i < (metaPartsBlk?.blockCount() ?? 0); i++) {
+    let mpBlk = metaPartsBlk.getBlock(i)
+    let pressureEffectBlk = (mpBlk % "effect").findvalue(isPressureEffect)
+    if (pressureEffectBlk == null)
+      continue
+    if (!(mpBlk % "part").contains(partName))
+      continue
+
+    let blockName = mpBlk.getBlockName()
+    let pressureOpen = pressureEffectBlk?.pressureOpen
+    compLabels.append(pressureOpen != null ? $"{blockName} (pressureOpen={pressureOpen})" : blockName)
+  }
+
+  return compLabels
+}
+
+
+function getPartPressureCompartmentDesc(partName, commonData) {
+  let { unitBlk, simUnitType, getXrayDevMode } = commonData
+  let desc = []
+  if (!getXrayDevMode() || !xraySimUnitTypesWithCompartments.contains(simUnitType))
+    return desc
+
+  let names = findCompartmentLabels(unitBlk, partName)
+  desc.append({
+    value = "".concat("Compartments: ", names.len() ? "\n".join(names) : "N/A")
+    isDevParam = true
+  })
+  return desc
+}
+
 
 
 function getAmmoStowageInfo(unitBlk, weaponTrigger, ammoStowageId = null, collectOnlyThisStowage = false) {
@@ -1020,7 +1239,7 @@ function getAmmoStowageInfo(unitBlk, weaponTrigger, ammoStowageId = null, collec
     let stowage = unitBlk?.ammoStowages[ammoId]
     if (!stowage)
       break
-    if (weaponTrigger && stowage.weaponTrigger != weaponTrigger)
+    if (weaponTrigger && (stowage % "weaponTrigger").findvalue(@(t) t == weaponTrigger) == null)
       continue
     if ((unitBlk.ammoStowages % ammoId).len() > 1)
       assert(false, $"ammoStowages contains non-unique ammo")
@@ -1074,7 +1293,7 @@ function mkWeaponDesc(partType, params, commonData) {
           weaponsCount > 1 ? format(loc("weapons/counter"), weaponsCount) : ""))
   }
   local weaponInfoBlk = null
-  let triggerParam = "trigger"
+  const triggerParam = "trigger"
   if (weaponTrigger != null) {
     let unitWeaponsList = getUnitWeaponsList(commonData)
     foreach (weapon in unitWeaponsList) {
@@ -1117,6 +1336,7 @@ function mkWeaponDesc(partType, params, commonData) {
         if (ammo > 1)
           desc.append("".concat(loc("shop/ammo"), colon, ammo))
         desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData))
+        desc.extend(getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData))
       }
       desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
       if (status?.isPrimary || status?.isSecondary) {
@@ -1138,25 +1358,183 @@ function mkWeaponDesc(partType, params, commonData) {
 
 
 
-function getAmmoStowageSlotInfo(unitBlk, partName) {
-  let res = {
-    count = 0,
-    isConstrainedInert = false
+function getAmmoStowageCountByWeapons(commonData, ammoStowageBlk) {
+  let weaponTriggers = ammoStowageBlk % "weaponTrigger"
+  if (weaponTriggers.len() == 0)
+    return 0
+
+  local res = 0
+  foreach (weapon in commonData?.getUnitWeaponsList(commonData) ?? [])
+    if (weaponTriggers.contains(weapon?.trigger ?? ""))
+      res += weapon?.bullets ?? 0
+  return res
+}
+
+enum AMMO_CLUSTER_STAGE {
+  LOADED_IN_GUN
+  FIRST_STAGE
+  SECOND_STAGE
+  NO_RELOAD
+}
+
+function getAmmoClusterStageOrder(clusterBlk) {
+  if (clusterBlk?.ammoLoadedInGun)
+    return AMMO_CLUSTER_STAGE.LOADED_IN_GUN
+  if ((clusterBlk?.firstStage ?? false) || (clusterBlk?.autoLoad ?? false))
+    return AMMO_CLUSTER_STAGE.FIRST_STAGE
+  if (clusterBlk?.noReload)
+    return AMMO_CLUSTER_STAGE.NO_RELOAD
+  return AMMO_CLUSTER_STAGE.SECOND_STAGE
+}
+
+
+
+
+function getAmmoStowageDistributedCount(commonData, ammoBlk, blockName, targetPartName, explicitCount) {
+  if (explicitCount != 0)
+    return explicitCount
+
+  
+  let clusters = []
+  local allIndexed = true
+  foreach (arrayIdx, cluster in ammoBlk % blockName) {
+    if (cluster?.index == null)
+      allIndexed = false
+    clusters.append({
+      cluster = cluster
+      arrayIdx = arrayIdx
+      stage = getAmmoClusterStageOrder(cluster)
+      isFirstStage = cluster?.firstStage ?? false
+      index = cluster?.index ?? -1
+    })
   }
+  if (allIndexed)
+    foreach (cluster in ammoBlk % (blockName == "shells" ? "charges" : "shells"))
+      if (cluster?.index == null) {
+        allIndexed = false
+        break
+      }
+
+  clusters.sort(@(a, b)
+    a.stage <=> b.stage
+    || b.isFirstStage <=> a.isFirstStage
+    || (allIndexed ? a.index <=> b.index : 0)
+    || b.arrayIdx <=> a.arrayIdx)
+
+  local undistributedCount = 0
+  local explicitSum = 0
+  local targetOrdinal = -1
+  foreach (c in clusters) {
+    let cluster = c.cluster
+    let reverseFill = cluster?.reverseFill ?? false
+    local clusterUndistributed = 0
+    local targetLocal = -1
+    for (local j = 0; j < cluster.blockCount(); j++) {
+      let slotBlk = cluster.getBlock(j)
+      if (slotBlk.getBlockName() == "damageEffect")
+        continue
+      let isTarget = slotBlk.getBlockName() == targetPartName
+      
+      let slotCount = slotBlk?.count ?? 0
+      if (slotCount != 0)
+        explicitSum += slotCount
+      else {
+        if (isTarget)
+          targetLocal = clusterUndistributed
+        clusterUndistributed++
+      }
+    }
+    if (targetLocal >= 0)
+      targetOrdinal = undistributedCount + (reverseFill ? clusterUndistributed - 1 - targetLocal : targetLocal)
+    undistributedCount += clusterUndistributed
+  }
+
+  let total = getAmmoStowageCountByWeapons(commonData, ammoBlk)
+  if (undistributedCount <= 0 || targetOrdinal < 0)
+    return total
+  let budget = max(total - explicitSum, 0)
+  let perSlot = budget / undistributedCount
+  let remainder = budget % undistributedCount
+  let extra = targetOrdinal < remainder ? 1 : 0
+  return perSlot + extra
+}
+
+
+
+
+
+
+
+
+
+
+function getAmmoStowageDesc(unitBlk, partName, commonData, isShipOrBoat) {
+  let res = { slotCount = 0, isConstrainedInert = false, weaponsAmmo = [] }
+
+  
+  local stowageBlk = null
+  local blockName = null
+  local cluster = null
+  local slotBlk = null
   let ammoStowages = unitBlk?.ammoStowages
   if (ammoStowages)
-    for (local i = 0; i < ammoStowages.blockCount(); i++) {
+    for (local i = 0; (i < ammoStowages.blockCount()) && (slotBlk == null); i++) {
       let blk = ammoStowages.getBlock(i)
-      foreach (blockName in [ "shells", "charges" ])
-        foreach (shells in blk % blockName) {
-          let slotBlk = shells?[partName]
-          if (slotBlk) {
-            res.count = slotBlk.count
-            res.isConstrainedInert = slotBlk?.type == "inert"
-            return res
+      foreach (name in [ "shells", "charges" ]) {
+        foreach (c in blk % name) {
+          let s = c?[partName]
+          if (s != null) {
+            stowageBlk = blk
+            blockName = name
+            cluster = c
+            slotBlk = s
+            break
           }
         }
+        if (slotBlk != null)
+          break
+      }
     }
+  if (slotBlk == null)
+    return res
+
+  res.isConstrainedInert = slotBlk?.type == "inert"
+  
+  if (!isShipOrBoat)
+    return res
+
+  let explicitCount = slotBlk?.count ?? 0
+  let weaponTriggers = stowageBlk % "weaponTrigger"
+  
+  let countByName = {}
+  foreach (weapon in commonData?.getUnitWeaponsList(commonData) ?? [])
+    if (weaponTriggers.contains(weapon?.trigger ?? "")) {
+      let weaponName = commonData.getWeaponNameByBlkPath(weapon?.blk ?? "")
+      if (weaponName == "")
+        continue
+      if (weaponName not in countByName) {
+        countByName[weaponName] <- 0
+        res.weaponsAmmo.append({ weaponName, count = 0 })
+      }
+      countByName[weaponName] += weapon?.bullets ?? 0
+    }
+
+  
+  
+  let isReadyUseRack = (explicitCount != 0)
+    && (getAmmoClusterStageOrder(cluster) != AMMO_CLUSTER_STAGE.SECOND_STAGE)
+  if (isReadyUseRack || res.weaponsAmmo.len() <= 1) {
+    res.slotCount = getAmmoStowageDistributedCount(commonData, stowageBlk, blockName, partName, explicitCount)
+    foreach (entry in res.weaponsAmmo)
+      entry.count = res.slotCount
+  }
+  else {
+    foreach (entry in res.weaponsAmmo)
+      entry.count = countByName[entry.weaponName]
+    
+    if (countByName.findindex(@(count) count > 0) == null)
+      res.slotCount = getAmmoStowageDistributedCount(commonData, stowageBlk, blockName, partName, explicitCount)
+  }
   return res
 }
 
@@ -1166,9 +1544,18 @@ function mkAmmoDesc(partType, params, commonData) {
   let desc = []
   local partLocId = partType
   let isShipOrBoat = [S_SHIP, S_BOAT].contains(simUnitType)
-  let ammoSlotInfo = getAmmoStowageSlotInfo(unitBlk, partName)
-  if (isShipOrBoat && ammoSlotInfo.count > 1)
-    desc.append("".concat(loc("shop/ammo"), colon, ammoSlotInfo.count))
+  let ammo = getAmmoStowageDesc(unitBlk, partName, commonData, isShipOrBoat)
+  if (isShipOrBoat) {
+    local shown = false
+    foreach (wa in ammo.weaponsAmmo)
+      if (wa.count > 0) {
+        desc.append("".concat(getWeaponLocName(wa.weaponName, commonData), " ", loc("shop/ammo"), colon, wa.count))
+        shown = true
+      }
+    
+    if (!shown && ammo.slotCount > 1)
+      desc.append("".concat(loc("shop/ammo"), colon, ammo.slotCount))
+  }
   let stowageInfo = getAmmoStowageInfo(unitBlk, null, partName, isShipOrBoat)
   if (stowageInfo.isCharges)
     partLocId = isShipOrBoat ? "ship_charges_storage" : "ammo_charges"
@@ -1180,7 +1567,7 @@ function mkAmmoDesc(partType, params, commonData) {
   }
   if (stowageInfo.isAutoLoad)
     desc.append(loc("xray/ammo/mechanized_ammo_rack"))
-  if (ammoSlotInfo.isConstrainedInert)
+  if (ammo.isConstrainedInert)
     desc.append(loc("xray/ammo/constrained_inert"))
   return { desc, partLocId }
 }
@@ -1248,13 +1635,13 @@ function mkTankArmorPartDesc(partType, params, commonData) {
     partLocId = info.titleLoc
 
   if (partName.startswith("firewall_armor")) {
-    let descLocId = "armor_class/desc/firewall_armor"
+    const descLocId = "armor_class/desc/firewall_armor"
     if (doesLocTextExist(descLocId))
       desc.append(loc(descLocId))
   }
 
   foreach (data in info.referenceProtectionArray) {
-    if (isPoint2(data.angles))
+    if (data.angles instanceof Point2)
       desc.append(loc("shop/armorThicknessEquivalent/angles",
         { angle1 = abs(data.angles.y), angle2 = abs(data.angles.x) }))
     else
@@ -1274,9 +1661,9 @@ function mkTankArmorPartDesc(partType, params, commonData) {
     let texts = []
     foreach (layer in info.layersArray) {
       local thicknessText = ""
-      if (isFloat(layer?.armorThickness) && layer.armorThickness > 0)
+      if (layer?.armorThickness instanceof Float && layer.armorThickness > 0)
         thicknessText = round(layer.armorThickness).tostring()
-      else if (isPoint2(layer?.armorThickness) && layer.armorThickness.x > 0 && layer.armorThickness.y > 0)
+      else if (layer?.armorThickness instanceof Point2 && layer.armorThickness.x > 0 && layer.armorThickness.y > 0)
         thicknessText = "".concat(round(layer.armorThickness.x), mdash,
           round(layer.armorThickness.y))
       if (thicknessText != "")
@@ -1303,6 +1690,20 @@ function mkCoalBunkerDesc(_partType, _params, commonData) {
 
 
 
+
+
+function isWeaponPresetModsAvailable(unitName, slotPresetBlk, isModAvailableOrFree) {
+  let reqMods = slotPresetBlk % "reqModification"
+  if (reqMods.len() == 0)
+    foreach (weaponBlk in slotPresetBlk % "Weapon")
+      reqMods.extend(weaponBlk % "reqModification")
+
+  foreach (req in reqMods)
+    if (!isModAvailableOrFree(unitName, req))
+      return false
+  return true
+}
+
 function getUnitSensorsList(commonData) {
   let { unitDataCache } = commonData
   if ("sensorBlkList" not in unitDataCache) {
@@ -1320,16 +1721,16 @@ function getUnitSensorsList(commonData) {
 
       if (isDebugBatchExportProcess && isMod && unitBlk?.sensors != null)
         for (local b = 0; b < unitBlk.sensors.blockCount(); b++)
-          appendOnce(unitBlk.sensors.getBlock(b), sensorBlkList, false, isEqual)
+          appendEqualOnce(sensorBlkList, unitBlk.sensors.getBlock(b))
 
       if (unitBlk?.WeaponSlots)
         foreach (slotBlk in unitBlk.WeaponSlots % "WeaponSlot")
           foreach (slotPresetBlk in (slotBlk % "WeaponPreset"))
             if (slotPresetBlk?.sensors != null) {
-              if (isDebugBatchExportProcess || slotPresetBlk?.reqModification == null
-                  || isModAvailableOrFree(unitName, slotPresetBlk.reqModification))
-                for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
-                  appendOnce(slotPresetBlk.sensors.getBlock(b), sensorBlkList, false, isEqual)
+              if (isDebugBatchExportProcess ||
+                isWeaponPresetModsAvailable(unitName, slotPresetBlk, isModAvailableOrFree))
+                  for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
+                    appendEqualOnce(sensorBlkList, slotPresetBlk.sensors.getBlock(b))
             }
     }
     unitDataCache.sensorBlkList <- sensorBlkList
@@ -1402,6 +1803,7 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
   local isEsm = false
   local rangeMax = 0.0
   local bandsTxtArr = []
+  local bandsIndexes = []
   local searchZoneAzimuthWidth = 0.0
   local searchZoneElevationWidth = 0.0
   let transiversBlk = sensorPropsBlk.getBlockByName("transivers")
@@ -1419,12 +1821,12 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
         isEsm = true
       else
         isRadar = true
-      local bandsIndexes = []
       for (local p = 0; p < transiverBlk.paramCount(); ++p)
-        if (transiverBlk.getParamName(p) == "band")
-          bandsIndexes.append(transiverBlk.getParamValue(p))
-      bandsTxtArr.clear()
-      addBandsText(bandsIndexes, bandsTxtArr)
+        if (transiverBlk.getParamName(p) == "band") {
+          let band = transiverBlk.getParamValue(p)
+          if (bandsIndexes.indexof(band) == null)
+            bandsIndexes.append(band)
+        }
     }
     if (transiverBlk?.antenna != null) {
       if (transiverBlk.antenna?.azimuth != null && transiverBlk.antenna?.elevation != null) {
@@ -1440,6 +1842,8 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       }
     }
   }
+  bandsIndexes.sort()
+  addBandsText(bandsIndexes, bandsTxtArr)
 
   let isSearchRadar = findBlockByName(sensorPropsBlk, "addTarget") != null
 
@@ -1839,6 +2243,20 @@ function getOpticsParams(zoomOutFov, zoomInFov) {
   }
 }
 
+function mkNVDGenerationText(memberRole, commonData) {
+  let desc = []
+  let memberNVDSight = commonData.unit?.getNVDSights("night_vision_system")
+    .findvalue(@(s) s.name.contains(memberRole))
+
+  if (!memberNVDSight)
+    return desc
+  let nvdGen = getNVDSightGen(memberNVDSight.resolution)
+  let nvdType = getNVDSightSystemText(memberNVDSight.name)
+  desc.append("".concat(nvdType, (nvdType != "" ? loc("ui/colon") : ""),
+    loc("modifications/generation"), loc("ui/space"), nvdGen))
+  return desc
+}
+
 function mkOpticsTexts(infoBlk, modBlk = null) {
   let desc = []
   let sightName = modBlk?.sightName ?? infoBlk?.sightName
@@ -1852,6 +2270,13 @@ function mkOpticsTexts(infoBlk, modBlk = null) {
   if (optics.fov != "")
     desc.append("".concat(loc("optic/fov"), colon, optics.fov))
   return desc
+}
+
+function mkOpticBodyDesc(_partType, params, commonData) {
+  let desc = []
+  if (tankDriverSightParts.contains(params.name))
+    desc.extend(mkNVDGenerationText("driver", commonData))
+  return { desc }
 }
 
 function mkSensorDesc(partType, params, commonData) {
@@ -1879,8 +2304,10 @@ function mkSensorDesc(partType, params, commonData) {
   if (partType == "optic_gun" && ![S_SHIP, S_BOAT].contains(simUnitType)) {
     let info = unitBlk?.cockpit
     let cockpitMod = findAnyModEffectValueBlk(commonData, "cockpit")
-    if (info?.sightName || cockpitMod?.sightName)
+    if (info?.sightName || cockpitMod?.sightName) {
       desc.extend(mkOpticsTexts(info, cockpitMod))
+      desc.extend(mkNVDGenerationText("gunner", commonData))
+    }
   }
   return { desc }
 }
@@ -2011,6 +2438,8 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
     desc.append(loc("avionics_hmd"))
   if (unitBlk.getBool("havePointOfInterestDesignator", false) || simUnitType == S_HELICOPTER)
     desc.append(loc("avionics_aim_spi"))
+  if (unitBlk.getBool("hasAimingPointsMemory", false))
+    desc.append(loc("avionics_target_point"))
   if (unitBlk.getBool("laserDesignator", false))
     desc.append(loc("avionics_aim_laser_designator"))
 
@@ -2132,8 +2561,10 @@ function mkCountermeasureDesc(_partType, params, commonData) {
 function mkCommanderPanoramicSightDesc(_partType, _params, commonData) {
   let { unitBlk } = commonData
   let desc = []
-  if (unitBlk?.commanderView)
+  if (unitBlk?.commanderView) {
     desc.extend(mkOpticsTexts(unitBlk.commanderView))
+    desc.extend(mkNVDGenerationText("commander", commonData))
+  }
   return { desc }
 }
 
@@ -2389,6 +2820,9 @@ return {
 
   getPartType
   getPartNameLocText
+  getPartNameDescLocText
+  getNVDSightGen
+  getNVDSightSystemText
 
   
   mkTankCrewMemberDesc
@@ -2411,6 +2845,7 @@ return {
   mkSensorDesc
   mkApsSensorDesc
   mkApsLauncherDesc
+  mkOpticBodyDesc
   
   mkAvionicsDesc
   mkCountermeasureDesc
@@ -2433,4 +2868,5 @@ return {
   getUnitSensorsList
   mkRwrTexts
   mkMlwsTexts
+  getPartPressureCompartmentDesc
 }

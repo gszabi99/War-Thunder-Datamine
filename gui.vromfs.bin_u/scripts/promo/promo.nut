@@ -1,10 +1,17 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isDataBlock, isEmpty, isString, chooseRandom
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/datablock.nut" import convertBlk
+from "string" import split_by_chars
+from "chat" import is_chat_message_empty
+from "%sqstd/string.nut" import split, cutPrefix
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_gui_regional_blk, get_game_settings_blk
 from "%scripts/dagui_natives.nut" import set_cached_music, has_entitlement, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
-let { isDataBlock, isEmpty, copy, isString, chooseRandom } = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { split_by_chars } = require("string")
+from "%globalScripts/cachedMusicConsts.nut" import *
+
 let time = require("%scripts/time.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { isVisibleByConditions } = require("%scripts/promo/promoConditions.nut")
@@ -13,19 +20,12 @@ let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoAc
 let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { validateLink } = require("%scripts/onlineShop/url.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
-let { showGuestEmailRegistration, needShowGuestEmailRegistration
-} = require("%scripts/user/suggestionEmailRegistration.nut")
-let { is_chat_message_empty } = require("chat")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
+let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { checkUnlockString } = require("%scripts/unlocks/unlocksModule.nut")
-let { split, cutPrefix } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
@@ -458,7 +458,7 @@ function checkMultiVisibleBlocks(block) {
   local countVisible = 0
   let blocksCount = block.blockCount()
   for (local i = 0; i < blocksCount; ++i)
-    if (checkSubBlockVisible(convertBlk(block.getBlock(i)))) {
+    if (checkSubBlockVisible(block.getBlock(i))) {
       ++countVisible
       if (countVisible > 1)
         return true
@@ -469,7 +469,7 @@ function checkMultiVisibleBlocks(block) {
 function hasVisibleBlocksInMultiblock(block) {
   let blocksCount = block.blockCount()
   for (local i = 0; i < blocksCount; ++i)
-    if (checkSubBlockVisible(convertBlk(block.getBlock(i))))
+    if (checkSubBlockVisible(block.getBlock(i)))
       return true
   return false
 }
@@ -490,15 +490,13 @@ let checkBlockVisibility = @(block) getShowAllPromoBlocks() ||
 let visibilityStatuses = {}
 let getPromoVisibilityById = @(id) visibilityStatuses?[id] ?? false
 
-function needUpdate(newData) {
+function needUpdate(promoBlocks) {
   local reqForceUpdate = false
-  for (local i = 0; i < newData.blockCount(); ++i) {
-    let block = newData.getBlock(i)
-    let id = block.getBlockName()
-
+  foreach (block in promoBlocks) {
+    let blockName = block.getBlockName()
     let show = checkBlockVisibility(block)
-    if (visibilityStatuses?[id] != show) {
-      visibilityStatuses[id] <- show
+    if (visibilityStatuses?[blockName] != show) {
+      visibilityStatuses[blockName] <- show
       reqForceUpdate = true
     }
     if (!reqForceUpdate && isMultiBlockActiveChanged(block))
@@ -508,7 +506,8 @@ function needUpdate(newData) {
   return reqForceUpdate
 }
 
-function receivePromoBlk() {
+function gatherPromoBlocksToArr() {
+  let promoBlocksArr = []
   local customPromoBlk = get_gui_regional_blk()?.promo_block
   
   if (!isDataBlock(customPromoBlk)) {
@@ -518,8 +517,11 @@ function receivePromoBlk() {
       customPromoBlk = DataBlock()
   }
 
+  for (local i = 0; i < customPromoBlk.blockCount(); i++)
+    promoBlocksArr.append(customPromoBlk.getBlock(i))
+
   let showAllPromo = getShowAllPromoBlocks()
-  let promoBlk = copy(customPromoBlk)
+
   let guiBlk = GUI.get()
   let staticPromoBlk = guiBlk?.static_promo_block
   if (isDataBlock(staticPromoBlk)) {
@@ -527,14 +529,23 @@ function receivePromoBlk() {
     for (local i = 0; i < staticPromoBlk.blockCount(); ++i) {
       let block = staticPromoBlk.getBlock(i)
       let blockName = block.getBlockName()
-      let haveDouble = blockName in promoBlk
+      let haveDouble = promoBlocksArr.findindex(@(v) v.getBlockName() == blockName) != null
       if (!haveDouble || showAllPromo)
-        promoBlk[blockName] <- copy(block)
+        promoBlocksArr.append(block)
     }
   }
+  return promoBlocksArr
+}
 
-  if (!needUpdate(promoBlk))
+function receivePromoBlk() {
+  let promoBlocksArr = gatherPromoBlocksToArr()
+
+  if (!needUpdate(promoBlocksArr))
     return null
+
+  let promoBlk = DataBlock()
+  foreach (block in promoBlocksArr)
+    promoBlk[block.getBlockName()] <- block
   return promoBlk
 }
 
@@ -587,7 +598,7 @@ function getType(block) {
   return getPromoButtonConfig(block.getBlockName())?.buttonType ?? PROMO_BUTTON_TYPE.ARROW
 }
 
-let defaultCollapsedIcon = "icon/news"
+const defaultCollapsedIcon = "icon/news"
 
 function getPromoCollapsedIcon(view, promoButtonId) {
   let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon

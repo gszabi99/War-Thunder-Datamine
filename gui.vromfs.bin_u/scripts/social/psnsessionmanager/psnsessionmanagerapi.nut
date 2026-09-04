@@ -1,8 +1,7 @@
+import "%sonyLib/webApi.nut" as psn
+import "statsd" as statsd
+from "%sqStdLibs/helpers/u.nut" import isEqual
 from "%scripts/dagui_library.nut" import *
-
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let psn = require("%sonyLib/webApi.nut")
-let statsd = require("statsd")
 
 let create = @(data, onFinishCb) psn.send(
   psn.sessionManager.create(data),

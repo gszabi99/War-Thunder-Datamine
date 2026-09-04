@@ -1,9 +1,10 @@
+from "%sqStdLibs/helpers/u.nut" import isEqual, isArray, isEmpty
 from "%scripts/dagui_library.nut" import *
+
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
-let { isEqual, isArray, isEmpty } = require("%sqStdLibs/helpers/u.nut")
 
-let class SquadMember {
+class SquadMember {
   uid = ""
   name = ""
   rank = -1
@@ -83,7 +84,7 @@ let class SquadMember {
     local isChanged = false
     let updatedData = {}
     foreach (_idx, property in this.updatedProperties) {
-      newValue = getTblValue(property, data, null)
+      newValue = data?[property]
       if (newValue == null)
         continue
 

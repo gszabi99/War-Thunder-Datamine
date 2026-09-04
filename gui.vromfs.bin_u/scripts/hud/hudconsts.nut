@@ -45,6 +45,9 @@ enum HUD_TYPE {
   HUMAN_DRONE,
   HUMAN_DRONE_HELI,
 
+
+
+
   NONE
 }
 

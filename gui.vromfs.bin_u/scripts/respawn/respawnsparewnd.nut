@@ -1,12 +1,12 @@
+from "guiRespawn" import getNumFreeSparesPerDay
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getNumFreeSparesPerDay } = require("guiRespawn")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { createDailyFreeSpareItem } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
 
 const NEED_SKIP_SPARE_ACTIVATION_CONFIRM_SAVE_ID = "needSkipSpareActivationConfirm"
@@ -54,7 +54,7 @@ let RespawnSpareWnd = class (ItemsListWndBase) {
   onAmountChange = @() null
 }
 
-gui_handlers.RespawnSpareWnd <- RespawnSpareWnd
+register_gui_handler("RespawnSpareWnd", RespawnSpareWnd)
 
 function openRespawnSpareWnd(unit, onOkCb, alignObj, showDailySparesOnly) {
   if (unit == null)

@@ -2,7 +2,6 @@ require darg
 require DagorStdGuiRender
 require math
 require DagorMath
-require DagorSystem
 require TwsHud
 require app
 require TwsHud
@@ -137,13 +136,12 @@ class Component : Canvas
     for i in range(length(hud.rwrTargets))
       drawRwrTarget(hud.rwrTargets[i], i)
 
-  [unused_argument(i)] def drawRwrTarget(target : RwrHudTarget const &; i : int)
+  def drawRwrTarget(target : RwrHudTarget const&; i : int)
     let ageFade = target_opacity(target.age, get_rwr_signal_hold_time_inv())
     let launchFade = target.launch ? blinkFade : 1.0
     var showMult = 1.0
-    static_if typeinfo has_field<rwrTargetVisibility>(*hud)
-      if i < length(hud.rwrTargetVisibility.targetShow) && !hud.rwrTargetVisibility.targetShow[i]
-        showMult = 0.2
+    if i < length(hud.rwrTargetVisibility.targetShow) && !hud.rwrTargetVisibility.targetShow[i]
+      showMult = 0.2
     let targetOpacity = showMult * ageFade * launchFade
     let priorityTargetOpacityMult = target.priority ? 2.0 : 1.0
     let fadedColor = color_mult4(props.textColor, targetOpacity)

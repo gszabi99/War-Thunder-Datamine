@@ -1,22 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 
-gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanSquadInfoWnd = class (BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
   sceneBlkName   = "%gui/clans/clanSquadInfo.blk"
   needVoiceChat = false
@@ -39,7 +39,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       squad = squad
     }
 
-    return loadHandler(gui_handlers.clanSquadInfoWnd, params)
+    return loadHandler(get_gui_handler("clanSquadInfoWnd"), params)
   }
 
   function initScreen() {
@@ -166,3 +166,6 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     squadsListData.requestList()
   }
 }
+register_gui_handler("clanSquadInfoWnd", clanSquadInfoWnd)
+
+return { clanSquadInfoWnd }

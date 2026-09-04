@@ -27,8 +27,8 @@
     "on_drag_drop": "onUnitCellDrop",
     "dragParent": "yes",
     "proxyEventsParentTag": "shopTable",
-    "on_hover": "::gcb.delayedTooltipHover",
-    "on_unhover": "::gcb.delayedTooltipHover",
+    "on_hover": "gcb.delayedTooltipHover",
+    "on_unhover": "gcb.delayedTooltipHover",
     "tooltip-float": "horizontal",
     "title": "$tooltipObj",
     "shopInServiceImg": {
@@ -58,6 +58,7 @@
     },
     "eliteIcon": {},
     "recentlyReleasedIcon": {},
+    "focus_border": {},
     "talismanIcon": {
       "id": "talisman",
       "incomplete": "no"
@@ -128,6 +129,35 @@
         "disabled": "no"
       }
     },
+    "tdiv": [
+      {
+        "id": "debugCostText",
+        "position": "absolute",
+        "pos": "pw-w, -h",
+        "background-color": "@shadeBackgroundColor",
+        "flow": "horizontal",
+        "display": "hide",
+        "shopItemText": {
+          "id": "debugCostValue",
+          "text": ""
+        }
+      },
+      {
+        "height": "@dIco",
+        "pos": "0.002@scrn_tgt, ph-h-0.005@scrn_tgt",
+        "position": "absolute",
+        "input-transparent": "yes",
+        "repairIcon": {
+          "id": "repairIcon",
+          "_transp-timer": "0"
+        },
+        "weaponsIcon": {
+          "id": "weaponStatusIcon",
+          "_transp-timer": "0",
+          "weaponsStatus": ""
+        }
+      }
+    ],
     "bottomline": {
       "tdiv": {
         "width": "fw",
@@ -189,21 +219,6 @@
       }
     },
     "groupUnfoldMark": {},
-    "tdiv": {
-      "height": "@dIco",
-      "pos": "0.002@scrn_tgt, ph-h-0.005@scrn_tgt",
-      "position": "absolute",
-      "input-transparent": "yes",
-      "repairIcon": {
-        "id": "repairIcon",
-        "_transp-timer": "0"
-      },
-      "weaponsIcon": {
-        "id": "weaponStatusIcon",
-        "_transp-timer": "0",
-        "weaponsStatus": ""
-      }
-    },
     "rentIcon": {
       "id": "rentIcon",
       "progress": {
@@ -216,7 +231,6 @@
       "id": "unitBonusMark",
       "text": ""
     },
-    "focus_border": {},
     "bottomButtonsDiv": {
       "class": "smallFont",
       "Button_text": {

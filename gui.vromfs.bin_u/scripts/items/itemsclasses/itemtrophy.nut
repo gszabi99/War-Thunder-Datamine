@@ -1,27 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "chard" import get_charserver_time_sec
+from "%sqstd/math.nut" import roundToDigits
 from "%scripts/dagui_natives.nut" import char_send_blk, get_trophy_info, wp_get_trophy_cost, wp_get_trophy_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
 
-let { isHandlerInScene, handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isHandlerInScene, handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { TrophyGroupShopWnd } = require("%scripts/items/trophyGroupShopWnd.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
 let { getPrizeChanceLegendMarkup, getTrophyChancesData, isTrophyChancesCalculated } = require("%scripts/items/prizeChance.nut")
-let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears,
-  TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
+let { hoursToString, secondsToHours, getTimestampFromStringUtc, calculateCorrectTimePeriodYears, TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
-let { get_charserver_time_sec } = require("chard")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { roundToDigits } = require("%sqstd/math.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText,
-  getPrizesStacksView
-} = require("%scripts/items/prizesView.nut")
+let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText, getPrizesStacksView } = require("%scripts/items/prizesView.nut")
 let { getPlayerCountryCode } = require("%scripts/user/countryUtils.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 
@@ -54,7 +51,7 @@ function fillContentRaw(contentRaw, blk) {
   }
 }
 
-let oneHundredPercentFloat = 100.0
+const oneHundredPercentFloat = 100.0
 
 let Trophy = class (BaseItem) {
   static iType = itemType.TROPHY
@@ -249,7 +246,7 @@ let Trophy = class (BaseItem) {
       let subTrophy = findItemById(i?.trophy)
       let countMul = i?.count ?? 1
       if (subTrophy) {
-        if (getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
+        if (subTrophy?.subtrophyShowAsPack || !useRecursion)
           content.append(i)
         else {
           let subContent = subTrophy.getContent(recursionUsedIds)
@@ -302,7 +299,7 @@ let Trophy = class (BaseItem) {
       let subTrophy = findItemById(i?.trophy)
       let countMul = i?.count ?? 1
       if (subTrophy) {
-        if (getTblValue("subtrophyShowAsPack", subTrophy) || !useRecursion)
+        if (subTrophy?.subtrophyShowAsPack || !useRecursion)
           contentWithChances.append(i)
         else {
           let subContent = subTrophy.getContent(recursionUsedIds, true)
@@ -516,7 +513,7 @@ let Trophy = class (BaseItem) {
   function _requestBuy(params = {}) {
     let blk = DataBlock()
     blk["name"] = this.id
-    blk["index"] = getTblValue("index", params, -1)
+    blk["index"] = (params?.index ?? -1)
     blk["cost"] = params.cost
     blk["costGold"] = params.costGold
     return char_send_blk("cln_buy_trophy", blk)
@@ -531,7 +528,7 @@ let Trophy = class (BaseItem) {
 
   function doMainAction(cb, handler, params = null) {
     if (!this.isInventoryItem && this.needOpenTrophyGroupOnBuy())
-      return handlersManager.loadHandler(gui_handlers.TrophyGroupShopWnd, { trophy = this })
+      return handlersManager.loadHandler(TrophyGroupShopWnd, { trophy = this })
 
 
     if (this.isPrizeUnitBought()) {
@@ -552,7 +549,7 @@ let Trophy = class (BaseItem) {
   }
 
   function needOpenTrophyGroupOnBuy() {
-    return this.isGroupTrophy && !isHandlerInScene(gui_handlers.TrophyGroupShopWnd)
+    return this.isGroupTrophy && !isHandlerInScene(TrophyGroupShopWnd)
   }
 
   function getOpeningCaption() {

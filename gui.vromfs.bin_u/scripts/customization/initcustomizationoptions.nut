@@ -1,22 +1,18 @@
+from "guiOptions" import set_gui_option
+from "blkGetters" import get_user_skins_profile_blk
+from "unitCustomization" import on_user_skin_profile_changed, get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
+from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_library.nut" import *
-from "%scripts/options/optionsExtNames.nut" import USEROPT_SKIN, USEROPT_USER_SKIN,
-  USEROPT_INFANTRY_SKIN, USEROPT_TANK_SKIN_CONDITION, USEROPT_TANK_CAMO_SCALE,
-  USEROPT_TANK_CAMO_ROTATION
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SKIN, USEROPT_USER_SKIN, USEROPT_INFANTRY_SKIN, USEROPT_TANK_SKIN_CONDITION, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION
 from "%scripts/controls/controlsConsts.nut" import optionControlType
-from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR,
-  TANK_CAMO_ROTATION_SLIDER_FACTOR
+from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
 from "%sqstd/platform.nut" import isPC
+from "types" import Array
+
 let { registerOption } = require("%scripts/options/optionsExt.nut")
-let { getSkinsOption, getCurUnitUserSkins, getUserSkinCondition,
-  getUserSkinScale, getUserSkinRotation, setLastSkin
-} = require("%scripts/customization/skins.nut")
+let { getSkinsOption, getCurUnitUserSkins, getUserSkinCondition, getUserSkinScale, getUserSkinRotation, setLastSkin } = require("%scripts/customization/skins.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { set_gui_option } = require("guiOptions")
-let { get_user_skins_profile_blk } = require("blkGetters")
-let { on_user_skin_profile_changed, get_tank_skin_condition,
-  get_tank_camo_scale, get_tank_camo_rotation } = require("unitCustomization")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { debug_dump_stack } = require("dagor.debug")
 let { getLocationInfantrySkins, saveInfantrySkin } = require("%scripts/customization/infantryCamouflageStorage.nut")
 let { convertLevelNameToLocation, getInfantrySkinTooltip } = require("%scripts/customization/infantryCamouflageUtils.nut")
 
@@ -38,7 +34,7 @@ function fillSkin(_optionId, descr, _context) {
 }
 
 function setSkin(value, descr, optionId) {
-  if (type(descr.values) == "array") {
+  if (descr.values instanceof Array) {
     let unitName = unitNameForWeapons.get()
     if (value >= 0 && value < descr.values.len()) {
       let isAutoSkin = descr.access[value].isAutoSkin
@@ -174,7 +170,7 @@ function fillInfantrySkin(_optionId, descr, context) {
 }
 
 function setInfantrySkin(value, descr, optionId) {
-  if (type(descr.values) == "array") {
+  if (descr.values instanceof Array) {
     if (value >= 0 && value < descr.values.len()) {
       set_gui_option(optionId, descr.values[value] ?? "")
       saveInfantrySkin(descr.values[value] ?? "default", descr.location, descr.team, descr.tier, unitNameForWeapons.get() ?? "")

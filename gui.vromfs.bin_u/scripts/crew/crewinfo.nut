@@ -1,6 +1,7 @@
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_library.nut" import *
-let { get_charserver_time_sec } = require("chard")
-let { get_warpoints_blk } = require("blkGetters")
+
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 

@@ -1,37 +1,38 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "guiOptions" import get_gui_option
+from "%sqstd/string.nut" import cutPostfix
+from "dynamicMission" import dynamicGetUnits, dynamicSetUnits
+from "guiMission" import select_mission_full, get_mission_difficulty
 from "%scripts/dagui_natives.nut" import set_context_to_player
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_gui_option } = require("guiOptions")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { cutPostfix } = require("%sqstd/string.nut")
-let { dynamicGetUnits, dynamicSetUnits } = require("dynamicMission")
-let { select_mission_full, get_mission_difficulty } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { guiStartFlight, guiStartCdOptions
-} = require("%scripts/missions/startMissionsList.nut")
+let { guiStartFlight, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
 let { get_mutable_mission_settings, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
-gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
+let MissionBuilderTuner = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/options/navOptionsBack.blk"
@@ -367,3 +368,6 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     return descr
   }
 }
+register_gui_handler("MissionBuilderTuner", MissionBuilderTuner)
+
+return { MissionBuilderTuner }

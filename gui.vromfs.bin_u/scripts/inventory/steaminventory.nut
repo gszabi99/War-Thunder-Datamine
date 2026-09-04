@@ -1,9 +1,8 @@
+from "eventbus" import subscribe_onehit
+from "steam" import generate_items, get_all_items, is_running, add_promo_item, grant_promo_items
 from "%scripts/dagui_library.nut" import *
 
-let { subscribe_onehit } = require("eventbus")
-let { generate_items, get_all_items, is_running, add_promo_item, grant_promo_items } = require("steam")
-
-let LOG_PREFIX = "[Steam Inventory] "
+const LOG_PREFIX = "[Steam Inventory] "
 let logS = log_with_prefix($"{LOG_PREFIX} ")
 
 const k_EResultOK = 1 

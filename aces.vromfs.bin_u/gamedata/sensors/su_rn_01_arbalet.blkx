@@ -8,7 +8,7 @@
       "band": 10,
       "rcs": 40.0,
       "range": 8000.0,
-      "rangeMax": 12000.0,
+      "rangeMax": 32000.0,
       "multipathEffect": [
         0.0,
         1.0,
@@ -56,7 +56,7 @@
       "band": 10,
       "rcs": 1.0,
       "range": 12000.0,
-      "rangeMax": 15000.0,
+      "rangeMax": 32000.0,
       "timeGainControl": true,
       "multipathEffect": [
         0.0,
@@ -84,11 +84,11 @@
         60.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -30.0,
+        30.0
       ],
-      "pitchStabLimit": 20.0,
-      "rollStabLimit": 20.0,
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
       "period": 2.0,
       "width": 60.0,
       "barHeight": 20.0,
@@ -103,11 +103,11 @@
         60.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -30.0,
+        30.0
       ],
-      "pitchStabLimit": 20.0,
-      "rollStabLimit": 20.0,
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
       "period": 1.0,
       "width": 30.0,
       "barHeight": 20.0,
@@ -122,11 +122,11 @@
         60.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -30.0,
+        30.0
       ],
-      "pitchStabLimit": 20.0,
-      "rollStabLimit": 20.0,
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
       "period": 2.0,
       "width": 60.0,
       "barHeight": 20.0,
@@ -141,11 +141,11 @@
         60.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -30.0,
+        30.0
       ],
-      "pitchStabLimit": 20.0,
-      "rollStabLimit": 20.0,
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
       "period": 1.0,
       "width": 30.0,
       "barHeight": 20.0,
@@ -160,11 +160,11 @@
         60.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -30.0,
+        30.0
       ],
-      "pitchStabLimit": 20.0,
-      "rollStabLimit": 20.0,
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
       "period": 2.0,
       "width": 60.0,
       "barHeight": 20.0,
@@ -179,11 +179,11 @@
         60.0
       ],
       "elevationLimits": [
-        -20.0,
-        20.0
+        -30.0,
+        30.0
       ],
-      "pitchStabLimit": 20.0,
-      "rollStabLimit": 20.0,
+      "pitchStabLimit": 30.0,
+      "rollStabLimit": 30.0,
       "period": 1.0,
       "width": 30.0,
       "barHeight": 20.0,
@@ -260,9 +260,14 @@
   },
   "scopeRangeSets": {
     "search": {
-      "range1": 12000.0,
-      "range2": 15000.0,
-      "range3": 6000.0
+      "range1": 2000.0,
+      "range2": 4000.0,
+      "range3": 8000.0,
+      "range4": 16000.0,
+      "range5": 32000.0
+    },
+    "ATM": {
+      "range1": 15000.0
     }
   },
   "fsms": {
@@ -303,12 +308,12 @@
             ],
             "azimuthRelWidthMin": 0.02,
             "elevationRange": [
-              -20.0,
-              20.0
+              -30.0,
+              30.0
             ],
             "distanceRange": [
               500.0,
-              15000.0
+              32000.0
             ]
           },
           "setFsmActive": {
@@ -335,7 +340,7 @@
           },
           "setFsmActive": [
             {
-              "fsm": "search",
+              "fsm": "tws",
               "active": true
             },
             {
@@ -351,7 +356,7 @@
         "resetSearchMode": {
           "clearTargets": {},
           "setFsmActive": {
-            "fsm": "search",
+            "fsm": "tws",
             "active": false
           },
           "setCueEnabled": {
@@ -406,14 +411,18 @@
         }
       }
     },
-    "search": {
+    "tws": {
       "stateInit": "search",
       "transitions": {
         "scan": {
-          "stateFrom": "search",
           "event": "update",
           "actions": {
             "scan": {},
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 8.0
+            },
+            "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
                 "source": "constant",
@@ -439,13 +448,11 @@
           "actions": {
             "setDistGatePos": {
               "source": "continuousScale",
-              "width": 0.0,
-              "widthRange": 200000.0
+              "width": 0.0
             },
             "setRelSpeedGatePos": {
               "source": "continuousScale",
-              "width": 0.0,
-              "widthRange": 1000.0
+              "width": 0.0
             },
             "detectTarget": {}
           }
@@ -453,8 +460,33 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "addTarget": {},
-            "updateActiveDetectedTarget": {}
+            "addTargetOfInterestCandidate": {},
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
+              "limit": 20,
+              "timeMin": 2.0,
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 1500.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                300.0
+              ],
+              "dopplerSpeedGateMaxTime": 2.0,
+              "dopplerSpeedGateRange": [
+                0.0,
+                400.0
+              ]
+            }
           }
         },
         "switchSelectedTarget": {
@@ -485,34 +517,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "stateFrom": "search",
-          "command": "selectTarget",
-          "stateTo": "designateActiveDetectedTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": "target",
-              "sensorIndex": 1
-            }
-          }
-        },
-        "designateActiveDetectedTarget": {
-          "stateFrom": "designateActiveDetectedTarget",
-          "command": "designateTarget",
-          "stateTo": "search"
-        },
-        "designateTargetUnderCue": {
-          "stateFrom": "designateActiveDetectedTarget",
-          "event": "update",
-          "stateTo": "search",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": "target",
-              "self": true,
-              "sensorIndex": 0
-            }
           }
         },
         "centerZone": {
@@ -550,6 +554,9 @@
             "source": "constant",
             "value": -6.25
           },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
           "clearTargets": {}
         },
         "setATMMode": {
@@ -569,6 +576,9 @@
             "source": "constant",
             "value": 0.0
           },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "ATM"
+          },
           "clearTargets": {}
         },
         "setMTIMode": {
@@ -587,6 +597,9 @@
           "setCenterElevation": {
             "source": "constant",
             "value": -6.25
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
           },
           "clearTargets": {}
         }

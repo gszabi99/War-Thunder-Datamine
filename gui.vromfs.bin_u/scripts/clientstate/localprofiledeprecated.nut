@@ -1,14 +1,14 @@
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
+from "dagor.debug" import debug_dump_stack
+from "blkGetters" import get_local_custom_settings_blk
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 
-let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { get_local_custom_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 
 function loadLocalByAccount(path, defValue = null) {

@@ -1,6 +1,5 @@
+from "%rGui/planeRwrs/rwrAnAlr56Components.nut" import rwrTargetsComponent
 from "%rGui/globals/ui_library.nut" import *
-
-let { rwrTargetsComponent } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
 
 function scope(scale, style) {
   return {
@@ -13,7 +12,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

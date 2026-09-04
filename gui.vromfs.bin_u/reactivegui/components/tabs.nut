@@ -1,6 +1,6 @@
+import "%rGui/components/tabsBase.nut" as tabsBase
 from "%rGui/globals/ui_library.nut" import *
 
-let tabsBase = require("%rGui/components/tabsBase.nut")
 let colors = require("%rGui/style/colors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 

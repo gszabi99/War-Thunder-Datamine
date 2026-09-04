@@ -1,9 +1,10 @@
+from "chard" import save_profile
+from "%sqstd/platform.nut" import is_pc
 from "%scripts/dagui_natives.nut" import save_short_token, restart_game
 from "%scripts/dagui_library.nut" import *
-let { save_profile } = require("chard")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { is_pc } = require("%sqstd/platform.nut")
 
 let canRestartClientByPlatform = is_pc
 

@@ -1,20 +1,20 @@
+from "eventbus" import eventbus_subscribe
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/contacts/contactsConsts.nut" import EPLX_SEARCH, EPLX_CLAN, EPLX_PS4_FRIENDS
 
-let { eventbus_subscribe } = require("eventbus")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { canInteractCrossConsole, isXBoxPlayerName, isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { contactsWndSizes, contactsByGroups
-} = require("%scripts/contacts/contactsListState.nut")
+let { contactsWndSizes, contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")
@@ -33,7 +33,7 @@ function guiStartSearchSquadPlayer(_ = null) {
   }
 
   updateContacts()
-  handlersManager.loadHandler(gui_handlers.SearchForSquadHandler)
+  handlersManager.loadHandler(get_gui_handler("SearchForSquadHandler"))
 }
 
 function openSearchSquadPlayer() {
@@ -43,7 +43,7 @@ function openSearchSquadPlayer() {
 
 eventbus_subscribe("guiStartSearchSquadPlayer", guiStartSearchSquadPlayer)
 
-gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
+let SearchForSquadHandler = class (ContactsHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/contacts/contacts.blk"
 
@@ -74,11 +74,11 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
   }
 
   function isValid() {
-    return gui_handlers.BaseGuiHandlerWT.isValid.bindenv(this)()
+    return BaseGuiHandlerWT.isValid.bindenv(this)()
   }
 
   function goBack() {
-    gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+    BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function checkScene() {
@@ -158,15 +158,16 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
 
   getContactsGroups = @() this.sg_groups
 }
+register_gui_handler("SearchForSquadHandler", SearchForSquadHandler)
 
 addPromoAction("squad_contacts", @(_handler, _params, _obj) openSearchSquadPlayer())
 
-let promoButtonId = "invite_squad_mainmenu_button"
+const promoButtonId = "invite_squad_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
   updateFunctionInHandler = function() {
-    let id = promoButtonId
+    const id = promoButtonId
     let show = !isMeNewbie() && getPromoVisibilityById(id)
     let buttonObj = showObjById(id, show, this.scene)
     if (!show || !checkObj(buttonObj))

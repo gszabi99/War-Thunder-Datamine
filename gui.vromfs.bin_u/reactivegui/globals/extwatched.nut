@@ -1,6 +1,6 @@
-let { Watched } = require("frp")
-let { eventbus_subscribe } = require("eventbus")
-let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
+from "frp" import Watched
+from "eventbus" import eventbus_subscribe
+from "nestdb" import ndbWrite, ndbRead, ndbExists
 
 let sharedData = {}
 

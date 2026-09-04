@@ -1,6 +1,6 @@
+from "%sqstd/platform.nut" import isPC
 from "%scripts/dagui_library.nut" import *
 
-let { isPC } = require("%sqstd/platform.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 

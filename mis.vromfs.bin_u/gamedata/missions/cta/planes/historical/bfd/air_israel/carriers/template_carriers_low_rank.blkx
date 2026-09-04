@@ -33,7 +33,47 @@
   "imports": {},
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "carriers_init_low": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/carriers_spawn",
+            "radius": -1.0,
+            "target": "t1_carriers_squad",
+            "team": "A",
+            "isAirfield": true,
+            "showOnMap": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          },
+          {
+            "loc_name": "missions/carriers_spawn",
+            "radius": -1.0,
+            "target": "t2_carriers_squad",
+            "team": "B",
+            "isAirfield": true,
+            "showOnMap": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -200,7 +240,7 @@
             -5474.27
           ]
         ],
-        "unit_class": "us_aircraftcarrier_lexington",
+        "unit_class": "us_aircraftcarrier_lexington_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,
@@ -345,7 +385,7 @@
             -7841.13
           ]
         ],
-        "unit_class": "uk_aircraftcarrier_illustrious",
+        "unit_class": "uk_aircraftcarrier_illustrious_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,
@@ -490,7 +530,7 @@
             20683.0
           ]
         ],
-        "unit_class": "us_aircraftcarrier_lexington",
+        "unit_class": "us_aircraftcarrier_lexington_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,
@@ -635,7 +675,7 @@
             33195.3
           ]
         ],
-        "unit_class": "uk_aircraftcarrier_illustrious",
+        "unit_class": "uk_aircraftcarrier_illustrious_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,

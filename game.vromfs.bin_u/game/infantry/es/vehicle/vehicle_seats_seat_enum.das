@@ -1,7 +1,5 @@
 require ecs
-require %appGame.infantry.es.vehicle.vehicle_seats_common
 require AnimV20
-require DagorSystem
 
 def register_seat_enum(@shared_comp vehicle_seats__seats : Array; seat_id : int; var seat__enumVarId : int&)
   let seat = get_ecs_object(vehicle_seats__seats, seat_id)

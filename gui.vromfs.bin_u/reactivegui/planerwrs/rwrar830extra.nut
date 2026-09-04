@@ -1,21 +1,22 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers, CurrentTime
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, metrToFeet
+from "%rGui/planeState/planeFlyState.nut" import Speed, Mach, Altitude, Aoa, Overload, Tangage, Roll, FuelInternal
+from "%rGui/planeRwrs/rwrAr830Components.nut" import baseLineWidth, createCompass, createRwrGrid, createRwrGridMarks, createRwrTarget
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount, IsChaffsEmpty, IsFlrEmpty
+from "string" import format
+from "math" import floor, sin, cos, PI
+from "%sqstd/math_ex.nut" import degToRad, radToDeg
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-let { floor, sin, cos, PI } = require("math")
-let { degToRad, radToDeg } = require("%sqstd/math_ex.nut")
+let { rwrTargets } = require("%rGui/twsState.nut")
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
-let { rwrTargetsTriggers, rwrTargets, CurrentTime } = require("%rGui/twsState.nut")
 
-let { mpsToKnots, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
-let { Speed, Mach, Altitude, Aoa, Overload, Tangage, Roll, FuelInternal } = require("%rGui/planeState/planeFlyState.nut")
-
-let { ThreatType, baseLineWidth, createCompass, createRwrGrid, createRwrGridMarks, createRwrTarget } = require("%rGui/planeRwrs/rwrAr830Components.nut")
-let { FlaresCount, ChaffsCount, IsChaffsEmpty, IsFlrEmpty } = require("%rGui/airState.nut")
+let { ThreatType } = require("%rGui/planeRwrs/rwrAr830Components.nut")
 
 function createBackground(backGroundColor) {
   return {
-    size = flex()
+    size = FLEX
     color = backGroundColor
     rendObj = ROBJ_VECTOR_CANVAS
     fillColor = backGroundColor
@@ -34,9 +35,9 @@ function createTimeStr(time) {
 
 function createTimeValue(gridStyle, params) {
   return @() params.styleText.__merge({
-    pos = [pw(100), 0],
+    pos = const [pw(100), 0],
     rendObj = ROBJ_TEXT,
-    size = flex(),
+    size = FLEX,
     watch = CurrentTime,
     fontSize = gridStyle.fontScale * params.styleText.fontSize,
     text = createTimeStr(CurrentTime.get()),
@@ -345,7 +346,7 @@ let settings = Computed(function() {
 function rwrGridMarksComponent(gridStyle, params) {
   return @() {
     watch = settings
-    size = flex()
+    size = FLEX
     children = createRwrGridMarks(gridStyle, params.styleText, settings.get())
   }
 }
@@ -353,7 +354,7 @@ function rwrGridMarksComponent(gridStyle, params) {
 function rwrTargetsComponent(objectStyle, params) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle, params.iconColor, params.backGroundColor, params.styleText))
   }
 }
@@ -385,7 +386,7 @@ function makeScaleTextMarks(gridStyle, center, sector, numMarks, markRadius, par
         pw( markRadius * sin(angleFrom + i * textMarkAngle) - center[0]),
         ph(-markRadius * cos(angleFrom + i * textMarkAngle) - center[1])
       ],
-      size = flex()
+      size = FLEX
       fontSize = gridStyle.fontScale * params.styleText.fontSize
       text = i.tointeger()
       halign = ALIGN_CENTER
@@ -395,7 +396,7 @@ function makeScaleTextMarks(gridStyle, center, sector, numMarks, markRadius, par
   return textMarks
 }
 
-let speedScaleInnerRadius = 30
+const speedScaleInnerRadius = 30
 
 function createSpeedScale(gridStyle, params) {
   let commands = makeScaleMarks([0, 0], [0, 360], 18, 100, [8, 4])
@@ -404,8 +405,8 @@ function createSpeedScale(gridStyle, params) {
   local textMarks = makeScaleTextMarks(gridStyle, [50, 50], [0, 360], 9, 80, params)
   textMarks.append(params.styleText.__merge({
     rendObj = ROBJ_TEXT
-    pos = [pw(0 - 50), ph(-speedScaleInnerRadius * 0.5 - 50)],
-    size = flex()
+    pos = const [pw(0 - 50), ph(-speedScaleInnerRadius * 0.5 - 50)],
+    size = FLEX
     fontSize = gridStyle.fontScale * params.styleText.fontSize
     text = "M"
     halign = ALIGN_CENTER
@@ -413,8 +414,8 @@ function createSpeedScale(gridStyle, params) {
   }))
 
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     color = params.color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -424,7 +425,7 @@ function createSpeedScale(gridStyle, params) {
   }
 }
 
-let speedMaxInv = 1.0 / 900.0
+const speedMaxInv = 1.0 / 900.0
 
 function createSpeedValueSectorCommands(valueAbs) {
   let valueRel = valueAbs * speedMaxInv
@@ -449,11 +450,11 @@ function createSpeedValueArrowCommands(valueAbs) {
 
 function createSpeedValues(gridStyle, params) {
   return @() {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       params?.speedValuesSector ? @() {
-        size = flex(),
+        size = FLEX,
         watch = Speed,
         color = params.sectorColor,
         rendObj = ROBJ_VECTOR_CANVAS
@@ -462,7 +463,7 @@ function createSpeedValues(gridStyle, params) {
         commands = createSpeedValueSectorCommands(Speed.get() * mpsToKnots)
       } : null,
       @() {
-        size = flex(),
+        size = FLEX,
         watch = Speed,
         color = params.color
         rendObj = ROBJ_VECTOR_CANVAS
@@ -471,10 +472,10 @@ function createSpeedValues(gridStyle, params) {
         commands = createSpeedValueArrowCommands(Speed.get() * mpsToKnots)
       },
       @() params.styleText.__merge({
-        size = flex()
+        size = FLEX
         watch = Mach,
         rendObj = ROBJ_TEXT
-        pos = [pw(0 - 50), ph(speedScaleInnerRadius * 0.4 - 50)],
+        pos = const [pw(0 - 50), ph(speedScaleInnerRadius * 0.4 - 50)],
         fontSize = gridStyle.fontScale * params.styleText.fontSize
         text = format("%.2f", Mach.get())
         halign = ALIGN_CENTER
@@ -486,7 +487,7 @@ function createSpeedValues(gridStyle, params) {
 
 function createAoaLoadFactorTable(gridStyle, params) {
   return {
-    size = flex(),
+    size = FLEX,
     color = params.color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -498,8 +499,8 @@ function createAoaLoadFactorTable(gridStyle, params) {
     children = [
       params.styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(-40), ph(-20)],
-        size = flex()
+        pos = const [pw(-40), ph(-20)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize
         text = "A"
         halign = ALIGN_CENTER
@@ -507,8 +508,8 @@ function createAoaLoadFactorTable(gridStyle, params) {
       }),
       params.styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(-40), ph(30)],
-        size = flex()
+        pos = const [pw(-40), ph(30)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize
         text = "G"
         halign = ALIGN_CENTER
@@ -519,15 +520,15 @@ function createAoaLoadFactorTable(gridStyle, params) {
 }
 
 function createAoaLoadFactorValue(gridStyle, params) {
-  let aoaLoadFactorFontScale = 1.2
+  const aoaLoadFactorFontScale = 1.2
   return @() {
-    size = flex(),
+    size = FLEX,
     children = [
       @() params.styleText.__merge({
         rendObj = ROBJ_TEXT
         watch = Aoa,
-        pos = [pw(45), ph(-20)],
-        size = flex()
+        pos = const [pw(45), ph(-20)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize * aoaLoadFactorFontScale
         text = format("%.f", Aoa.get())
         halign = ALIGN_LEFT
@@ -536,8 +537,8 @@ function createAoaLoadFactorValue(gridStyle, params) {
       @() params.styleText.__merge({
         rendObj = ROBJ_TEXT
         watch = Overload,
-        pos = [pw(45), ph(30)],
-        size = flex()
+        pos = const [pw(45), ph(30)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize * aoaLoadFactorFontScale
         text = format("%.1f", Overload.get())
         halign = ALIGN_LEFT
@@ -554,8 +555,8 @@ function createAltitudeScale(gridStyle, params) {
   let textMarks = makeScaleTextMarks(gridStyle, [50, 50], [0, 360], 10, 80, params)
 
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     color = params.color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -565,7 +566,7 @@ function createAltitudeScale(gridStyle, params) {
   }
 }
 
-let altitudeScaleInnerRadius = 60
+const altitudeScaleInnerRadius = 60
 
 function createAltitudeValueCommands(valueAbs) {
   let value1000Abs = valueAbs - floor(valueAbs * 0.001) * 1000.0
@@ -589,14 +590,14 @@ function split_1000(value) {
 }
 
 function createAltitudeValue(gridStyle, params) {
-  let altitude10000FontScale = 1.2
+  const altitude10000FontScale = 1.2
   return @() {
-    pos = [pw(50), ph(50)],
-    size = flex()
+    pos = const [pw(50), ph(50)],
+    size = FLEX
     watch = Altitude
     children = [
       {
-        size = flex()
+        size = FLEX
         color = params.color
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * 6 * gridStyle.lineWidthScale
@@ -605,8 +606,8 @@ function createAltitudeValue(gridStyle, params) {
       },
       params.styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(-100), ph(-50)],
-        size = flex()
+        pos = const [pw(-100), ph(-50)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize * altitude10000FontScale
         text = format("%.f", split_100000_1000(Altitude.get() * metrToFeet))
         halign = ALIGN_RIGHT
@@ -614,8 +615,8 @@ function createAltitudeValue(gridStyle, params) {
       }),
       params.styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [0, ph(-50)],
-        size = flex()
+        pos = const [0, ph(-50)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize
         text = format("%03.f", split_1000(Altitude.get() * metrToFeet))
         halign = ALIGN_LEFT
@@ -625,15 +626,15 @@ function createAltitudeValue(gridStyle, params) {
   }
 }
 
-let fuelInnerRadius = 35
+const fuelInnerRadius = 35
 
 function createFuelScale(gridStyle, params) {
   let commands = makeScaleMarks([0, 0], [0, 360], 6, 100, [8, 4])
   commands.append([VECTOR_ELLIPSE, 0, 0, fuelInnerRadius, fuelInnerRadius], [VECTOR_ELLIPSE, 0, 0, 100, 100])
 
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     color = params.color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -653,12 +654,12 @@ function createFuelValueCommands(valueAbs) {
 
 function createFuelValue(gridStyle, params) {
   return @() {
-    pos = [pw(50), ph(50)],
-    size = flex()
+    pos = const [pw(50), ph(50)],
+    size = FLEX
     watch = FuelInternal
     children = [
       {
-        size = flex()
+        size = FLEX
         color = params.sectorColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * 30
@@ -667,8 +668,8 @@ function createFuelValue(gridStyle, params) {
       },
       params.styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(0 - 50), ph(0 - 50)],
-        size = flex()
+        pos = const [pw(0 - 50), ph(0 - 50)],
+        size = FLEX
         fontSize = gridStyle.fontScale * params.styleText.fontSize
         text = format("%.0f", FuelInternal.get() * 0.1)
         halign = ALIGN_CENTER
@@ -683,23 +684,23 @@ function createAdiValues(gridStyle, params) {
   commands.append([VECTOR_SECTOR, 0, 0, 50, 50, 180, 360])
 
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     clipChildren = true,
     children = [
       {
-        pos = [pw(50), ph(50)],
+        pos = const [pw(50), ph(50)],
         size = const [pw(80), ph(80)],
         children = [
           {
-            size = flex(),
+            size = FLEX,
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.adiGroundColor,
             fillColor = params.adiGroundColor,
             commands = [ [VECTOR_RECTANGLE, -100, 0, 200, 100] ]
           },
           {
-            size = flex(),
+            size = FLEX,
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.backGroundColor,
             fillColor = params.backGroundColor,
@@ -713,14 +714,14 @@ function createAdiValues(gridStyle, params) {
             ]
           },
           {
-            size = flex(),
+            size = FLEX,
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.adiSkyColor,
             fillColor = params.adiSkyColor,
             commands = [ [VECTOR_RECTANGLE, -100, -100, 200, 100] ]
           },
           {
-            size = flex(),
+            size = FLEX,
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.color
             fillColor = 0,
@@ -742,11 +743,11 @@ function createAdiValues(gridStyle, params) {
         }
       },
       {
-        pos = [pw(50), ph(50)],
+        pos = const [pw(50), ph(50)],
         size = const [pw(80), ph(80)],
         children = [
           {
-            size = flex(),
+            size = FLEX,
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.backGroundColor,
             fillColor = 0,
@@ -754,7 +755,7 @@ function createAdiValues(gridStyle, params) {
             commands = [ [VECTOR_ELLIPSE, 0, 0, 70, 70] ]
           },
           {
-            size = flex(),
+            size = FLEX,
             rendObj = ROBJ_VECTOR_CANVAS,
             color = params.color,
             fillColor = 0,
@@ -779,11 +780,11 @@ function createAdiValues(gridStyle, params) {
 
 function createAdiGrid(gridStyle, params) {
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       {
-        size = flex(),
+        size = FLEX,
         color = params.color,
         fillColor = 0,
         rendObj = ROBJ_VECTOR_CANVAS,
@@ -800,13 +801,13 @@ function createAdiGrid(gridStyle, params) {
   }
 }
 
-let obdFontScale = 1.2
+const obdFontScale = 1.2
 
 let buttonNames = @(style, params) {
-  size = flex()
+  size = FLEX
   children = [
     params.styleText.__merge({
-      pos = [pw(125), ph(45)],
+      pos = const [pw(125), ph(45)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -815,7 +816,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(125), ph(70)],
+      pos = const [pw(125), ph(70)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -824,7 +825,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(122), ph(92)],
+      pos = const [pw(122), ph(92)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -833,7 +834,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(125), ph(95)],
+      pos = const [pw(125), ph(95)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -842,7 +843,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(-27), ph(-47)],
+      pos = const [pw(-27), ph(-47)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -851,7 +852,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(-27), ph(45)],
+      pos = const [pw(-27), ph(45)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -860,7 +861,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(-27), ph(68)],
+      pos = const [pw(-27), ph(68)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -869,7 +870,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(-27), ph(91)],
+      pos = const [pw(-27), ph(91)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -878,7 +879,7 @@ let buttonNames = @(style, params) {
       valign = ALIGN_CENTER,
     }),
     params.styleText.__merge({
-      pos = [pw(-24), ph(93)],
+      pos = const [pw(-24), ph(93)],
       rendObj = ROBJ_TEXTAREA,
       behavior = Behaviors.TextArea
       fontSize = style.grid.fontScale * params.styleText.fontSize * obdFontScale,
@@ -890,11 +891,11 @@ let buttonNames = @(style, params) {
 }
 
 let defaultRWR = @(style, params) {
-  pos = [pw(-15), ph(-55)],
+  pos = const [pw(-15), ph(-55)],
   size = [pw(130 * style.grid.scale), ph(130 * style.grid.scale * params.RWRYMult)],
   children = [
     {
-      pos = [pw(10), ph(10)],
+      pos = const [pw(10), ph(10)],
       size = const [pw(80), ph(80)],
       clipChildren = true,
       children = [
@@ -915,14 +916,14 @@ function scope(scale, style, params) {
     children = [
       createBackground(params.backGroundColor),
       {
-        pos = [pw(-75), ph(-100)],
-        size = flex(),
+        pos = const [pw(-75), ph(-100)],
+        size = FLEX,
         children = [
           createTimeValue(style.grid, params)
         ]
       },
       {
-        pos = [pw(-12), ph(55)],
+        pos = const [pw(-12), ph(55)],
         size = const [pw(60), ph(60)],
         children = [
           createAdiValues(style.grid, params),
@@ -930,7 +931,7 @@ function scope(scale, style, params) {
         ]
       },
       {
-        pos = [pw(-10), ph(90)],
+        pos = const [pw(-10), ph(90)],
         size = const [pw(20), ph(20)],
         children = [
           createSpeedValues(style.grid, params),
@@ -938,7 +939,7 @@ function scope(scale, style, params) {
         ]
       },
       {
-        pos = [pw(-15), ph(125)],
+        pos = const [pw(-15), ph(125)],
         size = const [pw(15), ph(10)],
         children = [
           createAoaLoadFactorValue(style.grid, params),
@@ -946,7 +947,7 @@ function scope(scale, style, params) {
         ]
       },
       {
-        pos = [pw(85), ph(90)],
+        pos = const [pw(85), ph(90)],
         size = const [pw(20), ph(20)],
         children = [
           createAltitudeValue(style.grid, params),
@@ -954,7 +955,7 @@ function scope(scale, style, params) {
         ]
       },
       {
-        pos = [pw(100), ph(125)],
+        pos = const [pw(100), ph(125)],
         size = const [pw(12), ph(12)],
         children = [
           createFuelValue(style.grid, params),
@@ -994,7 +995,7 @@ let defautParams = {
 }
 
 let Jas39ERWR = @(style, params) {
-  pos = [pw(-15), ph(-30)],
+  pos = const [pw(-15), ph(-30)],
   size = [pw(130), ph(130 * params.RWRYMult)],
   children = [
     createCompass({
@@ -1005,7 +1006,7 @@ let Jas39ERWR = @(style, params) {
       circle = true
     }, params.color, params.backGroundColor, params.styleText),
     {
-      pos = [pw(10), ph(10)],
+      pos = const [pw(10), ph(10)],
       size = const [pw(80), ph(80)],
       clipChildren = true,
       children = [
@@ -1019,7 +1020,7 @@ let Jas39ERWR = @(style, params) {
 let chaffs = @(_, params) @() {
   watch = [ChaffsCount, IsChaffsEmpty]
   size = SIZE_TO_CONTENT
-  pos = [pw(0), ph(-45)]
+  pos = const [pw(0), ph(-45)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = params.color
@@ -1033,7 +1034,7 @@ let chaffs = @(_, params) @() {
 let flares = @(_, params) @() {
   watch = [FlaresCount, IsFlrEmpty]
   size = SIZE_TO_CONTENT
-  pos = [pw(20), ph(-45)]
+  pos = const [pw(20), ph(-45)]
   rendObj = ROBJ_TEXTAREA
   behavior = Behaviors.TextArea
   color = params.color
@@ -1071,7 +1072,7 @@ let jas39EParams = {
     @(_, params) {
       rendObj = ROBJ_VECTOR_CANVAS
       color = params.color
-      size = flex()
+      size = FLEX
       lineWidth = baseLineWidth
       commands = [
         [VECTOR_LINE_DASHED, -60, 78, 160, 78, 5, 4],

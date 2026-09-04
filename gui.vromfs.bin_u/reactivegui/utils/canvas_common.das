@@ -2,7 +2,6 @@ module canvas_common
 require darg
 require DagorStdGuiRender
 require DagorMath
-require DagorSystem
 require math
 require strings
 require %rGui.utils.helpers_common

@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let seenInventory = require("%scripts/seen/seenList.nut").get(SEEN.INVENTORY)
 let { getInventoryList, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")

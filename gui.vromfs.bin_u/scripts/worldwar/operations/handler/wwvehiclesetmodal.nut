@@ -1,19 +1,20 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "chard" import getProfileCountry
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { getProfileCountry } = require("chard")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
-let { setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup,
-  getCurPresetUnitNames } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { setCurPreset, getCurPreset, getWarningTextTbl, getBestAvailableUnitByGroup, getCurPresetUnitNames } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
@@ -50,7 +51,7 @@ function getAvailableUnits(map, country) {
   return res
 }
 
-local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
+local handlerClass = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/worldWar/wwVehicleSetModal.blk"
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"
@@ -197,7 +198,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
 }
 
-gui_handlers.wwVehicleSetModal <- handlerClass
+register_gui_handler("wwVehicleSetModal", handlerClass)
 
 return {
   open = @(p) handlersManager.loadHandler(handlerClass, p)

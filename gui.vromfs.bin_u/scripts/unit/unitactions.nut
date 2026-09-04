@@ -1,22 +1,20 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isEmpty, isEqual
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isEmpty, isEqual } = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getUnitName, getUnitCountry, getUnitExp, getUnitCost
-} = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
-let { canBuyNotResearched, canResearchUnit, isUnitInResearch, isUnitResearched, isUnitFeatureLocked
-} = require("%scripts/unit/unitStatus.nut")
+let { canBuyNotResearched, canResearchUnit, isUnitInResearch, isUnitResearched, isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnit, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
@@ -83,7 +81,7 @@ function checkFeatureLock(unit, lockAction) {
     unit = unit
   }
 
-  loadHandler(gui_handlers.VehicleRequireFeatureWindow, params)
+  loadHandler(get_gui_handler("VehicleRequireFeatureWindow"), params)
   return false
 }
 
@@ -131,8 +129,9 @@ function buyUnit(unit, silent = false, params = {}) {
   let customButtons = [
     { text = "msgbox/btn_no", cb = @() null }
     { text = "msgbox/btn_order_and_choose_crew/later", cb = @() impl_buyUnit(unit, false, params) }
-    { text = "msgbox/btn_order_and_choose_crew", cb = @() impl_buyUnit(unit, true, params) }
   ]
+  if (!(params?.hideChooseCrewBtn ?? false))
+    customButtons.append({ text = "msgbox/btn_order_and_choose_crew", cb = @() impl_buyUnit(unit, true, params) })
 
   purchaseConfirmation({ id = "need_money", text = msgText, customButtons })
 
@@ -210,14 +209,14 @@ function flushSquadronExp(unit, params = {}) {
   showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
 }
 
-function buy(unit, metric) {
+function buy(unit, metric, buyParams = {}) {
   if (!unit)
     return
 
   if (canBuyUnitOnline(unit))
     showUnitGoods(unit.name, metric)
   else
-    buyUnit(unit)
+    buyUnit(unit, false, buyParams)
 }
 
 function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {

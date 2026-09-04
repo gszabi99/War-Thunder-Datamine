@@ -1,4 +1,5 @@
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 
 addListenersWithoutEnv({

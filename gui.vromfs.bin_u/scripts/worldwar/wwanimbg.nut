@@ -1,11 +1,11 @@
+from "dagor.random" import rnd
+from "%sqstd/datablock.nut" import convertBlk
+from "%sqstd/underscore.nut" import isDataBlock
 from "%scripts/dagui_library.nut" import *
 
-let { rnd } = require("dagor.random")
 let { createBgData } = require("%scripts/loading/loadingBgData.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { isDataBlock } = require("%sqstd/underscore.nut")
 
 const WW_BG_PATH = "worldwar_bg/"
 
@@ -25,4 +25,3 @@ function wwAnimBgLoad(name) {
 }
 
 return wwAnimBgLoad
-

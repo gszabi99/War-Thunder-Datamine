@@ -1,6 +1,7 @@
-from "%globalScripts/logs.nut" import *
 import "%globalScripts/ecs.nut" as ecs
-let { register_command } = require("console")
+from "console" import register_command
+from "%globalScripts/logs.nut" import *
+
 let { EventDedicLogerr, mkCmdEnableDedicatedLogger } = require("dedicLogerrSqEvents.nut")
 
 let subscriptions = []

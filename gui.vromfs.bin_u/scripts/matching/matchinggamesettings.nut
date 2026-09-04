@@ -1,11 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "matching.errors" import OPERATION_COMPLETE
+from "dagor.workcycle" import resetTimeout
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 
-let { OPERATION_COMPLETE } = require("matching.errors")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let logGM = log_with_prefix("[Matching_Game_Setting] ")
 

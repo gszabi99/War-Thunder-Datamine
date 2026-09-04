@@ -1,36 +1,29 @@
+from "%sqStdLibs/helpers/u.nut" import isDataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import get_current_personal_discount_count, get_current_personal_discount_uid, get_cyber_cafe_level
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
-from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC, SEEN
+from "%scripts/utils/delayedActions.nut" import addDelayedAction, LOST_DELAYED_ACTION_MSEC
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { GAME_LOCALIZATION_CHANGED, INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_time_msec } = require("dagor.time")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
-let { deferOnce } = require("dagor.workcycle")
 let { isMeNewbie } = require("%scripts/myStats.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
-let { itemsShopListVersion, inventoryListVersion,
-  inventory, itemsByItemdefId, setShouldCheckAutoConsume,
-  rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds, itemsListInternal,
-} = require("%scripts/items/itemsManagerState.nut")
-let { genericItemsForCyberCafeLevel,
-  setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate,
-  setNeedInventoryUpdate
-} = require("%scripts/items/itemsManagerChecks.nut")
+let { itemsShopListVersion, inventoryListVersion, inventory, itemsByItemdefId, setShouldCheckAutoConsume, rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds, itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
+let { genericItemsForCyberCafeLevel, setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate, setNeedInventoryUpdate } = require("%scripts/items/itemsManagerChecks.nut")
 let { getShopList, getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { createItem } = require("%scripts/items/itemsTypeClasses.nut")
 let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
-let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
-let { findItemById, findItemByUid, getInventoryListByShopMask,
-  getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
+let { findItemById, findItemByUid, getInventoryListByShopMask, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 
 
 let seenInventory = seenList.get(SEEN.INVENTORY)
@@ -217,7 +210,7 @@ function markInventoryUpdate() {
     seenInventory.setDaysToUnseen(OUT_OF_DATE_DAYS_INVENTORY)
   }
   seenInventory.onListChanged()
-  broadcastEvent("InventoryUpdate")
+  broadcastEvent(INVENTORY_UPDATE)
   inventoryListVersion.set(inventoryListVersion.get() + 1)
 }
 
@@ -267,8 +260,8 @@ addListenersWithoutEnv({
   TourRegistrationComplete = @(_) markInventoryUpdate()
   ExtInventoryChanged = @(_) markInventoryUpdateDelayed()
   SendingItemsChanged = @(_) markInventoryUpdateDelayed()
-  ExtPricesChanged = @(_) markItemsDefsListUpdateDelayed()
-  GameLocalizationChanged = @(_) inventoryClient.forceRefreshItemDefs(
+  ExtPricesChanged = @(_) markItemsDefsListUpdateDelayed(),
+  [GAME_LOCALIZATION_CHANGED] = @(_) inventoryClient.forceRefreshItemDefs(
     @() itemsByItemdefId.clear())
 
   function ProfileUpdated(_) {

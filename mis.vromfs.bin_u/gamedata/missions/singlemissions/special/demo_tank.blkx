@@ -27,25 +27,6 @@
     "atmosphere": {
       "pressure": 760.0,
       "temperature": -10.0
-    },
-    "briefing": {
-      "place_loc": "",
-      "date_loc": "",
-      "objective_loc": "",
-      "music": "action_01",
-      "part": {
-        "event": "",
-        "minTime": 0,
-        "slide": {
-          "map": true,
-          "minTime": 4,
-          "picture": "",
-          "showAirMap": true,
-          "battleArea": {
-            "target": "mission_area"
-          }
-        }
-      }
     }
   },
   "imports": {},
@@ -65,6 +46,20 @@
       },
       "conditions": {},
       "actions": {
+        "unitSetProperties": [
+          {
+            "tankSightPreset": "western_modern_tanks_2",
+            "object": "t1_player01"
+          },
+          {
+            "object": [
+              "t72_squad",
+              "bmp_squad"
+            ],
+            "accuracy": 0.3,
+            "checkVisibilityTarget": true
+          }
+        ],
         "unitPlayEffect": {
           "effect_type": "specify",
           "effect": "land_crash_smoke",
@@ -118,14 +113,6 @@
           "aimMaxDist": 3000.0,
           "attackMaxDist": 2500.0
         },
-        "unitSetProperties": {
-          "object": [
-            "t72_squad",
-            "bmp_squad"
-          ],
-          "accuracy": 0.3,
-          "checkVisibilityTarget": true
-        },
         "unitSetIndication": {
           "set": true,
           "target": [
@@ -169,11 +156,31 @@
       },
       "conditions": {},
       "actions": {
-        "triggerActivate": {
-          "target": "player_restart",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "doNotChange"
+        "triggerEnable": {
+          "target": "player_restart"
+        },
+        "missionSetFade": [
+          {
+            "mode": "fadeOut",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 0.0
+          },
+          {
+            "mode": "fadeIn",
+            "color": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "time": 1.0
+          }
+        ],
+        "wait": {
+          "time": 2.0
         },
         "unitMoveTo": [
           {
@@ -181,27 +188,25 @@
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t1_player01",
+            "target": "t1_main_players_spawn",
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
-            "follow_target": true,
+            "follow_target": false,
             "fastClimb": false,
             "destTimeMode": false,
             "teleportHeightType": "absolute",
             "useUnitHeightForTele": true,
             "shouldKeepFormation": false,
-            "shouldKeepAirFormation": false,
+            "shouldKeepAirFormation": true,
             "teleportHeightValue": 1000.0,
             "horizontalDirectionForTeleport": true,
-            "object": [
-              "t72_squad",
-              "bmp_squad"
-            ],
-            "move_type": "move"
+            "object": "t1_player01",
+            "move_type": "teleport",
+            "lookat": "t72_w01"
           },
           {
             "object_marking": 0,
@@ -327,14 +332,12 @@
             "horizontalDirectionForTeleport": true,
             "object": [
               "t72_w01",
-              "t72_w06",
               "t72_w11",
               "bmp_w01",
-              "bmp_w05",
-              "bmp_w09"
+              "bmp_w05"
             ],
             "move_type": "move",
-            "speed": 10.0
+            "speed": 20.0
           },
           {
             "object_marking": 0,
@@ -359,14 +362,12 @@
             "horizontalDirectionForTeleport": true,
             "object": [
               "t72_w02",
-              "t72_w07",
               "t72_w12",
               "bmp_w02",
-              "bmp_w06",
-              "bmp_w10"
+              "bmp_w06"
             ],
             "move_type": "move",
-            "speed": 10.0
+            "speed": 20.0
           },
           {
             "object_marking": 0,
@@ -391,14 +392,12 @@
             "horizontalDirectionForTeleport": true,
             "object": [
               "t72_w03",
-              "t72_w08",
               "t72_w13",
               "bmp_w03",
-              "bmp_w07",
-              "bmp_w11"
+              "bmp_w07"
             ],
             "move_type": "move",
-            "speed": 10.0
+            "speed": 20.0
           },
           {
             "object_marking": 0,
@@ -423,14 +422,12 @@
             "horizontalDirectionForTeleport": true,
             "object": [
               "t72_w04",
-              "t72_w09",
               "t72_w14",
               "bmp_w04",
-              "bmp_w08",
-              "bmp_w12"
+              "bmp_w08"
             ],
             "move_type": "move",
-            "speed": 10.0
+            "speed": 20.0
           },
           {
             "object_marking": 0,
@@ -455,11 +452,97 @@
             "horizontalDirectionForTeleport": true,
             "object": [
               "t72_w05",
-              "t72_w10",
               "t72_w15"
             ],
             "move_type": "move",
-            "speed": 10.0
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point06",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w09",
+              "t72_w06",
+              "bmp_w11"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point07",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w07",
+              "t72_w08",
+              "bmp_w10"
+            ],
+            "move_type": "move",
+            "speed": 20.0
+          },
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "target": "t72_target_point08",
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": false,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": false,
+            "shouldKeepAirFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object": [
+              "t72_w10",
+              "bmp_w12",
+              "bmp_w09"
+            ],
+            "move_type": "move",
+            "speed": 20.0
           }
         ]
       },
@@ -583,7 +666,7 @@
         },
         "actions": {
           "wait": {
-            "time": 3.0
+            "time": 1.0
           },
           "playHint": {
             "hintType": "standard",
@@ -598,6 +681,44 @@
             "object_var_comp_op": "equal",
             "object_var_value": 0,
             "item": "elevator+ailerons"
+          },
+          "triggerEnable": {
+            "target": "night_vision"
+          }
+        },
+        "else_actions": {}
+      },
+      "night_vision": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.1
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "wait": {
+            "time": 3.0
+          },
+          "playHint": {
+            "hintType": "standard",
+            "name": "missions/demo_tank_nvd",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_TANK_NIGHT_VISION"
           },
           "triggerEnable": {
             "target": "zoom"
@@ -618,17 +739,26 @@
             "time": 0.1
           }
         },
-        "conditions": {},
+        "conditions": {
+          "playerShortcutPressed": {
+            "control": "ID_TANK_NIGHT_VISION"
+          }
+        },
         "actions": {
-          "wait": [
-            {
-              "time": 3.0
-            },
-            {
-              "time": 3.0
-            }
-          ],
           "playHint": [
+            {
+              "hintType": "standard",
+              "name": "",
+              "action": "show",
+              "shouldFadeOut": false,
+              "isOverFade": false,
+              "time": -1.0,
+              "priority": 0,
+              "target_marking": 0,
+              "object_var_name": "",
+              "object_var_comp_op": "equal",
+              "object_var_value": 0
+            },
             {
               "hintType": "standard",
               "name": "hints/tank_modifications/zoom",
@@ -654,7 +784,16 @@
               "target_marking": 0,
               "object_var_name": "",
               "object_var_comp_op": "equal",
-              "object_var_value": 0
+              "object_var_value": 0,
+              "item": "ID_RANGEFINDER"
+            }
+          ],
+          "wait": [
+            {
+              "time": 1.0
+            },
+            {
+              "time": 3.0
             }
           ],
           "triggerEnable": {
@@ -897,9 +1036,9 @@
             0.252715
           ],
           [
-            675.8,
+            568.406,
             18.2666,
-            722.15
+            1219.58
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -937,6 +1076,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -969,17 +1109,17 @@
             0.627884
           ],
           [
-            2394.77,
-            7.80685,
-            3849.05
+            719.2,
+            45.1183,
+            2738.1
           ]
         ],
-        "unit_class": "us_m1a1_abrams",
+        "unit_class": "us_m1a2_sep_abrams",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "us_m1a1_abrams_default",
+        "weapons": "us_m1a2_sep_abrams_default",
         "bullets0": "120mm_M829A_APDS_FS",
         "bullets1": "",
         "bullets2": "",
@@ -992,10 +1132,11 @@
           "tank_tool_kit",
           "manual_extinguisher",
           "modern_tank_laser_rangefinder",
-          "120mm_M829A_APDS_FS"
+          "120mm_M829A_APDS_FS",
+          "night_vision_system"
         ],
         "crewSkillK": 0.0,
-        "applyAllMods": false,
+        "applyAllMods": true,
         "props": {
           "army": 1,
           "count": 1,
@@ -1008,7 +1149,8 @@
           "formation_noise": [
             0.1,
             0.1
-          ]
+          ],
+          "skin": "modern_gray_desert"
         },
         "way": {}
       },
@@ -1031,9 +1173,9 @@
             0.616162
           ],
           [
-            890.8,
+            783.406,
             17.7598,
-            75.0
+            547.11
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -1071,6 +1213,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1103,9 +1246,9 @@
             0.0973727
           ],
           [
-            780.25,
+            672.856,
             48.332,
-            -202.2
+            269.91
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -1143,6 +1286,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1175,9 +1319,9 @@
             -0.0926664
           ],
           [
-            967.9,
+            860.506,
             41.8926,
-            -162.75
+            309.36
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -1215,6 +1359,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1247,9 +1392,9 @@
             0.458785
           ],
           [
-            784.5,
+            677.106,
             18.1221,
-            293.15
+            765.26
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -1287,6 +1432,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1359,6 +1505,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1431,6 +1578,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1503,6 +1651,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1575,6 +1724,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1647,6 +1797,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1719,6 +1870,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1791,6 +1943,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1863,6 +2016,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -1935,6 +2089,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2007,6 +2162,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2039,9 +2195,9 @@
             0.0725378
           ],
           [
-            1486.64,
-            18.2665,
-            1130.82
+            932.628,
+            18.2666,
+            1847.35
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2079,6 +2235,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2111,9 +2268,9 @@
             0.462645
           ],
           [
-            1815.75,
-            17.7597,
-            533.567
+            892.068,
+            17.7598,
+            1612.35
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2151,6 +2308,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2183,9 +2341,9 @@
             -0.0852527
           ],
           [
-            1757.46,
-            48.3319,
-            240.884
+            956.588,
+            48.332,
+            1685.97
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2223,6 +2381,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2255,9 +2414,9 @@
             -0.272204
           ],
           [
-            1934.8,
-            41.8925,
-            313.803
+            1133.93,
+            41.8926,
+            1758.88
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2295,6 +2454,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2327,9 +2487,9 @@
             0.289538
           ],
           [
-            1671.55,
+            1041.76,
             18.122,
-            728.746
+            1770.85
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2367,6 +2527,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2399,9 +2560,9 @@
             0.774085
           ],
           [
-            -389.335,
-            18.2665,
-            1100.97
+            241.593,
+            18.2666,
+            1805.13
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2439,6 +2600,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2471,9 +2633,9 @@
             0.961838
           ],
           [
-            -596.733,
-            17.7597,
-            451.345
+            111.344,
+            17.7598,
+            1706.22
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2511,6 +2673,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2543,9 +2706,9 @@
             0.664862
           ],
           [
-            -849.337,
-            48.3319,
-            292.435
+            -141.26,
+            48.332,
+            1547.31
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2583,6 +2746,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2615,9 +2779,9 @@
             0.511546
           ],
           [
-            -674.451,
-            41.8925,
-            213.797
+            33.6264,
+            41.8926,
+            1468.67
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2655,6 +2819,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2687,9 +2852,9 @@
             0.894096
           ],
           [
-            -554.156,
-            18.122,
-            690.252
+            153.922,
+            18.1221,
+            1945.12
           ]
         ],
         "unit_class": "ussr_t_72a",
@@ -2727,6 +2892,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2759,12 +2925,12 @@
             -0.0926664
           ],
           [
-            736.945,
+            629.551,
             41.8926,
-            -529.469
+            -57.3586
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2799,6 +2965,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2831,12 +2998,12 @@
             -0.0926664
           ],
           [
-            562.433,
+            455.039,
             41.8926,
-            -529.469
+            -57.3586
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2871,6 +3038,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2903,12 +3071,12 @@
             -0.0926664
           ],
           [
-            562.433,
+            455.039,
             41.8926,
-            -727.616
+            -255.506
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -2943,6 +3111,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -2975,12 +3144,12 @@
             -0.0926664
           ],
           [
-            729.796,
+            622.402,
             41.8926,
-            -727.616
+            -255.506
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3015,6 +3184,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3047,12 +3217,12 @@
             -0.0926664
           ],
           [
-            -1062.19,
-            41.8926,
-            -67.9182
+            -354.112,
+            41.8927,
+            1186.95
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3087,6 +3257,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3119,12 +3290,12 @@
             -0.0926664
           ],
           [
-            -894.825,
-            41.8926,
-            -67.9182
+            -186.748,
+            41.8927,
+            1186.95
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3159,6 +3330,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3191,12 +3363,12 @@
             -0.0926664
           ],
           [
-            -887.676,
-            41.8926,
-            130.229
+            -179.599,
+            41.8927,
+            1385.1
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3231,6 +3403,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3263,12 +3436,12 @@
             -0.0926664
           ],
           [
-            -1062.19,
-            41.8926,
-            130.229
+            -354.112,
+            41.8927,
+            1385.1
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3303,6 +3476,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3335,12 +3509,12 @@
             -0.0926664
           ],
           [
-            1919.0,
+            984.618,
             41.8926,
-            -288.377
+            1449.13
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3375,6 +3549,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3407,12 +3582,12 @@
             -0.0926664
           ],
           [
-            2086.37,
+            1151.99,
             41.8926,
-            -288.377
+            1449.13
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3447,6 +3622,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3479,12 +3655,12 @@
             -0.0926664
           ],
           [
-            2093.52,
+            1159.14,
             41.8926,
-            -90.23
+            1647.28
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3519,6 +3695,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3551,12 +3728,12 @@
             -0.0926664
           ],
           [
-            1919.0,
+            984.618,
             41.8926,
-            -90.23
+            1647.28
           ]
         ],
-        "unit_class": "ussr_bmp_1",
+        "unit_class": "ussr_bmp_2",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -3591,6 +3768,7 @@
             0.1
           ],
           "attack_type": "fire_at_will",
+          "skin": "ussr_camo_desert_yellow_brown",
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 50.0,
@@ -3628,12 +3806,12 @@
             3849.05
           ]
         ],
-        "unit_class": "us_m1a1_abrams",
+        "unit_class": "us_m1a2_sep_abrams",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "us_m1a1_abrams_default",
+        "weapons": "us_m1a2_sep_abrams_default",
         "bullets0": "120mm_M829A_APDS_FS",
         "bullets1": "",
         "bullets2": "",
@@ -3662,7 +3840,8 @@
           "formation_noise": [
             0.1,
             0.1
-          ]
+          ],
+          "skin": "modern_gray_desert"
         },
         "way": {}
       },
@@ -3690,12 +3869,12 @@
             3849.05
           ]
         ],
-        "unit_class": "us_m1a1_abrams",
+        "unit_class": "us_m1a2_sep_abrams",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
         "shipTurnRadius": 100.0,
-        "weapons": "us_m1a1_abrams_default",
+        "weapons": "us_m1a2_sep_abrams_default",
         "bullets0": "120mm_M829A_APDS_FS",
         "bullets1": "",
         "bullets2": "",
@@ -3724,7 +3903,8 @@
           "formation_noise": [
             0.1,
             0.1
-          ]
+          ],
+          "skin": "modern_gray_desert"
         },
         "way": {}
       }
@@ -3861,24 +4041,24 @@
       "type": "Box",
       "tm": [
         [
-          102520.0,
+          3520.5,
           0.0,
           0.0
         ],
         [
           0.0,
-          80000.0,
+          4000.0,
           0.0
         ],
         [
           0.0,
           0.0,
-          100673.0
+          3457.07
         ],
         [
-          -2142.23,
-          1.00012,
-          -5470.88
+          1088.8,
+          1.0,
+          1301.75
         ]
       ],
       "objLayer": 4,
@@ -3930,9 +4110,9 @@
           -1133.15
         ],
         [
-          435.124,
+          364.34,
           13.4601,
-          1516.47
+          1989.99
         ]
       ],
       "objLayer": 0,
@@ -3957,9 +4137,9 @@
           -1133.15
         ],
         [
-          481.774,
+          563.068,
           13.4602,
-          1404.17
+          1960.01
         ]
       ],
       "objLayer": 0,
@@ -3984,9 +4164,9 @@
           -1133.15
         ],
         [
-          581.524,
-          13.4599,
-          1371.57
+          746.544,
+          13.46,
+          1991.26
         ]
       ],
       "objLayer": 0,
@@ -4011,9 +4191,9 @@
           -1133.15
         ],
         [
-          570.124,
+          666.337,
           45.3535,
-          1630.97
+          2261.37
         ]
       ],
       "objLayer": 0,
@@ -4038,9 +4218,9 @@
           -1133.15
         ],
         [
-          304.924,
+          295.12,
           13.46,
-          1712.87
+          2316.83
         ]
       ],
       "objLayer": 0,
@@ -4146,7 +4326,7 @@
           -1133.15
         ],
         [
-          609.079,
+          600.862,
           45.1183,
           2738.1
         ]
@@ -4173,9 +4353,9 @@
           -1133.15
         ],
         [
-          2117.26,
+          2201.33,
           45.1184,
-          -779.483
+          -230.601
         ]
       ],
       "objLayer": 0,
@@ -4200,9 +4380,9 @@
           -1133.15
         ],
         [
-          1782.38,
+          1866.45,
           45.1184,
-          -779.483
+          -230.601
         ]
       ],
       "objLayer": 0,
@@ -4227,9 +4407,9 @@
           -1133.15
         ],
         [
-          -65.1941,
+          -58.27,
           45.1184,
-          -779.483
+          -781.307
         ]
       ],
       "objLayer": 0,
@@ -4254,9 +4434,144 @@
           -1133.15
         ],
         [
-          -465.531,
+          -458.607,
           45.1184,
-          -779.483
+          -781.307
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_zone_close": {
+      "type": "Sphere",
+      "tm": [
+        [
+          561.669,
+          0.0,
+          -1919.51
+        ],
+        [
+          0.0,
+          2000.0,
+          0.0
+        ],
+        [
+          1919.51,
+          0.0,
+          561.67
+        ],
+        [
+          684.799,
+          -7.7085,
+          2740.57
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_zone_far": {
+      "type": "Sphere",
+      "tm": [
+        [
+          1123.34,
+          0.0,
+          -3839.02
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3839.02,
+          0.0,
+          1123.34
+        ],
+        [
+          684.282,
+          -7.7085,
+          2744.52
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point06": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          1038.78,
+          13.46,
+          2502.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point07": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          1028.34,
+          13.46,
+          2418.04
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t72_target_point08": {
+      "type": "Point",
+      "tm": [
+        [
+          -75.5438,
+          0.0,
+          -494.26
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          7413.9,
+          0.0,
+          -1133.15
+        ],
+        [
+          912.219,
+          13.4602,
+          2330.22
         ]
       ],
       "objLayer": 0,

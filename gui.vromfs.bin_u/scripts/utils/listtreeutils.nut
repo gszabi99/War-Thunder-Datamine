@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-let defaultListItemTpl = "%gui/customization/treeListItem.tpl"
+const defaultListItemTpl = "%gui/customization/treeListItem.tpl"
 
 function cutObjectPostfix(text) {
   let index = text.indexof(":")

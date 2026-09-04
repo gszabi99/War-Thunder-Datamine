@@ -2,7 +2,6 @@ require ecs
 require app
 require WTInput
 require DngHuman
-require DngWeapon
 require %game.input.input_events
 
 

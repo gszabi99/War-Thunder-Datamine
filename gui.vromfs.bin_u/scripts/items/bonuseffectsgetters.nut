@@ -1,10 +1,8 @@
+from "%appGlobals/ranks_common_shared.nut" import calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe
 from "%scripts/dagui_natives.nut" import get_cyber_cafe_level
 from "%scripts/dagui_library.nut" import *
 
-let { calc_boost_for_cyber_cafe, calc_boost_for_squads_members_from_same_cyber_cafe
-} = require("%appGlobals/ranks_common_shared.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { getSameCyberCafeMembersNum } = require("%scripts/squads/squadState.nut")
 
 function getCyberCafeBonusByEffectType(effectType, cyberCafeLevel = -1) {
   if (cyberCafeLevel < 0)
@@ -16,7 +14,7 @@ function getCyberCafeBonusByEffectType(effectType, cyberCafeLevel = -1) {
 
 function getSquadBonusForSameCyberCafe(effectType, num = -1) {
   if (num < 0)
-    num = g_squad_manager.getSameCyberCafeMembersNum()
+    num = getSameCyberCafeMembersNum()
   let cyberCafeBonusesTable = calc_boost_for_squads_members_from_same_cyber_cafe(num)
   let value = cyberCafeBonusesTable?[effectType.abbreviation] ?? 0
   return value

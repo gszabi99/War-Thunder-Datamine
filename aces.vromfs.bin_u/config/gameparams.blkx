@@ -91,6 +91,7 @@
   "wreckedDecoratorsCollision": false,
   "shipFloatingDebrisCount": 200,
   "hideWaterTrailWoutPeriscope": true,
+  "autoCopyCollResMatrixToVehiclePhysForHuman": true,
   "multipointVisibilityAgainstTreesWithoutMarkers": true,
   "multipointVisibilityTreeTrunkOpacity": 1.0,
   "multipointVisibilityTreeCanopyOpacity": 0.5,
@@ -294,7 +295,9 @@
   "criticalOffenderMaxSpeedWeight": 1.0,
   "criticalOffenderMetricsDiffMin": 0.3,
   "lightWeightClientCriticalDamageDetector": true,
-  "leaveKillerSearchDistanceMax": 3000.0,
+  "aircraftLeaveKillerSearchDistanceMax": 3000.0,
+  "groundLeaveKillerSearchDistanceMax": 3000.0,
+  "shipLeaveKillerSearchDistanceMax": 20000.0,
   "crashKillerSearchDistanceMax": 3000.0,
   "airfieldSafeLeaveZoneRadius": -1.0,
   "enableAircraftSevereDamage": true,
@@ -367,7 +370,9 @@
   "canReloadMines": false,
   "enableNoFirstMoveCooldown": true,
   "maxPartAmmoRearmTime": 30.0,
+  "aimShellsInAntiAirMode": true,
   "shipAiTargetMaxDist": 25000.0,
+  "timeStayInSessionForNotSpawned": 300.0,
   "timeStayOnInGameForDisconnected": 300.0,
   "useFullSectionsOnShips": false,
   "hitTrailTimeoutRange": [
@@ -479,6 +484,7 @@
   "traceRendInstSecondLayerMinHeight": 0.5,
   "useTargetingWithAimForShips": true,
   "showProjectileInterceptionMessage": true,
+  "sendShellIntersectionEvent": true,
   "shipsDeadCoversDelayedSinkingEnable": true,
   "isVisibleShipHitCounters": true,
   "shipFireControlIndicationOn": true,
@@ -12470,6 +12476,22 @@
         "serverSideCollectiveDetectionUseWhiteList": true
       }
     },
+    "forceAircraftVisibleOnMap": {
+      "off": {
+        "forceAircraftVisibleOnMap": false
+      },
+      "on": {
+        "forceAircraftVisibleOnMap": true
+      }
+    },
+    "detectTanksFromCamPos": {
+      "off": {
+        "detectTanksFromCamPos": false
+      },
+      "on": {
+        "detectTanksFromCamPos": true
+      }
+    },
     "distDetection": {
       "near": {
         "distDetectionK": 0.5,
@@ -13957,7 +13979,6 @@
     "targetingNearDist": 150.0,
     "targetingNearDistK": 0.1,
     "targetingDistancePower": 2.0,
-    "hydrophoneIdentificationTime": 120.0,
     "pointsInactive": 100.0,
     "pointsObjecive": 0.0,
     "pointsAlive": 25.0,
@@ -14100,11 +14121,31 @@
     "par_gui_quads": 4096
   },
   "destructables": {
-    "maxNumberOfDestructableBodies": 100,
-    "numOfDestrBodiesForScaleDt": 50,
-    "distForScaleDt": 100.0,
-    "maxScaleDt": 3.0,
-    "errorOnBodiesOverflow": false
+    "maxNumberOfDestructableBodies": 400,
+    "numOfDestrBodiesForScaleDt": -1,
+    "distForScaleDt": -1.0,
+    "errorOnBodiesOverflow": false,
+    "simpleInitialImpulse": false,
+    "projectileInteraction": true,
+    "keepAliveMaxHeightAboveGround": 0.5,
+    "outOfViewDisappear": {
+      "softHardBodyLimit": [
+        100,
+        200
+      ],
+      "minSizeTime": [
+        5.0,
+        0.0
+      ],
+      "maxSizeTime": [
+        30.0,
+        5.0
+      ],
+      "maxRelSize": [
+        0.1,
+        0.35
+      ]
+    }
   },
   "clouds": {
     "mapTexWidth": 256,
@@ -14355,7 +14396,7 @@
     "cameraPointOffset": 15.0,
     "shotDirDetectDist": 300.0,
     "shotDirDetectAngle": 4.0,
-    "depthChargeDetectDistance": 50.0,
+    "depthChargeDetectDistance": 100.0,
     "navalMineDetectDistance": 160.0,
     "sightLineDistMax": 22000.0,
     "sightLineDistHumanDroneMax": 160.0,
@@ -20242,11 +20283,11 @@
         },
         {
           "name": "wheel_r_01_",
-          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616"
+          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000"
         },
         {
           "name": "wheel_l_01_",
-          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616"
+          "modelNames": "citroen_kegresse_p4t,cckw_353_bofors,flak_37_sdkfz_9,flak_36_sdkfz_6_2,panzerwerfer_42,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,halftrack_m3_t48,halftrack_m13,halftrack_m15,halftrack_m16,m8_greyhound,type_94,armored_car_mk_2_aa,armored_car_aec_mk_2,t17e2,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,zis_43,su_57,94_km_zis_12_1945,gaz_mm_72k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,ystervark_spaa,ss_11_halftrack,lav_ad,dac,vcac_mephisto,alecto_mk_1,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,tcm_20,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,ystervark_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000"
         },
         {
           "name": "wheel_r_06_",
@@ -20258,27 +20299,27 @@
         },
         {
           "name": "wheel_r_02_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000"
         },
         {
           "name": "wheel_l_02_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,daimler_mk_2,bm_13n,bm_31_12,btr_152a,zsu_29k,gaz_aa_dshk,gaz_aa_4m,sdkfz_221_s_pz_b_41,semovente_breda_501,ab_41,ab_43,as_42_metropolitana,b1_centauro,b1_centauro_romor,fiat_6614_106sr,fiat_6614_firos,aubl_74_cockerill,oto_r3_t20_fa,oto_r3_106sr,t18e2,amx_10rc,type_16,type_16_mcv,aubl_74_60_70m,ba_11,amd_35,panhard_aml_90,rooikat_76_mk_1d,rooikat_105_td,landsverk_ush_405,tgdgb_m40_lv,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_93,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,eland_90_mk_7,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,pbil_m40,lav_ad,dac,vcac_mephisto,vbc_pt2,lancia3ro_100,g6_spg,vrcc_centauro,as_42_47mm,vab_santal,bosvark_spaag,m1128_wolfpack,fiat_cm52,hj_9,sdkfz_222,sdkfz_222_early,pantsyr_s1,vilkas,m53_59,m53_59_kit_4rank,type_16_mod,amd_35_sa35,sarc_mk4_a,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,fv721_fox,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,m53_59_md,tgdgb_m40_lv_md,vickers_mk_11_md,landsverk_ush_204_gk,zsl_92,vextra_105,antelope_tc_1l_ads,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,sl_amraam_launcher,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_fcs,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,hummer_h1,fiat_6616_ub,fiat_6616,fk_2000"
         },
         {
           "name": "wheel_r_03_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000"
         },
         {
           "name": "wheel_l_03_",
-          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan"
+          "modelNames": "cckw_353_bofors,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,m8_greyhound,type_94,btr_152a,semovente_breda_501,b1_centauro,b1_centauro_romor,t18e2,amx_10rc,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,type_87_rcv,flarakrad,m1128_mgs,gmc_cckw_353_m45_quad,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,ratel_20,ratel_90,ratel_zt3,ptl_02,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,crotale_ng,wma_301,lav_ad,vbc_pt2,g6_spg,vrcc_centauro,bosvark_spaag,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,type_87_rcv_prot,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,zis_152d,vickers_mk_11,type_81_tansam,breda_52_autocannone,tpk_641_vpc,cm_34,centauro_rgo_120,bosvark_spaag_md,btr_80a_md,flarakrad_md,vickers_mk_11_md,zsl_92,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,9a33bm3,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,type_81_tansam_fcs,sl_amraam_fcs,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,jaguar_ebrc,th_400,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,nasams_launcher,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000"
         },
         {
           "name": "wheel_r_04_",
-          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan"
+          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000"
         },
         {
           "name": "wheel_l_04_",
-          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan"
+          "modelNames": "lav_ad,sdkfz_234_2,sdkfz_234_3,sdkfz_234_4,b1_centauro,b1_centauro_romor,t18e2,type_16,type_16_mcv,rooikat_76_mk_1d,rooikat_105_td,radpanzer_90,ztl_11,centauro_mgs_120,sdkfz_234_1,flarakrad,m1128_mgs,sdkfz_251_9,sdkfz_251_10,sdkfz_251_21,sdkfz_251_22,panhard_ebr_1951,panhard_ebr_1954,panhard_ebr_1963,th_800_bismark,t55e1,rooikat_za_35,rooikat_mttd,marmon_herrington_mk_6_2pdr,marmon_herrington_mk_6_6pdr,concept3_ngac,alecto_mk_1,vbc_pt2,vrcc_centauro,m1128_wolfpack,pantsyr_s1,vilkas,type_16_mod,btr_80a,freccia,vbci2_mct30,patria_amv_ctcv_105hp,btr_80a_hungary,centauro_rgo_120,btr_80a_md,flarakrad_md,vextra_105,icv_prototype,boxer_cockerill_3105,sppz2_luchs_a2,icv_ifv_prototype,vbci,badger,pgz_625_fb10,iris_slm_fcs,iris_slm,spyder_aio,sky_sabre_fcs,sky_sabre_launcher,samp_t_fcs,samp_t_launcher,samp_t_france_fcs,samp_t_france_launcher,btr_82at,cm_34,type_03_chusam_fcs,type_03_chusam_launcher,hq_11,freccia_hitfist_ows,boxer_crv_block2,centauro_2,btr_3e1,sdkfz_234_2_mod,boxer_swatrinf,m1296_dragoon,eitan,fk_2000"
         },
         {
           "name": "wheel_r_05_",
@@ -21043,6 +21084,17 @@
         }
       ]
     },
+    "viewer_xray_armor": {
+      "p": {
+        "name": "armor",
+        "xrayColor": [
+          255,
+          255,
+          255,
+          255
+        ]
+      }
+    },
     "body": {
       "p": [
         {
@@ -21567,6 +21619,7 @@
     "minLodForMode2": 1,
     "minBoundRadForMode0": 3.0,
     "minBoundRadForMode2": 3.0,
+    "keepMaxDimForMode2": 2.5,
     "hideForMode2re": {
       "incRE": [
         "railroad_bridge_support_debris_a",
@@ -23431,9 +23484,9 @@
         "european_barrel_small_b",
         "european_bench_a",
         "european_bench_b",
-        "european_bycicle_a",
-        "european_bycicle_damaged_a",
-        "european_bycicle_parking_a",
+        "european_bicycle_a",
+        "european_bicycle_damaged_a",
+        "european_bicycle_parking_a",
         "european_gas_pump_a",
         "european_gas_pump_b",
         "european_lamp_a",
@@ -25585,8 +25638,7 @@
   },
   "replay": {
     "segmentLengthSec": 90,
-    "enableDeltaCompression": true,
-    "writeInJob": true
+    "enableDeltaCompression": true
   },
   "wakeFromBullet": {
     "minCal": 0.076,
@@ -26060,12 +26112,12 @@
       "excludeOffendersFromHunters": true,
       "offenderTimeThreshold": 60.0,
       "radius": 2000.0,
-      "scoutingTime": 30.0,
-      "markTimeInfantry": 30.0,
+      "scoutingTime": 15.0,
+      "markTimeInfantry": 15.0,
       "markerShowTime": 2.0,
       "markerHideTime": 0.0,
-      "actionBarCooldown": 4.0,
-      "actionBarFailCooldown": 6.0,
+      "actionBarCooldown": 3.0,
+      "actionBarFailCooldown": 3.0,
       "allowedTimeSecForRecentlyKilled": 0.5,
       "killScore": 0.7,
       "hitScore": 0.7,
@@ -26089,12 +26141,12 @@
       "excludeOffendersFromHunters": true,
       "offenderTimeThreshold": 60.0,
       "radius": 2000.0,
-      "scoutingTime": 45.0,
-      "markTimeInfantry": 30.0,
+      "scoutingTime": 15.0,
+      "markTimeInfantry": 15.0,
       "markerShowTime": 2.0,
       "markerHideTime": 0.0,
-      "actionBarCooldown": 4.0,
-      "actionBarFailCooldown": 6.0,
+      "actionBarCooldown": 3.0,
+      "actionBarFailCooldown": 3.0,
       "allowedTimeSecForRecentlyKilled": 0.5,
       "killScore": 0.7,
       "hitScore": 0.7,
@@ -26219,7 +26271,8 @@
     "minCaliber": 0.1,
     "maxCaliber": 0.4,
     "trackMinWidthK": 9.0,
-    "trackMaxWidthK": 45.0
+    "trackMaxWidthK": 45.0,
+    "maxTotalSegments": 2000
   },
   "highlights": {
     "event": [
@@ -26751,7 +26804,7 @@
   },
   "terraform": {
     "enabled": true,
-    "enableTerraformCraterEmissionDecal": false,
+    "enableTerraformCraterEmissionDecal": true,
     "width": 32768,
     "height": 32768,
     "minLevel": -4.1,
@@ -26844,6 +26897,7 @@
       "snowLower": true,
       "dirt": true,
       "duneSand": true,
+      "soil": true,
       "default": true
     },
     "splashToCraterDepth": {
@@ -27237,7 +27291,7 @@
   },
   "tankEnviCover": {
     "enabled": true,
-    "snowEmitterIntensity": 0.0,
+    "snowEmitterIntensity": 0.012,
     "velocitySheddingMult": 0.0005,
     "impulseEmitterLifetime": 0.3,
     "impulseEmitterCaliberMult": 40.0,
@@ -27289,7 +27343,38 @@
     "minSpeedForLerxVapor": 90.0,
     "intensityRampupEndSpeed": 128.0,
     "intensityRampDownStartSpeed": 272.222,
-    "maxSpeedForLerxVapor": 330.0
+    "maxSpeedForLerxVapor": 380.0,
+    "minTemperature": -7.5,
+    "peakIntensityTemperature": 15.0,
+    "maxTemperature": 80.0,
+    "humidityCloudProximityAdd": 12.0,
+    "humidityCloudProximityRange": 100.0,
+    "humidityWaterProximityAdd": 12.0,
+    "humidityWaterProximityRange": 300.0,
+    "humidityWaterTraceAngleDeg": 45.0,
+    "humidityViscosity": 0.5,
+    "lerxVaporHumidityPlateaus": [
+      5.0,
+      8.0,
+      13.0,
+      17.0
+    ],
+    "lerxVaporHumidityMult": [
+      0.6,
+      1.0,
+      3.0
+    ],
+    "machVaporHumidityPlateaus": [
+      5.0,
+      8.0,
+      13.0,
+      17.0
+    ],
+    "machVaporHumidityMult": [
+      0.5,
+      1.0,
+      3.0
+    ]
   },
   "physUpdateByControls": {
     "human": true

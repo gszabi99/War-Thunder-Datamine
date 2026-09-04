@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "%scripts/dagui_library.nut" import *
-
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+from "%globalScripts/shopItemConsts.nut" import *
 
 local orderUseResult = null
 

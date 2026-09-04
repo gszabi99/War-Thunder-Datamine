@@ -67,65 +67,41 @@
   },
   "bullet": [
     {
-      "mass": 0.115,
+      "bulletName": "20mm_brgr",
+      "mass": 0.117,
       "caliber": 0.02,
-      "speed": 705.0,
+      "speed": 720.0,
       "Cx": 0.50545,
-      "maxDistance": 2000.0,
-      "normalizationPreset": "heat",
-      "ricochetPreset": "he",
+      "maxDistance": 3000.0,
+      "selfDestructionInAir": true,
+      "explosiveType": "petn",
+      "explosiveMass": 0.0023,
+      "normalizationPreset": "default",
+      "ricochetPreset": "defaultExt",
       "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "he_frag_i_t",
-      "slopeEffectPreset": "ap",
-      "fresnel": [
-        0.23,
-        0.1,
-        2.0
-      ],
-      "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/he_belt.ivf",
+      "bulletType": "frag_i_t",
+      "shellAnimation": "video/shells_animations/frag_i_t_shell.ivf",
       "gbufferModelName": "ac_he",
       "cartridgeCaseModelName": "ac_he_with_cartridge_case",
-      "bulletName": "20mm_brgr",
-      "hitPowerMult": 1.0,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        300.0
-      ],
-      "farHitPower": [
-        0.1,
-        700.0
-      ],
-      "endHitPower": [
-        0.008,
-        1500.0
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
+      "fuseDelayDist": 0.2,
+      "explodeTreshold": 0.1,
+      "onHitChanceMultFire": 3.1,
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
       ],
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
-      "explodeTreshold": 0.3,
-      "explodeHitPower": 8.0,
-      "explodeArmorPower": 2.0,
-      "explodeRadius": [
-        0.12,
-        0.2
-      ],
-      "fuseDelayDist": 0.02,
-      "shutterDamage": true,
-      "shutterDamageRadius": 0.3,
-      "shutterAmount": 5,
-      "shutterArmorPower": 3.0,
-      "shutterHit": 2.5,
       "selfDestructionFx": "hit_5_7mm_metal_he",
       "groundCollisionEffect": "hit_19_27mm_dirt_he",
       "ricochetEffect": "hit_15_18mm_metal_ap",
@@ -154,43 +130,72 @@
           ]
         ]
       },
-      "pressureDamage": {
-        "damageType": "pressure"
-      },
-      "armorpower": {
-        "ArmorPower0m": [
-          2.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          2.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          1.5,
-          500.0
-        ],
-        "ArmorPower1000m": [
+      "hitpower": {
+        "HitPower10m": [
           1.0,
+          50.0
+        ],
+        "HitPower1000m": [
+          0.7,
           1000.0
         ],
-        "ArmorPower1450m": [
+        "HitPower1500m": [
           0.5,
-          1450.0
-        ],
-        "ArmorPower1500m": [
-          0.0,
           1500.0
+        ],
+        "HitPower2000m": [
+          0.1,
+          2000.0
         ]
       },
-      "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
-        "traceFreq": 1,
-        "tracer": "20mmWhite",
-        "trail": "thin"
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
+        "shatter": {
+          "useRealShatters": true,
+          "countPortion": 0.75,
+          "realShattersSplicing": 0.35,
+          "segment": [
+            {
+              "radiusScale": 1.05,
+              "penetrationScale": 1.1,
+              "damageScale": 1.0,
+              "angles": [
+                0.0,
+                40.0
+              ],
+              "countPortion": 0.05
+            },
+            {
+              "radiusScale": 1.05,
+              "penetrationScale": 1.0,
+              "damageScale": 1.0,
+              "angles": [
+                40.0,
+                140.0
+              ],
+              "countPortion": 0.9
+            },
+            {
+              "radiusScale": 1.05,
+              "penetrationScale": 0.8,
+              "damageScale": 1.0,
+              "angles": [
+                140.0,
+                180.0
+              ],
+              "countPortion": 0.05
+            }
+          ]
+        }
+      },
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "collisions": {
         "default": {
@@ -483,12 +488,26 @@
           "ricochetFx": "hit_15_18mm_wood_ap",
           "pierceFx": "hit_15_18mm_wood_ap"
         }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "20mmWhite",
+        "trail": "thin"
       }
     },
     {
       "bulletCount": 10,
       "mass": 0.115,
       "caliber": 0.02,
+      "bulletName": "20mm_pzbrgr_ph",
+      "speed": 705.0,
+      "Cx": 0.59471,
+      "maxDistance": 3000.0,
+      "onHitChanceMultFire": 3.0,
       "normalizationPreset": "default",
       "ricochetPreset": "defaultExt",
       "groundRicochetPreset": "default",
@@ -501,11 +520,6 @@
       "shellAnimation": "video/shells_animations/ap_belt.ivf",
       "cartridgeCaseModelName": "ac_ap_with_cartridge_case",
       "gbufferModelName": "ac_ap",
-      "bulletName": "20mm_pzbrgr_ph",
-      "speed": 705.0,
-      "Cx": 0.59471,
-      "maxDistance": 3000.0,
-      "onHitChanceMultFire": 3.0,
       "relativeVelHitShift": [
         300.0,
         1000.0

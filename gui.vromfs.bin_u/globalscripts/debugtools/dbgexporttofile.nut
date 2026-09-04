@@ -28,9 +28,9 @@ let EXPORT_PARAMS = {
   onFinish        = null              
 }
 
-let indicatorId = "dbgExportToFile"
+const indicatorId = "dbgExportToFile"
 let timeToStr = @(s) format("%02dm%02ds", s / 60, s % 60)
-let nbsp = "\u00A0"
+const nbsp = "\u00A0"
 
 function exportImpl(params, resBlk, idx, startTime) {
   let exportImplFunc = callee()

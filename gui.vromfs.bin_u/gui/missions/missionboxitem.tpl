@@ -1,6 +1,8 @@
-<<itemTag>><<^itemTag>>mission_item_unlocked<</itemTag>> {
+mission_item {
   id:t='<<id>>'
   css-hier-invalidate:t='yes'
+
+  missionItemType:t='<<itemType>>'
 
   <<#noMargin>>
   noMargin:t='yes'

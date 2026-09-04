@@ -1,29 +1,30 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
+from "dagor.math" import Point2
+from "%sqstd/string.nut" import startsWith
+from "worldwar" import wwGetOperationId, wwGetOperationWinner, wwClearOutlinedZones
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { Point2 } = require("dagor.math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let DataBlock  = require("DataBlock")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { wwGetOperationId, wwGetOperationWinner, wwClearOutlinedZones } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-let { WwObjectiveView } =  require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
-let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
+let { WwObjectiveView } = require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
 let { wwObjectiveType } = require("%scripts/worldWar/inOperation/model/wwObjectivesTypes.nut")
 let { getOperationObjectives } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getArmyGroupsBySide } = require("%scripts/worldWar/worldWarState.nut")
 
 
-gui_handlers.wwObjective <- class (BaseGuiHandler) {
+let wwObjective = class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarObjectivesInfo.tpl"
   sceneBlkName = null
@@ -417,7 +418,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function onOpenFullMissionObjects() {
-    gui_handlers.WwObjectivesInfo.open()
+    get_gui_handler("WwObjectivesInfo")?.open()
   }
 
   function onHoverName(obj) {
@@ -437,3 +438,6 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     wwClearOutlinedZones()
   }
 }
+register_gui_handler("wwObjective", wwObjective)
+
+return { wwObjective }

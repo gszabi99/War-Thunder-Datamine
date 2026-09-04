@@ -1,22 +1,22 @@
+from "%sqstd/string.nut" import clearBorderSymbols, utf8ToLower
+from "dagor.workcycle" import resetTimeout
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getSelectedChild, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { getSelectedChild, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { clearBorderSymbols, utf8ToLower } = require("%sqstd/string.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { resetTimeout } = require("dagor.workcycle")
 let { getInvitesList, findInviteByUid, markAllInvitesSeen } = require("%scripts/invites/invites.nut")
 
 const INVITES_PER_PAGE = 30
 const MORE_BTN_ID = "showMoreBtn"
 const LIST_UPDATE_TIMER_ID = "timer_invite_list_update"
 
-gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("InvitesWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/invitesWnd.blk"
 
@@ -258,4 +258,4 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.searchString = obj.getValue()
     resetTimeout(0.3, (@() (this?.isValid() ?? false) ? this.updateListView() : null).bindenv(this), LIST_UPDATE_TIMER_ID)
   }
-}
+})

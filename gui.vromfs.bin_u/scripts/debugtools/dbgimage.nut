@@ -1,17 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "dagor.fs" as dagor_fs
+from "console" import register_command
+from "%sqstd/string.nut" import slice
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 
 
 
 
 
 let g_path = require("%sqstd/path.nut")
-let dagor_fs = require("dagor.fs")
-let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
-let { slice } = require("%sqstd/string.nut")
 let g_font = require("%scripts/options/fonts.nut")
 let { viewFullscreenImage } = require("%scripts/showImage.nut")
 

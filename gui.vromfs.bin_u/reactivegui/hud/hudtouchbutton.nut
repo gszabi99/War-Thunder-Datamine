@@ -1,6 +1,5 @@
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut, setShortcutOn, setShortcutOff
 from "%rGui/globals/ui_library.nut" import *
-
-let { toggleShortcut, setShortcutOn, setShortcutOff } = require("%globalScripts/controls/shortcutActions.nut")
 
 let touchButtonSize        = shHud(10)
 let bigTouchButtonSize     = shHud(14)
@@ -8,8 +7,8 @@ let touchButtonMargin      = shHud(2)
 let menuTouchButtonWidth   = shHud(10)
 let menuTouchButtonHeight  = shHud(5.7)
 
-let iconColor         = Color(200, 209, 219, 170)
-let iconColorPushed   = Color(239, 231, 164)
+const iconColor         = Color(200, 209, 219, 170)
+const iconColorPushed   = Color(239, 231, 164)
 
 const ship_steering_rangeMax = "ship_steering_rangeMax"
 const ship_steering_rangeMin = "ship_steering_rangeMin"

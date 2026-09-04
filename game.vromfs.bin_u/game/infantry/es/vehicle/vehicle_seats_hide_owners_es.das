@@ -2,7 +2,6 @@ require ecs
 require ecs.common
 require vehicle
 require PhysVars
-require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.vehicle.vehicle_seats_common
 require ecs.safe
 

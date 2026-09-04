@@ -13,8 +13,15 @@
   ],
   "tags": {},
   "rocket": {
+    "dragCx": 0.21,
     "bulletName": "jp_ki_148_i_go_1b",
+    "iconType": "guided_missile_air_to_surface",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.57,
     "length": 4.09,
     "WdK": [
@@ -33,10 +40,8 @@
     "force": 2510.0,
     "fireDelay": 0.75,
     "timeLife": 90.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 150.0,
-    "endSpeed": 0.0,
     "maxDistance": 12000.0,
     "minDistance": 30.0,
     "operatedDist": 12000.0,
@@ -52,18 +57,17 @@
     "aimCorrectionVelMin": 200.0,
     "aimSensitivity": 22.1,
     "maxAxisValues": 1.0,
-    "maxDeltaAngle": 0.02,
     "explosiveType": "shimose",
     "explosiveMass": 130.0,
     "normalizationPreset": "heat",
-    "ricochetPreset": "heat_fs",
-    "groundRicochetPreset": "heat_fs",
+    "ricochetPreset": "atgm",
+    "groundRicochetPreset": "atgm",
     "secondaryShattersPreset": "ap",
     "stabilityThreshold": 0.5,
     "stabilityCaliberToArmorThreshold": 5.0,
     "stabilityReductionAfterRicochet": 0.3,
     "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "heat_fs_tank",
+    "bulletType": "atgm_tank",
     "cumulativeSecondaryShattersPreset": "heavy_heat_warhead",
     "explodeOnRendinst": true,
     "fresnel": [
@@ -71,62 +75,12 @@
       0.1,
       2.0
     ],
-    "shellAnimation": "video/shells_animations/heat_fs.ivf",
+    "shellAnimation": "video/shells_animations/atgm.ivf",
+    "hitPowerMult": 400.0,
     "shellCollision": true,
-    "dragCx": 0.21,
-    "distanceFuse": false,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "explodeHitPower": 1750.0,
-    "explodeArmorPower": 120.0,
-    "explodeRadius": [
-      3.8,
-      8.0
-    ],
-    "shutterDamage": true,
-    "shutterDamageRadius": 45.0,
-    "shutterAmount": 3000,
-    "shutterArmorPower": 12.0,
-    "shutterHit": 12.0,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "guided_missile_air_to_surface",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -153,6 +107,12 @@
       -0.47,
       0.0
     ],
+    "cumulativeDamage": {
+      "armorPower": 400.0,
+      "distance": 3.5,
+      "damage": 2000.0,
+      "onHitChanceMultFire": 25.0
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -169,6 +129,11 @@
     },
     "pressureDamage": {
       "damageType": "pressure"
+    },
+    "damage": {
+      "explosive": {
+        "offset": 0.3
+      }
     },
     "DamageParts": {
       "body": {
@@ -254,17 +219,6 @@
           }
         ]
       }
-    },
-    "damage": {
-      "explosive": {
-        "offset": 1.0
-      }
-    },
-    "cumulativeDamage": {
-      "armorPower": 400.0,
-      "distance": 3.5,
-      "damage": 2000.0,
-      "onHitChanceMultFire": 25.0
     },
     "explosionSmoke": {
       "radius": 11.0,

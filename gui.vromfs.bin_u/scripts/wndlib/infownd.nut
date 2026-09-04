@@ -1,13 +1,13 @@
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
@@ -41,7 +41,7 @@ const INFO_WND_SAVE_PATH = "infoWnd"
 
 
 
-gui_handlers.InfoWnd <- class (BaseGuiHandler) {
+let InfoWnd = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/wndLib/infoWnd.blk"
 
@@ -57,10 +57,10 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
   buttonsCbs = null
 
   static function openChecked(config) {
-    if (!gui_handlers.InfoWnd.canShowAgain(getTblValue("checkId", config)))
+    if (!get_gui_handler("InfoWnd").canShowAgain(config?.checkId))
       return false
 
-    handlersManager.loadHandler(gui_handlers.InfoWnd, config)
+    handlersManager.loadHandler(get_gui_handler("InfoWnd"), config)
     return true
   }
 
@@ -109,7 +109,7 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
         btn.funcName <- cbName
         markup = "".concat(markup, handyman.renderCached("%gui/commonParts/button.tpl", btn))
 
-        hasBigButton = hasBigButton || getTblValue("isToBattle", btn, false)
+        hasBigButton = hasBigButton || (btn?.isToBattle ?? false)
       }
     this.guiScene.replaceContentFromText(this.scene.findObject("buttons_place"), markup, markup.len(), this.buttonsCbs)
 
@@ -137,9 +137,12 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
       this.onCancel()
   }
 }
+register_gui_handler("InfoWnd", InfoWnd)
 
 subscriptions.addListenersWithoutEnv({
   AccountReset = function(_p) {
-    gui_handlers.InfoWnd.clearAllSaves()
+    InfoWnd.clearAllSaves()
   }
 }, g_listener_priority.CONFIG_VALIDATION)
+
+return { InfoWnd }

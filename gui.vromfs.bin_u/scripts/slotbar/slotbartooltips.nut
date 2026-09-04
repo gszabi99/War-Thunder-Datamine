@@ -1,19 +1,19 @@
+from "string" import format
+from "math" import floor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isSlotbarOverrided, getSlotbarOverrideMods } = require("%scripts/slotbar/slotbarOverride.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUnitClassIco, getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
-let { format } = require("string")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { floor } = require("math")
 let { fillAirInfo } = require("%scripts/airInfo.nut")
 let fontScaleOption = require("%scripts/options/fonts.nut")
 
@@ -25,7 +25,7 @@ addTooltipTypes({
     isCustomTooltipFill = true
     isModalTooltip = true
     fillTooltip = function(obj, handler, id, params) {
-      let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+      let actionsList = handlersManager.findHandlerClassInScene(ActionsList)
       if (actionsList && actionsList?.params.needCloseTooltips) {
         let transparentDirection = to_integer_safe(actionsList?.scene["_transp-direction"], 0, false)
         if (transparentDirection > -1) {
@@ -68,7 +68,7 @@ addTooltipTypes({
         : params.__merge({
             overrideMods = getSlotbarOverrideMods()?[unit.shopCountry][unit.name]
           })
-      fillAirInfo(unit, true, contentObj, handler, airInfoParams)
+      fillAirInfo(unit, true, contentObj, handler, airInfoParams.__merge({ needShowDebugInfo = true }))
       showObjById("aircraft-countryImg", false, contentObj)
       obj.getScene().setUpdatesEnabled(true, true)
       obj.getScene().applyPendingChanges(true)

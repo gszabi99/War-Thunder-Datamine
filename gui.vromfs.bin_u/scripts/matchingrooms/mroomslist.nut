@@ -1,15 +1,18 @@
+import "%sqstd/underscore.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/platform.nut" import is_gdk
+from "dagor.time" import get_time_msec
+from "string" import format
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "types" import Array
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { get_time_msec } = require("dagor.time")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let u = require("%sqstd/underscore.nut")
 let { fetchRoomsList } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
 let { getGameModeIdsByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
 let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
@@ -120,7 +123,7 @@ MRoomsList = class {
   function requestListCb(p, hideFullRooms) {
     this.isInUpdate = false
 
-    let digest = checkMatchingError(p, false) ? getTblValue("digest", p) : null
+    let digest = checkMatchingError(p, false) ? p?.digest : null
     if (!digest)
       return
 
@@ -190,7 +193,7 @@ MRoomsList = class {
       }
     }
     let clusters = ui_filter?.clusters
-    if (type(clusters) == "array" && clusters.len() > 0) {
+    if (clusters instanceof Array && clusters.len() > 0) {
       filter["public/cluster"] <- {
         test = "in"
         value = clusters

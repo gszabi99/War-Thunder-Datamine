@@ -1,30 +1,27 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "dagor.random" import rnd
+from "guiOptions" import get_gui_option, getCdBaseDifficulty
+from "dynamicMission" import dynamicGetList, dynamicTune, dynamicSetTakeoffMode
+from "guiMission" import select_mission_full
 from "%scripts/dagui_natives.nut" import fetch_first_builder
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_list
 
-let { currentCampaignMission, set_mission_for_takeoff, get_mission_settings, get_mutable_mission_settings, set_mission_settings
-} = require("%scripts/missions/missionsStates.nut")
+let { currentCampaignMission, set_mission_for_takeoff, get_mission_settings, get_mutable_mission_settings, set_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let DataBlock = require("DataBlock")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { rnd } = require("dagor.random")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MissionBuilderTuner } = require("%scripts/missionBuilder/missionBuilderTuner.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { GenericOptions, GenericOptionsModal } = require("%scripts/genericOptions.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_option, getCdBaseDifficulty } = require("guiOptions")
-let { dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
-} = require("dynamicMission")
 let { dynamicInitAsync } = require("%scripts/missions/dynCampaingState.nut")
-let { select_mission_full } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
-let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURROUND,
-  USEROPT_DMP_MAP, USEROPT_FRIENDLY_SKILL, USEROPT_ENEMY_SKILL, USEROPT_DIFFICULTY,
-  USEROPT_TIME, USEROPT_CLIME, USEROPT_TAKEOFF_MODE, USEROPT_LIMITED_FUEL,
-  USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES,
-  USEROPT_DYN_ENEMIES
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURROUND, USEROPT_DMP_MAP, USEROPT_FRIENDLY_SKILL, USEROPT_ENEMY_SKILL, USEROPT_DIFFICULTY, USEROPT_TIME, USEROPT_CLIME, USEROPT_TAKEOFF_MODE, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES, USEROPT_DYN_ENEMIES } = require("%scripts/options/optionsExtNames.nut")
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -41,7 +38,7 @@ function mergeToBlk(sourceTable, blk) {
     blk[idx] = val
 }
 
-gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
+register_gui_handler("MissionBuilder", class (GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsMap.blk"
   sceneNavBlkName = "%gui/navBuilderOptions.blk"
@@ -55,7 +52,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   needSlotbar = true
 
   function initScreen() {
-    gui_handlers.GenericOptions.initScreen.bindenv(this)()
+    GenericOptions.initScreen.bindenv(this)()
 
     this.guiScene.setUpdatesEnabled(false, false)
     let options =
@@ -243,7 +240,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     if (checkObj(mapObj))
       set_mission_settings("currentMissionIdx", mapObj.getValue())
 
-    let dynMission = getTblValue(get_mission_settings().currentMissionIdx, get_mutable_mission_settings().dynlist)
+    let dynMission = get_mutable_mission_settings().dynlist?[get_mission_settings().currentMissionIdx]
     if (!dynMission)
       return
 
@@ -350,7 +347,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       return
 
     set_mission_settings("currentMissionIdx", this.scene.findObject("dyn_mp_map").getValue())
-    let fullMissionBlk = getTblValue(get_mission_settings().currentMissionIdx, get_mutable_mission_settings().dynlist)
+    let fullMissionBlk = get_mutable_mission_settings().dynlist?[get_mission_settings().currentMissionIdx]
     if (!fullMissionBlk)
       return
 
@@ -405,7 +402,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
     
 
-    loadHandler(gui_handlers.MissionBuilderTuner)
+    loadHandler(MissionBuilderTuner)
   }
 
   function onLayoutChange(_obj = null) {
@@ -466,8 +463,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onEventBeforeStartMissionBuilder(_p) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, MainMenu)
   }
 
   onEventShowedUnitChanged = @(_p) this.reinitOptionsList()
-}
+})

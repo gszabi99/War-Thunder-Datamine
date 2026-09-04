@@ -1,16 +1,15 @@
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth
+from "%rGui/options/options.nut" import userOptDamageIndicatorSize
+from "%rGui/options/optionsMeasureUnits.nut" import isInitializedMeasureUnits, measureUnitsNames
+from "%rGui/components/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/hud/tankState.nut" import rpm, cruiseControlValue, gear, speed, hasSpeedWarning, stabilizer, lws
+  , ircm, firstStageAmmo, drivingDirectionMode
+from "%rGui/hud/tankHudDebuffsState.nut" import tracksData, turretDriveData, gunData, engineData, engineOverheatState, fireState, reInitTankDebuffsStates
+from "%rGui/hud/tankHudCrewState.nut" import crewState, crewGunnerState, crewDriverState, distance, reInitHudCrewStates
+from "%rGui/hudState.nut" import isSpectatorMode
+from "%sqstd/math.nut" import PI, cos, sin, roundToDigits
 from "%rGui/globals/ui_library.nut" import *
-
-let { PI, cos, sin, roundToDigits } = require("%sqstd/math.nut")
-let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
-let { userOptDamageIndicatorSize } = require("%rGui/options/options.nut")
-let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/components/tooltip.nut")
-let { rpm, cruiseControlValue, gear, speed, hasSpeedWarning,
-  stabilizer, lws, ircm, firstStageAmmo, drivingDirectionMode } = require("%rGui/hud/tankState.nut")
-let { tracksData, turretDriveData, gunData, engineData,
-  engineOverheatState, fireState, reInitTankDebuffsStates } = require("%rGui/hud/tankHudDebuffsState.nut")
-let { crewState, crewGunnerState, crewDriverState, distance, reInitHudCrewStates } = require("%rGui/hud/tankHudCrewState.nut")
-let { isSpectatorMode } = require("%rGui/hudState.nut")
+from "types" import Function
 
 const MIN_CREW_COUNT_FOR_WARNING = 2
 
@@ -43,9 +42,9 @@ let fontParamsByScale = Computed(@() (isSpectatorMode.get()
 let compSize = Computed(@() even(dmgIndicatorWidth.get() / 7))
 let indicatorSize = Computed(@() dmgIndicatorWidth.get())
 
-let frameBorderColor = 0xFF3A434E
-let frameBackgroundColor = 0xFF2D343C
-let textCompColor = 0xFFC0C0C0
+const frameBorderColor = 0xFF3A434E
+const frameBackgroundColor = 0xFF2D343C
+const textCompColor = 0xFFC0C0C0
 
 let stateColors = {
   ok = 0x500B0E10
@@ -86,8 +85,8 @@ let crewStateColors = {
   healing = 0xFFD31111
 }
 
-let drivingDirectionModeColorOn = 0xFF86D808
-let drivingDirectionModeColorOff = 0xFF252E35
+const drivingDirectionModeColorOn = 0xFF86D808
+const drivingDirectionModeColorOff = 0xFF252E35
 
 
 let tooltips = {
@@ -209,7 +208,7 @@ function mkTooltipParams(ctorOrLocId) {
     behavior = Behaviors.Button
     onElemState = withTooltip(stateFlag, key,
       function() {
-        let content = type(ctorOrLocId) == "function" ? ctorOrLocId() : mkTooltipText(loc(ctorOrLocId))
+        let content = ctorOrLocId instanceof Function ? ctorOrLocId() : mkTooltipText(loc(ctorOrLocId))
         if (calc_comp_size(content)[0] == 0)
           return null
 
@@ -286,7 +285,7 @@ function firstStageAmmoStateComp() {
     image = Picture($"ui/gameuiskin#icon_weapons_relocation_in_progress.svg:{compSize.get()}:{compSize.get()}:P")
     color = firstStageAmmoStateColors?[ammoState] ?? firstStageAmmoStateColors.none
     children = {
-      size = [compSize.get() / 2, flex()]
+      size = [compSize.get() / 2, FLEX]
       children = {
         rendObj = ROBJ_TEXT
         text = amount.tostring()
@@ -375,7 +374,7 @@ let speedComp = {
 
 let movementStateComp = {
   margin = [0, 0, shHud(0.3), shHud(0.6)]
-  size = flex()
+  size = FLEX
   flow = FLOW_VERTICAL
   valign = ALIGN_BOTTOM
   children = [
@@ -439,11 +438,11 @@ let mkTimeBarComp = @(crewMemberState) function() {
 
   return {
     watch = [crewMemberState, compSize]
-    size = flex()
+    size = FLEX
     children = {
       rendObj = ROBJ_PROGRESS_CIRCULAR
       image = Picture($"!ui/gameuiskin#timebar.svg:{compSize.get()}:{compSize.get()}:P")
-      size = flex()
+      size = FLEX
       bgColor = 0x0
       fgColor = stateColors.white
       animations = [{ prop = AnimProp.fValue, from, to = 1.0, duration = timeToTakePlace, play = true }]
@@ -461,7 +460,7 @@ function gunnerStateComp() {
     pos = getCompPosition(indicatorSize.get(), compSize.get(), 105)
     children = [@() {
       watch = gunnerStateColor
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#crew_gunner_indicator.svg:{compSize.get()}:{compSize.get()}:P")
       color = gunnerStateColor.get()
@@ -494,7 +493,7 @@ function driverStateComp() {
     pos = getCompPosition(indicatorSize.get(), compSize.get(), 135)
     children = [@() {
       watch = driverStateColor
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#crew_driver_indicator.svg:{compSize.get()}:{compSize.get()}:P")
       color = driverStateColor.get()
@@ -507,7 +506,7 @@ driverStateWink.subscribe(@(v) v ? anim_start("driverStateWink") : anim_request_
 
 let distanceBarComp = @() {
   watch = [distance, compSize]
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_PROGRESS_CIRCULAR
   image = Picture($"!ui/gameuiskin#timebar.svg:{compSize.get()}:{compSize.get()}:P")
   bgColor = 0x0
@@ -525,7 +524,7 @@ function distanceComp() {
     pos = getCompPosition(indicatorSize.get(), compSize.get(), 165)
     children = [@() {
       watch = distanceColor
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#overview_icon.svg:{compSize.get()}:{compSize.get()}:P")
       color = distanceColor.get()
@@ -534,7 +533,7 @@ function distanceComp() {
     {
       rendObj = ROBJ_IMAGE
       image = Picture($"!ui/gameuiskin#timebar.svg:{compSize.get()}:{compSize.get()}:P")
-      size = flex()
+      size = FLEX
       color = crewStateColors.ok
     }]
   }.__update(mkTooltipParams(mkDistanceTooltipContentCtor(distance, "hud_tank_crew_distance")))

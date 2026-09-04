@@ -1,22 +1,21 @@
-from "%rGui/globals/ui_library.nut" import *
+import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
+import "%rGui/hints/hints.nut" as hints
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/hud/humanSquad/humanConst.nut" import heroStateWidth, hpBarHeight, weaponBlockGap
+from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunSlotIdx, WEAPON_SLOTS, heroModsByWeaponSlot, isWeaponsListVisible, humanCurGunModeInfo
+from "%rGui/style/colors.nut" import white
+from "%rGui/hud/state/watched_hero.nut" import watchedHeroEid
+from "dagor.math" import Color4
+from "dasevents" import CmdUIShowWeaponsBlock
+from "%rGui/globals/ui_library.nut" import *
 
-let { Color4 } = require("dagor.math")
-
-let { heroStateWidth, hpBarHeight, weaponBlockGap } = require("%rGui/hud/humanSquad/humanConst.nut")
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
-let { weaponSlotsStatic, weaponSlots, humanCurGunSlotIdx, WEAPON_SLOTS, heroModsByWeaponSlot,
-  isWeaponsListVisible, humanCurGunModeInfo
-} = require("%rGui/hud/state/human_gun_info_es.nut")
-let { white, hud } = require("%rGui/style/colors.nut")
+let { weaponSlotsStatic, weaponSlots } = require("%rGui/hud/state/human_gun_info_es.nut")
+let { hud } = require("%rGui/style/colors.nut")
 let { infantryHudInactiveColor, infantryShortcutCommonColor,
   infantryShortcutDisableColor, infantryShortcutCommonTextColor, infantryShortcutDisableTextColor
 } = hud
-let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
-let hints = require("%rGui/hints/hints.nut")
-let { watchedHeroEid } = require("%rGui/hud/state/watched_hero.nut")
-let { CmdUIShowWeaponsBlock } = require("dasevents")
 
 let overrideImageSize = [shHud(2), shHud(2)]
 let weaponBlockSize = [ heroStateWidth, shHud(3) ]
@@ -40,11 +39,11 @@ let overrideItemIcon = {
 }
 
 
-let WEAPONS_LIST_ANIM_START_APPEAR = "weapons_list_anim_start_appear"
-let WEAPONS_LIST_ANIM_EXTEND = "weapons_list_anim_extend"
-let WEAPONS_LIST_ANIM_HIDE = "weapons_list_anim_hide"
-let changeOpacityAnimTime = 0.2
-let delayAnimTime = 3.0
+const WEAPONS_LIST_ANIM_START_APPEAR = "weapons_list_anim_start_appear"
+const WEAPONS_LIST_ANIM_EXTEND = "weapons_list_anim_extend"
+const WEAPONS_LIST_ANIM_HIDE = "weapons_list_anim_hide"
+const changeOpacityAnimTime = 0.2
+const delayAnimTime = 3.0
 let mkAnimations = [
   { prop=AnimProp.opacity, to=1, duration=changeOpacityAnimTime, playFadeOut = true,
     trigger = WEAPONS_LIST_ANIM_START_APPEAR, onStart = @() isWeaponsListVisible.set(true),
@@ -86,11 +85,12 @@ let weaponShortcut = {
   [5] = "{{ID_HUMAN_SPECIAL_1}}"
 }
 
-let getShortcutText = @(text, isEnabled) text != null ? hints( text, {
+let getShortcutText = @(text, isEnabled, fallback = null) text != null ? hints(text, {
   place = "actionItemInfantry"
   bgImageColor = isEnabled ? infantryShortcutCommonColor : infantryShortcutDisableColor
   shColor = isEnabled ? infantryShortcutCommonTextColor : infantryShortcutDisableTextColor
-}) : null
+  fallback
+}) : fallback
 
 let mkWeaponImage = @(iconTemplateWatch, isSelectedWatch) function() {
   if (iconTemplateWatch.get() == null)
@@ -151,31 +151,33 @@ function mkSlotRow(slotIdx, weaponImage, weapInfo, weaponStaticInfoWatch, isSele
   let ammoTotal = isMod ? Computed(@() weapInfo.get()?.modTotalAmmo ?? 0)
     : Computed(@() weapInfo.get()?.totalAmmo ?? 0)
   return {
-    size = flex()
+    size = FLEX
     children = [
       isSelected
       ? {
         rendObj = ROBJ_SOLID
-        size = [weaponBorderWidth, flex()]
+        size = [weaponBorderWidth, FLEX]
         pos = [-weaponBorderWidth, 0]
         color = white
       }
       : null
       {
-        size = flex()
+        size = FLEX
         padding = weaponBlockPadding
         flow = FLOW_HORIZONTAL
         valign = ALIGN_CENTER
         gap = weaponSlotGap
         children = [
           isMod
-            ? (getShortcutText("{{ID_HUMAN_WEAP_MOD_TOGGLE}}", isSelected)
-                || getShortcutText(weaponShortcut?[slotIdx], isSelected))
+            
+            
+            ? getShortcutText("{{ID_HUMAN_WEAP_MOD_TOGGLE}}", isSelected,
+                @() { children = getShortcutText(weaponShortcut?[slotIdx], isSelected) })
             : getShortcutText(weaponShortcut?[slotIdx], isSelected)
           {
-            size = flex()
+            size = FLEX
             children = {
-              size = [weaponImageSize[0] + weaponBlockPadding[3], flex()]
+              size = [weaponImageSize[0] + weaponBlockPadding[3], FLEX]
               valign = ALIGN_CENTER
               halign = ALIGN_CENTER
               children = weaponImage

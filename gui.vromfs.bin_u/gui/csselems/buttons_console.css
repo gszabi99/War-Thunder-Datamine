@@ -42,6 +42,8 @@
 @const goldButtonHoverColor:    #7e592e;
 @const goldButtonPushedColor:   #33292e;
 
+@const buttonImageHoverColor:   #181818;
+
 @const eSBattleBtnColor:         #bc1313;   @const eSBattleBtnColorHover:    #ff3b00;   @const eSBattleBtnColorPushed:   #910b0b;   @const eSBattleBtnColorDisabled: #efbc1313; 
 
 
@@ -805,6 +807,11 @@ Button_text[imgSize=small] > img {
   background-svg-size:@sIco, @sIco;
 }
 
+Button_text[imgSize=fit] > img {
+  size: pw, ph;
+  background-svg-size: pw, ph;
+}
+
 Button_text.image[imgSize=big]:hover {
   background-color: @buttonColorHover;
 }
@@ -847,6 +854,10 @@ Button_text.image[inactiveColor=yes] > img {
 Button_text[visualStyle=noFrame][isColoredImg=yes]:disabled > img,
 Button_text[visualStyle=noFrame][isColoredImg=yes][inactiveColor=yes] > img {
   background-color: @buttonFontColorPushed;
+}
+
+Button_text.battle[navButtonFont=yes][bigButtonSize=yes] {
+  size:1@bigButtonWidth, 1@buttonHeight;
 }
 
 Button_close {
@@ -1917,7 +1928,7 @@ fullSizeCollapseBtn > activeText{
   pos: 0, ph/2-h/2;
 }
 
-campaign_item > fullSizeCollapseBtn > activeText {
+mission_item[missionItemType=campaign] > fullSizeCollapseBtn > activeText {
   pos:@missionItemTextPaddingLeft, ph/2-h/2;
 }
 
@@ -2462,6 +2473,22 @@ Button_text[noPadding=yes] {
   padding:0;
 }
 
+Button_text[visualStyle=flatDark] {
+  background-color:@editboxColor;
+  border:no;
+  padding:2@buttonImgPadding;
+  padding-left:2@buttonImgPadding;
+  padding-right:2@buttonImgPadding;
+}
+
+Button_text[visualStyle=flatDark]:hover {
+  background-color:@buttonColorHover;
+}
+
+Button_text[visualStyle=flatDark]:pushed {
+  background-color:@buttonColorPushed;
+}
+
 Button_text.image[_isButtonWithText=yes] {
   padding-left:h + 1@buttonTextPadding;
   min-width:@buttonWidth;
@@ -2955,6 +2982,7 @@ Button_text.shortcut {
   display:show;
 }
 
+
 Button_text.shortcut:hover shortcutMask {
   background-color: @buttonColorHover;
 }
@@ -2965,12 +2993,12 @@ Button_text.shortcut:pushed shortcutMask {
 
 Button_text.shortcut:hover > img,
 Button_text.shortcut:hover > shortcutContent > img {
-  bgcolor:#181818;
+  bgcolor:@buttonImageHoverColor;
 }
 
 Button_text.shortcut:pushed > img,
 Button_text.shortcut:pushed > shortcutContent > img {
-  bgcolor:#908f8f;
+  bgcolor:@buttonFontColorPushed;
 }
 
 Button_text.shortcut hint > hintRow,
@@ -3004,3 +3032,41 @@ Button_text.shortcut hint > hintRow > combination > keyboardButton {
 Button_text.shortcut hint > hintRow > combination > textareaNoTab {
   margin:2@sf/@pf, 0;
 }
+
+secondGameModeBtn {
+  behavior:button;
+  background-color:@buttonColor;
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+  cursor:onButton;
+  snd_click:click;
+}
+
+secondGameModeBtn:hover {
+  background-color:@buttonColorHover;
+}
+
+secondGameModeBtn:pushed {
+  background-color:@buttonColorPushed;
+}
+
+secondGameModeBtn.usual {
+  height:38@sf/@pf;
+  width:38@sf/@pf;
+  padding:6@sf/@pf;
+}
+
+secondGameModeBtn.usual > img {
+  size:pw, pw;
+  background-size:pw, pw;
+  background-color:#FFCACCCE;
+}
+
+secondGameModeBtn.usual:hover > img{
+  background-color:@buttonImageHoverColor;
+}
+
+secondGameModeBtn.usual:pushed > img{
+  background-color:@buttonFontColorPushed;
+}
+

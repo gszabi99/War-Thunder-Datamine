@@ -20,7 +20,6 @@ require SmokeOccluder
 require DngHuman
 require HumanPhys
 require DagorMath
-require DagorDebug3D
 
 struct TargetData
   eid : EntityId
@@ -51,7 +50,7 @@ def categorize_moving(move_state : HUMoveState)
     return 3
   return 1
 
-def find_danger(var agent_dangers : AgentDangers; eid : EntityId)
+def find_danger(agent_dangers : AgentDangers; eid : EntityId)
   for i in iter_range(agent_dangers.dangers)
     if agent_dangers.dangers[i].eid == eid
       return i

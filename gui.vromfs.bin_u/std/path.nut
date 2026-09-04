@@ -1,4 +1,5 @@
 from "string" import split_by_chars, regexp
+from "types" import String, Array
 
 
 
@@ -17,7 +18,7 @@ from "string" import split_by_chars, regexp
 
 
 
-function normalize(path) {
+function normalize(path): string {
   let pathSegments = split_by_chars(path, "\\/")
   local isAbsolutePath = false
 
@@ -58,7 +59,7 @@ function normalize(path) {
 
 
 
-function isNormalized(path) {
+function isNormalized(path): bool {
   return path == normalize(path)
 }
 
@@ -66,7 +67,7 @@ function isNormalized(path) {
 
 
 
-function getLastSeparatorIndex(path) {
+function getLastSeparatorIndex(path): int {
   for (local j = path.len() - 1; j >= 0; j--)
     if (path[j] == '/')
       return j
@@ -133,8 +134,8 @@ function fileName(path) {
 
 
 function _join(basePath, other) {
-  assert(type(basePath) == "string")
-  assert(type(other) == "string")
+  assert(basePath instanceof String)
+  assert(other instanceof String)
   if (basePath == "")
     return other
   else if (other == "" || other == "/")
@@ -157,14 +158,16 @@ function _join(basePath, other) {
 
 
 
-function joinArray(pathArray) {
+function joinArray(pathArray): string {
+  if (pathArray.len() > 1 && pathArray[0] == "/")
+    return $"/{"/".join(pathArray.slice(1), true)}"
   return "/".join(pathArray)
 }
 
 function join(...) {
   local path = ""
   foreach (pathSegment in vargv) {
-    if (type(pathSegment) == "array") {
+    if (pathSegment instanceof Array) {
       path = _join(path,joinArray(pathSegment))
     }
     else {
@@ -184,10 +187,10 @@ function join(...) {
 
 
 
-function splitToArray(path) {
+function splitToArray(path): array {
   if (path == "")
     return []
-  assert(type(path)=="string", @() $"path type is not string ({type(path)})")
+  assert(path instanceof String, @() $"path type is not string ({type(path)})")
   let segments = split_by_chars(path, "/")
   if (path[0] == '/')
     segments.insert(0, "/")

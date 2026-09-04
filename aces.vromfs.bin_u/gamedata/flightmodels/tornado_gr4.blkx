@@ -2,7 +2,7 @@
   "model": "tornado_gr4",
   "fmFile": "/fm/tornado_gr4.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.1,
   "gearSinkRangeC": 0.212,
   "jetEnginePowerFullScale": true,
@@ -23,7 +23,7 @@
   "laserDesignator": true,
   "ilsTornado": true,
   "rwrIndicator": "ARI-18241",
-  "hmdTornado": true,
+  "hmdStrikerHmd": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -4019,7 +4019,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb1_ld",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4039,7 +4040,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_1",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -4055,7 +4057,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_1",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4075,7 +4078,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_1",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -4091,7 +4095,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_1",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4407,23 +4412,6 @@
           },
           {
             "iconType": "bombs_large",
-            "name": "1000lbs_slot5",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb3",
-              "bullets": 1,
-              "order": 7
-            }
-          },
-          {
-            "iconType": "bombs_large",
             "name": "1000lbs_default_slot5",
             "ShowNodes": {
               "node": "pylon_bomb3"
@@ -4535,7 +4523,8 @@
               "separate": true,
               "emitter": "bomb_pgm_2000_2",
               "bullets": 1,
-              "order": 7
+              "order": 7,
+              "machLimit": 1.01
             },
             "BannedWeaponPreset": [
               {
@@ -4565,10 +4554,6 @@
               {
                 "slot": 6,
                 "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_slot6"
               },
               {
                 "slot": 6,
@@ -4656,10 +4641,6 @@
               {
                 "slot": 6,
                 "preset": "1000lbs_mk83_x2_slot6"
-              },
-              {
-                "slot": 6,
-                "preset": "1000lbs_slot6"
               },
               {
                 "slot": 6,
@@ -4766,23 +4747,6 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
               "emitter": "pylon_tsc_5"
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "1000lbs_slot6",
-            "ShowNodes": {
-              "node": "pylon_bomb3"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb5",
-              "bullets": 1,
-              "order": 9
             }
           },
           {
@@ -4898,7 +4862,8 @@
               "separate": true,
               "emitter": "bomb5_ld",
               "bullets": 1,
-              "order": 9
+              "order": 9,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -4967,7 +4932,8 @@
                 0.03,
                 0.0
               ],
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "BannedWeaponPreset": [
               {
@@ -5014,7 +4980,8 @@
                 0.03,
                 0.0
               ],
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -5698,7 +5665,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb7_ld",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -5949,23 +5917,6 @@
           },
           {
             "iconType": "bombs_large",
-            "name": "1000lbs_slot8",
-            "ShowNodes": {
-              "node": "pylon_bomb5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb6",
-              "bullets": 1,
-              "order": 10
-            }
-          },
-          {
-            "iconType": "bombs_large",
             "name": "1000lbs_default_slot8",
             "ShowNodes": {
               "node": "pylon_bomb5"
@@ -6076,17 +6027,14 @@
               "external": true,
               "separate": true,
               "emitter": "bomb6_ld",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
               "preset": "litening_slot5"
             },
             "BannedWeaponPreset": [
-              {
-                "slot": 9,
-                "preset": "1000lbs_slot9"
-              },
               {
                 "slot": 9,
                 "preset": "1000lbs_default_slot9"
@@ -6270,10 +6218,6 @@
               },
               {
                 "slot": 9,
-                "preset": "1000lbs_slot9"
-              },
-              {
-                "slot": 9,
                 "preset": "1000lbs_default_slot9"
               },
               {
@@ -6373,23 +6317,6 @@
               "separate": true,
               "blk": "gameData/Weapons/containers/uk_tsc_500_mk82_snakeye_x2.blk",
               "emitter": "pylon_tsc_4"
-            }
-          },
-          {
-            "iconType": "bombs_large",
-            "name": "1000lbs_slot9",
-            "ShowNodes": {
-              "node": "pylon_bomb5"
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
-              "emitter": "bomb4",
-              "bullets": 1,
-              "order": 8
             }
           },
           {
@@ -6554,7 +6481,8 @@
                 0.0
               ],
               "bullets": 1,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.01
             },
             "BannedWeaponPreset": [
               {
@@ -6590,7 +6518,8 @@
                 0.0
               ],
               "bullets": 1,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -6625,7 +6554,8 @@
               "separate": true,
               "emitter": "bomb_pgm_2000_3",
               "bullets": 1,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.01
             },
             "BannedWeaponPreset": [
               {
@@ -6639,10 +6569,6 @@
               {
                 "slot": 8,
                 "preset": "1000lbs_mk83_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_slot8"
               },
               {
                 "slot": 8,
@@ -6704,7 +6630,8 @@
               "separate": true,
               "emitter": "bomb_pgm_2000_3",
               "bullets": 1,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -6722,10 +6649,6 @@
               {
                 "slot": 8,
                 "preset": "1000lbs_mk83_x2_slot8"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_slot8"
               },
               {
                 "slot": 8,
@@ -6797,10 +6720,6 @@
             "BannedWeaponPreset": [
               {
                 "slot": 8,
-                "preset": "1000lbs_slot8"
-              },
-              {
-                "slot": 8,
                 "preset": "1000lbs_default_slot8"
               },
               {
@@ -6858,7 +6777,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb4_ld",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -7298,7 +7218,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb2_ld",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -7318,7 +7239,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_4",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -7334,7 +7256,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_500_4",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -7354,7 +7277,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_4",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             }
           },
           {
@@ -7370,7 +7294,8 @@
               "external": true,
               "separate": true,
               "emitter": "bomb_pgm_2000_4",
-              "bullets": 1
+              "bullets": 1,
+              "machLimit": 1.01
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -8226,8 +8151,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

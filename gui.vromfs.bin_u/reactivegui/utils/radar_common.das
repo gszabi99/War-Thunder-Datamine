@@ -9,9 +9,7 @@ require FlightModelWrap
 require HeroManager
 require math
 require strings
-require DagorMath
 require darg
-require DagorSystem
 require hud
 require Localization
 
@@ -101,7 +99,7 @@ class Radar
 
   def static foreach_visible_target(blk : block<(target : RadarTarget const const#) : void>)
     Radar`foreach_targets() <| $(var target)
-      if target.isVisible
+      if target.isVisible && target.targetType == int(RadarTargetType.TYPE_TARGET)
         invoke(blk, target)
 
   def static foreach_own_weapon_with_target(own_weapon_index : int; own_weapon_target_index : int; blk : block<(ownWeapon : RadarTarget const const#; ownWeaponTarget : RadarTarget const const#) : void>)

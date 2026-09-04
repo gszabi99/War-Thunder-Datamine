@@ -1,0 +1,1331 @@
+{
+  "type": "radar",
+  "name": "FK-2000 TA",
+  "launchedMissilesPredictedPositionsMax": 8,
+  "transivers": {
+    "search": {
+      "power": 1500.0,
+      "band": 6,
+      "rcs": 2.0,
+      "range": 45000.0,
+      "rangeMax": 70000.0,
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 1.5,
+          "sideLobesSensitivity": -30.0
+        },
+        "elevation": {
+          "angleHalfSens": 25.0,
+          "sideLobesSensitivity": -30.0
+        }
+      }
+    }
+  },
+  "scanPatterns": {
+    "searchNarrow": {
+      "type": "cylinder",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
+      "elevationLimits": [
+        -5.0,
+        49.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 5.0,
+      "rollStabLimit": 5.0,
+      "period": 1.0,
+      "barHeight": 25.0,
+      "barsCount": 1,
+      "rowMajor": true,
+      "centerElevation": 12.5,
+      "preciseMinor": true
+    },
+    "searchMedium": {
+      "type": "cylinder",
+      "azimuthLimits": [
+        -180.0,
+        180.0
+      ],
+      "elevationLimits": [
+        -5.0,
+        49.0
+      ],
+      "yawStabLimit": 180.0,
+      "pitchStabLimit": 5.0,
+      "rollStabLimit": 5.0,
+      "period": 2.0,
+      "barHeight": 25.0,
+      "barsCount": 2,
+      "rowMajor": true,
+      "centerElevation": 24.0,
+      "preciseMinor": true
+    }
+  },
+  "scanPatternSets": {
+    "search": {
+      "scanPattern1": "searchMedium",
+      "scanPattern2": "searchNarrow"
+    }
+  },
+  "signals": {
+    "search": {
+      "groundClutter": false,
+      "friendFoeId": true,
+      "absDopplerSpeed": true,
+      "targetId": true,
+      "distance": {
+        "presents": true,
+        "minValue": 500.0,
+        "maxValue": 70000.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 30.0,
+        "maxValue": 1200.0,
+        "signalWidthMin": 5.0,
+        "width": 0.0
+      }
+    }
+  },
+  "scopeRangeSets": {
+    "search": {
+      "range1": 15000.0,
+      "range2": 30000.0,
+      "range3": 70000.0
+    }
+  },
+  "fsms": {
+    "main": {
+      "stateInit": "init",
+      "actionsTemplates": {
+        "init": {
+          "setEnabled": {
+            "value": false
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": [
+            {
+              "source": "constant",
+              "value": 0.0
+            },
+            {
+              "source": "constant",
+              "value": -4.0
+            }
+          ],
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setScopeRangeSet": {
+            "scopeRangeSet": "search"
+          },
+          "setTransiver": {
+            "transiver": "search"
+          },
+          "setSignal": {
+            "signal": "search"
+          },
+          "setTargetDesignationRange": {
+            "azimuthRange": [
+              -20.0,
+              20.0
+            ],
+            "azimuthWidth": 1.2,
+            "elevationRange": [
+              -5.0,
+              49.0
+            ],
+            "elevationWidth": 2.0,
+            "distanceRange": [
+              0.0,
+              35000.0
+            ],
+            "distanceRelWidthMin": 0.05
+          }
+        },
+        "setStandbyMode": {
+          "setModeName": {
+            "name": "standby"
+          },
+          "setEnabled": {
+            "value": false
+          }
+        },
+        "resetStandbyMode": {},
+        "setSearchMode": {
+          "setModeName": {
+            "name": "search"
+          },
+          "setEnabled": {
+            "value": true
+          },
+          "setFsmActive": {
+            "fsm": "search",
+            "active": true
+          },
+          "setCueEnabled": {
+            "value": true
+          },
+          "setScanDirectionPhase": {
+            "azimuth": 0.0,
+            "elevation": 0.0
+          }
+        },
+        "resetSearchMode": {
+          "clearTargets": {},
+          "setFsmActive": {
+            "fsm": "search",
+            "active": false
+          },
+          "setCueEnabled": {
+            "value": false
+          }
+        }
+      },
+      "transitions": {
+        "init": {
+          "stateFrom": "init",
+          "event": "init",
+          "stateTo": "standby",
+          "actions": {
+            "init": {},
+            "setStandbyMode": {}
+          }
+        },
+        "switchOn": {
+          "stateFrom": "standby",
+          "command": "switch",
+          "event": "enable",
+          "stateTo": "search",
+          "actions": {
+            "setSearchMode": {}
+          }
+        },
+        "switchScanPattern": {
+          "stateFrom": [
+            "standby",
+            "search"
+          ],
+          "command": "scanPatternSwitch",
+          "actions": {
+            "setNextScanPattern": {}
+          }
+        },
+        "switchScopeRange": {
+          "command": "rangeSwitch",
+          "actions": {
+            "setNextScopeRange": {}
+          }
+        },
+        "resumeSearch": {
+          "stateFrom": "antennaParking",
+          "command": "switch",
+          "stateTo": "search",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            },
+            "setSearchMode": {}
+          }
+        },
+        "switchingOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "antennaParking",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": true
+            }
+          }
+        },
+        "switchOff": {
+          "stateFrom": "antennaParking",
+          "event": "inScanDirectionPhase",
+          "stateTo": "standby",
+          "actions": {
+            "setFsmActive": {
+              "fsm": "parkAntenna",
+              "active": false
+            },
+            "setScanDirectionPhase": {
+              "azimuth": 0.0,
+              "elevation": 0.0
+            },
+            "resetSearchMode": {},
+            "setStandbyMode": {}
+          }
+        }
+      }
+    },
+    "search": {
+      "stateInit": "search",
+      "transitions": {
+        "scan": {
+          "stateFrom": "search",
+          "event": "update",
+          "actions": {
+            "scan": {}
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "setDistGatePos": {
+              "source": "continuousScale",
+              "width": 0.0,
+              "widthRange": 200000.0
+            },
+            "setRelSpeedGatePos": {
+              "source": "continuousScale",
+              "width": 0.0,
+              "widthRange": 1000.0
+            },
+            "detectTarget": {}
+          }
+        },
+        "addTarget": {
+          "event": "targetDetected",
+          "actions": {
+            "addTarget": {},
+            "updateActiveDetectedTarget": {}
+          }
+        },
+        "switchSelectedTarget": {
+          "command": "switchTarget",
+          "actions": {
+            "setNextDetectedTargetActive": {}
+          }
+        },
+        "setCueAzimuth": {
+          "command": "cueAxisX",
+          "actions": {
+            "setCueAzimuth": {}
+          }
+        },
+        "setCueDist": {
+          "command": "cueAxisY",
+          "actions": {
+            "setCueDist": {}
+          }
+        },
+        "setCueElevation": {
+          "command": "cueAxisZ",
+          "actions": {
+            "setCueElevation": {}
+          }
+        },
+        "setSelectedTarget": {
+          "command": "switchToTarget",
+          "actions": {
+            "setDetectedTargetActive": {}
+          }
+        },
+        "designateTarget": {
+          "stateFrom": "search",
+          "command": "selectTarget",
+          "stateTo": "designateActiveDetectedTarget",
+          "actions": {
+            "designateActiveDetectedTarget": {
+              "type": "target",
+              "sensorIndex": 1
+            }
+          }
+        },
+        "designateActiveDetectedTarget": {
+          "stateFrom": "designateActiveDetectedTarget",
+          "command": "designateTarget",
+          "stateTo": "search"
+        },
+        "designateTargetUnderCue": {
+          "stateFrom": "designateActiveDetectedTarget",
+          "event": "update",
+          "stateTo": "search",
+          "actions": {
+            "designateTargetUnderCue": {
+              "type": "cue",
+              "sensorIndex": 1
+            }
+          }
+        }
+      }
+    },
+    "parkAntenna": {
+      "stateInit": "init",
+      "transitions": {
+        "checkAntennaParked": {
+          "event": "update",
+          "actions": {
+            "checkInScanDirectionPhase": {
+              "azimuth": 0.0,
+              "elevation": 0.0
+            }
+          }
+        }
+      }
+    }
+  },
+  "hideInAvailableModeNameIds": {
+    "mode": "standby"
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/mig_15",
+      "targetType": [
+        "mig-15",
+        "mig-15_ns23",
+        "mig-15bis_ns23",
+        "mig-15bis_nr23_german",
+        "mig-15bis_nr23_hungary",
+        "mig-15bis_nr23_china",
+        "mig-15bis_ish",
+        "mig-17",
+        "mig-17_china",
+        "mig-17_cuba",
+        "mig-17_f5",
+        "mig-17p_lim_5p",
+        "mig-17pf_hungary"
+      ]
+    },
+    {
+      "name": "hud/l_39",
+      "targetType": [
+        "l_39za",
+        "l_39za_art_thailand"
+      ]
+    },
+    {
+      "name": "hud/yak_28",
+      "targetType": "yak-28b"
+    },
+    {
+      "name": "hud/yak_30",
+      "targetType": "yak-30d"
+    },
+    {
+      "name": "hud/yak_38",
+      "targetType": [
+        "yak-38",
+        "yak-38m"
+      ]
+    },
+    {
+      "name": "hud/yak_130",
+      "targetType": [
+        "yak_130_early",
+        "m_346fa"
+      ]
+    },
+    {
+      "name": "hud/yak_141",
+      "targetType": "yak_141"
+    },
+    {
+      "name": "hud/su_7",
+      "targetType": [
+        "su-7b",
+        "su-7bkl",
+        "su-7bmk",
+        "su-7bkl_killstreak",
+        "su-7bkl_china_killstreak"
+      ]
+    },
+    {
+      "name": "hud/su_17",
+      "targetType": [
+        "su_17m2",
+        "su_17m4",
+        "su_22m3",
+        "su_22m3_hungary",
+        "su_22um3k",
+        "su_22m4",
+        "su_22m4_de_wtd61",
+        "su_17m4_killstreak",
+        "su_17m4_china_killstreak"
+      ]
+    },
+    {
+      "name": "hud/su_24",
+      "targetType": [
+        "su_24m",
+        "nt_su_24m",
+        "su_24m_killstreak",
+        "su_24m_china_killstreak"
+      ]
+    },
+    {
+      "name": "hud/su_25",
+      "targetType": [
+        "su_25",
+        "su_25k",
+        "su_25t",
+        "su_25tm",
+        "su_25_558arz",
+        "su_25sm3",
+        "nt_su_25t"
+      ]
+    },
+    {
+      "name": "hud/su_27",
+      "targetType": [
+        "su_27",
+        "su_27sm",
+        "su_33",
+        "su_34",
+        "su_30sm",
+        "su_30mk2v_venezuela",
+        "j_11",
+        "j_11a",
+        "j_11b",
+        "su_30sm2",
+        "su_30mkm",
+        "su_30mkk",
+        "j_15t",
+        "j_16"
+      ]
+    },
+    {
+      "name": "hud/mig_19",
+      "targetType": [
+        "mig-19j_6a",
+        "mig-19pt",
+        "mig-19s",
+        "f_6c_pakistan"
+      ]
+    },
+    {
+      "name": "hud/mig_21",
+      "targetType": [
+        "mig-21_bis_lazur",
+        "mig-21_bison",
+        "mig-21_f13",
+        "mig-21_smt",
+        "mig-21_bis",
+        "mig-21_bis_sau",
+        "mig-21_bis_sau_hungary",
+        "mig-21_mf",
+        "mig-21_mf_hungary",
+        "mig-21_sps_k",
+        "mig-21_pfm",
+        "mig-21_s",
+        "mig_21_bis_finland",
+        "j_7_mk2",
+        "j_7d",
+        "j_7e",
+        "mig_21_2000_iaf",
+        "mig-21_bis_event"
+      ]
+    },
+    {
+      "name": "hud/mig_23",
+      "targetType": [
+        "mig_23m",
+        "mig_23bn",
+        "mig_23mf_germany",
+        "mig_23mf_hungary",
+        "mig_23ml",
+        "mig_23mld",
+        "mig_23mla",
+        "mig_27m",
+        "mig_27k",
+        "nt_mig_23mld"
+      ]
+    },
+    {
+      "name": "hud/mig_25",
+      "targetType": "mig_25pd"
+    },
+    {
+      "name": "hud/mig_29",
+      "targetType": [
+        "mig_29_9_13",
+        "mig_29_9_12g",
+        "mig_29_9_12_germany",
+        "mig_29_9_12b_hungary",
+        "mig_29smt_9_19",
+        "mig_29smt_9_19_missile_test",
+        "mig_29_9_12_sniper",
+        "mig_29n",
+        "mig_29_9_12",
+        "mig_29m_9_15",
+        "mig_29kr_9_41r",
+        "mig_29smt_9_19_killstreak",
+        "mig_35"
+      ]
+    },
+    {
+      "name": "hud/tu_95",
+      "targetType": [
+        "tu_95m",
+        "nt_tu_95m"
+      ]
+    },
+    {
+      "name": "hud/orion",
+      "targetType": [
+        "ucav_orion",
+        "ucav_orion_killstreak"
+      ]
+    },
+    {
+      "name": "hud/p_16",
+      "targetType": "ffa_p16"
+    },
+    {
+      "name": "hud/f3h_2",
+      "targetType": "f3h-2"
+    },
+    {
+      "name": "hud/a_4",
+      "targetType": [
+        "a_4b",
+        "a_4e_early",
+        "a_4e_early_iaf",
+        "a_4e_late_iaf",
+        "a_4h",
+        "a_4n",
+        "a_4ptm_malaysia"
+      ]
+    },
+    {
+      "name": "hud/f4d_1",
+      "targetType": "f4d_1"
+    },
+    {
+      "name": "hud/f_4",
+      "targetType": [
+        "f-4c",
+        "f-4e",
+        "f-4j",
+        "f-4s",
+        "f-4ej",
+        "f-4ej_adtw",
+        "f-4ej_kai",
+        "f-4m_fgr2",
+        "f-4jk",
+        "f-4k",
+        "f-4f",
+        "f-4f_late",
+        "f-4f_kws_lv",
+        "f-4e_iaf",
+        "f-4e_kurnass_2000",
+        "nt_f_4e",
+        "f_4e_event",
+        "f_4e_aup_greece"
+      ]
+    },
+    {
+      "name": "hud/f_5",
+      "targetType": [
+        "f-5a",
+        "f-5a_china",
+        "f-5ag_norway",
+        "f-5e_aidc",
+        "f-5e_fcu_thailand",
+        "f-5a_thailand",
+        "f-5t_thailand",
+        "f-5c",
+        "f-5e",
+        "f-5e_switzerland",
+        "nf_5a_netherlands",
+        "f-5th_thailand"
+      ]
+    },
+    {
+      "name": "hud/b_52",
+      "targetType": [
+        "b_52h",
+        "nt_b_52h"
+      ]
+    },
+    {
+      "name": "hud/a_6",
+      "targetType": [
+        "a_6e_tram",
+        "nt_a_6e_tram"
+      ]
+    },
+    {
+      "name": "hud/b_66",
+      "targetType": "b_66b"
+    },
+    {
+      "name": "hud/a_7",
+      "targetType": [
+        "a_7d",
+        "a_7e",
+        "a_7e_thailand",
+        "a_7k",
+        "nt_a_7e",
+        "a_7e_greece",
+        "a_7h_greece"
+      ]
+    },
+    {
+      "name": "hud/f_8",
+      "targetType": [
+        "f-8e",
+        "f-8e_fn",
+        "f8u-2"
+      ]
+    },
+    {
+      "name": "hud/a_10",
+      "targetType": [
+        "a_10a_early",
+        "a_10a_late",
+        "a_10c",
+        "nt_a_10a_early"
+      ]
+    },
+    {
+      "name": "hud/f_11",
+      "targetType": "f11f_1_late"
+    },
+    {
+      "name": "hud/f_84",
+      "targetType": [
+        "f-84b",
+        "f-84f",
+        "f-84f_france",
+        "f-84f_germany",
+        "f-84f_iaf",
+        "f-84f_israel_iaf",
+        "f-84f_italy",
+        "f-84g",
+        "f-84g_china",
+        "f-84g_france",
+        "f-84g_italy",
+        "f-84g_thailand",
+        "f-84g-31-re_china"
+      ]
+    },
+    {
+      "name": "hud/f_86",
+      "targetType": [
+        "f-86_canadair_german",
+        "f-86_cl_13_mk4_italy",
+        "f-86_cl_13b_mk6",
+        "f-86a-5",
+        "f-86f-2",
+        "f-86f-25",
+        "f-86f-30_china",
+        "f-86f-30_japan",
+        "f-86f-35",
+        "f-86f-40_china",
+        "f-86f-40_japan",
+        "f-86f-40_japan_blue_impulse",
+        "f-86k_late",
+        "f-86k_late_german",
+        "f-86k_late_italy",
+        "fj_4b",
+        "fj_4b_agm_12b",
+        "ca_27_mk32_malaysia",
+        "ca_27_mk32_raaf",
+        "f_86em_greece"
+      ]
+    },
+    {
+      "name": "hud/f_89",
+      "targetType": [
+        "f-89b",
+        "f-89c_30mm",
+        "f-89c_rocket",
+        "f-89d"
+      ]
+    },
+    {
+      "name": "hud/f_100",
+      "targetType": [
+        "f-100a_china",
+        "f-100d",
+        "f-100d_france",
+        "f_100f_china"
+      ]
+    },
+    {
+      "name": "hud/f_101",
+      "targetType": "f_101c"
+    },
+    {
+      "name": "hud/f_104",
+      "targetType": [
+        "f-104a",
+        "f-104c",
+        "f-104g",
+        "f-104a_china",
+        "f-104g_china",
+        "f-104g_italy",
+        "f-104j",
+        "f-104s",
+        "f-104s_cb",
+        "f-104s_asa",
+        "f-104g_belgium"
+      ]
+    },
+    {
+      "name": "hud/f_105",
+      "targetType": [
+        "f-105d",
+        "f_105d_killstreak",
+        "f_105d_japan_killstreak"
+      ]
+    },
+    {
+      "name": "hud/f_106",
+      "targetType": [
+        "f_106a_1972",
+        "f_102a_late",
+        "f_102a_greece"
+      ]
+    },
+    {
+      "name": "hud/f_111",
+      "targetType": [
+        "f_111a",
+        "f_111f",
+        "f_111c_raaf",
+        "f_111f_killstreak",
+        "f_111f_iaf_killstreak",
+        "f_111f_japan_killstreak"
+      ]
+    },
+    {
+      "name": "hud/f_117",
+      "targetType": "f_117"
+    },
+    {
+      "name": "hud/f_14",
+      "targetType": [
+        "f_14a_early",
+        "f_14a_iriaf",
+        "f_14b",
+        "f_14d",
+        "f_14d_vf_11"
+      ]
+    },
+    {
+      "name": "hud/f_15",
+      "targetType": [
+        "f_15a",
+        "f_15a_iaf",
+        "f_15j",
+        "f_15j_kai",
+        "f_15c_msip2",
+        "f_15c_baz_msip",
+        "f_15c_golden_eagle",
+        "f_15e",
+        "f_15i_raam"
+      ]
+    },
+    {
+      "name": "hud/f_16",
+      "targetType": [
+        "f_16a_block_10",
+        "f_16a_block_15_adf",
+        "f_16a_block_15_adf_italy",
+        "f_16a_block_15_ocu_thailand",
+        "f_16a_block_10_iaf",
+        "f_16a_block_10_netz_mod",
+        "f_16a_block_15_belgium",
+        "f_16am_block_15_mlu_belgium",
+        "f_16am_block_20_mlu_norway",
+        "f_16c_block_40_barak_2",
+        "f_16d_block_40_barak_2",
+        "f_16d_block_40_barak_2_missile_test",
+        "f_16a_block_20_mlu",
+        "f_16aj",
+        "f_16c_block_50",
+        "f_16c_block_50_missile_test",
+        "f_2a",
+        "f_2a_adtw",
+        "f_16i_sufa",
+        "f_16a_block_15_ocu_belgium",
+        "f_16a_block_5_netherlands",
+        "f_16a_block_10_norway",
+        "f_16c_block_52_aesa",
+        "f_16a_block_72v_china",
+        "f_16am_block_20_mlu_netherlands",
+        "f_16a_block_15_adf_italy_killstreak",
+        "f_16a_block_15_adf_killstreak",
+        "f_16a_block_20_mlu_killstreak",
+        "f_16d_block_40_barak_2_killstreak",
+        "f_16a_block_15_adf_germany_killstreak",
+        "f_16a_block_15_adf_britain_killstreak",
+        "f_16a_block_15_adf_france_killstreak",
+        "f_16a_block_15_adf_sweden_killstreak",
+        "f_2a_killstreak",
+        "f_16xl"
+      ]
+    },
+    {
+      "name": "hud/f_18",
+      "targetType": [
+        "fa_18a",
+        "fa_18c_early",
+        "fa_18c_late",
+        "fa_18c_finland",
+        "fa_18c_switzerland",
+        "fa_18c_late_switzerland",
+        "fa_18c_mlu_2_finland",
+        "fa_18a_raaf",
+        "fa_18a_hug_2_raaf",
+        "cf_188a_canada",
+        "fa_18e_block_2",
+        "fa_18d_late_malaysia",
+        "fa_18f_block_2_raaf"
+      ]
+    },
+    {
+      "name": "hud/f_20",
+      "targetType": "f_20a"
+    },
+    {
+      "name": "hud/mq_1",
+      "targetType": [
+        "ucav_mq_1_predator",
+        "ucav_mq_1_predator_usa_killstreak",
+        "ucav_mq_1_predator_uk_killstreak",
+        "ucav_mq_1_predator_sweden_killstreak",
+        "ucav_mq_1_predator_france_killstreak",
+        "ucav_mq_1_predator_japan_killstreak",
+        "ucav_mq_1_predator_germany_killstreak",
+        "ucav_mq_1_predator_iaf_killstreak",
+        "ucav_mq_1_predator_italy_killstreak"
+      ]
+    },
+    {
+      "name": "hud/hunter",
+      "targetType": [
+        "hunter_f1",
+        "hunter_f6",
+        "hunter_f6_holland",
+        "hunter_f9",
+        "hunter_f9_rhodesia",
+        "hunter_f50_sweden",
+        "hunter_f58_switzerland",
+        "hunter_f58a_1971_switzerland"
+      ]
+    },
+    {
+      "name": "hud/harrier",
+      "targetType": [
+        "harrier_gr1",
+        "harrier_gr3",
+        "harrier_frs1_early",
+        "harrier_frs1",
+        "harrier_gr7",
+        "harrier_t10",
+        "sea_harrier_fa2",
+        "av_8a",
+        "av_8b_na",
+        "av_8b_plus",
+        "av_8b_plus_italy",
+        "av_8c",
+        "av_8s_thailand",
+        "av_8s_late_thailand"
+      ]
+    },
+    {
+      "name": "hud/lightning",
+      "targetType": [
+        "lightning_f6",
+        "lightning_f53"
+      ]
+    },
+    {
+      "name": "hud/javelin",
+      "targetType": "javelin_fmk9"
+    },
+    {
+      "name": "hud/scimitar",
+      "targetType": "scimitar_f1"
+    },
+    {
+      "name": "hud/hawk",
+      "targetType": [
+        "hawk_200",
+        "hawk_200_rda",
+        "hawk_209_indonesia"
+      ]
+    },
+    {
+      "name": "hud/jaguar",
+      "targetType": [
+        "jaguar_is",
+        "jaguar_gr1a",
+        "jaguar_gr1",
+        "jaguar_e",
+        "jaguar_a",
+        "jaguar_a_killstreak",
+        "jaguar_a_germany_killstreak",
+        "jaguar_a_italy_killstreak",
+        "jaguar_a_japan_killstreak",
+        "jaguar_a_sweden_killstreak",
+        "jaguar_a_uk_killstreak",
+        "jaguar_a_usa_killstreak",
+        "jaguar_a_iaf_killstreak"
+      ]
+    },
+    {
+      "name": "hud/tornado",
+      "targetType": [
+        "tornado_gr1",
+        "tornado_gr4",
+        "tornado_f3",
+        "tornado_f3_late",
+        "tornado_ids_de_mfg",
+        "tornado_ids_de_assta1",
+        "tornado_ids_de_assta3_sle",
+        "tornado_ids_de_wtd61",
+        "tornado_ids_it",
+        "tornado_ids_it_mod95",
+        "tornado_ids_it_ret8",
+        "tornado_adv",
+        "tornado_ids_de_assta1_killstreak",
+        "tornado_ids_de_assta1_sweden_killstreak",
+        "tornado_ids_de_assta1_britain_killstreak",
+        "tornado_ids_de_assta1_italy_killstreak",
+        "tornado_ids_de_assta1_france_killstreak",
+        "tornado_ids_it_mod95_killstreak"
+      ]
+    },
+    {
+      "name": "hud/buccanier",
+      "targetType": [
+        "buccaneer_s1",
+        "buccaneer_s2",
+        "buccaneer_s2b"
+      ]
+    },
+    {
+      "name": "hud/typhoon",
+      "targetType": [
+        "ef_2000_fgr4",
+        "ef_2000a",
+        "ef_2000_block_10",
+        "ef_2000_aesa",
+        "ef_2000_typhoon_aesa",
+        "ef_2000a_aesa"
+      ]
+    },
+    {
+      "name": "hud/q_5",
+      "targetType": [
+        "q_5_early",
+        "q_5a",
+        "q_5l",
+        "a_5c"
+      ]
+    },
+    {
+      "name": "hud/jh_7",
+      "targetType": [
+        "jh_7",
+        "jh_7a",
+        "jh_7a_killstreak",
+        "jh_7a_prototype",
+        "jh_7a2"
+      ]
+    },
+    {
+      "name": "hud/j_8",
+      "targetType": [
+        "j_8b",
+        "j_8f",
+        "j_8f_missile_test"
+      ]
+    },
+    {
+      "name": "hud/j_10",
+      "targetType": [
+        "j_10a",
+        "j_10a_killstreak",
+        "j_10c"
+      ]
+    },
+    {
+      "name": "hud/jf_17",
+      "targetType": "jf_17"
+    },
+    {
+      "name": "hud/wing_loong",
+      "targetType": [
+        "ucav_wing_loong_i",
+        "ucav_wing_loong_i_killstreak"
+      ]
+    },
+    {
+      "name": "hud/f_1",
+      "targetType": [
+        "f1",
+        "t2_early",
+        "t2"
+      ]
+    },
+    {
+      "name": "hud/sagittario",
+      "targetType": [
+        "ariete",
+        "sagittario_2"
+      ]
+    },
+    {
+      "name": "hud/iar_93",
+      "targetType": [
+        "iar_93b",
+        "j_22m1a"
+      ]
+    },
+    {
+      "name": "hud/amx",
+      "targetType": [
+        "amx_a_1a_brazil",
+        "amx"
+      ]
+    },
+    {
+      "name": "hud/g_91",
+      "targetType": [
+        "fiat_g91_ps",
+        "fiat_g91_r1",
+        "fiat_g91_r3",
+        "fiat_g91_r4",
+        "fiat_g91_r4_german",
+        "fiat_g91_y",
+        "fiat_g91_ys"
+      ]
+    },
+    {
+      "name": "hud/vautour",
+      "targetType": [
+        "so_4050_vautour_2a",
+        "so_4050_vautour_2n",
+        "so_4050_vautour_2a_israel_iaf",
+        "so_4050_vautour_2n_iaf",
+        "so_4050_vautour_2a_iaf",
+        "so_4050_vautour_2b"
+      ]
+    },
+    {
+      "name": "hud/mystere",
+      "targetType": [
+        "md_454_mystere_4a",
+        "md_454_mystere_4a_iaf"
+      ]
+    },
+    {
+      "name": "hud/super_mystere",
+      "targetType": [
+        "md_460",
+        "md_460_yt_cup_2019",
+        "md_460_usa",
+        "md_460_sambad",
+        "md_460_saar"
+      ]
+    },
+    {
+      "name": "hud/etendard",
+      "targetType": [
+        "etndard_4m",
+        "super_etendard_97"
+      ]
+    },
+    {
+      "name": "hud/mirage_f1",
+      "targetType": [
+        "mirage_f1c_200",
+        "mirage_f1c",
+        "mirage_f1ct",
+        "mirage_f1cg_greece"
+      ]
+    },
+    {
+      "name": "hud/mirage_3",
+      "targetType": [
+        "mirage_3c",
+        "mirage_3cj",
+        "mirage_3e",
+        "mirage_milan",
+        "mirage_5f",
+        "mirage_5ba",
+        "kfir_canard",
+        "kfir_c2",
+        "kfir_c7",
+        "kfir_c10_colombia",
+        "mirage_3s_c70_switzerland",
+        "nesher"
+      ]
+    },
+    {
+      "name": "hud/mirage_2000",
+      "targetType": [
+        "mirage_2000_5f",
+        "mirage_2000_5f_missile_test",
+        "mirage_2000_5ei",
+        "mirage_2000c_s4",
+        "mirage_2000c_s5",
+        "mirage_2000d_r1",
+        "mirage_2000d_rmv",
+        "mirage_2000_5eg_mk2_greece"
+      ]
+    },
+    {
+      "name": "hud/mirage_4000",
+      "targetType": "mirage_4000"
+    },
+    {
+      "name": "hud/rafale",
+      "targetType": [
+        "rafale_c_f3",
+        "rafale_m_f3r",
+        "rafale_eg_greece"
+      ]
+    },
+    {
+      "name": "hud/alpha_jet",
+      "targetType": [
+        "alpha_jet_a",
+        "alpha_jet_a_jabog41",
+        "alpha_jet_a_thailand",
+        "alpha_jet_e",
+        "alpha_jet_th_phase_1"
+      ]
+    },
+    {
+      "name": "hud/tunnan",
+      "targetType": "saab_j29f"
+    },
+    {
+      "name": "hud/lansen",
+      "targetType": [
+        "saab_j32b",
+        "saab_a32a",
+        "saab_a32a_red_adam"
+      ]
+    },
+    {
+      "name": "hud/draken",
+      "targetType": [
+        "saab_j35xs",
+        "saab_j35d",
+        "saab_j35a",
+        "saab_f35_wdns",
+        "saab_j35j"
+      ]
+    },
+    {
+      "name": "hud/viggen",
+      "targetType": [
+        "saab_aj37",
+        "saab_ja37",
+        "saab_ja37d",
+        "saab_ja37di",
+        "saab_ja37di_f21",
+        "saab_ajs37",
+        "saab_ajs37_early"
+      ]
+    },
+    {
+      "name": "hud/gripen",
+      "targetType": [
+        "saab_jas39a",
+        "saab_jas39c_south_africa",
+        "saab_jas39c_south_africa_missile_test",
+        "saab_jas39c_hungary",
+        "saab_jas39c_thailand",
+        "saab_jas39c",
+        "saab_jas39e",
+        "saab_jas39d"
+      ]
+    },
+    {
+      "name": "hud/single prop",
+      "targetPropulsion": {
+        "type": "propellers",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi prop",
+      "targetPropulsion": [
+        {
+          "type": "propellers",
+          "num": 2
+        },
+        {
+          "type": "propellers",
+          "num": 3
+        },
+        {
+          "type": "propellers",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/single jet",
+      "targetPropulsion": {
+        "type": "jet",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi jet",
+      "targetPropulsion": [
+        {
+          "type": "jet",
+          "num": 2
+        },
+        {
+          "type": "jet",
+          "num": 3
+        },
+        {
+          "type": "jet",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/helicopter",
+      "targetPropulsion": {
+        "type": "rotors"
+      }
+    },
+    {
+      "name": "hud/rocket",
+      "targetPropulsion": {
+        "type": "rocket"
+      }
+    },
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ]
+}

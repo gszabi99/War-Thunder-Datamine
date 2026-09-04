@@ -1,15 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let DataBlock = require("DataBlock")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const SEARCH_CATEGORIES_SAVE_ID = "chat/searchCategories"
@@ -129,7 +128,7 @@ g_chat_categories.getSelCategoryNameByListObj <- function getSelCategoryNameByLi
   if (!checkObj(listObj))
     return defValue
 
-  let category = getTblValue(listObj.getValue(), chatCategoriesListSorted)
+  let category = chatCategoriesListSorted?[listObj.getValue()]
   if (category)
     return category.id
   return defValue
@@ -148,7 +147,7 @@ g_chat_categories.openChooseCategoriesMenu <- function openChooseCategoriesMenu(
       selected = isInArray(cat.id, curCategories)
     })
 
-  loadHandler(gui_handlers.MultiSelectMenu, {
+  loadHandler(MultiSelectMenu, {
     list = optionsList
     onFinalApplyCb = function(values) { g_chat_categories._setSearchCategories(values) }
     align = align

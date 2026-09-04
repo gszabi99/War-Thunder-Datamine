@@ -1,7 +1,7 @@
 "@override:video" {
   resolution:t="1920x1080"
-  upscaleQualityFor4k:t="ultra_quality"
-  upscaleQualityFor2k:t="ultra_quality"
+  levelUpscaleQualityFor4k:t="ultra_quality"
+  levelUpscaleQualityFor2k:t="ultra_quality"
 }
 
 "@override:graphics" {
@@ -18,7 +18,7 @@
 }
 
 "@override:texStreaming" {
-  forceMemQuotaKB:i=4096000  // 4000M
+  forceMemQuotaKB:i=3686400  // 3600M
 }
 
 "@delete:dx12" {}
@@ -29,7 +29,7 @@ dx12{
   onlyPreallocatedHeaps:b=no
   preallocHeap { sizeMB:i=1024; }
   preallocHeap { sizeMB:i=32;   cpuCached:b=yes; }
-  preallocHeap { sizeMB:i=4;    gpuExec:b=yes; }
+  preallocHeap { sizeMB:i=8;    gpuExec:b=yes; }
   renderMemoryLimitMb:i=4266
   additionalAsanSystemMemoryMb:i=640
 }

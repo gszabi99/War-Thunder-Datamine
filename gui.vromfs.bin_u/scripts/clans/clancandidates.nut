@@ -1,15 +1,14 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_natives.nut" import clan_get_my_role, clan_get_my_clan_id, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
 
 let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let DataBlock  = require("DataBlock")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
 
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -94,7 +93,7 @@ function markClanCandidatesAsViewed() {
 }
 
 function openClanRequestsWnd(candidatesData, clanId, owner) {
-  loadHandler(gui_handlers.clanRequestsModal,
+  loadHandler(get_gui_handler("clanRequestsModal"),
     {
       candidatesData = candidatesData,
       owner = owner

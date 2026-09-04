@@ -1,11 +1,12 @@
+from "math" import round
+from "string" import format, split_by_chars
+from "%sqstd/string.nut" import stripTags
+from "%sqstd/datablock.nut" import convertBlk
+from "%sqstd/underscore.nut" import isDataBlock
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { round } = require("math")
-let { format, split_by_chars } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { stripTags } = require("%sqstd/string.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { isDataBlock } = require("%sqstd/underscore.nut")
 
 
 
@@ -47,7 +48,7 @@ let layersCfgParams = {
   }
 }
 
-let iconLayer = @"iconLayer {
+const iconLayer = @"iconLayer {
   {id} size:t='{size}'; pos:t='{posX},{posY}'; position:t='{pos}'
   background-image:t='{image}'; background-svg-size:t='{texSize}'; {props} }"
 
@@ -100,15 +101,15 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = 
       if (!layerCfg)
         continue
 
-      let layerId = getTblValue("id", layerCfg, layerName)
-      let layerParams = getTblValue(layerId, iconParams)
+      let layerId = (layerCfg?.id ?? layerName)
+      let layerParams = iconParams?[layerId]
       if (layerParams) {
         layerCfg = clone layerCfg
         foreach (id, value in layerParams)
           layerCfg[id] <- value
       }
 
-      if (getTblValue("type", layerCfg, "image") == "text")
+      if ((layerCfg?.type ?? "image") == "text")
         data = "".concat(data, LayersIcon.getTextDataFromLayer(layerCfg))
       else
         data = "".concat(data, LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx))
@@ -141,11 +142,11 @@ LayersIcon.getCustomSizeIconData <- function getCustomSizeIconData(image, size, 
 }
 
 LayersIcon.findLayerCfg <- function findLayerCfg(id) {
-  return "layers" in LayersIconState.config ? getTblValue(id.tolower(), LayersIconState.config.layers) : null
+  return "layers" in LayersIconState.config ? LayersIconState.config.layers?[id.tolower()] : null
 }
 
 LayersIcon.findStyleCfg <- function findStyleCfg(id) {
-  return "styles" in LayersIconState.config ? getTblValue(id.tolower(), LayersIconState.config?.styles) : null
+  return "styles" in LayersIconState.config ? LayersIconState.config?.styles?[id.tolower()] : null
 }
 
 function calcLayerBaseParams(layerCfg, containerSizePx) {
@@ -154,7 +155,7 @@ function calcLayerBaseParams(layerCfg, containerSizePx) {
   foreach (paramName, table in layersCfgParams) {
     local result = table?.defaultValue ?? ""
     if (paramName in layerCfg) {
-      if (type(layerCfg[paramName]) == "string")
+      if (layerCfg[paramName] instanceof String)
         result = layerCfg[paramName]
       else if ("formatValue" in table)
         result = format(table.formatValue, layerCfg[paramName].tofloat())
@@ -177,11 +178,11 @@ LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers 
                                      
   let baseParams = calcLayerBaseParams(layerCfg, containerSizePx)
 
-  let offsetX = getTblValue("offsetX", layerCfg, "")
-  let offsetY = getTblValue("offsetY", layerCfg, "")
+  let offsetX = (layerCfg?.offsetX ?? "")
+  let offsetY = (layerCfg?.offsetY ?? "")
 
-  let id = getTblValue("id", layerCfg) ? "".concat("id:t='", layerCfg.id, "';") : ""
-  let img = getTblValue("img", layerCfg, "")
+  let id = layerCfg?.id ? "".concat("id:t='", layerCfg.id, "';") : ""
+  let img = (layerCfg?.img ?? "")
 
   local props = []
   foreach (key in [ "background-svg-size" ])
@@ -202,7 +203,7 @@ LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLay
   local insertLayers = ""
   foreach (layerCfg in insertLayersArrayCfg)
     if (layerCfg) {
-      if (getTblValue("type", layerCfg, "image") == "text")
+      if ((layerCfg?.type ?? "image") == "text")
         insertLayers = "".concat(insertLayers, LayersIcon.getTextDataFromLayer(layerCfg))
       else
         insertLayers = "".concat(insertLayers, LayersIcon.genDataFromLayer(layerCfg))
@@ -222,8 +223,8 @@ LayersIcon.replaceIcon <- function replaceIcon(iconObj, iconStyle, image = null,
 }
 
 LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
-  let props = [format("color:t='%s';", getTblValue("color", layerCfg, "@commonTextColor"))]
-  props.append(format("font:t='%s';", getTblValue("font", layerCfg, "@fontNormal")))
+  let props = [format("color:t='%s';", (layerCfg?.color ?? "@commonTextColor"))]
+  props.append(format("font:t='%s';", (layerCfg?.font ?? "@fontNormal")))
   foreach (id in ["font-ht", "max-width", "text-align", "shadeStyle"])
     if (id in layerCfg)
       props.append(format("%s:t='%s';", id, layerCfg[id]))
@@ -232,11 +233,11 @@ LayersIcon.getTextDataFromLayer <- function getTextDataFromLayer(layerCfg) {
 
   let posX = ("x" in layerCfg) ? layerCfg.x.tostring() : "(pw-w)/2"
   let posY = ("y" in layerCfg) ? layerCfg.y.tostring() : "(ph-h)/2"
-  let position = getTblValue("position", layerCfg, "absolute")
+  let position = (layerCfg?.position ?? "absolute")
 
   return format("blankTextArea {%s text:t='%s'; pos:t='%s, %s'; position:t='%s'; %s}",
                       idTag,
-                      stripTags(getTblValue("text", layerCfg, "")),
+                      stripTags((layerCfg?.text ?? "")),
                       posX, posY,
                       position,
                       "".join(props))

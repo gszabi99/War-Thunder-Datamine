@@ -1,29 +1,31 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "inventory" as inventory
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "string" import split_by_chars
+from "dagor.time" import get_time_msec
+from "app" import APP_ID
+from "url" import encode_uri_component
+from "json" import object_to_json_string
+from "%sqstd/string.nut" import cutPrefix
+from "blkGetters" import get_network_block
+from "steam" import steam_is_running, steam_get_my_id, steam_get_app_id
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, char_send_custom_action
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
+from "%globalScripts/charActionConsts.nut" import *
+from "%scripts/utils/delayedActions.nut" import LOST_DELAYED_ACTION_MSEC
+from "types" import Table
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let inventory = require("inventory")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { split_by_chars } = require("string")
-let { get_time_msec } = require("dagor.time")
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
 let contentSignKeys = require("%scripts/inventory/inventoryContentSign.nut")
-let { APP_ID } = require("app")
-let { encode_uri_component } = require("url")
-let DataBlock = require("DataBlock")
-let { object_to_json_string } = require("json")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { TASK_CB_TYPE, addTask } = require("%scripts/tasker.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
-let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 enum validationCheckBitMask {
@@ -222,7 +224,7 @@ function _validate(data, name) {
 }
 
 
-let class InventoryClient {
+class InventoryClient {
   items = {}
   itemdefs = {}
   itemsForRequest = {}
@@ -357,7 +359,7 @@ let class InventoryClient {
       local shouldUpdateItemdefs = false
       this.items = {}
       foreach (item in itemJson) {
-        let oldItem = getTblValue(item.itemid, oldItems)
+        let oldItem = oldItems?[item.itemid]
         if (oldItem) {
           if (oldItem.timestamp != item.timestamp) {
             hasInventoryChanges = true
@@ -528,7 +530,7 @@ let class InventoryClient {
   }
 
   function getTagsItemDef(itemdef) {
-    let tags = getTblValue("tags",  itemdef, null)
+    let tags = itemdef?.tags
     if (!tags)
       return null
 
@@ -599,7 +601,7 @@ let class InventoryClient {
     local shouldUpdateItemdefs = false
     local hasInventoryChanges = false
     foreach (item in itemJson) {
-      let oldItem = getTblValue(item.itemid, this.items)
+      let oldItem = this.items?[item.itemid]
       if (item.quantity == 0) {
         if (oldItem) {
           this.items.$rawdelete(item.itemid)
@@ -626,7 +628,7 @@ let class InventoryClient {
           return
 
         for (local i = newItems.len() - 1; i >= 0; --i)
-          if (type(newItems[i].itemdef) != "table") {
+          if (!(newItems[i].itemdef instanceof Table)) {
             newItems.remove(i)
           }
 
@@ -751,8 +753,8 @@ let class InventoryClient {
   function onEventSignOut(_p) {
     this.lastUpdateTime = -1
     this.firstProfileLoadComplete = false
-    priceEagles.get().clear()
-    priceWarPoint.get().clear()
+    priceEagles.set({})
+    priceWarPoint.set({})
     this.items.clear()
   }
 

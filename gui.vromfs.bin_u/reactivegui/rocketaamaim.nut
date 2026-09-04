@@ -1,16 +1,12 @@
+import "%sqstd/math.nut" as math
+from "%rGui/rocketAamAimState.nut" import GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState, TrackerSize, TrackerX
+  , TrackerY, TrackerVisible, GuidanceLockSnr, AamSightShadowOpacity, AamSightOpacity, AamSightLineWidthFactor, AamSightShadowLineWidthFactor
+from "%rGui/style/airHudStyle.nut" import relativCircle, isDarkColor
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 
-let { GimbalSize, GimbalX, GimbalY, GimbalVisible, GuidanceLockState,
-  TrackerSize, TrackerX, TrackerY, TrackerVisible, GuidanceLockSnr,
-  AamSightShadowOpacity, AamSightOpacity, AamSightLineWidthFactor, AamSightShadowLineWidthFactor } = require("%rGui/rocketAamAimState.nut")
-let { relativCircle, isDarkColor } = require("%rGui/style/airHudStyle.nut")
-
-let math = require("%sqstd/math.nut")
-
-let { GuidanceLockResult } = require("guidanceConstants")
-
 let gimbalLines = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = 0
   commands = [[VECTOR_ELLIPSE, 0, 0, 100, 100]]
@@ -55,7 +51,7 @@ let aamAimGimbal = @(color_watched, alert_color_watched) function() {
 }
 
 let trackerLines = {
-  size = flex()
+  size = FLEX
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS

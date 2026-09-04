@@ -1,15 +1,12 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt, mgCreateStartPoint, mgCreateStartLookAt, mgSetupArmada
+  , mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute, getAnyPlayerFighter, mgSetupAirfield, mgRemoveStrParam
+  , mgSetDistToAction, gmMarkCutsceneArmadaLooksLike, mgGetMissionSector, mgGetLevelName, mgEnsurePointsInMap, mgSetMinMaxAircrafts
+from "blkGetters" import get_warpoints_blk
 from "math" import clamp
 
-let { Point3 } = require("dagor.math")
 let { slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt, mgCreateStartPoint,
-  mgCreateStartLookAt, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt,
-  getDistancePerMinute, getAnyPlayerFighter, mgSetupAirfield, mgRemoveStrParam,
-  mgSetDistToAction, gmMarkCutsceneArmadaLooksLike, mgGetMissionSector, mgGetLevelName,
-  mgEnsurePointsInMap, mgSetMinMaxAircrafts
-} = require("dynamicMission")
-let { get_warpoints_blk } = require("blkGetters")
 
 local waypointFlightWpHeightNext = 0
 local waypointFlightWpHeight = 0

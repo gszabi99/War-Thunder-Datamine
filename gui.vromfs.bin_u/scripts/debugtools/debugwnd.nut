@@ -1,16 +1,16 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "dagor.fs" import read_text_from_file
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec, is_existing_file
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
-gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
+let debugWndHandler = class (BaseGuiHandler) {
   sceneBlkName = "%gui/debugFrame.blk"
   wndType = handlerType.MODAL
 
@@ -33,8 +33,8 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
   }
 
   function reinitScreen(params) {
-    let _blkName = getTblValue("blkName", params, this.blkName)
-    let _tplParams = getTblValue("tplParams", params, this.tplParams)
+    let _blkName = (params?.blkName ?? this.blkName)
+    let _tplParams = (params?.tplParams ?? this.tplParams)
     if (_blkName == this.blkName && u.isEqual(_tplParams, this.tplParams))
       return
 
@@ -100,9 +100,10 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
     }
   }
 }
+register_gui_handler("debugWndHandler", debugWndHandler)
 
 function debugWnd(blkName = null, tplParams = {}, callbacksContext = null) {
-  handlersManager.loadHandler(gui_handlers.debugWndHandler,
+  handlersManager.loadHandler(debugWndHandler,
     { blkName = blkName, tplParams = tplParams, callbacksContext = callbacksContext })
 }
 

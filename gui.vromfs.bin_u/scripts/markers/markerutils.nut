@@ -1,14 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/timeLoc.nut" import hoursToString
+from "dagor.workcycle" import deferOnce
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_ranks_blk
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let { getUnitsWithNationBonuses, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
 let { getUnitsWithUnlock } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
-let { deferOnce } = require("dagor.workcycle")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -16,9 +19,6 @@ let { getSortedDiscountUnits, createMoreText, maxTooltipUnitsCount } = require("
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { TIME_DAY_IN_SECONDS, buildDateTimeStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { hoursToString } = require("%appGlobals/timeLoc.nut")
-let { get_charserver_time_sec } = require("chard")
-let { get_ranks_blk } = require("blkGetters")
 let { getUnitsDiscounts, haveAnyUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 let { getEventMarkersData, getEventUnitsData } = require("%scripts/unit/unitEvents.nut")
 
@@ -42,7 +42,7 @@ let markersWidths = {
   discountMarker = "1@discountMarkerWidth"
 }
 
-let markersMargin = "0.5@blockInterval"
+const markersMargin = "0.5@blockInterval"
 
 local idCounter = 0
 

@@ -1,33 +1,32 @@
+from "%sqStdLibs/helpers/u.nut" import values
+from "%sqstd/string.nut" import utf8ToLower
+from "%sqstd/datablock.nut" import isDataBlock, convertBlk
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import *
+from "types" import String, Array
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { values } = require("%sqStdLibs/helpers/u.nut")
+let { getGcbName, getGcbParamsMarkup } = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { getUnitRole, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { getEntitlementConfig, getEntitlementName,
-  getEntitlementDescription, getEntitlementLocParams, getPremiumAccountDescriptionArr
-} = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementName, getEntitlementDescription, getEntitlementLocParams, getPremiumAccountDescriptionArr } = require("%scripts/onlineShop/entitlements.nut")
 let { getPrizeChanceConfig } = require("%scripts/items/prizeChance.nut")
 let { MODIFICATION, SPARE } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { isLoadingBgUnlock } = require("%scripts/loading/loadingBgData.nut")
-let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
+let { TrophyMultiAward, isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getFullUnlockDescByName, getUnlockNameText, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksState.nut")
+let { getFullUnlockDescByName, getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockType, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getViewTypeByResourceType, getViewTypeByUnlockedItemType
-} = require("%scripts/customization/decoratorViewType.nut")
+let { getViewTypeByResourceType, getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let { getUnitName, getUnitCountryIcon, image_for_air, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
@@ -41,10 +40,8 @@ let { getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { getMarkingPresetsById, shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
-let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { unlockAddProgressView, getPrizeType, hasKnowPrize, PRIZE_TYPE } = require("%scripts/items/prizesUtils.nut")
-let { getTrophyRewardType, isRewardMultiAward, isRewardItem, getRewardList
-} = require("%scripts/items/trophyReward.nut")
+let { getTrophyRewardType, isRewardMultiAward, isRewardItem, getRewardList } = require("%scripts/items/trophyReward.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getFullWPIcon } = require("%scripts/items/prizeUtils.nut")
 let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
@@ -89,7 +86,7 @@ const UNITS_STACK_BY_TYPE_COUNT  = 6
 
 let unitItemTypes = ["aircraft", "tank", "helicopter", "ship"]
 
-let template = "%gui/items/trophyDesc.tpl"
+const template = "%gui/items/trophyDesc.tpl"
 
 
 local getPrizesViewData = @(_prize, _showCount = true, _params = null) ""
@@ -707,21 +704,19 @@ function getPrizeActionButtonsView(prize, params = null) {
     if (!item || shouldDisguiseItem(item))
       return view
     if (item.canPreview() && isInMenu.get()) {
-      let gcb = globalCallbacks.ITEM_PREVIEW
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"
         tooltip = "#mainmenu/btnPreview"
-        funcName = gcb.cbName
-        actionParamsMarkup = gcb.getParamsMarkup({ itemId = item.id })
+        funcName = getGcbName("ITEM_PREVIEW")
+        actionParamsMarkup = getGcbParamsMarkup({ itemId = item.id })
       })
     }
     if (item.hasLink()) {
-      let gcb = globalCallbacks.ITEM_LINK
       view.append({
         image = "#ui/gameuiskin#gc.svg"
         tooltip =$"#{item.linkActionLocId}"
-        funcName = gcb.cbName
-        actionParamsMarkup = gcb.getParamsMarkup({ itemId = item.id })
+        funcName = getGcbName("ITEM_LINK")
+        actionParamsMarkup = getGcbParamsMarkup({ itemId = item.id })
       })
     }
     return view
@@ -729,12 +724,11 @@ function getPrizeActionButtonsView(prize, params = null) {
 
   let unitId = prize?.unit || prize?.rentedUnit
   if (unitId && getAircraftByName(unitId)?.isInShop) {
-    let gcb = globalCallbacks.UNIT_PREVIEW
     view.append({
       image = "#ui/gameuiskin#btn_preview.svg"
       tooltip = "#mainmenu/btnPreview"
-      funcName = gcb.cbName
-      actionParamsMarkup = gcb.getParamsMarkup({ unitId = unitId })
+      funcName = getGcbName("UNIT_PREVIEW")
+      actionParamsMarkup = getGcbParamsMarkup({ unitId = unitId })
     })
     return view
   }
@@ -742,15 +736,14 @@ function getPrizeActionButtonsView(prize, params = null) {
   let resource = prize?.resource
   let resourceType = prize?.resourceType
   if (resource && resourceType) {
-    let gcb = globalCallbacks.DECORATOR_PREVIEW
     let decType = getTypeByResourceType(resourceType)
     let decorator = getDecorator(resource, decType)
     if (decorator?.canPreview())
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"
         tooltip = "#mainmenu/btnPreview"
-        funcName = gcb.cbName
-        actionParamsMarkup = gcb.getParamsMarkup({ resource = resource, resourceType = resourceType })
+        funcName = getGcbName("DECORATOR_PREVIEW")
+        actionParamsMarkup = getGcbParamsMarkup({ resource = resource, resourceType = resourceType })
       })
     return view
   }
@@ -764,8 +757,8 @@ function getViewDataUnit(unitName, params = null, rentTimeHours = 0, numSpares =
     return null
 
   let isBought = isUnitBought(unit)
-  let receivedPrizes = getTblValue("receivedPrizes", params, true)
-  let classIco = getTblValue("singlePrize", params, false) ? null : getUnitClassIco(unit)
+  let receivedPrizes = (params?.receivedPrizes ?? true)
+  let classIco = (params?.singlePrize ?? false) ? null : getUnitClassIco(unit)
   let countryIco = getUnitCountryIcon(unit, false)
   let shopItemType = getUnitRole(unit)
   let isShowLocalState = receivedPrizes || rentTimeHours > 0
@@ -813,7 +806,7 @@ function getViewDataRentedUnit(unitName, params, timeHours, numSpares) {
 
 function getViewDataSpare(unitName, count, params) {
   let unit = getAircraftByName(unitName)
-  let spare = getTblValue("spare", unit)
+  let spare = unit?.spare
   if (!spare)
     return null
 
@@ -949,7 +942,7 @@ function getPrizeTypeIcon(prize, unitImage = false) {
     return "#ui/gameuiskin#item_type_premium.svg"
   if (prize?.unlock || prize?.unlockType) {
     local unlockType = prize?.unlockType || getUnlockType(prize?.unlock)
-    if (type(unlockType) == "string")
+    if (unlockType instanceof String)
       unlockType = get_unlock_type(unlockType)
     return getViewTypeByUnlockedItemType(unlockType).prizeTypeIcon
   }
@@ -1686,7 +1679,7 @@ function getCommonRewardText(configsArray) {
     else
       rewData.config <- config
 
-    if (!getTblValue(rewType, result))
+    if (!result?[rewType])
       result[rewType] <- rewData
 
     result[rewType].num++;
@@ -1701,7 +1694,7 @@ function getCommonRewardText(configsArray) {
 
   foreach (data in result) {
     if (data.type == "item") {
-      let item = getTblValue("item", data)
+      let item = data?.item
       if (item)
         returnData.append(loc("ui/colon").concat(item.getTypeName(), data.num))
     }
@@ -1727,7 +1720,7 @@ function getRewardsListViewData(config, params = {}) {
   params = clone params
   local rewardsList = []
   local singleReward = config
-  if (type(config) != "array")
+  if (!(config instanceof Array))
     rewardsList = getRewardList(config)
   else {
     singleReward = (config.len() == 1) ? config[0] : null
@@ -1735,7 +1728,7 @@ function getRewardsListViewData(config, params = {}) {
       rewardsList.extend(getRewardList(cfg))
   }
 
-  if (singleReward != null && getTblValue("multiAwardHeader", params)
+  if (singleReward != null && params?.multiAwardHeader
       && isRewardMultiAward(singleReward))
     params.header <- TrophyMultiAward(DataBlockAdapter(singleReward)).getName()
 

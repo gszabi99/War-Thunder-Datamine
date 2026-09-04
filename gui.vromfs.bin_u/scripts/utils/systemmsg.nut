@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "json" import parse_json
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
 
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { parse_json } = require("json")
 
 
 
@@ -73,10 +73,16 @@ let { parse_json } = require("json")
 
 
 
+enum COLOR_TAG {
+  ACTIVE = "av"
+  USERLOG = "ul"
+  TEAM_BLUE = "tb"
+  TEAM_RED = "tr"
+}
 
-let LOC_ID = "l"
-let VALUE_ID = "t"
-let COLOR_ID = "c"
+const LOC_ID = "l"
+const VALUE_ID = "t"
+const COLOR_ID = "c"
 
 let colors = {}
 let getColorByTag = @(tag) colors?[tag] ?? ""
@@ -218,6 +224,7 @@ return {
   LOC_ID = LOC_ID
   VALUE_ID = VALUE_ID
   COLOR_ID = COLOR_ID
+  COLOR_TAG = COLOR_TAG
 
   registerColors = registerColors
   registerLocTags = registerLocTags

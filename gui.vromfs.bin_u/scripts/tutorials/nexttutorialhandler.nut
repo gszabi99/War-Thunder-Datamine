@@ -1,30 +1,26 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqstd/math.nut" as stdMath
+from "chard" import save_profile
+from "mission" import set_game_mode
+from "guiMission" import select_mission
 from "%scripts/dagui_library.nut" import *
-let { save_profile } = require("chard")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+from "%globalScripts/gameModeNativeConsts.nut" import *
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { checkTutorialsList, saveTutorialToCheckReward,
-  launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue,
-  getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData
-} = require("%scripts/tutorials/tutorialsData.nut")
+let { checkTutorialsList, saveTutorialToCheckReward, launchedTutorialQuestionsPeerSession, setLaunchedTutorialQuestionsValue, getUncompletedTutorialData, getTutorialRewardMarkup, getSuitableUncompletedTutorialData } = require("%scripts/tutorials/tutorialsData.nut")
 let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsState.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let { set_game_mode } = require("mission")
-let { select_mission } = require("guiMission")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData,
-  getPromoVisibilityById
-} = require("%scripts/promo/promo.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { setPromoButtonText, getPromoActionParamsKey, setPromoActionsParamsData, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { guiStartTutorial, guiStartFlight
-} = require("%scripts/missions/startMissionsList.nut")
+let { guiStartTutorial, guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
@@ -33,10 +29,10 @@ const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutor
 dagui_propid_add_name_id("userInputType")
 
 
-function sendTutorialChoiceStatisticOnce(details) {
+function sendTutorialChoiceStatisticOnce(details, missionName) {
   if (loadLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, false))
     return
-  sendBqEvent("CLIENT_NEW_USER_1", "tutorialChoice", { details })
+  sendBqEvent("CLIENT_NEW_USER_1", "tutorialChoice", { details, missionName })
   saveLocalByAccount(NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID, true)
 }
 
@@ -54,7 +50,7 @@ function prepareStartTutorial(idx, mission) {
   save_profile(false)
 }
 
-local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local NextTutorialHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/nextTutorial.blk"
 
@@ -107,7 +103,7 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onStart() {
     prepareStartTutorial(this.checkIdx, this.tutorialMission)
-    sendTutorialChoiceStatisticOnce("acceptTutorial")
+    sendTutorialChoiceStatisticOnce("acceptTutorial", this.tutorialMission.name)
     this.guiScene.performDelayed(this, function() { this.goForward(guiStartFlight); })
   }
 
@@ -115,7 +111,7 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.canSkipTutorial)
       return
 
-    sendTutorialChoiceStatisticOnce("declineTutorial")
+    sendTutorialChoiceStatisticOnce("declineTutorial", this.tutorialMission.name)
     setLaunchedTutorialQuestions(this.checkIdx)
     this.goBack()
   }
@@ -130,12 +126,12 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.NextTutorialHandler <- NextTutorialHandler
+register_gui_handler("NextTutorialHandler", NextTutorialHandler)
 
 
 function autoRunTutorial(idx, mission) {
   prepareStartTutorial(idx, mission)
-  sendTutorialChoiceStatisticOnce("autostart")
+  sendTutorialChoiceStatisticOnce("autostart", mission.name)
   guiStartFlight()
 }
 
@@ -224,7 +220,7 @@ function getTutorialButtonText(tutorialMission = null) {
 
 addPromoAction("tutorial", @(handler, params, _obj) onOpenTutorialFromPromo(handler, params))
 
-let promoButtonId = "tutorial_mainmenu_button"
+const promoButtonId = "tutorial_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -233,7 +229,7 @@ addPromoButtonConfig({
   updateFunctionInHandler = function() {
     let tutorialData = getTutorialData()
     let tutorialMission = tutorialData?.tutorialMission
-    let tutorialId = getTblValue("tutorialId", tutorialData)
+    let tutorialId = tutorialData?.tutorialId
 
     let id = promoButtonId
     let actionKey = getPromoActionParamsKey(id)

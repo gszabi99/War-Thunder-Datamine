@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/enums.nut" import getCachedType, enumsAddTypes
 from "%scripts/dagui_library.nut" import *
 
-let { getCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 

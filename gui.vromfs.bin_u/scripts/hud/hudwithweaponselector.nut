@@ -1,9 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
 let { HudAirWeaponSelector } = require("%scripts/hud/hudAirWeaponSelector.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
 
-gui_handlers.HudWithWeaponSelector <- class (gui_handlers.BaseUnitHud) {
+let HudWithWeaponSelector = class (BaseUnitHud) {
   airWeaponSelector = null
   currentHudUnitName = ""
 
@@ -22,7 +23,8 @@ gui_handlers.HudWithWeaponSelector <- class (gui_handlers.BaseUnitHud) {
   }
 
 }
+register_gui_handler("HudWithWeaponSelector", HudWithWeaponSelector)
 
 return {
-  HudWithWeaponSelector = gui_handlers.HudWithWeaponSelector
+  HudWithWeaponSelector
 }

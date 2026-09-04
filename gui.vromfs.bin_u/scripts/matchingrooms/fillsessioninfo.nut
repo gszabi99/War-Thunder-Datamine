@@ -1,25 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "guiOptions" import get_cd_preset, set_cd_preset
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
-  USEROPT_VERSUS_RESPAWN, USEROPT_IS_BOTS_ALLOWED, USEROPT_ALLOW_EMPTY_TEAMS,
-  USEROPT_CLUSTERS, USEROPT_DISABLE_AIRFIELDS, USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS,
-  USEROPT_CONTENT_ALLOWED_PRESET
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_VERSUS_RESPAWN, USEROPT_IS_BOTS_ALLOWED, USEROPT_ALLOW_EMPTY_TEAMS, USEROPT_CLUSTERS, USEROPT_DISABLE_AIRFIELDS, USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, USEROPT_CONTENT_ALLOWED_PRESET } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
 let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { get_cd_preset, set_cd_preset } = require("guiOptions")
-let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit,
-  getRoomRequiredCrafts, getRoomMGameMode, getRoomTeamsCountries
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit, getRoomRequiredCrafts, getRoomMGameMode, getRoomTeamsCountries } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
@@ -119,7 +113,7 @@ return function(scene, sessionInfo) {
   if (isUserMission(sessionInfo))
     setTextToObj(mapNameObj, "".concat(loc("options/mp_user_mission"), loc("ui/colon")), sessionInfo?.userMissionName)
   else if (isUrlMissionByRoom(sessionInfo)) {
-    let url = getTblValue("missionURL", sessionInfo, "")
+    let url = (sessionInfo?.missionURL ?? "")
     let urlMission =  g_url_missions.findMissionByUrl(url)
     let missionName = urlMission ? urlMission.name : url
     setTextToObj(mapNameObj, "".concat(loc("urlMissions/sessionInfoHeader"), loc("ui/colon")), missionName)
@@ -152,11 +146,11 @@ return function(scene, sessionInfo) {
 
   let difObj = scene.findObject("session_difficulty")
   if (checkObj(difObj)) {
-    let diff = getTblValue("difficulty", missionInfo)
+    let diff = missionInfo?.difficulty
     setTextToObj(difObj, "".concat(loc("multiplayer/difficultyShort"), loc("ui/colon")), loc($"options/{diff}"))
     local diffTooltip = ""
     if (diff == "custom") {
-      let custDiff = getTblValue("custDifficulty", missionInfo, null)
+      let custDiff = missionInfo?.custDifficulty
       if (custDiff)
         diffTooltip = getCustomDifficultyTooltipText(custDiff)
     }
@@ -176,17 +170,17 @@ return function(scene, sessionInfo) {
 
   setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, getSessionLobbyTimeLimit(sessionInfo))
 
-  setTextToObjByOption("limited_fuel", USEROPT_LIMITED_FUEL, getTblValue("isLimitedFuel", missionInfo))
-  setTextToObjByOption("limited_ammo", USEROPT_LIMITED_AMMO, getTblValue("isLimitedAmmo", missionInfo))
+  setTextToObjByOption("limited_fuel", USEROPT_LIMITED_FUEL, missionInfo?.isLimitedFuel)
+  setTextToObjByOption("limited_ammo", USEROPT_LIMITED_AMMO, missionInfo?.isLimitedAmmo)
 
-  setTextToObjByOption("session_respawn", USEROPT_VERSUS_RESPAWN, getTblValue("maxRespawns", missionInfo, -1))
+  setTextToObjByOption("session_respawn", USEROPT_VERSUS_RESPAWN, (missionInfo?.maxRespawns ?? -1))
 
   let tObj = scene.findObject("session_takeoff")
   setTextToObj(tObj, "".concat(loc("options/optional_takeoff"), loc("ui/colon")),
     missionInfo?.optionalTakeOff ?? false)
 
   setTextToObjByOption("session_allowbots", USEROPT_IS_BOTS_ALLOWED,
-               (gt & GT_RACE) ? null : getTblValue("isBotsAllowed", missionInfo))
+               (gt & GT_RACE) ? null : missionInfo?.isBotsAllowed)
 
   setTextToObjByOption("session_allow_empty_teams", USEROPT_ALLOW_EMPTY_TEAMS, missionInfo?.allowEmptyTeams)
 
@@ -194,11 +188,11 @@ return function(scene, sessionInfo) {
   setTextToObj(bObj, "".concat(loc("options/allow_jip"), loc("ui/colon")),
     sessionInfo?.allowJIP ?? true)
 
-  setTextToObjByOption("session_cluster", USEROPT_CLUSTERS, getTblValue("cluster", sessionInfo))
+  setTextToObjByOption("session_cluster", USEROPT_CLUSTERS, sessionInfo?.cluster)
 
-  setTextToObjByOption("disable_airfields", USEROPT_DISABLE_AIRFIELDS, getTblValue("disableAirfields", missionInfo))
+  setTextToObjByOption("disable_airfields", USEROPT_DISABLE_AIRFIELDS, missionInfo?.disableAirfields)
 
-  setTextToObjByOption("spawn_ai_tank_on_tank_maps", USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, getTblValue("spawnAiTankOnTankMaps", missionInfo))
+  setTextToObjByOption("spawn_ai_tank_on_tank_maps", USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, missionInfo?.spawnAiTankOnTankMaps)
 
   setTextToObjByOption("content_allowed_preset", USEROPT_CONTENT_ALLOWED_PRESET, missionInfo?.allowedTagsPreset)
 

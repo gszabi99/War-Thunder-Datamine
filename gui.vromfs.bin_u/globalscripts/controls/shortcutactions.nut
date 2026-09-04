@@ -1,4 +1,4 @@
-let { activateShortcut } = require("controls")
+from "controls" import activateShortcut
 
 local toggleShortcut = @(shortcutName) activateShortcut(shortcutName, true, true)
 

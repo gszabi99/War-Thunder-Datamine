@@ -1,20 +1,17 @@
+import "DataBlock" as DataBlock
+from "chard" import get_charserver_time_sec
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, disable_user_log_entry, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let DataBlock = require("DataBlock")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
-let { getTextWithCrossplayIcon,
-        needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { INVITE_CHAT_LINK_PREFIX, registerInviteUserlogHandler, showExpiredInvitePopup,
-  showLeaveSessionFirstPopup, addTournamentBattleInvite
-} = require("%scripts/invites/invites.nut")
+let { INVITE_CHAT_LINK_PREFIX, registerInviteUserlogHandler, showExpiredInvitePopup, showLeaveSessionFirstPopup, addTournamentBattleInvite } = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
@@ -31,14 +28,14 @@ let TournamentBattle = class (BaseInvite) {
   needCheckSystemRestriction = true
 
   static function getUidByParams(params) {
-    return "".concat("TB_", getTblValue("battleId", params, ""))
+    return "".concat("TB_", (params?.battleId ?? ""))
   }
 
   function updateCustomParams(params, _initial = false) {
-    this.battleId = getTblValue("battleId", params, this.battleId)
-    this.inviteTime = getTblValue("inviteTime", params, this.inviteTime)
-    this.startTime = getTblValue("startTime", params, this.startTime)
-    this.endTime = getTblValue("endTime", params, this.endTime)
+    this.battleId = (params?.battleId ?? this.battleId)
+    this.inviteTime = (params?.inviteTime ?? this.inviteTime)
+    this.startTime = (params?.startTime ?? this.startTime)
+    this.endTime = (params?.endTime ?? this.endTime)
     this.isAccepted = false
 
     this.setTimedParams(this.inviteTime, this.startTime)
@@ -81,7 +78,7 @@ let TournamentBattle = class (BaseInvite) {
       get_user_log_blk_body(i, blk)
 
       if ((blk.type == EULT_INVITE_TO_TOURNAMENT) &&
-           (getTblValue("battleId", blk.body, "")  == this.battleId) &&
+           ((blk.body?.battleId ?? "")  == this.battleId) &&
            (disable_user_log_entry(i)))
         needSave = true
     }

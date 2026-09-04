@@ -1,26 +1,26 @@
+import "controllerState" as controllerState
+import "DataBlock" as DataBlock
+from "%sqstd/platform.nut" import isPC
+from "hangar" import hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_PROTECTION
+from "hangarEventCommand" import hangar_protection_map_update, hangar_crew_map_update, set_protection_analysis_editing, set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test, set_test_projectile_props
+from "replays" import get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode, on_update_loaded_model, restore_loaded_model, get_last_shot_blk, is_last_shot_valid, invalidate_last_shot
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import allowCuttingInHangar, repairUnit, allowDamageSimulationInHangar
-let { isPC } = require("%sqstd/platform.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_PROTECTION } = require("hangar")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { FileDialog } = require("%scripts/fileDialog/fileDialog.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let controllerState = require("controllerState")
-let { hangar_protection_map_update, hangar_crew_map_update, set_protection_analysis_editing,
-  set_protection_map_y_nulling, get_protection_map_progress, set_explosion_test, set_test_projectile_props } = require("hangarEventCommand")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { hitCameraInit } = require("%scripts/hud/hudHitCamera.nut")
 let { getAxisTextOrAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode,
-  on_update_loaded_model, restore_loaded_model, get_last_shot_blk, is_last_shot_valid,
-  invalidate_last_shot } = require("replays")
-let DataBlock = require("DataBlock")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -53,7 +53,7 @@ function isValidHitData(hitData) {
   return true
 }
 
-gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
+let ProtectionAnalysis = class (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/dmViewer/protectionAnalysis.blk"
 
@@ -247,7 +247,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -298,7 +298,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSaveHitFile() {
-    handlersManager.loadHandler(gui_handlers.FileDialog, {
+    handlersManager.loadHandler(FileDialog, {
       isSaveFile = true
       dirPath = get_replay_hits_dir()
       pathTag = "replay_hits"
@@ -319,7 +319,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onOpenHitFile(_) {
     restore_loaded_model()
-    handlersManager.loadHandler(gui_handlers.FileDialog, {
+    handlersManager.loadHandler(FileDialog, {
       isSaveFile = false
       dirPath = get_replay_hits_dir()
       pathTag = "replay_hits"
@@ -404,6 +404,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     ammoName = protectionAnalysisOptions.BULLET.value?.bulletName
   })
 }
+register_gui_handler("ProtectionAnalysis", ProtectionAnalysis)
 
 return {
   canOpen = function(unit) {
@@ -416,6 +417,6 @@ return {
   open = function (unit) {
     if (!this.canOpen(unit))
         return
-    handlersManager.loadHandler(gui_handlers.ProtectionAnalysis, { unit = unit })
+    handlersManager.loadHandler(ProtectionAnalysis, { unit = unit })
   }
 }

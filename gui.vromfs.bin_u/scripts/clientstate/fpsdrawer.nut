@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqstd/platform.nut" import is_android
+from "string" import format
+from "eventbus" import subscribe, unsubscribe
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
 from "hudState" import is_hud_visible
 
-let { is_android } = require("%sqstd/platform.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { subscribe, unsubscribe } = require("eventbus")
-let { isShowDebugInterface = @() false, is_app_loaded = @() false } = require("app") 
+let { isShowDebugInterface = @() false, is_app_loaded = @() false } = require("app")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 
 
@@ -16,7 +16,7 @@ const QUALITY_COLOR_OKAY = "qualityColorOkay"
 const QUALITY_COLOR_POOR = "qualityColorPoor"
 
 
-let paramsList = freeze(["fps", "latency", "ping", "pl", "sid"])
+const paramsList = ["fps", "latency", "ping", "pl", "sid"]
 const objIdPrefix = "status_text_"
 
 let mainSceneObjects = {}
@@ -51,7 +51,7 @@ function getPacketlossColor(pl) {
 
 
 function validateObjects(objects, guiScene) {
-  if (checkObj(getTblValue(paramsList[0], objects)))
+  if (checkObj(objects?[paramsList[0]]))
     return true
 
   let holderObj = guiScene["status_texts_holder"]

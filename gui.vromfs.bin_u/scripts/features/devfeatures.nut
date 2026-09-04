@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.system" import dgs_get_settings
+from "console" import register_command
 from "%scripts/dagui_library.nut" import log
 from "%scripts/controls/controlsConsts.nut" import optionControlType
-let { override, hasFeature, setOverrideFeature } = require("%scripts/user/features.nut")
-let { dgs_get_settings } = require("dagor.system")
-let { register_command } = require("console")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+from "%scripts/user/features.nut" import override, hasFeature, setOverrideFeature, clearFeatureCache
 
 let devFeatures = {
   PremiumSubscription = {
@@ -14,6 +14,7 @@ let devFeatures = {
   }
   HasSpecialEventWindow = {
     title = "Enable special events moved from achievements"
+    needBroadcastChangeEvent = true
   }
   HasTabsInGraphicsOption = {
     title = "Enable unit types tabs in graphics option groups"
@@ -26,7 +27,10 @@ function setDevFeatureValue(name, value) {
   if (name not in devFeatures)
     return
   setOverrideFeature(value, name)
-  broadcastEvent("DevFeatureChanged", { name, value })
+  if (devFeatures[name]?.needBroadcastChangeEvent ?? false) {
+    clearFeatureCache(name)
+    broadcastEvent("DevFeatureChanged", { name, value })
+  }
 }
 
 function updateDevFeaturesFromSystemConfig() {

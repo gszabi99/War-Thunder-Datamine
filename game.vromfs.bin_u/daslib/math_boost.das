@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options indenting = 4
 options strict_smart_pointers = true
 
@@ -36,16 +34,6 @@ struct Ray {
     
     dir : float3    
     origin : float3 
-}
-
-def degrees(f : float) {
-    
-    return f * 180. / PI
-}
-
-def radians(f : float) {
-    
-    return f * PI / 180.
 }
 
 def RGBA_TO_UCOLOR(x, y, z, w : float) {
@@ -148,6 +136,7 @@ def look_at_rh(Eye, At, Up : float3) {
     return tm
 }
 
+[deprecated(message="w-row bug (m[3][3] left at 1 -> clip.w = -z+1); mirror perspective_rh_0_to_1 for a corrected left-handed variant")]
 def perspective_lh(fovy, aspect, zn, zf : float) {
     
     let yScale = 1. / tan(fovy / 2.)
@@ -162,6 +151,7 @@ def perspective_lh(fovy, aspect, zn, zf : float) {
     return Result
 }
 
+[deprecated(message="w-row bug (m[3][3] left at 1 -> clip.w = -z+1); use perspective_rh_0_to_1 (corrected, z in [0..1])")]
 def perspective_rh(fovy, aspect, zn, zf : float) {
     
     let yScale = 1. / tan(fovy / 2.)
@@ -176,6 +166,7 @@ def perspective_rh(fovy, aspect, zn, zf : float) {
     return Result
 }
 
+[deprecated(message="w-row bug (m[3][3] left at 1 -> clip.w = -z+1); use perspective_rh_minus1_to_1 (corrected, z in [-1..1])")]
 def perspective_rh_opengl(fovy, aspect, zn, zf : float) {
     
     let yScale = 1. / tan(fovy / 2.)
@@ -187,6 +178,37 @@ def perspective_rh_opengl(fovy, aspect, zn, zf : float) {
     Result[2][2] = (zf + zn) / (zn - zf)
     Result[2][3] = -1.0
     Result[3][2] = 2. * zn * zf / (zn - zf)
+    return Result
+}
+
+
+def perspective_rh_0_to_1(fovy, aspect, zn, zf : float) {
+    
+    let yScale = 1. / tan(fovy / 2.)
+    let xScale = yScale / aspect
+    var Result : float4x4
+    identity(Result)
+    Result[0][0] = xScale
+    Result[1][1] = yScale
+    Result[2][2] = zf / (zn - zf)
+    Result[2][3] = -1.0
+    Result[3][2] = zn * zf / (zn - zf)
+    Result[3][3] = 0.
+    return Result
+}
+
+def perspective_rh_minus1_to_1(fovy, aspect, zn, zf : float) {
+    
+    let yScale = 1. / tan(fovy / 2.)
+    let xScale = yScale / aspect
+    var Result : float4x4
+    identity(Result)
+    Result[0][0] = xScale
+    Result[1][1] = yScale
+    Result[2][2] = (zf + zn) / (zn - zf)
+    Result[2][3] = -1.0
+    Result[3][2] = 2. * zn * zf / (zn - zf)
+    Result[3][3] = 0.
     return Result
 }
 

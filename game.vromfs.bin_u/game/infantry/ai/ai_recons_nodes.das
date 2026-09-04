@@ -6,7 +6,6 @@ require BehNodes
 require walkerai
 require DngWalkerai
 require DagorDataBlock
-require DagorSystem
 require math.random
 require math.linear
 require math.base
@@ -15,7 +14,6 @@ require Dacoll
 require Grid
 require DagorMath
 require DagorRandom
-require DagorDebug3D
 require %appGame.infantry.ai.ai_recons_common
 require %appGame.infantry.es.walker_common
 require %appGame.infantry.es.team_common

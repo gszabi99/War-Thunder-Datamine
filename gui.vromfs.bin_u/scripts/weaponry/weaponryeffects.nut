@@ -1,12 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "string" import format
+from "%sqstd/string.nut" import floatToStringRounded
+from "%sqstd/math.nut" import round_by_value, PI, fabs
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { floatToStringRounded } = require("%sqstd/string.nut")
-let { round_by_value, PI, fabs } = require("%sqstd/math.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { KGF_TO_NEWTON, getScoutScoreMuliplierWithUavByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
 

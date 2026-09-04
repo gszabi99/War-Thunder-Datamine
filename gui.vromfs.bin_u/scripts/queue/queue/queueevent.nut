@@ -1,33 +1,28 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "chardConst" import EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS
+from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueConsts.nut" import queueStates
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK,
-  USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES,
-  USEROPT_DISPLAY_MY_REAL_CLAN
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK, USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES, USEROPT_DISPLAY_MY_REAL_CLAN } = require("%scripts/options/optionsExtNames.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { getGameModeIdsByEconomicName, getGameModeIdsByEconomicNameWithoutTags,
-  NIGHT_GAME_MODE_TAG_PREFIX, SMALL_TEAMS_GAME_MODE_TAG_PREFIX
-} = require("%scripts/matching/matchingGameModes.nut")
+let { isBulletHellAvailable, hasBulletHellGameModes, mainModePairs, getJoinBlockReason, getGmsTagRequests } = require("%scripts/events/secondGameModesUtils.nut")
+let { getGameModeIdsByEconomicName, getGameModeIdsByEconomicNameWithoutTags, getGameModeIdsByEconomicNameWithOnlyTags, getModeById, NIGHT_GAME_MODE_TAG_PREFIX, SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX } = require("%scripts/matching/matchingGameModes.nut")
 let { markToShowMultiplayerLimitByAasMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS } = require("chardConst")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getRecentSquadMrank } = require("%scripts/battleRating.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
 let { registerQueueClass, getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue, findQueueByName
-} = require("%scripts/queue/queueState.nut")
+let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue, findQueueByName } = require("%scripts/queue/queueState.nut")
 let { getQueueCountry, getQueueSlots } = require("%scripts/queue/queueInfo.nut")
 let { leaveAllQueuesSilent, joinQueueImpl } = require("%scripts/queue/queueManager.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
@@ -35,6 +30,8 @@ let crossplayModule = require("%scripts/social/crossplay.nut")
 function getCustomMgm(eventName) {
   return events.getCustomGameMode(events.getEvent(eventName))
 }
+
+let ADDITIVE_GMS_TAG_PREFIXES = [ SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX ]
 
 function hasCustomModeByEventName(eventName) {
   return hasFeature("QueueCustomEventRoom") && !!getCustomMgm(eventName)
@@ -63,7 +60,7 @@ let Event = class (BaseQueue) {
   leaveQueueData = null
 
   function init() {
-    this.name = getTblValue("mode", this.params, "")
+    this.name = (this.params?.mode ?? "")
     this.shouldQueueCustomMode = getShouldEventQueueCustomMode(this.name)
 
     this.params.clusters <- clone (this.params?.clusters ?? [])
@@ -81,7 +78,7 @@ let Event = class (BaseQueue) {
   }
 
   function removeQueueByParams(leaveData) {
-    let queueUid = getTblValue("queueId", leaveData)
+    let queueUid = leaveData?.queueId
     if (queueUid == null || (queueUid in this.queueUidsList && this.queueUidsList.len() == 1)) { 
       this.clearAllQueues()
       return true
@@ -114,6 +111,14 @@ let Event = class (BaseQueue) {
   function join(successCallback, errorCallback) {
     log("enqueue into event session")
     debugTableData(this.params)
+    let blockReason = getJoinBlockReason(events.getEvent(this.name), mainModePairs)
+    if (blockReason != null) {
+      defer(function() {
+        showInfoMsgBox(blockReason)
+        errorCallback(null)
+      })
+      return
+    }
     this._joinQueueImpl(this.getQueryParams(true), successCallback, errorCallback)
   }
 
@@ -154,11 +159,16 @@ let Event = class (BaseQueue) {
 
   getExcludedGmsTags = @(event) {
     [NIGHT_GAME_MODE_TAG_PREFIX] = hasNightGameModes(event)
-      && !get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false),
+      && (!get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false)
+      || this.getCurRank(event) < event.minMRankForNightBattles),
 
     [SMALL_TEAMS_GAME_MODE_TAG_PREFIX] = hasSmallTeamsGameModes(event)
       && (!get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
-      || this.getCurRank(event) < event.minMRankForSmallTeamsBattles)
+      || this.getCurRank(event) < event.minMRankForSmallTeamsBattles),
+
+    [BULLET_HELL_GAME_MODE_TAG_PREFIX] = hasBulletHellGameModes(event)
+      && (!get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
+      || !isBulletHellAvailable(event))
   }.filter(@(v) v)
    .keys()
 
@@ -166,8 +176,14 @@ let Event = class (BaseQueue) {
     let qp = {}
     let event = events.getEvent(this.name)
     let eventName = getEventEconomicName(event)
-    let excludedTags = this.getExcludedGmsTags(event)
-    let gameModesList = (event?.forceBatchRequest ?? false) ? getGameModeIdsByEconomicName(eventName)
+    let tagRequests = getGmsTagRequests(event, mainModePairs)
+    let excludedTags = this.getExcludedGmsTags(event).extend(tagRequests.exclude)
+    let onlyTags = tagRequests.only
+    if (onlyTags.len() > 0)
+      onlyTags.extend(ADDITIVE_GMS_TAG_PREFIXES.filter(@(prefix) !isInArray(prefix, excludedTags)))
+    let gameModesList = onlyTags.len() > 0
+      ? getGameModeIdsByEconomicNameWithOnlyTags(eventName, onlyTags)
+      : (event?.forceBatchRequest ?? false) ? getGameModeIdsByEconomicName(eventName)
       : excludedTags.len() > 0 ? getGameModeIdsByEconomicNameWithoutTags(eventName, excludedTags)
       : []
 
@@ -181,6 +197,17 @@ let Event = class (BaseQueue) {
         qp.game_mode_id <- customMgm.gameModeId
       else
         qp.mode <- this.name
+    }
+
+    if (isForJoining) {
+      local sent = $"mode={qp?.mode}"
+      if (qp?.game_modes_list != null) {
+        let tags = ", ".join(qp.game_modes_list.map(@(id) $"{id}({getModeById(id)?.tag ?? "?"})"))
+        sent = $"game_modes=[{tags}]"
+      }
+      else if (qp?.game_mode_id != null)
+        sent = $"game_mode_id={qp.game_mode_id}"
+      log($"[queue] join event={this.name} forceBatch={event?.forceBatchRequest ?? false} excludedTags=[{", ".join(excludedTags)}] {sent}")
     }
 
     if (!isForJoining)
@@ -234,7 +261,7 @@ let Event = class (BaseQueue) {
 
   function getQueueData(qParams) {
     return {
-      gameModeId = getTblValue("gameModeId", qParams, -1)
+      gameModeId = (qParams?.gameModeId ?? -1)
     }
   }
 

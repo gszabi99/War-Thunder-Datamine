@@ -1,12 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { getSpareAvailableAmount } = require("%scripts/weaponry/weaponryTypes.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
 
-gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
+let UniversalSpareApplyWnd = class (ItemsListWndBase) {
   sceneTplName = "%gui/items/universalSpareApplyWnd.tpl"
 
   unit = null
@@ -23,7 +23,7 @@ gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
       showInfoMsgBox(loc("msg/noUniversalSpareForUnit"))
       return
     }
-    handlersManager.loadHandler(gui_handlers.UniversalSpareApplyWnd,
+    handlersManager.loadHandler(get_gui_handler("UniversalSpareApplyWnd"),
     {
       unit = unitToActivate
       itemsList = list
@@ -46,7 +46,7 @@ gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
 
   function updateAmountSlider() {
     let itemsAmount = this.curItem.getAmount()
-    let availableAmount = weaponryTypes.SPARE.getMaxAmount(this.unit, null) - weaponryTypes.SPARE.getAmount(this.unit, null)
+    let availableAmount = getSpareAvailableAmount(this.unit)
     this.maxAmount = min(itemsAmount, availableAmount)
     this.curAmount = 1
 
@@ -101,3 +101,6 @@ gui_handlers.UniversalSpareApplyWnd <- class (ItemsListWndBase) {
     this.sliderObj.setValue(this.maxAmount)
   }
 }
+register_gui_handler("UniversalSpareApplyWnd", UniversalSpareApplyWnd)
+
+return { UniversalSpareApplyWnd }

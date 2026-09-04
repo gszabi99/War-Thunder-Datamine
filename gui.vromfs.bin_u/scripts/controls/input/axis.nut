@@ -1,3 +1,4 @@
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 
@@ -36,25 +37,9 @@ let Axis = class (InputBase) {
   }
 
   function getMarkupData() {
-    let data = {
-      template = ""
-      view = {}
-    }
-
-    if (this.deviceId == JOYSTICK_DEVICE_0_ID) {
-      data.view.buttonImage <- this.getImage()
-      data.template = "%gui/shortcutAxis.tpl"
-    }
-    else if (this.deviceId == STD_MOUSE_DEVICE_ID && this.axisId < 0) {
-      data.view.buttonImage <- this.getImage()
-      data.template = "%gui/shortcutAxis.tpl"
-    }
-    else {
-      data.view.text <- this.getText()
-      data.template = "%gui/keyboardButton.tpl"
-    }
-
-    return data
+    let canShowIcon = this.deviceId == JOYSTICK_DEVICE_0_ID
+      || (this.deviceId == STD_MOUSE_DEVICE_ID && this.axisId < 0) 
+    return this.getAxisMarkupData(canShowIcon ? this.getImage() : null)
   }
 
   function getText() {

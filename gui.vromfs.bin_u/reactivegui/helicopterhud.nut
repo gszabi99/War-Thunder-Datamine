@@ -1,38 +1,35 @@
+import "%rGui/mfd.nut" as mfdHud
+import "%rGui/rocketAamAim.nut" as aamAim
+import "%rGui/agmAim.nut" as agmAim
+import "%rGui/fpvShellHud.nut" as fpvShellHud
+from "%rGui/planeIls.nut" import planeIlsSwitcher
+from "%rGui/style/screenState.nut" import bw, bh, rw, rh
+from "%rGui/airState.nut" import IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask, IsArbiterHudVisible, IsPilotHudVisible, IsMainHudVisible
+  , IsGunnerHudVisible, HudColor, MfdColor, AlertColorHigh, IsMfdEnabled, IsSightHudVisible
+from "%rGui/radarState.nut" import isCollapsedRadarInReplay, IsRadarDamaged, IsRadarVisible, IsRadar2Visible, ViewMode
+from "%rGui/airHudElems.nut" import paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed
+from "%rGui/airSight.nut" import gunDirection, fixedGunsDirection, helicopterCCRP, bombSightComponent
+from "%rGui/airHudComponents.nut" import radarElement, twsElement
+from "%rGui/airHudLeftPanel.nut" import leftPanel
+from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
+from "%rGui/globals/panelIds.nut" import PNL_ID_ILS, PNL_ID_MFD
+from "%rGui/radar.nut" import radarHud, radarIndication
+from "%rGui/options/options.nut" import isHeliPilotHudDisabled
+from "%rGui/planeHmd.nut" import planeHmdElem
+from "%rGui/hudState.nut" import isPlayingReplay, isSpectatorMode
+from "%rGui/twsState.nut" import IsTwsDamaged
+from "%rGui/planeState/planeWeaponState.nut" import ShellFPVModeEnabled
 from "%rGui/globals/ui_library.nut" import *
 
-let mfdHud = require("%rGui/mfd.nut")
-let { planeIlsSwitcher } = require("%rGui/planeIls.nut")
-let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
-let {
-  IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask, IsArbiterHudVisible,
-  IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
-  HudColor, MfdColor, AlertColorHigh, IsMfdEnabled, IsSightHudVisible } = require("%rGui/airState.nut")
-let { isCollapsedRadarInReplay, IsRadarDamaged, IsRadarVisible, IsRadar2Visible, ViewMode
-} = require("%rGui/radarState.nut")
-let aamAim = require("%rGui/rocketAamAim.nut")
-let agmAim = require("%rGui/agmAim.nut")
-let { paramsTable, taTarget, compassElem, rocketAim, vertSpeed, horSpeed } = require("%rGui/airHudElems.nut")
-let { gunDirection, fixedGunsDirection, helicopterCCRP, bombSightComponent } = require("%rGui/airSight.nut")
-let { radarElement, twsElement } = require("%rGui/airHudComponents.nut")
-let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
-let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
-let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
-let { radarHud, radarIndication } = require("%rGui/radar.nut")
-let { isHeliPilotHudDisabled } = require("%rGui/options/options.nut")
-let { planeHmdElem }  = require("%rGui/planeHmd.nut")
-let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
-let { IsTwsDamaged } = require("%rGui/twsState.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { helicopterTargetingPodSight } = require("%rGui/targetingPodSight.nut")
-let { ShellFPVModeEnabled } = require("%rGui/planeState/planeWeaponState.nut")
-let fpvShellHud = require("%rGui/fpvShellHud.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(15)]
 
-let paramsTableWidthHeli = hdpx(450)
-let paramsTableHeightHeli = hdpx(28)
-let arbiterParamsTableWidthHelicopter = hdpx(200)
+const paramsTableWidthHeli = hdpx(450)
+const paramsTableHeightHeli = hdpx(28)
+const arbiterParamsTableWidthHelicopter = hdpx(200)
 let positionParamsTable = Computed(@() [max(bw.get(), sw(50) - hdpx(660)), sh(50) - hdpx(80)])
 
 let radarSizeComp = Computed(@() isPlayingReplay.get() ? [sh(50), sh(25)] : [sh(66), sh(33)])
@@ -164,7 +161,7 @@ let indicatorsCtor = @() {
     IndicatorsVisible
     IsMfdEnabled
   ]
-  size = flex()
+  size = FLEX
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   children = (IndicatorsVisible.get() || IsMfdEnabled.get())

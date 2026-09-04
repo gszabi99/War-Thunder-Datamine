@@ -1,11 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "chat" import CHAT_MODE_TEAM, chat_set_mode
+from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 
-let { CHAT_MODE_TEAM, chat_set_mode } = require("chat")
-let { eventbus_send } = require("eventbus")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let { getMaxRoomMsgAmount } = require("%scripts/chat/chatStorage.nut")
-let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
+let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
 
 let mpChatState = persist("mpChatState", @() {
   log = [],

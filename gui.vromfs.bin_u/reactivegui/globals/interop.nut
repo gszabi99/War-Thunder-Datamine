@@ -1,3 +1,8 @@
+from "reactiveInterop" import set_interop_table
 
-#allow-root-table
-return { interop = getroottable()["interop"] }
+
+
+let interop = {}
+set_interop_table(interop)
+
+return { interop }

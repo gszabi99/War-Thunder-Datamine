@@ -1,18 +1,28 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import EDifficulties
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%sqstd/platform.nut" import isPC
+from "dagor.workcycle" import deferOnce
+from "mission" import get_game_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/events/eventsConsts.nut" import UnitRelevance
 
-let { isPC } = require("%sqstd/platform.nut")
-let { EDifficulties } = require("%appGlobals/ranks_common_shared.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let eventsState = require("%scripts/events/eventsState.nut")
+let { getEventDiffCode, getLastPlayedEvent, isEventsLoaded } = eventsState
+let getEventById = eventsState.getEvent 
+let { checkUnitRelevanceForEvent, getAvailableCountriesByEvent, getEDiffByEvent, isUnitAllowedForEvent, isUnitTypeAvailable, isUnitTypeRequired } = require("%scripts/events/eventTeamsInfo.nut")
+let { getEventNameText, getNameLocOldStyle } = require("%scripts/events/eventTexts.nut")
+let { diffCodeCompare, getEventPreviewVideoName, getEventTileImageName, getEventsForGcDrawer, getEventsVisibleInEventsWindowCount, isEventDisplayWide, isEventEnableOnDebug } = require("%scripts/events/eventDisplay.nut")
+let { eventChaptersManager } = require("%scripts/events/eventsChapter.nut")
+let { getLeaderGameModeId, isInSquad, isNotAloneOnline, isSquadLeader, isSquadMember } = require("%scripts/squads/squadState.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let RB_GM_TYPE = require("%scripts/gameModes/rbGmTypes.nut")
-let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
-} = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
+let { LEADER_GAME_MODE_APPLIED } = require("%scripts/crossModuleEvents.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
@@ -20,21 +30,17 @@ let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { getEventDisplayType, isEventForClan, isEventForNewbies } = require("%scripts/events/eventInfo.nut")
+let { getEventDisplayType, isEventForClan, isEventForNewbies, hasEventFeature, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getNextNewbieEvent, isMeNewbie } = require("%scripts/myStats.nut")
 let { getUnitTypeByNewbieEventId } = require("%scripts/user/myStatsState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
-let { deferOnce } = require("dagor.workcycle")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isQueueActive, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
-let { get_game_mode } = require("mission")
 let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { slotbarPresetsByCountry } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 
 
@@ -117,7 +123,7 @@ let setUserGameModeId = @(id) userGameModeId = id
 let getGameModeById = @(id) gameModeById?[id]
 
 function setCurrentGameModeId(id, save, isUserSelected = false) {
-  if (!events.isEventsLoaded())
+  if (!isEventsLoaded())
     return
 
   if (isUserSelected)
@@ -138,13 +144,13 @@ function setCurrentGameModeById(id, isUserSelected = false) {
   setCurrentGameModeId(id, true, isUserSelected)
 }
 
-let imgFolder = "#ui/images/game_modes_tiles/"
+const imgFolder = "#ui/images/game_modes_tiles/"
 
 let featuredModes = [
   {
     
     modeId = "world_war_featured_game_mode"
-    text = @() loc("mainmenu/btnWorldwar")
+    getText = @() loc("mainmenu/btnWorldwar")
     textDescription = @() getPlayedOperationText()
     isWide = @() isMeNewbie() || !isPC
     image = @() getOperationById(getLastPlayedOperationId()) != null
@@ -165,7 +171,7 @@ let featuredModes = [
   {
     
     modeId = "tss_featured_game_mode"
-    text = @() loc("mainmenu/btnTournamentsTSS")
+    getText = @() loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
     isWide = false
     
@@ -183,8 +189,8 @@ let featuredModes = [
   {
     
     modeId = "tournaments_and_event_featured_game_mode"
-    text = function () {
-      let activeEventsNum = events.getEventsVisibleInEventsWindowCount()
+    function getText() {
+      let activeEventsNum = getEventsVisibleInEventsWindowCount()
       if (activeEventsNum <= 0)
         return loc("mainmenu/events/eventlist_btn_no_active_events")
       else
@@ -195,16 +201,14 @@ let featuredModes = [
     
     image = @() $"{imgFolder}events_thin?P1"
     videoPreview = null
-    isVisible = @() hasFeature("Events") && events.getEventsVisibleInEventsWindowCount() > 0
+    isVisible = @() hasFeature("Events") && getEventsVisibleInEventsWindowCount() > 0
     hasNewIconWidget = false
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.get()
   }
   {
     
     modeId = "custom_battles_featured_game_mode"
-    text = function () {
-      return loc("mainmenu/btnSkirmish")
-    }
+    getText = @() loc("mainmenu/btnSkirmish")
     textDescription = function() { return null }
     isWide = false
     
@@ -234,16 +238,16 @@ let customGameModesBattles = [
     displayWide = true
     getEventId = function() {
       let curUnit = getCurSlotbarUnit()
-      let chapter = events.getChapter("simulation_battles")
+      let chapter = eventChaptersManager.getChapter("simulation_battles")
       let chapterEvents = chapter ? chapter.getEvents() : []
 
       local openEventId = null
       if (chapterEvents.len()) {
-        let lastPlayedEventId = events.getLastPlayedEvent()?.name
+        let lastPlayedEventId = getLastPlayedEvent()?.name
         let lastPlayedEventRelevance = isInArray(lastPlayedEventId, chapterEvents) ?
-          events.checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
+          checkUnitRelevanceForEvent(lastPlayedEventId, curUnit) : UnitRelevance.NONE
         let relevanceList = chapterEvents.map(@(id) { eventId = id,
-          relevance = events.checkUnitRelevanceForEvent(id, curUnit) })
+          relevance = checkUnitRelevanceForEvent(id, curUnit) })
         relevanceList.sort(@(a, b) b.relevance <=> a.relevance || a.eventId <=> b.eventId)
         openEventId = relevanceList.findvalue(@(item) lastPlayedEventRelevance >= item.relevance)?.eventId
           ?? lastPlayedEventId
@@ -254,7 +258,7 @@ let customGameModesBattles = [
     inactiveColor = function() {
       if (!isMultiplayerPrivilegeAvailable.get())
         return true
-      let chapter = events.getChapter("simulation_battles")
+      let chapter = eventChaptersManager.getChapter("simulation_battles")
       return !chapter || chapter.isEmpty()
     }
     isVisible = @() hasFeature("AllModesInRandomBattles") && g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)
@@ -349,7 +353,7 @@ function getGameModesPartitions() {
     
     if (diffCode == -1) {
       partition.gameModes.sort(function (gm1, gm2) {
-        return events.diffCodeCompare(gm1.diffCode, gm2.diffCode)
+        return diffCodeCompare(gm1.diffCode, gm2.diffCode)
       })
     }
     partitions.append(partition)
@@ -418,7 +422,7 @@ function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -
 
   
   let event = getNextNewbieEvent(null, null, true)
-  let idFromEvent = getTblValue("name", event, null)
+  let idFromEvent = event?.name
   if (idFromEvent in gameModeById)
     return idFromEvent
 
@@ -458,7 +462,7 @@ function updateCurrentGameModeId() {
   let curGameModeId = findCurrentGameModeId()
   if (curGameModeId != null) {
     
-    let save = curGameModeId == null && events.isEventsLoaded()
+    let save = curGameModeId == null && isEventsLoaded()
     setCurrentGameModeId(curGameModeId, save)
   }
 }
@@ -481,7 +485,7 @@ function getGameModeEvent(gm) {
   if (gm?.getEvent)
     return gm.getEvent()
 
-  return gm?.getEventId ? events.getEvent(gm.getEventId()) : null
+  return gm?.getEventId ? getEventById(gm.getEventId()) : null
 }
 
 function getUnitTypesByGameMode(gameMode, isOnlyAvailable = true, needReqUnitType = false) {
@@ -494,8 +498,8 @@ function getUnitTypesByGameMode(gameMode, isOnlyAvailable = true, needReqUnitTyp
 
   let event = getGameModeEvent(gameMode)
   return filteredUnitTypes
-    .filter(@(unitType) needReqUnitType ? events.isUnitTypeRequired(event, unitType.esUnitType)
-      : events.isUnitTypeAvailable(event, unitType.esUnitType))
+    .filter(@(unitType) needReqUnitType ? isUnitTypeRequired(event, unitType.esUnitType)
+      : isUnitTypeAvailable(event, unitType.esUnitType))
     .map(@(unitType) unitType.esUnitType)
 }
 
@@ -513,26 +517,27 @@ function createEventGameMode(event, isTempGameMode = false) {
     eventForSquad = null
     modeId = event.name
     type = RB_GM_TYPE.EVENT
-    text = events.getEventNameText(event)
-    diffCode = events.getEventDiffCode(event)
-    ediff = events.getEDiffByEvent(event)
-    image = events.getEventTileImageName(event, events.isEventDisplayWide(event))
-    videoPreview = hasFeature("VideoPreview") ? events.getEventPreviewVideoName(event, events.isEventDisplayWide(event)) : null
+    getText = @() getEventNameText(event)
+    diffCode = getEventDiffCode(event)
+    ediff = getEDiffByEvent(event)
+    image = getEventTileImageName(event, isEventDisplayWide(event))
+    videoPreview = hasFeature("VideoPreview") ? getEventPreviewVideoName(event, isEventDisplayWide(event)) : null
     displayType = getEventDisplayType(event)
     forClan = isForClan
-    countries = events.getAvailableCountriesByEvent(event)
-    displayWide = events.isEventDisplayWide(event)
-    enableOnDebug = events.isEventEnableOnDebug(event)
-    getEvent = function() { return (g_squad_manager.isNotAloneOnline() && this.eventForSquad) || event }
+    countries = getAvailableCountriesByEvent(event)
+    displayWide = isEventDisplayWide(event)
+    enableOnDebug = isEventEnableOnDebug(event)
+    getEvent = function() { return (isNotAloneOnline() && this.eventForSquad) || event }
     unitTypes = null
     reqUnitTypes = null
     inactiveColor = null
+    defAbbreviateLocId = $"{getNameLocOldStyle(event, getEventEconomicName(event))}/abbr"
   }
   gameMode.unitTypes = getUnitTypesByGameMode(gameMode, false)
   let reqUnitTypes = getUnitTypesByGameMode(gameMode, false, true)
   gameMode.reqUnitTypes = reqUnitTypes
   gameMode.inactiveColor = function() {
-    local inactiveColor = !events.checkEventFeature(event, true)
+    local inactiveColor = !hasEventFeature(event)
 
     if (!inactiveColor)
       foreach (esUnitType in reqUnitTypes) {
@@ -551,11 +556,11 @@ function createCustomGameMode(gm) {
     id = gm.id
     source = null
     type = RB_GM_TYPE.CUSTOM
-    text = gm.difficulty.getLocName()
+    getText = @() gm.difficulty.getLocName()
     diffCode = gm.difficulty.diffCode
     ediff = gm.difficulty.getEdiff()
     image = gm.image
-    linkIcon = getTblValue("linkIcon", gm, false)
+    linkIcon = (gm?.linkIcon ?? false)
     videoPreview = null
     displayType = gm.type
     forClan = false
@@ -565,7 +570,7 @@ function createCustomGameMode(gm) {
     inactiveColor = gm?.inactiveColor ?? @() false
     unitTypes = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_BOAT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_HELICOPTER]
     getEventId = @() gm?.getEventId()
-    getEvent = @() events.getEvent(gm?.getEventId())
+    getEvent = @() getEventById(gm?.getEventId())
   }
   return appendGameMode(gameMode)
 }
@@ -574,26 +579,27 @@ function updateGameModes() {
   clearGameModes()
 
   let newbieGmByUnitType = {}
-  foreach (unitType in unitTypes.types) {
-    let event = getNextNewbieEvent(null, unitType.esUnitType, false)
-    if (event)
-      newbieGmByUnitType[unitType.esUnitType] <- createEventGameMode(event)
-  }
+  if (!isInSquad())
+    foreach (unitType in unitTypes.types) {
+      let event = getNextNewbieEvent(null, unitType.esUnitType, false)
+      if (event)
+        newbieGmByUnitType[unitType.esUnitType] <- createEventGameMode(event)
+    }
 
   foreach (dm in customGameModesBattles) {
     if (!("isVisible" in dm) || dm.isVisible())
       createCustomGameMode(dm)
   }
 
-  foreach (eventId in events.getEventsForGcDrawer()) {
-    let event = events.getEvent(eventId)
+  foreach (eventId in getEventsForGcDrawer()) {
+    let event = getEventById(eventId)
     local skip = false
     local hasNewbieEvent = false
     foreach (unitType, newbieGm in newbieGmByUnitType) {
-      if (!(events.isUnitTypeAvailable(event, unitType) && events.isUnitTypeRequired(event, unitType, true)))
+      if (!(isUnitTypeAvailable(event, unitType) && isUnitTypeRequired(event, unitType, true)))
         continue
       hasNewbieEvent = true
-      if (events.getEventDiffCode(event) != newbieGm.diffCode)
+      if (getEventDiffCode(event) != newbieGm.diffCode)
         break
       if (isEventForNewbies(event))
         newbieGm.eventForSquad = event
@@ -703,26 +709,13 @@ function updateManager() {
 
 function setLeaderGameMode(id) {
   if (!getGameModeById(id))
-    createEventGameMode(events.getEvent(id), true)
+    createEventGameMode(getEventById(id), true)
 
   setCurrentGameModeId(id, false, false)
-
-  if (!g_squad_manager.isMeReady())
-    return
-
-  let leaderEvent = events.getEvent(id)
-  if (leaderEvent == null)
-    return
-
-  let requiredUnitsAvailable = events.checkRequiredUnits(leaderEvent, null, profileCountrySq.get())
-  if (!requiredUnitsAvailable) {
-    g_squad_manager.setReadyFlag(false)
-    return
-  }
-
-  let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.get())
-  if (!repairInfo.canFlyout)
-    g_squad_manager.setReadyFlag(false)
+  
+  
+  
+  broadcastEvent(LEADER_GAME_MODE_APPLIED, { modeId = id })
 }
 
 
@@ -737,7 +730,7 @@ function isUnitAllowedForGameMode(unit, gameMode = null) {
   if (!gameMode)
     return false
   return gameMode.type != RB_GM_TYPE.EVENT
-    || events.isUnitAllowedForEvent(getGameModeEvent(gameMode), unit)
+    || isUnitAllowedForEvent(getGameModeEvent(gameMode), unit)
 }
 
   
@@ -746,7 +739,7 @@ function isUnitAllowedForGameMode(unit, gameMode = null) {
 
 
 function isPresetValidForGameMode(preset, gameMode = null) {
-  let unitNames = getTblValue("units", preset, null)
+  let unitNames = preset?.units
   if (unitNames == null)
     return false
   if (gameMode == null)
@@ -785,11 +778,11 @@ function getCurrentGameModeEdiff() {
 }
 
 function updateVisibleGameMode() {
-  if (g_squad_manager.isSquadLeader())
+  if (isSquadLeader())
     return
 
-  if (g_squad_manager.isInSquad()) {
-    let id = g_squad_manager.getLeaderGameModeId()
+  if (isInSquad()) {
+    let id = getLeaderGameModeId()
     if (id != "" && id != getCurrentGameModeId())
       setLeaderGameMode(id)
     return
@@ -805,6 +798,7 @@ addListenersWithoutEnv({
   MyStatsUpdated             = @(_) updateManager()
   UnitTypeChosen             = @(_) updateManager()
   CrewTakeUnit               = @(_) updateManager()
+  SquadStatusChanged         = @(_) updateManager()
   function GameLocalizationChanged(_) {
     if (!isLoggedIn.get())
       return
@@ -825,6 +819,15 @@ addListenersWithoutEnv({
 function isGameModeWithSpendableWeapons() {
   let mode = get_game_mode()
   return mode == GM_DOMINATION || mode == GM_TOURNAMENT
+}
+
+function getCurrentEvent() {
+  if (isSquadMember()) {
+    let gameModeId = getLeaderGameModeId()
+    return getEventById(gameModeId)
+  }
+  let gameMode = getCurrentGameMode()
+  return gameMode ? getGameModeEvent(gameMode) : null
 }
 
 return {
@@ -855,4 +858,5 @@ return {
   getCurrentShopDifficulty
   getCurrentGameModeEdiff
   isGameModeWithSpendableWeapons
+  getCurrentEvent
 }

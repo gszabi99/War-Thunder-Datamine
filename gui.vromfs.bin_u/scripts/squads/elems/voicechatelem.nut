@@ -1,17 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "chat" import get_option_voicechat
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { get_option_voicechat } = require("chat")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 

@@ -1,12 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import gchat_is_connected
 from "%scripts/dagui_library.nut" import *
 
-let { get_time_msec } = require("dagor.time")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const CHAT_SYSTEM_MESSAGE_TIMEOUT_MSEC = 60000
 const SYSTEM_COLOR = "@chatInfoColor"

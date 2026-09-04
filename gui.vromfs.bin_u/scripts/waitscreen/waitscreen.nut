@@ -1,10 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim
-} = require("%sqDagui/framework/msgBox.nut")
-let { defer } = require("dagor.workcycle")
+let { update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim } = require("%scripts/sqDagui/framework/msgBox.nut")
 
 local currentWaitScreen = null
 local currentWaitScreenText = ""

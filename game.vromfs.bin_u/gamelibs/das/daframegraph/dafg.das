@@ -108,14 +108,14 @@ def root() : NameSpace
   return NameSpace(nameSpaceId = getRegistry().knownNames |> root)
 
 
-def operator /(var self : NameSpace; child_name : string) : NameSpace
+def operator /(self : NameSpace; child_name : string) : NameSpace
   if is_in_aot() || is_in_completion()
     return <- NameSpace()
 
   return NameSpace(nameSpaceId = getRegistry().knownNames |> addNameId`NameSpaceNameId(self.nameSpaceId, child_name))
 
 
-def fillSlot(var self : NameSpace; slot : NamedSlot; res_name_space : NameSpace; res_name : string)
+def fillSlot(self : NameSpace; slot : NamedSlot; res_name_space : NameSpace; res_name : string)
   fill_slot(self.nameSpaceId, slot.name, res_name_space.nameSpaceId, res_name)
 
 
@@ -127,7 +127,7 @@ def private get(var nodes : idIndexedMapping`NodeNameId`NodeData&; node_id : Nod
   return <- cb |> invoke(nodes |> get(node_id))
 
 
-def registerNode(var self : NameSpace; name : string; var declaration_callback : lambda<(var reg : Registry) : lambda<void>>) : NodeHandle
+def registerNode(self : NameSpace; name : string; var declaration_callback : lambda<(var reg : Registry) : lambda<void>>) : NodeHandle
   if is_in_aot() || is_in_completion()
     return <- NodeHandle()
 
@@ -349,7 +349,7 @@ def isDasNative(var t : TypeDeclPtr) : bool
   if t.isHandle
     return false
 
-  if length(t.dim) > 0
+  if t.baseType == Type.tFixedArray
     return true
 
   
@@ -558,6 +558,7 @@ def optional(var self : auto(TT)) : TT
 def useAs(var self : auto(TT); usageType : Usage) : TT
   let setUsage = $ <| (var request : ResourceRequest &)
     request.usage.usageType = usageType
+    request.usageDeclared = true
   self |> modifyRequest(setUsage)
   return self
 
@@ -626,7 +627,7 @@ def requestState(var self : Registry) : StateRequest
   return StateRequest(registry = self.registry, nodeId = self.nodeId)
 
 
-def private setBlock(var self : StateRequest; name : string; layer : string; var value : int&) : StateRequest
+def private setBlock(var self : StateRequest; name : string; layer : string; var value : int&) : StateRequest    
   if value != -1
     let selfName = self.registry.knownNames |> getName(self.nodeId)
     error("Block requested to be set to layer {layer} twice within {selfName} frame graph node! Ignoring one of the requests!")

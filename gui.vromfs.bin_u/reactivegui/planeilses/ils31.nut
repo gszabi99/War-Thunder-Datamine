@@ -1,27 +1,30 @@
+import "string" as string
+from "%rGui/planeState/planeFlyState.nut" import Speed, BarAltitude, Tangage, Accel
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKmh, baseLineWidth, radToDeg, weaponTriggerName
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget, BombCCIPMode, RocketMode
+  , CannonMode, TargetPosValid, TargetPos, AirCannonMode, AimLockValid, AimLockDist, BombingMode
+  , TimeBeforeBombRelease, RadarTargetHeight, RadarTargetDistRate
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkASP
+from "%rGui/planeIlses/commonElements.nut" import ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine
+from "%rGui/radarState.nut" import IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax, IsRadarVisible, RadarModeNameId, ScanElevationMax
+  , ScanElevationMin, ElevationMin, ElevationMax, Elevation, HasAzimuthScale, IsCScopeVisible, HasDistanceScale
+  , Irst, DistanceMax, CueVisible, CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel
+  , CueDist, TargetRadarDist, CueDistWidthRel, IsRadarEmitting, TimeToMissileHitRel, AzimuthMin, AzimuthMax
+  , ScanAzimuthMin, ScanAzimuthMax
+from "%rGui/planeState/planeWeaponState.nut" import CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger
+from "%rGui/rocketAamAimState.nut" import IlsTrackerVisible, IlsTrackerX, IlsTrackerY
+from "%rGui/airState.nut" import IsAgmLaunchZoneVisible, IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge1Y, IlsAtgmLaunchEdge2X, IlsAtgmLaunchEdge2Y, IlsAtgmLaunchEdge3X, IlsAtgmLaunchEdge3Y
+  , IlsAtgmLaunchEdge4X, IlsAtgmLaunchEdge4Y, IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, AgmLaunchZoneDistMax
+from "%rGui/hud/targetTrackerState.nut" import HasTargetTracker
+from "%sqstd/math.nut" import floor, ceil, round, sqrt, abs
+from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
-let { Speed, BarAltitude, Tangage, Accel } = require("%rGui/planeState/planeFlyState.nut")
-let { mpsToKmh, baseLineWidth, radToDeg, weaponTriggerName } = require("%rGui/planeIlses/ilsConstants.nut")
-let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget,
-  BombCCIPMode, RocketMode, CannonMode, TargetPosValid, TargetPos, RadarTargetPos, IlsPosSize,
-  AirCannonMode, AimLockPos, AimLockValid, AimLockDist, BombingMode, TimeBeforeBombRelease,
-  RadarTargetHeight, RadarTargetDistRate } = require("%rGui/planeState/planeToolsState.nut")
-let { compassWrap, generateCompassMarkASP } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("%rGui/planeIlses/commonElements.nut")
-let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax,
-  IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, ElevationMin, ElevationMax, Elevation,
-  HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax, CueVisible,
-  CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel,
-  IsRadarEmitting, TimeToMissileHitRel, AzimuthMin, AzimuthMax, ScanAzimuthMin, ScanAzimuthMax } = require("%rGui/radarState.nut")
-let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
-let string = require("string")
-let { floor, ceil, round, sqrt, abs } = require("%sqstd/math.nut")
-let { cvt } = require("dagor.math")
-let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { IsAgmLaunchZoneVisible, IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge1Y, IlsAtgmLaunchEdge2X, IlsAtgmLaunchEdge2Y,
- IlsAtgmLaunchEdge3X, IlsAtgmLaunchEdge3Y, IlsAtgmLaunchEdge4X, IlsAtgmLaunchEdge4Y, IsInsideLaunchZoneYawPitch,
- IsInsideLaunchZoneDist, AgmLaunchZoneDistMax } = require("%rGui/airState.nut")
-let {HasTargetTracker} = require("%rGui/hud/targetTrackerState.nut");
+
+let { RadarTargetPos, IlsPosSize, AimLockPos } = require("%rGui/planeState/planeToolsState.nut")
+let { ASPAirSymbolWrap } = require("%rGui/planeIlses/commonElements.nut")
+let { modeNames, targets } = require("%rGui/radarState.nut")
+let { enableSu25tAddons, pitchBlock, accelerationSu25t, opticsLimitWarning, targetDistanceText, opticsReadyIndicator, CCIPLine, radarTargetType, lauchPermitedIndicator, targetDistanceRocket, aamLaunchPermitted, rocketFlightTime, radarHudDisabled, agmLaunchZoneSu25T, weaponDistanceGrid, bombFlightDistance, bombTargetHorDistance } = require("su25tAddons.nut")
 
 let RadarTargetValid = Computed(@() RadarTargetDist.get() > 0.0)
 let AirTargetCannonMode = Computed(@() AirCannonMode.get() && RadarTargetValid.get())
@@ -33,7 +36,7 @@ let speed = @() {
   watch = [SpeedValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(17), ph(20)]
+  pos = const [pw(17), ph(20)]
   color = IlsColor.get()
   fontSize = 50
   font = Fonts.ils31
@@ -45,11 +48,11 @@ let altitude = @() {
   watch = [AltValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(71), ph(20)]
+  pos = const [pw(71), ph(20)]
   color = IlsColor.get()
   fontSize = 50
   font = Fonts.ils31
-  text = string.format("%dp", AltValue.get())
+  text = AltValue.get().tostring()
 }
 
 let AccelWatch = Computed(@() clamp((50.0 - Accel.get() * mpsToKmh), 0, 100).tointeger())
@@ -58,7 +61,7 @@ let acceleration = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   size = const [pw(10), ph(2)]
-  pos = [pw(17), ph(25)]
+  pos = const [pw(17), ph(25)]
   color = IlsColor.get()
   commands = [
     [VECTOR_LINE, 0, 0, 100, 0]
@@ -67,7 +70,7 @@ let acceleration = @() {
     watch = AccelWatch
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       [VECTOR_LINE, 100 - AccelWatch.get(), 5, 100 - AccelWatch.get() + 10, 100],
@@ -79,7 +82,7 @@ let acceleration = @() {
 
 let compassMark = @() {
   watch = IlsColor
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
@@ -92,11 +95,13 @@ let compassMark = @() {
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let AtgmMode = Computed(@() SelectedTrigger.get() == weaponTriggerName.AGM_TRIGGER)
-let RollVisible = Computed(@() CCIPMode.get() || !IsRadarVisible.get())
+let AamMode = Computed(@() SelectedTrigger.get() == weaponTriggerName.AAM_TRIGGER)
+
+let RollVisible = Computed(@() (CCIPMode.get() || !IsRadarVisible.get()) && ((!AamMode.get() && !AtgmMode.get()) || !enableSu25tAddons.get()))
 let rollIndicator = @() {
   watch = [RollVisible, AirTargetCannonMode, IlsColor]
   size = const [pw(15), ph(15)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
@@ -170,7 +175,7 @@ let connectors = @() {
   children = [
     @() {
       watch = [WeaponSlots, WeaponSlotActive]
-      size = flex()
+      size = FLEX
       children = getWeaponSlotNumber(WeaponSlots.get(), WeaponSlotActive.get())
     }
   ]
@@ -179,10 +184,10 @@ let connectors = @() {
 function generatePitchLine(num) {
   return {
     size = const [pw(60), ph(30)]
-    pos = [pw(20), 0]
+    pos = const [pw(20), 0]
     children = [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get() * (num == 0 ? 1.0 : 0.5)
@@ -190,10 +195,11 @@ function generatePitchLine(num) {
         commands = [
           (num == 0 ? [VECTOR_LINE, 0, 0, 100, 0] : [VECTOR_LINE, 95, 0, 105, 0])
         ]
+        children = enableSu25tAddons.get() && num == 0 ?  pitchBlock : null
       },
       @() {
         size = SIZE_TO_CONTENT
-        pos = [pw(95), ph(-25)]
+        pos = const [pw(95), ph(-25)]
         watch = IlsColor
         rendObj = ROBJ_TEXT
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -234,7 +240,7 @@ function pitchWrap(width, height) {
   return @() {
     watch = AirCannonMode
     size = const [pw(50), ph(50)]
-    pos = [pw(25), ph(25)]
+    pos = const [pw(25), ph(25)]
     clipChildren  = true
     children = !AirCannonMode.get() ? [
       pitch(width, height, generatePitchLine)
@@ -246,16 +252,16 @@ let BVBMode = Computed(@() !CCIPMode.get() && !AirCannonMode.get() && RadarModeN
 function basicInfo(width, height) {
   return @() {
     watch = [AirCannonMode, AirNoTargetCannonMode]
-    size = flex()
+    size = FLEX
     children = [
       speed,
-      acceleration,
+      enableSu25tAddons.get() ? accelerationSu25t : acceleration,
       (!AirCannonMode.get() ? compassWrap(width, height, 0.17, generateCompassMarkASP, 0.6, 5.0, false, -1, Fonts.ils31) : null),
       (!AirCannonMode.get() ? compassMark : null),
       altitude,
       (!AirNoTargetCannonMode.get() ? rollIndicator : null),
       pitchWrap(width, height),
-      connectors
+      connectors,
     ]
   }
 }
@@ -264,7 +270,7 @@ let radarMaxDist = @() {
   watch = [RadarDistanceMax, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(18), ph(28)]
+  pos = const [pw(18), ph(28)]
   color = IlsColor.get()
   fontSize = 35
   font = Fonts.ils31
@@ -276,7 +282,7 @@ let radarMaxElev = @() {
   watch = [MaxElevation, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(70), ph(28)]
+  pos = const [pw(70), ph(28)]
   color = IlsColor.get()
   fontSize = 35
   font = Fonts.ils31
@@ -292,7 +298,7 @@ let curRadarDist = @() {
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       [VECTOR_LINE, 0, 0, 40, -100],
@@ -311,7 +317,7 @@ let maxAamDistMarkDgftPos = Computed(@() DistanceMax.get() > 0 ? ((1.0 - AamLaun
 let AamDistMarkDgftVis = Computed(@() AamLaunchZoneDistDgftMax.get() > 0.0)
 let maxMinLaunchDist = @() {
   watch = [IsAamLaunchZoneVisible, AirTargetCannonMode, AamDistMarkDgftVis]
-  size = flex()
+  size = FLEX
   children = IsAamLaunchZoneVisible.get() && !AirTargetCannonMode.get() ?
    [
      @() {
@@ -342,7 +348,7 @@ let maxMinLaunchDist = @() {
 let maxAgmDistMarkPos = Computed(@() DistanceMax.get() > 0 ? ((DistanceMax.get() * 1000.0 - AgmLaunchZoneDistMax.get()) * 0.1 / DistanceMax.get()).tointeger() : 0)
 let maxAtgmLaunchDist = @() {
   watch = [AtgmMode]
-  size = flex()
+  size = FLEX
   children = AtgmMode.get()?
    [
      @() {
@@ -359,7 +365,7 @@ let maxAtgmLaunchDist = @() {
 let radarDistGrid = @() {
   watch = IlsColor
   size = const [pw(1.5), ph(40)]
-  pos = [pw(24), ph(30)]
+  pos = const [pw(24), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -391,7 +397,7 @@ let curCCIPDist = @() {
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       [VECTOR_LINE, 0, 0, 40, -100],
@@ -407,7 +413,7 @@ let curCCIPDist = @() {
 let ccipDistGrid = @() {
   watch = IlsColor
   size = const [pw(1.5), ph(40)]
-  pos = [pw(24), ph(30)]
+  pos = const [pw(24), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -438,7 +444,7 @@ let ccipDistGrid = @() {
 let radarElevGrid = @() {
   watch = IlsColor
   size = const [pw(1.5), ph(40)]
-  pos = [pw(74), ph(30)]
+  pos = const [pw(74), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -454,10 +460,10 @@ let radarType = @(is_cn) function() {
   return {
     watch = [Irst, IlsColor]
     size = const [pw(10), SIZE_TO_CONTENT]
-    pos = [pw(14), ph(35.5)]
+    pos = enableSu25tAddons.get() ? [pw(7), ph(35.5)] : [pw(14), ph(35.5)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
-    fontSize = 50
+    fontSize = enableSu25tAddons.get() ? 35 : 50
     font = Fonts.ils31
     text = is_cn ? (Irst.get() ? "光学" : "雷达") : (Irst.get() ? "ТП" : "РЛ")
     halign = ALIGN_RIGHT
@@ -467,7 +473,8 @@ let radarType = @(is_cn) function() {
 let elevationMark = @() {
   watch = [Elevation, IlsColor]
   size = [baseLineWidth * 0.8 * IlsLineScale.get(), ph(10)]
-  pos = [pw(103), ph((1.0 - Elevation.get()) * 100 - 5)]
+  pos = enableSu25tAddons.get() ? [pw(105), ph((1.0 - Elevation.get()) * 100 - 5)]
+    : [pw(103), ph((1.0 - Elevation.get()) * 100 - 5)]
   rendObj = ROBJ_SOLID
   color = IlsColor.get()
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -487,7 +494,7 @@ function createTargetDist(index) {
   return @() {
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
     color = IlsColor.get()
     fillColor = Color(0, 0, 0, 0)
@@ -539,7 +546,7 @@ function createTargetDist(index) {
 function radarReticle(width, height) {
   return @() {
     watch = RadarTargetPosValid
-    size = flex()
+    size = FLEX
     children = RadarTargetPosValid.get() ?
     [
       @() {
@@ -582,7 +589,7 @@ let cue = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = 2
   color = IlsColor.get()
-  size = flex()
+  size = FLEX
   commands = [
     [VECTOR_LINE, -100.0 * CueAzimuthHalfWidthRel.get(), -50.0 * CueDistWidthRel.get(), -100.0 * CueAzimuthHalfWidthRel.get(), 50.0 * CueDistWidthRel.get()],
     [VECTOR_LINE,  100.0 * CueAzimuthHalfWidthRel.get(), -50.0 * CueDistWidthRel.get(),  100.0 * CueAzimuthHalfWidthRel.get(), 50.0 * CueDistWidthRel.get()],
@@ -594,14 +601,14 @@ let cue = @() {
 let cueIndicator = @(){
   watch = CueVisible
   size = const [pw(50), ph(40)]
-  pos = [pw(25), ph(30)]
+  pos = const [pw(25), ph(30)]
   children = CueVisible.get() ? @(){
     watch = [CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel]
     pos = [
       pw((CueAzimuth.get() * (TargetRadarAzimuthWidth.get() / AzimuthRange.get() - CueAzimuthHalfWidthRel.get()) + 0.5) * 100),
       ph((1.0 - (0.5 * CueDistWidthRel.get() + CueDist.get() * TargetRadarDist.get() * (1.0 - CueDistWidthRel.get()))) * 100)
     ]
-    size = flex()
+    size = FLEX
     children = cue
   } : null
 }
@@ -610,7 +617,7 @@ let radarTargetAltitude = @() {
   watch = [RadarTargetHeight, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(71), ph(15)]
+  pos = const [pw(71), ph(15)]
   color = IlsColor.get()
   fontSize = 50
   font = Fonts.ils31
@@ -630,8 +637,8 @@ let radarTargetClosingSpeedScale = @() function() {
   return {
     watch = [RadarTargetDistRate, SpeedValue, IlsColor, IlsLineScale]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
-    pos = [pw(74.5), ph(66)]
+    size = FLEX
+    pos = const [pw(74.5), ph(66)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = [
@@ -677,7 +684,7 @@ function selectedTargetAspectAngle(index) {
     watch = [IlsColor, IlsLineScale]
     rendObj = ROBJ_VECTOR_CANVAS
     size = const [pw(5), ph(5)]
-    pos = [pw(25.5), ph(70)]
+    pos = const [pw(25.5), ph(70)]
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
     commands = [
@@ -705,7 +712,7 @@ function selectedTargetAspectAngle(index) {
 let selectedTargetDetails = @() function() {
   return {
     watch = [RadarTargetValid]
-    size = flex()
+    size = FLEX
     children = RadarTargetValid.get() ? [
       radarTargetAltitude
       radarTargetClosingSpeedScale()
@@ -716,7 +723,7 @@ let selectedTargetDetails = @() function() {
 
 let TimeToMissileHitIndicator =  @() {
   watch = TimeToMissileHitRel
-  size = flex()
+  size = FLEX
   children = TimeToMissileHitRel.get() >= 0 ?
   [
     @() {
@@ -724,7 +731,7 @@ let TimeToMissileHitIndicator =  @() {
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       size = const [pw(30),  ph(1)]
-      pos = [pw(35), ph(35)]
+      pos = const [pw(35), ph(35)]
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = [
         [VECTOR_LINE, 0, 0, TimeToMissileHitRel.get() * 100, 0],
@@ -739,7 +746,7 @@ let radarEmittingIcon = @() {
   watch = IlsColor
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(5), ph(66)]
+  pos = enableSu25tAddons.get() ? [pw(45), ph(70)] : [pw(5), ph(66)]
   color = IlsColor.get()
   fontSize = 50
   font = Fonts.ils31
@@ -753,12 +760,12 @@ let scanAzimuth =  @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   size = const [pw(45),  ph(1)]
-  pos = [pw(27.5), ph(73.5)]
+  pos = enableSu25tAddons.get() ? [pw(27.5), ph(68)] : [pw(27.5), ph(73.5)]
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands =  !enableSu25tAddons.get() ? [
     [VECTOR_LINE, 0, 0, 100, 0],
     [VECTOR_LINE, scanAzimuthMinX.get(), 100, scanAzimuthMaxX.get(), 100]
-  ]
+  ] : [[VECTOR_LINE, scanAzimuthMinX.get(), 100, scanAzimuthMaxX.get(), 100]]
 }
 
 let scanElevationMinY = Computed(@() round(cvt(ScanElevationMin.get(), ElevationMin.get(), ElevationMax.get(), 100, 0)).tointeger())
@@ -768,18 +775,18 @@ let scanElevation = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   size = const [pw(1),  ph(45)]
-  pos = [pw(75.5), ph(27.5)]
+  pos = const [pw(75.5), ph(27.5)]
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = !enableSu25tAddons.get() ? [
     [VECTOR_LINE, 0, 0, 0, 100],
     [VECTOR_LINE, 100, scanElevationMinY.get(), 100, scanElevationMaxY.get()]
-  ]
+  ] : [[VECTOR_LINE, 100, scanElevationMinY.get(), 100, scanElevationMaxY.get()]]
 }
 
 let radar = @(is_cn) function() {
   return {
     watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode, IsRadarEmitting]
-    size = flex()
+    size = FLEX
     children = IsRadarVisible.get() && !CCIPMode.get() && !AirNoTargetCannonMode.get() && !BombingMode.get() ? [
       ((!Irst.get() && !BVBMode.get()) || RadarTargetValid.get() ? radarDistGrid : null),
       ((!Irst.get() && !BVBMode.get()) || RadarTargetValid.get() ? radarMaxDist : null),
@@ -787,7 +794,7 @@ let radar = @(is_cn) function() {
       (!Irst.get() && !RadarTargetValid.get() && !BVBMode.get() ? radarMaxElev : null),
       (!BVBMode.get() ? {
         size = const [pw(50), ph(40)]
-        pos = [pw(25), ph(30)]
+        pos = const [pw(25), ph(30)]
         children = [
           targetsComponent(createTargetDist),
           (!Irst.get() ? ASPAzimuthMark : null),
@@ -797,8 +804,8 @@ let radar = @(is_cn) function() {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = const [flex(), ph(60)]
-        pos = [0, ph(35)]
+        size = const [FLEX, ph(60)]
+        pos = const [0, ph(35)]
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
         commands = [
@@ -810,16 +817,22 @@ let radar = @(is_cn) function() {
       cueIndicator,
       selectedTargetDetails(),
       (IsRadarEmitting.get() && !Irst.get() ? radarEmittingIcon : null),
-      (Irst.get() && !RadarTargetValid.get() ? scanElevation : null),
-      (Irst.get() && !RadarTargetValid.get() ? scanAzimuth : null)
+      (enableSu25tAddons.get() || (Irst.get() && !RadarTargetValid.get()) ? scanElevation : null),
+      (enableSu25tAddons.get() || (Irst.get() && !RadarTargetValid.get()) ? scanAzimuth : null)
     ] : null
   }
+}
+
+let radarWrap = @(is_cn) @() {
+  watch = radarHudDisabled
+  size = FLEX
+  children = !radarHudDisabled.get() ? radar(is_cn) : null
 }
 
 function radarReticlWrap(width, height) {
   return @() {
     watch = IsRadarVisible
-    size = flex()
+    size = FLEX
     children = IsRadarVisible.get() ? radarReticle(width, height) : null
   }
 }
@@ -870,11 +883,11 @@ function currentMode(is_cn) {
   return @(){
     watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor, BombingMode]
     size = const [pw(15), SIZE_TO_CONTENT]
-    pos = [pw(9), ph(72)]
+    pos = enableSu25tAddons.get() ? [pw(2), ph(72)] : [pw(9), ph(72)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
     halign = ALIGN_RIGHT
-    fontSize = 50
+    fontSize = enableSu25tAddons.get() ? 35 : 50
     font = Fonts.ils31
     text = AirCannonMode.get() ? (is_cn ? "弹道" : "ВПУ") : (CCIPMode.get() || AtgmMode.get() || BombingMode.get() ? (is_cn ? "空对地" : "ЗМЛ") : (IsRadarVisible.get() ? getRadarMode(is_cn) : (is_cn ? "目视" : "ФИ0")))
   }
@@ -882,12 +895,12 @@ function currentMode(is_cn) {
 
 function currentSubMode(is_cn) {
   return @(){
-    watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
+    watch = [CCIPMode, RadarModeNameId, BombingMode, Irst, AirCannonMode, IlsColor]
     size = const [pw(15), SIZE_TO_CONTENT]
-    pos = [pw(9), ph(66)]
+    pos = enableSu25tAddons.get() ? [pw(2), ph(66)] : [pw(9), ph(66)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
-    fontSize = 50
+    fontSize = enableSu25tAddons.get() ? 35 : 50
     font = Fonts.ils31
     text = getRadarSubMode(is_cn)
     halign = ALIGN_RIGHT
@@ -896,9 +909,9 @@ function currentSubMode(is_cn) {
 
 function currentSideMode(is_cn) {
   return @(){
-    watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
+    watch = [CCIPMode, RadarModeNameId, BombingMode, Irst, AirCannonMode, IlsColor]
     size = const [pw(15), SIZE_TO_CONTENT]
-    pos = [pw(9), ph(31.5)]
+    pos = const [pw(9), ph(31.5)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
     fontSize = 50
@@ -915,7 +928,13 @@ let mkCcipReticle = @(ovr = {}) @() {
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get()
-  commands = [
+  commands = enableSu25tAddons.get() ? [
+    [VECTOR_LINE, 0, 0, 0, 0],
+    [VECTOR_LINE, -100, 0, 0, 100],
+    [VECTOR_LINE, 100, 0, 0, 100],
+    [VECTOR_LINE, -100, 0, 0, -100],
+    [VECTOR_LINE, 100, 0, 0, -100],
+  ] : [
     [VECTOR_ELLIPSE, 0, 0, 100, 100],
     [VECTOR_LINE, 0, 0, 0, 0]
   ]
@@ -930,7 +949,7 @@ let mkCcipReticle = @(ovr = {}) @() {
 let TargetDistAngle = Computed(@() cvt(RadarTargetDist.get(), 0, 1200, -90, 270).tointeger())
 let airGunCcrpMark = @() {
   watch = [AirTargetCannonMode, TargetPosValid]
-  size = flex()
+  size = FLEX
   children = [
     (AirTargetCannonMode.get() && TargetPosValid.get() ?
     @(){
@@ -959,12 +978,12 @@ let airGunCcrpMark = @() {
 
 let ccip = @() {
   watch = [CCIPMode, BombingMode]
-  size = flex()
+  size = FLEX
   children = CCIPMode.get() || BombingMode.get() ? [
-    ccipDistGrid,
+    !enableSu25tAddons.get() ? ccipDistGrid : null,
     @() {
       watch = [TargetPosValid, BombingMode]
-      size = flex()
+      size = FLEX
       children = TargetPosValid.get() && !BombingMode.get() ? mkCcipReticle() : null
     }
   ] : []
@@ -975,7 +994,7 @@ function shellName(is_cn) {
     watch = [IlsColor, CurWeaponName, CannonMode, AirCannonMode]
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_TEXT
-    pos = [pw(75), ph(72)]
+    pos = const [pw(75), ph(72)]
     color = IlsColor.get()
     fontSize = 35
     font = Fonts.ils31
@@ -985,7 +1004,7 @@ function shellName(is_cn) {
 
 let aamReticle = @() {
   watch = IlsTrackerVisible
-  size = flex()
+  size = FLEX
   children = IlsTrackerVisible.get() ?
   [
     @() {
@@ -1011,14 +1030,14 @@ let aamReticle = @() {
 let ShellPart = Computed(@() ceil(ShellCnt.get() / 37.5).tointeger())
 let impactLine = @() {
   watch = [AirCannonMode, AirNoTargetCannonMode]
-  size = flex()
+  size = FLEX
   children = AirCannonMode.get() ? [
     (AirNoTargetCannonMode.get() ? bulletsImpactLine : null),
     @() {
       watch = IlsColor
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
-      pos = [pw(49), ph(22)]
+      pos = const [pw(49), ph(22)]
       color = IlsColor.get()
       fontSize = 40
       font = Fonts.ils31
@@ -1027,7 +1046,7 @@ let impactLine = @() {
     @() {
       watch = IlsColor
       size = const [pw(4), ph(4)]
-      pos = [pw(70), ph(70)]
+      pos = const [pw(70), ph(70)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -1040,7 +1059,7 @@ let impactLine = @() {
       watch = [ShellPart, IlsColor]
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
-      pos = [pw(71), ph(70.2)]
+      pos = const [pw(71), ph(70.2)]
       color = IlsColor.get()
       fontSize = 40
       font = Fonts.ils31
@@ -1052,10 +1071,10 @@ let impactLine = @() {
 function agmLaunchZone(width, height) {
   return @() {
     watch = [IsAgmLaunchZoneVisible, IlsColor]
-    size = flex()
+    size = FLEX
     children = IsAgmLaunchZoneVisible.get() ? @(){
       watch = [IlsAtgmLaunchEdge1X, IlsAtgmLaunchEdge2X, IlsColor]
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       commands = [
@@ -1072,10 +1091,10 @@ function tvMode(is_cn) {
   return @(){
     watch = IlsColor
     size = const [pw(15) , SIZE_TO_CONTENT]
-    pos = [pw(10), ph(55)]
+    pos = enableSu25tAddons.get() ? [pw(3), ph(55)] : [pw(10), ph(55)]
     rendObj = ROBJ_TEXT
     color = IlsColor.get()
-    fontSize = is_cn ? 38 : 50
+    fontSize = is_cn ? 38 : (enableSu25tAddons.get() ? 35 : 50)
     font = Fonts.ils31
     text = is_cn ? "吊舱瞄准" : "ТВ"
     halign = ALIGN_RIGHT
@@ -1085,11 +1104,11 @@ function tvMode(is_cn) {
 let laserMode = @(is_cn) function() {
   return {
     watch = AimLockValid
-    size = flex()
+    size = FLEX
     children = AimLockValid.get() ? @() {
       watch = IlsColor
       size = const [pw(20), SIZE_TO_CONTENT]
-      pos = [pw(3), ph(60)]
+      pos = const [pw(3), ph(60)]
       rendObj = ROBJ_TEXT
       color = IlsColor.get()
       fontSize = 50
@@ -1102,14 +1121,14 @@ let laserMode = @(is_cn) function() {
 
 let atgmLaunchPermitted = @(is_cn) function() {
   return {
-    watch = [IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist]
+    watch = [IsInsideLaunchZoneYawPitch, IsInsideLaunchZoneDist, enableSu25tAddons]
     size = flex()
-    children = IsInsideLaunchZoneYawPitch.get() && IsInsideLaunchZoneDist.get() ?
+    children = !enableSu25tAddons.get() && IsInsideLaunchZoneYawPitch.get() && IsInsideLaunchZoneDist.get() ?
       @() {
         watch = IlsColor
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_TEXT
-        pos = [pw(48), ph(85)]
+        pos = const [pw(48), ph(85)]
         color = IlsColor.get()
         fontSize = 40
         font = Fonts.hud
@@ -1121,7 +1140,7 @@ let atgmLaunchPermitted = @(is_cn) function() {
 
 let aimLockPosMark = @() {
   watch = AimLockValid
-  size = flex()
+  size = FLEX
   children = AimLockValid.get() ? [
     @(){
       watch = IlsColor
@@ -1148,15 +1167,15 @@ let aimLockPosMark = @() {
 function atgmGrid(width, height, is_cn) {
   return @() {
     watch = [AtgmMode, IsRadarVisible]
-    size = flex()
+    size = FLEX
     children = AtgmMode.get() ? [
-      (!IsRadarVisible.get() ? ccipDistGrid : null),
+      (!IsRadarVisible.get() && !enableSu25tAddons.get() ? ccipDistGrid : null),
       @() {
         watch = AimLockValid
-        size = flex()
+        size = FLEX
         children = AimLockValid.get() ? mkCcipReticle({ update = @() { transform = { translate  = AimLockPos } }}) : null
       },
-      agmLaunchZone(width, height),
+      enableSu25tAddons.get() ? agmLaunchZoneSu25T(width, height) : agmLaunchZone(width, height),
       atgmLaunchPermitted(is_cn)
     ] : [aimLockPosMark]
   }
@@ -1164,7 +1183,7 @@ function atgmGrid(width, height, is_cn) {
 
 let bombingStabMark = @(){
   watch = BombingMode
-  size = flex()
+  size = FLEX
   children = BombingMode.get() ? {
     size = const [pw(3), ph(3)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -1184,13 +1203,29 @@ let bombingStabMark = @(){
   } : null
 }
 
+let su25tAddons = @() {
+  size = flex()
+  children = [
+    targetDistanceText,
+    opticsLimitWarning,
+    opticsReadyIndicator,
+    CCIPLine,
+    radarTargetType,
+    lauchPermitedIndicator,
+    rocketFlightTime,
+    weaponDistanceGrid,
+    targetDistanceRocket,
+    bombFlightDistance,
+    bombTargetHorDistance
+  ]
+}
 function Ils31(width, height, is_cn) {
   return {
     size = [width, height]
     children = [
       basicInfo(width, height),
-      radar(is_cn),
-      ASPLaunchPermitted(!is_cn, 48, 85, is_cn),
+      radarWrap(is_cn),
+      enableSu25tAddons.get() ? aamLaunchPermitted : ASPLaunchPermitted(!is_cn, 48, 85, is_cn),
       currentMode(is_cn),
       currentSubMode(is_cn),
       currentSideMode(is_cn),
@@ -1204,7 +1239,8 @@ function Ils31(width, height, is_cn) {
       laserMode(is_cn),
       bombingStabMark,
       radarReticlWrap(width, height),
-      TimeToMissileHitIndicator
+      TimeToMissileHitIndicator,
+      enableSu25tAddons.get() ? su25tAddons : null
     ]
   }
 }

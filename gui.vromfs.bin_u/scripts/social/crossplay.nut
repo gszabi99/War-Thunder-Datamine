@@ -1,22 +1,20 @@
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/platform.nut" import is_gdk
+from "%gdkLib/crossnetwork.nut" import crossnetworkPrivilege
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
-let { crossnetworkPrivilege } = require("%gdkLib/crossnetwork.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
-} = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD } = require("%scripts/options/optionsExtNames.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
-let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
-let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
+const PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
+const PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
 let crossNetworkPlayStatus = mkWatched(persist, "crossNetworkPlayStatus", null)
 crossNetworkPlayStatus.subscribe(function(v) {

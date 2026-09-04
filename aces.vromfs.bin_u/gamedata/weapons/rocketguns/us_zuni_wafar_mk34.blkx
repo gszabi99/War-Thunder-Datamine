@@ -1,14 +1,33 @@
 {
   "rocketGun": true,
-  "preset_cost": 25,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "us_zuni_wafar_mk32_rocket",
   "mesh_deployed": "us_zuni_wafar_mk32_rocket_deployed",
-  "helicopterGroup": 2,
-  "shotFreq": 20.0,
-  "sound": "weapon.rocketgun_132",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
   "rocket": {
+    "dragCx": 0.0084,
     "bulletName": "us_zuni_wafar_mk34",
-    "statType": "hydra",
+    "iconType": "nar_ap_special",
+    "amountPerTier": 4.0,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "statType": [
+      "hydra",
+      "hydra"
+    ],
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 1.3,
+    "advancedSpread": 0.5,
+    "velSpread": 0.0,
+    "thrustDeviation": 0.00001,
     "caliber": 0.130175,
     "length": 2.811272,
     "WdK": [
@@ -22,20 +41,12 @@
     "massEnd": 39.94335,
     "timeFire": 1.79,
     "force": 20135.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 726.0,
-    "endSpeed": 0.0,
     "maxDistance": 20000.0,
     "minDistance": 500.0,
     "explosiveType": "smoke_composition",
     "explosiveMass": 0.272,
-    "explodeTreshold": 0.00001,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "dragCx": 0.0084,
-    "amountPerTier": 4.0,
-    "iconType": "nar_ap_special",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_small_caliber_ground",
@@ -54,10 +65,46 @@
     ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/smoke.ivf",
-    "maxDeltaAngle": 1.3,
-    "advancedSpread": 0.5,
-    "velSpread": 0.0,
-    "thrustDeviation": 0.00001,
+    "hitPowerMult": 1.0,
+    "nearHitPower": [
+      1.0,
+      50.0
+    ],
+    "midHitPower": [
+      0.9,
+      400.0
+    ],
+    "farHitPower": [
+      0.1,
+      1000.0
+    ],
+    "endHitPower": [
+      0.01,
+      1500.0
+    ],
+    "relativeVelHitShift": [
+      300.0,
+      1000.0
+    ],
+    "nearArmorPower": [
+      10.0,
+      50.0
+    ],
+    "midArmorPower": [
+      7.0,
+      400.0
+    ],
+    "farArmorPower": [
+      0.2,
+      700.0
+    ],
+    "relativeVelArmorShift": [
+      200.0,
+      1000.0
+    ],
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "smokeShell": true,
     "smokeFx": "smokescreen_big",
     "smokeExplosionFx": "smoke_shell_explosion",

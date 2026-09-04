@@ -12,6 +12,14 @@ firstChoiceItem {
   firstChoiceImage {
     background-image:t='<<backgroundImage>>'
 
+    <<#videoPreview>>
+    movie {
+      movie-load='<<videoPreview>>'
+      movie-autoStart:t='yes'
+      movie-loop:t='yes'
+    }
+    <</videoPreview>>
+
     firstChoiceShadow {
       size:t='pw, 1@countryChoiceTextBlockHeight'
       background-svg-size:t='1@unitChoiceImageWidth, 1@countryChoiceTextBlockHeight'

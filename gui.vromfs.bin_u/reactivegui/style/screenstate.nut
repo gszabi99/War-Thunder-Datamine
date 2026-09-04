@@ -1,8 +1,8 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+from "vr" import is_stereo_mode
 from "%rGui/globals/ui_library.nut" import *
-let { is_stereo_mode } = require("vr")
-let extWatched = require("%rGui/globals/extWatched.nut")
 
-let debugRowHeight = 14 
+const debugRowHeight = 14 
 
 let safeAreaHud = extWatched("safeAreaHud", [ 1.0, 1.0 ])
 

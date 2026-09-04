@@ -1,7 +1,7 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let psnPostFuncSrc = require("%scripts/social/activityFeed/ps4PostFunc.nut")
 

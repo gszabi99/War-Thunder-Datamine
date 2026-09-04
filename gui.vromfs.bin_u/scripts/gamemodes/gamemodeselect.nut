@@ -1,47 +1,41 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/dagui_natives.nut" import can_receive_pve_trophy
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { move_mouse_on_child, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+
+let { events } = require("%scripts/events/eventsManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_child, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEventPVETrophyName, hasNightGameModes, hasSmallTeamsGameModes, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
+let { getEventPVETrophyName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo, checkCanChangeGameModeAndDo } = require("%scripts/squads/squadUtils.nut")
-let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
-let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
-let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameModeById,
-  getGameModesPartitions, getFeaturedGameModes, getDebugGameModes, getPveBattlesGameModes,
-  getClanBattlesGameModes, markShowingGameModeAsSeen, isGameModeSeen, getFeaturedModesConfig,
-  getRequiredUnitTypes, getGameModeItemId, getGameModeEvent
-} = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getGameModeStartFunction, getGameModeCrossplayTooltip, getGameModeUnlockTooltipText,
-   getGameModeDescrAndUnlockTooltipText, getGameModeUnlockFullText
-} = require("%scripts/gameModes/gameModeManagerView.nut")
+let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode, getGameModeById, getGameModesPartitions, getFeaturedGameModes, getDebugGameModes, getPveBattlesGameModes, getClanBattlesGameModes, markShowingGameModeAsSeen, isGameModeSeen, getFeaturedModesConfig, getRequiredUnitTypes, getGameModeItemId, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getGameModeStartFunction, getGameModeCrossplayTooltip, getGameModeUnlockTooltipText, getGameModeDescrAndUnlockTooltipText, getGameModeUnlockFullText } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 dagui_propid_add_name_id("modeId")
 
-gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
+let GameModeSelect = class (BaseGuiHandlerWT) {
   sceneTplName = "%gui/gameModeSelect/gameModeSelect.tpl"
   shouldBlurSceneBgFn = needUseHangarDof
   needAnimatedSwitchScene = false
@@ -79,7 +73,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
   ]
 
   static function open() {
-    loadHandler(gui_handlers.GameModeSelect)
+    loadHandler(get_gui_handler("GameModeSelect"))
   }
 
   function getSceneTplView() {
@@ -236,7 +230,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
         modeId = mode.modeId
         hasContent = true
         isMode = true
-        text  = mode.text
+        text  = mode.getText
         textDescription = mode.textDescription
         hasCountries = false
         isWide = mode.isWide
@@ -296,18 +290,6 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       this.gameModesWithTimer[id] <- this.mode.updateByTimeFunc
 
     let settingsButtons = []
-    if (hasSmallTeamsGameModes(event))
-      settingsButtons.append({
-        settingsButtonClick = "onSmallTeams"
-        settingsButtonTooltip = loc("game_mode_settings")
-        settingsButtonImg = "#ui/gameuiskin#slot_modifications.svg"
-      })
-    if (hasNightGameModes(event))
-      settingsButtons.append({
-        settingsButtonClick = "onNightBattles"
-        settingsButtonTooltip = loc("night_battles")
-        settingsButtonImg = "#ui/gameuiskin#night_battles.svg"
-      })
     if (this.isShowMapPreferences(event))
       settingsButtons.append({
         settingsButtonClick = "onMapPreferences"
@@ -327,9 +309,9 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       hasContent = true
       isMode = true
       isConsoleBtn = showConsoleButtons.get()
-      text = gameMode.text
+      text = gameMode.getText
       getEvent = gameMode?.getEvent
-      textDescription = getTblValue("textDescription", gameMode, null)
+      textDescription = gameMode?.textDescription
       tooltip = getGameModeDescrAndUnlockTooltipText(gameMode)
       hasCountries = countries.len() != 0
       countries = countries
@@ -497,7 +479,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!obj?.id || isGameModeSeen(obj.id))
       return
 
-    let widget = getTblValue(obj.id, this.newIconWidgetsByGameModeID)
+    let widget = this.newIconWidgetsByGameModeID?[obj.id]
     if (!widget)
       return
 
@@ -592,11 +574,6 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       && isMultiplayerPrivilegeAvailable.get(), this.scene
     )
 
-    let isVisibleNightBattlesBtn = showConsoleButtons.get() && hasNightGameModes(gameMode?.getEvent())
-    let nightBattlesBtn = showObjById("night_battles_console_button", isVisibleNightBattlesBtn, this.scene)
-    if (isVisibleNightBattlesBtn)
-      nightBattlesBtn.modeId = gameMode?.id
-
     let prefObj = showObjById("map_preferences_console_button",
       this.isShowMapPreferences(gameMode?.getEvent()) && showConsoleButtons.get(),
       this.scene)
@@ -655,9 +632,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       Callback(@() mapPreferencesModal.open({ curEvent = curEvent }), this),
       null, this.shouldCheckCrewsReady)
   }
-
-  onNightBattles = @(obj) nightBattlesOptionsWnd(obj?.modeId,
-    { callbackOnClose = Callback(@() this.backPointerToPrevHoveredItem(), this) })
-
-  onSmallTeams = @(obj) smallTeamsOptionsWnd(obj?.modeId)
 }
+register_gui_handler("GameModeSelect", GameModeSelect)
+
+return { GameModeSelect }

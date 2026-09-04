@@ -1,16 +1,16 @@
+import "DataBlock" as DataBlock
+from "%sqstd/platform.nut" import platformId
+from "string" import regexp
 from "%scripts/dagui_library.nut" import *
 
-let { platformId } = require("%sqstd/platform.nut")
-let { regexp } = require("string")
-let DataBlock  = require("DataBlock")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
 
 
 
 
-let stdPresetPathPrefix = "config/hotkeys/hotkey."
-let presetFileNameExtention = ".blk"
+const stdPresetPathPrefix = "config/hotkeys/hotkey."
+const presetFileNameExtention = ".blk"
 let versionRegExp = regexp(@"_ver(\d+)$")
 let versionDigits = regexp(@"\d+$")
 

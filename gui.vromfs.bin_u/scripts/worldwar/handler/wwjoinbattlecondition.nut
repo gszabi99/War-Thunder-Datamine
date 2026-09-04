@@ -1,14 +1,16 @@
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 
-gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwJoinBattleCondition = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/worldWar/battleJoinCondition.tpl"
 
@@ -55,3 +57,6 @@ gui_handlers.WwJoinBattleCondition <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("WwJoinBattleCondition", WwJoinBattleCondition)
+
+return { WwJoinBattleCondition }

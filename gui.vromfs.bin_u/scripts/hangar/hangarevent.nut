@@ -1,24 +1,24 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "eventbus" import eventbus_subscribe
+from "hangar" import enable_scene_camera, disable_scene_camera
+from "dagor.workcycle" import resetTimeout
+from "guiMission" import select_training_mission, get_meta_mission_info_by_gm_and_name
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { reqUnlockByClient, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { enable_scene_camera, disable_scene_camera } = require("hangar")
-let { resetTimeout } = require("dagor.workcycle")
-let { select_training_mission, get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 function startGameMode(params) {
-  if(handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) == null)
+  if(handlersManager.findHandlerClassInScene(MainMenu) == null)
     return
 
   let gameModeName = params?.gameModeName
@@ -35,7 +35,7 @@ function startGameMode(params) {
   guiStartModalEvents({ event = gameModeName, autoJoin = true })
 }
 
-let clickToReqUnlockHint = @"textareaNoTab {
+const clickToReqUnlockHint = @"textareaNoTab {
   id:t='clickToReqUnlockCount'
   width:t='200@sf/@pf'
   position:t='absolute'
@@ -136,10 +136,10 @@ function clickToReqUnlock(params) {
 
 
 
+
 addListenersWithoutEnv({
   SignOut = @(_) clickCountByUnlock.clear()
 })
 
 eventbus_subscribe("startGameMode", @(param) startGameMode(param))
 eventbus_subscribe("clickToReqUnlock", @(param) clickToReqUnlock(param))
-

@@ -1,18 +1,20 @@
+from "console" import register_command
+from "unitCalculcation" import buildMissileTrajectoryData
+from "dagor.math" import Point3
+from "%sqstd/math.nut" import round_by_value
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
-let { buildMissileTrajectoryData } = require("unitCalculcation")
-let { Point3 } = require("dagor.math")
-let { round_by_value } = require("%sqstd/math.nut")
 let { isMissileWeapon, isMissileBullet, isGuidedBomb } = require("%scripts/weaponry/weaponryInfo.nut")
 let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { GraphCompareBulletsWnd } = require("%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut")
 let { mkSliderMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
 let { getStatCardInfo } = require("%scripts/unit/statCardInfo.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { eventbus_subscribe} = require("eventbus")
 
-function canRequestTrajectorys(wType, bType) {
+
+function canRequestTrajectorys(wType, bType, _hasNestedRocketBlk = false) {
   return isMissileWeapon(wType) || isGuidedBomb(wType) || isMissileBullet(bType)
 }
 
@@ -191,7 +193,9 @@ let openMissileTrajectoryWnd = @(p)
 
 eventbus_subscribe("trajectory_btn_clicked", @(p) openMissileTrajectoryWnd(p))
 
-register_command(@() openMissileTrajectoryWnd({ unit = getAircraftByName("f_14b") }), "debug.open_missile_trajectory_wnd")
+register_command(@() openMissileTrajectoryWnd({
+  unit = getAircraftByName("nt_mig_23mld")
+}), "debug.open_missile_trajectory_wnd")
 
 return {
   openMissileTrajectoryWnd

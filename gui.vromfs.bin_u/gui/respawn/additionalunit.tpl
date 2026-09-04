@@ -1,8 +1,8 @@
 <<#units>>
 additionalUnit{
   id:t='<<unitName>>'
-  on_hover:t='::gcb.delayedTooltipHover'
-  on_unhover:t='::gcb.delayedTooltipHover'
+  on_hover:t='gcb.delayedTooltipHover'
+  on_unhover:t='gcb.delayedTooltipHover'
 
   behavior:t='Timer'
   timer_interval_msec:t='1000'

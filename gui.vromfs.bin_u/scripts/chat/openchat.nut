@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import gchat_is_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlayerFromXboxOne } = require("%scripts/clientState/platform.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getLastGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")

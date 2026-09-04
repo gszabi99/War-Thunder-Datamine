@@ -1,0 +1,37 @@
+{
+  "root": {
+    "behavior": "button",
+    "on_click": "goBack",
+    "frame": {
+      "id": "wndFrame",
+      "noPadding": "yes",
+      "position": "absolute",
+      "min-width": "330@sf/@pf",
+      "tdiv": {
+        "id": "settingsList",
+        "position": "relative",
+        "flow": "vertical",
+        "size": "pw, fh",
+        "padding": "3@blockInterval, 2@blockInterval, 3@blockInterval, 2@blockInterval"
+      }
+    },
+    "Button_text": {
+      "id": "btnClose",
+      "class": "image",
+      "position": "absolute",
+      "noMargin": "yes",
+      "showConsoleImage": "no",
+      "on_click": "goBack",
+      "img": {
+        "id": "icon",
+        "background-image": "#ui/gameuiskin#slot_modifications.svg",
+        "halign": "center",
+        "valign": "center"
+      }
+    },
+    "DummyButton": {
+      "btnName": "B",
+      "on_click": "goBack"
+    }
+  }
+}

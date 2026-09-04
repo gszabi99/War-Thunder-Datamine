@@ -1,24 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import get_team_name_by_mp_team
+from "string" import format
+from "guiRespawn" import getAvailableRespawnBases
+from "mission" import get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team, get_user_custom_state, get_mission_custom_state
+from "guiMission" import get_mission_difficulty_int, get_respawns_left, get_respawns_total_count, get_current_mission_desc
+from "blkGetters" import get_current_mission_info_cached, get_warpoints_blk
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, stay_on_respawn_screen, get_local_player_country
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
 let { g_team } = require("%scripts/teams.nut")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
-let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let DataBlock = require("DataBlock")
-let { getAvailableRespawnBases } = require("guiRespawn")
 let { get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_game_mode, get_game_type, get_local_mplayer, get_mp_local_team,
-  get_user_custom_state, get_mission_custom_state } = require("mission")
-let { get_mission_difficulty_int, get_respawns_left,
-  get_respawns_total_count, get_current_mission_desc } = require("guiMission")
-let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -59,13 +59,13 @@ let Base = class {
     get_current_mission_desc(this.missionParams)
 
     let isVersus = isGameModeVersus(get_game_mode())
-    this.isSpawnDelayEnabled = isVersus && getTblValue("useSpawnDelay", this.missionParams, false)
-    this.isTeamScoreRespawnEnabled = isVersus && getTblValue("useTeamSpawnScore", this.missionParams, false)
-    this.isScoreRespawnEnabled = this.isTeamScoreRespawnEnabled || (isVersus && getTblValue("useSpawnScore", this.missionParams, false))
+    this.isSpawnDelayEnabled = isVersus && (this.missionParams?.useSpawnDelay ?? false)
+    this.isTeamScoreRespawnEnabled = isVersus && (this.missionParams?.useTeamSpawnScore ?? false)
+    this.isScoreRespawnEnabled = this.isTeamScoreRespawnEnabled || (isVersus && (this.missionParams?.useSpawnScore ?? false))
     this.isRageTokensRespawnEnabled = isMissionExtrByName(this.missionParams?.name ?? "")
-    this.isWarpointsRespawnEnabled = isVersus && getTblValue("multiRespawn", this.missionParams, false)
+    this.isWarpointsRespawnEnabled = isVersus && (this.missionParams?.multiRespawn ?? false)
     this.hasRespawnCost = this.isScoreRespawnEnabled || this.isWarpointsRespawnEnabled
-    this.isWorldWar = isVersus && getTblValue("isWorldWar", this.missionParams, false)
+    this.isWorldWar = isVersus && (this.missionParams?.isWorldWar ?? false)
     this.needShowLockedSlots = this.missionParams?.needShowLockedSlots ?? true
   }
 
@@ -104,7 +104,7 @@ let Base = class {
 
   function getUnitLeftWeaponShortText(unit) {
     let weaponsLimits = this.getWeaponsLimitsBlk()
-    let unitWeaponLimit = getTblValue(unit.name, weaponsLimits, null)
+    let unitWeaponLimit = weaponsLimits?[unit.name]
     if (!unitWeaponLimit)
       return ""
 
@@ -203,8 +203,8 @@ let Base = class {
 
   function getCurSpawnScore() {
     if (this.isTeamScoreRespawnEnabled)
-      return getTblValue("teamSpawnScore", get_local_mplayer(), 0)
-    return this.isScoreRespawnEnabled ? getTblValue("spawnScore", get_local_mplayer(), 0) : 0
+      return (get_local_mplayer()?.teamSpawnScore ?? 0)
+    return this.isScoreRespawnEnabled ? (get_local_mplayer()?.spawnScore ?? 0) : 0
   }
 
   function canRespawnOnUnitBySpawnScore(unit) {
@@ -295,8 +295,8 @@ let Base = class {
   }
 
   function getUnitFuelPercent(unitName) { 
-    let unitsFuelPercentList = getTblValue("unitsFuelPercentList", this.getCustomRulesBlk())
-    return getTblValue(unitName, unitsFuelPercentList, 0)
+    let unitsFuelPercentList = this.getCustomRulesBlk()?.unitsFuelPercentList
+    return (unitsFuelPercentList?[unitName] ?? 0)
   }
 
   function hasWeaponLimits() {
@@ -329,15 +329,15 @@ let Base = class {
   }
 
   function getCustomRulesBlk() {
-    return getTblValue("customRules", get_current_mission_info_cached())
+    return get_current_mission_info_cached()?.customRules
   }
 
   function getTeamDataBlk(team, keyName) {
-    let teamsBlk = getTblValue(keyName, this.getMisStateBlk())
+    let teamsBlk = this.getMisStateBlk()?[keyName]
     if (!teamsBlk)
       return null
 
-    let res = getTblValue(get_team_name_by_mp_team(team), teamsBlk)
+    let res = teamsBlk?[get_team_name_by_mp_team(team)]
     return u.isDataBlock(res) ? res : null
   }
 
@@ -374,7 +374,7 @@ let Base = class {
   }
 
   function getWeaponsLimitsBlk() {
-    return getTblValue("weaponList", this.getMyStateBlk())
+    return this.getMyStateBlk()?.weaponList
   }
 
   

@@ -461,7 +461,7 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 39.5
+        "hp": 36.5
       }
     },
     "c_dural3": {
@@ -503,10 +503,12 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 71.6
+        "hp": 71.6,
+        "deadExplProb": 0.5
       },
       "fuse_dm": {
-        "hp": 72.7
+        "hp": 72.7,
+        "deadExplProb": 0.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
@@ -574,6 +576,9 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft1_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
         "hp": 60.5
       },
@@ -614,7 +619,6 @@
     },
     "steel_pilot": {
       "pilot_dm": {
-        "fireProtectionHp": 20.0,
         "hp": 20.0
       }
     },
@@ -1284,6 +1288,9 @@
       },
       {
         "name": "pilot_dm"
+      },
+      {
+        "name": "propeller_shaft1_dm"
       },
       {
         "name": "rudder_dm",
@@ -2078,6 +2085,7 @@
       },
       {
         "name": "wing_l_dm",
+        "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -2139,6 +2147,7 @@
       },
       {
         "name": "wing_r_dm",
+        "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
             "smoke": 0.1,

@@ -1,6 +1,5 @@
 require ecs
 require %appGame.wt_events
-require %appGame.infantry.es.vehicle.vehicle_events
 require %appGame.infantry.es.vehicle.vehicle_seats_common
 require %appGame.infantry.es.team_common
 

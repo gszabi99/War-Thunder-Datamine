@@ -1,7 +1,5 @@
 require ecs
 require net
-require inventory
-require %game.events
 
 require %appGame.wt_events
 

@@ -1,6 +1,6 @@
-let { Watched } = require("frp")
-let { eventbus_subscribe } = require("eventbus")
-let { is_app_loaded } = require("app")
+from "frp" import Watched
+from "eventbus" import eventbus_subscribe
+from "app" import is_app_loaded
 
 let isAppLoaded = Watched(is_app_loaded())
 

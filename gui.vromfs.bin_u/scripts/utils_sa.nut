@@ -1,16 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "json" import object_to_json_string
+from "string" import format
+from "%sqstd/string.nut" import stripTags, cutPrefix
+from "dagor.random" import rnd
+from "guiMission" import get_player_army_for_hud
+from "multiplayer" import is_mplayer_host, is_mplayer_peer
+from "math" import fabs
 from "%scripts/dagui_natives.nut" import is_myself_chat_moderator, is_myself_grand_moderator, is_myself_moderator
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
-let { object_to_json_string } = require("json")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
-let { stripTags, cutPrefix } = require("%sqstd/string.nut")
-let { rnd } = require("dagor.random")
+from "types" import Table
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_player_army_for_hud } = require("guiMission")
-let { is_mplayer_host, is_mplayer_peer } = require("multiplayer")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { fabs } = require("math")
 
 function getAmountAndMaxAmountText(amount, maxAmount, showMaxAmount = false) {
   let amountText = []
@@ -99,8 +101,8 @@ function save_to_json(obj) {
   return object_to_json_string(obj, false)
 }
 
-let roman_numerals = freeze(["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
-                         "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"])
+const roman_numerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+                         "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
 
 let is_multiplayer = @() is_mplayer_host() || is_mplayer_peer()
 
@@ -134,18 +136,18 @@ function buildTableRow(rowName, rowData, even = null, trParams = "", _tablePad =
   }
 
   foreach (idx, cell in rowData) {
-    let haveParams = type(cell) == "table"
+    let haveParams = cell instanceof Table
     let config = (haveParams ? cell : {}).__merge({
       params = haveParams
       display = (cell?.show ?? true) ? "show" : "hide"
-      id = getTblValue("id", cell,$"td_{idx}")
-      rawParam = getTblValue("rawParam", cell, "")
-      needText = getTblValue("needText", cell, true)
-      textType = getTblValue("textType", cell, "activeText")
-      text = haveParams ? getTblValue("text", cell, "") : cell.tostring()
-      textRawParam = getTblValue("textRawParam", cell, "")
-      imageType = getTblValue("imageType", cell, "cardImg")
-      fontIconType = getTblValue("fontIconType", cell, "fontIcon20")
+      id = (cell?.id ?? $"td_{idx}")
+      rawParam = (cell?.rawParam ?? "")
+      needText = (cell?.needText ?? true)
+      textType = (cell?.textType ?? "activeText")
+      text = haveParams ? (cell?.text ?? "") : cell.tostring()
+      textRawParam = (cell?.textRawParam ?? "")
+      imageType = (cell?.imageType ?? "cardImg")
+      fontIconType = (cell?.fontIconType ?? "fontIcon20")
     })
 
     view.cell.append(config)

@@ -1,25 +1,23 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getSelectedChild, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { getSelectedChild, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { updateChallenges, curSeasonChallenges, getChallengeView
-} = require("%scripts/battlePass/challenges.nut")
+let { updateChallenges, curSeasonChallenges, getChallengeView } = require("%scripts/battlePass/challenges.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
-  buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
-let { getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig,
-  getRewardCfgByUnlockCfg, getSubunlocksView, getUnlockStagesView
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, getRewardCfgByUnlockCfg, getSubunlocksView, getUnlockStagesView } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isBattleTask, getBattleTaskById } = require("%scripts/unlocks/battleTasksState.nut")
-let { isBattleTasksAvailable, isBattleTaskDone, getCurBattleTasksByGm
-} = require("%scripts/unlocks/battleTasks.nut")
+let { isBattleTasksAvailable, isBattleTaskDone, getCurBattleTasksByGm } = require("%scripts/unlocks/battleTasks.nut")
 let { mkUnlockConfigByBattleTask, getBattleTaskView } = require("%scripts/unlocks/battleTasksView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
@@ -142,7 +140,7 @@ function getTabsView() {
   return view
 }
 
-let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
+class PersonalTasksModal (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/unlocks/personalTasksModal.blk"
 
@@ -195,7 +193,7 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.PersonalTasksModal <- PersonalTasksModal
+register_gui_handler("PersonalTasksModal", PersonalTasksModal)
 
 return {
   openPersonalTasks = @() handlersManager.loadHandler(PersonalTasksModal)

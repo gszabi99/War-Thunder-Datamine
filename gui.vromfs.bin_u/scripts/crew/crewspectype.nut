@@ -1,18 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%sqstd/datablock.nut" import convertBlk
+from "string" import format
+from "blkGetters" import get_warpoints_blk, get_skills_blk, get_price_blk
 from "%scripts/dagui_natives.nut" import expert_to_ace_get_unit_exp, wp_get_specialization_cost_gold, wp_get_specialization_cost
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
-let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq,
-  crewSkillPages, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
+let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq, crewSkillPages, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
 
 const CREW_BONUS_TO_SKILL_EXPERT = 3
 const CREW_BONUS_TO_SKILL_ACE = 2
@@ -194,8 +194,8 @@ crewSpecTypes = {
       loadCrewSkillsOnce()
       let crewUnitType = unit?.getCrewUnitType?() ?? CUT_INVALID
       let reqTbl = unitCrewTrainReq?[crewUnitType]
-      let ranksTbl = getTblValue(upgradeFromCode, reqTbl)
-      return getTblValue(unit.rank, ranksTbl, 0)
+      let ranksTbl = reqTbl?[upgradeFromCode]
+      return (ranksTbl?[unit.rank] ?? 0)
     }
 
     function getNextMaxAvailableType(unit, crewLevel) {
@@ -420,8 +420,8 @@ enums.addTypes(crewSpecTypes, {
     }
 
     function getExpLeftByCrewAndUnit(crew, unit) {
-      let crewId = getTblValue("id", crew)
-      let unitName = getTblValue("name", unit)
+      let crewId = crew?.id
+      let unitName = unit?.name
       return expert_to_ace_get_unit_exp(crewId, unitName)
     }
 
@@ -447,8 +447,8 @@ enums.addTypes(crewSpecTypes, {
         discountData.append(convertBlk(stageBlk))
 
       discountData.sort(function (a, b) {
-        let percentA = getTblValue("percent", a, 0)
-        let percentB = getTblValue("percent", b, 0)
+        let percentA = (a?.percent ?? 0)
+        let percentB = (b?.percent ?? 0)
         if (percentA != percentB)
           return percentA > percentB ? 1 : -1
         return 0

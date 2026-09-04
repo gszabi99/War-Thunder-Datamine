@@ -1,17 +1,19 @@
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "%sqstd/platform.nut" import isPC, is_android
+from "string" import format
+from "dagor.debug" import debug_dump_stack
+from "hangar" import hangar_get_current_unit_name
+from "blkGetters" import get_warpoints_blk
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { isPC, is_android } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { debug_dump_stack } = require("dagor.debug")
-let { hangar_get_current_unit_name } = require("hangar")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { InstantDomination } = require("%scripts/mainmenu/instantActionHandler.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
-let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
+let { TopMenu } = require("%scripts/mainmenu/topMenuHandler.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
@@ -19,16 +21,13 @@ let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewar
 let { getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getSuggestedSkin } = require("%scripts/customization/suggestedSkins.nut")
-let { startFleetTrainingMission, getFleetTrainingMissionName
-} = require("%scripts/missions/fleetTrainingMission.nut")
+let { startFleetTrainingMission, getFleetTrainingMissionName } = require("%scripts/missions/fleetTrainingMission.nut")
 let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
-let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarStateData.nut")
 let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { getMyClanCandidates, isHaveRightsToReviewCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { totalRooms, totalPlayers } = require("%scripts/onlineInfo/onlineInfo.nut")
@@ -37,8 +36,8 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 
-gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
-  rootHandlerClass = topMenuHandlerClass.getHandler()
+let MainMenu = class (InstantDomination) {
+  rootHandlerClass = TopMenu
 
   unitInfoPanel = null
   promoHandler = null
@@ -241,8 +240,9 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       obj.findObject("time").setValue(timeStr)
 
       let showButtons = hasFeature("EarlyExitCrewUnlock")
-      let crewCost = shop_get_unlock_crew_cost(crew.id)
-      let crewCostGold = shop_get_unlock_crew_cost_gold(crew.id)
+      
+      let crewCost = shop_get_unlock_crew_cost(crew?.id)
+      let crewCostGold = shop_get_unlock_crew_cost_gold(crew?.id)
       if (showButtons) {
         placePriceTextToButton(obj, "btn_unlock_crew", loc("mainmenu/btn_crew_unlock"), crewCost, 0)
         placePriceTextToButton(obj, "btn_unlock_crew_gold", loc("mainmenu/btn_crew_unlock"), 0, crewCostGold)
@@ -260,3 +260,6 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
     this.updateSuggestedSkin(getAircraftByName(hangar_get_current_unit_name()))
   }
 }
+register_gui_handler("MainMenu", MainMenu)
+
+return { MainMenu }

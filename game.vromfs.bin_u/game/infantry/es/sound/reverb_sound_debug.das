@@ -2,7 +2,6 @@ options no_aot
 require ecs
 require ecs.ecs_template
 require math.color
-require math.base
 require math
 require DagorMath
 require DagorSystem

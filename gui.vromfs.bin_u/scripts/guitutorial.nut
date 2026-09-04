@@ -1,12 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import call_for_handler
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -16,7 +17,7 @@ let { findGoodPos } = require("%scripts/linesGenerator.nut")
 
 const TUTOR_STEP_TIMEOUT_SEC  = 30
 
-let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
+let Tutor = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -48,15 +49,15 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
       return this.finalizeTutorial()
 
     let stepData = this.config[this.stepIdx]
-    let actionType = getTblValue("actionType", stepData, tutorAction.ANY_CLICK)
+    let actionType = (stepData?.actionType ?? tutorAction.ANY_CLICK)
     let params = {
       onClick = (actionType == tutorAction.ANY_CLICK) ? "onNext" : null
     }
 
     let msgObj = this.scene.findObject("msg_text")
-    local text = getTblValue("text", stepData, "")
+    local text = (stepData?.text ?? "")
 
-    let bottomText = getTblValue("bottomText", stepData, "")
+    let bottomText = (stepData?.bottomText ?? "")
     if (text != "" && bottomText != "")
       text = $"{text}\n\n{bottomText}"
 
@@ -64,7 +65,7 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
 
     let needAccessKey = (actionType == tutorAction.OBJ_CLICK ||
                            actionType == tutorAction.FIRST_OBJ_CLICK)
-    let shortcut = getTblValue("shortcut", stepData, needAccessKey ? GAMEPAD_ENTER_SHORTCUT : null)
+    let shortcut = (stepData?.shortcut ?? (needAccessKey ? GAMEPAD_ENTER_SHORTCUT : null))
     let blocksList = []
     local objList = stepData?.obj ?? []
     if (!u.isArray(objList))
@@ -87,12 +88,12 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
     if (needArrow && !blocksList.findvalue(@(b) b?.hasArrow == true))
       blocksList[0].hasArrow = true
 
-    local nextActionShortcut = getTblValue("nextActionShortcut", stepData)
+    local nextActionShortcut = stepData?.nextActionShortcut
     if (nextActionShortcut && showConsoleButtons.get())
       nextActionShortcut = "PRESS_TO_CONTINUE"
 
     local markup = ""
-    if (nextActionShortcut) {
+    if (nextActionShortcut && shortcut) {
       markup = "".concat(
         markup,
         showConsoleButtons.get() ? Button(shortcut.dev[0], shortcut.btn[0]).getMarkup() : "",
@@ -135,7 +136,7 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
 
     showObjById("dummy_console_next", actionType == tutorAction.ANY_CLICK, this.scene)
 
-    let waitTime = getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY ? 1 : -1)
+    let waitTime = (stepData?.waitTime ?? (actionType == tutorAction.WAIT_ONLY ? 1 : -1))
     if (waitTime > 0)
       Timer(this.scene, waitTime, (@(stepIdx) function() { this.timerNext(stepIdx) })(this.stepIdx), this) 
 
@@ -190,12 +191,12 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.canceled)
       return
 
-    let stepData = getTblValue(this.stepIdx, this.config)
-    let cb = getTblValue("cb", stepData)
+    let stepData = this.config?[this.stepIdx]
+    let cb = stepData?.cb
     if (!cb)
       return
 
-    if (u.isCallback(cb) || getTblValue("keepEnv", stepData, false))
+    if (u.isOfClass(cb, Callback) || (stepData?.keepEnv ?? false))
       cb()
     else
       call_for_handler(this.ownerWeak, cb)
@@ -238,7 +239,7 @@ function gui_modal_tutor(stepsConfig, wndHandler, isTutorialCancelable = false) 
   })
 }
 
-gui_handlers.Tutor <- Tutor
+register_gui_handler("Tutor", Tutor)
 
 return {
   gui_modal_tutor

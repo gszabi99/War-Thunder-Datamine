@@ -1,8 +1,10 @@
+from "mission" import get_game_mode, get_game_type, get_mp_local_team
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_local_player_country, is_crew_slot_was_ready_at_host
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "guiRespawn" import getAvailableRespawnBases
 
-let { get_game_mode, get_game_type, get_mp_local_team } = require("mission")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")

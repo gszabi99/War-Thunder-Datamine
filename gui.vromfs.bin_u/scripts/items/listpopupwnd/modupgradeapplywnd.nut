@@ -2,12 +2,13 @@ from "%scripts/dagui_natives.nut" import get_modification_level, calculate_mod_o
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ItemsListWndBase } = require("%scripts/items/listPopupWnd/itemsListWndBase.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
-gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
+let ModUpgradeApplyWnd = class (ItemsListWndBase) {
   sceneTplName = "%gui/items/modUpgradeApplyWnd.tpl"
 
   unit = null
@@ -20,7 +21,7 @@ gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
       showInfoMsgBox(loc("msg/noUpgradeItemsForMod"))
       return
     }
-    handlersManager.loadHandler(gui_handlers.ModUpgradeApplyWnd,
+    handlersManager.loadHandler(get_gui_handler("ModUpgradeApplyWnd"),
     {
       unit = unitToActivate
       mod = modToActivate
@@ -54,3 +55,6 @@ gui_handlers.ModUpgradeApplyWnd <- class (gui_handlers.ItemsListWndBase) {
     this.curItem.activateOnMod(this.unit, this.mod, Callback(this.goBack, this))
   }
 }
+register_gui_handler("ModUpgradeApplyWnd", ModUpgradeApplyWnd)
+
+return { ModUpgradeApplyWnd }

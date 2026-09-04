@@ -1,13 +1,13 @@
+from "%rGui/hudSpectatorState.nut" import isSpectatorMode
+from "%rGui/missionState.nut" import localTeam
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/string.nut" import hexStringToInt
+from "%sqstd/underscore.nut" import isEqual
+from "eventbus" import eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
 
-let cross_call = require("%rGui/globals/cross_call.nut")
 local cc = require("colorCorrector")
-let { hexStringToInt } = require("%sqstd/string.nut")
-let { localTeam } = require("%rGui/missionState.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
 let colors = require("%rGui/style/colors.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let defaultTeamColorsData = {
   teamScoreBlueColor    = null
@@ -47,7 +47,7 @@ let forcedTeamColors = mkWatched(persist, "forcedTeamColors", {})
 let teamColors = Computed(function(prev) {
   local newTeamColors = clone defaultTeamColorsData
   let forcedColors = forcedTeamColors.get()
-  local standardColors = !isLoggedIn.get() || !cross_call.isPlayerDedicatedSpectator()
+  local standardColors = !isLoggedIn.get() || !isSpectatorMode.get()
   local allyTeam, allyTeamColor, enemyTeamColor
   local isForcedColor = forcedColors.len() > 0
   if (isForcedColor) {

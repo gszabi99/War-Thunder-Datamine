@@ -1,23 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import get_aircraft_crew_blk
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 
 
 
 
 
 
-local lastUnitCrewData = null
-local lastUnitCrewId = -1
-local lastUnitName = ""
+let unitCrewDataCache = {}
 
 function invalidateCache() {
-  lastUnitCrewData = null
-  lastUnitCrewId = -1
-  lastUnitName = ""
+  unitCrewDataCache.clear()
 }
 
 function getUnitCrewDataById(crewId, unit) {
@@ -25,13 +21,12 @@ function getUnitCrewDataById(crewId, unit) {
     return null
 
   let unitName = unit?.name ?? ""
-  if (crewId != lastUnitCrewId || unitName != lastUnitName) {
-    lastUnitCrewId = crewId
-    lastUnitName = unitName
-    let unitCrewBlk = get_aircraft_crew_blk(lastUnitCrewId, lastUnitName)
-    lastUnitCrewData = convertBlk(unitCrewBlk)
-  }
-  return lastUnitCrewData
+  let key = $"crew{crewId}_{unitName}"
+
+  if (key not in unitCrewDataCache)
+    unitCrewDataCache[key] <- convertBlk(get_aircraft_crew_blk(crewId, unitName))
+
+  return unitCrewDataCache[key]
 }
 
 let onNeedReset = @(_p) invalidateCache()

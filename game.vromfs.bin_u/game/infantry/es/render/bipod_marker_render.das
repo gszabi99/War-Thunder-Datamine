@@ -21,7 +21,7 @@ def bipod_draw_placeable_marker(evt : RenderEventUI;
                                              bipod_marker__lineWidth : float = 3f;
                                              bipod_marker__lineSpacing : float = 8f;
                                              bipod_marker__placePos : float3)
-      var uiViewTm : float3x4 = evt.viewTm
+      let uiViewTm : float3x4 = evt.viewTm
       
       let screenHalfSize = StdGuiRender_screen_size() / 2.0
       let screenPos = from_world_coord_to_screen(uiViewTm * bipod_marker__placePos, evt.persp.wk, evt.persp.hk, screenHalfSize)

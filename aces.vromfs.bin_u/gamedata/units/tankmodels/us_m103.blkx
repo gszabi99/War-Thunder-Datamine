@@ -52,20 +52,16 @@
       "body_top_dm": {
         "armorThickness": 127.0
       },
-      "body_front_dm": {
-        "armorThickness": 254.0
+      "body_dm": {
+        "armorThickness": 127.0,
+        "variableThickness": true
       },
       "superstructure_side_dm": {
         "armorThickness": 50.8
       },
       "body_side_dm": {
-        "armorThickness": 44.4
-      },
-      "turret_03_bottom_dm": {
-        "armorThickness": 80.0
-      },
-      "turret_01_front_dm": {
-        "armorThickness": 127.0
+        "armorThickness": 25.4,
+        "armorClass": "RHA_tank"
       },
       "superstructure_top_dm": {
         "armorThickness": 25.4
@@ -82,23 +78,10 @@
       "body_bottom_dm": {
         "armorThickness": 114.3
       },
-      "ex_decor_l_02_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
+      "body_shield_dm": {
+        "armorThickness": 25.4
       },
       "ex_decor_l_09_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_l_06_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_r_01_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "tank_structural_steel"
-      },
-      "ex_decor_r_08_dm": {
         "armorThickness": 5.0,
         "armorClass": "tank_structural_steel"
       },
@@ -109,73 +92,68 @@
       "turret_05_top_dm": {
         "armorThickness": 5.0,
         "armorClass": "tank_structural_steel"
+      },
+      "gun_trunnion_dm": {
+        "armorThickness": 40.0,
+        "armorClass": "tank_structural_steel"
       }
     },
     "hull_RHA": {
       "armorClass": "RHA_tank",
-      "turret_top_dm": {
-        "armorThickness": 38.0
+      "turret_03_bottom_dm": {
+        "armorThickness": 10.0
       },
       "turret_04_top_dm": {
         "armorThickness": 10.0
+      },
+      "turret_01_top_dm": {
+        "armorThickness": 12.7
       }
     },
     "turret": {
       "armorClass": "CHA_tank",
-      "turret_side_dm": {
-        "armorThickness": 159.0
+      "turret_top_dm": {
+        "armorThickness": 150.0,
+        "variableThickness": true
       },
       "turret_front_dm": {
-        "armorThickness": 162.0
+        "armorThickness": 150.0,
+        "variableThickness": true
+      },
+      "turret_01_bottom_dm": {
+        "armorThickness": 89.0,
+        "variableThickness": true
+      },
+      "turret_side_dm": {
+        "armorThickness": 89.0,
+        "variableThickness": true
       },
       "turret_01_back_dm": {
         "armorThickness": 163.83
       },
       "turret_bottom_dm": {
-        "armorThickness": 38.0
+        "armorThickness": 6.35,
+        "armorClass": "t_90_rubber_fabric_screens"
       },
       "turret_back_dm": {
-        "armorThickness": 58.0
+        "armorThickness": 25.4
       },
       "turret_commander_dm": {
         "armorThickness": 82.5,
         "hp": 800.0
       },
-      "turret_01_top_dm": {
-        "armorThickness": 139.7
-      },
-      "turret_01_bottom_dm": {
-        "armorThickness": 102.0
-      },
       "turret_02_top_dm": {
         "armorThickness": 79.0
       },
       "turret_02_bottom_dm": {
-        "armorThickness": 80.0
-      },
-      "turret_02_front_dm": {
-        "armorThickness": 350.0
-      },
-      "turret_02_side_dm": {
-        "armorThickness": 107.0
+        "armorThickness": 20.0,
+        "armorClass": "tank_structural_steel"
       },
       "turret_02_back_dm": {
         "armorThickness": 112.0
       },
-      "ex_armor_turret_01_dm": {
-        "armorThickness": 16.0
-      },
-      "turret_01_side_dm": {
-        "armorThickness": 79.0
-      },
       "turret_03_back_dm": {
         "armorThickness": 158.75
-      },
-      "turret_03_side_dm": {
-        "armorThickness": 158.0
-      },
-      "turret_03_top_dm": {
-        "armorThickness": 156.0
       },
       "turret_03_front_dm": {
         "armorThickness": 25.4
@@ -184,22 +162,38 @@
     "mask": {
       "armorClass": "CHA_tank",
       "gun_mask_dm": {
-        "armorThickness": 254.0
+        "armorThickness": 254.0,
+        "variableThickness": true
       },
       "gun_mask_01_dm": {
         "armorThickness": 101.6
       }
     },
-    "body_shields": {
-      "armorClass": "tank_structural_steel",
+    "inner_parts": {
+      "armorClass": "aluminium",
       "hp": 1000.0,
       "armorThickness": 4.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
-      "ex_decor_r_02_dm": {},
-      "ex_decor_r_03_dm": {},
-      "ex_decor_l_03_dm": {},
-      "ex_decor_l_04_dm": {}
+      "composite_armor_hull_02_dm": {},
+      "composite_armor_hull_03_dm": {},
+      "composite_armor_hull_06_dm": {}
+    },
+    "body_shields": {
+      "armorClass": "aluminium",
+      "hp": 1000.0,
+      "armorThickness": 4.0,
+      "stopChanceOnDeadPart": 0.0,
+      "createSecondaryShatters": false,
+      "turret_02_front_dm": {},
+      "ex_armor_body_l_01_dm": {},
+      "ex_armor_body_r_01_dm": {},
+      "ex_armor_body_l_02_dm": {},
+      "ex_armor_body_r_02_dm": {},
+      "ex_armor_body_l_03_dm": {},
+      "ex_armor_body_r_03_dm": {},
+      "ex_armor_body_l_04_dm": {},
+      "ex_armor_body_r_04_dm": {}
     },
     "optics": {
       "armorClass": "optics_tank",
@@ -801,6 +795,14 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    }
+  },
+  "xrayOverride": {
+    "radiator_l_dm": {
+      "overrideTitle": "oil_tank"
+    },
+    "radiator_r_dm": {
+      "overrideTitle": "oil_tank"
     }
   },
   "sound": {
@@ -1419,21 +1421,64 @@
       ]
     }
   },
+  "xray_viewer_data": {
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "aluminium",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "aluminium",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_06_dm",
+        "titleLoc": "aluminium",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_06_dm"
+          }
+        }
+      }
+    ]
+  },
   "MetaParts": {
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
-        "loader_dm",
         "gunner_dm",
+        "gunner_01_dm",
+        "gunner_02_dm",
         "commander_dm",
         "machine_gunner_dm",
         "machine_gunner_01_dm",
         "machine_gunner_02_dm",
-        "gunner_01_dm",
-        "gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
         "radio_station_dm",
+        "driver_controls_dm",
+        "fire_control_system_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
         "drive_turret_v_01_dm",
@@ -1496,6 +1541,32 @@
         "ammo_turret_53_dm",
         "ammo_turret_54_dm",
         "ammo_turret_55_dm",
+        "ammo_turret_56_dm",
+        "ammo_turret_57_dm",
+        "ammo_turret_58_dm",
+        "ammo_turret_59_dm",
+        "ammo_turret_60_dm",
+        "ammo_turret_61_dm",
+        "ammo_turret_62_dm",
+        "ammo_turret_63_dm",
+        "ammo_turret_64_dm",
+        "ammo_turret_65_dm",
+        "ammo_turret_66_dm",
+        "ammo_turret_67_dm",
+        "ammo_turret_68_dm",
+        "ammo_turret_69_dm",
+        "ammo_turret_70_dm",
+        "ammo_turret_71_dm",
+        "ammo_turret_72_dm",
+        "ammo_turret_73_dm",
+        "ammo_turret_74_dm",
+        "ammo_turret_75_dm",
+        "ammo_turret_76_dm",
+        "ammo_turret_77_dm",
+        "ammo_turret_78_dm",
+        "ammo_turret_79_dm",
+        "ammo_turret_80_dm",
+        "ammo_body_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
@@ -1551,6 +1622,31 @@
         "ammo_body_53_dm",
         "ammo_body_54_dm",
         "ammo_body_55_dm",
+        "ammo_body_56_dm",
+        "ammo_body_57_dm",
+        "ammo_body_58_dm",
+        "ammo_body_59_dm",
+        "ammo_body_60_dm",
+        "ammo_body_61_dm",
+        "ammo_body_62_dm",
+        "ammo_body_63_dm",
+        "ammo_body_64_dm",
+        "ammo_body_65_dm",
+        "ammo_body_66_dm",
+        "ammo_body_67_dm",
+        "ammo_body_68_dm",
+        "ammo_body_69_dm",
+        "ammo_body_70_dm",
+        "ammo_body_71_dm",
+        "ammo_body_72_dm",
+        "ammo_body_73_dm",
+        "ammo_body_74_dm",
+        "ammo_body_75_dm",
+        "ammo_body_76_dm",
+        "ammo_body_77_dm",
+        "ammo_body_78_dm",
+        "ammo_body_79_dm",
+        "ammo_body_80_dm",
         "ammo_body_l_01_dm",
         "ammo_body_l_02_dm",
         "ammo_body_l_03_dm",
@@ -1571,6 +1667,16 @@
         "ammo_body_l_18_dm",
         "ammo_body_l_19_dm",
         "ammo_body_l_20_dm",
+        "ammo_body_l_21_dm",
+        "ammo_body_l_22_dm",
+        "ammo_body_l_23_dm",
+        "ammo_body_l_24_dm",
+        "ammo_body_l_25_dm",
+        "ammo_body_l_26_dm",
+        "ammo_body_l_27_dm",
+        "ammo_body_l_28_dm",
+        "ammo_body_l_29_dm",
+        "ammo_body_l_30_dm",
         "ammo_body_r_01_dm",
         "ammo_body_r_02_dm",
         "ammo_body_r_03_dm",
@@ -1590,7 +1696,17 @@
         "ammo_body_r_17_dm",
         "ammo_body_r_18_dm",
         "ammo_body_r_19_dm",
-        "ammo_body_r_20_dm"
+        "ammo_body_r_20_dm",
+        "ammo_body_r_21_dm",
+        "ammo_body_r_22_dm",
+        "ammo_body_r_23_dm",
+        "ammo_body_r_24_dm",
+        "ammo_body_r_25_dm",
+        "ammo_body_r_26_dm",
+        "ammo_body_r_27_dm",
+        "ammo_body_r_28_dm",
+        "ammo_body_r_29_dm",
+        "ammo_body_r_30_dm"
       ],
       "effect": [
         {

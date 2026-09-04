@@ -1,6 +1,13 @@
 {
   "cannon": false,
   "weaponType": 3,
+  "maxDeltaAngle": 0.3,
+  "shotFreq": 14.16,
+  "traceFreq": 4,
+  "bullets": 250,
+  "shootingCharge": 5.5,
+  "shouldCollideWithRendinsts": true,
+  "mass": 109.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -10,29 +17,29 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
+  "bEnablePause": false,
+  "bulletsCluster": 1,
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
-  "maxDeltaAngle": 0.3,
-  "shotFreq": 14.16,
-  "alternativeShotFreq": 10.83,
-  "traceFreq": 4,
-  "bEnablePause": false,
-  "bullets": 250,
-  "bulletsCluster": 1,
-  "shootingCharge": 5.5,
-  "preset_cost": 200,
-  "mass": 109.0,
-  "shouldCollideWithRendinsts": true,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
+  "alternativeShotFreq": 10.83,
+  "preset_cost": 200,
   "iconType": "multibarrel_box_cannon",
+  "gunSound": {
+    "path": "sounds/guns",
+    "pathStudio": "aircraft/weapon",
+    "outside": "m197_gun_outside",
+    "cockpit": "m197_gun_inside",
+    "ai": "m197_gun_ai"
+  },
   "bullet": [
     {
-      "mass": 0.09962,
+      "mass": 0.09979,
       "caliber": 0.02,
       "speed": 1030.0,
       "maxDistance": 6250.0,
-      "Cx": 0.45,
+      "Cx": 0.46979,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
       "groundRicochetPreset": "ap_ground",
@@ -50,6 +57,7 @@
         300.0,
         1000.0
       ],
+      "recoilMultiplier": 0.4,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -409,13 +417,13 @@
       }
     },
     {
-      "mass": 0.10166,
+      "mass": 0.09979,
       "caliber": 0.02,
       "speed": 1030.0,
       "maxDistance": 6250.0,
-      "Cx": 0.46,
-      "explosiveType": "rdx",
-      "explosiveMass": 0.01,
+      "Cx": 0.46979,
+      "explosiveType": "h761",
+      "explosiveMass": 0.0107,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_small_caliber_ground",
@@ -850,11 +858,11 @@
       }
     },
     {
-      "mass": 0.09962,
+      "mass": 0.09979,
       "caliber": 0.02,
       "speed": 1030.0,
       "maxDistance": 6250.0,
-      "Cx": 0.45,
+      "Cx": 0.46979,
       "normalizationPreset": "ap",
       "ricochetPreset": "ap",
       "groundRicochetPreset": "ap_ground",
@@ -872,6 +880,7 @@
         300.0,
         1000.0
       ],
+      "recoilMultiplier": 0.4,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -1234,13 +1243,13 @@
   "M195_air_targets": {
     "bullet": [
       {
-        "mass": 0.10166,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.01,
+        "Cx": 0.46979,
+        "explosiveType": "h761",
+        "explosiveMass": 0.0107,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -1675,13 +1684,13 @@
         }
       },
       {
-        "mass": 0.10166,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.01,
+        "Cx": 0.46979,
+        "explosiveType": "h761",
+        "explosiveMass": 0.0107,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -2116,13 +2125,13 @@
         }
       },
       {
-        "mass": 0.10166,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.01,
+        "Cx": 0.46979,
+        "explosiveType": "h761",
+        "explosiveMass": 0.0107,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -2557,11 +2566,11 @@
         }
       },
       {
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "groundRicochetPreset": "ap_ground",
@@ -2579,6 +2588,7 @@
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.4,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -2942,11 +2952,11 @@
   "M195_armor_targets": {
     "bullet": [
       {
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "groundRicochetPreset": "ap_ground",
@@ -2964,6 +2974,7 @@
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.4,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -3323,11 +3334,11 @@
         }
       },
       {
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "groundRicochetPreset": "ap_ground",
@@ -3345,6 +3356,7 @@
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.4,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -3704,11 +3716,11 @@
         }
       },
       {
-        "mass": 0.09962,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.45,
+        "Cx": 0.46979,
         "normalizationPreset": "ap",
         "ricochetPreset": "ap",
         "groundRicochetPreset": "ap_ground",
@@ -3726,6 +3738,7 @@
           300.0,
           1000.0
         ],
+        "recoilMultiplier": 0.4,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -4085,13 +4098,13 @@
         }
       },
       {
-        "mass": 0.10166,
+        "mass": 0.09979,
         "caliber": 0.02,
         "speed": 1030.0,
         "maxDistance": 6250.0,
-        "Cx": 0.46,
-        "explosiveType": "rdx",
-        "explosiveMass": 0.01,
+        "Cx": 0.46979,
+        "explosiveType": "h761",
+        "explosiveMass": 0.0107,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_small_caliber_ground",
@@ -4526,13 +4539,6 @@
         }
       }
     ]
-  },
-  "gunSound": {
-    "path": "sounds/guns",
-    "pathStudio": "aircraft/weapon",
-    "outside": "m197_gun_outside",
-    "cockpit": "m197_gun_inside",
-    "ai": "m197_gun_ai"
   },
   "overheat": {
     "overheat": [

@@ -1,35 +1,32 @@
-from "%rGui/globals/ui_library.nut" import *
+import "%rGui/hints/hints.nut" as hints
+import "%globalScripts/iconRender/icon3dByGameTemplate.nut" as icon3dByGameTemplate
+import "%globalScripts/iconRender/forceRealTimeRenderIcon.nut" as forceRealTimeRenderIcon
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/hud/humanSquad/humanSquadState.nut" import isPersonalContextCommandMode, watchedHeroSquadMembersGetWatched, watchedHeroSquadMembersOrderedSet
+from "%appGlobals/hudSquadMembers.nut" import selectedBotForOrderEid, watchedHeroSquadMembers, hudSquadBlockCollapsed
+from "%rGui/hud/state/controlledHeroEid.nut" import controlledHeroEid
+from "%rGui/hudState.nut" import isSpectatorMode
+from "%rGui/hud/humanSquad/hudSquadMemberIcons.nut" import mkMineIcon, mkStatusIcon
+from "%rGui/hud/humanSquad/humanSquadFormation.nut" import squadFormation, SquadFormationSpreadEnum
+from "%rGui/hud/humanSquad/humanSquadBehaviour.nut" import squadBehaviour, SquadBehaviourEnum
+from "%rGui/hud/humanSquad/grenadeIcon.nut" import mkGrenadeIcon
+from "%rGui/style/colors.nut" import white, hudSquadBgColor, attackWarningColor, transparent, attackWarningColor2, attackWarningColor3
+from "%rGui/hud/humanSquad/humanEnums.nut" import ATTACK_RES
+from "%rGui/style/const.nut" import humanSquadSingleItemWidth, squadMemberGap
+from "console" import register_command
+from "eventbus" import eventbus_subscribe
+from "controls" import emulateShortcut
+from "dagor.math" import Color4
+from "%rGui/globals/ui_library.nut" import *
 
-let {
-  isPersonalContextCommandMode,
-  watchedHeroSquadMembersGetWatched, watchedHeroSquadMembersOrderedSet
-} = require("%rGui/hud/humanSquad/humanSquadState.nut")
-let { selectedBotForOrderEid, watchedHeroSquadMembers, hudSquadBlockCollapsed } = require("%appGlobals/hudSquadMembers.nut")
-let { controlledHeroEid } = require("%rGui/hud/state/controlledHeroEid.nut")
-let { isSpectatorMode } = require("%rGui/hudState.nut")
-let { mkMineIcon,  mkStatusIcon } = require("%rGui/hud/humanSquad/hudSquadMemberIcons.nut")
-let hints = require("%rGui/hints/hints.nut")
-let { squadFormation, SquadFormationSpreadEnum } = require("%rGui/hud/humanSquad/humanSquadFormation.nut")
-let { squadBehaviour, SquadBehaviourEnum } = require("%rGui/hud/humanSquad/humanSquadBehaviour.nut")
-let { mkGrenadeIcon } = require("%rGui/hud/humanSquad/grenadeIcon.nut")
-let { white, hudSquadBgColor, attackWarningColor, transparent,
-  attackWarningColor2, attackWarningColor3, hud } = require("%rGui/style/colors.nut")
+let { hud } = require("%rGui/style/colors.nut")
 let { infantryShortcutCommonColor, infantryShortcutCommonTextColor } = hud
-let { register_command } = require("console")
-let { ATTACK_RES } = require("%rGui/hud/humanSquad/humanEnums.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { emulateShortcut } = require("controls")
-let icon3dByGameTemplate = require("%globalScripts/iconRender/icon3dByGameTemplate.nut")
-let forceRealTimeRenderIcon = require("%globalScripts/iconRender/forceRealTimeRenderIcon.nut")
-let { humanSquadSingleItemWidth, squadMemberGap } = require("%rGui/style/const.nut")
 let { hudBlurPanel } = require("%rGui/components/blurPanel.nut")
-let { Color4 } = require("dagor.math")
 
 const EWS_TERTIARY = 2
 
-let ANIM_SQUAD_BLOCK_SHOW_ID = "anim_squad_block_show"
-let ANIM_SQUAD_BLOCK_HIDE_ID = "anim_squad_block_hide"
+const ANIM_SQUAD_BLOCK_SHOW_ID = "anim_squad_block_show"
+const ANIM_SQUAD_BLOCK_HIDE_ID = "anim_squad_block_hide"
 let isAnimSquadBlockFinished = Watched(false)
 let isSquadBlockHidden = Computed(@() hudSquadBlockCollapsed.get() && isAnimSquadBlockFinished.get())
 
@@ -75,20 +72,20 @@ let tertiaryWeaponSize = [ humanSquadSingleItemWidth - 2*smallPadding, humanSqua
 const memberMarkerBlockSize = [memberMarkerSize, memberMarkerSize]
 const selectedMemberMarkerBlockSize = [selectedMemberMarkerSize, selectedMemberMarkerSize]
 
-const equipmentStatusRowDummy = { size = [sIconSize, sIconSize] }
+const equipmentStatusRowDummy = { size = const [sIconSize, sIconSize] }
 
 const memberIconLightColor = 0xFFd2d2d1
 
 let whiteColor4 = Color4(255,255,255,255)
 
 let personalOrderMarker = freeze({
-  size = [memberMarkerSize, memberMarkerSize]
+  size = const [memberMarkerSize, memberMarkerSize]
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = hudSquadBgColor
   color = transparent
   commands = [[VECTOR_ELLIPSE, 50, 50, 50, 50]]
   children = {
-    size = [personalOrderMarkerSize, personalOrderMarkerSize]
+    size = const [personalOrderMarkerSize, personalOrderMarkerSize]
     rendObj = ROBJ_IMAGE
     hplace = ALIGN_CENTER
     vplace = ALIGN_CENTER
@@ -98,7 +95,7 @@ let personalOrderMarker = freeze({
 })
 
 let memberSelfMarker = freeze({
-  size = [memberMarkerSize, memberMarkerSize]
+  size = const [memberMarkerSize, memberMarkerSize]
   rendObj = ROBJ_IMAGE
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
@@ -127,7 +124,7 @@ let memberMarker = @(memberIdx, isSelectedForOrder) isSelectedForOrder
 
 let emptySlotIcon = freeze({
   rendObj = ROBJ_IMAGE
-  size = [sIconSize, sIconSize]
+  size = const [sIconSize, sIconSize]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   color = memberIconLightColor
@@ -149,7 +146,7 @@ function mkAiAction(member, blockSize) {
     valign = ALIGN_CENTER
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_FRAME
         borderWidth = lineWidth
         color = 0
@@ -263,7 +260,7 @@ let memberUi = memoize(function(eid) {
             hudBlurPanel
             mkAiAction(member, memberBlockSize)
             isSelf ? {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_VECTOR_CANVAS
               lineWidth
               color = memberIconLightColor
@@ -273,7 +270,7 @@ let memberUi = memoize(function(eid) {
             mkStatusIcon(member, iconSize)
             !isAlive ? null : {
               flow = FLOW_VERTICAL
-              size = flex()
+              size = FLEX
               margin = smallPadding
               gap = miniPadding
               halign = ALIGN_CENTER
@@ -283,7 +280,7 @@ let memberUi = memoize(function(eid) {
                   children = tertImage
                 }
                 {
-                  size = [SIZE_TO_CONTENT, sIconSize]
+                  size = const [SIZE_TO_CONTENT, sIconSize]
                   children = isAliveAI || isSelf
                       ? (mkGrenadeIcon(grenadeT, sIconSize, iconColor)
                         ?? mkMineIcon(member, sIconSize, iconColor) )
@@ -294,8 +291,8 @@ let memberUi = memoize(function(eid) {
           ]
         }
         isAlive ? {
-          size = [ flex(), memberMarkerSize ]
-          pos = [ 0, -markerOffset ]
+          size = const [ FLEX, memberMarkerSize ]
+          pos = const [ 0, -markerOffset ]
           valign = ALIGN_CENTER
           children = [
             {
@@ -327,7 +324,7 @@ let squadMembersList = @() {
 let mkSquadStatusIcon = @(icon) {
   hplace = ALIGN_CENTER
   rendObj = ROBJ_IMAGE
-  size = [squadStatusIconSize, squadStatusIconSize]
+  size = const [squadStatusIconSize, squadStatusIconSize]
   image = Picture($"{icon}:{squadStatusIconSize}:{squadStatusIconSize}:P")
 }
 
@@ -409,7 +406,7 @@ let collapseButton = @() {
   ]
 }
 
-let unitControlHelp = @() getShortcutText(
+let mkUnitControlHelp = @() getShortcutText(
   "{{ID_HELP}} {0}".subst(loc("hotkeys/ID_HELP"))
 )
 
@@ -427,8 +424,8 @@ let members = {
       animations = membersAnimations
       flow = FLOW_VERTICAL
       children = isSquadBlockHidden.get() ? null : [
-        { size = [SIZE_TO_CONTENT, markerOffset] }
-        unitControlHelp
+        { size = const [SIZE_TO_CONTENT, markerOffset] }
+        mkUnitControlHelp()
       ]
     }
   ]

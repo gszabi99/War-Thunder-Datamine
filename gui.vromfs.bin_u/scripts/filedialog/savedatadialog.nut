@@ -1,23 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
-let DataBlock = require("DataBlock")
-let { activateObjsByTable, move_mouse_on_child_by_value, select_editbox
-} = require("%sqDagui/daguiUtil.nut")
+let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
+let { activateObjsByTable, move_mouse_on_child_by_value, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"
 
-gui_handlers.SaveDataDialog <- class (gui_handlers.BaseGuiHandlerWT) {
+let SaveDataDialog = class (BaseGuiHandlerWT) {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/saveDataDialog.blk"
 
@@ -370,3 +369,6 @@ gui_handlers.SaveDataDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   getTableListObj = @() this.getObj("file_table")
   getSortListObj = @() this.getObj("sort_params_list")
 }
+register_gui_handler("SaveDataDialog", SaveDataDialog)
+
+return { SaveDataDialog }

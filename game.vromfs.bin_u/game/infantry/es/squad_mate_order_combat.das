@@ -3,7 +3,6 @@ require ecs
 
 require %appGame.wt_events
 require %appGame.infantry.es.loc_squad_common
-require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 
 [es(tag=server)]

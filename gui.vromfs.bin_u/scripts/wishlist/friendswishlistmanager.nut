@@ -1,6 +1,6 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { charRequestJson } = require("%scripts/tasker.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 

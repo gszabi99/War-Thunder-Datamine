@@ -1,32 +1,31 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqStdLibs/helpers/enums.nut" as enums
+import "DataBlock" as DataBlock
+from "controls" import isXInputDevice
+from "dagor.time" import get_time_msec
+from "chard" import get_charserver_time_sec
+from "string" import format
+from "%sqstd/datablock.nut" import blk2SquirrelObjNoArrays
+from "vr" import is_stereo_mode
+from "hudState" import getHudUnitType
+from "%sqstd/string.nut" import startsWith
+from "mission" import get_mplayer_by_id
+from "guiMission" import get_mission_difficulty, get_current_mission_desc, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
+from "console" import register_command
+from "%sqstd/underscore.nut" import isEqual
 from "%scripts/dagui_natives.nut" import is_hint_enabled, get_hint_seen_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/viewUtils/hints.nut" import g_hints, g_hint_tag
 from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color
 
-let DataBlock = require("DataBlock")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
-let { get_time_msec } = require("dagor.time")
-let { get_charserver_time_sec } = require("chard")
-let { format } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
-let { blk2SquirrelObjNoArrays } = require("%sqstd/datablock.nut")
-let { is_stereo_mode } = require("vr")
-let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { get_mplayer_by_id } = require("mission")
-let { get_mission_difficulty, get_current_mission_desc,
-  OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
-let { loadLocalAccountSettings, saveLocalAccountSettings} = require("%scripts/clientState/localProfile.nut")
-let { register_command } = require("console")
-let { isEqual } = require("%sqstd/underscore.nut")
+let { loadLocalAccountSettings, saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { g_hud_hint_types } = require("%scripts/hud/hudHintTypes.nut")
 let { objectiveStatus } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
@@ -241,7 +240,7 @@ g_hud_hints._getNoKeyLocId <- function _getNoKeyLocId() {
 }
 
 g_hud_hints._getLifeTime <- function _getLifeTime(data) {
-  return this.lifeTime || getTblValue("lifeTime", data, 0)
+  return this.lifeTime || (data?.lifeTime ?? 0)
 }
 
 g_hud_hints._getShortcuts <- function _getShortcuts(_data) {
@@ -283,7 +282,7 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
 
   updateCbs = {
     ["mission:timer:start"] = function(_hintData, eventData) {
-      let totalSec = getTblValue("totalTime", eventData)
+      let totalSec = eventData?.totalTime
       if (!totalSec)
         return false
 
@@ -300,22 +299,22 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
   isCurrent = function(eventData, isHideEvent) {
     if (isHideEvent && !("hintType" in eventData))
       return true
-    return checkHintTypeNameFunc(getTblValue("hintType", eventData, MISSION_HINT_TYPE.STANDARD))
+    return checkHintTypeNameFunc((eventData?.hintType ?? MISSION_HINT_TYPE.STANDARD))
   }
 
   getLocId = function (hintData) {
-    return getTblValue("locId", hintData, "")
+    return (hintData?.locId ?? "")
   }
 
   getShortcuts = function (hintData) {
-    return getTblValue("shortcuts", hintData)
+    return hintData?.shortcuts
   }
 
   buildText = function (hintData) {
     local res = g_hud_hints._buildText.call(this, hintData)
-    local varValue = getTblValue("variable_value", hintData)
+    local varValue = hintData?.variable_value
     if (varValue != null) {
-      let varStyle = getTblValue("variable_style", hintData)
+      let varStyle = hintData?.variable_style
       if (varStyle == "playerId") {
         let player = get_mplayer_by_id(varValue)
         varValue = buildMplayerName(player)
@@ -331,11 +330,11 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
     let res = g_hud_hints._getHintMarkupParams.call(this, eventData, hintObjId)
     res.hideWhenStopped <- true
     res.timerOffsetX <- "-w" 
-    res.isOrderPopup <- getTblValue("isOverFade", eventData, false)
+    res.isOrderPopup <- (eventData?.isOverFade ?? false)
     res.isVerticalAlignText = this.isVerticalAlignText && this.getTimerTotalTimeSec(eventData) != 0
 
-    res.animation <- getTblValue("shouldBlink", eventData, false) ? "wink"
-      : getTblValue("shouldFadeout", eventData, false) ? "show"
+    res.animation <- (eventData?.shouldBlink ?? false) ? "wink"
+      : (eventData?.shouldFadeout ?? false) ? "show"
       : null
     return res
   }
@@ -350,9 +349,9 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
     return time.millisecondsToSeconds(get_time_msec() - this._missionTimerStartMsec)
   }
 
-  getLifeTime = @(eventData) getTblValue("time", eventData, 0)
+  getLifeTime = @(eventData) (eventData?.time ?? 0)
 
-  isInstantHide = @(eventData) !getTblValue("shouldFadeout", eventData, true)
+  isInstantHide = @(eventData) !(eventData?.shouldFadeout ?? true)
   hideHint = function(hintObject, isInstant) {
     if (isInstant)
       hintObject.getScene().destroyElement(hintObject)
@@ -493,7 +492,7 @@ g_hud_hints.template <- {
 
   getLocParams = @(_hintData) {}
 
-  getPriority = function(eventData) { return getTblValue("priority", eventData, this.priority) }
+  getPriority = function(eventData) { return (eventData?.priority ?? this.priority) }
   isCurrent = @(_eventData, _isHideEvent) true
 
   
@@ -1214,7 +1213,7 @@ enums.addTypes(g_hud_hints, {
       local reservedSlotsCountA = 0
       local reservedSlotsCountB = 0
       let totalSlotsPerCommand = eventData?.slotsCount ?? 0
-      let spaceStr = "          "
+      const spaceStr = "          "
 
       local participantList = []
       if (eventData?.participant)
@@ -1244,8 +1243,8 @@ enums.addTypes(g_hud_hints, {
         }
       }
 
-      let freeSlotIconName = "#ui/gameuiskin#btn_help.svg"
-      let freeSlotIconColor = "@minorTextColor"
+      const freeSlotIconName = "#ui/gameuiskin#btn_help.svg"
+      const freeSlotIconColor = "@minorTextColor"
       let freeSlotIconStr = this.makeSmallImageStr(freeSlotIconName, freeSlotIconColor, "small")
       if (participantsAStr.len() > 0)
         for (local i = 0; i < totalSlotsPerCommand - reservedSlotsCountA; ++i)
@@ -1530,7 +1529,7 @@ enums.addTypes(g_hud_hints, {
 
     isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
     getLocId = function(eventData) {
-      return getTblValue("hintId", eventData, "hints/unknown")
+      return (eventData?.hintId ?? "hints/unknown")
     }
   }
 
@@ -1558,7 +1557,7 @@ enums.addTypes(g_hud_hints, {
     isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
 
     getLocId = function(hintData) {
-      let objType = getTblValue("objectiveType", hintData, OBJECTIVE_TYPE_SECONDARY)
+      let objType = (hintData?.objectiveType ?? OBJECTIVE_TYPE_SECONDARY)
       local result = ""
       if (objType == OBJECTIVE_TYPE_PRIMARY)
         result = "hints/objective_success"
@@ -1584,7 +1583,7 @@ enums.addTypes(g_hud_hints, {
     isCurrent = @(eventData, _isHideEvent) !("hintType" in eventData) || isStandardMissionHint(eventData.hintType)
 
     getLocId = function(hintData) {
-      let objType = getTblValue("objectiveType", hintData, OBJECTIVE_TYPE_PRIMARY)
+      let objType = (hintData?.objectiveType ?? OBJECTIVE_TYPE_PRIMARY)
       local result = ""
       if (objType == OBJECTIVE_TYPE_PRIMARY)
         result = "hints/objective_fail"
@@ -1778,17 +1777,17 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.REPAIR
     getLocId = function (data) {
       let hudUnitType = getHudUnitType()
-      if (getTblValue("assist", data, false)) {
+      if ((data?.assist ?? false)) {
         if (hudUnitType == HUD_UNIT_TYPE.TANK)
           return "hints/repair_assist_tank_hold"
         if (hudUnitType == HUD_UNIT_TYPE.SHIP || hudUnitType == HUD_UNIT_TYPE.SHIP_EX)
           return "hints/repair_assist_ship_hold"
         return "hints/repair_assist_plane_hold"
       }
-      if (getTblValue("request", data, false)) {
+      if ((data?.request ?? false)) {
         return "hints/repair_request_assist_hold"
       }
-      else if (getTblValue("cancelRequest", data, false)) {
+      else if ((data?.cancelRequest ?? false)) {
         return "hints/repair_cancel_request_assist_hold"
       }
       if (hudUnitType == HUD_UNIT_TYPE.HUMAN)
@@ -2090,10 +2089,10 @@ NEED_STOP_FOR_RADAR = {
   REQUEST_EXTINGUISH_HELP_HINT = {
     hintType = g_hud_hint_types.REPAIR
     getLocId = function (data) {
-      if (getTblValue("request", data, false)) {
+      if ((data?.request ?? false)) {
         return "hints/request_extinguish_help"
       }
-      else if (getTblValue("cancelRequest", data, false)) {
+      else if ((data?.cancelRequest ?? false)) {
         return "hints/request_extinguish_help_cancel"
       }
       return ""
@@ -3006,13 +3005,6 @@ NEED_STOP_FOR_RADAR = {
     hintType  = g_hud_hint_types.REPAIR
     locId     = "hints/manual_sensor_tilt_control"
     showEvent = "hint:manual_sensor_tilt_control"
-    lifeTime  = 5.0
-  }
-
-  SENSOR_TARGET_CYCLIC_SWITCH = {
-    hintType  = g_hud_hint_types.REPAIR
-    locId     = "hints/sensor_target_cyclic_switch"
-    showEvent = "hint:sensor_target_cyclic_switch"
     lifeTime  = 5.0
   }
 

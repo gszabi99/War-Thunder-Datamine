@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module instance_function shared private
@@ -17,16 +15,9 @@ require daslib/rtti
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/defer
-require strings
 
 [function_macro(name="instance_function")]
 class InstanceFunctionAnnotation : AstFunctionAnnotation {
-    
-    
-    
-    
-    
-    
     
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         var generic_name = ""

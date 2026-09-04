@@ -1,28 +1,30 @@
+import "%rGui/hints/hints.nut" as hints
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/radarState.nut" import Irst, HasIrst, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX, IsRadarHudVisible
+  , IsRadarHasFilters, IsEsm, HasMultipleSensorModes, ScanPatternsMax, DistanceScalesMax, ScanElevationMin, ScanElevationMax
+  , ElevationMin, ElevationMax, ElevationHalfWidth
+from "%rGui/ctrlsState.nut" import showConsoleButtons, cursorVisible
+from "%rGui/hudState.nut" import isPlayingReplay, isUnitAlive, unitType
+from "%rGui/airState.nut" import HudColor
+from "%rGui/style/airHudStyle.nut" import adjustColorBrightness
+from "%rGui/globalState.nut" import isInFlight
+from "%rGui/components/gamepadImgByKey.nut" import mkImageCompByDargKey
+from "%rGui/radarFilters.nut" import switchFilter, isFiltersExpanded
+from "%rGui/hudUnitType.nut" import isAir
+from "%sqstd/frp.nut" import isObservable
+from "controls" import setVirtualAxisValue
+from "dagor.workcycle" import setTimeout, clearTimer, defer
+from "eventbus" import eventbus_subscribe
+from "radarGuiControls" import RadarTargetsIffFilterMask, AirRadarGuiControlMode, getAirRadarGuiControlMode, getNextRadarTargetsIffFilterMask
+from "console" import register_command
+from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
-let { isObservable } = require("%sqstd/frp.nut")
-let { setVirtualAxisValue } = require("controls")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let hints = require("%rGui/hints/hints.nut")
-let { Irst, HasIrst, modeNames, RadarModeNameId, IsRadarVisible, HasHelmetTarget, MfdRadarOffsetX,
-  IsRadarHudVisible, IsRadarHasFilters, IsEsm, HasMultipleSensorModes, ScanPatternsMax,
-  DistanceScalesMax, ScanElevationMin, ScanElevationMax, ElevationMin, ElevationMax,
-  ElevationHalfWidth
-} = require("%rGui/radarState.nut")
-let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
-let { eventbus_subscribe } = require("eventbus")
-let { RadarTargetsIffFilterMask, AirRadarGuiControlMode, getAirRadarGuiControlMode, getNextRadarTargetsIffFilterMask } = require("radarGuiControls")
+from "types" import String
+
+let { modeNames } = require("%rGui/radarState.nut")
 let { AIR_RADAR_GUI_CONTROL_HIDDEN, AIR_RADAR_GUI_CONTROL_BUTTONAS_AND_SHORTCUTS } = AirRadarGuiControlMode
-let { showConsoleButtons, cursorVisible } = require("%rGui/ctrlsState.nut")
-let { isPlayingReplay, isUnitAlive, unitType } = require("%rGui/hudState.nut")
-let { HudColor } = require("%rGui/airState.nut")
-let { adjustColorBrightness } = require("%rGui/style/airHudStyle.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
-let { register_command } = require("console")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { IFFFilter, typeFilter, filterPresets, switchFilter, isFiltersExpanded, ESMModeTypeFilter } = require("%rGui/radarFilters.nut")
-let { isAir } = require("%rGui/hudUnitType.nut")
-let { cvt } = require("dagor.math")
+let { IFFFilter, typeFilter, filterPresets, ESMModeTypeFilter } = require("%rGui/radarFilters.nut")
 
 const HELI_AXIS_CONTROL_PREFIX = "helicopter_"
 
@@ -309,7 +311,7 @@ function getFilterButtonsConfig() {
     return cachedFiltersBtns
 
   let isBtnsExpanded = isFiltersExpanded.get()
-  let collapseFiltersIconSize = hdpxi(18)
+  const collapseFiltersIconSize = hdpxi(18)
   let collapseBtn = { isSelected = isFiltersExpanded, iconSize = collapseFiltersIconSize,
     getText = @() isBtnsExpanded ? loc("mainmenu/btnCollapse") : loc("mainmenu/btnExpand"),
     onClick = onCollapseFiltersBtn, icon = Picture($"ui/gameuiskin#filter_icon.svg:{collapseFiltersIconSize}:P") }
@@ -333,7 +335,7 @@ function getFilterButtonsConfig() {
 }
 
 function mkButtonIconComp(srcValueOrWatched) {
-  let iconSrcW = type(srcValueOrWatched) == "string" ? Watched(srcValueOrWatched)
+  let iconSrcW = srcValueOrWatched instanceof String ? Watched(srcValueOrWatched)
     : srcValueOrWatched
   let drawPicture = srcValueOrWatched != null
 
@@ -540,7 +542,7 @@ let mkHorizontalButtons = @(buttonsCfg, ovr = {}, params = null) @() {
   hplace = ALIGN_CENTER
   vplace = ALIGN_BOTTOM
   flow = FLOW_HORIZONTAL
-  gap = const { size = flex() }
+  gap = const { size = FLEX }
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
   children = IsRadarVisible.get()
@@ -644,41 +646,43 @@ function onFilterBtnsApplyShortcut() {
   btnsConfig[index]?.onClick()
 }
 
-let filtersButtons = @(offsets) function() {
-  let btnsConfig = getFilterButtonsConfig()
-  let children = btnsConfig.filter(@(btnData) (btnData?.isVisible ?? true)).map(@(btnData, idx) mkBaseButtonMini(btnData, idx))
-  let navShortcut = isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"]
-  let applyShortcut= isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"]
-
+function filtersButtons(offsets) {
   let filtersBtnsPadding = Computed(function() {
     return [0, 0, 0,
       MfdRadarOffsetX.get() + offsets.get()[0]]
   })
 
-  children.append(
-    { behavior = Behaviors.Button
-      onClick = onFilterBtnsNavigationShortcut
-      hotkeys = [navShortcut]
-    },
-    {
-      behavior = Behaviors.Button
-      onClick = onFilterBtnsApplyShortcut
-      hotkeys = [applyShortcut]
+  return function() {
+    let btnsConfig = getFilterButtonsConfig()
+    let children = btnsConfig.filter(@(btnData) (btnData?.isVisible ?? true)).map(@(btnData, idx) mkBaseButtonMini(btnData, idx))
+    let navShortcut = isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_NAVIGATION_HELICOPTER"]
+    let applyShortcut= isAir() ? ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY"] : ["@ID_TOGGLE_AIR_RADAR_NCTR_APPLY_HELICOPTER"]
+
+    children.append(
+      { behavior = Behaviors.Button
+        onClick = onFilterBtnsNavigationShortcut
+        hotkeys = [navShortcut]
+      },
+      {
+        behavior = Behaviors.Button
+        onClick = onFilterBtnsApplyShortcut
+        hotkeys = [applyShortcut]
+      }
+    )
+
+    const gapSize = hdpx(6)
+    let totalHeight = (gapSize + FILTER_BTN_SIZE) * btnsConfig.len() - gapSize
+
+    return {
+      watch = [isFiltersExpanded, filtersBtnsPadding, IsEsm]
+      flow = FLOW_VERTICAL
+      padding = filtersBtnsPadding.get()
+      pos = const [pw(100), 0]
+      size = [SIZE_TO_CONTENT, totalHeight + hdpx(15)]
+      vplace = ALIGN_BOTTOM
+      gap = gapSize
+      children
     }
-  )
-
-  const gapSize = hdpx(6)
-  let totalHeight = (gapSize + FILTER_BTN_SIZE) * btnsConfig.len() - gapSize
-
-  return {
-    watch = [isFiltersExpanded, filtersBtnsPadding, IsEsm]
-    flow = FLOW_VERTICAL
-    padding = filtersBtnsPadding.get()
-    pos = [pw(100), 0]
-    size = [SIZE_TO_CONTENT, totalHeight + hdpx(15)]
-    vplace = ALIGN_BOTTOM
-    gap = gapSize
-    children
   }
 }
 
@@ -691,7 +695,7 @@ function mkRadarButtons(vButtonsCfg, hButtonsCfg, hButtonsSectionOvr = {}, param
   let handleGamepadNavChange = @(isEnabled) moveMouseOnGamepadNavEnabled(isEnabled, btnIdsToTryFocus)
   return {
     key = {}
-    size = flex()
+    size = FLEX
     children = [
       mkVerticalButtons(vButtonsCfg)
       mkHorizontalButtons(hButtonsCfg, hButtonsSectionOvr, params)
@@ -732,11 +736,11 @@ register_command(@() isRadarGamepadNavEnabled.set(!isRadarGamepadNavEnabled.get(
 return {
   isRadarButtonsVisible
   radarButtonsAirMinimized = mkRadarButtons([], horizontalButtonsMinized,
-    { halign = ALIGN_LEFT, pos = [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(30)], gap = hdpx(5) },
+    { halign = ALIGN_LEFT, pos = const [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(30)], gap = hdpx(5) },
     { hideCornerBtn = true, btnType = mkButtonMini }
   )
   radarButtonsHeliMinimized = mkRadarButtons([], horizontalButtonsMinizedHeli,
-    { halign = ALIGN_LEFT, pos = [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(30)], gap = hdpx(5) },
+    { halign = ALIGN_LEFT, pos = const [HORIZONTAL_BUTTONS_OIFFSET_X, hdpx(30)], gap = hdpx(5) },
     { hideCornerBtn = true, btnType = mkButtonMini }
   )
   radarButtonsAir = mkRadarButtons(verticalButtonsAir, horizontalButtonsAir)

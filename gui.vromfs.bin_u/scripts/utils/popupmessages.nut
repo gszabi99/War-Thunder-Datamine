@@ -1,27 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "string" import split_by_chars
+from "app" import get_game_version_str
+from "%sqstd/string.nut" import startsWith
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_gui_regional_blk
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import ps4_activity_feed
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { checkPromoBlockUnlock, checkPromoBlockReqEntitlement,
-  checkPromoBlockReqFeature, isPromoVisibleByAction
-} = require("%scripts/promo/promo.nut")
-let { split_by_chars } = require("string")
-let { get_game_version_str } = require("app")
+let { checkPromoBlockUnlock, checkPromoBlockReqEntitlement, checkPromoBlockReqFeature, isPromoVisibleByAction } = require("%scripts/promo/promo.nut")
 let time = require("%scripts/time.nut")
 let promoConditions = require("%scripts/promo/promoConditions.nut")
 let { isPollVoted } = require("%scripts/web/webpoll.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { get_gui_regional_blk } = require("blkGetters")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
-let { register_command } = require("console")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"

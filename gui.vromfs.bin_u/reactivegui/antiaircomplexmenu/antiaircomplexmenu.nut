@@ -1,48 +1,42 @@
+import "string" as string
+from "%rGui/radarState.nut" import TargetsTrigger, HasAzimuthScale, AzimuthMin, AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin
+  , RadarParkingState, CueVisible, CueReferenceTurretAzimuth, CueAzimuth, CueAzimuthHalfWidthRel, CueDistWidthRel, CueDist
+  , TargetRadarAzimuthWidth, TargetRadarDist
+from "%rGui/style/screenState.nut" import safeAreaSizeHud, bh, rh
+from "%rGui/hudState.nut" import needShowDmgIndicator
+from "%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut" import mkFrame, shortcutButtonPadding, frameHeaderHeight, borderWidth, makeTargetStatusEllementFactory, targetsSortFunction, targetSortFunctionWatched
+  , frameBorderColor, frameBackgroundColor, hoverFillColor
+from "%rGui/hints/shortcuts.nut" import antiAirMenuShortcutHeight
+from "%rGui/hud/actionBarState.nut" import actionBarSize, isActionBarVisible, isActionBarCollapsed, actionBarActionsCount
+from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanelMarginBottom, actionBarTopPanelHeight
+from "%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut" import aaMenuCfg
+from "%rGui/components/gamepadImgByKey.nut" import mkImageCompByDargKey
+from "%rGui/ctrlsState.nut" import showConsoleButtons
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%rGui/components/scrollbar.nut" import scrollbarWidth, makeSideScroll
+from "%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut" import mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwitchBtn, mkSensorScanPatternSwitchBtn, mkSensorRangeSwitchBtn
+  , mkSensorTargetLockBtn, mkFireBtn, mkSpecialFireBtn, mkWeaponLockBtn, mkNightVisionBtn
+from "%rGui/antiAirComplexMenu/antiAirComplexMenuTargetsList.nut" import mkFilterTargetsBtn
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
+from "%rGui/radar.nut" import radarCanvas
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorPos
+from "%rGui/screenHelpOverlay/screenHelpOverlayState.nut" import closeScreenHelp, openScreenHelp, screenHelpItems
+from "%rGui/screenHelpOverlay/screenHelpOverlay.nut" import screenHelpOverlay
+from "vehicleModel" import hasSpecialWeapon, hasManySensorScanPattern, hasTargetTrack, hasWeaponLock
+from "dagor.workcycle" import deferOnce, setTimeout, clearTimer
+from "%sqstd/math.nut" import PI, floor
+from "dagor.math" import norm_s_ang
+from "radarGuiControls" import radarSwitchToTarget, isRadarTargetFullyInAzimuthLockSpan
+from "guiRadar" import RadarTargetType, RadarParkingStateType, RadarHudTargetIconType
+from "hudState" import setRenderCameraToHudTexture
+from "hudActionBarConst" import EII_SLAVE_UNIT_STATUS
+from "controls" import showAAComplexMenu
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/gameRendObjs.nut" import *
 
-let { hasSpecialWeapon, hasManySensorScanPattern, hasTargetTrack, hasWeaponLock } = require("vehicleModel")
-let string = require("string")
-let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin,
-  AzimuthRange, HasDistanceScale, DistanceMax, DistanceMin, RadarParkingState,
-  CueVisible, CueReferenceTurretAzimuth, CueAzimuth, CueAzimuthHalfWidthRel, CueDistWidthRel, CueDist
-  TargetRadarAzimuthWidth, TargetRadarDist
-} = require("%rGui/radarState.nut")
-let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
-let { PI, floor } = require("%sqstd/math.nut")
-let { norm_s_ang } = require("dagor.math")
-let { radarSwitchToTarget, isRadarTargetFullyInAzimuthLockSpan } = require("radarGuiControls")
-let { RadarTargetType, RadarParkingStateType, RadarHudTargetIconType } = require("guiRadar")
-let { RADAR_TAGET_TYPE_OWN_WEAPON, RADAR_TAGET_TYPE_OWN_WEAPON_TARGET } = RadarTargetType
-let { safeAreaSizeHud, bh, rh } = require("%rGui/style/screenState.nut")
-let { needShowDmgIndicator } = require("%rGui/hudState.nut")
-let { setRenderCameraToHudTexture } = require("hudState")
-let { mkFrame, shortcutButtonPadding, frameHeaderHeight, borderWidth,
-  makeTargetStatusEllementFactory, targetsSortFunction, targetSortFunctionWatched,
-  frameBorderColor, frameBackgroundColor, hoverFillColor
-} = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
-let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
-let { actionBarSize, isActionBarVisible, isActionBarCollapsed, actionBarActionsCount
-} = require("%rGui/hud/actionBarState.nut")
-let { EII_SLAVE_UNIT_STATUS } = require("hudActionBarConst")
-let { actionBarTopPanelMarginBottom, actionBarTopPanelHeight
-} = require("%rGui/hud/actionBarTopPanel.nut")
-let { aaMenuCfg } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
-let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { scrollbarWidth, makeSideScroll } = require("%rGui/components/scrollbar.nut")
-let { mkZoomMinBtn, mkZoomMaxBtn, radarColor, mkSensorTypeSwitchBtn, mkSensorSwitchBtn,
-  mkSensorScanPatternSwitchBtn, mkSensorRangeSwitchBtn, mkSensorTargetLockBtn,
-  mkFireBtn, mkSpecialFireBtn, mkWeaponLockBtn, mkNightVisionBtn, zoomControlByMouseWheel
-} = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
-let { mkFilterTargetsBtn } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuTargetsList.nut")
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-let { radarCanvas } = require("%rGui/radar.nut")
-let { dmgIndicatorPos } = require("%rGui/hud/dmgIndicatorState.nut")
-let { showAAComplexMenu } = require("controls")
-let { closeScreenHelp, openScreenHelp, screenHelpItems
-} = require("%rGui/screenHelpOverlay/screenHelpOverlayState.nut")
-let { screenHelpOverlay } = require("%rGui/screenHelpOverlay/screenHelpOverlay.nut")
+let { targets } = require("%rGui/radarState.nut")
+let { RADAR_TAGET_TYPE_TARGET } = RadarTargetType
+let { zoomControlByMouseWheel } = require("%rGui/antiAirComplexMenu/antiAirComplexControlsButtons.nut")
 
 const HELP_BTN_ICON_SIZE = hdpxi(24)
 const HELP_BTN_BG_COLOR = 0x80182029
@@ -54,7 +48,7 @@ const AA_VERTICAL_VIEW_KEY = {}
 
 local tooltipTimer = null
 
-let imageSize = hdpxi(20)
+const imageSize = hdpxi(20)
 let planeTargetPicture = Picture($"ui/gameuiskin#tws_filter_aircraft.svg:{imageSize}:P")
 let helicopterTargetPicture = Picture($"ui/gameuiskin#tws_filter_helicopter.svg:{imageSize}:P")
 let rocketTargetPicture = Picture($"ui/gameuiskin#tws_filter_ammunition.svg:{imageSize}:P")
@@ -69,21 +63,21 @@ let headerToopltipLocs = {
   IFF = "hud/AAComplexMenu/IFF/tooltip"
 }
 
-let headerTooltipData = Watched({ id = null, pos = [0, 0] })
+let headerTooltipData = Watched({ id = null, pos = const [0, 0] })
 
 let scrollHandler = ScrollHandler()
-let blockInterval = hdpx(6)
+const blockInterval = hdpx(6)
 
 let multiplayerScoreHeightWithOffset = shHud(5)
 let hudActionBarItemSize = shHud(6)
 let hudActionBarItemOffset = shHud(0.5)
 let sizeDamageIndicatorFull = shHud(30)
-let panelsGap = hdpx(8)
+const panelsGap = hdpx(8)
 let targetRowHeight = evenPx(32)
-let targetsListPadding = hdpx(4)
-let defLeftPanelsWidth = hdpx(480)
-let defRightPanelsWidth = hdpx(560)
-let defRadarHeight = hdpx(716)
+const targetsListPadding = hdpx(4)
+const defLeftPanelsWidth = hdpx(480)
+const defRightPanelsWidth = hdpx(560)
+const defRadarHeight = hdpx(716)
 let targetTypeIconHeight = evenPx(24)
 let targetTypeIconSize = [targetTypeIconHeight, targetTypeIconHeight]
 let controlPanelHeight = frameHeaderHeight + 2*antiAirMenuShortcutHeight + 5*panelsGap
@@ -276,8 +270,7 @@ let mkCentralBlock = @() @() {
 
 let selectTarget = @(target) radarSwitchToTarget(target.objectId)
 let isVisibleTarget = @(target) target != null
-  && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON_TARGET
-  && target.targetType != RADAR_TAGET_TYPE_OWN_WEAPON
+  && target.targetType == RADAR_TAGET_TYPE_TARGET
 
 function isTargetInLockZone(target, az_min, az_range, max_dist) {
   let targetAz = norm_s_ang(az_min + az_range * target.azimuthRel - PI * 0.5)
@@ -379,7 +372,7 @@ function mkTooltipHeader() {
 }
 
 let targetStatusFactories = [
-  {key = "index", ell = makeTargetStatusEllementFactory([flex(7), flex()], "#",
+  {key = "index", ell = makeTargetStatusEllementFactory([flex(7), FLEX], "#",
     @(target) target.persistentIndex,
     @(_, target) getTargetStatusIndexText(target),
     function(target) {
@@ -387,7 +380,7 @@ let targetStatusFactories = [
       if (target.isSelectedTargetOfInterest)
         upd = {
           children = {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_BOX
             borderColor = 0xFFAAAAAA
             borderWidth = hdpx(1)
@@ -396,17 +389,17 @@ let targetStatusFactories = [
       return upd
     })}
 
-  {key = "azimuth", ell = makeTargetStatusEllementFactory([flex(11), flex()], loc("hud/AAComplexMenu/azimuth"),
+  {key = "azimuth", ell = makeTargetStatusEllementFactory([flex(11), FLEX], loc("hud/AAComplexMenu/azimuth"),
     @(target) target.azimuthRel,
     function(azimuth_rel, _) {
-      let radToDeg = 180.0 / PI
+      const radToDeg = 180.0 / PI
       let azimuth = (AzimuthMin.get() + AzimuthRange.get() * azimuth_rel) * radToDeg
       let text = HasAzimuthScale.get() ? string.format("%d", floor(azimuth)) : "-"
       return text
     },
     { watch = [AzimuthMin, AzimuthRange, HasAzimuthScale] })}
 
-  {key = "distance", ell = makeTargetStatusEllementFactory([flex(15), flex()], loc("hud/AAComplexMenu/distance"),
+  {key = "distance", ell = makeTargetStatusEllementFactory([flex(15), FLEX], loc("hud/AAComplexMenu/distance"),
     @(target) target.distanceRel,
     function(dist_rel, _){
       let distance = DistanceMax.get() * dist_rel
@@ -415,15 +408,15 @@ let targetStatusFactories = [
     },
     { watch = [DistanceMin, DistanceMax, HasDistanceScale] })}
 
-  {key = "height", ell = makeTargetStatusEllementFactory([flex(16), flex()], loc("hud/AAComplexMenu/height"),
+  {key = "height", ell = makeTargetStatusEllementFactory([flex(16), FLEX], loc("hud/AAComplexMenu/height"),
     @(target) target.heightRel,
     @(height, _) string.format("%.1f", height * 0.001))}
 
-  {key = "speed", ell = makeTargetStatusEllementFactory([flex(15), flex()], loc("hud/AAComplexMenu/speed"),
+  {key = "speed", ell = makeTargetStatusEllementFactory([flex(15), FLEX], loc("hud/AAComplexMenu/speed"),
     @(target) target.radSpeed
     @(rad_speed, _) rad_speed > -3000.0 ? string.format("%.1f", rad_speed) : "-")}
 
-  {key = "courseDist", ell = makeTargetStatusEllementFactory([flex(4), flex()], loc("hud/AAComplexMenu/courseDist"),
+  {key = "courseDist", ell = makeTargetStatusEllementFactory([flex(4), FLEX], loc("hud/AAComplexMenu/courseDist"),
     @(target) target.courseDist
     @(course_dist, _) course_dist >= 0.0 ? string.format("%.1f", course_dist * 0.001) : loc("hud/AAComplexMenu/courseDistUnknown"))}
 
@@ -433,7 +426,7 @@ let targetStatusFactories = [
     @(target) target.typeId,
     @(target_id, _) loc(target_id))}
 
-  {key = "IFF", ell = makeTargetStatusEllementFactory([flex(9), flex()], loc("hud/AAComplexMenu/IFF/header"),
+  {key = "IFF", ell = makeTargetStatusEllementFactory([flex(9), FLEX], loc("hud/AAComplexMenu/IFF/header"),
     @(target) target.isEnemy,
     @(is_enemy, _) is_enemy ? loc("hud/AAComplexMenu/IFF/enemy") : loc("hud/AAComplexMenu/IFF/ally"))}
 ]
@@ -470,7 +463,7 @@ function createTargetListElement(is_header, target, scale, isSelected = false) {
     AzimuthMin.get(), AzimuthRange.get(), TargetRadarDist.get()))
 
   return @() {
-    watch = [aaMenuCfg, isThisTargetInLockZone, hasSelectedTarget]
+    watch = aaMenuCfg
 
     behavior = !is_header ? Behaviors.Button : null
     function onClick(){
@@ -493,7 +486,7 @@ function createTargetListElement(is_header, target, scale, isSelected = false) {
       }
     }
 
-    size = [flex(), targetRowHeight]
+    size = [FLEX, targetRowHeight]
 
     children = [
       !isSelected || !showConsoleButtons.get() ? null
@@ -506,14 +499,14 @@ function createTargetListElement(is_header, target, scale, isSelected = false) {
       @() {
         watch = [hasSelectedTarget, isThisTargetInLockZone]
         rendObj = ROBJ_SOLID
-        size = flex()
+        size = FLEX
         color = is_header ? 0
         : isSelected ? 0x19191919
         : isThisTargetInLockZone.get() ? 0
         : hasSelectedTarget.get() ? 0x19190000 : 0x09090000
       }
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_HORIZONTAL
         children = targetStatusFactories.map(function(prot){
           let isPresent =  aaMenuCfg.get().targetList?[prot.key] ?? true
@@ -538,11 +531,11 @@ function createTargetDist(index, target, scale, isShowConsoleButtons) {
 }
 
 let targetList = @() {
-  watch = [TargetsTrigger, contentScale, targetSortFunctionWatched]
-  size = flex()
+  watch = [TargetsTrigger, contentScale, targetSortFunctionWatched, showConsoleButtons]
+  size = FLEX
   flow = FLOW_VERTICAL
   children = makeSideScroll({
-    margin = [0, targetsListPadding, 0, 0]
+    margin = const [0, targetsListPadding, 0, 0]
     size = FLEX_H
     flow = FLOW_VERTICAL
     children = targets
@@ -652,7 +645,7 @@ let helpBtn = watchElemState(@(sf) {
 })
 
 let aaComplexMenu = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = 0xDD101010
   hotkeys = [
@@ -662,7 +655,7 @@ let aaComplexMenu = {
   children = [
     @() {
       watch = [safeAreaSizeHud, aaMenuCfg, contentScale]
-      size = flex()
+      size = FLEX
       margin = safeAreaSizeHud.get().borders
       padding = [multiplayerScoreHeightWithOffset, 0, 0, 0]
 

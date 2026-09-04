@@ -1,43 +1,61 @@
+import "%rGui/planeCockpit/instrumentsPage/ah64FltPage.nut" as ah64Flt
+import "%rGui/planeCockpit/weaponPage/ah64WpnPage.nut" as ah64Wpn
+import "%rGui/planeCockpit/targetingPage/mfdSu27Pod.nut" as su27Pod
+import "%rGui/planeCockpit/weaponPage/ef2000WpnPage.nut" as ef2000Wpn
+import "%rGui/planeCockpit/instrumentsPage/planeAttitude.nut" as planeAttitude
+import "%rGui/planeCockpit/instrumentsPage/BaeHawkFltPage.nut" as BaeHawkFlt
+import "%rGui/planeCockpit/instrumentsPage/mfdF16cAttitude.nut" as f16cAttitude
+from "%rGui/utils/builders.nut" import createScriptComponentWithPos
+from "%rGui/planeState/planeToolsState.nut" import CustomPages, CustomPagesBlk
+from "%rGui/planeCockpit/weaponPage/f15cWpnPage.nut" import f15cWpn, f15jWpn
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
+from "%sqStdLibs/helpers/u.nut" import copy
+from "dagor.math" import E3DCOLOR
+from "dagor.debug" import logerr
 from "%rGui/globals/ui_library.nut" import *
 
-let { createScriptComponentWithPos } = require("%rGui/utils/builders.nut")
-let { CustomPages, CustomPagesBlk } = require("%rGui/planeState/planeToolsState.nut")
-let { E3DCOLOR } = require("dagor.math")
-let ah64Flt = require("%rGui/planeCockpit/ah64FltPage.nut")
-let ah64Wpn = require("%rGui/planeCockpit/ah64WpnPage.nut")
-let {f15cWpn, f15jWpn} = require("%rGui/planeCockpit/f15cWpnPage.nut")
-let su27Pod = require("%rGui/planeCockpit/mfdSu27Pod.nut")
-let ef2000Wpn = require("%rGui/planeCockpit/ef2000WpnPage.nut")
-let planeAttitude = require("%rGui/planeCockpit/planeAttitude.nut")
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-let { copy } = require("%sqStdLibs/helpers/u.nut")
-let { logerr } = require("dagor.debug")
-let BaeHawkFlt = require("%rGui/planeCockpit/BaeHawkFltPage.nut")
-
-let fa18cRadarAzEl = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarAzEl.das", {
+let fa18cRadarAzEl = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdfa18cRadarAzEl.das", {
   fontId = Fonts.hud
 })
-let rafaleWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdRafaleWpn.das", { fontId = Fonts.hud })
-let f18Wpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF18Wpn.das", { fontId = Fonts.ah64 })
-let su30smWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdSu30smWpn.das", { fontId = Fonts.hud })
-let f2aWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF2aWpn.das", { fontId = Fonts.hud })
+let rafaleWpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdRafaleWpn.das", { fontId = Fonts.hud })
+let f18Wpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdF18Wpn.das", { fontId = Fonts.ah64 })
+let su30smWpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdSu30smWpn.das", { fontId = Fonts.hud })
+let f2aWpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdF2aWpn.das", { fontId = Fonts.hud })
 
-let mi35acc = createScriptComponentWithPos("%rGui/planeCockpit/mfdMi35ACC.das", { fontId = Fonts.hud })
+let mi35acc = createScriptComponentWithPos("%rGui/planeCockpit/targetingPage/mfdMi35ACC.das", { fontId = Fonts.hud })
 
-let mi35accEn = createScriptComponentWithPos("%rGui/planeCockpit/mfdMi35ACC.das", { fontId = Fonts.hud, english = true })
-let f5ThWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF5ThWpn.das", { fontId = Fonts.hud})
-let f5ThWpnDclt = createScriptComponentWithPos("%rGui/planeCockpit/mfdF5ThWpn.das", { fontId = Fonts.hud, declutter = true })
-let fa18Engine = createScriptComponentWithPos("%rGui/planeCockpit/mfdFA18Engine.das", { fontId = Fonts.hud })
-let europeanAviaHorizont = createScriptComponentWithPos("%rGui/planeCockpit/mfdEuropeanHorizont.das", { fontId = Fonts.hud, isMetricUnits = false })
-let mfdYak130Horizont = createScriptComponentWithPos("%rGui/planeCockpit/MfdYak130Horizont.das", { fontId = Fonts.ils31, fontSize = 16, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask_2.avif") })
-let mfdYak130Compass = createScriptComponentWithPos("%rGui/planeCockpit/mfdYak130Compass.das", { fontId = Fonts.ils31, fontSize = 16 })
-let mfdYak130Kab = createScriptComponentWithPos("%rGui/planeCockpit/mfdYak130Kab.das", { fontId = Fonts.ils31, fontSize = 16 })
-let f101Radar = createScriptComponentWithPos("%rGui/planeCockpit/F101Radar.das", {
+let mi35accEn = createScriptComponentWithPos("%rGui/planeCockpit/targetingPage/mfdMi35ACC.das", { fontId = Fonts.hud, english = true })
+let f5ThWpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdF5ThWpn.das", { fontId = Fonts.hud})
+let f5ThWpnDclt = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdF5ThWpn.das", { fontId = Fonts.hud, declutter = true })
+let fa18Engine = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdFA18Engine.das", { fontId = Fonts.hud })
+let europeanAviaHorizont = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdEuropeanHorizont.das", { fontId = Fonts.hud, isMetricUnits = false })
+let mfdYak130Horizont = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/MfdYak130Horizont.das", { fontId = Fonts.ils31, fontSize = 16, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask_2.avif") })
+let mfdYak130Compass = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdYak130Compass.das", { fontId = Fonts.ils31, fontSize = 16 })
+let mfdYak130Kab = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdYak130Kab.das", { fontId = Fonts.ils31, fontSize = 16 })
+let f101Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/F101Radar.das", {
   fontId = Fonts.hud
 })
-let mfdMig29additionalAH = createScriptComponentWithPos("%rGui/planeCockpit/mfdMig29additionalAH.das", { fontId = Fonts.hud, fontSize = 14, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif") })
-let m346FaWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdM346FaWpn.das", { fontId = Fonts.hud })
-let yak130Wpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdYak130Wpn.das", {
+let mfdMig21Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdMig21Radar.das", {
+  fontId = Fonts.ussr_ils
+})
+let mfdF104Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF104Radar.das", {
+  fontId = Fonts.hud
+})
+let mfdF102Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF102Radar.das", {
+  fontId = Fonts.hud
+})
+let mfdSu15Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdSu15Radar.das", {
+  fontId = Fonts.hud
+})
+let mfdF1Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdF1Radar.das", {
+  fontId = Fonts.ils31
+})
+let mfdMirageF1Radar = createScriptComponentWithPos("%rGui/planeCockpit/radarPage/mfdMirageF1Radar.das", {
+  fontId = Fonts.ils31
+})
+let mfdMig29additionalAH = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdMig29additionalAH.das", { fontId = Fonts.hud, fontSize = 14, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif") })
+let m346FaWpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdM346FaWpn.das", { fontId = Fonts.hud })
+let yak130Wpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdYak130Wpn.das", {
   fontId = Fonts.hud
   stationFontId = Fonts.ils31
   aamPic = Picture($"!ui/gameuiskin#aam.svg")
@@ -51,22 +69,45 @@ let yak130Wpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdYak130Wpn.da
   ptbPic = Picture($"!ui/gameuiskin#ptb.svg")
   yakPic = Picture($"ui/gameuiskin#yak_130.svg:400:483")
 })
-let f16cAttitude = require("%rGui/planeCockpit/mfdF16cAttitude.nut")
-let mfdOraoInstruments = createScriptComponentWithPos("%rGui/planeCockpit/mfdOraoInstruments.das", { fontId = Fonts.hud })
-let mfdOraoHorizonCompass = createScriptComponentWithPos("%rGui/planeCockpit/mfdOraoHorizonCompass.das", { fontId = Fonts.hud, horMask = Picture($"!ui/gameuiskin#mfd_f4_agm65.avif") })
-let mfdOraoEngineSmall = createScriptComponentWithPos("%rGui/planeCockpit/mfdOraoEngineSmall.das", { fontId = Fonts.hud })
-let z19Eng = createScriptComponentWithPos("%rGui/planeCockpit/mfdZ19Eng.das", { fontId = Fonts.hud })
-let z19Pfd = createScriptComponentWithPos("%rGui/planeCockpit/mfdZ19Pfd.das", { fontId = Fonts.hud, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif") })
-let mfdMig29Horizont = createScriptComponentWithPos("%rGui/planeCockpit/mfdMig29Horizont.das", {
+let mfdOraoInstruments = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdOraoInstruments.das", { fontId = Fonts.hud })
+let mfdOraoHorizonCompass = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdOraoHorizonCompass.das", { fontId = Fonts.hud, horMask = Picture($"!ui/gameuiskin#mfd_f4_agm65.avif") })
+let mfdOraoEngineSmall = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdOraoEngineSmall.das", { fontId = Fonts.hud })
+let z19Eng = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdZ19Eng.das", { fontId = Fonts.hud })
+let z19Pfd = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdZ19Pfd.das", { fontId = Fonts.hud, horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif") })
+let mfdMig29Horizont = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdMig29Horizont.das", {
   fontId = Fonts.ils31, fontSize = 16
 })
+let mfdSu35J16Horizon = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdSu35J16Horizon.das", {
+  fontId = Fonts.ils31, fontSize = 14,
+  altDevImage = Picture($"!ui/gameuiskin#mfd_altitude.avif"),
+  spdDevImage = Picture($"!ui/gameuiskin#mfd_speed.avif"),
+  varioDevImage = Picture($"!ui/gameuiskin#mfd_vario.avif"),
+  horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif")
+})
+let mfdMigCompass = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdMigCompass.das", {
+  fontId = Fonts.ils31, fontSize = 16
+})
+let mfdKa52Wpn = createScriptComponentWithPos("%rGui/planeCockpit/weaponPage/mfdKa52Wpn.das", {
+  fontId = Fonts.ils31
+})
+function mfdKa52Compass(pos, size) {
+  return {
+    rendObj = ROBJ_DAS_CANVAS
+    pos
+    size
+    script = getDasScriptByPath("%rGui/planeCockpit/instrumentsPage/mfdKa52Compass.das")
+    drawFunc = "render"
+    setupFunc = "setup"
+    fontId = Fonts.ils31
+  }
+}
 
 function f5ThAviaHorizont(pos, size) {
   return {
     rendObj = ROBJ_DAS_CANVAS
     pos
     size
-    script = getDasScriptByPath("%rGui/planeCockpit/mfdF5thHorizont.das")
+    script = getDasScriptByPath("%rGui/planeCockpit/instrumentsPage/mfdF5thHorizont.das")
     drawFunc = "draw"
     setupFunc = "setup"
     horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif")
@@ -81,8 +122,8 @@ function f5ThEngine(pos, size) {
     children = [
       {
         rendObj = ROBJ_DAS_CANVAS
-        size = [ph(75), ph(50)]
-        script = getDasScriptByPath("%rGui/planeCockpit/mfdF5thHorizont.das")
+        size = const [ph(75), ph(50)]
+        script = getDasScriptByPath("%rGui/planeCockpit/instrumentsPage/mfdF5thHorizont.das")
         drawFunc = "draw_small"
         setupFunc = "setup"
         horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif")
@@ -91,9 +132,9 @@ function f5ThEngine(pos, size) {
       }
       {
         rendObj = ROBJ_DAS_CANVAS
-        size = [ph(75), ph(50)]
-        pos = [0, ph(50)]
-        script = getDasScriptByPath("%rGui/planeCockpit/mfdF5thEngine.das")
+        size = const [ph(75), ph(50)]
+        pos = const [0, ph(50)]
+        script = getDasScriptByPath("%rGui/planeCockpit/instrumentsPage/mfdF5thEngine.das")
         drawFunc = "draw"
         setupFunc = "setup"
         font = Fonts.hud
@@ -105,12 +146,18 @@ function f5ThEngine(pos, size) {
   }
 }
 
-let mi35flt = createScriptComponentWithPos("%rGui/planeCockpit/mfdMi35FLT.das",
+let mfdKa52Instruments = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdKa52Instruments.das",
+ {
+  fontId = Fonts.hud
+  horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask.avif")
+})
+
+let mi35flt = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdMi35FLT.das",
  {
   fontId = Fonts.hud
   horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask_circular.avif")
 })
-let mi35fltEn = createScriptComponentWithPos("%rGui/planeCockpit/mfdMi35FLT.das",
+let mi35fltEn = createScriptComponentWithPos("%rGui/planeCockpit/instrumentsPage/mfdMi35FLT.das",
  {
   fontId = Fonts.hud
   horMask = Picture($"!ui/gameuiskin#mfd_horizont_mask_circular.avif")
@@ -122,7 +169,7 @@ function su30Devices(pos, size) {
     rendObj = ROBJ_DAS_CANVAS
     pos
     size
-    script = getDasScriptByPath("%rGui/planeCockpit/mfdSu30devices.das")
+    script = getDasScriptByPath("%rGui/planeCockpit/instrumentsPage/mfdSu30devices.das")
     drawFunc = "draw"
     setupFunc = "setup"
     altDevImage = Picture($"!ui/gameuiskin#mfd_altitude.avif")
@@ -137,7 +184,7 @@ function su30RadarElevation(pos, size) {
     rendObj = ROBJ_DAS_CANVAS
     pos
     size
-    script = getDasScriptByPath("%rGui/planeCockpit/mfdSu30Radar.das")
+    script = getDasScriptByPath("%rGui/planeCockpit/radarPage/mfdSu30Radar.das")
     drawFunc = "draw_radar_hud"
     setupFunc = "setup_radar_data"
     color = Color(10, 202, 10, 250)
@@ -180,7 +227,7 @@ function hsiPage(pos, size) {
     pos
     size
     rendObj   = ROBJ_DAS_CANVAS
-    script    = getDasScriptByPath("%rGui/planeCockpit/hsi.das")
+    script    = getDasScriptByPath("%rGui/planeCockpit/instrumentsPage/hsi.das")
     drawFunc  = "render"
     setupFunc = "setup"
     lineColor = E3DCOLOR(0xFFFFFFFF)
@@ -210,6 +257,7 @@ let pageByName = {
   f2aWpn,
   mi35acc,
   mi35flt,
+  mfdKa52Instruments,
   mi35accEn,
   mi35fltEn,
   f5ThWpn,
@@ -226,6 +274,12 @@ let pageByName = {
   mfdYak130Compass,
   mfdYak130Kab,
   f101Radar,
+  mfdMig21Radar,
+  mfdF104Radar,
+  mfdF102Radar,
+  mfdSu15Radar,
+  mfdF1Radar,
+  mfdMirageF1Radar,
   hsiPage,
   f16cAttitude,
   mfdOraoInstruments,
@@ -234,6 +288,10 @@ let pageByName = {
   z19Eng,
   z19Pfd,
   mfdMig29Horizont,
+  mfdSu35J16Horizon,
+  mfdMigCompass,
+  mfdKa52Compass,
+  mfdKa52Wpn,
 }
 
 function customPageSettingsUpd(page_blk) {
@@ -258,7 +316,7 @@ function mfdCustomPages() {
   }
   return {
     watch = [CustomPages, CustomPagesBlk]
-    size = flex()
+    size = FLEX
     children = pages
   }
 }

@@ -1,19 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
+from "math" import ceil
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { ceil } = require("math")
 let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 
-gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let squadInviteListWnd = class (BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
   sceneBlkName        = "%gui/squads/squadInvites.blk"
 
@@ -48,7 +48,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       alignObj = alignObj
     }
 
-    return handlersManager.loadHandler(gui_handlers.squadInviteListWnd, params)
+    return handlersManager.loadHandler(get_gui_handler("squadInviteListWnd"), params)
   }
 
   static function canOpen() {
@@ -156,7 +156,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let rows = total && ceil(total.tofloat() / this.MAX_COLUMNS.tofloat())
     let columns = rows && ceil(total.tofloat() / rows.tofloat())
 
-    let sizeFormat = "%d@mIco"
+    const sizeFormat = "%d@mIco"
     listObj.width = format(sizeFormat, columns)
     listObj.height = format(sizeFormat, rows)
   }
@@ -210,3 +210,6 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("updateReceiveApplicationsOption")
   }
 }
+register_gui_handler("squadInviteListWnd", squadInviteListWnd)
+
+return { squadInviteListWnd }

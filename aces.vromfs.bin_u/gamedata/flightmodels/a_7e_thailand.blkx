@@ -1,7 +1,7 @@
 {
   "model": "a_7e",
   "fmFile": "fm/a_7e.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.36,
   "gearSinkRangeC": 0.36,
@@ -13,6 +13,7 @@
   "laserDesignator": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsAVQ7": true,
   "ilsHaveAVQ7CCIP": true,
   "ilsHaveAVQ7CCRP": true,
@@ -2628,9 +2629,9 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 7260.0,
-    "maxloadMassLeftConsoles": 3630.0,
-    "maxloadMassRightConsoles": 3630.0,
+    "maxloadMass": 8150.0,
+    "maxloadMassLeftConsoles": 4100.0,
+    "maxloadMassRightConsoles": 4100.0,
     "maxDisbalance": 2900.0,
     "HideNodes": {
       "node": [
@@ -4761,8 +4762,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

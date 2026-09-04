@@ -1,4 +1,4 @@
-let yieldLimitFromStage = [
+const yieldLimitFromStage = [
   
   0,
   10, 
@@ -6,6 +6,6 @@ let yieldLimitFromStage = [
   10000
 ]
 
-return {
+return const {
   yieldLimitFromStage
 }

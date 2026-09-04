@@ -1,6 +1,6 @@
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
-let { doesLocTextExist } = require("dagor.localize")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 
 let langs = {
   "mainmenu/custom_lang_info": "Custom localization enabled",

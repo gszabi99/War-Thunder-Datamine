@@ -5,7 +5,6 @@ require %rGui.utils.constants_common
 
 require app
 require DagorMath
-require DagorMathUtils
 require DagorStdGuiRender
 require darg
 require FlightModelWrap

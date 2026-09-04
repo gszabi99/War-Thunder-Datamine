@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "blkGetters" import get_current_mission_info_cached
 from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 let { UnitLimitByUnitName } = require("%scripts/misCustomRules/unitLimit.nut")
@@ -24,8 +24,8 @@ let UnitsDeck = class (RuleBase) {
     if (!unit)
       return 0
     let myState = this.getMyStateBlk()
-    let limitedUnits = getTblValue("limitedUnits", myState)
-    return getTblValue(unit.name, limitedUnits, 0)
+    let limitedUnits = myState?.limitedUnits
+    return (limitedUnits?[unit.name] ?? 0)
   }
 
   function getUnitLeftRespawnsByTeamDataBlk(unit, teamDataBlk) {
@@ -52,8 +52,8 @@ let UnitsDeck = class (RuleBase) {
     res.defaultUnitRespawnsLeft = 0
 
     let myTeamDataBlk = isTeamMine ? this.getMyTeamDataBlk() : this.getEnemyTeamDataBlk()
-    let distributedBlk = getTblValue("distributedUnits", myTeamDataBlk)
-    let limitedBlk = getTblValue("limitedUnits", myTeamDataBlk)
+    let distributedBlk = myTeamDataBlk?.distributedUnits
+    let limitedBlk = myTeamDataBlk?.limitedUnits
     let myTeamUnitsParamsBlk = isTeamMine
       ? this.getMyTeamDataBlk("unitsParamsList") : this.getEnemyTeamDataBlk("unitsParamsList")
     let weaponsLimitsBlk = this.getWeaponsLimitsBlk()
@@ -62,14 +62,14 @@ let UnitsDeck = class (RuleBase) {
     if (u.isDataBlock(limitedBlk))
       for (local i = 0; i < limitedBlk.paramCount(); i++) {
         let unitName = limitedBlk.getParamName(i)
-        let teamUnitPreset = getTblValue(unitName, myTeamUnitsParamsBlk, null)
-        let userUnitPreset = getTblValue(unitName, weaponsLimitsBlk, null)
-        let weapon = getTblValue("weapon", teamUnitPreset, null)
+        let teamUnitPreset = myTeamUnitsParamsBlk?[unitName]
+        let userUnitPreset = weaponsLimitsBlk?[unitName]
+        let weapon = teamUnitPreset?.weapon
 
         let presetData = {
-          weaponPresetId = getTblValue("name", weapon, "")
-          teamUnitPresetAmount = getTblValue("count", weapon, "")
-          userUnitPresetAmount = getTblValue("respawnsLeft", userUnitPreset, 0)
+          weaponPresetId = (weapon?.name ?? "")
+          teamUnitPresetAmount = (weapon?.count ?? "")
+          userUnitPresetAmount = (userUnitPreset?.respawnsLeft ?? 0)
         }
 
         let group = unitsGroups?[unitName]

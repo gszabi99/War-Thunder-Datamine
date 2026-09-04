@@ -1,6 +1,5 @@
+from "vr" import is_stereo_mode
 from "%scripts/dagui_library.nut" import *
-
-let { is_stereo_mode } = require("vr")
 
 let needUseHangarDof = @() is_stereo_mode()
 

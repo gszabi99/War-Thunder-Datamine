@@ -1,26 +1,25 @@
+from "%appGlobals/hud/hudState.nut" import isWheelMenuActive
+from "hudState" import getHudUnitType
+from "math" import PI
+from "controls" import hasXInputDevice
+from "reactiveGuiCommand" import setSceneActive
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, ps4_is_circle_selected_as_enter_button
 from "%scripts/dagui_library.nut" import *
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getGamepadAxisTexture, getButtonNameByIdx } = require("%scripts/controls/gamepadIcons.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getHudUnitType } = require("hudState")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { getComplexAxesId, isComponentsAssignedToSingleInputItem
-} = require("%scripts/controls/shortcutsUtils.nut")
-let { PI } = require("math")
+let { getComplexAxesId, isComponentsAssignedToSingleInputItem } = require("%scripts/controls/shortcutsUtils.nut")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { hasXInputDevice } = require("controls")
 let { getHudKillStreakShortcutId } = require("%scripts/hud/hudActionBarType.nut")
-let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo,
-  getAxisData } = require("%scripts/joystickInterface.nut")
-let { setSceneActive } = require("reactiveGuiCommand")
-let { isWheelMenuActive } = require("%appGlobals/hud/hudState.nut")
+let { getWheelMenuAxisWatch, getAxisStuck, getMaxDeviatedAxisInfo, getAxisData } = require("%scripts/joystickInterface.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 const ITEMS_PER_PAGE = 8
@@ -35,26 +34,25 @@ function guiStartWheelmenu(params, isUpdate = false) {
     contentTemplate = null
   }.__update(params)
 
-  local handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+  local handler = handlersManager.findHandlerClassInScene(get_gui_handler("wheelMenuHandler"))
   if (handler && isUpdate)
     handler.updateContent(params)
   else if (handler)
     handler.reinitScreen(params)
   else
-    handler = handlersManager.loadHandler(gui_handlers.wheelMenuHandler, params)
+    handler = handlersManager.loadHandler(get_gui_handler("wheelMenuHandler"), params)
 
   return handler
 }
 
 function closeCurWheelmenu() {
-  local handler = handlersManager.findHandlerClassInScene(gui_handlers.wheelMenuHandler)
+  local handler = handlersManager.findHandlerClassInScene(get_gui_handler("wheelMenuHandler"))
   if (handler && handler.isActive)
     handler.showScene(false)
-  handler = handlersManager.findHandlerClassInScene(gui_handlers.chooseVehicleMenuHandler)
+  handler = handlersManager.findHandlerClassInScene(get_gui_handler("chooseVehicleMenuHandler"))
   if (handler && handler.isActive)
     handler.showScene(false)
 }
-
 
 
 
@@ -78,10 +76,11 @@ function closeCurWheelmenu() {
 
 dagui_propid_add_name_id("index") 
 
-gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let wheelMenuHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/wheelMenu/wheelmenu.blk"
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
+  wndControlsAllowMaskToApply = CtrlsInGui.CTRL_ALLOW_NONE
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
@@ -121,6 +120,11 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!ps4_is_circle_selected_as_enter_button())
       this.wndControlsAllowMaskWhenActive = this.wndControlsAllowMaskWhenActive | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
+
+    this.wndControlsAllowMaskToApply = this.mouseEnabled
+      ? this.wndControlsAllowMaskWhenActive ^ CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
+      : this.wndControlsAllowMaskWhenActive
+
     closeCurWheelmenu()
 
     this.guiScene = this.scene.getScene()
@@ -143,7 +147,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     g_hud_event_manager.subscribe("LocalPlayerDead", @(_) this.quit(), this)
 
-    this.wndControlsAllowMask = this.wndControlsAllowMaskWhenActive
+    this.wndControlsAllowMask = this.wndControlsAllowMaskToApply
   }
 
   function destroyItems(){
@@ -388,7 +392,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.show(show)
     this.scene.enable(show)
     this.isActive = show
-    this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
+    this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskToApply : CtrlsInGui.CTRL_ALLOW_FULL)
     setSceneActive(!this.isActive)
     isWheelMenuActive.set(this.isActive)
   }
@@ -414,10 +418,12 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   quit = @() this.sendAnswerAndClose(this.invalidIndex)
   onEventHudTypeSwitched = @(_) this.quit()
 }
+register_gui_handler("wheelMenuHandler", wheelMenuHandler)
 
 isInBattleState.subscribe(@(_) isWheelMenuActive.set(false))
 
 return {
+  wheelMenuHandler
   guiStartWheelmenu
   closeCurWheelmenu
 }

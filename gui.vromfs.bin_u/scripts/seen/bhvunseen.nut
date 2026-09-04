@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "json" import parse_json
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
-from "%sqDagui/guiBhv/guiBhvUtils.nut" import isDebugLogBhvAttach
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { parse_json } = require("json")
 let seenList = require("%scripts/seen/seenList.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 
@@ -21,8 +21,6 @@ let BhvUnseen = class {
   valuePID     = dagui_propid_add_name_id("value")
 
   function onAttach(obj) {
-    if (isDebugLogBhvAttach())
-      log($"[DEBUG_ATTACH] BhvUnseen {obj?.value}")
     if (obj?.value)
       this.setNewConfig(obj, this.buildConfig(obj.value))
     this.updateView(obj)

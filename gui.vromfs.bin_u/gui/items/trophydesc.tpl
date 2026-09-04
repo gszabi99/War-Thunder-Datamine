@@ -85,9 +85,9 @@ tdiv {
   <<#tooltipId>>
   tooltipId:t='<<tooltipId>>'
   behavior = 'button'
-  on_pushed = '::gcb.delayedTooltipPush'
-  on_hold_start = '::gcb.delayedTooltipHoldStart'
-  on_hold_stop = '::gcb.delayedTooltipHoldStop'
+  on_pushed = 'gcb.delayedTooltipPush'
+  on_hold_start = 'gcb.delayedTooltipHoldStart'
+  on_hold_stop = 'gcb.delayedTooltipHoldStop'
   navigatorShortcuts = 'SpaceA'
   not-input-transparent:t='yes'
   <</tooltipId>>

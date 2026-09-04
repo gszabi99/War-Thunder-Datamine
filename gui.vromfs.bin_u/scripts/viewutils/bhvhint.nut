@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/u.nut" import isString
+from "dagor.localize" import doesLocTextExist
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/viewUtils/hints.nut" import g_hints
 
-let { isString } = require("%sqStdLibs/helpers/u.nut")
-let { doesLocTextExist } = require("dagor.localize")
-
 let bhvHintForceUpdateValuePID = dagui_propid_add_name_id("_bhvHintForceUpdateValue")
 
-let class BhvHint {
+class BhvHint {
   eventMask    = EV_ON_CMD
   valuePID               = dagui_propid_add_name_id("value")
   wrapInRowPID           = dagui_propid_add_name_id("isWrapInRowAllowed")

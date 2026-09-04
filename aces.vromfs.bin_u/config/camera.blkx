@@ -513,7 +513,7 @@
     "shootingFov": 60.0,
     "cameraShakeMultiplier": 0.0,
     "cameraShakeMultiplierOnShooting": 0.0,
-    "transitionFadeInTime": 0.12,
+    "transitionFadeInTime": 0.18,
     "transitionFadeOutTime": 0.2,
     "viscosity": 0.0001,
     "cameraControlSmooth": 0.15,
@@ -1010,14 +1010,11 @@
       }
     }
   },
-  "follow_rocket_fps": {
-    "type": "TurretFpsCamera",
+  "fpv_shell_camera": {
+    "type": "FpvShellCamera",
     "fov": 30.0,
     "zoomFov": 5.0,
-    "cameraControlSmoothX": 0.0,
-    "cameraControlSmoothY": 0.0,
     "cameraControlViewRadius": 14.0,
-    "subtype": "shell_fpv",
     "horLimit": [
       -1.0,
       1.0
@@ -1027,18 +1024,15 @@
       1.0
     ],
     "verticalLimit": 10.0,
-    "useOffset": true,
     "cameraOffset": [
       14.0,
       0.0,
       0.0
     ],
     "clipType": "none",
-    "cameraShakeMultiplier": 0.025,
     "transitionFadeInTime": 0.0,
     "transitionFadeOutTime": 0.1,
-    "viscosity": 0.1,
-    "hookToShell": true
+    "viscosity": 0.1
   },
   "replay_spectator": {
     "type": "SpectatorCamera",
@@ -4801,6 +4795,9 @@
       "IsWeaponAimAllowedCondition": {}
     }
   },
+  "sensor_view_tactical_map_cam": {
+    "type": "SensorViewTacticalMapCamera"
+  },
   "replay_target_fps_shake": {
     "type": "TpsTargetFlightCameraReplay",
     "freeCamOrientInert": 0.5,
@@ -5013,7 +5010,7 @@
     ],
     "clipType": "none",
     "cameraShakeMultiplier": 0.025,
-    "transitionFadeInTime": 0.12,
+    "transitionFadeInTime": 0.18,
     "transitionFadeOutTime": 0.002,
     "viscosity": 0.002,
     "tiltShakeMultiplierForTanks": 0.0,
@@ -5110,13 +5107,14 @@
     "specialCamerasList": {
       "camName": [
         "follow_object_camera",
-        "follow_rocket_fps",
+        "fpv_shell_camera",
         "artillery_crosshair",
         "camera_binoculars",
         "driver_ground",
         "camera_binoculars_targeting",
         "camera_periscope",
-        "fixed"
+        "fixed",
+        "sensor_view_tactical_map_cam"
       ]
     },
     "spectator": {

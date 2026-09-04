@@ -1,18 +1,18 @@
+import "DataBlock" as DataBlock
+from "%rGui/shipState.nut" import depthLevel, waterDist, wishDist, periscopeCanBeEnabled
+from "%rGui/shellState.nut" import isAimCamera
+from "%rGui/planeState/planeToolsState.nut" import BlkFileName
+from "%rGui/hudState.nut" import tacticalMapStates, unitType, isUnitAlive
+from "%rGui/options/optionsMeasureUnits.nut" import isInitializedMeasureUnits, measureUnitsNames
+from "%rGui/globalState.nut" import isInFlight
+from "math" import floor, fabs
+from "blkLoad" import tryLoadBlk
+from "dagor.math" import Point4
+from "dagor.workcycle" import clearTimer, resetTimeout
 from "%rGui/globals/ui_library.nut" import *
 
-let { floor, fabs } = require("math")
-let { depthLevel, waterDist, wishDist, periscopeCanBeEnabled } = require("%rGui/shipState.nut")
-let { isAimCamera } = require("%rGui/shellState.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
-let DataBlock = require("DataBlock")
-let { tryLoadBlk } = require("blkLoad")
-let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
-let { Point4 } = require("dagor.math")
-let { tacticalMapStates, unitType, isUnitAlive } = require("%rGui/hudState.nut")
-let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 let { hudLogBgColor } = require("%rGui/style/colors.nut").hud
-let { isInFlight } = require("%rGui/globalState.nut")
-let { clearTimer, resetTimeout } = require("dagor.workcycle")
 
 const WATER_SURFACE_DEPTH = 1.0
 const BIG_LINE_DEPTH = 10.0
@@ -144,7 +144,7 @@ function arrowsIndicator() {
     let firstDelay = startOpacity * fullBlinkTime
     children.append({
       rendObj = ROBJ_IMAGE
-      size = [arrowSize[0], arrowSize[1]]
+      size = const [arrowSize[0], arrowSize[1]]
       pos = [0, arrowSize[1] * (direction > 0 ? (arrowsCount - i - 1) :  i)]
       transform = direction > 0 ? { rotate = 180 } : null
       animations = [
@@ -188,7 +188,7 @@ let wishDepthComps = @() {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
-  padding = [0, hdpx(7)]
+  padding = const [0, hdpx(7)]
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
   children = [arrowsIndicator, wishDepthText, wishDepthMeasureText]
@@ -202,7 +202,7 @@ let wishDepthComps = @() {
 let wishDepthMarker = @() {
   watch = [wishDist, rouletteMaxDepth]
   pos = [0, shVertSpeedHeight * ( wishDist.get() / rouletteMaxDepth.get() ) - markerSize * 0.5]
-  size = [markerSize, markerSize]
+  size = const [markerSize, markerSize]
   rendObj = ROBJ_VECTOR_CANVAS
   color = GREEN_DEPTH_COLOR
   fillColor = GREEN_DEPTH_COLOR
@@ -214,11 +214,11 @@ let wishDepthMarker = @() {
 
 let waterDistMarker = @() {
   watch = [waterDist, maxDepth]
-  pos = [0, -markerSize * 0.5]
+  pos = const [0, -markerSize * 0.5]
   transform = {
     translate = [0, shVertSpeedHeight * (waterDist.get() / maxDepth.get())]
   }
-  size = [markerSize, markerSize]
+  size = const [markerSize, markerSize]
   color = 0xFFFFFF
   rendObj = ROBJ_VECTOR_CANVAS
   fillColor = 0xFFFFFF
@@ -229,8 +229,8 @@ let waterDistMarker = @() {
 }
 
 let markersComps = {
-  size = [markerSize, shVertSpeedHeight]
-  margin = [0, hdpx(5), 0, 0]
+  size = const [markerSize, shVertSpeedHeight]
+  margin = const [0, hdpx(5), 0, 0]
   children = [waterDistMarker, wishDepthMarker]
 }
 
@@ -264,7 +264,7 @@ function roulette() {
   return styleLine.__merge({
     watch = [rouletteMaxDepth, periscopeDepth]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [shVertSpeedScaleWidth, shVertSpeedHeight]
+    size = const [shVertSpeedScaleWidth, shVertSpeedHeight]
     lineWidth = hdpx(2)
     commands = canvasCommands
   })
@@ -272,7 +272,7 @@ function roulette() {
 
 let periscopeDepthInd = @(){
   watch = [periscopeDepth, periscopeCanBeEnabled, rouletteMaxDepth]
-  size = [rouletteIconSize, rouletteIconSize]
+  size = const [rouletteIconSize, rouletteIconSize]
   pos = [1.5 * shVertSpeedScaleWidth + hdpx(10), (periscopeDepth.get() / rouletteMaxDepth.get()) * shVertSpeedHeight - rouletteIconSize/2]
   rendObj = ROBJ_IMAGE
   color = periscopeCanBeEnabled.get() ? GREEN_DEPTH_COLOR : 0xFFFFFFFF
@@ -281,8 +281,8 @@ let periscopeDepthInd = @(){
 
 let waterSurfaceInd = @(){
   watch = [waterDist]
-  size = [rouletteIconSize, rouletteIconSize]
-  pos = [1.5 * shVertSpeedScaleWidth + hdpx(10), -rouletteIconSize * 0.9]
+  size = const [rouletteIconSize, rouletteIconSize]
+  pos = const [1.5 * shVertSpeedScaleWidth + hdpx(10), -rouletteIconSize * 0.9]
   rendObj = ROBJ_IMAGE
   color = waterDist.get() < 2 ? GREEN_DEPTH_COLOR : 0xFFFFFFFF
   image = Picture($"ui/gameuiskin#ic_water_surface.svg:{rouletteIconSize}:{rouletteIconSize}")
@@ -292,7 +292,7 @@ let depthTextIndicators = {
   flow = FLOW_VERTICAL
   halign = ALIGN_RIGHT
   gap = hdpx(12)
-  margin = [0, hdpx(3), 0, 0]
+  margin = const [0, hdpx(3), 0, 0]
   children = [
     depthLevelCmp
     wishDepthComps
@@ -307,7 +307,7 @@ let childrenShVerSpeed = [
 
 let depthIndicator = @() {
   watch = isAimCamera
-  pos = [pw(-100), 0]
+  pos = const [pw(-100), 0]
   valign = ALIGN_CENTER
   flow = FLOW_HORIZONTAL
   children = !isAimCamera.get() ? childrenShVerSpeed : null

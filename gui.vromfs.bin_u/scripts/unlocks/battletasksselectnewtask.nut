@@ -1,12 +1,14 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { filterBattleTasksByGameModeId } = require("%scripts/unlocks/battleTasks.nut")
-let {getBattleTaskView, mkUnlockConfigByBattleTask} = require("%scripts/unlocks/battleTasksView.nut")
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getBattleTaskView, mkUnlockConfigByBattleTask } = require("%scripts/unlocks/battleTasksView.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { addTask } = require("%scripts/tasker.nut")
@@ -14,7 +16,7 @@ let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 
-gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("BattleTasksSelectNewTaskWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/unlocks/battleTasksSelectNewTask.tpl"
@@ -87,7 +89,7 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function isConfigHaveConditions(config) {
-    return getTblValue("names", config, []).len() != 0
+    return (config?.names ?? []).len() != 0
   }
 
   function onViewBattleTaskRequirements() {
@@ -122,4 +124,4 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function onTaskReroll(_obj) {}
-}
+})

@@ -1,12 +1,14 @@
+from "guiMission" import get_meta_missions_info_by_chapters
+from "mission" import set_game_mode, get_game_mode
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { get_meta_missions_info_by_chapters } = require("guiMission")
-let { set_game_mode, get_game_mode } = require("mission")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getTimePlayed } = require("%scripts/user/myStatsState.nut")
 
-let skipTutorialBitmaskId = "skip_tutorial_bitmask"
+const skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
 let reqTutorial = {
   [ES_UNIT_TYPE_AIRCRAFT] = "tutorialB_takeoff_and_landing",
@@ -19,7 +21,7 @@ function resetTutorialSkip() {
 
 let getReqTutorial = @(unitType) reqTutorial?[unitType] ?? ""
 
-let reqTimeInMode = 60 
+const reqTimeInMode = 60 
 function isDiffUnlocked(diff, checkUnitType) {
   
   for (local d = diff; d < 3; d++)

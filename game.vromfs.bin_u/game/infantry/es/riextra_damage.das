@@ -1,17 +1,17 @@
 require ecs
 require net
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.riextra_damage_common
 require %appGame.infantry.es.team_common
-require RiDestr
 require RendInst
 
 
 [es(tag=server)]
 def riextra_request_damage_server_es(evt : RequestRendinstDamage; eid : EntityId)
-  damage_ri_on_server(evt.handle, evt.damage, evt.pos, evt.impulse, evt.time, eid)
+  let desc = ri_desc_from_net_restorable(RendInstDesc(evt.cellIdx, 0, evt.pool, evt.offs, 0), false)
+  if desc.isValid
+    damage_ri_on_server(desc.riExtraHandle, evt.damage, evt.pos, evt.impulse, evt.time, eid)
 
 [es(tag=server)]
 def riextra_ent_request_damage_server_es(evt : RequestRendinstEntityDamage; eid : EntityId)
@@ -30,14 +30,16 @@ def riextra_damage_client_es(evt : CmdRendinstDamage; eid : EntityId; possessedB
   query(possessedByPlr) <| $ [es] (is_local : bool)
     if is_local
       let poolId = handle_to_ri_type(evt.handle)
-      if poolId < rendinst_getRiGenExtraResCount()
+      if rendinst_isRiGenExtraResIdValid(int(poolId))
         if riex_isImmortal(poolId)
           return
       let riExtraEid = find_ri_extra_eid(evt.handle)
       if riExtraEid != INVALID_ENTITY_ID
         send_net_event(eid, RequestRendinstEntityDamage(eid = riExtraEid, damage = evt.damage, pos = evt.pos, impulse = evt.impulse, time = evt.time))
       else
-        send_net_event(eid, RequestRendinstDamage(handle = evt.handle, damage = evt.damage, pos = evt.pos, impulse = evt.impulse, time = evt.time))
+        let desc = ri_desc_to_net_restorable(RendInstDesc(evt.handle), true)
+        if desc.isValid
+          send_net_event(eid, RequestRendinstDamage(pool = desc.pool, cellIdx = desc.cellIdx, offs = desc.offs, damage = evt.damage, pos = evt.pos, impulse = evt.impulse, time = evt.time))
 
 [es(tag=server, REQUIRE=override__riextraDamage)]
 def loc_riextra_damage_server_es(evt : CmdRendinstDamage;
@@ -66,7 +68,7 @@ def loc_riextra_damage_client_es(evt : CmdRendinstDamage;
       return
 
     let poolId = handle_to_ri_type(evt.handle)
-    if poolId < rendinst_getRiGenExtraResCount()
+    if rendinst_isRiGenExtraResIdValid(int(poolId))
       if riex_isImmortal(poolId)
         return
 
@@ -74,4 +76,6 @@ def loc_riextra_damage_client_es(evt : CmdRendinstDamage;
     if riExtraEid != INVALID_ENTITY_ID
       send_net_event(eid, RequestRendinstEntityDamage(eid = riExtraEid, damage = evt.damage, pos = evt.pos, impulse = evt.impulse, time = evt.time))
     else
-      send_net_event(eid, RequestRendinstDamage(handle = evt.handle, damage = evt.damage, pos = evt.pos, impulse = evt.impulse, time = evt.time))
+      let desc = ri_desc_to_net_restorable(RendInstDesc(evt.handle), true)
+      if desc.isValid
+        send_net_event(eid, RequestRendinstDamage(pool = desc.pool, cellIdx = desc.cellIdx, offs = desc.offs, damage = evt.damage, pos = evt.pos, impulse = evt.impulse, time = evt.time))

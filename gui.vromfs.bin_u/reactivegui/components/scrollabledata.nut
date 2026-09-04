@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "types" import Function
 
 function make(log_state) {
   let scrollHandler = ScrollHandler()
@@ -10,7 +11,7 @@ function make(log_state) {
     data = function (container_ctor, message_component) {
       let container = container_ctor()
       return function () {
-        let result = (type(container) == "function") ? container() : container
+        let result = (container instanceof Function) ? container() : container
         let messages = log_state.get().map(message_component)
         result.flow <- FLOW_VERTICAL
         result.children <- messages

@@ -3,6 +3,10 @@ module capzones_common shared
 require math
 require math.base
 
+enum CapZoneAIHint
+  NONE = 0
+  NO_DEFEND = 1
+
 def is_pos_inside_capture_point(pos; margin_distance; transform; capzone__approximateRadius; sphere_zone__radius)
   let distanceSq = length_sq(transform[3] - pos)
   if capzone__approximateRadius >= 0.f

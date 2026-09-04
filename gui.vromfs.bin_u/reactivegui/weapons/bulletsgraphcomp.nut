@@ -1,12 +1,13 @@
+from "%rGui/components/tooltip.nut" import withTooltip, tooltipDetach
+from "%rGui/weapons/bulletsGraphState.nut" import graphPlayerParams
+from "dagor.time" import get_time_msec
+from "%sqstd/time.nut" import secondsToMilliseconds
+from "%sqstd/math.nut" import lerp, truncateToMultiple
+from "string" import format
+from "math" import abs, round
 from "%rGui/globals/ui_library.nut" import *
+
 let fontsState = require("%rGui/style/fontsState.nut")
-let { withTooltip, tooltipDetach } = require("%rGui/components/tooltip.nut")
-let { graphPlayerParams } = require("%rGui/weapons/bulletsGraphState.nut")
-let { get_time_msec } = require("dagor.time")
-let { secondsToMilliseconds } = require("%sqstd/time.nut")
-let { lerp } = require("%sqstd/math.nut")
-let { format } = require("string")
-let { abs } = require("math")
 
 const MARK_COUNT_Y = 9
 const MARK_COUNT_X = 35
@@ -24,9 +25,9 @@ let graphHorizontalMeasureHeight = fpx(80)
 let graphGridLineThickness = dp(1)
 let graphLineThickness = dp(2)
 let graphGridLineLength = fpx(12)
-let graphGridLineShortRelativeLength = 58
+const graphGridLineShortRelativeLength = 58
 let graphPointFullSize = fpx(11)
-let graphPointCenterRelativeRadius = 27.3
+const graphPointCenterRelativeRadius = 27.3
 let leftGraphPadding = graphGridTextMaxWidth + graphGridTextPadding
 
 let axisLabelParams = {
@@ -57,7 +58,7 @@ let axisLabelParams = {
 }
 
 let mkPointCanvas = @(graphColor, radius) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = graphLineThickness
   color = graphColor
@@ -115,7 +116,7 @@ function mkGraphPointByTime(pointPosX, pointPosY, graphColor, tooltipContent, pl
 }
 
 let mkGraphLine = @(commands, graphColor, lineWidth = graphLineThickness) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth
   color = graphColor
@@ -146,7 +147,7 @@ function makeLineCommandByTime(lineCommand, graphPoints, curFlightTimeMs) {
 
 function mkGraphLineByTime(lineCommand, graphColor, playerParams, graphPoints) {
   return {
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = graphLineThickness
     color = graphColor
@@ -184,7 +185,7 @@ function mkHorizontalGridLine(topPos, color, text) {
     gap = graphGridTextPadding
     children = [
       {
-        pos = [0, ph(-50)]
+        pos = const [0, ph(-50)]
         size = [graphGridTextMaxWidth, SIZE_TO_CONTENT]
         halign = ALIGN_RIGHT
         children = mkGraphText(text)
@@ -194,7 +195,7 @@ function mkHorizontalGridLine(topPos, color, text) {
   }
 }
 
-function mkVerticalMeasureGridLine(idx, leftPosVeticalLine, xStep, startValueX) {
+function mkVerticalMeasureGridLine(idx, leftPosVeticalLine, xStep, startValueX, axisXUnitText = "") {
   let isEven = idx % 2 == 0
   return {
     pos = [idx * leftPosVeticalLine, 0]
@@ -209,15 +210,15 @@ function mkVerticalMeasureGridLine(idx, leftPosVeticalLine, xStep, startValueX) 
         fillColor = graphGridColor
         commands = [[VECTOR_LINE, 0, 0, 0, isEven ? 100 : graphGridLineShortRelativeLength]]
       }
-      isEven ? mkGraphText((startValueX + idx * xStep).tostring(), { pos = [pw(-50), 0] }) : null
+      isEven ? mkGraphText($"{startValueX + idx * xStep}{axisXUnitText}", { pos = const [pw(-50), 0] }) : null
     ]
   }
 }
 
-function mkHorizontalMeasureGridLine(topPos, leftPosVeticalLine, xStep, startValueX) {
+function mkHorizontalMeasureGridLine(topPos, leftPosVeticalLine, xStep, startValueX, markCountX, axisXUnitText = "") {
   return {
     pos = [0, topPos]
-    size = [flex(), graphHorizontalMeasureHeight]
+    size = [FLEX, graphHorizontalMeasureHeight]
     padding = [0, 0, 0, graphGridTextMaxWidth + graphGridTextPadding]
     valign = ALIGN_BOTTOM
     children = {
@@ -227,8 +228,8 @@ function mkHorizontalMeasureGridLine(topPos, leftPosVeticalLine, xStep, startVal
         mkGraphLine([[VECTOR_LINE, 0, 0, 100, 0]], graphGridColor, graphGridLineThickness)
         {
           size = FLEX_H
-          children = array(MARK_COUNT_X + 1, null).map(@(_, idx)
-            mkVerticalMeasureGridLine(idx, leftPosVeticalLine, xStep, startValueX))
+          children = array(markCountX + 1, null).map(@(_, idx)
+            mkVerticalMeasureGridLine(idx, leftPosVeticalLine, xStep, startValueX, axisXUnitText))
         }
       ]
     }
@@ -236,37 +237,51 @@ function mkHorizontalMeasureGridLine(topPos, leftPosVeticalLine, xStep, startVal
 }
 
 function mkGraphGrid(graphWidth, graphHeight, absLenX, absLenY,
-    startValueX, startValueY) {
+    startValueX, startValueY, markCountX, axisYUnitText = "", axisXUnitText = "") {
   let topPosHorizontalLine = graphHeight / MARK_COUNT_Y
-  let leftPosVeticalLine = graphWidth / MARK_COUNT_X
-  let xStep = absLenX / MARK_COUNT_X
+  let leftPosVeticalLine = graphWidth / markCountX
+  let xStep = absLenX / markCountX
   let yStep = absLenY / MARK_COUNT_Y
   let horizontalLine = array(MARK_COUNT_Y+1, null).map(@(_, idx)
     mkHorizontalGridLine(idx * topPosHorizontalLine,
-      graphGridOpacityColor, $"{absLenY - idx * yStep + startValueY}"))
+      graphGridOpacityColor, $"{absLenY - idx * yStep + startValueY}{axisYUnitText}"))
   horizontalLine.append(
-    mkHorizontalMeasureGridLine(graphHeight, leftPosVeticalLine, xStep, startValueX))
+    mkHorizontalMeasureGridLine(graphHeight, leftPosVeticalLine, xStep, startValueX, markCountX, axisXUnitText))
   return {
-    size = flex()
+    size = FLEX
     children = horizontalLine
   }
 }
 
-let roundedStepValues = [5000, 4500, 4000, 3500, 3000, 2500, 2000, 1500, 1000, 500, 250, 100, 50, 25, 10, 5, 2]
+let roundedStepValues = [
+  5000, 4500, 4000, 3500, 3000, 2500, 2000, 1500, 1000, 750, 500, 250, 200, 150, 125, 100, 50, 25, 10, 5, 2
+]
+const WIDTH_MAX_GAP = 1.2 
 
 function roundingValueDivisionByMarksCount(maxValue, minValue, marksCount) {
   let value = abs(maxValue) + abs(minValue)
   let notRoundStep = (value + 0.5).tointeger() / marksCount + 1
-  let roundStep = notRoundStep > roundedStepValues[0] ? ((notRoundStep / 1000) + 1) * 1000
+  local roundStep = notRoundStep > roundedStepValues[0] ? ((notRoundStep / 1000) + 1) * 1000
     : roundedStepValues.findvalue(@(v, idx) notRoundStep <= v && notRoundStep > (roundedStepValues?[idx + 1] ?? 1)) ?? 1
-  return {
-    absLen = marksCount * roundStep
-    startValue = minValue == 0 ? 0
-      : (minValue.tointeger() / roundStep - 1) * roundStep
+  
+  
+  let startValue = truncateToMultiple(round(minValue), roundStep).tointeger()
+  let neededLen = value - startValue
+  
+  
+  
+  if (neededLen > 0 && (marksCount * roundStep).tofloat() / neededLen >= WIDTH_MAX_GAP) {
+    let stepIdx = roundedStepValues.findindex(@(v) v == roundStep) ?? -1
+    for (local i = stepIdx + 1; i < roundedStepValues.len(); i++) {
+      if (marksCount * roundedStepValues[i] < neededLen)
+        break
+      roundStep = roundedStepValues[i]
+    }
   }
+  return { absLen = marksCount * roundStep, startValue }
 }
 
-function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, keyX, keyY, mkTooltipText, playerParams) {
+function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, keyX, keyY, mkTooltipText, playerParams, markCountX) {
   local maxValueX = 0
   local maxValueY = 0
   local minValueX = 0
@@ -286,7 +301,7 @@ function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, keyX, keyY, m
   }
 
   let hasPlayerParams = playerParams != null
-  let valuesX = roundingValueDivisionByMarksCount(maxValueX, minValueX, MARK_COUNT_X)
+  let valuesX = roundingValueDivisionByMarksCount(maxValueX, minValueX, markCountX)
   let absLenX = valuesX.absLen
   let startValueX = valuesX.startValue
   let valuesY = roundingValueDivisionByMarksCount(maxValueY, minValueY, MARK_COUNT_Y)
@@ -309,7 +324,7 @@ function calcGraphLineComp(bulletsConfig, graphWidth, graphHeight, keyX, keyY, m
       let pointPosX = absLenX == 0 ? 0 : valueX.tofloat() / absLenX
       let pointPosY = absLenY == 0 ? 0
         : valueY == 0 ? 1
-        : clamp(1 - valueY / absLenY, 0, 1) 
+        : clamp(1 - valueY.tofloat() / absLenY, 0, 1) 
                                                 
       if (!haveTooManyPoints || (i % 2) == 0 || i == (pointsCount - 1))
         if (hasPlayerParams)
@@ -351,7 +366,7 @@ function mkAxisXLabel(labelId) {
 function mkAxisYLabel(labelId) {
   return mkGraphText(getLabelText(labelId),
     {
-      pos = [elemw(-50), elemh(50)]
+      pos = const [elemw(-50), elemh(50)]
       font = fontsState.get("normal")
       hplace = ALIGN_LEFT
       vplace = ALIGN_CENTER
@@ -365,29 +380,30 @@ function mkAxisYLabel(labelId) {
 let roundingSizeDivisionByMarksCount = @(size, marksCount) size - (size % marksCount)
 
 function mkGridAndGraphComp(graphConfig, size, keyX, keyY, getTooltipText,
-    labelAxisX = null, labelAxisY = null, playerParams = null) {
+    labelAxisX = null, labelAxisY = null, playerParams = null, showAxisLabels = true,
+    axisYUnitText = "", axisXUnitText = "", markCountX = MARK_COUNT_X) {
   let paddingSize = 2 * graphNestPadding + 2 * graphGridPadding
   let width = size[0] - leftGraphPadding - paddingSize
   let height = size[1] - graphHorizontalMeasureHeight - paddingSize
   let graphHeight = roundingSizeDivisionByMarksCount(height, MARK_COUNT_Y)
-  let graphWidth = roundingSizeDivisionByMarksCount(width, MARK_COUNT_X)
+  let graphWidth = roundingSizeDivisionByMarksCount(width, markCountX)
   let { absLenX, absLenY, startValueX, startValueY, bulletsGraphComp
-  } = calcGraphLineComp(graphConfig, graphWidth, graphHeight, keyX, keyY, getTooltipText, playerParams)
+  } = calcGraphLineComp(graphConfig, graphWidth, graphHeight, keyX, keyY, getTooltipText, playerParams, markCountX)
   return {
-    size = flex()
+    size = FLEX
     padding = graphNestPadding
     children = [
-      mkAxisXLabel(labelAxisX ?? keyX)
-      mkAxisYLabel(labelAxisY ?? keyY)
+      showAxisLabels ? mkAxisXLabel(labelAxisX ?? keyX) : null
+      showAxisLabels ? mkAxisYLabel(labelAxisY ?? keyY) : null
       {
-        size = flex()
+        size = FLEX
         pos = [0, 0.5*height - 0.5*graphHeight]
         padding = graphGridPadding
         children = [
           mkGraphGrid(graphWidth, graphHeight, absLenX, absLenY,
-            startValueX, startValueY)
+            startValueX, startValueY, markCountX, axisYUnitText, axisXUnitText)
           {
-            size = flex()
+            size = FLEX
             children = bulletsGraphComp
           }
         ]
@@ -407,9 +423,9 @@ let getBulletPenetrationTooltip = @(graphPoint) "\n".concat(
   mkTextValue("options/measure_units_dist", graphPoint.distance, "measureUnits/meters_alt")
 )
 
-let mkBulletsArmorPiercingGraph = @(bulletsConfig, size)
+let mkBulletsArmorPiercingGraph = @(bulletsConfig, size, showAxisLabels = true, axisYUnitText = "", axisXUnitText = "", markCountX = MARK_COUNT_X)
   mkGridAndGraphComp(bulletsConfig, size, "distance", "penetration",
-    getBulletPenetrationTooltip)
+    getBulletPenetrationTooltip, null, null, null, showAxisLabels, axisYUnitText, axisXUnitText, markCountX)
 
 function getBulletBallisticTooltip(graphPoint) {
   let { distance, altitude, speed, flightDistance, flightTime } = graphPoint
@@ -459,4 +475,7 @@ return {
   mkMissileTelemetryDistanceGraph
   mkMissileTelemetrySpeedGraph
   mkMissileTrajectoryGraph
+  graphGridColor
+  graphGridLineThickness
+  mkGraphLine
 }

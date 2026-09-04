@@ -1,6 +1,7 @@
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let hasOptionsInitialized = @() optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disableNetwork)
 

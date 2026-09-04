@@ -1,8 +1,8 @@
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 
 return function showClanPageModal(id, name, tag) {
-  loadHandler(gui_handlers.clanPageModal,
+  loadHandler(get_gui_handler("clanPageModal"),
     {
       clanIdStrReq = id,
       clanNameReq = name,

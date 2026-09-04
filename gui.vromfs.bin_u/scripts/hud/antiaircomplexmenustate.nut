@@ -1,14 +1,15 @@
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%appGlobals/hud/hudState.nut" import savedRadarFilters, AAComplexRadarFiltersSaveSlotName
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { savedRadarFilters, AAComplexRadarFiltersSaveSlotName } = require("%appGlobals/hud/hudState.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+from "types" import Table
 
-let FILTER_SAVE_ID_DEPRICATED = "aaComplexMenuFilters"
-let FILTER_SAVE_ID = "savedRadarFilters"
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+
+const FILTER_SAVE_ID_DEPRICATED = "aaComplexMenuFilters"
+const FILTER_SAVE_ID = "savedRadarFilters"
 local loadedFiltersData = {}
 
 let radarFilterSaveMigrations = [
@@ -31,7 +32,7 @@ let radarFilterSaveMigrations = [
 
 function migrateSavedRadarFilters(data) {
   foreach (slot in data) {
-    if (type(slot) != "table")
+    if (!(slot instanceof Table))
       continue
     foreach (m in radarFilterSaveMigrations)
       if (m.oldId in slot) {

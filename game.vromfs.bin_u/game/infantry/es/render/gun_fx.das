@@ -2,7 +2,6 @@ require ecs
 require AnimV20
 require GeomNodeTree
 require math
-require math.base
 require %game.events
 
 [es(tag=render, after=slot_attach_init_tms_es)]

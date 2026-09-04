@@ -1,11 +1,11 @@
+from "%globalScripts/guiGeom/guiBox.nut" import cutBoxesAroundTargets
+from "%globalScripts/guiGeom/linesGenerator.nut" import LinesPriorities, createLinkLines
+from "%globalScripts/guiGeom/hintPlacement.nut" import findPlaceForHintByRect
+from "%rGui/screenHelpOverlay/screenHelpOverlayState.nut" import screenHelpItems, screenHelpSafeArea, closeScreenHelp
+from "%rGui/hud/actionBarState.nut" import actionBarRect
 from "%rGui/globals/ui_library.nut" import *
 
-let { GuiBox, cutBoxesAroundTargets } = require("%globalScripts/guiGeom/guiBox.nut")
-let { LinesPriorities, createLinkLines } = require("%globalScripts/guiGeom/linesGenerator.nut")
-let { findPlaceForHintByRect } = require("%globalScripts/guiGeom/hintPlacement.nut")
-let { screenHelpItems, screenHelpSafeArea, closeScreenHelp
-} = require("%rGui/screenHelpOverlay/screenHelpOverlayState.nut")
-let { actionBarRect } = require("%rGui/hud/actionBarState.nut")
+let { GuiBox } = require("%globalScripts/guiGeom/guiBox.nut")
 
 const DARK_COLOR = 0xCC000000
 const SIZE_INC_ADD = -2 
@@ -165,7 +165,7 @@ function mkHelpContent(helpItems, safeAreaRect, actionBarRectV) {
 
 let screenHelpOverlay = @() {
   watch = [screenHelpItems, screenHelpSafeArea, actionBarRect]
-  size = flex()
+  size = FLEX
   zOrder = Layers.Tooltip
   behavior = screenHelpItems.get() != null ? Behaviors.Button : null
   onClick = closeScreenHelp

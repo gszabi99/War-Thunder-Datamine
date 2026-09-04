@@ -2,7 +2,6 @@ require ecs
 require DngWalkerai
 require math
 require zones
-require DagorDataBlock
 
 require %game.events
 require %appGame.infantry.es.loc_squad_common
@@ -12,9 +11,7 @@ require %appGame.infantry.es.battle_area_common
 require %appGame.infantry.es.team_common
 require math.base
 
-require BehNodes
 require net
-require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 
 [es(tag=server, no_order)]

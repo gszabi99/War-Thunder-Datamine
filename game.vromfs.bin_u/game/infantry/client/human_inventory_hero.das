@@ -12,15 +12,15 @@ def show_compatible_gun_on_human_appear(evt : Event;
                                         human_weap__gunEids : EidList)
   let slot = HUWeaponSlots.EWS_PRIMARY
   let weaponEid = length(human_weap__gunEids) > 0 ? human_weap__gunEids[int(slot)] : INVALID_ENTITY_ID
-  query() <| $ [es(REQUIRE=(item__pickupOnlyAmmo, transform))] (item__isOnGround : bool;
-                                                                gun__ammoHolders : Array const?;
-                                                                var animchar_render__enabled : bool&)
+  query() <| $ [es(REQUIRE=(item__pickupOnlyAmmo, transform), REQUIRE_NOT=discardedItem)] (item__isOnGround : bool;
+                                                                                           gun__ammoHolders : Array const?;
+                                                                                           var animchar_render__enabled : bool&)
     if !item__isOnGround
       return
     animchar_render__enabled = is_ammo_compatible_with_our_gun(weaponEid, gun__ammoHolders)
 
 
-[es(tag=gameClient, on_appear, REQUIRE=(item__pickupOnlyAmmo, transform))]
+[es(tag=gameClient, on_appear, REQUIRE=(item__pickupOnlyAmmo, transform), REQUIRE_NOT=discardedItem)]
 def show_compatible_gun_on_gun_appear(evt : Event;
                                       item__isOnGround : bool;
                                       gun__ammoHolders : Array const?;
@@ -93,13 +93,16 @@ def human_inventory_hero_es(info : ParallelUpdateFrameDelayed;
       continue
 
     var isInteractionBlockedByLastOwner = false
+    var isPickupDisabled = false
     var pickupScore = ItemPickupScore(score = -1.0, useful = false)
     query(itemEid) <| $ [es] (item__lastOwner : EntityId = INVALID_ENTITY_ID;
                               item__overridePickupScore = -1.;
+                              item__disablePickup : bool = false;
                               canItemPickedUpOnlyByLastOwner : Tag const?)
       isInteractionBlockedByLastOwner = canItemPickedUpOnlyByLastOwner != null && item__lastOwner != eid
+      isPickupDisabled = item__disablePickup
       pickupScore.score = item__overridePickupScore
-    if isInteractionBlockedByLastOwner
+    if isInteractionBlockedByLastOwner || isPickupDisabled
       continue
 
 

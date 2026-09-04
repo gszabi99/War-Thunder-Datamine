@@ -8,7 +8,6 @@ require strings
 require Unit
 require Weapon
 require WTCamera
-require DagorSystem
 
 struct WeaponSlot
   idx : int = -1

@@ -1,6 +1,5 @@
+from "math" import round
 from "%scripts/dagui_library.nut" import *
-
-let { round } = require("math")
 
 function isTripleHead(sw = null, sh = null) {
   sw = sw ?? screen_width()

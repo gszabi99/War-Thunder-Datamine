@@ -13,7 +13,7 @@
   "hasPointOfInterestMemory": false,
   "hasHmdGunControl": true,
   "rwrIndicator": "AN/APR-39",
-  "hmdAh1w": true,
+  "hmdHssReticle": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -40.0,
@@ -1293,6 +1293,7 @@
     "turretTurnSfxPath": "tanks/effects_tanks",
     "turretTurnSfxPathStudio": "aircraft/effects",
     "turretTurnSfxName": "turret_turn_servo",
+    "voiceWarningSystem": "betty",
     "voiceWarningSystemOverride": {
       "vws_right": {},
       "vws_left": {},
@@ -1311,8 +1312,6 @@
       "vws_over_g": {},
       "vws_critical_speed": {},
       "vws_dangerous_close": {},
-      "vws_gear_down": {},
-      "vws_check_gear": {},
       "vws_pull_up": {},
       "vws_roll_left": {},
       "vws_roll_right": {},
@@ -1365,6 +1364,36 @@
     "sightInFov": 5.66,
     "sightOutFov": 37.46,
     "sightFov": 5.5,
+    "hmdEnabledByDefault": true,
+    "hmdScreenBlockRad": 0.026,
+    "hmdBlock": {
+      "ils": {
+        "pos": [
+          2.13,
+          0.365,
+          0.0
+        ],
+        "norm": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rad": 0.07
+      },
+      "full_devices": {
+        "pos": [
+          2.186,
+          -0.215,
+          0.0
+        ],
+        "norm": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rad": 0.395
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -3.0,

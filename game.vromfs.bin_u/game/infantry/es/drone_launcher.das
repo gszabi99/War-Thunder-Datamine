@@ -8,8 +8,11 @@ require DagorMath
 require DngHuman
 require Plane
 require FlightModelWrap
-require Dacoll
 require net
+require Unit
+require %game.unit.unit_events
+require Dacoll
+require %appGame.infantry.es.tactical_phone_common
 
 
 def is_there_space_for_drone(soldier_transform : float3x4; offset : float3) : bool
@@ -45,7 +48,7 @@ def create_drone_entity(transform : float3x4;
                         playerEid : EntityId;
                         team : int;
                         launcherEid : EntityId;
-                        enableSound : bool)
+                        isDelayed : bool = false)
   let templateName = droneTemplate + "+unit_init_params"
   return createEntity(templateName) <| $(var init)
     set(init, "drone__owner", ownerEid)
@@ -55,8 +58,8 @@ def create_drone_entity(transform : float3x4;
     set(init, "drone__launcherEid", launcherEid)
     set(init, "transform", transform)
     set(init, "team", team)
-    set(init, "drone__soundEnabled", enableSound)
-    set(init, "sound_control__allowSound", enableSound)
+    if isDelayed
+      set(init, "setting__isDelayed", true)
 
 
 [es(tag=server, REQUIRE=isDrone, on_event=(CmdDestroyDrone, EventPlayerUnitControlLost), on_disappear)]
@@ -113,12 +116,6 @@ def drone_launcher_reset_on_unit_spawn(evt : Event;
       drone_launcher__launchesRemaining = drone_launcher__maxLaunches > 0 ? drone_launcher__maxLaunches : -1
 
 
-[es(tag=server, on_appear)]
-def drone_launcher_appear_server(evt : Event;
-                                 var drone_launcher_launch__velocityDir : float3&)
-  drone_launcher_launch__velocityDir = normalize(drone_launcher_launch__velocityDir)
-
-
 [es(tag=server)]
 def drone_launcher_on_instant_launch_request(evt : RequestDroneLauncherInstantLaunch;
                                              eid aka human_eid : EntityId;
@@ -150,7 +147,7 @@ def drone_launcher_on_instant_launch_request(evt : RequestDroneLauncherInstantLa
 
     beh_tree__wantRoleDroner = true
 
-    drone_launcher__drone = create_drone_entity(respawn as transform, drone_launcher__droneTemplate, drone_launcher__behTreeName, human_eid, possessedByPlr, team, evt.droneLauncherEid, true)
+    drone_launcher__drone = create_drone_entity(respawn as transform, drone_launcher__droneTemplate, drone_launcher__behTreeName, human_eid, possessedByPlr, team, evt.droneLauncherEid)
     drone_launcher__nextUseAtTime = time + drone_launcher__cooldown
     drone_launcher__state = int(DroneLauncherState.DLS_LAUNCHED)
     if drone_launcher__launchesRemaining > 0
@@ -166,15 +163,17 @@ def drone_launcher_on_start_launch_request(evt : RequestDroneLauncherStartLaunch
     return
 
   query(evt.droneLauncherEid) <| $ [es] (gun__owner : EntityId;
+                                         drone_launcher__tacticalPhone : EntityId;
                                          drone_launcher__nextUseAtTime : float;
                                          drone_launcher_anim__launchTime : float;
                                          drone_launcher__instantLaunchFromPhone : bool;
-                                         drone_launcher__drone : EntityId&;
+                                         drone_launcher__droneTemplate : string;
+                                         drone_launcher_launch__positionOffset : float3;
+                                         drone_launcher__behTreeName : string;
+                                         var drone_launcher__drone : EntityId&;
                                          var drone_launcher__state : int&;
                                          var drone_launcher__launchesRemaining : int&;
                                          var drone_launcher_launch__start : float&;
-                                         var drone_launcher_launch__applyTransformAndVelocityStatus : bool&;
-                                         var drone_launcher_launch__enableSoundStatus : bool&;
                                          var drone_launcher_launch__replaceStatus : bool&;
                                          var drone_launcher_launch__controlStatus : bool&;
                                          var drone_launcher_anim__launchStart : float&;
@@ -195,13 +194,20 @@ def drone_launcher_on_start_launch_request(evt : RequestDroneLauncherStartLaunch
 
     beh_tree__wantRoleDroner = true
 
+    query(drone_launcher__tacticalPhone) <| $ [es] (var tactical_phone__mode : int&)
+      tactical_phone__mode = int(TacticalPhoneMode.TPM_DRONE)
+
+    query(human_eid) <| $ [es] (human_net_phys : HumanActor;
+                                possessedByPlr : EntityId;
+                                team : int)
+      let droneTm = get_drone_transform_relative_to_human(human_net_phys, drone_launcher_launch__positionOffset)
+      drone_launcher__drone = create_drone_entity(droneTm, drone_launcher__droneTemplate, drone_launcher__behTreeName, human_eid, possessedByPlr, team, evt.droneLauncherEid, true)
+
     if drone_launcher__launchesRemaining > 0
       drone_launcher__launchesRemaining -= 1
 
     drone_launcher__state = int(DroneLauncherState.DLS_LAUNCH)
     drone_launcher_launch__start = evt.atTime
-    drone_launcher_launch__applyTransformAndVelocityStatus = false
-    drone_launcher_launch__enableSoundStatus = false
     drone_launcher_launch__replaceStatus = false
     drone_launcher_launch__controlStatus = false
 
@@ -221,6 +227,25 @@ def get_drone_transform_relative_to_human(human_net_phys : HumanActor;
   return droneTm
 
 
+[es(REQUIRE=isDrone)]
+def drone_teleport_to_owner_on_undelay(evt : EventUnitDelayedStatusChanged;
+                                       drone__owner : EntityId;
+                                       drone__launcherEid : EntityId;
+                                       var unit__ref : UnitRef&)
+  if evt.isDelayed
+    return
+  query(drone__launcherEid) <| $ [es] (drone_launcher__instantLaunchFromPhone : bool;
+                                       drone_launcher_launch__positionOffset : float3)
+    if drone_launcher__instantLaunchFromPhone
+      return
+    query(drone__owner) <| $ [es] (human_net_phys : HumanActor)
+      var fmw = as_fmw(unit__ref.unit)
+      if fmw == null
+        return
+      let droneTm = get_drone_transform_relative_to_human(human_net_phys, drone_launcher_launch__positionOffset)
+      *fmw |> setTm(false, droneTm)
+
+
 [es(tag=server, on_appear)]
 def init_drone_speed_es(evt : Event;
                         transform : float3x4;
@@ -234,19 +259,12 @@ def init_drone_speed_es(evt : Event;
 
 [es(tag=server, after=drone_launcher_on_start_launch_request)]
 def drone_launcher_launching_server(info : UpdateStageInfoAct;
-                                    eid : EntityId;
-                                    gun__owner : EntityId;
-                                    var drone_launcher__drone : EntityId&;
+                                    drone_launcher__drone : EntityId;
                                     drone_launcher__nextUseAtTime : float;
                                     drone_launcher__launchesRemaining : int;
-                                    drone_launcher__droneTemplate : string;
-                                    drone_launcher_launch__positionOffset : float3;
                                     drone_launcher_launch__start : float;
-                                    drone_launcher_launch__enableSoundTime : float;
                                     drone_launcher_launch__replaceTime : float;
                                     drone_launcher_launch__controlTime : float;
-                                    drone_launcher__behTreeName : string;
-                                    var drone_launcher_launch__enableSoundStatus : bool&;
                                     var drone_launcher_launch__replaceStatus : bool&;
                                     var drone_launcher_launch__controlStatus : bool&;
                                     var drone_launcher__state : int&;
@@ -262,24 +280,17 @@ def drone_launcher_launching_server(info : UpdateStageInfoAct;
 
   let delta = info.curTime - drone_launcher_launch__start
 
-  if !drone_launcher_launch__enableSoundStatus && delta >= drone_launcher_launch__enableSoundTime
-    query(drone_launcher__drone) <| $ [es] (var drone__soundEnabled : bool&)
-      drone__soundEnabled = true
-    drone_launcher_launch__enableSoundStatus = true
-
   if !drone_launcher_launch__replaceStatus && delta >= drone_launcher_launch__replaceTime
     drone_launcher_anim__replaceAnimationWithEntity = true
     drone_launcher_launch__replaceStatus = true
 
   if !drone_launcher_launch__controlStatus && delta >= drone_launcher_launch__controlTime
-    query(gun__owner) <| $ [es] (human_net_phys : HumanActor;
-                                 possessedByPlr : EntityId;
-                                 team : int)
-      let droneTm = get_drone_transform_relative_to_human(human_net_phys, drone_launcher_launch__positionOffset)
-      drone_launcher__drone = create_drone_entity(droneTm, drone_launcher__droneTemplate, drone_launcher__behTreeName, gun__owner, possessedByPlr, team, eid, true)
+    var unit = get_unit(drone_launcher__drone)
+    if unit != null
+      *unit |> setDelayed(false)
       drone_launcher_launch__controlStatus = true
 
-  if drone_launcher_launch__enableSoundStatus && drone_launcher_launch__replaceStatus && drone_launcher_launch__controlStatus
+  if drone_launcher_launch__replaceStatus && drone_launcher_launch__controlStatus
     drone_launcher__state = int(DroneLauncherState.DLS_LAUNCHED)
 
 
@@ -287,4 +298,18 @@ def drone_launcher_launching_server(info : UpdateStageInfoAct;
 def on_drone_launcher_disappear(evt : Event;
                                 gun__owner : EntityId;
                                 drone_launcher__drone : EntityId)
-  send_net_event(gun__owner, CmdRequestDestroyDrone(droneEid = drone_launcher__drone))
+  if drone_launcher__drone == INVALID_ENTITY_ID
+    return
+  var handled = false
+  query(drone_launcher__drone) <| $ [es(REQUIRE=isDrone)] (drone__owner : EntityId;
+                                                           isAlive : bool;
+                                                           unit__ref : UnitRef)
+    handled = true
+    if drone__owner != gun__owner || !isAlive
+      return
+    if unit__ref.unit.isDelayed
+      destroyEntity(drone_launcher__drone)
+    else
+      sendEventImmediate(drone_launcher__drone, CmdDestroyDrone())
+  if !handled
+    destroyEntity(drone_launcher__drone)

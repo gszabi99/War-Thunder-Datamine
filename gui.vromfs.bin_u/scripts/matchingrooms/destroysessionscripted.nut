@@ -1,6 +1,7 @@
-let { is_mplayer_peer, destroy_session } = require("multiplayer")
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "multiplayer" import is_mplayer_peer, destroy_session
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 function destroySessionScripted(sourceInfo) {
   let needEvent = is_mplayer_peer()

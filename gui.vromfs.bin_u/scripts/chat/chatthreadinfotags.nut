@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "%sqstd/string.nut" import startsWith, slice
 from "%scripts/dagui_natives.nut" import gchat_unescape_target
 from "%scripts/dagui_library.nut" import *
 
-let { startsWith, slice } = require("%sqstd/string.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let g_chat_thread_tag = {
   types = []
 }

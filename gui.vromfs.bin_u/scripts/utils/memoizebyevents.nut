@@ -1,8 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 
 

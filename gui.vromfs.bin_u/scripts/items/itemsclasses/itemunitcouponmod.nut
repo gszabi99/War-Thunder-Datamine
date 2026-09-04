@@ -1,8 +1,8 @@
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 

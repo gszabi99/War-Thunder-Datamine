@@ -1,4 +1,5 @@
 
+from "types" import Function
 let callback = require("callback.nut")
 
 const SUBSCRIPTIONS_AMOUNT_TO_CLEAR = 50
@@ -31,7 +32,7 @@ local debugToStringFunc = @(...) ""
 
 let subscriptionsData = {}
 
-let class Subscription {
+class Subscription {
   listenerPriority = 0
   listenerCallback = null
 
@@ -99,7 +100,7 @@ function subscribe_handler(handler, listener_priority = -1) {
   if (handler == null)
     return
   foreach (property_name, property in handler) {
-    if (type(property)!="function")
+    if (!(property instanceof Function))
       continue
     let index = property_name.indexof("onEvent")
     if (index != 0)

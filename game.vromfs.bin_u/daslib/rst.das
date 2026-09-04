@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options no_aot = true
 options strict_smart_pointers = true
 
@@ -23,6 +21,25 @@ require daslib/strings_boost
 require daslib/regex
 require daslib/regex_boost
 
+enum DocumentBlock {
+    Typedefs,
+    GlobalConstants,
+    Enumerations,
+    Structures,
+    StructureAnnotations,
+    FunctionAnnotations,
+    CallMacros,
+    ReaderMacros,
+    VariantMacros,
+    TypeinfoMacros,
+    Annotations,
+    EnumerationAnnotations,
+    StructureMacros,
+    TypeMacros,
+    Classes,
+    Functions,
+}
+
 let { 
     log_documentation = false
     show_hidden_groups = false
@@ -38,9 +55,36 @@ var public {
     strict_struct_fields = true
     group_function_overloads = true
     property_assignment_operator = ":="
+    doc_block_order = [
+        DocumentBlock.Typedefs,
+        DocumentBlock.GlobalConstants,
+        DocumentBlock.Enumerations,
+        DocumentBlock.Structures,
+        DocumentBlock.StructureAnnotations,
+        DocumentBlock.FunctionAnnotations,
+        DocumentBlock.CallMacros,
+        DocumentBlock.ReaderMacros,
+        DocumentBlock.VariantMacros,
+        DocumentBlock.TypeinfoMacros,
+        DocumentBlock.Annotations,
+        DocumentBlock.EnumerationAnnotations,
+        DocumentBlock.StructureMacros,
+        DocumentBlock.TypeMacros,
+        DocumentBlock.Classes,
+        DocumentBlock.Functions
+    ]
 }
 
 var private seen_function_labels : table<string; uint>
+
+
+
+var private pageless_ref_modules : table<string>
+
+
+
+
+var private nosearch_symbols : table<string>
 
 
 
@@ -63,6 +107,16 @@ def module_name(mod) {
         if (mn == src) return dst
     }
     return mn
+}
+
+def public mark_module_pageless(name : string) {
+    
+    
+    pageless_ref_modules |> insert(name)
+}
+
+def has_ref_page(mod) : bool {
+    return !key_exists(pageless_ref_modules, module_name(mod))
 }
 
 def alias_label_name(td : TypeDeclPtr) {
@@ -197,7 +251,6 @@ def function_label_name(value : FunctionPtr) {
     let mn = function_short_mangled_name(value)
     let res = "function-{safe_function_name(mn)}"
     
-    
     if (group_function_overloads) {
         var is_generic = false
         for (arg in value.arguments) {
@@ -207,11 +260,8 @@ def function_label_name(value : FunctionPtr) {
             }
         }
         
-        
-        
         if (is_generic || value.flags.isClassMethod) return "{res}_{value.at.line}"
     }
-    
     
     let lower_res = to_lower(res)
     if (key_exists(seen_function_labels, lower_res)) {
@@ -260,7 +310,7 @@ def cleanup_type_short(name : string) {
     return res
 }
 
-def describe_type_short(td : TypeDeclPtr) {
+def describe_type_short(td : TypeDeclPtr) { 
     if (td == null) {
         PANIC("describe_type_short: null type")
     }
@@ -375,15 +425,20 @@ def rst_describe_function_short(func : FunctionPtr) {
         }
     }
 
-    var res = "{function_name(func)} ({join(args,"; ")})"
+    
+    var fname = function_name(func)
+    if (fname |> ends_with("_")) {
+        fname = slice(fname, 0, -1) + "\\_"
+    }
+    var res = "{fname} ({join(args,"; ")})"
     if (func.result != null && func.result.baseType != Type.tVoid) {
         res = "{res} : {describe_type_short(func.result)}"
     }
     return res
 }
 
-def describe_type(td : TypeDecl?) {
-    return build_string() $(var writer) {
+def describe_type(td : TypeDecl?) { 
+    return build_string() $(var writer) { 
         if (!empty(td.alias) && !td.isAuto && !td.isAlias) {
             write(writer, make_ref(alias_label_name(td), string(td.alias)))
             return
@@ -399,6 +454,20 @@ def describe_type(td : TypeDecl?) {
             write(writer, "auto")
             if (!empty(td.alias)) {
                 write(writer, "({td.alias})")
+            }
+        } elif (baseType == Type.tFixedArray) {
+            
+            var elemT = clone_type(td)
+            while (elemT.baseType == Type.tFixedArray && elemT.firstType != null) {
+                elemT = clone_type(elemT.firstType)
+            }
+            write(writer, describe_type(elemT))
+            var lvl = clone_type(td)
+            while (lvl.baseType == Type.tFixedArray && lvl.firstType != null) {
+                write(writer, "\\ [")
+                write(writer, lvl.fixedDim)
+                write(writer, "]")
+                lvl = clone_type(lvl.firstType)
             }
         } elif (baseType == Type.tHandle) {
             let hname = string(td.annotation.name)
@@ -421,18 +490,24 @@ def describe_type(td : TypeDecl?) {
                 write(writer, ",")
                 write(writer, parts[2])
                 write(writer, ">")
-            } else {
+            } elif (has_ref_page(td.annotation._module)) {
                 write(writer, make_ref(handle_label_name(td.annotation), "{td.annotation.name}"))
+            } else {
+                write(writer, "{td.annotation.name}")
             }
         } elif (baseType == Type.tStructure) {
-            write(writer, make_ref(struct_label_name(td.structType), "{td.structType.name}"))
+            if (has_ref_page(td.structType._module)) {
+                write(writer, make_ref(struct_label_name(td.structType), "{td.structType.name}"))
+            } else {
+                write(writer, "{td.structType.name}")
+            }
         } elif (baseType == Type.tEnumeration || baseType == Type.tEnumeration8 || baseType == Type.tEnumeration16 || baseType == Type.tEnumeration64) {
-            write(writer, make_ref(enum_label_name(td.enumType), "{td.enumType.name}"))
+            if (has_ref_page(td.enumType._module)) {
+                write(writer, make_ref(enum_label_name(td.enumType), "{td.enumType.name}"))
+            } else {
+                write(writer, "{td.enumType.name}")
+            }
         }
-        
-        
-        
-        
         
         elif (baseType == Type.tPointer) {
             if (td.flags.smartPtr) {
@@ -558,12 +633,6 @@ def describe_type(td : TypeDecl?) {
             write(writer, das_to_string(baseType))
         }
         
-        
-        for (d in td.dim) {
-            write(writer, "\\ [")
-            write(writer, d)
-            write(writer, "]")
-        }
         if (td.flags.ref) {
             write(writer, "\\ &")
         }
@@ -660,6 +729,26 @@ def make_table(title : string; tab : array<array<string>>) {
     }
 }
 
+def private is_nosearch(name : string) : bool {
+    return key_exists(nosearch_symbols, name)
+}
+
+def private indent_block(text : string) : string {
+    return build_string() $(writer) {
+        let lines <- split(text, "\n")
+        for (line, i in lines, count()) {
+            if (i > 0) { write(writer, "\n") }
+            if (!empty(line)) { write(writer, "   {line}") }
+        }
+    }
+}
+
+
+def private table_block(header : string; tab : array<array<string>>; nosearch : bool) : string {
+    let t = make_table(header, tab)
+    return t if (!nosearch)
+    return ".. container:: nosearch\n\n{indent_block(t)}"
+}
 
 
 def make_table_(tab : array<array<string>>; withHeader : bool = false) {
@@ -683,26 +772,6 @@ def make_table_(tab : array<array<string>>; withHeader : bool = false) {
         write(writer, "\n\n")
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -733,7 +802,7 @@ def topic(mod : Module?) {
 }
 
 def document_topic(doc_file : file; topic, content : string implicit) {
-    document_topic(doc_file, topic, content) $(txt) {
+    document_topic(doc_file, topic, content) $(txt; _handmade) {
         return txt
     }
 }
@@ -743,7 +812,7 @@ def document_function_topic(doc_file : file; resType : TypeDecl?&; topic, conten
     var paramsIdx = -1
     var returnsIdx = -1
     let header = "Arguments"
-    document_topic(doc_file, topic, content) $(txt) {
+    document_topic(doc_file, topic, content) $(txt; _handmade) {
 
         var addDescription = false
         var lines <- txt |> replace("\r\n", "\n") |> split("\n")
@@ -814,11 +883,11 @@ def document_function_topic(doc_file : file; resType : TypeDecl?&; topic, conten
     }
 }
 
-def document_topic(header : string; doc_file : file; topic, content : string implicit; var tab : array<array<string>>) {
-    document_topic(doc_file, topic, content) $(txt) {
+def document_topic(header : string; doc_file : file; topic, content : string implicit; var tab : array<array<string>>; nosearch : bool = false) {
+    document_topic(doc_file, topic, content) $(txt; handmade) {
         if (add_stub_header && txt |> starts_with(STUB)) {
             if (length(tab) > 1) {
-                fwrite(doc_file, make_table(header, tab))
+                fwrite(doc_file, table_block(header, tab, nosearch))
             }
             return txt
         }
@@ -830,9 +899,11 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
                 got--
             }
             let expected = length(tab) - 1
-            if (got < expected) {
+            
+            let minLines = handmade ? expected + 1 : expected
+            if (got < minLines) {
                 if (strict_struct_fields) {
-                    error("{topic} has less documentation than values. Expected at least {expected} lines ({[for (i in range(1, length(tab))); tab[i][0]]}), got {got}\n")
+                    error("{topic} has less documentation than values. Expected at least {minLines} lines ({[for (i in range(1, length(tab))); tab[i][0]]}), got {got}\n")
                     PANIC("invalid documentation")
                 }
 
@@ -845,7 +916,7 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
                 }
 
                 if (length(tab) > 1) {
-                    fwrite(doc_file, make_table(header, tab))
+                    fwrite(doc_file, table_block(header, tab, nosearch))
                 }
 
                 hasDoc = true
@@ -868,7 +939,7 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
             tab[0] |> push("description")
 
             if (length(tab) > 1) {
-                fwrite(doc_file, make_table(header, tab))
+                fwrite(doc_file, table_block(header, tab, nosearch))
             }
             hasDoc = true
         }
@@ -876,13 +947,13 @@ def document_topic(header : string; doc_file : file; topic, content : string imp
         return "" if (hasDoc)
 
         if (length(tab) > 1) {
-            fwrite(doc_file, make_table(header, tab))
+            fwrite(doc_file, table_block(header, tab, nosearch))
         }
         return txt
     }
 }
 
-def document_topic(doc_file : file; topic, content : string implicit; cb : block<(text : string) : string>) {
+def document_topic(doc_file : file; topic, content : string implicit; cb : block<(text : string; handmade : bool) : string>) {
     let is_handmade_topic = topic |> starts_with("|handmade/")
     let base_root = is_handmade_topic ? handmade_root : topic_root
     let topic_file_name = "{base_root}/{slice(topic,1,-1)}.rst"
@@ -907,7 +978,7 @@ def document_topic(doc_file : file; topic, content : string implicit; cb : block
     if (stat(topic_file_name, st)) {
         fopen(topic_file_name, "rb") $(topic_file) {
             if (topic_file != null) {
-                let instxt = cb |> invoke(fread(topic_file))
+                let instxt = cb |> invoke(fread(topic_file), is_handmade_topic)
                 fwrite(doc_file, instxt)
                 fwrite(doc_file, "\n\n")
             } else {
@@ -926,7 +997,7 @@ def document_bitfield(mod : Module?; doc_file : file; name : string; value : Typ
     var tab : array<array<string>>
     emplace(tab, array<string>("field", "bit"))
     for (an, bit in value.argNames, urange(32)) {
-        var line <- [string(an), "{uint64(1ul << uint64(bit))}"]
+        var line <- [string(an), "{1ul << uint64(bit)}"]
         emplace(tab, line)
     }
 
@@ -941,7 +1012,7 @@ def document_bitfield(mod : Module?; doc_file : file; name : string; value : Typ
         }
     }
 
-    document_topic("Fields", doc_file, topic("typedef", mod, name), describe(value), tab)
+    document_topic("Fields", doc_file, topic("typedef", mod, name), describe(value), tab, is_nosearch(name))
 }
 
 def document_variant(mod : Module?; doc_file : file; name : string; value : TypeDeclPtr) {
@@ -951,7 +1022,7 @@ def document_variant(mod : Module?; doc_file : file; name : string; value : Type
         var line <- [string(an), describe_type(at)]
         emplace(tab, line)
     }
-    document_topic("Variants", doc_file, topic("typedef", mod, name), describe(value), tab)
+    document_topic("Variants", doc_file, topic("typedef", mod, name), describe(value), tab, is_nosearch(name))
 }
 
 def document_typedef(doc_file : file; mod : Module?; name : string implicit; value) {
@@ -989,7 +1060,7 @@ def document_typedefs(doc_file : file; mods : array<Module?>) {
     var any = false
     for (mod in mods) {
         if (any) break
-        for_each_typedef(mod) $(name, value) {
+        for_each_typedef(mod) $(_name, value) {
             if (value.flags.isPrivateAlias) return
             any = true
         }
@@ -1014,8 +1085,6 @@ def document_global_constant(doc_file : file; mod : Module?; value : VariablePtr
 
 def private is_global_constant(value : VariablePtr) {
     if (value.flags.private_variable || !value._type.flags.constant || value.flags.bitfield_constant) return false
-    
-    
     
     return !(value.init == null)
 }
@@ -1060,7 +1129,7 @@ def public document_enumeration(doc_file : file; mod : Module?; value) {
         push(line, short_enum_value(describe(en.value)))
         emplace(tab, line)
     }
-    document_topic("Values", doc_file, topic("enumeration", mod, string(value.name)), "enum {value.name}", tab)
+    document_topic("Values", doc_file, topic("enumeration", mod, string(value.name)), "enum {value.name}", tab, is_nosearch(string(value.name)))
 }
 
 
@@ -1116,6 +1185,7 @@ def document_function_declaration(doc_file : file; domain, func_name : string;
     fwrite(doc_file, "\n\n")
 }
 
+[unused_argument(doc_file)]
 def document_function_arguments(doc_file : file; argNames : array<string>; argTypes : array<TypeDecl?>; skip_args : int) : array<array<string>> {
     var tab : array<array<string>>
     emplace(tab, array<string>("argument", "type"))
@@ -1197,9 +1267,6 @@ def document_struct_method(doc_file : file; mod : Module?; value; var func) {
     var args <- document_function_arguments(doc_file, argNames, argTypes, 1)
 
     
-    
-    
-    
     let hash_drop = is_static ? 0 : 1
     let mn = build_string() $(var w) {
         w |> write(fname)
@@ -1244,7 +1311,7 @@ def is_class_method(value; fld : FieldDeclaration&) {
 }
     
 
-def document_classes(doc_file : file; mods : array<Module?>) {
+def document_classes(doc_file : file; mods : array<Module?>) { 
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1304,7 +1371,7 @@ def document_classes(doc_file : file; mods : array<Module?>) {
                 }
             }
 
-            document_topic("Fields", doc_file, topic("class", mod, string(value.name)), "class {value.name}", fields)
+            document_topic("Fields", doc_file, topic("class", mod, string(value.name)), "class {value.name}", fields, is_nosearch(string(value.name)))
 
             for (fld in value.fields) {
                 if (is_class_method(value, fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.flags.implemented)) {
@@ -1314,6 +1381,7 @@ def document_classes(doc_file : file; mods : array<Module?>) {
             var first = true
             var annT = new TypeDecl(baseType = Type.tStructure, structType = value)
             for_each_function(mod, "") $(func) {
+                
                 if (func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func)) {
                     
                     document_function(doc_file, mod, func, 0, "{value.name}-", "das:function")
@@ -1421,8 +1489,7 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
         }
     }
     
-    
-    document_topic("Fields", doc_file, topic("structure", mod, string(value.name)), "struct {value.name}", tab)
+    document_topic("Fields", doc_file, topic("structure", mod, string(value.name)), "struct {value.name}", tab, is_nosearch(string(value.name)))
 
     for (fld in value.fields) {
         if (is_class_method(value, fld) && !fld.flags.generated && !fld.flags.privateField && !fld.flags.parentType && fld.flags.implemented) {
@@ -1430,7 +1497,6 @@ def document_structure(doc_file : file; mod : Module?; var value : StructurePtr)
         }
     }
 
-    
     
     for_each_function(mod, "") $(func) {
         if (!func.flags.isClassMethod || func.classParent != value
@@ -1498,7 +1564,7 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
     var props : array<array<string>>
     props |> emplace(array<string>("field", "type"))
     var annT = new TypeDecl(baseType = Type.tHandle,
-        annotation = unsafe(reinterpret<TypeAnnotation?> value))
+        annotation = unsafe(reinterpret<TypeAnnotation?>(value)))
     for_each_function(mod, "") $(func) {
         if (!func.moreFlags.propertyFunction || func.arguments |> length != 1) return
         let fna = string(func.name)
@@ -1515,7 +1581,7 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
         fwrite(doc_file, make_table("Properties", props))
     }
 
-    var ann = unsafe(reinterpret<BasicStructureAnnotation?> value)
+    var ann = unsafe(reinterpret<BasicStructureAnnotation?>(value))
 
     var tab : array<array<string>>
     tab |> emplace(array<string>("field", "type"))
@@ -1533,10 +1599,10 @@ def document_structure_annotation(doc_file : file; mod : Module?; value) {
         emplace(tab, line)
     }
 
-    document_topic("Fields", doc_file, topic("structure_annotation", mod, string(value.name)), "Annotation {value.name}", tab)
+    document_topic("Fields", doc_file, topic("structure_annotation", mod, string(value.name)), "Annotation {value.name}", tab, is_nosearch(string(value.name)))
 }
 
-def document_structure_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_structure_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1562,7 +1628,7 @@ def document_enumeration_annotation(doc_file : file; mod : Module?; value) {
     document_topic(doc_file, topic("enumeration_macro", mod, string(value.name)), "Enumeration annotation {value.name}")
 }
 
-def document_enumeration_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_enumeration_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1589,7 +1655,7 @@ def document_function_annotation(doc_file : file; mod : Module?; value) {
     document_topic(doc_file, topic("function_annotation", mod, string(value.name)), "Function annotation {value.name}")
 }
 
-def document_function_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_function_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1615,7 +1681,7 @@ def document_annotation(doc_file : file; mod : Module?; value) {
     document_topic(doc_file, topic("annotation", mod, string(value.name)), "Annotation {value.name}")
 }
 
-def document_annotations(doc_file : file; mods : array<Module?>; var hook = DocsHook()) {
+def document_annotations(doc_file : file; mods : array<Module?>; hook = DocsHook()) {
     var any = false
     for (mod in mods) {
         if (any) break
@@ -1676,7 +1742,7 @@ def document_call_macros(doc_file : file; mods : array<Module?>) {
     var any = false
     for (mod in mods) {
         if (any) break
-        for_each_call_macro(mod) $(value) {
+        for_each_call_macro(mod) $(_value) {
             any = true
         }
     }
@@ -1700,7 +1766,7 @@ def document_reader_macros(doc_file : file; mods : array<Module?>) {
     var any = false
     for (mod in mods) {
         if (any) break
-        for_each_reader_macro(mod) $(value) {
+        for_each_reader_macro(mod) $(_value) {
             any = true
         }
     }
@@ -1724,7 +1790,7 @@ def document_variant_macros(doc_file : file; mods : array<Module?>) {
     var any = false
     for (mod in mods) {
         if (any) break
-        for_each_variant_macro(mod) $(value) {
+        for_each_variant_macro(mod) $(_value) {
             any = true
         }
     }
@@ -1748,7 +1814,7 @@ def document_typeinfo_macros(doc_file : file; mods : array<Module?>) {
     var any = false
     for (mod in mods) {
         if (any) break
-        for_each_typeinfo_macro(mod) $(value) {
+        for_each_typeinfo_macro(mod) $(_value) {
             any = true
         }
     }
@@ -1870,7 +1936,6 @@ def document_function(doc_file : file; mod : Module?; var func : FunctionPtr; dr
         argNames, argTypes, argInits, func.result, drop_args))
     if (skip_body) return
     
-    
     document_deprecated_unsafe(doc_file, func)
 
     var args <- document_function_arguments(doc_file, argNames, argTypes, drop_args)
@@ -1878,7 +1943,7 @@ def document_function(doc_file : file; mod : Module?; var func : FunctionPtr; dr
 }
 
 
-def document_functions(doc_file : file; mods : array<Module?>; var groups : array<DocGroup>) {
+def document_functions(doc_file : file; mods : array<Module?>; var groups : array<DocGroup>) { 
     var tab : table<Function?>
     for (grp in groups) {
         if (!empty(grp.func)) {
@@ -2049,13 +2114,12 @@ def private generate_topic_stub(var tab : table<string>; doc_file : file; topic 
 def private generate_substitute_stub(mod : Module?; substname : string) {
     var _st : FStat
     
-    
     mkdir_rec(dir_name(substname))
     fopen(substname, "wb") $(stub_file) {
         if (stub_file != null) {
             var tab : table<string>
             
-            for_each_typedef(mod) $(name, value) {
+            for_each_typedef(mod) $(name, _value) {
                 generate_topic_stub(tab, stub_file, topic("typedef", mod, name))
             }
             
@@ -2108,12 +2172,18 @@ def private generate_substitute_stub(mod : Module?; substname : string) {
 }
 
 
-def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; var hook : DocsHook = DocsHook()) {
+def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; hook : DocsHook = DocsHook()) {
     
     
     
     let mods : array<Module?> = [mod]
     documents(name, mods, fname, groups, hook)
+}
+
+def public document(name : string; var mod : Module?; fname : string; var groups : array<DocGroup>; hook : DocsHook; nosearch : array<string>) {
+    
+    let mods : array<Module?> = [mod]
+    documents(name, mods, fname, groups, hook, nosearch)
 }
 
 struct public DocsHook {
@@ -2123,9 +2193,20 @@ struct public DocsHook {
 }
 
 
-def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; var hook : DocsHook = DocsHook()) {
+def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; hook : DocsHook = DocsHook()) {
+    
+    let none : array<string>
+    documents(name, mods, fname, groups, hook, none)
+}
+
+def public documents(name : string; mods : array<Module?>; fname : string; var groups : array<DocGroup>; hook : DocsHook; nosearch : array<string>) {
+    
     
     clear(seen_function_labels)
+    clear(nosearch_symbols)
+    for (n in nosearch) {
+        nosearch_symbols |> insert(n)
+    }
     static_if (log_documentation) {
         print("Documenting {name} into {fname}\n")
     }
@@ -2158,25 +2239,44 @@ def public documents(name : string; mods : array<Module?>; fname : string; var g
         break
     }
 
-    document_typedefs(doc_file, mods)
-    document_global_constants(doc_file, mods)
-    let wasEnums = document_enumerations(doc_file, mods)
-    if (hook.afterEnums != null) {
-        hook.afterEnums |> invoke(doc_file, wasEnums)
+    for (docBlock in doc_block_order) {
+        if (docBlock == DocumentBlock.Typedefs) {
+            document_typedefs(doc_file, mods)
+        } elif (docBlock == DocumentBlock.GlobalConstants) {
+            document_global_constants(doc_file, mods)
+        } elif (docBlock == DocumentBlock.Enumerations) {
+            let wasEnums = document_enumerations(doc_file, mods)
+            if (hook.afterEnums != null) {
+                hook.afterEnums |> invoke(doc_file, wasEnums)
+            }
+        } elif (docBlock == DocumentBlock.Structures) {
+            document_structures(doc_file, mods)
+        } elif (docBlock == DocumentBlock.StructureAnnotations) {
+            document_structure_annotations(doc_file, mods, hook)
+        } elif (docBlock == DocumentBlock.FunctionAnnotations) {
+            document_function_annotations(doc_file, mods, hook)
+        } elif (docBlock == DocumentBlock.CallMacros) {
+            document_call_macros(doc_file, mods)
+        } elif (docBlock == DocumentBlock.ReaderMacros) {
+            document_reader_macros(doc_file, mods)
+        } elif (docBlock == DocumentBlock.VariantMacros) {
+            document_variant_macros(doc_file, mods)
+        } elif (docBlock == DocumentBlock.TypeinfoMacros) {
+            document_typeinfo_macros(doc_file, mods)
+        } elif (docBlock == DocumentBlock.Annotations) {
+            document_annotations(doc_file, mods, hook)
+        } elif (docBlock == DocumentBlock.EnumerationAnnotations) {
+            document_enumeration_annotations(doc_file, mods, hook)
+        } elif (docBlock == DocumentBlock.StructureMacros) {
+            document_structure_macros(doc_file, mods)
+        } elif (docBlock == DocumentBlock.TypeMacros) {
+            document_typemacros(doc_file, mods)
+        } elif (docBlock == DocumentBlock.Classes) {
+            document_classes(doc_file, mods)
+        } elif (docBlock == DocumentBlock.Functions) {
+            document_functions(doc_file, mods, groups)
+        }
     }
-    document_structures(doc_file, mods)
-    document_structure_annotations(doc_file, mods, hook)
-    document_function_annotations(doc_file, mods, hook)
-    document_call_macros(doc_file, mods)
-    document_reader_macros(doc_file, mods)
-    document_variant_macros(doc_file, mods)
-    document_typeinfo_macros(doc_file, mods)
-    document_annotations(doc_file, mods, hook)
-    document_enumeration_annotations(doc_file, mods, hook)
-    document_structure_macros(doc_file, mods)
-    document_typemacros(doc_file, mods)
-    document_classes(doc_file, mods)
-    document_functions(doc_file, mods, groups)
     fwrite(doc_file, "\n")
     fclose(doc_file)
 }

@@ -1,5 +1,5 @@
+from "%rGui/hud/actionBarState.nut" import getActionBarItemRectByType, actionBarRect
 from "%rGui/globals/ui_library.nut" import *
-let { getActionBarItemRectByType, actionBarRect } = require("%rGui/hud/actionBarState.nut")
 
 
 

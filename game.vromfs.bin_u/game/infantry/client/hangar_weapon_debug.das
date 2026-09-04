@@ -4,7 +4,6 @@ require DagorConsole
 require DagorDebug3D
 require DagorMath
 require CollRes
-require math.base
 
 require %appGame.wt_events
 

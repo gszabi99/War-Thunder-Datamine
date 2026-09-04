@@ -1,14 +1,15 @@
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "string" import format
+from "blkGetters" import get_wpcost_blk
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import shop_get_premium_account_ent_name, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { get_wpcost_blk } = require("blkGetters")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 function getAircraftRank(curAir) {
   return get_wpcost_blk()?[curAir]?.rank ?? 0

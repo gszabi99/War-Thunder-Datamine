@@ -1,18 +1,18 @@
+import "DataBlock" as DataBlock
+import "statsd" as statsd
+import "sony.store" as psnStore
+import "sony.sys" as psnSystem
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-require("ingameConsoleStore.nut")
-let DataBlock = require("DataBlock")
-let statsd = require("statsd")
-let psnStore = require("sony.store")
-let psnSystem = require("sony.sys")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { IngameConsoleStore } = require("%scripts/onlineShop/ingameConsoleStore.nut")
 let { getShopData, getShopItem } = require("%scripts/onlineShop/ps4ShopData.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
-gui_handlers.Ps4Shop <- class (gui_handlers.IngameConsoleStore) {
+register_gui_handler("Ps4Shop", class (IngameConsoleStore) {
   needWaitIcon = true
   isLoadingInProgress = false
 
@@ -89,4 +89,4 @@ gui_handlers.Ps4Shop <- class (gui_handlers.IngameConsoleStore) {
   function onEventSignOut(_p) {
     psnStore.hide_icon()
   }
-}
+})

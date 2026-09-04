@@ -1,8 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import stat_get_value_time_played
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { get_game_settings_blk } = require("blkGetters")
+from "%globalScripts/unitClassConsts.nut" import *
+
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 let newPlayersBattles = {}

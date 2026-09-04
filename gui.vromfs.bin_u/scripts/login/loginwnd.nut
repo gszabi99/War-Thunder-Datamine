@@ -1,16 +1,33 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "statsd" as statsd
+import "regexp2" as regexp2
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/platform.nut" import platformId, is_gdk, is_pc
+from "language" import getLocalLanguage
+from "guiOptions" import setGuiOptionsMode
+from "auth_wt" import getDistr, convertExternalJwtToAuthJwt, getLoginPass, getTwoStepCodeAsync2, checkLoginPass, setLoginPass, getPlayerTagsGlobalStr
+from "dagor.system" import dgs_get_settings
+from "sysinfo" import get_user_system_info
+from "console" import register_command
+from "%sqstd/string.nut" import validateEmail
+from "eventbus" import eventbus_subscribe
+from "blkGetters" import get_network_block, get_common_local_settings_blk
+from "steam" import steam_is_running
+from "webauth" import webauth_start, webauth_stop, webauth_get_url, webauth_completion_event
+from "dagor.random" import frnd
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import dgs_get_argv, get_cur_circuit_name, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, set_network_circuit
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/autoSaveFlagConsts.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 from "chard" import save_profile
+from "types" import Integer, String
 
-let { platformId, is_gdk, is_pc } = require("%sqstd/platform.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("loginState.nut")
-let { getLocalLanguage } = require("language")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let statsd = require("statsd")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { get_disable_autorelogin_once, set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
@@ -18,41 +35,33 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { select_editbox, setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
-let { setGuiOptionsMode } = require("guiOptions")
-let { getDistr, convertExternalJwtToAuthJwt, getLoginPass, getTwoStepCodeAsync2,
-  checkLoginPass, setLoginPass, getPlayerTagsGlobalStr } = require("auth_wt")
-let { dgs_get_settings } = require("dagor.system")
-let { get_user_system_info } = require("sysinfo")
-let regexp2 = require("regexp2")
-let { register_command } = require("console")
+let { select_editbox, setFocusToNextObj, getObjValue } = require("%scripts/sqDagui/daguiUtil.nut")
 let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
-let { validateEmail } = require("%sqstd/string.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
-let { saveLocalSharedSettings, loadLocalSharedSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { isPlatformShieldTv, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization, getCurLangShortName
-} = require("%scripts/langUtils/language.nut")
-let { get_network_block, get_common_local_settings_blk } = require("blkGetters")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { steam_is_running } = require("steam")
+let { getGameLocalizationInfo, setGameLocalization, canSwitchGameLocalization, getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { bqSendNoAuth, bqSendNoAuthWeb } = require("%scripts/bigQuery/bigQueryClient.nut")
-let { webauth_start, webauth_stop, webauth_get_url, webauth_completion_event } = require("webauth")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { close_browser_modal, browser_set_external_url } = require("%scripts/onlineShop/browserWndActions.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
-let { frnd } = require("dagor.random")
+let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
 const MIGRATION_URL = "migration.warthunder.com"
 const LAST_LOGIN_TYPE_SAVE_ID = "lastLoginType"
+const LOGIN_WND_STYLE_SAVE_ID = "loginWndStyle"
+
+enum LoginHelpShowState {
+  HIDED = 0,
+  WAIT_ANIM = 1,
+  SHOWED = 2
+}
 
 let transparentTimerPid = dagui_propid_add_name_id("_transp-timer")
 let sizeTimerPid = dagui_propid_add_name_id("_size-timer")
@@ -102,7 +111,7 @@ function isShowMessageAboutProfileMoved() {
   return true
 }
 
-gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
+let LoginWndHandler = class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBox.blk"
 
   check2StepAuthCode = false
@@ -122,7 +131,8 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   defaultSaveLoginFlagVal = false
   defaultSavePasswordFlagVal = false
   defaultSaveAutologinFlagVal = false
-  isExistingAccountPanelOpened = false
+  isExistingAccountPanelOpened = true
+  loginHelpShowState = LoginHelpShowState.HIDED
 
   tabFocusArray = [
     "loginbox_username",
@@ -217,15 +227,23 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     }
 
     select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
-    
+
+
+
   }
 
   function fillLoginForm() {
     let runCount = get_common_local_settings_blk()?.runCount ?? 0
-    let isFirstLogin = type(runCount) != "integer" || runCount <= 0
+    let isFirstLogin = !(runCount instanceof Integer) || runCount <= 1
     if (!isFirstLogin) {
       let lastLoginIsGuest = loadLocalSharedSettings(LAST_LOGIN_TYPE_SAVE_ID, null) == "guest"
-      if (lastLoginIsGuest) {
+      if (!lastLoginIsGuest)
+        return
+
+      let needCompactWndStyle = loadLocalSharedSettings(LOGIN_WND_STYLE_SAVE_ID, "usual") == "compact"
+      if (needCompactWndStyle) {
+        this.setCompactWndStyle()
+      } else {
         let guestBtn = this.scene.findObject("guest_login_action_button")
         let loginBtn = this.scene.findObject("login_action_button")
         loginBtn.findObject("login_btn_text").show(false)
@@ -245,18 +263,26 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     let newLoginWndStyle = frnd() > 0.5
     bqSendNoAuthWeb(newLoginWndStyle ? "login_style:new" : "login_style:old")
 
-    if (newLoginWndStyle)
-      this.setNewVisual()
+    if (newLoginWndStyle) {
+      saveLocalSharedSettings(LOGIN_WND_STYLE_SAVE_ID, "compact")
+      this.setCompactWndStyle()
+    }
   }
 
-  function setNewVisual() {
+  function setCompactWndStyle() {
     this.scene.findObject("main_panel_frame")["padding-top"] = "1@framePadding + 1@blockInterval + 1@navBarBattleButtonHeight"
     this.scene.findObject("existing_account_label").show(true)
     this.scene.findObject("usual_login_btn").show(true)
 
+    let guestBtn = this.scene.findObject("guest_login_action_button")
+    guestBtn["class"] = "battle"
+    guestBtn["navButtonFont"] = "yes"
+    guestBtn.findObject("guest_btn_text").show(true)
+
     let existingAccountObj = this.scene.findObject("existing_account_block")
     existingAccountObj.height = "1"
     existingAccountObj.show(false)
+    this.isExistingAccountPanelOpened = false
   }
 
   function onDestroy() {
@@ -291,7 +317,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       for (local i = 0; i < avCircuits.paramCount(); ++i) {
         let param = avCircuits.getParamName(i)
         let value = avCircuits.getParamValue(i)
-        if (param == this.paramName && type(value) == "string") {
+        if (param == this.paramName && value instanceof String) {
           if (value == defaultCircuit)
             defValue = i
 
@@ -375,7 +401,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
   }
 
   function onPopupLanguages(obj) {
-    if (gui_handlers.ActionsList.hasActionsListOnObject(obj))
+    if (ActionsList.hasActionsListOnObject(obj))
       return this.onClosePopups()
 
     this.localizationInfo = this.localizationInfo || getGameLocalizationInfo()
@@ -401,13 +427,13 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
         selected    = lang.id == curLangId
       })
     }
-    gui_handlers.ActionsList.open(obj, menu)
+    ActionsList.open(obj, menu)
   }
 
   function onClosePopups() {
     let obj = this.scene.findObject("btn_language")
     if (checkObj(obj))
-      gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
+      ActionsList.removeActionsListFromObject(obj, true)
   }
 
   function onChangeLanguage(langId) {
@@ -423,7 +449,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
     setGameLocalization(langId, true, true)
 
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+    let handler = handlersManager.findHandlerClassInScene(get_gui_handler("LoginWndHandler"))
     this.scene = handler ? handler.scene : null
     if (!checkObj(this.scene))
       return
@@ -508,6 +534,20 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     if (!this.isLoginEditsFilled())
       return
 
+    this.confirmSteamRunningWarning(Callback(this.startLogin, this))
+  }
+
+  function confirmSteamRunningWarning(continueFn) {
+    if (getCurCircuitOverride("publisher") != null && steam_is_running()) {
+      this.msgBox("login_pixelstorm_steam_running_warning", loc("msgbox/login_pixelstorm_steam_running_warning"),
+        [["ok", continueFn]], "ok")
+      return
+    }
+
+    continueFn()
+  }
+
+  function startLogin() {
     this.isLoginRequestInprogress = true
     this.requestGet2stepCodeAtempt = MAX_GET_2STEP_CODE_ATTEMPTS
     this.doLoginWaitJob()
@@ -662,7 +702,10 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
       bqSendNoAuth("auth:not_found:guest")
       saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
-      this.onGuestAuthorization()
+      if (this.loginHelpShowState == LoginHelpShowState.HIDED)
+        this.showLoginHelp()
+      else
+        this.onGuestAuthorization()
     }
 
     else {
@@ -732,13 +775,25 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     this.setLoginBtnState()
   }
 
-  function onDoneEnter() {
-    if (!this.check2StepAuthCode)
-      this.doLoginWaitJob()
+  function onUserNameDoneEnter() {
+    let psObj = this.scene.findObject("loginbox_password")
+    if (!psObj?.isValid())
+      return
+
+    if ((psObj.getValue() ?? "") != "") {
+      this.onDoneEnter()
+      return
+    }
+
+    select_editbox(psObj)
+    
+    if (isPlatformSteamDeck || is_steam_big_picture())
+      psObj.setValue(true)
   }
 
-  function onDoneCode() {
-    this.doLoginWaitJob()
+  function onDoneEnter() {
+    if (!this.check2StepAuthCode)
+      this.confirmSteamRunningWarning(Callback(this.doLoginWaitJob, this))
   }
 
   function onExit() {
@@ -805,30 +860,101 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
     })
   }
 
+  function showLoginHelp() {
+    if (!this.isExistingAccountPanelOpened) {
+      this.loginHelpShowState = LoginHelpShowState.WAIT_ANIM
+      this.openExistingAccountPanel()
+      return
+    }
+    saveLocalSharedSettings(LOGIN_WND_STYLE_SAVE_ID, "usual")
+    this.loginHelpShowState = LoginHelpShowState.SHOWED
+    let helpDiv = this.scene.findObject("help_div")
+    if (!helpDiv?.isValid())
+      return
+    helpDiv.show(true)
+    this.guiScene.applyPendingChanges(false)
+    let helpbox = helpDiv.findObject("loginbox_help")
+    let loginObj = this.scene.findObject("loginbox_username")
+
+    let loginPos = loginObj.getPos()
+    let passwdObj = this.scene.findObject("loginbox_password")
+    let passwdPos = passwdObj.getPos()
+    let passwdSize = passwdObj.getSize()
+
+    let helpboxSize = helpbox.getSize()
+    let minHelpBoxHeight =  passwdPos[1] + passwdSize[1] - loginPos[1]
+    if (helpboxSize[1] < minHelpBoxHeight) {
+      helpbox.height = minHelpBoxHeight
+      helpboxSize[1] = minHelpBoxHeight
+    }
+    helpbox.top = loginPos[1] + (minHelpBoxHeight - helpboxSize[1])/2
+
+    let loginBtnObj = this.scene.findObject("login_action_button")
+    let loginBtnPos = loginBtnObj.getPos()
+    let loginBtnSize = loginBtnObj.getSize()
+    let helpBtnBox = helpDiv.findObject("loginbtn_help")
+    helpBtnBox.top = $"{loginBtnPos[1] + 0.5*loginBtnSize[1]} - h/2"
+
+    this.guiScene.applyPendingChanges(false)
+    let linkLinesConfig = {
+      startObjContainer = this.scene
+      endObjContainer = helpDiv
+      lineInterval = "@helpLineInterval"
+      obstacles = null
+      links = [
+        { start = "loginbox_username", end = "loginbox_help" }
+        { start = "loginbox_password", end = "loginbox_help" }
+        { start = "login_action_button", end = "loginbtn_help" }
+      ]
+    }
+
+    let markup = getLinkLinesMarkup(linkLinesConfig)
+    let obj = helpDiv.findObject("lines_block")
+    obj.show(true)
+    this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
+
+    let guestBtn = this.scene.findObject("guest_login_action_button")
+    guestBtn.findObject("guest_btn_text").show(false)
+    guestBtn["class"] = ""
+    guestBtn["navButtonFont"] = "no"
+
+    loginBtnObj.findObject("login_btn_text").show(true)
+    loginBtnObj["class"] = "battle"
+    loginBtnObj["navButtonFont"] = "yes"
+  }
+
   function openExistingAccountPanel() {
     if (this.isExistingAccountPanelOpened)
       return
     this.isExistingAccountPanelOpened = true
     let block = this.scene.findObject("existing_account_block")
+    block.setFloatProp(sizeTimerPid, 0.1)
     block.show(true)
-    block.setFloatProp(sizeTimerPid, 0)
 
     let btn = this.scene.findObject("usual_login_btn")
     btn.setFloatProp(transparentTimerPid, 0)
     btn.selfRemoveOnFinish = "1"
     btn["transp-end"] = 0
   }
+
+  function afterOpenExistingAccBlock() {
+    if (this.loginHelpShowState != LoginHelpShowState.WAIT_ANIM)
+      return
+    this.showLoginHelp()
+  }
+
 }
+register_gui_handler("LoginWndHandler", LoginWndHandler)
 
 eventbus_subscribe("ProceedGetTwoStepCode", function ProceedGetTwoStepCode(p) {
-  let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+  let loginWnd = handlersManager.findHandlerClassInScene(LoginWndHandler)
   if (loginWnd == null)
     return
   loginWnd.proceedGetTwoStepCode(p)
 })
 
 eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(p) {
-  let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+  let loginWnd = handlersManager.findHandlerClassInScene(LoginWndHandler)
   if (loginWnd == null)
     return
   let no_dump_login = getObjValue(loginWnd.scene, "loginbox_username", "")
@@ -841,8 +967,10 @@ eventbus_subscribe("ConvertExternalJwt", function ContinueExternalLogin(p) {
 })
 
 eventbus_subscribe(webauth_completion_event, function ProceedWebAuth(p) {
-  let loginWnd = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandler)
+  let loginWnd = handlersManager.findHandlerClassInScene(LoginWndHandler)
   if (loginWnd == null)
     return
   loginWnd.onSsoAuthorizationComplete(p)
 })
+
+return { LoginWndHandler }

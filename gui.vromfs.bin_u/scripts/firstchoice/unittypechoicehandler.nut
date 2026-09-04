@@ -1,15 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import find_in_array
+from "dagor.random" import rnd
 from "%scripts/dagui_natives.nut" import char_send_blk
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
-let { rnd } = require("dagor.random")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
+let { EVENTS_DATA_UPDATED } = require("%scripts/crossModuleEvents.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { checkUnlockedCountriesByAirs, unlockCountry, getFirstChosenUnitType, isFirstChoiceShown,
-  fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
+let { checkUnlockedCountriesByAirs, unlockCountry, getFirstChosenUnitType, isFirstChoiceShown, fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
@@ -21,7 +23,7 @@ let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewTrain.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { newbieInitSlotbarPresets } = require("%scripts/slotbar/slotbarPresets.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 
 function createReserveTasksData(country, unitType, checkCurrentCrewAircrafts = true, ignoreSlotbarCheck = false) {
@@ -64,7 +66,7 @@ function createBatchRequestByPresetsData(presetsData) {
   return createBatchTrainCrewRequestBlk(requestData)
 }
 
-gui_handlers.UnitTypeChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let UnitTypeChoiceHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/firstChoice/unitTypeChoice.blk"
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -137,7 +139,7 @@ gui_handlers.UnitTypeChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.clnSetStartingInfo(presetsData, uType, function () {
       newbieInitSlotbarPresets(presetsData)
       checkUnlockedCountriesByAirs()
-      broadcastEvent("EventsDataUpdated")
+      broadcastEvent(EVENTS_DATA_UPDATED)
       handler.goBack()
     })
     saveShowedTutorial("unitTypeChoice")
@@ -228,3 +230,6 @@ gui_handlers.UnitTypeChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.restoreMainOptions()
   }
 }
+register_gui_handler("UnitTypeChoiceHandler", UnitTypeChoiceHandler)
+
+return { UnitTypeChoiceHandler }

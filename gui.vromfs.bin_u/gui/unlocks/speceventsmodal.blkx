@@ -29,96 +29,112 @@
       },
       "tdiv": [
         {
-          "id": "eventsBlock",
-          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "id": "eventsNest",
           "position": "absolute",
-          "height": "454@sf/@pf",
-          "overflow": "hidden",
-          "tdiv": [
-            {
-              "id": "eventsContainer",
-              "position": "relative",
-              "height": "ph",
-              "flow": "horizontal"
-            },
-            {
-              "id": "eventsButtons",
-              "position": "absolute",
-              "size": "pw, ph",
-              "tdiv": [
-                {
-                  "position": "absolute",
-                  "size": "0.5@eventSlotWidth, ph",
-                  "tdiv": [
-                    {
-                      "size": "0.3@eventSlotWidth, ph",
-                      "bgcolor": "#FF111821"
-                    },
-                    {
-                      "size": "0.2@eventSlotWidth, ph",
-                      "background-image": "#ui/gameuiskin#fade_to_dark.svg",
-                      "background-svg-size": "0.2@eventSlotWidth, ph",
-                      "bgcolor": "@white"
-                    }
-                  ]
-                },
-                {
-                  "position": "absolute",
-                  "left": "pw-w",
-                  "size": "0.5@eventSlotWidth, ph",
-                  "tdiv": [
-                    {
-                      "size": "0.2@eventSlotWidth, ph",
-                      "background-image": "#ui/gameuiskin#fade_to_dark.svg",
-                      "background-svg-size": "0.2@eventSlotWidth, ph",
-                      "bgcolor": "@white",
-                      "rotation": "180"
-                    },
-                    {
-                      "size": "0.3@eventSlotWidth, ph",
-                      "bgcolor": "#FF111821"
-                    }
-                  ]
-                }
-              ],
-              "hoverButton": [
-                {
-                  "id": "prevEventBtn",
-                  "position": "absolute",
-                  "pos": "0, (ph-h)/2",
-                  "size": "90@sf/@pf, 90@sf/@pf",
-                  "behavior": "button",
-                  "on_click": "onMovePrevEvent",
-                  "hasTransparentBG": "yes",
-                  "hasDoubleSize": "yes",
-                  "icon": {
-                    "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
-                    "rotation": "270"
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "flow": "vertical",
+          "popupFilter": {
+            "id": "filter_nest",
+            "position": "relative",
+            "left": "pw-w-90@sf/@pf",
+            "margin-bottom": "1@blockInterval",
+            "flow": "vertical"
+          },
+          "tdiv": {
+            "id": "eventsBlock",
+            "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+            "position": "relative",
+            "height": "454@sf/@pf",
+            "overflow": "hidden",
+            "tdiv": [
+              {
+                "id": "eventsContainer",
+                "position": "relative",
+                "height": "ph",
+                "flow": "horizontal"
+              },
+              {
+                "id": "eventsButtons",
+                "position": "absolute",
+                "size": "pw, ph",
+                "tdiv": [
+                  {
+                    "id": "prevEventBg",
+                    "position": "absolute",
+                    "size": "0.5@eventSlotWidth, ph",
+                    "tdiv": [
+                      {
+                        "size": "0.3@eventSlotWidth, ph",
+                        "bgcolor": "#FF111821"
+                      },
+                      {
+                        "size": "0.2@eventSlotWidth, ph",
+                        "background-image": "#ui/gameuiskin#fade_to_dark.svg",
+                        "background-svg-size": "0.2@eventSlotWidth, ph",
+                        "bgcolor": "@white"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "nextEventBg",
+                    "position": "absolute",
+                    "left": "pw-w",
+                    "size": "0.5@eventSlotWidth, ph",
+                    "tdiv": [
+                      {
+                        "size": "0.2@eventSlotWidth, ph",
+                        "background-image": "#ui/gameuiskin#fade_to_dark.svg",
+                        "background-svg-size": "0.2@eventSlotWidth, ph",
+                        "bgcolor": "@white",
+                        "rotation": "180"
+                      },
+                      {
+                        "size": "0.3@eventSlotWidth, ph",
+                        "bgcolor": "#FF111821"
+                      }
+                    ]
                   }
-                },
-                {
-                  "id": "nextEventBtn",
-                  "position": "absolute",
-                  "pos": "pw-w, (ph-h)/2",
-                  "size": "90@sf/@pf, 90@sf/@pf",
-                  "behavior": "button",
-                  "on_click": "onMoveNextEvent",
-                  "hasTransparentBG": "yes",
-                  "hasDoubleSize": "yes",
-                  "icon": {
-                    "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
-                    "rotation": "90"
+                ],
+                "hoverButton": [
+                  {
+                    "id": "prevEventBtn",
+                    "position": "absolute",
+                    "pos": "0, (ph-h)/2",
+                    "size": "90@sf/@pf, 90@sf/@pf",
+                    "behavior": "button",
+                    "on_click": "onMovePrevEvent",
+                    "hasTransparentBG": "yes",
+                    "hasDoubleSize": "yes",
+                    "noMargin": "yes",
+                    "icon": {
+                      "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
+                      "rotation": "270"
+                    }
+                  },
+                  {
+                    "id": "nextEventBtn",
+                    "position": "absolute",
+                    "pos": "pw-w, (ph-h)/2",
+                    "size": "90@sf/@pf, 90@sf/@pf",
+                    "behavior": "button",
+                    "on_click": "onMoveNextEvent",
+                    "hasTransparentBG": "yes",
+                    "hasDoubleSize": "yes",
+                    "noMargin": "yes",
+                    "icon": {
+                      "background-image": "#ui/gameuiskin#spinnerListBox_arrow_up.svg",
+                      "rotation": "90"
+                    }
                   }
-                }
-              ]
-            }
-          ]
+                ]
+              }
+            ]
+          }
         },
         {
           "id": "rewardsContainer",
           "position": "relative",
           "left": "0.5pw-0.5w",
-          "width": "11(@rewardSlotWidth + @dp) + @dp",
           "margin": "0, 3@blockInterval, 0, 5@blockInterval"
         }
       ],
@@ -127,6 +143,7 @@
         "size": "@specEventPanelWidth + @scrollBarSize + @dp, fh",
         "pos": "0.5pw-0.5w+0.5@scrollBarSize, 0",
         "position": "relative",
+        "padding-top": "-2@blockInterval",
         "flow": "h-flow",
         "on_select": "onOrderSelect",
         "isSpecEventsList": "yes"

@@ -427,7 +427,7 @@ def bipod_human_post_phys_act_es(evt : CmdPostPhysUpdate;
   bipod__prevBodyDirYaw = dir_to_angles(float3(newBodyDir.x, 0.0, newBodyDir.z)).x
 
 [es(tag=server)]
-def human_place_bipod_server_es(evt : RequestBipodPlacingV2;
+def human_place_bipod_server_es(evt : RequestBipodPlacing;
                                 var bipod__enabled : bool&;
                                 var bipod__isCrawl : bool&;
                                 var bipod__anchorPos : float3&;
@@ -464,22 +464,26 @@ def trace_bipod_attached_ri(pos)
   var matId = PHYSMAT_INVALID
   let traceDir = float3(0, -1, 0) 
   var minHeight = 1.0
-  let res = traceray_normalized(pos, traceDir, minHeight, matId, norm, ETF_RI, riDesc, -1)
+  let tracePos = pos + float3(0.0, 0.1, 0.0)
+  let res = traceray_normalized(tracePos, traceDir, minHeight, matId, norm, ETF_RI, riDesc, -1)
   if res && riDesc.isValid
-    return int(riDesc.riExtraHandle)
-  return -1
+    return riDesc.riExtraHandle
+  return RIEX_HANDLE_NULL
 
 
-
-
-
-
+[es(tag=server)]
+def human_bipod_deattached_from_ri_es(evt : EventRendInstDestroyed;
+                                      var bipod__attachedToRi : uint64&;
+                                      var bipod__enabled : bool&)
+  if bipod__enabled && bipod__attachedToRi != RIEX_HANDLE_NULL && evt.riexHandle == bipod__attachedToRi
+    bipod__enabled = false
+    bipod__attachedToRi = RIEX_HANDLE_NULL
 
 
 [es(tag=server, track=bipod__enabled)]
-def human_bipod_attached_to_ri_es(evt : Event; bipod__enabled : bool; bipod__placePos : float3; var bipod__attachedToRi : int&)
+def human_bipod_attached_to_ri_es(evt : Event; bipod__enabled : bool; bipod__anchorPos : float3; var bipod__attachedToRi : uint64&)
   if !bipod__enabled
-    bipod__attachedToRi = -1
+    bipod__attachedToRi = RIEX_HANDLE_NULL
     return
 
-  bipod__attachedToRi = trace_bipod_attached_ri(bipod__placePos)
+  bipod__attachedToRi = trace_bipod_attached_ri(bipod__anchorPos)

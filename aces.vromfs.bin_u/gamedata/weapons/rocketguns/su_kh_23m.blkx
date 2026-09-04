@@ -14,8 +14,15 @@
   ],
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "su_kh_23m",
+    "iconType": "missile_air_to_uni",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.275,
     "length": 3.49,
     "WdK": [
@@ -33,11 +40,9 @@
     "timeFire": 4.9,
     "force": 24700.0,
     "timeLife": 30.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 2.0,
     "maxSpeed": 450.0,
-    "endSpeed": 0.0,
     "maxDistance": 10000.0,
     "minDistance": 600.0,
     "operatedDist": 10000.0,
@@ -53,6 +58,8 @@
     "aimCorrectionVelMin": 500.0,
     "aimSensitivity": 22.1,
     "maxAxisValues": 1.0,
+    "explosiveType": "tg_40",
+    "explosiveMass": 75.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -70,18 +77,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tg_40",
-    "explosiveMass": 75.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -126,7 +126,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.75
       }
     },
     "DamageParts": {

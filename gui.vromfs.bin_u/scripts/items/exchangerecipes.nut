@@ -1,18 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "string" import format
+from "math" import floor
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE, itemType
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { format } = require("string")
-let DataBlock  = require("DataBlock")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
-let { getCustomLocalizationPresets, getRandomEffect,
-  getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
+let { getCustomLocalizationPresets, getRandomEffect, getEffectOnStartCraftPresetById } = require("%scripts/items/workshop/workshop.nut")
 let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
 let { userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { getUserstatItemRewardData } = require("%scripts/userstat/userstat.nut")
@@ -21,16 +22,13 @@ let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nu
 let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
-let { floor } = require("math")
 let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { markInventoryUpdate } = require("%scripts/items/itemsManager.nut")
 let { findItemById, getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { isShowItemInTrophyReward } = require("%scripts/items/trophyReward.nut")
 let { getPrizesListText, getPrizesListView } = require("%scripts/items/prizesView.nut")
 
-let markRecipeSaveId = "markRecipe/"
+const markRecipeSaveId = "markRecipe/"
 
 let recipeComponentHeaderParams = {
   headerFont = "mediumFont"
@@ -364,7 +362,10 @@ function exchangeSeveralRecipes(initialExchanges, processingExchanges = null, re
 }
 
 local lastRecipeIdx = 0
-local ExchangeRecipes = class {
+
+local ExchangeRecipes
+
+ExchangeRecipes = class {
   idx = 0
   uid = ""
   components = null
@@ -880,9 +881,12 @@ local ExchangeRecipes = class {
       : itemLocIdsList.msgBoxConfirmWhithItemName)
   getActionButtonLocId = @() this.getLocIdsList().actionButton
   getEffectOnStartCraft = @() getEffectOnStartCraftPresetById(this.effectOnStartCraftPresetName)
-}
 
-u.registerClass("Recipe", ExchangeRecipes, @(r1, r2) r1.idx == r2.idx)
+  isEqual = @(other) other instanceof ExchangeRecipes && this.idx == other.idx
+  isEmpty = @() false
+  _typeof = @() "Recipe"  
+
+}
 
 return {
   ExchangeRecipes

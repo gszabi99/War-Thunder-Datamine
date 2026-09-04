@@ -1,16 +1,19 @@
-from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_race_laps_count
-from "%scripts/dagui_library.nut" import *
 import "%scripts/time.nut" as time
 import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
+from "guiMission" import get_player_score_for_exp_events
+from "mission" import get_mplayer_by_userid
+from "%globalScripts/gameTypeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import get_race_checkpoints_count, get_race_laps_count
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/dagui_library.nut" import *
+from "%globalScripts/expEventConsts.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
-let { get_player_score_for_exp_events } = require("guiMission")
-let { get_mplayer_by_userid } = require("mission")
 let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 
@@ -63,7 +66,7 @@ g_mplayer_param_type.template <- {
   isForceUpdate = false 
   missionObjective = MISSION_OBJECTIVE.ANY
   getVal = function(player) {
-    return getTblValue(this.id, player, this.defVal)
+    return (player?[this.id] ?? this.defVal)
   }
   printFunc = function(val, _player) {
     return val != null ? val.tostring() : ""
@@ -284,7 +287,7 @@ enumsAddTypes(g_mplayer_param_type, {
     getVal = function(player) {
       local res = 0
       foreach (aiKillsRowId in [ "aiKills", "aiGroundKills", "aiNavalKills" ])
-        res += getTblValue(aiKillsRowId, player, 0)
+        res += (player?[aiKillsRowId] ?? 0)
       return res
     }
     printFunc = function(_val, player) {
@@ -466,7 +469,7 @@ enumsAddTypes(g_mplayer_param_type, {
       if (val < 0) {
         let total = get_race_checkpoints_count()
         if (total)
-          return "".concat((100 * getTblValue("raceLastCheckpoint", player, 0) / total).tointeger(), "%")
+          return "".concat((100 * (player?.raceLastCheckpoint ?? 0) / total).tointeger(), "%")
       }
       return time.getRaceTimeFromSeconds(val)
     }

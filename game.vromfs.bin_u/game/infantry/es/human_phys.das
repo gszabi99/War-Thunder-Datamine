@@ -10,6 +10,7 @@ require Dacoll
 require WTPhysActor
 require Unit
 require net
+require app
 
 [event(broadcast)]
 struct UpdateSimplifiedPhysState {}
@@ -74,8 +75,8 @@ def human_phys_save_default_accelerations(evt : Event;
   resize(human_phys__accelerationByStateDef, statesCount)
   resize(human_phys__botAccelerationByState, statesCount)
   for i in 0..statesCount
-    human_phys__fricitonByStateDef[i] = human_net_phys.phys.fricitonByState[i]
-    human_phys__botFricitonByState[i] = human_net_phys.phys.fricitonByState[i]
+    human_phys__fricitonByStateDef[i] = human_net_phys.phys.frictionByState[i]
+    human_phys__botFricitonByState[i] = human_net_phys.phys.frictionByState[i]
     human_phys__accelerationByStateDef[i] = human_net_phys.phys.accelerationByState[i]
     human_phys__botAccelerationByState[i] = human_net_phys.phys.accelerationByState[i]
 
@@ -104,7 +105,7 @@ def human_phys_bot_accelerations(evt : Event;
                                  var human_net_phys : HumanActor)
   let statesCount = int(HUMoveState.EMS_NUM)
   for i in 0..statesCount
-    human_net_phys.phys.fricitonByState[i] = beh_tree__enabled ? human_phys__botFricitonByState[i] : human_phys__fricitonByStateDef[i]
+    human_net_phys.phys.frictionByState[i] = beh_tree__enabled ? human_phys__botFricitonByState[i] : human_phys__fricitonByStateDef[i]
     human_net_phys.phys.accelerationByState[i] = beh_tree__enabled ? human_phys__botAccelerationByState[i] : human_phys__accelerationByStateDef[i]
 
 [es]
@@ -369,6 +370,8 @@ def sprint_leap_es(evt : CmdPostPhysUpdate;
 def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
                                      active : bool;
                                      human_net_phys : HumanActor;
+                                     var human_net_phys__segPhysStateVersion : int&;
+                                     var human_net_phys__segPhysState : float2&;
                                      var human_net_phys__isClimbing : bool&;
                                      var human_net_phys__climbToPos : float3&;
                                      var human_net_phys__states : int&;
@@ -380,7 +383,12 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
   if !active
     return
   assume currentState = human_net_phys.phys.currentState
+  assume segPhysState = human_net_phys.phys.segPhysState
 
+  if human_net_phys__segPhysStateVersion != segPhysState.syncVersion
+    human_net_phys__segPhysStateVersion = segPhysState.syncVersion
+    human_net_phys__segPhysState.x = float(segPhysState.currSeg)
+    human_net_phys__segPhysState.y = get_sync_time()
   human_net_phys__isClimbing = human_phys_state_get_isClimbing(currentState)
   human_net_phys__climbToPos = currentState.climbToPos
   human_net_phys__states = int(currentState.states)
@@ -395,7 +403,7 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
 
   human_weap__curGunSlot = int(currentState.weapEquipState.curSlot)
 
-[unused_argument(human_net_phys__useTraceCapsuleCastForWalk), es]
+[es]
 def human_phys_set_simplified_phys_es(evt : CmdPrePhysUpdate;
                                       human_net_phys__isSimplifiedPhys : bool;
                                       human_net_phys__isSimplifiedQueryWalkPosition : bool;
@@ -403,8 +411,7 @@ def human_phys_set_simplified_phys_es(evt : CmdPrePhysUpdate;
                                       var human_net_phys : HumanActor&)
   human_net_phys.phys.isSimplifiedPhys = human_net_phys__isSimplifiedPhys
   human_net_phys.phys.isSimplifiedQueryWalkPosition = human_net_phys__isSimplifiedQueryWalkPosition
-  static_if typeinfo has_field<useTraceCapsuleCastForWalk>(human_net_phys.phys)
-    human_net_phys.phys.useTraceCapsuleCastForWalk = human_net_phys__useTraceCapsuleCastForWalk
+  human_net_phys.phys.useTraceCapsuleCastForWalk = human_net_phys__useTraceCapsuleCastForWalk
 
 [es(after=before_net_phys_sync )]
 def human_pre_phys_ladder_update_es(evt : CmdPrePhysUpdate;
@@ -444,16 +451,23 @@ def stop_human_moving(var human_net_phys : HumanActor&)
   producedCT |> set_chosen_weapon(currentState.weapEquipState.nextSlot)
   currentState.weapEquipState.curSlot = currentState.weapEquipState.nextSlot
 
-[es(tag=gameClient, track=human__controlledDrone)]
-def human_launch_drone_idle_control(evt : Event;
-                                    human__controlledDrone : EntityId;
-                                    var human_net_phys : HumanActor&)
+
+[es(tag=gameClient, REQUIRE=controlledHero, on_disappear)]
+def human_drone_idle_control_on_control_lost(evt : Event;
+                                             human__controlledDrone : EntityId;
+                                             human_weap__gunEids : EidList;
+                                             var human_net_phys : HumanActor&)
   if human__controlledDrone != INVALID_ENTITY_ID
     stop_human_moving(human_net_phys)
+    if human_weap__gunEids[int(HUWeaponSlots.EWS_SPECIAL)] != INVALID_ENTITY_ID
+      human_net_phys.phys.producedCT |> set_chosen_weapon(HUWeaponSlots.EWS_SPECIAL)
+
 
 [es(tag=(server, net), after=before_net_phys_sync)]
 def human_pre_phys_idle_control(evt : CmdPrePhysUpdate;
+                                eid : EntityId;
                                 unit__ref : UnitRef;
+                                human__controlledDrone : EntityId = INVALID_ENTITY_ID;
                                 var human_net_phys__prevIsLocal : bool&;
                                 var human_net_phys : HumanActor&)
   
@@ -462,4 +476,8 @@ def human_pre_phys_idle_control(evt : CmdPrePhysUpdate;
   let isLocal = (unitRoleMask & uint(NetRole.URF_LOCAL_CONTROL)) != 0u
   if isLocal && isAuthority && !human_net_phys__prevIsLocal
     stop_human_moving(human_net_phys)
+    if human__controlledDrone != INVALID_ENTITY_ID
+      query(eid) <| $ [es] (human_weap__gunEids : EidList)
+        if human_weap__gunEids[int(HUWeaponSlots.EWS_SPECIAL)] != INVALID_ENTITY_ID
+          human_net_phys.phys.producedCT |> set_chosen_weapon(HUWeaponSlots.EWS_SPECIAL)
   human_net_phys__prevIsLocal = isLocal

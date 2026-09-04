@@ -1,27 +1,28 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+import "%rGui/components/modalWindow.nut" as modalWindow
+import "%rGui/components/focusBorder.nut" as focusBorder
+import "%rGui/components/spinner.nut" as spinner
+from "%rGui/components/formatText.nut" import formatText
+from "%rGui/changelog/changeLogState.nut" import curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote, prevPatchNote, patchnotesReceived, versions
+  , chosenPatchnoteContent, chosenPatchnoteLoaded, needShowSteamReviewBtn, isNews, isEvent, closePatchnote
+from "%rGui/components/textButton.nut" import commonTextButton, steamReviewTextButton, buttonHeight
+from "%rGui/components/gamepadImgByKey.nut" import mkImageCompByDargKey
+from "%rGui/ctrlsState.nut" import showConsoleButtons
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "eventbus" import eventbus_send
+from "string" import format
+from "steam" import steam_get_app_id
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
+from "types" import Array
 
-let { eventbus_send } = require("eventbus")
 let scrollbar = require("%rGui/components/scrollbar.nut")
-let { formatText } = require("%rGui/components/formatText.nut")
-let { curPatchnote, curPatchnoteIdx, choosePatchnote, nextPatchNote,
-  prevPatchNote, patchnotesReceived, versions, chosenPatchnoteContent,
-  chosenPatchnoteLoaded, needShowSteamReviewBtn, isNews, isEvent,
-  closePatchnote } = require("%rGui/changelog/changeLogState.nut")
 let colors = require("%rGui/style/colors.nut")
-let { commonTextButton, steamReviewTextButton, buttonHeight
-} = require("%rGui/components/textButton.nut")
-let modalWindow = require("%rGui/components/modalWindow.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
+
+
+let featureAllowExternalLink = extWatched("featureAllowExternalLink", false)
 let JB = require("%rGui/control/gui_buttons.nut")
-let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
-let focusBorder = require("%rGui/components/focusBorder.nut")
 let { blurPanel } = require("%rGui/components/blurPanel.nut")
-let spinner = require("%rGui/components/spinner.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { format } = require("string")
-let { steam_get_app_id } = require("steam")
 
 let tabStyle = {
   fillColor = {
@@ -75,7 +76,7 @@ function patchnote(v) {
     onElemState = @(sf) stateFlags.set(sf)
     children = [
       {
-        size = const [flex(), ph(100)]
+        size = const [FLEX, ph(100)]
         maxWidth = maxPatchnoteWidth - 2 * scrn_tgt(0.01)
         behavior = Behaviors.TextArea
         rendObj = ROBJ_TEXTAREA
@@ -91,7 +92,7 @@ function patchnote(v) {
 }
 
 let topBorder = @(params = {}) {
-  size = [dp(1), flex()]
+  size = [dp(1), FLEX]
   valign = ALIGN_CENTER
 }.__merge(params)
 
@@ -116,7 +117,7 @@ function getPatchoteSelectorChildren(versionsConf, needAddGamepadButtons) {
 
 let patchnoteSelector = @() {
   watch = [versions, showConsoleButtons]
-  size = [flex(), buttonHeight + 2*blockInterval]
+  size = [FLEX, buttonHeight + 2*blockInterval]
   flow = FLOW_HORIZONTAL
   gap = topBorder()
   padding = [blockInterval, 0, 0, 0]
@@ -163,22 +164,22 @@ let patchnoteLoading = freeze({
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(20)
-  valign = ALIGN_CENTER size = const [flex(), sh(20)]
+  valign = ALIGN_CENTER size = const [FLEX, sh(20)]
   padding = sh(2)
 })
 
 function selPatchnote() {
   local text = (chosenPatchnoteContent.get().text ?? "") != ""
     ? chosenPatchnoteContent.get().text : missedPatchnoteText
-  if (cross_call.hasFeature("AllowExternalLink") && !isNewsOrEvent.get()) {
-    if (type(text) != "array")
+  if (featureAllowExternalLink.get() && !isNewsOrEvent.get()) {
+    if (!(text instanceof Array))
       text = [text, seeMoreUrl]
     else
       text = (clone text).append(seeMoreUrl)
   }
   return {
-    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent, isNewsOrEvent]
-    size = flex()
+    watch = [chosenPatchnoteLoaded, chosenPatchnoteContent, isNewsOrEvent, featureAllowExternalLink]
+    size = FLEX
     children = [
       scrollbar.makeSideScroll({
         size = FLEX_H
@@ -224,7 +225,7 @@ let btnNext  = commonTextButton(loc("mainmenu/btnNextItem"), nextPatchNote,
 let btnClose = commonTextButton(loc("mainmenu/btnClose"), onCloseAction,
   { hotkeys = [["{0}".subst(JB.B)]], margin = 0 })
 let btnSteamReview = steamReviewTextButton(loc("write_review"), openSteamReview,
-  { hotkeys = [["J:Y"]], margin = 0, onAttach = @(_) sendBqSteamReview("showReviewBtnInChangeLog") })
+  { hotkeys = [["J:Y"]], margin = 0, onAttach = @() sendBqSteamReview("showReviewBtnInChangeLog") })
 let btnGotoAchievement = commonTextButton(loc("mainmenu/btnGotoAchievement"), onGotoAchievement,
   { hotkeys = [["J:X"]], margin = 0 })
 
@@ -260,7 +261,7 @@ let navbar = {
 }
 
 let clicksHandler = {
-  size = flex(),
+  size = FLEX,
   eventPassThrough = true,
   skipDirPadNav = true
   behavior = Behaviors.Button
@@ -271,19 +272,19 @@ let clicksHandler = {
 }
 
 let changelogRoot = {
-  size = flex()
+  size = FLEX
   children = [
     blurPanel
     clicksHandler
     modalWindow({
       content = {
-        size = flex()
+        size = FLEX
         margin = blockInterval
         flow = FLOW_VERTICAL
         children = [
           {
             rendObj = ROBJ_BOX
-            size = flex()
+            size = FLEX
             flow = FLOW_VERTICAL
             borderColor = colors.menu.separatorBlockColor
             borderWidth = [0, 0, borderWidth, 0]

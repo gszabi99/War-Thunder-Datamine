@@ -1,14 +1,13 @@
+from "chardResearch" import getTiersOpenedAndAwarded
+from "blkGetters" import get_ranks_blk
+from "%sqstd/math.nut" import roundToDigits
 from "%scripts/dagui_natives.nut" import shop_get_module_exp, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
+from "types" import Array, Table, String
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getModificationByName, getModificationBulletsGroup, isModResearched
-} = require("%scripts/weaponry/modificationInfo.nut")
+let { getModificationByName, getModificationBulletsGroup, isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
 let { Cost } = require("%scripts/money.nut")
-let { getTiersOpenedAndAwarded } = require("chardResearch")
-let { get_ranks_blk } = require("blkGetters")
-let { roundToDigits } = require("%sqstd/math.nut")
-let { dynamic_content } = require("%sqstd/analyzer.nut")
 
 const PROGRESS_ROUND_DIGITS = 3
 const PROGRESS_MIN_VALUE = 0.001
@@ -17,7 +16,12 @@ let isModificationInTree = @(unit, mod) !mod.isHidden
   && !wp_get_modification_cost_gold(unit.name, mod.name)
   && getModificationBulletsGroup(mod.name) == ""
 
-let commonProgressMods = dynamic_content({ })
+let commonProgressMods = {
+  hasSummary = false
+  earnedExp = 0
+  reqExp = 0
+  progress = 0.0
+}
 let modsWndWidthRestrictions = { min = 6, max = 8 }
 let sizeByTier = {}
 
@@ -26,13 +30,13 @@ let categoryTooltips = {
 }
 
 function shiftBranchY(branch, treeXY) {
-  if (type(branch) == "array") { 
+  if (branch instanceof Array) { 
     foreach (item in branch)
       shiftBranchY(item, treeXY)
     return
   }
 
-  if (type(branch) != "table") 
+  if (!(branch instanceof Table)) 
     return
 
   let { guiPosX, tier } = branch
@@ -74,11 +78,11 @@ let modsTree = {
 
   function findPathToMod(branch, modName) {
     foreach (idx, item in branch)
-      if (type(item) == "table") { 
+      if (item instanceof Table) { 
         if (item.name == modName)
           return [idx]
       }
-      else if (type(item) == "array") { 
+      else if (item instanceof Array) { 
         let res = this.findPathToMod(item, modName)
         if (res != null) {
           res.insert(0, idx)
@@ -110,7 +114,7 @@ let modsTree = {
         return true
 
       foreach (branch in this.tree)
-        if (type(branch) == "array" && branch[0] == mod.modClass) {
+        if (branch instanceof Array && branch[0] == mod.modClass) {
           branch.append(mod)
           return true
         }
@@ -182,9 +186,9 @@ let modsTree = {
 
   function collectTreeItems(branch, res) {
     foreach (_idx, item in branch)
-      if (type(item) == "table")
+      if (item instanceof Table)
         res.append(item)
-      else if (type(item) == "array")
+      else if (item instanceof Array)
         this.collectTreeItems(item, res)
     return res
   }
@@ -231,12 +235,6 @@ let modsTree = {
   }
 
   function calcCommonProgressMods(tiersExp) {
-    if(tiersExp.len() == 0) {
-      commonProgressMods.clear()
-      commonProgressMods.hasSummary <- false
-      return
-    }
-
     let summary = tiersExp.reduce(function(res, value) {
       res.earnedExp += value.tierEarnedExp
       res.reqExp += value.tierReqExp
@@ -244,16 +242,15 @@ let modsTree = {
     }, { earnedExp = 0, reqExp = 0 })
 
     if(summary.reqExp == 0) {
-      commonProgressMods.clear()
-      commonProgressMods.hasSummary <- false
+      commonProgressMods.hasSummary = false
       return
     }
 
-    commonProgressMods.clear()
-    commonProgressMods.__update(summary)
     let progress = roundToDigits(summary.earnedExp.tofloat() / summary.reqExp, PROGRESS_ROUND_DIGITS)
-    commonProgressMods.progress <- progress < PROGRESS_MIN_VALUE ? 0 : progress
-    commonProgressMods.hasSummary <- true
+    commonProgressMods.earnedExp = summary.earnedExp
+    commonProgressMods.reqExp = summary.reqExp
+    commonProgressMods.progress = progress < PROGRESS_MIN_VALUE ? 0 : progress
+    commonProgressMods.hasSummary = true
   }
 
   function clearEmptyClasses(tree) {
@@ -265,9 +262,9 @@ let modsTree = {
   }
 
   function shiftBranchX(branch, offsetX) {
-    if (type(branch) == "table") 
+    if (branch instanceof Table) 
       branch.guiPosX <- (branch?.guiPosX ?? 0) + offsetX
-    else if (type(branch) == "array") { 
+    else if (branch instanceof Array) { 
       if(branch[0] == "bonus") {
         if(offsetX < modsWndWidthRestrictions.min - 1)
           this.hasEmptyColumn = true
@@ -279,11 +276,11 @@ let modsTree = {
   }
 
   function getMergeBranchXOffset(branch, tiersTable) {
-    if (type(branch) == "table") { 
+    if (branch instanceof Table) { 
       let curOffset = (tiersTable && (branch.tier in tiersTable)) ? tiersTable[branch.tier] : 0
       return curOffset - branch.guiPosX
     }
-    else if (type(branch) == "array") { 
+    else if (branch instanceof Array) { 
       local mergeOffset = 0
       foreach (idx, item in branch) {
         let offset = this.getMergeBranchXOffset(item, tiersTable)
@@ -326,8 +323,8 @@ let modsTree = {
     heightByTier = heightByTier ?? []
     this.hasEmptyColumn = false
     let hasSeveralRowsOnTier = this.air.isHuman()
-    let isRoot = !branch[0] || type(branch[0]) == "string"
-    let isCategory = branch[0] && type(branch[0]) == "string"
+    let isRoot = !branch[0] || branch[0] instanceof String
+    let isCategory = branch[0] && branch[0] instanceof String
     let rootTier = isRoot ? -1 : branch[0].tier
     let sideBranches = [] 
                             
@@ -338,7 +335,7 @@ let modsTree = {
       let item = branch[i]
       local isSide = false
       local itemTiers = null
-      if (type(item) == "table") { 
+      if (item instanceof Table) { 
         item.guiPosX <- 0
         item.guiPosY <- item.tier - 1
         itemTiers = { [item.tier] = 1 }
@@ -347,9 +344,9 @@ let modsTree = {
             itemTiers[j] <- 1
         isSide = isRoot || isCategory || (item.tier == rootTier && !hasSeveralRowsOnTier)
       }
-      else if (type(item) == "array") { 
+      else if (item instanceof Array) { 
         itemTiers = this.generatePositions(item, heightByTier)
-        if (type(item[0]) == "table") {
+        if (item[0] instanceof Table) {
           isSide = item[0].tier == rootTier && !hasSeveralRowsOnTier
           if (rootTier >= 0)
             for (local j = rootTier + 1; j < item[0].tier; j++) 
@@ -444,7 +441,7 @@ let modsTree = {
       curCorners = [{ guiPosX = -1, guiPosY = -1, tier = -1 },
         { guiPosX = -1, guiPosY = -1, tier = -1 }]
     foreach (_idx, item in branch)
-      if (type(item) == "table") { 
+      if (item instanceof Table) { 
         foreach (p in ["guiPosX", "guiPosY", "tier"]) {
           if (item[p] < curCorners[0][p] || curCorners[0][p] < 0)
             curCorners[0][p] = item[p]
@@ -452,7 +449,7 @@ let modsTree = {
             curCorners[1][p] = item[p] + 1
         }
       }
-      else if (type(item) == "array") 
+      else if (item instanceof Array) 
         curCorners = this.getBranchCorners(item, curCorners)
     return curCorners
   }
@@ -461,14 +458,14 @@ let modsTree = {
     if (!curArrows)
       curArrows = []
 
-    let reqName = (type(branch[0]) == "table") ? branch[0].name : null
+    let reqName = (branch[0] instanceof Table) ? branch[0].name : null
     foreach (_idx, item in branch) {
       local checkItem = null
-      if (type(item) == "table") 
+      if (item instanceof Table) 
         checkItem = item
-      else if (type(item) == "array") { 
+      else if (item instanceof Array) { 
         this.getBranchArrows(item, curArrows)
-        if (type(item[0]) == "table")
+        if (item[0] instanceof Table)
           checkItem = item[0]
       }
 
@@ -496,12 +493,12 @@ let modsTree = {
       return res
 
     foreach (_idx, item in this.tree)
-      if (type(item) == "array") { 
+      if (item instanceof Array) { 
         let corners = this.getBranchCorners(item)
-        let category = type(item[0]) == "string" ? item[0] : ""
+        let category = item[0] instanceof String ? item[0] : ""
         let tooltip = categoryTooltips?[category]() ?? ""
         let block = {
-          name = type(item[0]) == "string" ? loc($"modification/category/{item[0]}") : ""
+          name = item[0] instanceof String ? loc($"modification/category/{item[0]}") : ""
           width = max(corners[1].guiPosX - corners[0].guiPosX, 1)
           tooltip
           haveTooltip = tooltip != ""
@@ -525,14 +522,14 @@ let modsTree = {
     if (!branch)
       branch = this.tree
     foreach (_idx, item in branch)
-      if (type(item) == "table") 
+      if (item instanceof Table) 
         debugLog($"{addStr}{item.name} ({item.tier}, {item?.guiPosX ?? 0}, {item?.guiPosY ?? 0})") 
-      else if (type(item) == "array") { 
+      else if (item instanceof Array) { 
         debugLog($"{addStr}[") 
         this.debugTree(item,$"{addStr}  ")
         debugLog($"{addStr}]") 
       }
-      else if (type(item) == "string")
+      else if (item instanceof String)
         debugLog($"{addStr}modClass = {item}") 
   }
 

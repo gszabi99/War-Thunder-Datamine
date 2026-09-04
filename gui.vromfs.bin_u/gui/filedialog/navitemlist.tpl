@@ -1,6 +1,9 @@
 <<#items>>
-  <<#isChapter>>chapter<</isChapter>><<^isChapter>>mission<</isChapter>>_item_unlocked {
+  mission_item {
     id:t = '<<id>>'
+
+    missionItemType:t='<<#isChapter>>chapterUnlocked<</isChapter>>'
+
     <<#isSelected>>
     selected:t = 'yes'
     <</isSelected>>

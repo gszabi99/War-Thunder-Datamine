@@ -3,7 +3,6 @@ require ecs.common
 require ecs.safe
 require Unit
 require math.base
-require DagorMath
 require DagorSystem
 require Mission
 require strings

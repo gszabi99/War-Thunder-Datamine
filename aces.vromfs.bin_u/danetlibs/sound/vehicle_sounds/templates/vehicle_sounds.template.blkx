@@ -74,6 +74,11 @@
     ],
     "_group": {
       "_tags": "sound",
+      "vehicle_horn_sound__localOffset": [
+        0.0,
+        0.5,
+        0.0
+      ],
       "vehicle_horn_sound__path:shared:object": {
         "path": "enemy/vehicle/car/horns/default/horn"
       }
@@ -210,16 +215,16 @@
       "vehicle_tracks_sound__surfaceWaterToVar": 10.0,
       "vehicle_tracks_sound__surfaceConcreteToVar": 1.0,
       "vehicle_tracks_sound__path:shared:object": {
-        "hero": "player/vehicle/car/opel_olympia/tracks",
-        "enemy": "enemy/vehicle/car/opel_olympia/tracks"
+        "watched": "player/vehicle/car/opel_olympia/tracks",
+        "other": "enemy/vehicle/car/opel_olympia/tracks"
       }
     }
   },
   "car_vehicle_tracks_sound_setup": {
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/car/opel_olympia/tracks",
-      "enemy": "enemy/vehicle/car/opel_olympia/tracks"
+      "watched": "player/vehicle/car/opel_olympia/tracks",
+      "other": "enemy/vehicle/car/opel_olympia/tracks"
     }
   },
   "truck_vehicle_tracks_sound_setup": {
@@ -232,8 +237,8 @@
         0.25
       ],
       "vehicle_tracks_sound__path:shared:object": {
-        "hero": "player/vehicle/car/opel_blitz_omnibus/tracks",
-        "enemy": "enemy/vehicle/car/opel_blitz_omnibus/tracks"
+        "watched": "player/vehicle/car/opel_blitz_omnibus/tracks",
+        "other": "enemy/vehicle/car/opel_blitz_omnibus/tracks"
       }
     }
   },
@@ -249,8 +254,8 @@
     },
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/car/apc_with_wheels/tracks",
-      "enemy": "enemy/vehicle/car/apc_with_wheels/tracks"
+      "watched": "player/vehicle/car/apc_with_wheels/tracks",
+      "other": "enemy/vehicle/car/apc_with_wheels/tracks"
     }
   },
   "tank_vehicle_tracks_sound_setup": {
@@ -265,36 +270,36 @@
     },
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/tank/common/tracks",
-      "enemy": "enemy/vehicle/tank/common/tracks"
+      "watched": "player/vehicle/tank/common/tracks",
+      "other": "enemy/vehicle/tank/common/tracks"
     }
   },
   "tank_light_vehicle_tracks_sound_setup": {
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/tank/common/tracks_light",
-      "enemy": "enemy/vehicle/tank/common/tracks_light"
+      "watched": "player/vehicle/tank/common/tracks_light",
+      "other": "enemy/vehicle/tank/common/tracks_light"
     }
   },
   "tank_heavy_vehicle_tracks_sound_setup": {
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/tank/common/tracks_heavy",
-      "enemy": "enemy/vehicle/tank/common/tracks_heavy"
+      "watched": "player/vehicle/tank/common/tracks_heavy",
+      "other": "enemy/vehicle/tank/common/tracks_heavy"
     }
   },
   "tank_with_wheels_vehicle_tracks_sound_setup": {
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/car/opel_blitz_kfz_305/tracks",
-      "enemy": "enemy/vehicle/car/opel_blitz_kfz_305/tracks"
+      "watched": "player/vehicle/car/opel_blitz_kfz_305/tracks",
+      "other": "enemy/vehicle/car/opel_blitz_kfz_305/tracks"
     }
   },
   "motorcycle_vehicle_tracks_sound_setup": {
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/motorcycle/motorcycle01/tracks",
-      "enemy": "enemy/vehicle/motorcycle/motorcycle01/tracks"
+      "watched": "player/vehicle/motorcycle/motorcycle01/tracks",
+      "other": "enemy/vehicle/motorcycle/motorcycle01/tracks"
     }
   },
   "movable_cannon_vehicle_tracks_sound_setup": {
@@ -310,8 +315,8 @@
     },
     "vehicle_tracks_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/car/cannon/tracks",
-      "enemy": "enemy/vehicle/car/cannon/tracks"
+      "watched": "player/vehicle/car/cannon/tracks",
+      "other": "enemy/vehicle/car/cannon/tracks"
     }
   },
   "vehicle_sound_update_surface_subtemplate": {
@@ -344,7 +349,8 @@
   "car_vehicle_suspension_sound_setup": {
     "ground_vehicle_suspension_sound__path:shared:object": {
       "_tags": "sound",
-      "path": "enemy/vehicle/car/common/car/rattle"
+      "watched": "player/vehicle/car/common/car/rattle",
+      "other": "enemy/vehicle/car/common/car/rattle"
     }
   },
   "tank_vehicle_suspension_sound_setup": {
@@ -355,20 +361,23 @@
         2.0
       ],
       "ground_vehicle_suspension_sound__path:shared:object": {
-        "path": "enemy/vehicle/tank/common/rattle"
+        "watched": "player/vehicle/tank/common/rattle",
+        "other": "enemy/vehicle/tank/common/rattle"
       }
     }
   },
   "truck_vehicle_suspension_sound_setup": {
     "ground_vehicle_suspension_sound__path:shared:object": {
       "_tags": "sound",
-      "path": "enemy/vehicle/car/common/truck/rattle"
+      "watched": "player/vehicle/car/common/truck/rattle",
+      "other": "enemy/vehicle/car/common/truck/rattle"
     }
   },
   "motorcycle_vehicle_suspension_sound_setup": {
     "ground_vehicle_suspension_sound__path:shared:object": {
       "_tags": "sound",
-      "path": "enemy/vehicle/motorcycle/common/motorcycle/rattle"
+      "watched": "player/vehicle/car/motorcycle/common/motorcycle/rattle",
+      "other": "enemy/vehicle/car/motorcycle/common/motorcycle/rattle"
     }
   },
   "vehicle_seat_sound": {
@@ -381,7 +390,7 @@
         "path": "enemy/vehicle/car/common/door/leave"
       },
       "changeSeat:object": {
-        "hero": "player/vehicle/car/common/change_seat"
+        "watched": "player/vehicle/car/common/change_seat"
       }
     }
   },
@@ -395,7 +404,7 @@
         "path": "enemy/vehicle/car/common/door/leave"
       },
       "changeSeat:object": {
-        "hero": "player/vehicle/car/common/change_seat"
+        "watched": "player/vehicle/car/common/change_seat"
       }
     }
   },
@@ -409,7 +418,7 @@
         "path": "enemy/vehicle/car/common/no_door/leave"
       },
       "changeSeat:object": {
-        "hero": "player/vehicle/car/common/change_seat"
+        "watched": "player/vehicle/car/common/change_seat"
       }
     }
   },
@@ -423,7 +432,7 @@
         "path": "enemy/vehicle/motorcycle/common/door/leave"
       },
       "changeSeat:object": {
-        "hero": "player/vehicle/car/common/change_seat"
+        "watched": "player/vehicle/car/common/change_seat"
       }
     }
   },
@@ -443,16 +452,16 @@
         3.0
       ],
       "ground_vehicle_brakes_sound__path:shared:object": {
-        "hero": "player/vehicle/car/common/car/brakes",
-        "enemy": "enemy/vehicle/car/common/brakes"
+        "watched": "player/vehicle/car/common/car/brakes",
+        "other": "enemy/vehicle/car/common/brakes"
       }
     }
   },
   "motorcycle_vehicle_brakes_sound_setup": {
     "ground_vehicle_brakes_sound__path:shared:object": {
       "_tags": "sound",
-      "hero": "player/vehicle/motorcycle/common/motorcycle/brakes",
-      "enemy": "enemy/vehicle/motorcycle/common/brakes"
+      "watched": "player/vehicle/motorcycle/common/motorcycle/brakes",
+      "other": "enemy/vehicle/motorcycle/common/brakes"
     }
   },
   "vehicle_engine_sound_subtemplate": {
@@ -483,16 +492,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/car/opel_olympia/engine",
-        "enemy": "enemy/vehicle/car/opel_olympia/engine"
+        "watched": "player/vehicle/car/opel_olympia/engine",
+        "other": "enemy/vehicle/car/opel_olympia/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/car/opel_olympia/engine_start",
-        "enemy": "enemy/vehicle/car/opel_olympia/engine_start"
+        "watched": "player/vehicle/car/opel_olympia/engine_start",
+        "other": "enemy/vehicle/car/opel_olympia/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/car/opel_olympia/engine_stop",
-        "enemy": "enemy/vehicle/car/opel_olympia/engine_stop"
+        "watched": "player/vehicle/car/opel_olympia/engine_stop",
+        "other": "enemy/vehicle/car/opel_olympia/engine_stop"
       }
     }
   },
@@ -500,16 +509,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/tank/m4a2/engine",
-        "enemy": "enemy/vehicle/tank/m4a2/engine"
+        "watched": "player/vehicle/tank/m4a2/engine",
+        "other": "enemy/vehicle/tank/m4a2/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/tank/m4a2/engine_start",
-        "enemy": "enemy/vehicle/tank/m4a2/engine_start"
+        "watched": "player/vehicle/tank/m4a2/engine_start",
+        "other": "enemy/vehicle/tank/m4a2/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/tank/m4a2/engine_stop",
-        "enemy": "enemy/vehicle/tank/m4a2/engine_stop"
+        "watched": "player/vehicle/tank/m4a2/engine_stop",
+        "other": "enemy/vehicle/tank/m4a2/engine_stop"
       }
     }
   },
@@ -517,16 +526,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/car/opel_blitz_kfz_305/engine",
-        "enemy": "enemy/vehicle/car/opel_blitz_kfz_305/engine"
+        "watched": "player/vehicle/car/opel_blitz_kfz_305/engine",
+        "other": "enemy/vehicle/car/opel_blitz_kfz_305/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/car/opel_blitz_kfz_305/engine_start",
-        "enemy": "enemy/vehicle/car/opel_blitz_kfz_305/engine_start"
+        "watched": "player/vehicle/car/opel_blitz_kfz_305/engine_start",
+        "other": "enemy/vehicle/car/opel_blitz_kfz_305/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/car/opel_blitz_kfz_305/engine_stop",
-        "enemy": "enemy/vehicle/car/opel_blitz_kfz_305/engine_stop"
+        "watched": "player/vehicle/car/opel_blitz_kfz_305/engine_stop",
+        "other": "enemy/vehicle/car/opel_blitz_kfz_305/engine_stop"
       }
     }
   },
@@ -534,16 +543,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/car/apc_with_wheels/engine",
-        "enemy": "enemy/vehicle/car/apc_with_wheels/engine"
+        "watched": "player/vehicle/car/apc_with_wheels/engine",
+        "other": "enemy/vehicle/car/apc_with_wheels/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/car/apc_with_wheels/engine_start",
-        "enemy": "enemy/vehicle/car/apc_with_wheels/engine_start"
+        "watched": "player/vehicle/car/apc_with_wheels/engine_start",
+        "other": "enemy/vehicle/car/apc_with_wheels/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/car/apc_with_wheels/engine_stop",
-        "enemy": "enemy/vehicle/car/apc_with_wheels/engine_stop"
+        "watched": "player/vehicle/car/apc_with_wheels/engine_stop",
+        "other": "enemy/vehicle/car/apc_with_wheels/engine_stop"
       }
     }
   },
@@ -551,16 +560,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/tank/btr80/engine_interior",
-        "enemy": "enemy/vehicle/tank/btr80/engine"
+        "watched": "player/vehicle/tank/btr80/engine_interior",
+        "other": "enemy/vehicle/tank/btr80/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/tank/btr80/engine_start_interior",
-        "enemy": "enemy/vehicle/tank/btr80/engine_start"
+        "watched": "player/vehicle/tank/btr80/engine_start_interior",
+        "other": "enemy/vehicle/tank/btr80/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/tank/btr80/engine_stop_interior",
-        "enemy": "enemy/vehicle/tank/btr80/engine_stop"
+        "watched": "player/vehicle/tank/btr80/engine_stop_interior",
+        "other": "enemy/vehicle/tank/btr80/engine_stop"
       }
     }
   },
@@ -568,16 +577,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/tank/bmp/engine_interior",
-        "enemy": "enemy/vehicle/tank/bmp/engine"
+        "watched": "player/vehicle/tank/bmp/engine_interior",
+        "other": "enemy/vehicle/tank/bmp/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/tank/bmp/engine_start_interior",
-        "enemy": "enemy/vehicle/tank/bmp/engine_start"
+        "watched": "player/vehicle/tank/bmp/engine_start_interior",
+        "other": "enemy/vehicle/tank/bmp/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/tank/bmp/engine_stop_interior",
-        "enemy": "enemy/vehicle/tank/bmp/engine_stop"
+        "watched": "player/vehicle/tank/bmp/engine_stop_interior",
+        "other": "enemy/vehicle/tank/bmp/engine_stop"
       }
     }
   },
@@ -585,16 +594,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/motorcycle/motorcycle01/engine",
-        "enemy": "enemy/vehicle/motorcycle/motorcycle01/engine"
+        "watched": "player/vehicle/motorcycle/motorcycle01/engine",
+        "other": "enemy/vehicle/motorcycle/motorcycle01/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/motorcycle/motorcycle01/engine_start",
-        "enemy": "enemy/vehicle/motorcycle/motorcycle01/engine_start"
+        "watched": "player/vehicle/motorcycle/motorcycle01/engine_start",
+        "other": "enemy/vehicle/motorcycle/motorcycle01/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/motorcycle/motorcycle01/engine_stop",
-        "enemy": "enemy/vehicle/motorcycle/motorcycle01/engine_stop"
+        "watched": "player/vehicle/motorcycle/motorcycle01/engine_stop",
+        "other": "enemy/vehicle/motorcycle/motorcycle01/engine_stop"
       }
     }
   },
@@ -602,16 +611,16 @@
     "_group": {
       "_tags": "sound",
       "vehicle_engine_sound__path:shared:object": {
-        "hero": "player/vehicle/tank/t34/engine",
-        "enemy": "enemy/vehicle/tank/t34/engine"
+        "watched": "player/vehicle/tank/t34/engine",
+        "other": "enemy/vehicle/tank/t34/engine"
       },
       "vehicle_engine_sound__startPath:shared:object": {
-        "hero": "player/vehicle/tank/t34/engine_start",
-        "enemy": "enemy/vehicle/tank/t34/engine_start"
+        "watched": "player/vehicle/tank/t34/engine_start",
+        "other": "enemy/vehicle/tank/t34/engine_start"
       },
       "vehicle_engine_sound__stopPath:shared:object": {
-        "hero": "player/vehicle/tank/t34/engine_stop",
-        "enemy": "enemy/vehicle/tank/t34/engine_stop"
+        "watched": "player/vehicle/tank/t34/engine_stop",
+        "other": "enemy/vehicle/tank/t34/engine_stop"
       }
     }
   },
@@ -631,7 +640,7 @@
     "_group": {
       "_tags": "sound",
       "ground_vehicle_gear_sound__path:shared:object": {
-        "hero": "player/vehicle/car/common/car/transmission"
+        "watched": "player/vehicle/car/common/car/transmission"
       }
     }
   },
@@ -639,7 +648,7 @@
     "_group": {
       "_tags": "sound",
       "ground_vehicle_gear_sound__path:shared:object": {
-        "hero": "player/vehicle/car/common/jeep/transmission"
+        "watched": "player/vehicle/car/common/jeep/transmission"
       }
     }
   },
@@ -647,7 +656,7 @@
     "_group": {
       "_tags": "sound",
       "ground_vehicle_gear_sound__path:shared:object": {
-        "hero": "player/vehicle/car/common/truck/transmission"
+        "watched": "player/vehicle/car/common/truck/transmission"
       }
     }
   },
@@ -655,7 +664,7 @@
     "_group": {
       "_tags": "sound",
       "ground_vehicle_gear_sound__path:shared:object": {
-        "hero": "player/vehicle/tank/common/transmission"
+        "watched": "player/vehicle/tank/common/transmission"
       }
     }
   },
@@ -663,7 +672,7 @@
     "_group": {
       "_tags": "sound",
       "ground_vehicle_gear_sound__path:shared:object": {
-        "hero": "player/vehicle/motorcycle/common/motorcycle/transmission"
+        "watched": "player/vehicle/motorcycle/common/motorcycle/transmission"
       }
     }
   },
@@ -693,7 +702,7 @@
       ],
       "vehicle_collision_sound__paths:shared:object": {
         "collScrape:object": {
-          "hero": "player/vehicle/car/collision/scrape"
+          "watched": "player/vehicle/car/collision/scrape"
         },
         "collGeneric:object": {
           "path": "enemy/vehicle/car/collision/generic"
@@ -720,7 +729,7 @@
     "vehicle_collision_sound__paths:shared:object": {
       "_tags": "sound",
       "collScrape:object": {
-        "hero": "player/vehicle/tank/collision/scrape"
+        "watched": "player/vehicle/tank/collision/scrape"
       },
       "collGeneric:object": {
         "path": "enemy/vehicle/tank/collision/generic"

@@ -1,6 +1,12 @@
 {
   "cannon": true,
   "weaponType": -1,
+  "maxDeltaAngle": 0.43,
+  "shotFreq": 11.0,
+  "traceFreq": 4,
+  "bullets": 60,
+  "dragCx": 0.009,
+  "mass": 58.0,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -10,16 +16,10 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
+  "bEnablePause": false,
+  "bulletsCluster": 1,
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
-  "maxDeltaAngle": 0.43,
-  "shotFreq": 11.0,
-  "traceFreq": 1,
-  "bEnablePause": false,
-  "bullets": 60,
-  "bulletsCluster": 1,
-  "dragCx": 0.009,
-  "mass": 58.0,
   "fxType": "muzzle_air_30mm",
   "fxMultipleSpawn": true,
   "bullet": [
@@ -478,16 +478,6 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "i",
       "shellAnimation": "video/shells_animations/i_shell.ivf",
-      "fuseDelayDist": 1.0,
-      "explodeTreshold": 0.4,
-      "explodeHitPower": 18.0,
-      "explodeArmorPower": 6.0,
-      "explodeRadius": [
-        0.037,
-        0.26
-      ],
-      "hitPowerMult": 15.0,
-      "onHitChanceMultExplFuel": 4500.0,
       "onHitChanceMultFire": 10.0,
       "relativeVelArmorShift": [
         200.0,
@@ -524,6 +514,15 @@
             0.3
           ]
         ]
+      },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.327,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "hitpower": {
         "HitPower10m": [
@@ -2180,16 +2179,6 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i",
         "shellAnimation": "video/shells_animations/i_shell.ivf",
-        "fuseDelayDist": 1.0,
-        "explodeTreshold": 0.4,
-        "explodeHitPower": 18.0,
-        "explodeArmorPower": 6.0,
-        "explodeRadius": [
-          0.037,
-          0.26
-        ],
-        "hitPowerMult": 15.0,
-        "onHitChanceMultExplFuel": 4500.0,
         "onHitChanceMultFire": 10.0,
         "relativeVelArmorShift": [
           200.0,
@@ -2226,6 +2215,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -3883,16 +3881,6 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i",
         "shellAnimation": "video/shells_animations/i_shell.ivf",
-        "fuseDelayDist": 1.0,
-        "explodeTreshold": 0.4,
-        "explodeHitPower": 18.0,
-        "explodeArmorPower": 6.0,
-        "explodeRadius": [
-          0.037,
-          0.26
-        ],
-        "hitPowerMult": 15.0,
-        "onHitChanceMultExplFuel": 4500.0,
         "onHitChanceMultFire": 10.0,
         "relativeVelArmorShift": [
           200.0,
@@ -3929,6 +3917,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [
@@ -5589,16 +5586,6 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i",
         "shellAnimation": "video/shells_animations/i_shell.ivf",
-        "fuseDelayDist": 1.0,
-        "explodeTreshold": 0.4,
-        "explodeHitPower": 18.0,
-        "explodeArmorPower": 6.0,
-        "explodeRadius": [
-          0.037,
-          0.26
-        ],
-        "hitPowerMult": 15.0,
-        "onHitChanceMultExplFuel": 4500.0,
         "onHitChanceMultFire": 10.0,
         "relativeVelArmorShift": [
           200.0,
@@ -5635,6 +5622,15 @@
               0.3
             ]
           ]
+        },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
         },
         "hitpower": {
           "HitPower10m": [

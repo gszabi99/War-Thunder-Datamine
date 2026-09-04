@@ -903,14 +903,47 @@
     ]
   },
   "MetaParts": {
-    "closed_fightning_compartment": {
+    "crew_fighting_compartment": {
       "part": [
-        "driver_dm",
-        "loader_dm",
-        "gunner_dm",
         "commander_dm",
         "machine_gunner_dm",
         "radio_station_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_fightning_compartment": {
+      "part": [
+        "loader_dm",
+        "gunner_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_driver_compartment": {
+      "part": [
+        "driver_dm",
+        "driver_controls_dm"
       ],
       "effect": [
         {

@@ -1,48 +1,53 @@
-from "%scripts/dagui_natives.nut" import get_pds_next_time, ps4_is_ugc_enabled, gchat_unescape_target, sync_handler_simulate_signal, gchat_list_rooms, gchat_is_connecting, get_pds_code_limit, update_objects_under_windows_state, gchat_is_connected, ps4_show_ugc_restriction, gchat_chat_private_message, gchat_chat_message, gchat_join_room, gchat_raw_command, gchat_escape_target, send_pds_presence_check_in, get_pds_code_suggestion, gchat_list_names
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent, addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived, isAuthorized
+from "blkGetters" import get_game_params_blk
+from "string" import format
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "json" import parse_json
+from "%sqstd/string.nut" import clearBorderSymbols, startsWith, stripTags
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "chat" import get_option_voicechat, set_gchat_event_cb, is_chat_message_empty, is_chat_message_allowed
+from "chard" import get_charserver_time_sec
+from "worldwar" import wwIsOperationLoaded
+from "%sqstd/math.nut" import ceil
+from "%globalScripts/externalPlayerListConsts.nut" import *
+from "%scripts/dagui_natives.nut" import get_pds_next_time, ps4_is_ugc_enabled, gchat_unescape_target, sync_handler_simulate_signal, gchat_list_rooms, gchat_is_connecting, get_pds_code_limit
+  , update_objects_under_windows_state, gchat_is_connected, ps4_show_ugc_restriction, gchat_chat_private_message, gchat_chat_message, gchat_join_room, gchat_raw_command
+  , gchat_escape_target, send_pds_presence_check_in, get_pds_code_suggestion, gchat_list_names
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gchatEventConsts.nut" import *
 from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/utils_sa.nut" import save_to_json, is_myself_anyof_moderators
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
-let { get_game_params_blk } = require("blkGetters")
 let { g_chat } = require("%scripts/chat/chat.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { isRoomWWOperation, g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { subscribe_handler, broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let DataBlock = require("DataBlock")
-let { get_time_msec } = require("dagor.time")
-let { deferOnce } = require("dagor.workcycle")
-let regexp2 = require("regexp2")
-let { parse_json } = require("json")
-let { clearBorderSymbols, startsWith, stripTags } = require("%sqstd/string.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, checkChatEnableWithPlayer, isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatMPlobby
-} = require("%scripts/user/matchingFeature.nut")
+let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 let { add_user, remove_user, is_muted } = require("%scripts/chat/xboxVoice.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_option_voicechat, set_gchat_event_cb,
-  is_chat_message_empty, is_chat_message_allowed } = require("chat")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { get_charserver_time_sec } = require("chard")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_VOICE_CHAT, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize, saveLocalByScreenSize
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings, loadLocalByScreenSize, saveLocalByScreenSize } = require("%scripts/clientState/localProfile.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
@@ -51,7 +56,6 @@ let { getContactByName, clanUserTable } = require("%scripts/contacts/contactsLis
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getLastGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { isProfileReceived, isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
@@ -63,18 +67,14 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { globalChatRooms, langsList } = require("%scripts/chat/chatConsts.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
-let { getChatObject, isUserBlockedByPrivateSetting, validateChatMessage,
-filterNameFromHtmlCodes, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
+let { getChatObject, isUserBlockedByPrivateSetting, filterNameFromHtmlCodes, addTextToEditbox } = require("%scripts/chat/chatUtils.nut")
+let { validateChatMessage } = require("%scripts/chat/localizedMessages.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { wwIsOperationLoaded } = require("worldwar")
 let { acceptInviteByLink, addChatRoomInvite } = require("%scripts/invites/invites.nut")
-let { ceil } = require("%sqstd/math.nut")
-let { lastChatSceneShow, chatPrevScenes, addChatScene, clearChatScenes,
-menuChatHandler, chatActiveSceneParam, hideChatHandlerScene } = require("%scripts/chat/chatHandler.nut")
+let { lastChatSceneShow, chatPrevScenes, addChatScene, clearChatScenes, menuChatHandler, chatActiveSceneParam, hideChatHandlerScene } = require("%scripts/chat/chatHandler.nut")
 let { openChatRoom } = require("%scripts/chat/openChat.nut")
-let { joinThread, getRoomById, addRoom, isRoomSquad, isRoomClan, isNotUsersClanRoom
-} = require("%scripts/chat/chatRooms.nut")
-let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
+let { joinThread, addRoom, isRoomSquad, isRoomClan, isNotUsersClanRoom } = require("%scripts/chat/chatRooms.nut")
+let { getRoomById, getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 let { updateUserReputationData } = require("%scripts/user/usersReputation.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
@@ -126,7 +126,7 @@ function getGlobalRoomsListByLang(lang, roomsList = null) {
     local l = def_lang
     if ("langs" in r && r.langs.len()) {
       l = isInArray(lang, r.langs) ? lang : r.langs[0]
-      if (getTblValue("hideInOtherLangs", r, false) && !isInArray(lang, r.langs))
+      if ((r?.hideInOtherLangs ?? false) && !isInArray(lang, r.langs))
         continue
     }
     if (!roomsList || isInArray(r.name, roomsList))
@@ -153,7 +153,7 @@ function menuChatCallback(event, taskId, db) {
   broadcastEvent("ChatCallback", { event, taskId, db })
 }
 
-let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
+let MenuChatHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   presenceDetectionTimer = 0
@@ -377,7 +377,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.guiScene.setUpdatesEnabled(false, false)
-    let roomFormat = "shopFilter { shopFilterText { id:t='room_txt_%d'; text:t='' } Button_close { id:t='close_%d'; on_click:t='onRoomClose';}}\n"
+    const roomFormat = "shopFilter { shopFilterText { id:t='room_txt_%d'; text:t='' } Button_close { id:t='close_%d'; on_click:t='onRoomClose';}}\n"
     this.fillList(obj, roomFormat, g_chat.rooms.len())
 
     local curVal = -1
@@ -420,7 +420,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let obj = this.scene.findObject("rooms_list")
     let value = obj.getValue()
-    let roomData = getTblValue(value, g_chat.rooms)
+    let roomData = g_chat.rooms?[value]
 
     if (!roomData) {
       this.updateUsersList()
@@ -510,7 +510,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateInputText(roomData) {
-    this.scene.findObject("menuchat_input").setValue(getTblValue("lastTextInput", roomData, ""))
+    this.scene.findObject("menuchat_input").setValue((roomData?.lastTextInput ?? ""))
   }
 
   function updateRoomTabByIdx(idx, room, listObj = null) {
@@ -555,7 +555,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventChatThreadInfoChanged(p) {
-    this.updateRoomTabById(getTblValue("roomId", p))
+    this.updateRoomTabById(p?.roomId)
   }
 
   function onEventChatFilterChanged(_p) {
@@ -740,7 +740,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (picObj)
       picObj["background-image"] = image
     else {
-      let string = "%s { id:t='%s'; background-image:t='%s'}"
+      const string = "%s { id:t='%s'; background-image:t='%s'}"
       let data = format(string, blockName, id, image)
       this.guiScene.prependWithBlk(obj, data, this)
     }
@@ -1447,7 +1447,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkLastActionRoom() {
     if (this.lastActionRoom == "" || !getRoomById(this.lastActionRoom))
-      this.lastActionRoom = getTblValue("id", this.curRoom, "")
+      this.lastActionRoom = (this.curRoom?.id ?? "")
   }
 
   function onMessage(db) {
@@ -1599,7 +1599,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
           return
         }
 
-        let wasPasswordEntered = getTblValue(roomId, this.roomJoinParamsTable, "") != ""
+        let wasPasswordEntered = (this.roomJoinParamsTable?[roomId] ?? "") != ""
         let locId = wasPasswordEntered ? "chat/wrongPassword" : "chat/enterPassword"
         let params = {
           title = roomId.slice(1)
@@ -1746,7 +1746,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.saveJoinedRooms()
     if (chatStatesCanUseVoice() && r.type.canVoiceChat) {
       this.shouldCheckVoiceChatSuggestion = true
-      if (handlersManager.findHandlerClassInScene(gui_handlers.MainMenu) != null)
+      if (handlersManager.findHandlerClassInScene(MainMenu) != null)
         this.checkVoiceChatSuggestion()
     }
     return r
@@ -2101,7 +2101,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventSquadPlayerInvited(params) {
-    let uid = getTblValue("uid", params, "")
+    let uid = (params?.uid ?? "")
     if (u.isEmpty(uid))
       return
 
@@ -2805,7 +2805,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventInviteReceived(params) {
-    let invite = getTblValue("invite", params)
+    let invite = params?.invite
     if (!invite || !invite.isVisible())
       return
 
@@ -2933,7 +2933,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   mpostColor = "@chatTextMpostColor"
 }
 
-gui_handlers.MenuChatHandler <- MenuChatHandler
+register_gui_handler("MenuChatHandler", MenuChatHandler)
 
 function createMenuChatHandler(scene, obj = null) {
   if (menuChatHandler.get())

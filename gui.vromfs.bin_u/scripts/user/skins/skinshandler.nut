@@ -1,8 +1,13 @@
+import "DataBlock" as DataBlock
+from "%sqstd/math.nut" import is_bit_set
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
-let DataBlock = require("DataBlock")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
@@ -10,15 +15,11 @@ let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getDecoratorById } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorViewTypes } = require("%scripts/customization/decoratorViewType.nut")
 let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getUnlockCondsDescByCfg, getLocForBitValues, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg,
-  buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockCondsDescByCfg, getLocForBitValues, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/user/skins/skinsFilter.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { initTree } = require("%scripts/user/skins/decoratorGroupsTree.nut")
 let { getSkinsCache, isSkinVisible } = require("%scripts/user/skins/skinsCache.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
@@ -65,7 +66,7 @@ function getUnitParamsFromSkinId(skinId) {
   return res
 }
 
-local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local SkinsHandler = class (BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/profile/skinsPage.blk"
 
@@ -193,7 +194,7 @@ local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
       treeData.append({
         id = country
-        itemTag = "campaign_item"
+        itemType = "campaign"
         itemText = $"#{country}"
         isCollapsable = true
         hidden = false
@@ -411,7 +412,7 @@ local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.SkinsHandler <- SkinsHandler
+register_gui_handler("SkinsHandler", SkinsHandler)
 
 return {
   openSkinsPage = @(params = {}) handlersManager.loadHandler(SkinsHandler, params)

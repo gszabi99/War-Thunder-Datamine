@@ -1,7 +1,10 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "blkGetters" import get_unittags_blk
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+from "types" import String
+
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { get_unittags_blk } = require("blkGetters")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let basicUnitRoles = {
   [ES_UNIT_TYPE_AIRCRAFT] = ["type_fighter", "type_assault", "type_bomber"],
@@ -120,7 +123,7 @@ let getRoleTextByTag = @(tag) loc($"mainmenu/{tag}")
 
 function getUnitRole(unitData) { 
   local unit = unitData
-  if (type(unitData) == "string")
+  if (unitData instanceof String)
     unit = getAircraftByName(unitData);
 
   if (!unit)

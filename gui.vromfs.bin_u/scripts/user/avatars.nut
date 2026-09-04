@@ -1,5 +1,6 @@
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")

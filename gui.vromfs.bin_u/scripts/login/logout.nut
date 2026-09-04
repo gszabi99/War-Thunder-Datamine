@@ -1,22 +1,21 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu, disableNetwork
+from "auth_wt" import signOut
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "gameplayBinding" import isInFlight
+from "guiMission" import quit_to_debriefing, interrupt_multiplayer
 from "app" import exitGame
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
-let { signOut } = require("auth_wt")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { set_disable_autorelogin_once } = require("loginState.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlersManager, get_current_base_gui_handler
-} = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { isInFlight } = require("gameplayBinding")
-let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
+let { set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { handlersManager, get_current_base_gui_handler } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { resetLogin } = require("%scripts/login/loginManager.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
-let { shouldDisableMenu, disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { add_msg_box, remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
+let { add_msg_box, remove_scene_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 

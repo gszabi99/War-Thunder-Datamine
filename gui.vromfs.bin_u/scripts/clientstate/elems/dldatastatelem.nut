@@ -1,15 +1,35 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import resetTimeout
+from "dagor.system" import dgs_get_settings
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
-let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
-let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
-let { resetTimeout } = require("dagor.workcycle")
+let elemModelType = require("%scripts/sqDagui/elemUpdater/elemModelType.nut")
+let elemViewType = require("%scripts/sqDagui/elemUpdater/elemViewType.nut")
 
 const HIDE_STAT_TIME_SEC = 1
 const HIDE_STAT_WITH_FAILED_TIME_SEC = 10
 
+
+
+const SYS_MSG_INDENT_MULT_BY_PERF_METRIC = { [0] = 0.0, [1] = 1, [2] = 0.75, [3] = 1.75 }
+
 local prevStat = null
 local curStat = null
+local perfMetricsIdxOverride = null
+
+function getSystemMsgPos() {
+  let idx = perfMetricsIdxOverride ?? dgs_get_settings()?.video.perfMetrics ?? 1
+  let muliplier = SYS_MSG_INDENT_MULT_BY_PERF_METRIC?[idx] ?? 1
+  return format("%.2f@systemMsgIndent, 0", muliplier)
+}
+
+add_event_listener("PerfMetricsOptionChanged", function(p) {
+  perfMetricsIdxOverride = p.idx
+  elemModelType.SYSTEM_MSG_INDENT.notify([])
+})
+
 local statText = null
 
 let notifyDlDataChanged = @()  elemModelType.DL_DATA_STATE.notify([])
@@ -70,6 +90,7 @@ eventbus_subscribe("on_show_dldata_stat", updateStat)
 
 elemModelType.addTypes({
   DL_DATA_STATE = {}
+  SYSTEM_MSG_INDENT = {}
 })
 
 elemViewType.addTypes({
@@ -93,6 +114,14 @@ elemViewType.addTypes({
 
     updateView = function(obj, _params) {
       obj.fade = ((curStat?.filesInFlight ?? 0) != 0) ? "in" : "out"
+    }
+  }
+
+  SYSTEM_MSG_INDENT = {
+    model = elemModelType.SYSTEM_MSG_INDENT
+
+    updateView = function(obj, _params) {
+      obj.pos = getSystemMsgPos()
     }
   }
 })

@@ -1,15 +1,16 @@
+from "controls" import emulateShortcut, isXInputDevice
+from "eventbus" import eventbus_subscribe, eventbus_send
+from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { wheelMenuHandler } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu/multifuncMenuTools.nut")
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
-let { emulateShortcut, isXInputDevice } = require("controls")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
-let { registerRespondent } = require("scriptRespondent")
 
 
 
-gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
+register_gui_handler("multifuncMenuHandler", class (wheelMenuHandler) {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -74,7 +75,7 @@ gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
       eventbus_send("onMultifuncMenuClosed")
     }
   }
-}
+})
 
 
 

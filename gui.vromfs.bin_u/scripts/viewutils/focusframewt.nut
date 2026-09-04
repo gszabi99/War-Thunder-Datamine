@@ -1,8 +1,9 @@
+import "%sqstd/math.nut" as stdMath
+from "math" import abs
 from "%scripts/dagui_library.nut" import *
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
-let focusFrame = require("%sqDagui/focusFrame/focusFrame.nut")
-let stdMath = require("%sqstd/math.nut")
-let { abs } = require("math")
+
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
+let focusFrame = require("%scripts/sqDagui/focusFrame/focusFrame.nut")
 
 let sizeProps = [
   ["width-base", "width-end"],
@@ -11,7 +12,7 @@ let sizeProps = [
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 
-let baseTransparency = "30"
+const baseTransparency = "30"
 focusFrame.setHideTgtImageTimeMsec(200)
 
 focusFrame.setAnimFunction(function(animObj, curTgt, prevTgt) {

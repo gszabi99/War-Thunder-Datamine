@@ -1,25 +1,26 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sonyLib/webApi.nut" as psn
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "dagor.time" import get_time_msec
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let logS = log_with_prefix("[PSN: Contacts] ")
 
-let { get_time_msec } = require("dagor.time")
-let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
 let { psnApprovedUids, psnBlockedUids, findContactByPSNId } = require("%scripts/contacts/contactsListState.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqual } = u
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let isContactsUpdated = mkWatched(persist, "isContactsUpdated", false)
 
-let LIMIT_FOR_ONE_TASK_GET_USERS = 200
-let UPDATE_TIMER_LIMIT = 10000
+const LIMIT_FOR_ONE_TASK_GET_USERS = 200
+const UPDATE_TIMER_LIMIT = 10000
 local LAST_UPDATE_FRIENDS = -UPDATE_TIMER_LIMIT
 let PSN_RESPONSE_FIELDS = { friends = "friends", blocklist = "blocks" }
 

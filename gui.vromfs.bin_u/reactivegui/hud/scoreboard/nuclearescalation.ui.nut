@@ -1,12 +1,11 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/missions/nuclearEscalationCfg.nut" import yieldLimitFromStage
+from "%rGui/missionState.nut" import scoreLimit, localTeam, ticketsTeamA, ticketsTeamB
+from "%rGui/hud/scoreboard/hudElemsPkg.nut" import mkTeamProgress
+from "%rGui/globalState.nut" import isInFlight
+from "guiMission" import get_current_mission_desc
+from "eventbus" import eventbus_send
 from "%rGui/globals/ui_library.nut" import *
-
-let { scoreLimit, localTeam, ticketsTeamA, ticketsTeamB } = require("%rGui/missionState.nut")
-let { mkTeamProgress } = require("%rGui/hud/scoreboard/hudElemsPkg.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { get_current_mission_desc } = require("guiMission")
-let DataBlock = require("DataBlock")
-let { eventbus_send } = require("eventbus")
-let { yieldLimitFromStage } = require("%appGlobals/missions/nuclearEscalationCfg.nut")
 
 const ANIM_TRIGGER_ALLY = "main_anim_ally"
 const ANIM_TRIGGER_ENEMY = "main_anim_enemy"

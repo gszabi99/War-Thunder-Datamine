@@ -1,15 +1,15 @@
+import "contacts" as lowLevelClient
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "auth_wt" import getPlayerTokenGlobal
+from "app" import APP_ID
+from "console" import register_command
+from "dagor.random" import rnd_int
 from "%scripts/dagui_library.nut" import *
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
-let lowLevelClient = require("contacts")
-let { getPlayerTokenGlobal } = require("auth_wt")
-let { APP_ID } = require("app")
-let { register_command } = require("console")
-let { rnd_int } = require("dagor.random")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let logC = log_with_prefix("[CONTACTS CLIENT] ")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 local lastRequestId = rnd_int(0, 32767)
 

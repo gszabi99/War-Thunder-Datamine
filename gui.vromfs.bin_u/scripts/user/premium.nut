@@ -1,15 +1,15 @@
+import "%appGlobals/timeLoc.nut" as timeBase
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "chard" import getPremiumSavedTimeMinutes
+from "dagor.workcycle" import setTimeout, clearTimer
+from "console" import register_command
 from "%scripts/dagui_natives.nut" import entitlement_expires_in, shop_get_premium_account_ent_name
 from "%scripts/dagui_library.nut" import *
 
-let { getPremiumSavedTimeMinutes } = require("chard")
-let timeBase = require("%appGlobals/timeLoc.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { register_command } = require("console")
 let { getExpireText } = require("%scripts/time.nut")
 
 
-let PREM_TIMER_ID = "timer_premium_update"
+const PREM_TIMER_ID = "timer_premium_update"
 
 let haveProfilePremium = Watched(null)
 let forcePremium = Watched(null)

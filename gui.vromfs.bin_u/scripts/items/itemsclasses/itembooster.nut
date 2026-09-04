@@ -1,27 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import calc_personal_boost, calc_public_boost
+from "mission" import get_mission_time
+from "string" import format
+from "gameplayBinding" import isInFlight
+from "math" import floor
 from "%scripts/dagui_natives.nut" import set_char_cb, get_current_booster_count, char_send_blk, get_current_booster_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
-let { get_mission_time } = require("mission")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
 let { getActiveBoostersArray, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getFullUnlockCondsDesc,
-  getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isInFlight } = require("gameplayBinding")
+let { getFullUnlockCondsDesc, getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { floor } = require("math")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
@@ -82,7 +80,7 @@ let Booster = class (BaseItem) {
     base.constructor(blk, invBlk, slotData)
     this._initBoosterParams(blk?.rateBoosterParams)
     if (this.isActive())
-      this.stopProgress = getTblValue("progress", invBlk, 0)
+      this.stopProgress = (invBlk?.progress ?? 0)
   }
 
   function _initBoosterParams(blk) {
@@ -256,7 +254,7 @@ let Booster = class (BaseItem) {
     if (!handler)
       handler = get_cur_base_gui_handler()
 
-    let checkIsInFlight = getTblValue("checkIsInFlight", checkParams, false)
+    let checkIsInFlight = (checkParams?.checkIsInFlight ?? false)
     if (checkIsInFlight && isInFlight()) {
       if (cb) {
         cb({
@@ -268,7 +266,7 @@ let Booster = class (BaseItem) {
       return false
     }
 
-    let checkActive = getTblValue("checkActive", checkParams, false)
+    let checkActive = (checkParams?.checkActive ?? false)
     if (checkActive && this.haveActiveBoosters()) {
       if (cb) {
         cb({
@@ -470,7 +468,7 @@ let Booster = class (BaseItem) {
   function getTotalStopSessions() {
     if (this._totalStopSessions < 0) {
       let mainCondition = getMainProgressCondition(this.stopConditions)
-      this._totalStopSessions = getTblValue("num", mainCondition, 0)
+      this._totalStopSessions = (mainCondition?.num ?? 0)
     }
     return this._totalStopSessions
   }
@@ -526,7 +524,7 @@ let Booster = class (BaseItem) {
   }
 
   function getEventTypeIcon() {
-    return getTblValue("iconImg", this.eventTypeData)
+    return this.eventTypeData?.iconImg
   }
 
   function canStack(item) {
@@ -545,10 +543,10 @@ let Booster = class (BaseItem) {
         continue
 
       let efTypeName = efType.name
-      let valTbl = getTblValue(efTypeName, stackParams, {})
-      let minVal = getTblValue("min", valTbl)
+      let valTbl = (stackParams?[efTypeName] ?? {})
+      let minVal = valTbl?.min
       valTbl.min <- minVal ? min(minVal, value) : value
-      let maxVal = getTblValue("max", valTbl)
+      let maxVal = valTbl?.max
       valTbl.max <- maxVal ? max(maxVal, value) : value
       stackParams[efTypeName] <- valTbl
     }
@@ -558,7 +556,7 @@ let Booster = class (BaseItem) {
     local res = colorize("activeTextColor", loc($"item/{this.defaultLocId}"))
     let effects = []
     foreach (efType in boosterEffectType) {
-      let valTbl = getTblValue(efType.name, stackParams)
+      let valTbl = stackParams?[efType.name]
       if (!valTbl || (!("min" in valTbl)))
         continue
 

@@ -4,7 +4,6 @@ require AnimV20
 require GeomNodeTree
 require CollRes
 require DagorMath
-require %game.events
 
 
 [es(tag=(render, ui), no_order)] 

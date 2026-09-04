@@ -1,13 +1,18 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
+from "console" import register_command
+from "blkGetters" import get_price_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { eventbus_subscribe } = require("eventbus")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let time = require("%scripts/time.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
@@ -16,15 +21,10 @@ let { tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
 let { findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
-let { register_command } = require("console")
 let { initItemsRoulette, skipItemsRouletteAnimation } = require("%scripts/items/roulette/itemsRoulette.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { get_price_blk } = require("blkGetters")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData,
-  isRewardItem
-} = require("%scripts/items/trophyReward.nut")
+let { rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem } = require("%scripts/items/trophyReward.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { findItemById, getItemsList } = require("%scripts/items/itemsManagerModule.nut")
@@ -33,7 +33,6 @@ let { getInternalItemsDebugInfo } = require("%scripts/items/itemsManagerDbgState
 let { itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getPrizeImageByConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
 
 local afterCloseTrophyWnd = @(_configsTable) null
@@ -93,7 +92,7 @@ function guiStartOpenTrophy(configsTable = {}) {
   params.trophyItem <- trophyItem
   params.configsArray <- configsArray
   params.afterFunc <- @() afterCloseTrophyWnd(localConfigsTable)
-  loadHandler(gui_handlers.trophyRewardWnd, params)
+  loadHandler(get_gui_handler("trophyRewardWnd"), params)
 }
 
 eventbus_subscribe("guiStartOpenTrophy", guiStartOpenTrophy)
@@ -131,7 +130,7 @@ afterCloseTrophyWnd = function (configsTable) {
     broadcastEvent("TrophyWndClose", {})
 }
 
-gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let trophyRewardWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
 
@@ -455,7 +454,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (layersData == "")
       return ""
 
-    let layerId = "item_place_container"
+    const layerId = "item_place_container"
     local layerCfg = LayersIcon.findLayerCfg($"{trophyStyle}_{layerId}")
     if (!layerCfg)
       layerCfg = LayersIcon.findLayerCfg(layerId)
@@ -601,7 +600,9 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     : this.isCreation() ? this.trophyItem.getItemsListLocId()
     : this.trophyItem.getRewardListLocId()
 }
+register_gui_handler("trophyRewardWnd", trophyRewardWnd)
 
 return {
+  trophyRewardWnd
   guiStartOpenTrophy
 }

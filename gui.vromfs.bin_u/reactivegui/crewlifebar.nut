@@ -1,9 +1,9 @@
+from "%rGui/crewState.nut" import totalCrewMembersCount, aliveCrewMembersCount, minCrewMembersCount
+from "%rGui/options/options.nut" import damageIndicatorScale
+from "dagor.workcycle" import resetTimeout
 from "%rGui/globals/ui_library.nut" import *
 
 let { hudLogBgColor } = require("%rGui/style/colors.nut").hud
-let { totalCrewMembersCount, aliveCrewMembersCount, minCrewMembersCount } = require("%rGui/crewState.nut")
-let { resetTimeout } = require("dagor.workcycle")
-let { damageIndicatorScale } = require("%rGui/options/options.nut")
 
 const badCrewTextColor = 0xFFc56e18
 const goodCrewTextColor = 0xC8C8C8C8
@@ -60,7 +60,7 @@ function onChangeLifePercent(val) {
 lifePercent.subscribe(onChangeLifePercent)
 
 let lifebarBg = {
-  size = [pw(100), ph(100)]
+  size = const [pw(100), ph(100)]
   rendObj = ROBJ_BOX
   fillColor = 0x1c1c1c
 }
@@ -152,7 +152,7 @@ let minAliveBar = @() {
 }
 
 let crewLifebar = {
-  size = [pw(100), lifeBarHeight]
+  size = const [pw(100), lifeBarHeight]
   padding = hdpx(3)
   rendObj = ROBJ_BOX
   borderColor = 0x46464646
@@ -192,7 +192,7 @@ let crewsCountPanel = {
 
 let panelContent = {
   flow = FLOW_HORIZONTAL
-  size = [pw(100), SIZE_TO_CONTENT]
+  size = const [pw(100), SIZE_TO_CONTENT]
   gap = { size = const [hdpx(5), hdpx(5)] }
   padding = const [hdpx(5), hdpx(10)]
   valign = ALIGN_CENTER

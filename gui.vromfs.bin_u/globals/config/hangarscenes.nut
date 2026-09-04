@@ -13,7 +13,7 @@ from "%sqstd/platform.nut" import is_xboxone
 
 
 
-return [
+return freeze([
   {
     id = "hangar_regular"
     isRegularHangar = true
@@ -56,4 +56,4 @@ return [
 
 
 
-]
+])

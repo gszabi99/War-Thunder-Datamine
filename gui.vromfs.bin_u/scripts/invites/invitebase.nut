@@ -1,17 +1,16 @@
+from "dagor.time" import get_time_msec
+from "chard" import get_charserver_time_sec
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
+
 let { g_chat } = require("%scripts/chat/chat.nut")
-let { get_time_msec } = require("dagor.time")
 let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { checkChatEnableWithPlayer, isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { get_charserver_time_sec } = require("chard")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { INVITE_CHAT_LINK_PREFIX, openInviteWnd, updateNewInvitesAmount, broadcastInviteReceived,
-  removeInvite
-} = require("%scripts/invites/invites.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
+let { colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
+let { INVITE_CHAT_LINK_PREFIX, openInviteWnd, updateNewInvitesAmount, broadcastInviteReceived, removeInvite } = require("%scripts/invites/invites.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
@@ -54,7 +53,7 @@ let BaseInvite = class {
   }
 
   static function getUidByParams(params) { 
-    return "".concat("ERR_", getTblValue("inviterName", params, ""))
+    return "".concat("ERR_", (params?.inviterName ?? ""))
   }
 
   function updateParams(params, initial = false) {
@@ -104,7 +103,7 @@ let BaseInvite = class {
   }
 
   function getInviterName() {
-    return getPlayerName(this.inviterName)
+    return colorizeWhitePsnIcon(getPlayerName(this.inviterName))
   }
 
   function isVisible() {

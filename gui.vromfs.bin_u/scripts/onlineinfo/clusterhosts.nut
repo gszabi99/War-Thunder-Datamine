@@ -1,12 +1,12 @@
+import "regexp2" as regexp2
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "dagor.workcycle" import resetTimeout
+from "matching.errors" import OPERATION_COMPLETE
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
 
-let regexp2 = require("regexp2")
-let { resetTimeout } = require("dagor.workcycle")
-let { OPERATION_COMPLETE } = require("matching.errors")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInBattleState, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let logCH = log_with_prefix("[CLUSTER_HOSTS] ")
 

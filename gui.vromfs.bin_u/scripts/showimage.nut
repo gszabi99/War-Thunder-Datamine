@@ -1,15 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 
 const MAX_TEXTURE_SIZE_IN_ATLAS = 512
 
-gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
+let ShowImage = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 
@@ -109,6 +111,7 @@ gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("ShowImage", ShowImage)
 
 
 
@@ -120,7 +123,7 @@ function guiStartImageWnd(image = null, ratio = 1, maxSize = 0) {
     return
 
   let params = { image, ratio, maxSize }
-  let hClass = gui_handlers.ShowImageSimple
+  let hClass = get_gui_handler("ShowImageSimple")
   let handler = handlersManager.findHandlerClassInScene(hClass)
   if (handler == null)
     handlersManager.loadHandler(hClass, params)
@@ -128,7 +131,7 @@ function guiStartImageWnd(image = null, ratio = 1, maxSize = 0) {
     handler.reinitScreen(params)
 }
 
-gui_handlers.ShowImageSimple <- class (gui_handlers.BaseGuiHandlerWT) {
+let ShowImageSimple = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showImage.blk"
 
@@ -192,8 +195,9 @@ gui_handlers.ShowImageSimple <- class (gui_handlers.BaseGuiHandlerWT) {
     this.goBack()
   }
 }
+register_gui_handler("ShowImageSimple", ShowImageSimple)
 
 return {
   guiStartImageWnd
-  viewFullscreenImage = @(obj) handlersManager.loadHandler(gui_handlers.ShowImage, { showObj = obj })
+  viewFullscreenImage = @(obj) handlersManager.loadHandler(ShowImage, { showObj = obj })
 }

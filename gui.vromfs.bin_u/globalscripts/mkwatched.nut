@@ -1,4 +1,4 @@
-let { Watched } = require("frp")
+from "frp" import Watched
 
 function mkWatched(persistFunc, persistKey, defVal = null, observableInitArg = null) {
   let container = persistFunc(persistKey, @() { v = defVal })

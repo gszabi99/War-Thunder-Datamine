@@ -1,3 +1,4 @@
+from "%globalScripts/templates.nut" import getTemplateCompValue
 from "string" import format
 from "chardResearch" import shopIsModificationPurchased
 from "%sqstd/datablock.nut" import blkOptFromPath
@@ -12,7 +13,6 @@ let { USEROPT_BULLETS0 } = require("%scripts/options/optionsExtNames.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getUnitTemplateNames } = require("%scripts/weaponry/infantryTemplates.nut")
-let { getTemplateCompValue } = require("%globalScripts/templates.nut")
 
 const DEFAULT_BELT_IMAGE = "!#ui/gameuiskin#magazine_medium.svg"
 const PRIMARY_WEAPON_SLOT_NAME = "primary"

@@ -1,9 +1,8 @@
 import "%sqstd/ecs.nut" as ecs
-
-let { EventPlayerOwnedUnitChanged, EventPlayerControlledUnitChanged } = require("dasevents")
-let { get_local_mplayer } = require("mission")
-let {wlog, log} = require("%globalScripts/logs.nut")
-let { controlledHeroEid } = require("%appGlobals/controlledHeroEid.nut")
+from "%globalScripts/logs.nut" import wlog, log
+from "%appGlobals/controlledHeroEid.nut" import controlledHeroEid
+from "dasevents" import EventPlayerOwnedUnitChanged, EventPlayerControlledUnitChanged
+from "mission" import get_local_mplayer
 
 wlog(controlledHeroEid, "controlled: ")
 

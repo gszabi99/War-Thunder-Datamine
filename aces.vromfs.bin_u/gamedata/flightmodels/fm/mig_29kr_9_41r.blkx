@@ -951,10 +951,10 @@
       "Thrust": 2200.0,
       "ThrottleBoost": 1.01,
       "AfterburnerBoost": 1.15,
-      "RPMMin": 5500.0,
-      "RPMMax": 8350.0,
-      "RPMAfterburner": 8350.0,
-      "RPMMaxAllowed": 8950.0,
+      "RPMMin": 7250.0,
+      "RPMMax": 11000.0,
+      "RPMAfterburner": 11000.0,
+      "RPMMaxAllowed": 16000.0,
       "StandbyFriction": 0.055,
       "FuelConsumptionOnIdle": 0.108,
       "FuelConsumptionOnHalfThr": 0.43,
@@ -977,19 +977,19 @@
       ],
       "ThrottleRPMAuto0": [
         0.0,
-        5500.0
+        7250.0
       ],
       "ThrottleRPMAuto1": [
         1.0,
         16500.0
       ],
-      "ShaftRPMMin": 5500.0,
+      "ShaftRPMMin": 7250.0,
       "ShaftRPMMax": 16500.0,
       "ShaftRpmController": false,
       "Power": 1200.0,
       "ConsumptionOmegaMax": 0.8,
       "TorqueZeroOmegaMult": 3.0,
-      "TurbineTimeConstant": 1.25,
+      "TurbineTimeConstant": 1.0,
       "ThrustMax": {
         "Altitude_0": 0.0,
         "Altitude_1": 3000.0,
@@ -1311,7 +1311,7 @@
         "TurbineTimeConstantMult": 1.0
       },
       "Mode5": {
-        "Throttle": 1.08,
+        "Throttle": 1.07,
         "RPM": 1.0,
         "ThrustMult": 1.37,
         "TorqueMultMinRpm": 3.0,
@@ -1416,31 +1416,37 @@
       "OilTemperatureInertia": 8.0,
       "Mode0": {
         "Altitude": 1000.0,
-        "RPM": 5500.0,
+        "RPM": 7250.0,
         "WaterTemperature": 460.0,
         "OilTemperature": 70.0
       },
       "Mode1": {
         "Altitude": 1000.0,
-        "RPM": 8000.0,
+        "RPM": 10500.0,
         "WaterTemperature": 700.0,
         "OilTemperature": 75.0
       },
       "Mode2": {
         "Altitude": 1000.0,
-        "RPM": 8250.0,
+        "RPM": 10900.0,
         "WaterTemperature": 880.0,
         "OilTemperature": 85.0
       },
       "Mode3": {
         "Altitude": 1000.0,
-        "RPM": 8350.0,
+        "RPM": 11000.0,
         "WaterTemperature": 920.0,
         "OilTemperature": 95.0
       },
       "Mode4": {
         "Altitude": 1000.0,
-        "RPM": 8600.0,
+        "RPM": 11170.0,
+        "WaterTemperature": 925.0,
+        "OilTemperature": 100.0
+      },
+      "Mode5": {
+        "Altitude": 1000.0,
+        "RPM": 11330.0,
         "WaterTemperature": 970.0,
         "OilTemperature": 115.0
       },
@@ -1461,8 +1467,8 @@
         "RecoverTime": 60.0
       },
       "Load3": {
-        "WaterTemperature": 930.0,
-        "OilTemperature": 100.0,
+        "WaterTemperature": 935.0,
+        "OilTemperature": 105.0,
         "WorkTime": 900.0,
         "RecoverTime": 40.0
       },
@@ -1489,9 +1495,9 @@
       "IsControllable": false,
       "Type": 3,
       "NumSteps": 1,
-      "RPM0": 5500.0,
+      "RPM0": 7700.0,
       "ATA0": 1.0,
-      "RPM1": 16500.0,
+      "RPM1": 11000.0,
       "ATA1": 1.86,
       "ExactAltitudes": false,
       "CompressorOmegaFactorSq": 0.0,
@@ -1929,10 +1935,10 @@
     },
     "StrutC": {
       "SpringHeight": 0.21,
-      "SpringCoeff": 155000.0,
-      "SpringDampCoeff": 0.6,
+      "SpringCoeff": 175000.0,
+      "SpringDampCoeff": 0.75,
       "SpringDampForceMaxMult": 2.0,
-      "WheelRestitutionCoeff": 0.0,
+      "WheelRestitutionCoeff": 300000.0,
       "WheelRadus": 0.303,
       "Retractable": true,
       "LeftBrake": false,

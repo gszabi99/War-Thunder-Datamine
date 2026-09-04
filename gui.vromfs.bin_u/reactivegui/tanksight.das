@@ -6,12 +6,10 @@ require Unit
 require HeroManager
 require IGroundModel
 require strings
-require DagorSystem
 require app
 require Weapon
 require WTCamera
 require hud
-require DagorTexture3D
 require Mission
 require Localization
 

@@ -1,20 +1,20 @@
+from "string" import format
+from "dagor.localize" import doesLocTextExist
+from "%sqstd/string.nut" import utf8ToUpper
+from "blkGetters" import get_warpoints_blk, get_ranks_blk
+from "steam" import steam_is_running
+from "%sqstd/platform.nut" import isPC
 from "%scripts/dagui_natives.nut" import has_entitlement, get_entitlement_cost_gold
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { formatLocalizationArrayToDescription } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
-let { doesLocTextExist } = require("dagor.localize")
-let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { steam_is_running } = require("steam")
-let { isPC } = require("%sqstd/platform.nut")
 
 let exchangedWarpointsExpireDays = {
   ["Japanese"] = 180
@@ -171,7 +171,7 @@ function getEntitlementName(ent) {
 
 function getFirstPurchaseAdditionalAmount(ent) {
   if (!has_entitlement(ent.name))
-    return getTblValue("goldIncomeFirstBuy", ent, 0)
+    return (ent?.goldIncomeFirstBuy ?? 0)
 
   return 0
 }

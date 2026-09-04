@@ -1,9 +1,10 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "string" import split_by_chars
 from "%scripts/dagui_natives.nut" import is_unlocked
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-
-let { split_by_chars } = require("string")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { dynamic_content } = require("%sqstd/analyzer.nut")
+from "%globalScripts/hudNativeConsts.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
 const BULLETS_SETS_QUANTITY_SHORT = 4
 
@@ -175,4 +176,9 @@ let unitTypes = {
   }
 }
 
-return dynamic_content(unitTypes)
+
+
+let { INVALID, AIRCRAFT, TANK, SHIP, HELICOPTER, BOAT, HUMAN } = require("%scripts/unit/baseUnitTypes.nut")
+unitTypes.addTypes([INVALID, AIRCRAFT, TANK, SHIP, HELICOPTER, BOAT, HUMAN])
+
+return unitTypes

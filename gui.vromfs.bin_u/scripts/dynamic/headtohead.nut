@@ -1,20 +1,16 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt, mgGetEnemySide, mgCreateStartPoint, mgCreateStartLookAt
+  , mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute, getAircraftCost
+  , getAnyPlayerFighter, mgSetupAirfield, mgSetDistToAction, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName
+  , mgSetMinMaxAircrafts
+from "blkGetters" import get_warpoints_blk
 from "math" import max, min, sqrt, clamp
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgAcceptMission, mgFullLogs, mgSetInt,
-  mgGetEnemySide, mgCreateStartPoint, mgCreateStartLookAt,
-  mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute,
-  getAircraftCost, getAnyPlayerFighter, mgSetupAirfield, mgSetDistToAction,
-  gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName,
-  mgSetMinMaxAircrafts
-} = require("dynamicMission")
-let { get_warpoints_blk } = require("blkGetters")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function genHeadToHeadMission(_isFreeFlight) {
-  let mission_preset_name = "head_to_head_preset01"
+  const mission_preset_name = "head_to_head_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let enemySide = mgGetEnemySide()
   local startPos = mgCreateStartPoint(1500)

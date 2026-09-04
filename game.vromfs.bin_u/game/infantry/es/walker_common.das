@@ -2,9 +2,7 @@ module walker_common shared
 
 require DagorRandom
 require DagorMath
-require math.base
 require pathfinder
-require math.maybe_pos
 require ecs
 require HumanPhys
 require Dacoll

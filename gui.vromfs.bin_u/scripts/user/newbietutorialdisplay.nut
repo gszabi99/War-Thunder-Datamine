@@ -1,20 +1,20 @@
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { skipTutorialBitmaskId } = require("%scripts/tutorials/tutorialsState.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
 
-let TUTORIAL_VERSION_COUNTER = 1
+const TUTORIAL_VERSION_COUNTER = 1
 
 let saveVersion = function(ver = null) {
   if (loadLocalByAccount("tutor/tutorialVersion") == null)
@@ -61,4 +61,3 @@ return {
   reqFirstCountryChoice
   getFirstCountryChoice
 }
-

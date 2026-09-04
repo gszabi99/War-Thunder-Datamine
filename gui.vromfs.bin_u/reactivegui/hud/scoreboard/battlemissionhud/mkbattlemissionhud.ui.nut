@@ -1,9 +1,9 @@
+from "%rGui/hud/scoreboard/battleMissionHud/battleMissionHudState.nut" import getEnemyTeamColorW, getAllyTeamColorW, getEnemyCapZoneIdxW, getAllyCapZoneIdxW, getTimeLeftStrW, getCountKillsToWinW, getAllyTeamScoreW
+  , getEnemyTeamScoreW, getCapZoneStateW, getCapZoneColorW
+from "%rGui/hud/scoreboard/battleMissionHud/battleMissionHudAnimations.nut" import mkReflectionLineAnimComp, mkScoreBlinkAnim, mkScoreTextAnim
+from "%rGui/hud/capZones/capZonesState.nut" import startPollingZonesState, stopPollingZonesState
+from "console" import register_command
 from "%rGui/globals/ui_library.nut" import *
-let { getEnemyTeamColorW, getAllyTeamColorW, getEnemyCapZoneIdxW, getAllyCapZoneIdxW, getTimeLeftStrW,
-  getCountKillsToWinW, getAllyTeamScoreW, getEnemyTeamScoreW, getCapZoneStateW, getCapZoneColorW } = require("%rGui/hud/scoreboard/battleMissionHud/battleMissionHudState.nut")
-let { mkReflectionLineAnimComp, mkScoreBlinkAnim, mkScoreTextAnim } = require("%rGui/hud/scoreboard/battleMissionHud/battleMissionHudAnimations.nut")
-let { register_command } = require("console")
-let { startPollingZonesState, stopPollingZonesState } = require("%rGui/hud/capZones/capZonesState.nut")
 
 const NEUTRAL_BG_COLOR = 0x58000000
 const FONT_COLOR = 0xFFFFFFFF
@@ -11,26 +11,26 @@ const FONT_COLOR = 0xFFFFFFFF
 const ANIM_TRIGGER_ALLY = "main_anim_ally"
 const ANIM_TRIGGER_ENEMY = "main_anim_enemy"
 
-let TIMER_WIDTH     = hdpxi(60)
-let TIMER_HEIGHT    = hdpxi(18)
-let TIMER_FONT_SIZE = hdpx(16)
+const TIMER_WIDTH     = hdpxi(60)
+const TIMER_HEIGHT    = hdpxi(18)
+const TIMER_FONT_SIZE = hdpx(16)
 let TIMER_FONT      = Fonts.small_text_hud
 
-let KILLS_TO_WIN_WIDTH     = hdpxi(48)
-let KILLS_TO_WIN_HEIGHT    = hdpxi(30)
+const KILLS_TO_WIN_WIDTH     = hdpxi(48)
+const KILLS_TO_WIN_HEIGHT    = hdpxi(30)
 let KILLS_TO_WIN_FONT      = Fonts.big_text_hud
-let KILLS_TO_WIN_FONT_SIZE = hdpx(18)
+const KILLS_TO_WIN_FONT_SIZE = hdpx(18)
 
-let TEAM_SCORE_INDICATOR_WIDTH  = hdpxi(40)
-let TEAM_SCORE_INDICATOR_HEIGHT = hdpxi(22)
-let TEAM_SCORE_FONT_SIZE        = hdpx(24)
+const TEAM_SCORE_INDICATOR_WIDTH  = hdpxi(40)
+const TEAM_SCORE_INDICATOR_HEIGHT = hdpxi(22)
+const TEAM_SCORE_FONT_SIZE        = hdpx(24)
 let TEAM_SCORE_FONT             = Fonts.big_text_hud
 
-let CAPTURE_POINT_SIZE          = hdpxi(23)
-let CAPTURE_POINT_OFFSET        = hdpxi(37)
-let CAPTURE_POINT_ACTIVE_SCALE  = 1.2
-let CAPTURE_POINT_ICON_SIZE     = hdpxi(23 * CAPTURE_POINT_ACTIVE_SCALE)
-let CAPTURE_POINT_ANIM_DURATION = 0.25
+const CAPTURE_POINT_SIZE          = hdpxi(23)
+const CAPTURE_POINT_OFFSET        = hdpxi(37)
+const CAPTURE_POINT_ACTIVE_SCALE  = 1.2
+const CAPTURE_POINT_ICON_SIZE     = hdpxi(23 * CAPTURE_POINT_ACTIVE_SCALE)
+const CAPTURE_POINT_ANIM_DURATION = 0.25
 let CAPTURE_POINT_ANIM_EASING   = InOutCubic
 
 let fontFx = {
@@ -42,14 +42,14 @@ let fontFx = {
 function mkTeamScoreBg(params) {
   let { colorW, mainAnimTrigger, bgRotate = 0, animDirectionMult = 1} = params
   return {
-    size = flex()
+    size = FLEX
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     clipChildren = true
     children = [
       @() {
         watch = colorW
-        size = [TEAM_SCORE_INDICATOR_WIDTH, TEAM_SCORE_INDICATOR_HEIGHT]
+        size = const [TEAM_SCORE_INDICATOR_WIDTH, TEAM_SCORE_INDICATOR_HEIGHT]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#team_score_bg.svg:{TEAM_SCORE_INDICATOR_WIDTH}:{TEAM_SCORE_INDICATOR_HEIGHT}")
         color = colorW.get()
@@ -67,7 +67,7 @@ function mkTeamScoreComp(params) {
   let { hudScoreW, mainAnimTrigger, ovr = {} } = params
 
   return {
-    size = [TEAM_SCORE_INDICATOR_WIDTH, TEAM_SCORE_INDICATOR_HEIGHT]
+    size = const [TEAM_SCORE_INDICATOR_WIDTH, TEAM_SCORE_INDICATOR_HEIGHT]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     children = [
@@ -96,12 +96,12 @@ function mkTeamCapPoint(idxW, allyColorW, enemyColorW, isRightPos = false) {
   return @() {
     watch = zoneStateW
     pos = [isRightPos ? CAPTURE_POINT_OFFSET : -CAPTURE_POINT_OFFSET, 0]
-    size = [CAPTURE_POINT_SIZE, CAPTURE_POINT_SIZE]
+    size = const [CAPTURE_POINT_SIZE, CAPTURE_POINT_SIZE]
 
     children = [
       @() {
         watch = zoneStateW
-        size = flex()
+        size = FLEX
         opacity = zoneStateW.get()?.watchedHeroInZone ? 1 : 0
         rendObj = ROBJ_VECTOR_CANVAS
         commands = [
@@ -119,7 +119,7 @@ function mkTeamCapPoint(idxW, allyColorW, enemyColorW, isRightPos = false) {
       }
       @() {
         watch = [zoneStateW, zoneColorW]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_PROGRESS_CIRCULAR
         fValue = 0.01 * (zoneStateW.get()?.mpTimeX100 ?? 0)
         fgColor = zoneColorW.get()
@@ -129,7 +129,7 @@ function mkTeamCapPoint(idxW, allyColorW, enemyColorW, isRightPos = false) {
       }
       @() {
         watch =[idxW, zoneStateW]
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_IMAGE
         fValue = 0.01 * (zoneStateW.get()?.mpTimeX100 ?? 0)
         image = getZoneIcon(idxW.get())
@@ -154,7 +154,7 @@ function mkTimerComp() {
     valign = ALIGN_CENTER
     children = [
       {
-        size = [TIMER_WIDTH, TIMER_HEIGHT]
+        size = const [TIMER_WIDTH, TIMER_HEIGHT]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#timer_bg.svg:{TIMER_WIDTH}:{TIMER_HEIGHT}:P")
         keepAspect = true
@@ -179,7 +179,7 @@ function mkKillsToWinCountComp() {
     valign = ALIGN_CENTER
     children = [
       {
-        size = [KILLS_TO_WIN_WIDTH, KILLS_TO_WIN_HEIGHT]
+        size = const [KILLS_TO_WIN_WIDTH, KILLS_TO_WIN_HEIGHT]
         rendObj = ROBJ_IMAGE
         image = Picture($"ui/gameuiskin#total_score_bg.svg:{KILLS_TO_WIN_WIDTH}:{KILLS_TO_WIN_HEIGHT}:P")
         keepAspect = true
@@ -210,8 +210,8 @@ return function mkBattleHud() {
   let allyZoneIdxW = getAllyCapZoneIdxW()
   let enemyZoneIdxW = getEnemyCapZoneIdxW()
 
-  allyTeamScoreW.subscribe(@(score) score > 0 && anim_start(ANIM_TRIGGER_ALLY))
-  enemyTeamScoreW.subscribe(@(score) score > 0 && anim_start(ANIM_TRIGGER_ENEMY))
+  let onAllyScore = @(score) score > 0 && anim_start(ANIM_TRIGGER_ALLY)
+  let onEnemyScore = @(score) score > 0 && anim_start(ANIM_TRIGGER_ENEMY)
 
   return {
     key = {}
@@ -252,7 +252,15 @@ return function mkBattleHud() {
       }
     ]
 
-    onAttach = startPollingZonesState
-    onDetach = stopPollingZonesState
+    onAttach = function() {
+      allyTeamScoreW.subscribe(onAllyScore)
+      enemyTeamScoreW.subscribe(onEnemyScore)
+      startPollingZonesState()
+    }
+    onDetach = function() {
+      allyTeamScoreW.unsubscribe(onAllyScore)
+      enemyTeamScoreW.unsubscribe(onEnemyScore)
+      stopPollingZonesState()
+    }
   }
 }

@@ -1,19 +1,19 @@
+import "personalOffers" as personalOffers
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "json" import parse_json
+from "dagor.workcycle" import setTimeout, clearTimer
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import shop_is_aircraft_purchased
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let personalOffers = require("personalOffers")
-let DataBlock = require("DataBlock")
-let { parse_json } = require("json")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { get_charserver_time_sec } = require("chard")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
@@ -223,7 +223,7 @@ function getNotExistedAndExternalOfferItems(currentOfferData) {
 
     if(contentType == "item") {
       let { item } = offer
-      if(type(item) == "string") {
+      if(item instanceof String) {
         if(!findItemById(item))
           notExistedItems.append($"item:{item}")
       }

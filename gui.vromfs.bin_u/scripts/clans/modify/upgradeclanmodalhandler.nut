@@ -1,10 +1,11 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
 let { zero_money } = require("%scripts/money.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ModifyClanModalHandler } = require("%scripts/clans/modify/modifyClanModalHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
@@ -14,7 +15,7 @@ let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { clanTagDecoratorFuncs } = require("%scripts/clans/clanTagDecorator.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
-gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
+let UpgradeClanModalHandler = class (ModifyClanModalHandler) {
   owner = null
 
   function createView() {
@@ -90,9 +91,10 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
     return clanTagDecoratorFuncs.getDecoratorsForClanType(this.newClanType)
   }
 }
+register_gui_handler("UpgradeClanModalHandler", UpgradeClanModalHandler)
 
 let openUpgradeClanWnd = @(clanData, owner) loadHandler(
-  gui_handlers.UpgradeClanModalHandler, { clanData, owner })
+  UpgradeClanModalHandler, { clanData, owner })
 
 return {
   openUpgradeClanWnd

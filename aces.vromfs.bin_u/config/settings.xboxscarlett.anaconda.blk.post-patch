@@ -1,6 +1,6 @@
 "@override:video" {
   resolution:t="3840x2160"
-  upscaleQualityFor4k:t="ultra_quality"
+  levelUpscaleQualityFor4k:t="ultra_quality"
 }
 
 "@override:graphics" {
@@ -29,7 +29,7 @@ dx12{
   onlyPreallocatedHeaps:b=no
   preallocHeap { sizeMB:i=1024; }
   preallocHeap { sizeMB:i=32;   cpuCached:b=yes; }
-  preallocHeap { sizeMB:i=4;    gpuExec:b=yes; }
+  preallocHeap { sizeMB:i=8;    gpuExec:b=yes; }
   renderMemoryLimitMb:i=9006
   additionalAsanSystemMemoryMb:i=4096
 }

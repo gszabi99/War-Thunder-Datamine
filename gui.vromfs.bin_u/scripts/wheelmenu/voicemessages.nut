@@ -1,22 +1,24 @@
+from "unit" import get_player_unit_name
+from "string" import format
+from "mission" import get_game_mode, get_game_type
+from "scriptRespondent" import registerRespondent
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, on_voice_message_button, get_option_favorite_voice_message
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { get_player_unit_name } = require("unit")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { format } = require("string")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { get_game_mode, get_game_type } = require("mission")
 let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
-let { registerRespondent } = require("scriptRespondent")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
@@ -148,16 +150,16 @@ function guiStartVoicemenu(config) {
     axisEnabled  = true
   }
 
-  local handler = handlersManager.findHandlerClassInScene(gui_handlers.voiceMenuHandler)
+  local handler = handlersManager.findHandlerClassInScene(get_gui_handler("voiceMenuHandler"))
   if (handler)
     handler.reinitScreen(params)
   else
-    handler = handlersManager.loadHandler(gui_handlers.voiceMenuHandler, params)
+    handler = handlersManager.loadHandler(get_gui_handler("voiceMenuHandler"), params)
   return handler
 }
 
 function closeCurVoicemenu() {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.voiceMenuHandler)
+  let handler = handlersManager.findHandlerClassInScene(get_gui_handler("voiceMenuHandler"))
   if (handler && handler.isActive)
     handler.showScene(false)
 }
@@ -217,15 +219,15 @@ function showVoiceMessageList(show, category, squad, targetName) {
         break
 
       let messageIndex = get_option_favorite_voice_message(i)
-      let record = getTblValue(messageIndex, voiceMessageNames)
+      let record = voiceMessageNames?[messageIndex]
       if (!record)
         continue
 
       if (
-          (getTblValue("haveTarget", record, false) && targetName == "")
-          || (getTblValue("forAircraft", record, false) && (heroIsTank || heroIsHuman))
-          || (getTblValue("forTank", record, false) && !heroIsTank)
-          || (getTblValue("forHuman", record, false) && !heroIsHuman)
+          ((record?.haveTarget ?? false) && targetName == "")
+          || ((record?.forAircraft ?? false) && (heroIsTank || heroIsHuman))
+          || ((record?.forTank ?? false) && !heroIsTank)
+          || ((record?.forHuman ?? false) && !heroIsHuman)
          ) {
         menu.append({})
         continue

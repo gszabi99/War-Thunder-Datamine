@@ -1,6 +1,5 @@
+from "eventbus" import eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
-
-let { eventbus_subscribe } = require("eventbus")
 
 let killLogState = mkWatched(persist, "killLogState", [])
 

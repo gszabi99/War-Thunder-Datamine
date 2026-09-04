@@ -85,9 +85,9 @@ root {
 
                   <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
                   total-input-transparent:t='yes'
-                  on_pushed:t='::gcb.delayedTooltipPush'
-                  on_hold_start:t='::gcb.delayedTooltipHoldStart'
-                  on_hold_stop:t='::gcb.delayedTooltipHoldStop'
+                  on_pushed:t='gcb.delayedTooltipPush'
+                  on_hold_start:t='gcb.delayedTooltipHoldStart'
+                  on_hold_stop:t='gcb.delayedTooltipHoldStop'
 
                   img {
                     pos:t='20%w, ph/2-h/2'
@@ -143,9 +143,9 @@ root {
                   on_select:t='onUnitClick'
                   move-only-hover:t='yes'
 
-                  on_pushed:t='::gcb.delayedTooltipListPush'
-                  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-                  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+                  on_pushed:t='gcb.delayedTooltipListPush'
+                  on_hold_start:t='gcb.delayedTooltipListHoldStart'
+                  on_hold_stop:t='gcb.delayedTooltipListHoldStop'
 
                   <<@plateMarkup>>
                 }

@@ -1,11 +1,11 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
+from "app" import get_game_version_str
 from "%scripts/dagui_library.nut" import *
 
-let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { Cost, Money } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
-let { format } = require("string")
-let { get_game_version_str } = require("app")
+let { removeTextareaTags } = require("%scripts/sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function setDoubleTextToButton(nestObj, firstBtnId, firstText, secondText = null, textBlock = null) {
@@ -50,7 +50,7 @@ function setColoredDoubleTextToButton(nestObj, btnId, coloredText) {
 
 function placePriceTextToButton(nestObj, btnId, localizedText, arg1 = 0, arg2 = 0, fullCost = null, viewParams = {}) {
   let { textColor = "", priceTextColor = "" }  = viewParams
-  let cost = u.isMoney(arg1) ? arg1 : Cost(arg1, arg2)
+  let cost = u.isOfClass(arg1, Money) ? arg1 : Cost(arg1, arg2)
   let needShowPrice = !cost.isZero()
   let needShowDiscount = needShowPrice && fullCost != null && (fullCost.gold > cost.gold || fullCost.wp > cost.wp)
   let priceFormat = needShowPrice ? " ({0})" : ""

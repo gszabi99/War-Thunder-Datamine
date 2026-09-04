@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
 let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
 let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
@@ -62,7 +62,7 @@ function tryShowSteamItemsNotificationOnUpdate(items = []) {
   let newItems = items
   let handler = handlersManager.getActiveBaseHandler()
   let handlerClass = handler?.getclass()
-  if (handler?.isValid() && handlerClass == gui_handlers.MainMenu)
+  if (handler?.isValid() && handlerClass == MainMenu)
     handler.doWhenActive(@() tryShowSteamItemsNotification(newItems))
 }
 

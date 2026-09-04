@@ -2,7 +2,6 @@ module shell_fx_common shared
 
 require ecs
 require ecs.safe
-require DagorSystem
 require PhysMat
 require Dacoll
 

@@ -1,6 +1,6 @@
 import "%sqstd/ecs.nut" as ecs
-let { EventWindowActivated, EventWindowDeactivated } = require("os.window")
-let { eventbus_send } = require("eventbus")
+from "os.window" import EventWindowActivated, EventWindowDeactivated
+from "eventbus" import eventbus_send
 
 ecs.register_es("os_window_activation_tracker",
   {

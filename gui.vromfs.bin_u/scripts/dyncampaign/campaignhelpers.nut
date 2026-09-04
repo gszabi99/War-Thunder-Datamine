@@ -1,7 +1,6 @@
+import "DataBlock" as DataBlock
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_library.nut" import *
-
-let { get_game_settings_blk } = require("blkGetters")
-let DataBlock = require("DataBlock")
 
 
 function isDynamicCountryAllowed(country) {

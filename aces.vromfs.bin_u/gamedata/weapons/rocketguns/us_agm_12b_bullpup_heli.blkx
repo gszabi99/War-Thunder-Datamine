@@ -1,6 +1,10 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "us_agm_12b_bullpup_rocket",
   "bombCart": "missile_cart_mid",
   "offsetForDemonstration": [
@@ -8,12 +12,26 @@
     0.04,
     0.0
   ],
-  "helicopterGroup": 2,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "tags": {},
   "rocket": {
+    "dragCx": 0.02,
     "bulletName": "us_agm_12b_bullpup",
+    "iconType": "missile_air_to_uni",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "gunnerFilterMaxDistMult": 0.3,
+    "useStartSpeed": [
+      true,
+      true
+    ],
+    "endSpeed": [
+      2000.0,
+      0.0
+    ],
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.298,
     "length": 3.12,
     "CxK": 1.25,
@@ -27,17 +45,14 @@
     "force": 53400.0,
     "fireDelay": 0.0,
     "timeLife": 30.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 455.0,
-    "endSpeed": 0.0,
     "maxDistance": 12000.0,
     "minDistance": 2000.0,
     "guaranteedRange": 8000.0,
     "autoAimingMaxAngle": 1.0,
     "guidanceType": "saclos",
     "launchZoneDistance": 100.0,
-    "maxDeltaAngle": 3.5,
     "explosiveType": "comp_h6",
     "explosiveMass": 43.0,
     "normalizationPreset": "heat",
@@ -57,50 +72,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
+    "hitPowerMult": 400.0,
     "shellCollision": true,
-    "dragCx": 0.02,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
     "distanceFuse": false,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
     "explosionEffect": "explosion_midair_rocket_medium",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -225,6 +201,11 @@
         1.0
       ]
     },
+    "damage": {
+      "explosive": {
+        "offset": 0.75
+      }
+    },
     "DamageParts": {
       "body": {
         "hp": 50.0,
@@ -308,11 +289,6 @@
             "fHitCritical": true
           }
         ]
-      }
-    },
-    "damage": {
-      "explosive": {
-        "offset": 0.5
       }
     },
     "explosionSmoke": {

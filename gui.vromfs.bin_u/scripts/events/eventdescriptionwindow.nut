@@ -1,14 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { create_event_description } = require("%scripts/events/eventDescription.nut")
 
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 
-gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("EventDescriptionWindow", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   event = null
 
@@ -36,4 +36,4 @@ gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   function checkEvent(ev) {
     return ev != null
   }
-}
+})

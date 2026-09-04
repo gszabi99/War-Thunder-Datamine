@@ -1,5 +1,5 @@
+from "%sqstd/platform.nut" import is_sony
 from "%rGui/globals/ui_library.nut" import *
-let { is_sony } = require("%sqstd/platform.nut")
 
 let dargJKeysToImage = {
   "J:D.Up"          : "dpad_up",

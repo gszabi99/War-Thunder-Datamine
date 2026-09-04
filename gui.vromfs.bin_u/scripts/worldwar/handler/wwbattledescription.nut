@@ -1,38 +1,44 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import get_mp_team_by_team_name
+from "guiTacticalMap" import tacticalMapSetTeamForBriefing
+from "worldwar" import wwGetOperationId, wwGetPlayerSide
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { tacticalMapSetTeamForBriefing } = require("guiTacticalMap")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { WwSquadList } = require("%scripts/worldWar/handler/wwSquadList.nut")
+let { WwQueueInfo } = require("%scripts/worldWar/handler/wwQueueInfo.nut")
+let { WwMyClanSquadInviteModal } = require("%scripts/worldWar/handler/wwMyClanSquadInviteModal.nut")
+let { WwJoinBattleCondition } = require("%scripts/worldWar/handler/wwJoinBattleCondition.nut")
+let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
+let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let DataBlock  = require("DataBlock")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let wwHelpSlotbarGroupsModal = require("%scripts/worldWar/handler/wwHelpSlotbarGroupsModal.nut")
 let { getBestPresetData, generatePreset } = require("%scripts/slotbar/generatePreset.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getOperationById, getMapByName
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getOperationById, getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let getLockedCountryData = require("%scripts/worldWar/inOperation/wwGetSlotbarLockedCountryFunc.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarStateData.nut")
-let { get_mp_team_by_team_name } = require("%appGlobals/ranks_common_shared.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
@@ -42,8 +48,7 @@ let { getBattles, getBattleById } = require("%scripts/worldWar/worldWarState.nut
 let { getOppositeSide, getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let WwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { tryToJoin, getCantJoinReasonData, getBattleStatusWithCanJoinText, isAutoBattle,
-  isStillInOperation } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+let { tryToJoin, getCantJoinReasonData, getBattleStatusWithCanJoinText, isAutoBattle, isStillInOperation } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 
@@ -64,7 +69,7 @@ local DEFAULT_BATTLE_ITEM_CONFIG = {
   isHidden = true
 }
 
-gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwBattleDescription = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/battleDescriptionWindow.tpl"
@@ -113,7 +118,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    loadHandler(gui_handlers.WwBattleDescription, {
+    loadHandler(get_gui_handler("WwBattleDescription"), {
         curBattleInList = battle
         operationBattle = WwBattle()
       })
@@ -153,7 +158,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(queueInfoObj))
       return
 
-    let handler = loadHandler(gui_handlers.WwQueueInfo,
+    let handler = loadHandler(WwQueueInfo,
       { scene = queueInfoObj })
     this.registerSubHandler(handler)
     this.queueInfoHandlerWeak = handler.weakref()
@@ -181,7 +186,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(squadInfoObj))
       return
 
-    let handler = loadHandler(gui_handlers.WwSquadList,
+    let handler = loadHandler(WwSquadList,
       { scene = squadInfoObj })
     this.registerSubHandler(handler)
     this.squadListHandlerWeak = handler.weakref()
@@ -437,7 +442,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   createSlotbarHandler = @(params) this.hasSlotbarByUnitsGroups
     ? slotbarWidget.create(params)
-    : gui_handlers.SlotbarWidget.create(params)
+    : SlotbarWidget.create(params)
 
   function getGameModeNameText() {
     return WwBattleView(this.operationBattle, {
@@ -795,7 +800,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenSquadsListModal(_obj) {
-    gui_handlers.WwMyClanSquadInviteModal.open(
+    WwMyClanSquadInviteModal.open(
       wwGetOperationId(), this.operationBattle.id, profileCountrySq.get())
   }
 
@@ -868,7 +873,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let side = obj?.isPlayerSide == "yes" ?
       this.getPlayerSide() : getOppositeSide(this.getPlayerSide())
 
-    loadHandler(gui_handlers.WwJoinBattleCondition, {
+    loadHandler(WwJoinBattleCondition, {
       battle = this.operationBattle
       side = side
     })
@@ -927,7 +932,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function tryToSetCrewsReadyFlag() {
     let warningData = this.operationBattle.getWarningReasonData(this.getPlayerSide())
     if (warningData.needMsgBox && !loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
-      loadHandler(gui_handlers.SkipableMsgBox,
+      loadHandler(SkipableMsgBox,
         {
           parentHandler = this
           message = u.isEmpty(warningData.fullWarningText)
@@ -1184,7 +1189,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -1280,3 +1285,6 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return [ "autorefill", "aircraft", "weapons", "sec_weapons", "crew", "info", "repair" ]
   }
 }
+register_gui_handler("WwBattleDescription", WwBattleDescription)
+
+return { WwBattleDescription }

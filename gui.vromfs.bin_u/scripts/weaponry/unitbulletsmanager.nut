@@ -1,17 +1,16 @@
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "string" import format
+from "guiOptions" import get_gui_option, getGuiOptionsMode
+from "chardResearch" import shopIsModificationPurchased
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { format } = require("string")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
-let stdMath = require("%sqstd/math.nut")
 let { AMMO, bulletsAmountState, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
-let { getBulletsSetData, getLinkedGunIdx, getOptionsBulletsList, getBulletsGroupCount,
-  getActiveBulletsGroupInt, getBulletsInfoForPrimaryGuns, calcBulletLimits
-} = require("%scripts/weaponry/bulletsInfo.nut")
+let { getBulletsSetData, getLinkedGunIdx, getOptionsBulletsList, getBulletsGroupCount, getActiveBulletsGroupInt, getBulletsInfoForPrimaryGuns, calcBulletLimits } = require("%scripts/weaponry/bulletsInfo.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
 let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
@@ -41,7 +40,7 @@ let UnitBulletsManager = class {
   }
 
   function setUnit(v_unit, forceUpdate = false) {
-    if (type(v_unit) == "string")
+    if (v_unit instanceof String)
       v_unit = getAircraftByName(v_unit)
     if (this.unit == v_unit && !forceUpdate)
       return
@@ -58,7 +57,7 @@ let UnitBulletsManager = class {
   }
 
   function getBulletGroupByIndex(groupIdx) {
-    return getTblValue(groupIdx, this.getBulletsGroups())
+    return this.getBulletsGroups()?[groupIdx]
   }
 
   function getBulletGroupBySelectedMod(mod) {
@@ -76,7 +75,7 @@ let UnitBulletsManager = class {
     ? this.gunsInfo?[linkedIdx].__update({ total = maxToRespawn }) : this.gunsInfo?[linkedIdx]
 
   function getUnallocatedBulletCount(bulGroup) {
-    return getTblValue("unallocated", bulGroup.gunInfo, 0)
+    return (bulGroup.gunInfo?.unallocated ?? 0)
   }
 
   
@@ -162,8 +161,7 @@ let UnitBulletsManager = class {
   function checkBulletsCountReady() {
     let res = {
       status = bulletsAmountState.READY
-      unallocated = 0
-      required = 0
+      lowAmountWeapons = [] 
     }
     if (!this.gunsInfo.len())
       return res
@@ -185,13 +183,14 @@ let UnitBulletsManager = class {
       else
         status = bulletsAmountState.LOW_AMOUNT
 
-      if (status <= res.status)
-        continue
+      if (status > res.status)
+        res.status = status
 
-      res.status = status
-      res.unallocated = unallocated * gInfo.guns
-      if (status == bulletsAmountState.LOW_AMOUNT)
-        res.required = min(minBullets, totalBullets) * gInfo.guns
+      if (status == bulletsAmountState.LOW_AMOUNT) {
+        let allocated = totalBullets - unallocated
+        let missing = (min(minBullets, totalBullets) - allocated) * gInfo.guns
+        res.lowAmountWeapons.append({ weapName = gInfo.weapName, missing = missing })
+      }
     }
     return res
   }
@@ -210,7 +209,7 @@ let UnitBulletsManager = class {
   }
 
   function openChooseBulletsWnd(groupIdx, itemParams = null, alignObj = null, align = "bottom") {
-    let bulGroup = getTblValue(groupIdx, this.getBulletsGroups())
+    let bulGroup = this.getBulletsGroups()?[groupIdx]
     if (!this.unit || !bulGroup)
       return
 
@@ -399,7 +398,7 @@ let UnitBulletsManager = class {
     foreach (gIdx, bulGroup in this.bulGroups) {
       if (!bulGroup.active)
         continue
-      let list = getTblValue(bulGroup.getGunIdx(), selectedList)
+      let list = selectedList?[bulGroup.getGunIdx()]
       if (!list)
         continue
 
@@ -493,7 +492,7 @@ let UnitBulletsManager = class {
   }
 
   function onEventUnitWeaponChanged(p) {
-    if (this.unit && this.unit.name == getTblValue("unitName", p))
+    if (this.unit && this.unit.name == p?.unitName)
       this.updateGroupsActiveMask()
   }
 

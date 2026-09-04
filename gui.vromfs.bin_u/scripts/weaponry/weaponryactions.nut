@@ -1,21 +1,21 @@
+import "DataBlock" as DataBlock
+from "guiOptions" import set_unit_option, set_gui_option
+from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_natives.nut" import shop_enable_modifications
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
 
-let DataBlock = require("DataBlock")
-let { set_unit_option, set_gui_option } = require("guiOptions")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0, USEROPT_BULLETS_WEAPON0
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0, USEROPT_BULLETS_WEAPON0 } = require("%scripts/options/optionsExtNames.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 
 function open_weapons_for_unit(unit, params = {}) {
   if (!("name" in unit))
     return
   unitNameForWeapons.set(unit.name)
-  handlersManager.loadHandler(gui_handlers.WeaponsModalHandler, params)
+  handlersManager.loadHandler(get_gui_handler("WeaponsModalHandler"), params)
 }
 
 function enable_modifications(unitName, modNames, enable) {

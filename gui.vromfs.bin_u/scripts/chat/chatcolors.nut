@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { userName } = require("%scripts/user/profileStates.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let chatColors = freeze({ 

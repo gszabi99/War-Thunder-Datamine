@@ -1,7 +1,6 @@
+from "%rGui/shipState.nut" import speed, portSideMachine, sideboardSideMachine, stopping
+from "%rGui/options/optionsMeasureUnits.nut" import isInitializedMeasureUnits, measureUnitsNames
 from "%rGui/globals/ui_library.nut" import *
-
-let { speed, portSideMachine, sideboardSideMachine, stopping } = require("%rGui/shipState.nut")
-let { isInitializedMeasureUnits, measureUnitsNames } = require("%rGui/options/optionsMeasureUnits.nut")
 
 let machineDirectionLoc = [
   loc("HUD/ENGINE_REV_BACK_SHORT")

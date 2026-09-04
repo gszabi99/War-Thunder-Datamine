@@ -1,13 +1,16 @@
+import "%sqstd/math.nut" as stdMath
+from "math" import ceil
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_child, adjustWindowSizeByConfig, countSizeInItems } = require("%sqDagui/daguiUtil.nut")
-let { ceil } = require("math")
+let { move_mouse_on_child, adjustWindowSizeByConfig, countSizeInItems } = require("%scripts/sqDagui/daguiUtil.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
-let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { toggleUnlockFav, initUnlockFavObj, toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
@@ -28,7 +31,7 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 function gui_choose_image(applyFunc, owner, scene, onCloseFunc) {
-  handlersManager.loadHandler(gui_handlers.ChooseImage,
+  handlersManager.loadHandler(get_gui_handler("ChooseImage"),
     { applyFunc, owner, scene, onCloseFunc }
   )
 }
@@ -67,7 +70,7 @@ let menuItems = [
   }
 ]
 
-gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
+let ChooseImage = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/chooseImage/chooseImage.blk"
   owner = null
@@ -482,6 +485,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   getSelectedIndex = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].currentIndex
   setSelectedIndex = @(value, imageType = null) this.currentListValues[imageType ?? this.currentListId].currentIndex = value
 }
+register_gui_handler("ChooseImage", ChooseImage)
 
 return {
   gui_choose_image

@@ -1,16 +1,18 @@
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView, getEntitlementLayerIconsConfig } = require("%scripts/onlineShop/entitlementView.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
 
 const MAX_REWARDS_SHOW_IN_ENTITLEMENT = 9
 
-gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
+let EntitlementRewardWnd = class (trophyRewardWnd) {
   wndType = handlerType.MODAL
 
   entitlementConfig = null
@@ -106,6 +108,7 @@ gui_handlers.EntitlementRewardWnd <- class (gui_handlers.trophyRewardWnd) {
   notifyTrophyVisible = @() null
   updateRewardItem = @() null
 }
+register_gui_handler("EntitlementRewardWnd", EntitlementRewardWnd)
 
 function showEntitlement(entitlementId, params = {}) {
   let config = getEntitlementConfig(entitlementId)
@@ -114,7 +117,7 @@ function showEntitlement(entitlementId, params = {}) {
     return
   }
 
-  handlersManager.loadHandler(gui_handlers.EntitlementRewardWnd, {
+  handlersManager.loadHandler(EntitlementRewardWnd, {
     entitlementConfig = config
     viewParams = params
   })

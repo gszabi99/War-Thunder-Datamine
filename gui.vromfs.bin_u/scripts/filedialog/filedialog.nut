@@ -1,25 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqstd/platform.nut" import is_windows, platformId
+from "string" import format
+from "math" import abs
+from "dagor.fs" import find_files
+from "%sqstd/string.nut" import lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith
 from "%scripts/dagui_natives.nut" import get_exe_dir, get_save_load_path
 from "%scripts/dagui_library.nut" import *
 
-let { is_windows, platformId } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { format } = require("string")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let stdpath = require("%sqstd/path.nut")
-let { abs } = require("math")
-let { find_files } = require("dagor.fs")
-let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
-let { select_editbox, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { select_editbox, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
-gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
+let FileDialog = class (BaseGuiHandlerWT) {
   static wndType = handlerType.MODAL
   static sceneBlkName = "%gui/fileDialog/fileDialog.blk"
 
@@ -143,10 +143,10 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     name = {
       header = "#filesystem/fileName"
       getValue = function(file, _fileDialog) {
-        return getTblValue("name", file)
+        return file?.name
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
+        return get_gui_handler("FileDialog").compareStringOrNull(lhs, rhs)
       }
       width = "fw"
       getView = function(value) {
@@ -162,10 +162,10 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     mTime = {
       header = "#filesystem/fileMTime"
       getValue = function(file, _fileDialog) {
-        return getTblValue("modifyTime", file)
+        return file?.modifyTime
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
+        return get_gui_handler("FileDialog").compareIntOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -187,15 +187,15 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     directory = {
       header = ""
       getValue = function(file, _fileDialog) {
-        return getTblValue("isDirectory", file, false)
+        return (file?.isDirectory ?? false)
       }
       comparator = function(lhs, rhs) {
         return (lhs ? 1 : 0) - (rhs ? 1 : 0)
       }
       width = "h"
       getView = function(value) {
-        let fileImage = "#ui/gameuiskin#btn_clear_all.svg"
-        let dirImage = "#ui/gameuiskin#btn_load_from_file.svg"
+        const fileImage = "#ui/gameuiskin#btn_clear_all.svg"
+        const dirImage = "#ui/gameuiskin#btn_load_from_file.svg"
         return {
           text = ""
           tooltip = ""
@@ -209,7 +209,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     extension = {
       header = "#filesystem/fileExtension"
       getValue = function(file, _fileDialog) {
-        if (getTblValue("isDirectory", file, false))
+        if ((file?.isDirectory ?? false))
           return "."
 
         let filename = file?.name ?? ""
@@ -220,7 +220,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         return utf8ToUpper(filename.slice(fileExtIdx))
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareStringOrNull(lhs, rhs)
+        return get_gui_handler("FileDialog").compareStringOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -244,10 +244,10 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     size = {
       header = "#filesystem/fileSize"
       getValue = function(file, _fileDialog) {
-        return getTblValue("size", file)
+        return file?.size
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareIntOrNull(lhs, rhs)
+        return get_gui_handler("FileDialog").compareIntOrNull(lhs, rhs)
       }
       width = "0.18@sf"
       getView = function(value) {
@@ -280,7 +280,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
       comparator = function(lhs, rhs) {
-        return gui_handlers.FileDialog.compareObjOrNull(lhs, rhs) ||
+        return get_gui_handler("FileDialog").compareObjOrNull(lhs, rhs) ||
           (lhs != null ? lhs.column.comparator(lhs.value, rhs.value) * lhs.multiplier : 0)
       }
     }
@@ -309,7 +309,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
         return null
       let basename = stdpath.fileName(path)
       local files = find_files(path, { maxCount = 1 })
-      if (files.len() > 0 && getTblValue("name", files[0]) == basename)
+      if (files.len() > 0 && files[0]?.name == basename)
         return files[0]
 
       if (files.len() == 0)
@@ -320,11 +320,11 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     getFileName = function(file) {
-      return getTblValue("name", file, "")
+      return (file?.name ?? "")
     }
 
     getFileFullPath = function(file) {
-      return getTblValue("fullPath", file, "")
+      return (file?.fullPath ?? "")
     }
 
     isExists = function(file) {
@@ -332,7 +332,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     isDirectory = function(file) {
-      return file != null && getTblValue("isDirectory", file, false)
+      return file != null && (file?.isDirectory ?? false)
     }
 
     getNavElements = function() {
@@ -520,7 +520,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     else {
       this.updateSelectedFileName()
 
-      let fullPath = getTblValue(this.fileName, this.cachedFileFullPathByFileName) ||
+      let fullPath = this.cachedFileFullPathByFileName?[this.fileName] ||
         stdpath.join(this.dirPath, this.fileName)
       if (fullPath != "")
         this.openFileOrDir(fullPath)
@@ -669,7 +669,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
 
         if (u.isString(columnInfo.column)) {
           let columnName = columnInfo.column
-          this.columns[columnName] <- getTblValue(columnName, this.columns, {})
+          this.columns[columnName] <- (this.columns?[columnName] ?? {})
           columnInfo.column = this.columns[columnName]
         }
       }
@@ -746,8 +746,8 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let settingName = $"{this.FILEDIALOG_PATH_SETTING_ID}/{this.pathTag}"
     let loadBlk = loadLocalAccountSettings(settingName)
-    this.dirPath  = getTblValue("dirPath",  loadBlk, this.dirPath)
-    this.fileName = getTblValue("fileName", loadBlk, this.fileName)
+    this.dirPath  = (loadBlk?.dirPath ?? this.dirPath)
+    this.fileName = (loadBlk?.fileName ?? this.fileName)
 
     while (!this.isDirectory(this.readFileInfo(this.dirPath))) {
       let parentPath = stdpath.parentPath(this.dirPath)
@@ -883,7 +883,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!fileTableObj)
       return
 
-    let selectedFile = getTblValue(this.dirPath, this.lastSelectedFileByPath, this.fileName)
+    let selectedFile = (this.lastSelectedFileByPath?[this.dirPath] ?? this.fileName)
     if (selectedFile in this.cachedTableRowIdxByFileName) {
       let rowIdx = this.cachedTableRowIdxByFileName[selectedFile]
       if (rowIdx >= 0 && rowIdx < fileTableObj.childrenCount())
@@ -1185,11 +1185,11 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (columnSource in [this.columnSortOrder, this.visibleColumns])
       foreach (sortInfo in columnSource) {
         let column = sortInfo.column
-        let lhsValue = getTblValue(column.name, lhs, null)
-        let rhsValue = getTblValue(column.name, rhs, null)
+        let lhsValue = lhs?[column.name]
+        let rhsValue = rhs?[column.name]
         let result = column.comparator(lhsValue, rhsValue)
         if (result != 0)
-          return result * (getTblValue("reverse", sortInfo, false) ? -1 : 1)
+          return result * ((sortInfo?.reverse ?? false) ? -1 : 1)
       }
     return 0
   }
@@ -1200,12 +1200,15 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
 
   static function compareStringOrNull(lhs, rhs) {
     return lhs == rhs ? 0
-      : (gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
+      : (get_gui_handler("FileDialog").compareObjOrNull(lhs, rhs)
         || (lhs > rhs ? 1 : lhs < rhs ? -1 : 0))
   }
 
   static function compareIntOrNull(lhs, rhs) {
-    return gui_handlers.FileDialog.compareObjOrNull(lhs, rhs)
+    return get_gui_handler("FileDialog").compareObjOrNull(lhs, rhs)
       || (lhs != null ? lhs - rhs : 0)
   }
 }
+register_gui_handler("FileDialog", FileDialog)
+
+return { FileDialog }

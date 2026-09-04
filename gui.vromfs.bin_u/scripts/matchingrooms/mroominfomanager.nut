@@ -15,7 +15,7 @@ function clearOutdated() {
 
 function getMroomInfo(roomId) {
   clearOutdated()
-  local info = getTblValue(roomId, infoByRoomId)
+  local info = infoByRoomId?[roomId]
   if (info)
     return info
 

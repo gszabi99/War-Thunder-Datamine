@@ -1,16 +1,17 @@
+import "regexp2" as regexp2
+import "DataBlock" as DataBlock
+from "%sqstd/platform.nut" import is_gdk
+from "string" import format
+from "blkGetters" import get_game_settings_blk
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_rights, clan_get_my_clan_type, ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { is_gdk } = require("%sqstd/platform.nut")
 let { isNamePassing, checkName } = require("%scripts/dirtyWordsFilter.nut")
 let time = require("%scripts/time.nut")
-let { format } = require("string")
-let { get_game_settings_blk } = require("blkGetters")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let regexp2 = require("regexp2")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let DataBlock  = require("DataBlock")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { check_ugc_privilege } = require("%scripts/gdk/permissions.nut")
 

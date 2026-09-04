@@ -3,6 +3,7 @@ require HumanPhys
 require DngHuman
 require %game.input.input_events
 require DagorConsole
+require DagorMath
 
 [es(tag=input, after=human_input_es, before=before_net_phys_sync)]
 def check_hold_breath_stamina_therhold_es(evt : UpdateStageUpdateInput;

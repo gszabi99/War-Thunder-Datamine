@@ -1,25 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
+from "math" import fabs
+from "chard" import get_charserver_time_sec
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
-import "%sqStdLibs/helpers/enums.nut" as enums
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { fabs } = require("math")
 let time = require("%scripts/time.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { wwStatusType, setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwOperationsGroup.nut")
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { get_charserver_time_sec } = require("chard")
 let { getWwSetting } = require("%scripts/worldWar/worldWarCfgState.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
-let { sortUnitsBySortCodeAndCount, loadUnitsFromNameCountTbl, loadWWUnitsFromUnitsArray
-} = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
+let { sortUnitsBySortCodeAndCount, loadUnitsFromNameCountTbl, loadWWUnitsFromUnitsArray } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 
 
@@ -49,7 +48,7 @@ let WwMap = class {
   }
 
   function getChapterId() {
-    return getTblValue("operationChapter", this.data, "")
+    return (this.data?.operationChapter ?? "")
   }
 
   function getChapterText() {
@@ -94,8 +93,8 @@ let WwMap = class {
   }
 
   function getGeoCoordsText() {
-    let latitude  = getTblValue("worldMapLatitude", this.data, 0.0)
-    let longitude = getTblValue("worldMapLongitude", this.data, 0.0)
+    let latitude  = (this.data?.worldMapLatitude ?? 0.0)
+    let longitude = (this.data?.worldMapLongitude ?? 0.0)
 
     let ud = loc("measureUnits/deg")
     let um = loc("measureUnits/degMinutes")
@@ -230,7 +229,7 @@ let WwMap = class {
     this._cachedCountriesByTeams = {}
     let countries = this.getCountryToSideTbl()
     foreach (c in shopCountriesList) {
-      let side = getTblValue(c, countries, SIDE_NONE)
+      let side = (countries?[c] ?? SIDE_NONE)
       if (side == SIDE_NONE)
         continue
 
@@ -282,12 +281,12 @@ let WwMap = class {
   }
 
   function getMinClansCondition() {
-    return getTblValue("minClanCount", this.data, 0)
+    return (this.data?.minClanCount ?? 0)
   }
 
   function getClansConditionText(isSideInfo = false) {
     let minNumb = this.getMinClansCondition()
-    let maxNumb = getTblValue("maxClanCount", this.data, 0)
+    let maxNumb = (this.data?.maxClanCount ?? 0)
     local prefix = isSideInfo ? "side_" : ""
     return minNumb == maxNumb ?
       loc($"worldwar/operation/{prefix}clans_number", { numb = maxNumb }) :
@@ -358,30 +357,22 @@ let WwMap = class {
 
 const MAPS_OUT_OF_DATE_DAYS = 1
 
-enums.enumsAddTypes(wwStatusType, {
-  MAPS = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.MAPS
-    charDataId = "maps"
-    emptyCharData = {}
+setStatusTypeLoadList("MAPS", function loadList() {
+  this.cachedList = {}
+  let data = this.getData()
+  if (!u.isTable(data) || (data.len() <= 0))
+    return
 
-    function loadList() {
-      this.cachedList = {}
-      let data = this.getData()
-      if (!u.isTable(data) || (data.len() <= 0))
-        return
+  foreach (name, mapData in data)
+    this.cachedList[name] <- WwMap(name, mapData)
 
-      foreach (name, mapData in data)
-        this.cachedList[name] <- WwMap(name, mapData)
-
-      let guiScene = get_cur_gui_scene()
-      if (guiScene) 
-        guiScene.performDelayed(this,
-          function() {
-            seenWWMapsAvailable.setDaysToUnseen(MAPS_OUT_OF_DATE_DAYS)
-            seenWWMapsAvailable.onListChanged()
-          })
-    }
-  }
+  let guiScene = get_cur_gui_scene()
+  if (guiScene) 
+    guiScene.performDelayed(this,
+      function() {
+        seenWWMapsAvailable.setDaysToUnseen(MAPS_OUT_OF_DATE_DAYS)
+        seenWWMapsAvailable.onListChanged()
+      })
 })
 
 seenWWMapsAvailable.setListGetter(function() {

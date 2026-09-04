@@ -1,17 +1,20 @@
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "string" import format
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import set_presence_to_player, is_online_available
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { show_obj } = require("%sqDagui/daguiUtil.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
@@ -19,10 +22,9 @@ let { checkQueueAndStart, leaveAllQueuesSilent } = require("%scripts/queue/queue
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
 
-let { getCurrentGameMode, getGameModeEvent
-} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameMode, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
 
-let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
+class AutoStartBattleHandler (BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
   wndGameMode = GM_DOMINATION
   sceneBlkName = "%gui/autoStartBattle.blk"
@@ -196,4 +198,6 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.AutoStartBattleHandler <- AutoStartBattleHandler
+register_gui_handler("AutoStartBattleHandler", AutoStartBattleHandler)
+
+return { AutoStartBattleHandler }

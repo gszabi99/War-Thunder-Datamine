@@ -1,15 +1,17 @@
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { WwMapDescription } = require("%scripts/worldWar/operations/handler/wwMapDescription.nut")
 let { Cost } = require("%scripts/money.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
-gui_handlers.WwQueueDescriptionCustomHandler <- class (gui_handlers.WwMapDescription) {
+register_gui_handler("WwQueueDescriptionCustomHandler", class (WwMapDescription) {
   function mapCountriesToView(side, _amountByCountry, joinedCountries) {
     let countriesByTeams = this.descItem.getCountriesByTeams()
     let countries = countriesByTeams?[side] ?? []
@@ -78,4 +80,4 @@ gui_handlers.WwQueueDescriptionCustomHandler <- class (gui_handlers.WwMapDescrip
     if (isVisible && lastSelectedValue >= 0)
       obj.findObject("countries_container").setValue(lastSelectedValue)
   }
-}
+})

@@ -1,6 +1,6 @@
+from "%sqstd/math.nut" import sqrt, pow
 from "%scripts/dagui_library.nut" import *
 
-let { sqrt, pow } = require("%sqstd/math.nut")
 let { MAX_DEADZONE, MAX_NONLINEARITY, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [

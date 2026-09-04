@@ -1,19 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "tankSightSettings" import set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings, save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset
+  , switch_tank_sight_settings_mode, TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings
+  , reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair, delete_user_tank_sight_preset
+from "dagor.localize" import doesLocTextExist
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { tankSightOptionsMap, tankSightOptionsSections, getSightOptionValueIdx, initTankSightOptions,
-  updateTankSightCrosshairOpts } = require("%scripts/options/tankSightOptions.nut")
+let { tankSightOptionsMap, tankSightOptionsSections, getSightOptionValueIdx, initTankSightOptions, updateTankSightCrosshairOpts } = require("%scripts/options/tankSightOptions.nut")
 let unitOptions = require("%scripts/options/tankSightUnitOptions.nut")
-let { set_tank_sight_setting, set_tank_sight_highlight_obj, load_tank_sight_settings, get_tank_sight_settings,
-  save_tank_sight_settings, get_tank_sight_presets, apply_tank_sight_preset, switch_tank_sight_settings_mode,
-  TSM_SIMPLE, TSM_LIGHT, TSM_NIGHT_VISION, TSM_THERMAL, TSI_CROSSHAIR, on_exit_from_tank_sight_settings,
-  reset_tank_sight_settings, save_user_tank_sight_preset, get_tank_alt_crosshair, delete_user_tank_sight_preset } = require("tankSightSettings")
 let { create_option_combobox } = require("%scripts/options/optionsCtors.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { doesLocTextExist } = require("dagor.localize")
-let { eventbus_subscribe } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { destroyModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
 
@@ -52,7 +52,7 @@ let getPresetsOptions = @() [customPresetOption]
         || p1.sortId <=> p2.sortId)
   )
 
-local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
+local class TankSightSettings (BaseGuiHandlerWT) {
   sceneTplName = "%gui/options/tankSightSettings.tpl"
   widgetsList = [ { widgetId = DargWidgets.TANK_SIGHT_SETTINGS } ]
 
@@ -348,7 +348,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
 
 eventbus_subscribe("TankSightObjectClick", @(tso) broadcastEvent("TankSightObjectClick", tso))
 
-gui_handlers.TankSightSettings <- TankSightSettings
+register_gui_handler("TankSightSettings", TankSightSettings)
 
 return function() {
   initTankSightOptions()

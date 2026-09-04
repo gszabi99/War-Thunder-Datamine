@@ -1,16 +1,17 @@
+from "hudState" import hud_request_hud_ship_debuffs_state, shouldShowSubmarineMinimap
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
-let { hud_request_hud_ship_debuffs_state, shouldShowSubmarineMinimap } = require("hudState")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
-let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
+let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
 
-let HudShip = class (gui_handlers.BaseUnitHud) {
+let HudShip = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudShip.blk"
 
   widgetsList = [

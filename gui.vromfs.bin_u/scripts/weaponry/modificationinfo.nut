@@ -1,15 +1,16 @@
+from "%globalScripts/templates.nut" import getTemplateCompValue
+from "blkGetters" import get_modifications_blk
+from "chardResearch" import shopIsModificationAvailable, shopIsModificationPurchased, shopIsModificationEnabled
+from "guiOptions" import get_gui_option
+from "mission" import get_game_mode
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost_gold, shop_get_module_research_status, wp_get_modification_cost, get_modifications_overdrive
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/shopItemConsts.nut" import *
 
-let { get_modifications_blk } = require("blkGetters")
 let { AMMO, getAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
-let { shopIsModificationAvailable, shopIsModificationPurchased, shopIsModificationEnabled
-} = require("chardResearch")
-let { get_gui_option } = require("guiOptions")
-let { get_game_mode } = require("mission")
 let { USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
-let { getTemplateCompValue } = require("%globalScripts/templates.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 
 let isReqModificationsUnlocked = @(unit, mod) mod?.reqModification.findvalue(
   @(req) !shopIsModificationPurchased(unit.name, req)) == null

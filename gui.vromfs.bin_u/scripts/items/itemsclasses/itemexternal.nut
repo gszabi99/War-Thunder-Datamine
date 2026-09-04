@@ -1,34 +1,31 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.time" import get_time_msec
+from "math" import ceil
+from "string" import format, split_by_chars
+from "guiMission" import select_training_mission, get_meta_mission_info_by_name
+from "%sqstd/string.nut" import utf8ToLower, stripTags
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import char_send_blk, inventory_generate_key
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { get_time_msec } = require("dagor.time")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
-let { ceil } = require("math")
-let { format, split_by_chars } = require("string")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
-let { hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes, tryUseRecipeSeveralTime
-} = require("%scripts/items/exchangeRecipes.nut")
+let { hasFakeRecipesInList, getRequirementsMarkup, tryUseRecipes, tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
 let guidParser = require("%scripts/guidParser.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 let time = require("%scripts/time.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let recipesListWnd = require("%scripts/items/listPopupWnd/recipesListWnd.nut")
 let itemTransfer = require("%scripts/items/itemsTransfer.nut")
-let { getMarkingPresetsById, getCustomLocalizationPresets,
-  getEffectOnOpenChestPresetById } = require("%scripts/items/workshop/workshop.nut")
+let { getMarkingPresetsById, getCustomLocalizationPresets, getEffectOnOpenChestPresetById } = require("%scripts/items/workshop/workshop.nut")
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
-let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
-let { getDecorator, buildLiveDecoratorFromResource
-} = require("%scripts/customization/decoratorGetters.nut")
+let { getDecorator, buildLiveDecoratorFromResource } = require("%scripts/customization/decoratorGetters.nut")
 let { getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
-let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
 let { addTask } = require("%scripts/tasker.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
@@ -38,10 +35,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { currentCampaignMission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
 let { getMissionName } = require("%scripts/missions/missionsText.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
-let { refreshExtInventory, markInventoryUpdateDelayed
-} = require("%scripts/items/itemsManager.nut")
-let { findItemById, findItemByUid, getInventoryItemByCraftedFrom, getItemGenerator
-} = require("%scripts/items/itemsManagerModule.nut")
+let { refreshExtInventory, markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
+let { findItemById, findItemByUid, getInventoryItemByCraftedFrom, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { getPrizesListView } = require("%scripts/items/prizesView.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
@@ -158,7 +153,7 @@ let ItemExternal = class (BaseItem) {
     if (this.expireTimestamp != -1)
       this.expiredTimeSec = (get_time_msec() * 0.001) + (this.expireTimestamp - get_charserver_time_sec())
 
-    let meta = getTblValue("meta", this.itemDef)
+    let meta = this.itemDef?.meta
     if (meta && meta.len()) {
       this.metaBlk = DataBlock()
       if (!this.metaBlk.loadFromText(meta, meta.len())) {
@@ -774,14 +769,14 @@ let ItemExternal = class (BaseItem) {
     return this.metaBlk?.resource
   }
 
-  function addResources(params = null) {
+  function addResources(unitId = null) {
     if (!this.metaBlk?.resource || !this.metaBlk?.resourceType || !this.itemDef)
       return
     let resource = this.metaBlk.resource
     if (!guidParser.isGuid(resource))
       return
 
-    buildLiveDecoratorFromResource(this.metaBlk.resource, this.metaBlk.resourceType, this.itemDef, params)
+    buildLiveDecoratorFromResource(this.metaBlk.resource, this.metaBlk.resourceType, this.itemDef, unitId)
   }
 
   function getRelatedRecipes() {

@@ -1,17 +1,16 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_natives.nut" import char_send_blk, get_current_personal_discount_count, get_current_personal_discount_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
-let DataBlock  = require("DataBlock")
-let { parseDiscountDescription, createDiscountDescriptionSortData,
-  sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
+let { parseDiscountDescription, createDiscountDescriptionSortData, sortDiscountDescriptionItems } = require("%scripts/items/discountItemSortMethod.nut")
 let { getUnitName, getUnitRealCost, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
-let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
+let { removeTextareaTags } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
@@ -200,12 +199,12 @@ let Discount = class (BaseItem) {
   }
 
   function _getDataItemDiscountText(dataItem, toTextFunc = function(val) { return $"{val}%" }) {
-    let value = getTblValue("discountValue", dataItem, 0)
+    let value = (dataItem?.discountValue ?? 0)
     if (value)
       return toTextFunc(value)
 
-    let minValue = getTblValue("discountMin", dataItem, 0)
-    let maxValue = getTblValue("discountMax", dataItem, 0)
+    let minValue = (dataItem?.discountMin ?? 0)
+    let maxValue = (dataItem?.discountMax ?? 0)
     local res = toTextFunc(minValue)
     if (minValue != maxValue)
       res = " - ".concat(res, toTextFunc(maxValue))
@@ -284,7 +283,7 @@ let Discount = class (BaseItem) {
     let data1 = discountDescriptionData[0]
     let data2 = item.getDiscountDescriptionDataItems()[0]
     foreach (p in this.stackBases)
-      if (getTblValue(p, data1) != getTblValue(p, data2))
+      if (data1?[p] != data2?[p])
         return false
     return true
   }
@@ -296,18 +295,18 @@ let Discount = class (BaseItem) {
     let data = this.getDiscountDescriptionDataItems()[0]
     if (!stackParams.len()) 
       foreach (p in this.stackBases)
-        stackParams[p] <- getTblValue(p, data)
+        stackParams[p] <- data?[p]
 
     foreach (p in this.stackVariables) {
-      let pValue = getTblValue(p, data)
-      let stackValue = getTblValue(p, stackParams, pValue)
+      let pValue = data?[p]
+      let stackValue = (stackParams?[p] ?? pValue)
       stackParams[p] <- (pValue == stackValue) ? pValue : null
     }
 
     let value = data.discountValue
-    let minValue = getTblValue("discountMin", stackParams)
+    let minValue = stackParams?.discountMin
     stackParams.discountMin <- minValue ? min(minValue, value) : value
-    let maxValue = getTblValue("discountMax", stackParams)
+    let maxValue = stackParams?.discountMax
     stackParams.discountMax <- maxValue ? max(maxValue, value) : value
   }
 

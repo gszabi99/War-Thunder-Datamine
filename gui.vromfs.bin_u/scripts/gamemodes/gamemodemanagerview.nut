@@ -1,21 +1,19 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isCrossPlayEnabled,
-  needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
 let { guiStartSkirmish } = require("%scripts/missions/startMissionsList.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { setCurrentGameModeById, getGameModeById, getGameModeEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { killsOnUnitTypes, newbieNextEvent } = require("%scripts/myStats.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { isWorldWarEnabled, getCantPlayWorldwarReasonText } = require("%scripts/globalWorldWarScripts.nut")
 let { openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
 

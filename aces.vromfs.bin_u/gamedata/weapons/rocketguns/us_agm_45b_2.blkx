@@ -25,25 +25,26 @@
       "hydra"
     ],
     "maxDeltaAngle": 0.02,
-    "caliber": 0.203,
+    "thrustDeviation": 0.01,
+    "caliber": 0.2032,
     "length": 3.048,
     "WdK": [
       0.1,
       0.1,
       0.1
     ],
-    "CxK": 1.7,
-    "wingAreaMult": 1.4,
+    "CxK": 1.4125,
+    "wingAreaMult": 3.0,
     "finsAoaHor": 0.1,
     "finsAoaVer": 0.1,
-    "distFromCmToStab": 0.065,
+    "distFromCmToStab": 0.0425,
     "mass": 192.3232,
-    "massEnd": 173.2232,
-    "massEnd1": 150.0232,
+    "massEnd": 174.5242,
+    "massEnd1": 152.77,
     "timeFire": 1.25,
     "timeFire1": 20.0,
-    "force": 32087.98,
-    "force1": 2436.0,
+    "force": 32038.14,
+    "force1": 2447.35,
     "fireDelay": 0.0,
     "timeLife": 150.0,
     "startSpeed": 0.0,
@@ -52,6 +53,14 @@
     "maxDistance": 50000.0,
     "minDistance": 10000.0,
     "rangeMax": 50000.0,
+    "extPressureToThrustMult": [
+      101300.0,
+      1.0,
+      26500.0,
+      1.25
+    ],
+    "CyK": 3.5,
+    "CxAoA": 0.8,
     "loadFactorMax": 10.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
@@ -100,6 +109,40 @@
       -0.16,
       0.0
     ],
+    "CyMachMult": {
+      "CyMachMult0": [
+        0.8,
+        0.815
+      ],
+      "CyMachMult1": [
+        1.0,
+        1.0
+      ],
+      "CyMachMult2": [
+        1.2,
+        1.0
+      ],
+      "CyMachMult3": [
+        1.6,
+        0.874
+      ],
+      "CyMachMult4": [
+        2.0,
+        0.698
+      ],
+      "CyMachMult5": [
+        2.4,
+        0.629
+      ],
+      "CyMachMult6": [
+        2.8,
+        0.562
+      ],
+      "CyMachMult7": [
+        4.0,
+        0.436
+      ]
+    },
     "guidance": {
       "uncageBeforeLaunch": true,
       "warmUpTime": 0.3,
@@ -160,9 +203,9 @@
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 10.0,
-        "accelControlProp": 0.0045,
-        "accelControlIntg": 0.0425,
-        "accelControlDiff": 0.0021,
+        "accelControlProp": 0.032871,
+        "accelControlIntg": 0.076269,
+        "accelControlDiff": 0.002915,
         "accelControlIntgLim": 1.0
       }
     },
@@ -185,7 +228,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 0.3
+        "offset": 0.75
       }
     },
     "DamageParts": {

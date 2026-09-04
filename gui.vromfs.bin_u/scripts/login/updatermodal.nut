@@ -1,16 +1,16 @@
+import "statsd" as statsd
+from "string" import format
+from "math" import floor
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { floor } = require("math")
 
-let statsd = require("statsd")
 let time = require("%scripts/time.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 
@@ -27,12 +27,12 @@ let { start_updater_with_config_once, stop_updater,
 const ContentUpdaterEventId = "contentupdater.modal.event"
 
 eventbus_subscribe(ContentUpdaterEventId, function (evt) {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.UpdaterModal)
+  let handler = handlersManager.findHandlerClassInScene(get_gui_handler("UpdaterModal"))
   if ((handler?.isValid() ?? false))
     handler?.onUpdaterCallback(evt)
 })
 
-gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
+let UpdaterModal = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/login/updaterModal.blk"
   timeToShowCancel = 600
@@ -220,3 +220,5 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
     addLoginState(LOGIN_STATE.AUTHORIZED)
   }
 }
+register_gui_handler("UpdaterModal", UpdaterModal)
+

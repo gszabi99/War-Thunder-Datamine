@@ -2,6 +2,7 @@ import "DataBlock" as DataBlock
 from "eventbus" import eventbus_subscribe_onehit, eventbus_subscribe, eventbus_unsubscribe
 from "dagor.system" import dgs_get_settings
 from "platform" import get_platform_string_id
+from "types" import Array, String, Table
 let {object_to_json_string=null} = require_optional("json")
 let toJson = object_to_json_string ?? getroottable()?.save_to_json
 
@@ -26,11 +27,11 @@ let nativeSend = nativeApi?.send ?? @(...) null
 
 let platformId = dgs_get_settings().getStr("platform", get_platform_string_id())
 
-let webApiMethodGet = 0
-let webApiMethodPost = 1
-let webApiMethodPut = 2
-let webApiMethodDelete = 3
-let webApiMethodPatch = 4
+const webApiMethodGet = 0
+const webApiMethodPost = 1
+const webApiMethodPut = 2
+const webApiMethodDelete = 3
+const webApiMethodPatch = 4
 
 function createRequest(api, method, path=null, params={}, data=null, forceBinary=false, headers = {}) {
   let request = DataBlock()
@@ -41,7 +42,7 @@ function createRequest(api, method, path=null, params={}, data=null, forceBinary
 
   request.params = DataBlock()
   foreach(key,val in params) {
-    if (type(val) == "array") {
+    if (val instanceof Array) {
       foreach(v in val)
         request.params[key] <- v
     }
@@ -49,11 +50,11 @@ function createRequest(api, method, path=null, params={}, data=null, forceBinary
       request.params[key] = val
   }
 
-  if (type(data) == "string")
+  if (data instanceof String)
     request.request = data
-  if (type(data) == "table")
+  if (data instanceof Table)
     request.request = toJson(data)
-  else if (type(data) == "array")
+  else if (data instanceof Array)
     foreach(part in data)
       request.part <- part
 
@@ -217,7 +218,7 @@ let commerce = {
 
   
   function listCategory(category, params={}) {
-    assert(type(category) == "string", "[PSWA] only one category can be listed at a time")
+    assert(category instanceof String, "[PSWA] only one category can be listed at a time")
     return createRequest(commerceApi, webApiMethodGet, category, params)
   }
 }
@@ -227,9 +228,8 @@ let inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 let inGameCatalog = {
   
   function get(ids, serviceLabel, params={}) {
-    params["serviceLabel"] <- serviceLabel
-    params["containerIds"] <- ":".join(ids)
-    return createRequest(inGameCatalogApi, webApiMethodGet, null, params)
+    return createRequest(inGameCatalogApi, webApiMethodGet, null,
+                         params.__merge({serviceLabel, containerIds = ":".join(ids)}))
   }
 }
 
@@ -291,9 +291,9 @@ let matches = {
 
 
 
-function isHttpSuccess(code) { return code >= 200 && code < 300 }
+function isHttpSuccess(code): bool { return code >= 200 && code < 300 }
 
-function getNewRequestIdImpl() {
+function getNewRequestIdImpl(): string {
   let reqId = getNewRequestId()
   return $"sony_webapi_request_{reqId}"
 }
@@ -315,16 +315,19 @@ function send(action, onResponse=null) {
 }
 
 function fetch(action, onChunkReceived, chunkSize = 20) {
+  local lastPos = 0
   function onResponse(response, err) {
     
-    let entry = ((type(response) == "array") ? response?[0] : response) ?? {}
+    let entry = ((response instanceof Array) ? response?[0] : response) ?? {}
     let received = (getPreferredVersion() == 2)
                    ? (entry?.nextOffset ?? entry?.totalItemCount ?? 0)
                    : (entry?.start ?? 0) + (entry?.size ?? 0)
     let total = entry?.total_results ?? entry?.totalResults ?? entry?.totalItemCount ?? received
 
-    if (err == null && received < total)
+    if (err == null && received < total && received > lastPos) {
+      lastPos = received
       send(makeIterable(action, received, chunkSize), callee())
+    }
 
     onChunkReceived(response, err)
   }

@@ -1,50 +1,47 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available,
-  get_auto_buy_modifications, shop_get_unit_excess_exp, set_char_cb, utf8_strlen,
-  shop_set_researchable_unit_module, set_auto_buy_modifications, shop_get_researchable_module_name
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/underscore.nut" import deep_clone
+from "string" import format
+from "chardResearch" import shopIsModificationEnabled
+from "math" import floor
+from "dagor.workcycle" import defer
+from "guiMission" import get_meta_mission_info_by_name
+from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, set_char_cb, utf8_strlen, shop_set_researchable_unit_module
+  , set_auto_buy_modifications, shop_get_researchable_module_name
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text, roman_numerals, check_aircraft_tags
+from "types" import String, Table, Array
 
-let { deep_clone } = require("%sqstd/underscore.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { UniversalSpareApplyWnd } = require("%scripts/items/listPopupWnd/universalSpareApplyWnd.nut")
+let { ModUpgradeApplyWnd } = require("%scripts/items/listPopupWnd/modUpgradeApplyWnd.nut")
+let { HelpInfoHandlerModal, findPlaceForHint, updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
-  isModificationInTree, modsWndWidthRestrictions, getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
+let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods, isModificationInTree, modsWndWidthRestrictions, getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
-let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
-  isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
-  getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
+let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium, isModClassExpendable, getModificationByName, findAnyNotResearchedMod, getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl,
-  isCanBeDisabled, isModInResearch, getBundleCurItem, canResearchItem
-} = require("%scripts/weaponry/itemInfo.nut")
-let { getModItemName, getReqModElements, getBulletsListHeader
-} = require("%scripts/weaponry/weaponryDescription.nut")
-let { updateModItem, createModItem, createModBundle, createModItemLayout
-} = require("%scripts/weaponry/weaponryVisual.nut")
-let { isBullets, getBulletsList, setUnitLastBullets,
-  getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName,
-  getLastFakeBulletsIndex, isBulletsGroupActiveByMod, isPairBulletsGroup
-} = require("%scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets,
-  checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList,
-  getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd,
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { getItemAmount, getItemCost, getAllModsCost, getByCurBundle, getItemStatusTbl, isCanBeDisabled, isModInResearch, getBundleCurItem, canResearchItem } = require("%scripts/weaponry/itemInfo.nut")
+let { getModItemName, getReqModElements, getBulletsListHeader } = require("%scripts/weaponry/weaponryDescription.nut")
+let { updateModItem, createModItem, createModBundle, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
+let { isBullets, getBulletsList, setUnitLastBullets, getBulletGroupIndex, getBulletsItemsList, isWeaponTierAvailable, getModificationName, getLastFakeBulletsIndex, isBulletsGroupActiveByMod, isPairBulletsGroup } = require("%scripts/weaponry/bulletsInfo.nut")
+let { WEAPON_TAG, getLastWeapon, validateLastWeapon, setLastWeapon, checkUnitBullets, checkUnitSecondaryWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList, getSecondaryWeaponsList, isUnitHaveAnyWeaponsTags, needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { setDoubleTextToButton, placePriceTextToButton
-} = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { setDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { MODIFICATION_DELAYED_TIER } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { showDamageControl } = require("%scripts/damageControl/damageControlWnd.nut")
@@ -54,24 +51,15 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { promptReqModInstall, needReqModInstall } = require("%scripts/weaponry/checkInstallMods.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { floor } = require("math")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
 let { canDoUnlock, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { defer } = require("dagor.workcycle")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
-let { findPlaceForHint, updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
-let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit,
-  markSeenNightBattle } = require("%scripts/events/nightBattlesStates.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial,
-  startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
+let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial, startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
@@ -90,18 +78,12 @@ let { RESEARCHED_MODE_FOR_CHECK } = require ("%scripts/researches/researchConsts
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
-let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
-let { getWeaponsForInfantryUnit, infantryWeaponsSlotIdx, createEmptyWeaponSlot,
-  getPresetCompositionByName, getSoldiersWeaponsListForPreset, createCustomInfantryPreset,
-  createEmptyInfantryPreset, isEmptyPresetAlreadyExist, getPresetSpecialWeapons, getSoldiersCount,
-  getWeaponDataByWeaponInfo
-} = require("%scripts/weaponry/infantryWeapons.nut")
+let { getWeaponryGroupHeader } = require("%scripts/weaponry/weaponryTypes.nut")
+let { getWeaponsForInfantryUnit, infantryWeaponsSlotIdx, createEmptyWeaponSlot, getPresetCompositionByName, getSoldiersWeaponsListForPreset, createCustomInfantryPreset, createEmptyInfantryPreset, isEmptyPresetAlreadyExist, getPresetSpecialWeapons, getSoldiersCount, getWeaponDataByWeaponInfo } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitArmorData, getAppliedArmorForUnit } = require("%scripts/weaponry/infantryArmor.nut")
 let { addCustomPreset, deleteCustomPreset } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { isCustomPreset, EMPTY_PRESET_NAME, INF_VIEW_SIZE_MULTIPLIER
-} = require("%scripts/weaponry/weaponryPresets.nut")
-let { checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod
-  } = require("%scripts/unit/unitChecks.nut")
+let { isCustomPreset, EMPTY_PRESET_NAME, INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
+let { checkSecondaryWeaponModsRecount, updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
@@ -159,7 +141,7 @@ function getSkinMod(unit) {
   } : null
 }
 
-gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
   items = null
 
   wndWidth = 7
@@ -452,7 +434,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.setModificatonOnResearch(modForResearch,
           function() {
             this.updateAllItems()
-            let guiPosIdx = getTblValue("guiPosIdx", modForResearch, -1)
+            let guiPosIdx = (modForResearch?.guiPosIdx ?? -1)
             assert(guiPosIdx >= 0, $"missing guiPosIdx, mod - {modForResearch?.name ?? "none"}; unit - {this.air.name}")
             this.selectResearchModule(guiPosIdx >= 0 ? guiPosIdx : 0)
           })
@@ -1024,7 +1006,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local bonuses = null
     foreach(branch in tree) {
-      if (branch == null || branch.len() == 0 || type(branch[0]) != "string")
+      if (branch == null || branch.len() == 0 || !(branch[0] instanceof String))
         continue
       if (branch[0] == "bonus") {
         bonuses = branch
@@ -1036,7 +1018,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     foreach(bonus in bonuses) {
-      if (type(bonus) == "string")
+      if (bonus instanceof String)
         continue
 
       let bonusObj = this.scene.findObject(bonus.id)
@@ -1117,9 +1099,9 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function collectBranchItems(branch, resItems) {
     foreach (_idx, item in branch)
-      if (type(item) == "table") 
+      if (item instanceof Table) 
         resItems.append(item)
-      else if (type(item) == "array") 
+      else if (item instanceof Array) 
         this.collectBranchItems(item, resItems)
     return resItems
   }
@@ -1246,7 +1228,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       loc("modification/progressModsText", { earnedExp, reqExp }) :
       loc("modification/progressModsAllResearchedText"))
     this.scene.findObject("progressModsPercent").setValue(progress)
-    let thumbWidth = 60
+    const thumbWidth = 60
     this.scene.findObject("progressModsTrack")["width"] = $"{commonProgressMods.progress}(pw - {thumbWidth}@sf/@pf) + {thumbWidth/2}@sf/@pf"
   }
 
@@ -1498,7 +1480,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.offsetCoordsForSecondaryWeapons = { offsetX, offsetY }
       }
       columnsList.append(this.getWeaponsColumnData(
-        weaponryTypes.WEAPON.getHeader(this.air)).__merge(
+        getWeaponryGroupHeader(this.air)).__merge(
           {
             haveWarning = checkUnitSecondaryWeapons(this.air) != UNIT_WEAPONS_READY
             warningId = "weapons"
@@ -1967,12 +1949,12 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let item = this.items[idx]
     if (item.type == weaponsItem.spare) {
-      gui_handlers.UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
+      UniversalSpareApplyWnd.open(this.air, this.getItemObj(idx))
       return
     }
     else if (item.type == weaponsItem.modification) {
       if (getItemAmount(this.air, item) && isModUpgradeable(item.name)) {
-        gui_handlers.ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
+        ModUpgradeApplyWnd.open(this.air, item, this.getItemObj(idx))
         return
       }
     }
@@ -2012,7 +1994,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }.bindenv(this)
     }
 
-    handlersManager.loadHandler(gui_handlers.GenericOptionsModal, params)
+    handlersManager.loadHandler(GenericOptionsModal, params)
   }
 
   function restoreModTutorialFocus() {
@@ -2032,16 +2014,6 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventModalWndDestroy(params) {
     base.onEventModalWndDestroy(params)
     this.restoreModTutorialFocus()
-  }
-
-  function onAltModActionCommon(obj) { 
-    let idx = this.getItemIdxByObj(obj)
-    if (idx < 0)
-      return
-
-    let item = this.items[idx]
-    if (canGoToNightBattleOnUnit(this.air, item.name))
-      nightBattlesOptionsWnd()
   }
 
   function onBuy(idx, buyAmount = 0) { 
@@ -2216,7 +2188,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.researchMode) {
       let curResName = shop_get_researchable_module_name(this.airName)
-      if (getTblValue("name", this.lastResearchMod, "") != curResName)
+      if ((this.lastResearchMod?.name ?? "") != curResName)
         this.setModificatonOnResearch(getModificationByName(this.air, curResName))
     }
 
@@ -2239,7 +2211,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onDestroy() {
     if (this.needRestoreResearchMode() || this.shouldBeRestoredOnMainMenu)
-      handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+      handlersManager.requestHandlerRestore(this, MainMenu)
 
     this.sendModPurchasedStatistic(this.air)
   }
@@ -2303,34 +2275,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return idx < 0 ? null : this.items[idx]
   }
 
-  function markSeenNightBattleIfNeed(item) {
-    if (!needShowUnseenNightBattlesForUnit(this.air, item.name))
-      return
-    markSeenNightBattle()
-  }
-
   function markSeenModTutorialIfNeeded(item) {
     if (!needShowUnseenModTutorialForUnitMod(this.air, item))
       return
     markSeenModTutorial(item)
   }
 
-  function onEventMarkSeenNightBattle(_) {
-    let unit = this.air
-    let modificationsWithNVDSighst = unit.getModifications()
-      .filter(@(v) unit.getNVDSights(v.name).len() > 0)
-    if (modificationsWithNVDSighst.len() == 0)
-      return
-
-    foreach (mod in modificationsWithNVDSighst) {
-      let itemidx = this.getItemIdxByName(mod.name)
-      if (itemidx >= 0)
-        this.updateItem(itemidx)
-    }
-  }
-
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getWndHelpConfig() {
@@ -2535,7 +2487,6 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.getUnhoveredItem(obj, obj.findObject("modSlotButtonsNest"))
     if (!item)
       return
-    this.markSeenNightBattleIfNeed(item)
     this.markSeenModTutorialIfNeeded(item)
   }
 
@@ -2559,16 +2510,15 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.getUnhoveredItem(obj.getParent(), obj)
     if (!item)
       return
-    this.markSeenNightBattleIfNeed(item)
     this.markSeenModTutorialIfNeeded(item)
   }
 
   function onEventBeforeOpenWeaponryPresetsWnd(_) {
     handlersManager.requestHandlerRestore(this)
   }
-}
+})
 
-gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("MultiplePurchase", class (BaseGuiHandlerWT) {
   curValue = 0
   minValue = 0
   maxValue = 1
@@ -2706,4 +2656,4 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
   onEventWeaponPurchased = @(_p) this.goBack()
   onEventSparePurchased = @(_p) this.goBack()
   onEventProfileUpdated = @(_p) this.updateButtonPriceText()
-}
+})

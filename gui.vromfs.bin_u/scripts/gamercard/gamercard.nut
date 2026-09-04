@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import gchat_is_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { lastGamercardScenes } = require("%scripts/gamercard/gamercardState.nut")
 let { doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
@@ -34,11 +34,7 @@ function updateGamercardChatButton() {
 
 hasMenuChat.subscribe(@(_) updateGamercardChatButton())
 
-globalCallbacks.addTypes({
-  onOpenGameModeSelect = {
-    onCb = @(_obj, _params) broadcastEvent("OpenGameModeSelect")
-  }
-})
+eventbus_subscribe("gamercard.openGameModeSelect", @(_) broadcastEvent("OpenGameModeSelect"))
 
 addListenersWithoutEnv({
   RequestUpdateGamercards = @(_) updateGamercards()

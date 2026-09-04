@@ -1,19 +1,18 @@
+import "DataBlock" as DataBlock
+import "statsd" as statsd
+from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import ps4_open_store
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let DataBlock = require("DataBlock")
-let statsd = require("statsd")
-let { defer } = require("dagor.workcycle")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenEnumId = SEEN.EXT_PS4_SHOP
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
-let { canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpdated
-} = require("%scripts/onlineShop/ps4ShopData.nut")
+let { canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpdated } = require("%scripts/onlineShop/ps4ShopData.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
@@ -134,7 +133,7 @@ let openIngameStoreImpl = kwarg(
     let item = curItemId != "" ? getShopItem(curItemId) : null
     if (canUseIngameShop() && !forceExternalShop) {
       statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
-      handlersManager.loadHandler(gui_handlers.Ps4Shop, {
+      handlersManager.loadHandler(get_gui_handler("Ps4Shop"), {
         itemsCatalog = getShopItemsTable()
         isLoadingInProgress = !isItemsUpdated()
         chapter = chapter

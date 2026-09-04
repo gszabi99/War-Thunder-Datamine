@@ -1,39 +1,40 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "dagor.fs" import file_exists
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "%sqstd/math.nut" import floor, round_by_value, roundToDigits, round, pow
+from "math" import cos, PI
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "%sqstd/string.nut" import stripTags
+from "string" import format
+from "guiMission" import get_mission_difficulty_int
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import is_light_dm
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
 
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { file_exists } = require("dagor.fs")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
-let { floor, round_by_value, roundToDigits, round, pow } = require("%sqstd/math.nut")
-let { cos, PI } = require("math")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let {
-      
+  
 
 
-        getBulletsSetData,
-        getBulletAnnotation,
-        getBulletsSearchName, anglesToCalcDamageMultiplier,
-        getModifIconItem, getSquashArmorAnglesScale,
-        getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
-let { WEAPON_TYPE, isCaliberCannon, getWeaponNameByBlkPath, additionalMarkupTypes,
-  additionalMarkupByType, getAdditionalBulletMarkupTypes } = require("%scripts/weaponry/weaponryInfo.nut")
+  getBulletsSetData, getBulletAnnotation, getBulletsSearchName, anglesToCalcDamageMultiplier, getModifIconItem, getSquashArmorAnglesScale, getModificationBulletsEffect
+} = require("%scripts/weaponry/bulletsInfo.nut")
+
+let { WEAPON_TYPE, isCaliberCannon, getWeaponNameByBlkPath, additionalMarkupTypes, additionalMarkupByType, getAdditionalBulletMarkupTypes } = require("%scripts/weaponry/weaponryInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
-let { getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg,
-  getMaxArmorPiercing
-} = require("%scripts/weaponry/dmgModel.nut")
+let { getMeasuredExplosionText, getTntEquivalentText, getRicochetData, getTntEquivalentDmg } = require("%scripts/weaponry/dmgModel.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { get_mission_difficulty_int } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-local bulletIcons = {}
-local bulletAspectRatio = {}
+let bulletIcons = {}
+let bulletAspectRatio = {}
 
 let bulletsFeaturesImg = [
   { id = "damage", values = [] }
@@ -46,7 +47,7 @@ const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
 const MAX_BLOCK_IN_MAIN_SHELLS_PARAMS_TOOLTIP = 3
 
-let bulletArmorPiercingMainParamDesc = @"
+const bulletArmorPiercingMainParamDesc = @"
   tdiv {
     pos:t='0.5pw-0.5w, 0'
     position:t='relative'
@@ -68,7 +69,7 @@ let bulletArmorPiercingMainParamDesc = @"
   }
 "
 
-let bulletArmorPiercingMainParamDistanceText = @"
+const bulletArmorPiercingMainParamDistanceText = @"
   textareaNoTab {
     text:t='{distanceText}'
     valign:t='center'
@@ -77,7 +78,7 @@ let bulletArmorPiercingMainParamDistanceText = @"
   }
 "
 
-let DEG_TO_RAD = PI / 180.0
+const DEG_TO_RAD = PI / 180.0
 
 function resetBulletIcons() {
   bulletIcons.clear()
@@ -143,9 +144,9 @@ function getBulletsIconView(bulletsSet, tooltipId = null, tooltipDelayed = false
         count = length * max(1, floor(maxAmountInView / length))
       }
 
-      let totalWidth = 100.0
+      const totalWidth = 100.0
       let itemWidth = totalWidth * ratio
-      let itemHeight = totalWidth
+      const itemHeight = totalWidth
       let space = totalWidth - itemWidth * count
       let separator = (space > 0)
         ? (space / (count + 1))
@@ -222,7 +223,7 @@ function getArmorPiercingViewData(armorPiercing, dist) {
     res.append(row)
   }
 
-  let baseArmorPiercingIndex = 1
+  const baseArmorPiercingIndex = 1
   let baseDistance = ranges[baseArmorPiercingIndex] ?? 0
   let baseArmorPiercingFloat = armorPiercing?[baseArmorPiercingIndex][0]
     ?? armorPiercing?[baseArmorPiercingIndex]["0"] ?? 0 
@@ -250,25 +251,47 @@ function addArmorPiercingToDesc(bulletsData, descTbl) {
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props, header })
 }
 
-function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
-  let { armorPiercingDist, armorPiercingKinetic, cumulativeDamage = 0, explosiveType = null,
-    explosiveMass = 0, cumulativeByNormal = false } = bulletsData
-  let { props, baseArmorPiercing, baseDistance } = getArmorPiercingViewData(armorPiercingKinetic, armorPiercingDist)
-  let highEnergyPenetration = explosiveType == null || explosiveMass == 0 ? 0
-    : round_by_value(getMaxArmorPiercing(explosiveType, explosiveMass), 0.1)
+function getHighEnergyPenetrationMarkup(splashPenetration, shatterPenetration) {
+  let mmText = loc("measureUnits/mm")
+  let splashPart = splashPenetration <= 0 ? null
+    : { value = $"{splashPenetration} {mmText}",
+      label = loc("bullet_properties/armorPiercing/explosive") }
+  let shatterPart = shatterPenetration <= 0 ? null
+    : { value = $"{shatterPenetration} {mmText}",
+      label = loc("bullet_properties/armorPiercing/fragmentation") }
+
+  return splashPart != null ? { primary = splashPart, secondary = shatterPart }
+    : { primary = shatterPart, secondary = null }
+}
+
+function addArmorPiercingToDescForBullets(bulletsData, descTbl, bullet = null) {
+  let { armorPiercingDist, armorPiercingKinetic, cumulativeDamage = 0, cumulativeByNormal = false,
+    armorPiercingShatter = 0, armorPiercingSplash = 0 } = bulletsData
+  let { props, baseArmorPiercing, baseDistance
+  } = getArmorPiercingViewData(armorPiercingKinetic, armorPiercingDist)
+  let shatterPenetration = round_by_value(armorPiercingShatter, 0.1)
+  let splashPenetration = round_by_value(armorPiercingSplash, 0.1)
+  let highEnergyPenetration = max(shatterPenetration, splashPenetration)
 
   let cumulativeDamageInt = round(cumulativeDamage).tointeger()
-  let maxPenetartion = max(highEnergyPenetration, cumulativeDamageInt, baseArmorPiercing)
-  if (maxPenetartion == 0)
+  let maxPenetration = max(highEnergyPenetration, cumulativeDamageInt, baseArmorPiercing)
+  if (maxPenetration == 0)
     return
 
-  let isKineticDmg = maxPenetartion == baseArmorPiercing
+  let isKineticDmg = maxPenetration == baseArmorPiercing
   let armorPiercingIconId = isKineticDmg ? "penetration_kinetic_icon"
-    : maxPenetartion == cumulativeDamageInt && !cumulativeByNormal ? "penetration_cumulative_jet_icon"
+    : maxPenetration == cumulativeDamageInt && !cumulativeByNormal ? "penetration_cumulative_jet_icon"
     : "penetration_high_explosive_fragmentation_icon"
 
+  
+  let isGraphCompareBulletsWndActive =
+    handlersManager.findHandlerClassInScene(get_gui_handler("GraphCompareBulletsWnd")) != null
+  let tooltipId = bullet != null && baseArmorPiercing != 0 && !isGraphCompareBulletsWndActive
+    ? getTooltipType("PENETRATION_GRAPH").getTooltipId(bullet)
+    : null
+
   let bulletBaseArmorPiercing = {
-    value = " ".concat(maxPenetartion, loc("measureUnits/mm"))
+    value = " ".concat(maxPenetration, loc("measureUnits/mm"))
     customDesc = bulletArmorPiercingMainParamDesc.subst({
       baseText = stripTags(loc("bullet_properties/armorPiercing_short"))
       armorPiercingIconId
@@ -307,8 +330,8 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
 
   descTbl.bulletPenetrationData <- (descTbl?.bulletPenetrationData ?? {}).__update({
     highEnergyPenetration = highEnergyPenetration == 0 ? null
-      : $"{highEnergyPenetration} {loc("measureUnits/mm")}"
-    kineticPenetration = baseArmorPiercing != 0 ? { props } : null
+      : getHighEnergyPenetrationMarkup(splashPenetration, shatterPenetration)
+    kineticPenetration = baseArmorPiercing != 0 ? { props, tooltipId, isTooltipByHold = showConsoleButtons.get() } : null
     cumulativePenetration
   })
 }
@@ -464,6 +487,12 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, unit, params = {})
       if ("radarRange" in bulletsData)
         addProp(p, loc("missile/seekerRange"),
           measureType.DISTANCE.getMeasureUnitsText(bulletsData.radarRange))
+      if ("distanceGate" in bulletsData)
+        if (bulletsData.distanceGate)
+          addProp(p, loc("missile/rangeGate"), loc("options/yes"))
+      if ("dopplerSpeedGate" in bulletsData)
+        if (bulletsData.dopplerSpeedGate)
+          addProp(p, loc("missile/speedGate"), loc("options/yes"))
     }
     else if (bulletsData.guidanceType == "saclos") {
       addProp(p, loc("missile/guidance"),
@@ -641,6 +670,8 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
     armorPiercing = []
     armorPiercingDist = []
     armorPiercingKinetic = []
+    armorPiercingShatter = 0
+    armorPiercingSplash = 0
     isCountermeasure
     cumulativeDamage = 0
     cumulativeByNormal = false
@@ -679,11 +710,14 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
     bullet_parameters = filteredBulletParameters
   }
 
-  foreach (bullet_params in bullet_parameters) {
+  foreach (bulletIdx, bullet_params in bullet_parameters) {
     if (!bullet_params)
       continue
 
     if (bullet_params?.bulletType != "aam") {
+      bulletsData.armorPiercingShatter = max(bulletsData.armorPiercingShatter, bullet_params?.explosiveShutterPenetration.shatter ?? 0)
+      bulletsData.armorPiercingSplash = max(bulletsData.armorPiercingSplash, bullet_params?.explosiveShutterPenetration.splash ?? 0)
+
       if (bulletsData.armorPiercingDist.len() < bullet_params.armorPiercingDist.len()) {
         bulletsData.armorPiercing.resize(bullet_params.armorPiercingDist.len())
         bulletsData.armorPiercingDist = bullet_params.armorPiercingDist
@@ -695,7 +729,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
         for (local i = 0; i < bullet_params.armorPiercingDist.len(); i++) {
           let idist = bullet_params.armorPiercingDist[i].tointeger()
           foreach (tableName in ["armorPiercing", "armorPiercingKinetic"]) {
-            if (type(bullet_params[tableName][i]) != "table")
+            if (!(bullet_params[tableName][i] instanceof Table))
               continue
             local armor = null
             if (d == idist || (d < idist && !i))
@@ -729,7 +763,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
       bulletsData[p] <- bullet_params?[p] ?? 0
 
     foreach (p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange", "rangeMax",
-      "weaponBlkPath", "guidanceType", "targetSignatureType", "radarRange", "laserRange", "loadFactorMax",
+      "weaponBlkPath", "guidanceType", "targetSignatureType", "radarRange", "distanceGate", "dopplerSpeedGate", "laserRange", "loadFactorMax",
       "inertialNavigation", "inertialNavigationDriftSpeed", "datalink"]) {
       if (p in bullet_params)
         bulletsData[p] <- bullet_params[p]
@@ -741,10 +775,23 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
       bulletsData[p] <- bullet_params?[p] ?? true
 
     if (bulletsSet) {
-      foreach (p in ["caliber", "explosiveType", "explosiveMass",
-        "proximityFuseArmDistance", "proximityFuseRadius" ])
+      foreach (p in ["caliber", "proximityFuseArmDistance", "proximityFuseRadius" ])
       if (p in bulletsSet)
         bulletsData[p] <- bulletsSet[p]
+
+      
+      local bulletKey = bullet_params?.bulletType ?? ""
+      if (bulletKey == "") {
+        let bulletName = bulletsSet?.bullets[bulletIdx] ?? ""
+        let part = bulletName.indexof("@")
+        bulletKey = part == null ? bulletName : bulletName.slice(0, part)
+      }
+      let bulletData = bulletKey != "" ? bulletsSet?.bulletDataByType[bulletKey] : null
+      foreach (p in ["explosiveType", "explosiveMass"])
+        if (bulletData != null)
+          bulletsData[p] <- bulletData?[p]
+        else if (p in bulletsSet)
+          bulletsData[p] <- bulletsSet[p]
 
       if (isSmokeGenerator)
         foreach (p in ["smokeShellRad", "smokeActivateTime", "smokeTime"])
@@ -885,8 +932,13 @@ function addBulletsParamToDesc(descTbl, unit, item, params = {}) {
 
   addAdditionalBulletsInfoToDesc(bulletsData, descTbl, unit,
     params.__merge({ name = bulletsSet?.bulletNames[0] ?? modName }))
-  if (isBulletCard)
-    addArmorPiercingToDescForBullets(bulletsData, descTbl)
+  if (isBulletCard) {
+    let bullet = "weaponBlkName" in bulletsSet
+      ? { weaponBlkName = bulletsSet.weaponBlkName, bulletName = bulletsSet?.bulletNames[0] ?? modName,
+          bulletNameTxt = getModItemName(unit, item, false), esUnitType = unit.esUnitType }
+      : null
+    addArmorPiercingToDescForBullets(bulletsData, descTbl, bullet)
+  }
   else
     addArmorPiercingToDesc(bulletsData, descTbl)
 }
@@ -938,7 +990,11 @@ function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulle
   let bulletsData = buildBulletsData([bulletParams], bulletsSet)
   addAdditionalBulletsInfoToDesc(bulletsData, descTbl, unit,
     { isBulletCard = true, name = bulletName })
-  addArmorPiercingToDescForBullets(bulletsData, descTbl)
+  let bullet = "weaponBlkName" in bulletsSet
+    ? { weaponBlkName = bulletsSet.weaponBlkName, bulletName, bulletNameTxt = locName,
+      esUnitType = unit.esUnitType }
+    : null
+  addArmorPiercingToDescForBullets(bulletsData, descTbl, bullet)
   checkBulletParamsBeforeRender(descTbl)
   return descTbl
 }

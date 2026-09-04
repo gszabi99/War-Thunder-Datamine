@@ -1,21 +1,23 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "dagor.random" import frnd
+from "%sqstd/datablock.nut" import convertBlk
+from "%sqstd/underscore.nut" import isArray
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
+from "types" import Array
 
+let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock  = require("DataBlock")
-let { frnd } = require("dagor.random")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let Set = require("workshopSet.nut")
+let Set = require("%scripts/items/workshop/workshopSet.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
-let { isArray } = require("%sqstd/underscore.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isInventoryFullUpdated } = require("%scripts/items/itemsManager.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
-let OUT_OF_DATE_DAYS_WORKSHOP = 28
+const OUT_OF_DATE_DAYS_WORKSHOP = 28
 
 local isInited = false
 let setsList = []
@@ -32,7 +34,7 @@ local effectOnOpenChestPresets = {}
 
 function checkBlkDuplicates(cfg, cfgName) {
   foreach(key, val in cfg) {
-    assert(type(val) != "array", $"config/workshop.blk: Duplicate block in {cfgName}: {key}")
+    assert(!(val instanceof Array), $"config/workshop.blk: Duplicate block in {cfgName}: {key}")
   }
 }
 
@@ -170,8 +172,8 @@ function getRandomEffect(effects) {
 }
 
 subscriptions.addListenersWithoutEnv({
-  SignOut = @(_p) invalidateCache()
-  InventoryUpdate = @(_p) invalidateItemsCache()
+  SignOut = @(_p) invalidateCache(),
+  [INVENTORY_UPDATE] = @(_p) invalidateItemsCache(),
   ItemsShopUpdate = @(_p) invalidateItemsCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 

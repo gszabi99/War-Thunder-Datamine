@@ -10,14 +10,41 @@
     "hangarControlTracking": {},
     "tdiv": {
       "id": "wnd_frame",
-      "overflow": "hidden",
       "right": "1@bw",
       "top": "1@bh + 1@titleLogoPlateHeight - 0.5@frameMediumPadding",
       "position": "absolute",
       "width": "1048@sf/@pf",
       "height": "1@crewWndBaseHeight",
-      "blur": {},
-      "blur_foreground": {},
+      "tdiv": [
+        {
+          "position": "absolute",
+          "size": "pw, ph",
+          "input-transparent": "yes",
+          "overflow": "hidden",
+          "blur": {},
+          "blur_foreground": {
+            "isRoot": "yes"
+          }
+        },
+        {
+          "position": "absolute",
+          "right": "pw",
+          "bottom": "0",
+          "overflow": "hidden",
+          "blur": {},
+          "blur_foreground": {
+            "isRoot": "yes"
+          },
+          "VerticalListBox": {
+            "id": "unit_type_selector",
+            "position": "relative",
+            "noPadding": "yes",
+            "background-color": "@frameDarkTransparentBgColor",
+            "on_select": "onUnitTypeSelector",
+            "padding-top": "-1@sf/@pf"
+          }
+        }
+      ],
       "frame": {
         "class": "wndNav",
         "noHeaderFooterBars": "yes",
@@ -124,6 +151,7 @@
                 "VerticalListBox": {
                   "id": "crew_pages_list",
                   "size": "pw,ph",
+                  "overflow-y": "auto",
                   "on_select": "onCrewPage",
                   "navigator": "posNavigator",
                   "navigatorShortcuts": "yes",
@@ -434,6 +462,8 @@
             "display": "hide",
             "pos": "50%sw-50%w, 1@bh",
             "position": "root",
+            "flow": "vertical",
+            "css-hier-invalidate": "yes",
             "min-width": "1@gameModeSelectBlockWidth",
             "padding-top": "1@gameModeSelectPaddingTop",
             "background-color": "@gameModeColor",
@@ -445,9 +475,11 @@
               "enable": "no",
               "Button_text": {
                 "id": "game_mode_change_button",
-                "_on_click": "::gcb.onOpenGameModeSelect",
+                "on_click": "@emit gamercard.openGameModeSelect",
                 "noMargin": "yes",
                 "btnName": "Y",
+                "total-input-transparent": "yes",
+                "input-transparent": "yes",
                 "visualStyle": "noFrame",
                 "buttonWink": {},
                 "ButtonImg": {},
@@ -465,6 +497,16 @@
                   }
                 }
               }
+            },
+            "secondGameModesPanel": {
+              "id": "second_game_modes_nest",
+              "position": "relative",
+              "width": "pw",
+              "flow": "vertical",
+              "isEmpty": "no",
+              "isInQueue": "no",
+              "total-input-transparent": "yes",
+              "css-hier-invalidate": "yes"
             }
           },
           "TopMenuPanel": {
@@ -845,7 +887,7 @@
                           "tooltip": "#battlePass/btn_buy",
                           "display": "hide",
                           "enable": "no",
-                          "on_click": "::gcb.openBattlePassShopWnd",
+                          "on_click": "@emit battlePass.openShopWnd",
                           "img": {
                             "id": "gc_BattlePassProgressImg",
                             "behaviour": "bhvUpdateByWatched",
@@ -908,7 +950,8 @@
         {
           "id": "gamercard_bottom",
           "systemMsg": {
-            "pos": "1@systemMsgIndent, 0",
+            "behavior": "bhvUpdater",
+            "value": "{\"viewId\": \"SYSTEM_MSG_INDENT\"}",
             "position": "root",
             "flow": "vertical",
             "dlDataStat": {
@@ -1140,6 +1183,13 @@
       {
         "id": "dmviewer_title",
         "overlayTextColor": "active",
+        "text": "",
+        "input-transparent": "yes"
+      },
+      {
+        "id": "dmviewer_short_desc",
+        "display": "hide",
+        "margin-top": "5@sf/@pf",
         "text": "",
         "input-transparent": "yes"
       },

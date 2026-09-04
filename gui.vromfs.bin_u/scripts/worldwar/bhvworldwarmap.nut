@@ -1,22 +1,23 @@
-from "%scripts/dagui_natives.nut" import ww_zoom_map, ww_update_hover_zone_id, is_keyboard_btn_down, ww_get_battle_icon_radius, ww_side_val_to_name, ww_update_hover_battle_id, ww_find_army_name_by_coordinates, ww_find_army_names_in_point, ww_update_hover_airfield_id, ww_convert_map_to_world_position
+from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor
+from "dagor.math" import Point2
+from "string" import split_by_chars
+from "worldwar" import wwGetZoneName, wwGetZoneIdx, wwGetSelectedAirfield, wwSelectAirfield, wwFindAirfieldByCoordinates, wwClearOutlinedZones, wwGetBattlesNames
+  , wwUpdateHoverArmyName, wwFindLastFlewOutArmyNameByAirfield, wwIsCellGenerallyPassable, wwCanAppendPathPointForSelectedArmies, wwUpdateSelectedArmiesName
+from "worldwarConst" import RenderCategory
+from "%globalScripts/inputDeviceConsts.nut" import *
+from "%globalScripts/guiBehaviourConsts.nut" import *
+from "%scripts/dagui_natives.nut" import ww_zoom_map, ww_update_hover_zone_id, is_keyboard_btn_down, ww_get_battle_icon_radius, ww_side_val_to_name, ww_update_hover_battle_id, ww_find_army_name_by_coordinates
+  , ww_find_army_names_in_point, ww_update_hover_airfield_id, ww_convert_map_to_world_position
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { Point2 } = require("dagor.math")
-let { split_by_chars } = require("string")
+let { WwAirfieldFlyOut } = require("%scripts/worldWar/handler/wwAirfieldFlyOut.nut")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
-let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { wwGetZoneName, wwGetZoneIdx, wwGetSelectedAirfield, wwSelectAirfield,
-  wwFindAirfieldByCoordinates, wwClearOutlinedZones, wwGetBattlesNames,
-  wwUpdateHoverArmyName, wwFindLastFlewOutArmyNameByAirfield,
-  wwIsCellGenerallyPassable, wwCanAppendPathPointForSelectedArmies, wwUpdateSelectedArmiesName } = require("worldwar")
+let { markObjShortcutOnHover } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { selectArmyByName, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
-let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
-let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getRearZonesOwnedToSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
@@ -149,7 +150,7 @@ let worldWarMapControls = class {
 
       let mapCell = mapCellUnderCursor.get()
       if (wwIsCellGenerallyPassable(mapCell))
-        gui_handlers.WwAirfieldFlyOut.open(
+        WwAirfieldFlyOut.open(
           airfieldIdx, clickPos, armyTargetName, mapCell, Callback(checkFlewOutArmy, this))
       else
         addPopup("", loc("worldwar/charError/MOVE_REJECTED"),
@@ -221,7 +222,7 @@ let worldWarMapControls = class {
       if (hoverBattle)
         hoverBattleId = hoverBattle.id
 
-      let lastSavedBattleName = getTblValue("battleName", params)
+      let lastSavedBattleName = params?.battleName
       if (hoverBattleId != lastSavedBattleName) {
         if (!hoverBattleId)
           params.$rawdelete("battleName")
@@ -257,7 +258,7 @@ let worldWarMapControls = class {
     }
 
     let zoneIndex = wwGetZoneIdx(mousePos[0], mousePos[1])
-    let lastZoneIndex = getTblValue("zoneIndex", params)
+    let lastZoneIndex = params?.zoneIndex
     if (zoneIndex != lastZoneIndex) {
       if (zoneIndex < 0)
         params.$rawdelete("zoneIndex")
@@ -316,7 +317,7 @@ let worldWarMapControls = class {
   }
 
   function getSelectedArmiesOnMap(obj) {
-    let selectedArmies = getTblValue(this.selectedArmiesID, obj.getUserData(), "")
+    let selectedArmies = (obj.getUserData()?[this.selectedArmiesID] ?? "")
     return split_by_chars(selectedArmies, ",")
   }
 

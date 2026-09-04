@@ -3,6 +3,7 @@ from "dagor.clipboard" import set_clipboard_text
 from "%darg/ui_imports.nut" import *
 import "inspectorViews.nut" as fieldsMap
 import "simpleCursors.nut" as cursors
+from "types" import String, Function, Class
 
 
 let utf8 = require_optional("utf8")
@@ -127,7 +128,7 @@ let mkImageCtor = @(image) @(content) {
 
 let IMAGE_KEYS = {"image":1, "fallbackImage":1}
 
-function getPropValueTexts(desc, key, textLimit = 0) {
+function getPropValueTexts(desc, key, textLimit = 0): table {
   let val = desc[key]
   let tp = type(val)
 
@@ -161,14 +162,14 @@ function getPropValueTexts(desc, key, textLimit = 0) {
   return { text, valCtor }
 }
 
-let textColor = @(sf) sf & S_ACTIVE ? 0xFFFFFF00
+let textColor = @(sf: int): int sf & S_ACTIVE ? 0xFFFFFF00
   : sf & S_HOVER ? 0xFF80A0FF
   : 0xFFFFFFFF
 
 function mkPropContent(desc, key, sf) {
   let { text, valCtor } = getPropValueTexts(desc, key, 200)
   local keyValue = $"{key.tostring()} = <color={valColor}>{text}</color>"
-  if (type(valCtor) == "string")
+  if (valCtor instanceof String)
     keyValue = $"{keyValue} {valCtor}"
   local content = {
     rendObj = ROBJ_TEXTAREA
@@ -179,14 +180,14 @@ function mkPropContent(desc, key, sf) {
     hangingIndent = sh(3)
     text = keyValue
   }
-  if (type(valCtor) == "function")
+  if (valCtor instanceof Function)
     content = valCtor?(content)
   return content
 }
 
 function propPanel(desc) {
   local pKeys = []
-  if (type(desc) == "class")
+  if (desc instanceof Class)
     foreach (key, _ in desc)
       pKeys.append(key)
   else
@@ -206,7 +207,7 @@ function propPanel(desc) {
   })
 }
 
-function elemLocationText(elem, builder, builder_func_name) {
+function elemLocationText(elem, builder, builder_func_name): string {
   local text = "Source: unknown"
 
   let location = locate_element_source(elem)
@@ -225,7 +226,7 @@ function updatePickedList(data) {
   animHighlight.set(null)
 }
 
-let prepareCallstackText = @(text) 
+let prepareCallstackText = @(text: string): string 
   text.replace("/", "/\t")
 
 function clickableText(labelText, valueText, onClick = null, highlightBB = null) {
@@ -410,7 +411,7 @@ let elementPicker = @() {
 function inspectorRoot() {
   let res = {
     watch = [pickerActive, shown]
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     zOrder = getroottable()?.Layers.Inspector ?? 10
     skipInspection = true
   }

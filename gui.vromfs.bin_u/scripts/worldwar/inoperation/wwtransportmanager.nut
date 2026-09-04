@@ -1,8 +1,8 @@
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetLoadedTransport
 from "%scripts/dagui_library.nut" import *
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
-let { wwGetLoadedTransport } = require("worldwar")
 
 local cachedLoadedTransport = null
 function getLoadedTransport() {

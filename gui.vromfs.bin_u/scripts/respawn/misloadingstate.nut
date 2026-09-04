@@ -1,11 +1,11 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "eventbus" import eventbus_subscribe
+from "guiRespawn" import getAvailableRespawnBases
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_local_player_country
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { getAvailableRespawnBases } = require("guiRespawn")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInFlight } = require("gameplayBinding")
 let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { invalidateCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")

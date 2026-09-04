@@ -1,7 +1,6 @@
 require ecs
 
 require %appGame.wt_events
-require DngWeapon
 require soundEvent
 
 

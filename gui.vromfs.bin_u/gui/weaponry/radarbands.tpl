@@ -7,8 +7,8 @@ tdiv {
     <<#tooltipId>>
     <<#isTooltipByHold>>
     tooltipId:t='<<tooltipId>>'
-    on_hover:t='::gcb.delayedTooltipHover'
-    on_unhover:t='::gcb.delayedTooltipHover'
+    on_hover:t='gcb.delayedTooltipHover'
+    on_unhover:t='gcb.delayedTooltipHover'
     <</isTooltipByHold>>
     <<^isTooltipByHold>>
     tooltip:t='$tooltipObj'

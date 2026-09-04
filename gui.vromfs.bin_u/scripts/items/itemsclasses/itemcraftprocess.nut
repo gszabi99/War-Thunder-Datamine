@@ -1,7 +1,7 @@
+from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
-let { eventbus_send } = require("eventbus")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")

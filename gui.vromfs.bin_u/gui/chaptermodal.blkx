@@ -281,6 +281,8 @@
             "display": "hide",
             "pos": "50%sw-50%w, 1@bh",
             "position": "root",
+            "flow": "vertical",
+            "css-hier-invalidate": "yes",
             "min-width": "1@gameModeSelectBlockWidth",
             "padding-top": "1@gameModeSelectPaddingTop",
             "background-color": "@gameModeColor",
@@ -292,9 +294,11 @@
               "enable": "no",
               "Button_text": {
                 "id": "game_mode_change_button",
-                "_on_click": "::gcb.onOpenGameModeSelect",
+                "on_click": "@emit gamercard.openGameModeSelect",
                 "noMargin": "yes",
                 "btnName": "Y",
+                "total-input-transparent": "yes",
+                "input-transparent": "yes",
                 "visualStyle": "noFrame",
                 "buttonWink": {},
                 "ButtonImg": {},
@@ -312,6 +316,16 @@
                   }
                 }
               }
+            },
+            "secondGameModesPanel": {
+              "id": "second_game_modes_nest",
+              "position": "relative",
+              "width": "pw",
+              "flow": "vertical",
+              "isEmpty": "no",
+              "isInQueue": "no",
+              "total-input-transparent": "yes",
+              "css-hier-invalidate": "yes"
             }
           },
           "TopMenuPanel": {
@@ -692,7 +706,7 @@
                           "tooltip": "#battlePass/btn_buy",
                           "display": "hide",
                           "enable": "no",
-                          "on_click": "::gcb.openBattlePassShopWnd",
+                          "on_click": "@emit battlePass.openShopWnd",
                           "img": {
                             "id": "gc_BattlePassProgressImg",
                             "behaviour": "bhvUpdateByWatched",
@@ -755,7 +769,8 @@
         {
           "id": "gamercard_bottom",
           "systemMsg": {
-            "pos": "1@systemMsgIndent, 0",
+            "behavior": "bhvUpdater",
+            "value": "{\"viewId\": \"SYSTEM_MSG_INDENT\"}",
             "position": "root",
             "flow": "vertical",
             "dlDataStat": {

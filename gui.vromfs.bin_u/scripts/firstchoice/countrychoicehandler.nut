@@ -1,33 +1,38 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import shuffle
+from "%sqstd/string.nut" import cutPrefix
+from "string" import format
+from "math" import floor
+from "dagor.localize" import doesLocTextExist
+from "console" import register_command
+from "%scripts/dagui_natives.nut" import is_existing_file
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let { floor } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getFirstChosenUnitType, isFirstChoiceShown, fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getUnitTypesInCountries, getCountriesByUnitType } = require("%scripts/unit/unitInfo.nut")
 let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { saveShowedTutorial, getFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { unlockLaterVehicles, getRecomendedCountries } = require("%appGlobals/config/countriesVehicles.nut")
 let { hasRunTutorialDialog } = require("%scripts/tutorials.nut")
-let { doesLocTextExist } = require("dagor.localize")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
-let { register_command } = require("console")
-let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
-let { shuffle } = require("%sqStdLibs/helpers/u.nut")
+let { findChildIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 
 
 function getReserveUnits(country, esUnitType) {
@@ -63,7 +68,7 @@ function isCountryAvailable(country, unitType) {
   return getUnitTypesInCountries()?[country][unitType.esUnitType]
 }
 
-gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let CountryChoiceHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/firstChoice/countryChoice.blk"
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -125,11 +130,15 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (availCountries.contains(country)) {
         let isRecomended = getRecomendedCountries(this.esUnitType).contains(country)
         let countriesList = isRecomended ? recomendedCountries : otherCountries
+        let countryShort = cutPrefix(country, "country_")
+        let videoPath = $"video/countryPreview/{this.curArmyName}/{countryShort}_{this.curArmyName}.ivf"
+        let videoPreview = hasFeature("VideoPreview") && is_existing_file(videoPath, false) ? videoPath : null
         countriesList.append({
           country
           isRecomended
           countryName = loc(country)
           backgroundImage = image
+          videoPreview
           tooltip = !this.isNewStyleView ? this.getCountryInfoDescription(country) : ""
         })
       }
@@ -257,7 +266,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onToBattleClick() {
     this.saveChoosenCountry()
-    let handler = handlersManager.findHandlerClassInScene(gui_handlers.MainMenu)
+    let handler = handlersManager.findHandlerClassInScene(MainMenu)
     if (handler)
       handler.onStart()
     this.goBack()
@@ -274,6 +283,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.listObj.setValue(idx)
   }
 }
+register_gui_handler("CountryChoiceHandler", CountryChoiceHandler)
 
 register_command(function(esUnitType, isNewStyleView) {
   if (!unitTypes.getByEsUnitType(esUnitType).isAvailableForFirstChoice()) {
@@ -281,5 +291,9 @@ register_command(function(esUnitType, isNewStyleView) {
     esUnitType = ES_UNIT_TYPE_AIRCRAFT
   }
 
-  handlersManager.loadHandler(gui_handlers.CountryChoiceHandler, { esUnitType, isNewStyleView })
-}, "debug.open_country_choice_wnd")
+  handlersManager.loadHandler(CountryChoiceHandler, { esUnitType, isNewStyleView })
+}, "debug.country_choice_wnd_open")
+
+register_command(function() {
+  handlersManager.findHandlerClassInScene(CountryChoiceHandler)?.goBack()
+}, "debug.country_choice_wnd_close")

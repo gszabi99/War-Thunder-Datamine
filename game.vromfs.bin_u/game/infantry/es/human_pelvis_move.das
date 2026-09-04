@@ -3,7 +3,6 @@ require PhysVars
 require DngHuman
 require math
 require math.base
-require math.ang
 require DagorMath
 require %game.events
 

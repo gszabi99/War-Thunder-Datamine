@@ -1,22 +1,22 @@
-from "%scripts/dagui_library.nut" import *
 import "%scripts/matchingRooms/lobbyStates.nut" as lobbyStates
+from "mission" import set_game_mode, get_game_mode, get_cur_game_mode_name
+from "string" import format
+from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { set_game_mode, get_game_mode, get_cur_game_mode_name } = require("mission")
-let { format } = require("string")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { isInJoiningGame, getSessionLobbyMissionParams, sessionLobbyStatus, getSessionLobbyGameMode
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { isInJoiningGame, getSessionLobbyMissionParams, sessionLobbyStatus, getSessionLobbyGameMode } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
-gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("JoiningGameWaitBox", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 30
@@ -93,7 +93,7 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showCancelButton(show) {
-    let btnId = "btn_cancel"
+    const btnId = "btn_cancel"
     local obj = this.scene.findObject(btnId)
     if (obj) {
       obj.show(show)
@@ -105,7 +105,7 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!show)
       return
 
-    let data = format(
+    const data = format(
       "Button_text{id:t='%s'; btnName:t='AB'; text:t='#msgbox/btn_cancel'; on_click:t='onCancel'}",
       btnId)
     let holderObj = this.scene.findObject("buttons_holder")
@@ -138,4 +138,4 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
       leaveSessionRoom()
     })
   }
-}
+})

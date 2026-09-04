@@ -1,12 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/worldWar/wwOperationState.nut" import isOperationFinished
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, ww_side_val_to_name, ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBattleResultsView.nut")
 let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
 let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
@@ -118,7 +119,7 @@ let WwBattleResults = class {
           if (armyName.len() == 0)
             continue
 
-          let army = getTblValue(armyName, wwArmies)
+          let army = wwArmies[armyName]
           let armyState = armyStatesBlk?[armyName].state ?? "EASAB_UNKNOWN"
 
           if (teamCountry == "")
@@ -168,7 +169,7 @@ let WwBattleResults = class {
         continue
       for (local j = 0; j < teamsBlk.blockCount(); j++) {
         let teamBlk = teamsBlk.getBlock(j)
-        let team = getTblValue(teamBlk.getBlockName() ?? "", this.teams)
+        let team = this.teams?[teamBlk.getBlockName() ?? ""]
         if (!team)
           continue
 
@@ -217,25 +218,25 @@ let WwBattleResults = class {
 
 
   function updateFromUserlog(userlog) {
-    let wwSharedPool = getTblValue("wwSharedPool", userlog)
-    let wwBattleResult = getTblValue("wwBattleResult", userlog, {})
+    let wwSharedPool = userlog?.wwSharedPool
+    let wwBattleResult = (userlog?.wwBattleResult ?? {})
     if (!wwSharedPool)
       return this
 
-    let initialArmies = getTblValue("initialArmies", wwSharedPool, [])
-    let teamsCasualties = getTblValue("casualties", wwSharedPool, [])
+    let initialArmies = (wwSharedPool?.initialArmies ?? [])
+    let teamsCasualties = (wwSharedPool?.casualties ?? [])
 
     
 
-    let localTeam  = getTblValue("localTeam", wwSharedPool, "")
+    let localTeam  = (wwSharedPool?.localTeam ?? "")
     let sidesOrder = getSidesOrder() 
-    let winnerSide = getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
+    let winnerSide = userlog?.win ? sidesOrder[0] : sidesOrder[1]
 
     local sideInBattle = SIDE_NONE
     local countryInBattle = ""
     let teamBySide = {}
     foreach (_armyName, initialArmy in initialArmies) {
-      let teamName = getTblValue("team", initialArmy, "")
+      let teamName = (initialArmy?.team ?? "")
       let side = teamName == localTeam ? sidesOrder[0] : sidesOrder[1]
       teamBySide[side] <- teamName
       initialArmy.side <- ww_side_val_to_name(side)
@@ -250,10 +251,10 @@ let WwBattleResults = class {
     let wwArmies = initialArmies.map(function(initialArmy, armyName) {
       let armyState = wwBattleResult?.armyStates[armyName] ?? {}
 
-      let side  = ww_side_name_to_val(getTblValue("side", initialArmy, ""))
-      let country = getTblValue("country", initialArmy, "")
-      let clanTag = getTblValue("armyGroupName", armyState, "")
-      let unitTypeTextCode = getTblValue("unitType", initialArmy, "")
+      let side  = ww_side_name_to_val((initialArmy?.side ?? ""))
+      let country = (initialArmy?.country ?? "")
+      let clanTag = (armyState?.armyGroupName ?? "")
+      let unitTypeTextCode = (initialArmy?.unitType ?? "")
       let wwUnitType = g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
       let wwArmy = getArmyByName(armyName)
       let hasFoundArmy = wwArmy.getUnitType() != g_ww_unit_type.UNKNOWN.code
@@ -279,13 +280,13 @@ let WwBattleResults = class {
     
 
     let wwOperationId = wwSharedPool?.operationId
-    this.id = getTblValue("battleId", wwSharedPool, "")
+    this.id = (wwSharedPool?.battleId ?? "")
     if (wwOperationId)
       this.operationId = wwOperationId.tointeger()
     this.winner = winnerSide
     this.playerSide = sideInBattle
     this.playerCountry = countryInBattle
-    this.locName = getTblValue("locName", userlog, "")
+    this.locName = (userlog?.locName ?? "")
     this.isBattleResultsIgnored = isOperationFinished()
 
     this.teams = {}
@@ -314,9 +315,9 @@ let WwBattleResults = class {
         teamUnits = u.tablesCombine(teamUnits, armyUnits, function(a, b) { return a + b }, 0)
       }
 
-      let teamCasualties = getTblValue(teamName, teamsCasualties, {})
+      let teamCasualties = (teamsCasualties?[teamName] ?? {})
       let teamUnitStats  = u.mapAdvanced(teamUnits, function(initial, unitName, ...) {
-        let casualties = getTblValue(unitName, teamCasualties, 0)
+        let casualties = (teamCasualties?[unitName] ?? 0)
         return {
           initial    = initial
           remain     = initial - casualties

@@ -1,8 +1,10 @@
+from "controls" import getShortcutGroupMask
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
+from "types" import String
+
 let shortcutTemplate = require("%scripts/controls/shortcutsList/shortcutTemplate.nut")
 let shortcutsModulesList = require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")
-let { getShortcutGroupMask } = require("controls")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let shortcutsListTypes = {
@@ -12,7 +14,7 @@ let shortcutsListTypes = {
 function addShortcuts(shArray) {
   foreach (shSrc in shArray) {
     
-    let sh = shortcutTemplate.__merge((type(shSrc) == "string") ? { id = shSrc } : shSrc)
+    let sh = shortcutTemplate.__merge((shSrc instanceof String) ? { id = shSrc } : shSrc)
     sh.reqInMouseAim = sh.reqInMouseAim ?? sh.checkAssign
     let { id } = sh
     if (id in shortcutsListTypes) {

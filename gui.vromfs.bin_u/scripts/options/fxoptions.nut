@@ -1,16 +1,14 @@
+from "chard" import save_profile
+from "graphicsOptions" import getPaperWhiteNits, setPaperWhiteNits, getDefaultPaperWhiteNits, getHdrBrightness, setHdrBrightness, getDefaultHdrBrightness, getHdrShadows
+  , setHdrShadows, getDefaultHdrShadows, isHdrEnabled
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_slider
 
-let { save_profile } = require("chard")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 
-let { getPaperWhiteNits, setPaperWhiteNits, getDefaultPaperWhiteNits,
-  getHdrBrightness, setHdrBrightness, getDefaultHdrBrightness,
-  getHdrShadows, setHdrShadows, getDefaultHdrShadows, isHdrEnabled } = require("graphicsOptions")
 
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
@@ -25,7 +23,7 @@ let hdrSettingsConfig = [
     getter = getHdrShadows, setter = setHdrShadows, defgetter = getDefaultHdrShadows }
 ]
 
-gui_handlers.fxOptions <- class (BaseGuiHandler) {
+let fxOptions = class (BaseGuiHandler) {
   sceneTplName = "%gui/options/fxOptions.tpl"
   headerText = "#mainmenu/btnHdrSettings"
 
@@ -119,13 +117,14 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
     base.goBack()
   }
 }
+register_gui_handler("fxOptions", fxOptions)
 
 function openHdrSettings() {
-  let openedHdrSettings = handlersManager.findHandlerClassInScene(gui_handlers.fxOptions)
+  let openedHdrSettings = handlersManager.findHandlerClassInScene(fxOptions)
   if (openedHdrSettings != null)
     return
 
-  handlersManager.loadHandler(gui_handlers.fxOptions, {
+  handlersManager.loadHandler(fxOptions, {
     settings = hdrSettingsConfig
     LOCAL_PATH_SHOWED_ON_START = LOCAL_PATH_SHOWED_HDR_ON_START
   })

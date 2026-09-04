@@ -1,16 +1,16 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "guiMission" import get_meta_mission_info_by_gm_and_name, select_training_mission
+from "console" import register_command
+from "guiOptions" import set_gui_option, get_gui_option, setGuiOptionsMode
+from "mission" import set_game_mode
 from "%scripts/dagui_library.nut" import *
-let { get_meta_mission_info_by_gm_and_name, select_training_mission } = require("guiMission")
+from "%globalScripts/gameModeNativeConsts.nut" import *
+
 let { isModResearched } = require("%scripts/weaponry/modificationInfo.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { register_command } = require("console")
-let { set_gui_option, get_gui_option, setGuiOptionsMode } = require("guiOptions")
-let { set_game_mode } = require("mission")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT, OPTIONS_MODE_TRAINING
-} = require("%scripts/options/optionsExtNames.nut")
-let DataBlock = require("DataBlock")
+let { USEROPT_DIFFICULTY, USEROPT_WEAPONS, USEROPT_AIRCRAFT, OPTIONS_MODE_TRAINING } = require("%scripts/options/optionsExtNames.nut")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")

@@ -1,18 +1,12 @@
+import "DataBlock" as DataBlock
+from "dagor.workcycle" import defer
+from "language" import getLocalLanguage
+from "%sqstd/json.nut" import saveJson
 from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
-
-let { defer } = require("dagor.workcycle")
-let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-
-let DataBlock  = require("DataBlock")
-
-let { getLocalLanguage } = require("language")
-
+from "%scripts/webRPC.nut" import webRpcRegister
+let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-
-let { saveJson } = require("%sqstd/json.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
-
 let { getCachedDecoratorsListByType } = require("%scripts/customization/decoratorGetters.nut")
 
 function genAllSkinLocksToBlkCurLang(path) {
@@ -67,4 +61,4 @@ function exportSkinsInfo(params) {
   return "ok"
 }
 
-web_rpc.register_handler("exportSkinsInfo", exportSkinsInfo)
+webRpcRegister("exportSkinsInfo", exportSkinsInfo)

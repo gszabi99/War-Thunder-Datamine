@@ -1,36 +1,35 @@
-from "%rGui/globals/ui_library.nut" import *
+import "%rGui/style/teamColors.nut" as teamColors
 import "console" as console
+from "%rGui/hud/scoreboard/missionModeState.nut" import TOTAL_DOMINATION_START_ANIM_ID, TOTAL_DOMINATION_MULT_ANIM_ID
+from "%rGui/missionState.nut" import totalDomTeam, totalDomMult, totalDomEnabled
+from "dagor.workcycle" import deferOnce
+from "%rGui/globals/ui_library.nut" import *
 
-let teamColors = require("%rGui/style/teamColors.nut")
 let { ticketHudBlurPanel } = require("%rGui/components/blurPanel.nut")
-let { TOTAL_DOMINATION_START_ANIM_ID, TOTAL_DOMINATION_MULT_ANIM_ID
-} = require("%rGui/hud/scoreboard/missionModeState.nut")
-let { totalDomTeam, totalDomMult, totalDomEnabled } = require("%rGui/missionState.nut")
-let { deferOnce } = require("dagor.workcycle")
 
-let neutralColor = 0XFFCCCCCC
-let darkColor = 0X98000000
+const neutralColor = 0XFFCCCCCC
+const darkColor = 0X98000000
 
-let cpBasicSize = hdpxi(22)
-let cpInZoneSize = hdpxi(40)
-let superiorityIconSize = hdpxi(10)
+const cpBasicSize = hdpxi(22)
+const cpInZoneSize = hdpxi(40)
+const superiorityIconSize = hdpxi(10)
 let progressLineSize = [hdpxi(200), hdpxi(10)]
-let progressGap = hdpxi(5)
+const progressGap = hdpxi(5)
 let zoneSymbols = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"]
 let totalDomMultIconSize = [hdpxi(16), hdpxi(10)]
 
-let TOTAL_DOM_MULT_FADE_DUR = 0.4
-let TOTAL_DOM_MULT_CYCLES = 2
+const TOTAL_DOM_MULT_FADE_DUR = 0.4
+const TOTAL_DOM_MULT_CYCLES = 2
 
-let longAnimsCount = 2
-let longAnimDuration = 0.75
+const longAnimsCount = 2
+const longAnimDuration = 0.75
 
-let shortAnimsCount = 4
-let shortAnimDuration = 0.5
+const shortAnimsCount = 4
+const shortAnimDuration = 0.5
 
 
 let mkSuperiorityIcon = @(color) {
-  size = [superiorityIconSize, superiorityIconSize ]
+  size = const [superiorityIconSize, superiorityIconSize ]
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#person_icon.svg:{superiorityIconSize}:{superiorityIconSize}:P")
   color
@@ -38,7 +37,7 @@ let mkSuperiorityIcon = @(color) {
 
 
 let inZoneFrame = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   commands = [
     [VECTOR_POLY,  5,  5, 20,  5,  5, 20],
@@ -52,7 +51,7 @@ let inZoneFrame = {
 }
 
 let mkProgressDecor = @(isAlly) {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_IMAGE
   image = Picture($"ui/gameuiskin#progres_line_decor.svg:{progressLineSize[0]}:{progressLineSize[1]}:P")
   color = darkColor
@@ -158,10 +157,10 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
   return {
     watch = [captureZoneW, teamColors, localTeamW]
     flow = FLOW_VERTICAL
-    size = [ SIZE_TO_CONTENT, cpInZoneSize ]
+    size = const [ SIZE_TO_CONTENT, cpInZoneSize ]
     children = [
       {
-        size = [ SIZE_TO_CONTENT, cpInZoneSize ]
+        size = const [ SIZE_TO_CONTENT, cpInZoneSize ]
         valign = ALIGN_CENTER
         children = {
           size = [cpSize, cpSize]
@@ -169,7 +168,7 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
           valign = ALIGN_CENTER
           children = [
             {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_PROGRESS_CIRCULAR
               fValue = progress / 100.0
               fgColor = teamColor
@@ -181,7 +180,7 @@ let mkTeamCapPoint = @(captureZoneW, localTeamW) function() {
             }
             watchedHeroInZone ? inZoneFrame : null
             {
-              size = flex()
+              size = FLEX
               rendObj = ROBJ_IMAGE
               image = Picture($"ui/gameuiskin#basezone_small_mark_no_bg_{zoneSymbols[id]}.svg:{cpInZoneSize}:{cpInZoneSize}:P")
               color = darkColor
@@ -310,7 +309,7 @@ let mkTotalDominationScoreMultiplayers = @(isAlly, teamColor) function() {
 
 function mkTeamProgressLine(isAlly, teamColor, progress, reflectionAnimTrigger) {
   return {
-    size = [pw(progress), flex()]
+    size = [pw(progress), FLEX]
     rendObj = ROBJ_SOLID
     color = teamColor
     hplace = isAlly ? ALIGN_RIGHT : ALIGN_LEFT
@@ -318,7 +317,7 @@ function mkTeamProgressLine(isAlly, teamColor, progress, reflectionAnimTrigger) 
     transform = {}
     animations = [ mkScoreBlinkAnim(reflectionAnimTrigger) ]
     children = {
-      size = [progressLineSize[0], flex()]
+      size = [progressLineSize[0], FLEX]
       children = [
         isAlly ? allyProgressDecor : enemyProgressDecor
       ]

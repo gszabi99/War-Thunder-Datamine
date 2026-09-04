@@ -1,25 +1,27 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "statsd" as statsd
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "%sqstd/string.nut" import startsWith, stripTags
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import browser_reload_page, browser_go, browser_get_current_url, browser_go_back
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/browserEventConsts.nut" import *
+from "types" import String
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let statsd = require("statsd")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getPollIdByFullUrl, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 eventbus_subscribe("notify_browser_window", @(params) broadcastEvent("EmbeddedBrowser", params))
 
-gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
+let BrowserModalHandler = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/browser.blk"
   sceneNavBlkName = null
@@ -150,7 +152,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   }
 
   function wordWrapText(str, width) {
-    if (type(str) != "string" || str == "" || width <= 0)
+    if (!(str instanceof String) || str == "" || width <= 0)
       return str
     let wrapped = []
     let lines = str.split("\n")
@@ -168,8 +170,8 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
       return ""
 
     
-    let fontSizePropName = "smallFont"
-    let fontSizeCssId = "fontSmall"
+    const fontSizePropName = "smallFont"
+    const fontSizeCssId = "fontSmall"
     let maxWidthPx = to_pixels("0.8@rw")
     let textWidthPx = getStringWidthPx(urlStr, fontSizeCssId, this.guiScene)
     if (textWidthPx != 0 && textWidthPx > maxWidthPx) {
@@ -180,3 +182,6 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
       fontSizePropName, stripTags(urlStr))
   }
 }
+register_gui_handler("BrowserModalHandler", BrowserModalHandler)
+
+return { BrowserModalHandler }

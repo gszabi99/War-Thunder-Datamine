@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
 let recomendedCountriesByUnitType = {
   [ES_UNIT_TYPE_AIRCRAFT] = ["country_usa", "country_germany", "country_ussr", "country_britain", "country_japan"],
@@ -68,7 +69,7 @@ let unlockLaterVehicles = {
 let getRecomendedCountries = @(esUnitType) recomendedCountriesByUnitType?[esUnitType] ?? recomendedCountriesByUnitType[ES_UNIT_TYPE_TANK]
 
 
-return {
+return freeze({
   unlockLaterVehicles
   getRecomendedCountries
-}
+})

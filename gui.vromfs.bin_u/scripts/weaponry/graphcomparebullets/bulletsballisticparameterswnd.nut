@@ -1,19 +1,19 @@
+from "console" import register_command
+from "unitCalculcation" import buildBallisticTrajectoryAngleData, buildBallisticTrajectoryRangeData
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
-let { buildBallisticTrajectoryData, buildArmorPenetrationData } = require("unitCalculcation")
 let { isMissileWeapon, isMissileBullet, isGuidedBomb } = require("%scripts/weaponry/weaponryInfo.nut")
 let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { GraphCompareBulletsWnd } = require("%scripts/weaponry/graphCompareBullets/graphCompareBulletsWnd.nut")
-let { mkSliderMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
+let { mkSliderMarkup, mkModeButtonsMarkup } = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptionsView.nut")
+let { requestArmorPenetrationData } = require("%scripts/weaponry/graphCompareBullets/armorPenetrationDataRequest.nut")
 
-const DEFAULT_MAX_DISTANCE = 2000.0
-let maxDistanceByEsUnitType = {
-  [ES_UNIT_TYPE_SHIP] = 15000.0,
-  [ES_UNIT_TYPE_BOAT] = 15000.0,
+enum ShotMode {
+  ANGLE
+  RANGE
 }
-
-let getMaxDistance = @(esUnitType) maxDistanceByEsUnitType?[esUnitType] ?? DEFAULT_MAX_DISTANCE
 
 let unitsTypesBulletsCanBeCompared = { 
   [ES_UNIT_TYPE_AIRCRAFT]   = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_HELICOPTER],
@@ -23,14 +23,15 @@ let unitsTypesBulletsCanBeCompared = {
   [ES_UNIT_TYPE_BOAT]       = [ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT],
 }.map(@(l) l.reduce(@(res, v) res.$rawset(v, true), {}))
 
-function canRequestBallisticsData(weaponType, bulletType) {
-  return !isMissileWeapon(weaponType)
+function canRequestBallisticsData(weaponType, bulletType, hasNestedRocketBlk) {
+  return !hasNestedRocketBlk
+    && !isMissileWeapon(weaponType)
     && !isGuidedBomb(weaponType)
     && !isMissileBullet(bulletType)
 }
 
 let canRequestBulletBallisticsData = @(bullet)
-  canRequestBallisticsData(bullet?.weaponType, bullet?.bulletParams.bulletType)
+  canRequestBallisticsData(bullet?.weaponType, bullet?.bulletParams.bulletType, bullet?.hasNestedRocketBlk ?? false)
 
 
 function canBeComparedBulletsByUnitType(bullet, compareBulletsList) {
@@ -43,21 +44,67 @@ function canBeComparedBulletsByUnitType(bullet, compareBulletsList) {
   return compareBulletsList.findvalue(@(v) v.esUnitType not in curBulletUniTypesList) == null
 }
 
-function requestArmorPenetrationData(bullet, _settings, handlerCb) {
-  let { weaponBlkName, bulletName, esUnitType } = bullet
-  let cb = @(penetrationData) handlerCb({ weaponBlkName, bulletName, penetrationData })
-  buildArmorPenetrationData(weaponBlkName, bulletName, getMaxDistance(esUnitType), cb)
+let shotAngleSetting = {
+  id = "shotAngle"
+  locId = "mainmenu/angle"
+  minValue = 1
+  maxValue = 60
+  step = 1
+  value = 10
+  getValueText = @(value) $"{value}{loc("measureUnits/deg")}"
+  getControlMarkup = mkSliderMarkup
+  isVisible = @(settings) settings.shotMode == ShotMode.ANGLE
 }
+
+let targetRangeSetting = {
+  id = "targetRange"
+  locId = "distance"
+  minValue = 100
+  maxValue = 40000
+  step = 100
+  value = 1000
+  getValueText = @(value) $"{value}{loc("measureUnits/meters_alt")}"
+  getControlMarkup = mkSliderMarkup
+  isVisible = @(settings) settings.shotMode == ShotMode.RANGE
+}
+
+let shotModeParams = {
+  [ShotMode.ANGLE] = {
+    setting = shotAngleSetting,
+    buildTrajectoryData = buildBallisticTrajectoryAngleData
+  },
+  [ShotMode.RANGE] = {
+    setting = targetRangeSetting,
+    buildTrajectoryData = buildBallisticTrajectoryRangeData
+  },
+}
+
+let getShotModeValue = @(settings) settings[shotModeParams[settings.shotMode].setting.id]
 
 function requestBallisticsData(bullet, settings, handlerCb) {
   let { weaponBlkName, bulletName } = bullet
-  if (canRequestBulletBallisticsData(bullet)) {
-    let { shotAngle } = settings
-    let cb = @(ballisticsData) handlerCb({ weaponBlkName, bulletName, shotAngle, ballisticsData })
-    buildBallisticTrajectoryData(weaponBlkName, bulletName, shotAngle, cb)
-  }
-  else
+  if (!canRequestBulletBallisticsData(bullet)) {
     handlerCb({ weaponBlkName, bulletName })
+    return
+  }
+
+  let { shotMode } = settings
+  let shotModeValue = getShotModeValue(settings)
+  let cb = @(ballisticsData) handlerCb({
+    weaponBlkName, bulletName, shotMode, shotModeValue, ballisticsData
+  })
+  shotModeParams[shotMode].buildTrajectoryData(weaponBlkName, bulletName, shotModeValue, cb)
+}
+
+function needActualizeBallisticsData(cacheData, settings, bullet) {
+  if (!canRequestBulletBallisticsData(bullet))
+    return cacheData == null
+
+  if (cacheData == null)
+    return true
+
+  return cacheData.shotMode != settings.shotMode
+    || cacheData.shotModeValue != getShotModeValue(settings)
 }
 
 function getBallisticsData(compareBulletsList, cacheBulletsData) {
@@ -94,11 +141,7 @@ let bulletsParametersPages = [
     cacheDataId = "pageBallisticsData"
     locId = "mainmenu/ballistics"
     requestGraphData = requestBallisticsData
-    needActualize = function(cacheData, settings, bullet) {
-      if (canRequestBulletBallisticsData(bullet))
-        return cacheData?.shotAngle != settings.shotAngle
-      return cacheData == null
-    }
+    needActualize = needActualizeBallisticsData
     getGraphDataFromCache = getBallisticsData
     hasShotSetting = true
   }
@@ -114,15 +157,14 @@ let bulletsParametersPages = [
 ]
 
 let shotSettings = [
+  shotAngleSetting
+  targetRangeSetting
   {
-    id = "shotAngle"
-    locId = "mainmenu/angle"
-    minValue = 1
-    maxValue = 60
-    step = 1
-    value = 10
-    getValueText = @(value) $"{value}{loc("measureUnits/deg")}"
-    getControlMarkup = mkSliderMarkup
+    id = "shotMode"
+    value = ShotMode.ANGLE
+    values = [ShotMode.ANGLE, ShotMode.RANGE]
+    getItemText = @(value) loc(shotModeParams[value].setting.locId)
+    getControlMarkup = mkModeButtonsMarkup
   }
 ]
 

@@ -1,4 +1,5 @@
 from "debug" import format_call_stack_string
+from "types" import String
 
 const ASSERT_MSG = "provided value should be Monad"
 
@@ -15,10 +16,10 @@ const ASSERT_MSG = "provided value should be Monad"
 
 
 
-function checkInterface(klass, methods){
+function checkInterface(klass, methods): bool {
   let failedMethods = []
   foreach (method in methods){
-    if (type(method) == "string") {
+    if (method instanceof String) {
       if (method not in klass)
         failedMethods.append([method, "not presented"])
     }
@@ -57,7 +58,7 @@ function checkInterface(klass, methods){
 
 
 
-let class Monad {
+class Monad {
   
   static function of(_){
     throw("pure method needs to be implemented")
@@ -249,9 +250,11 @@ Either = class (Monad) {
   }
   static left = @(a) Left(a)
   static right = @(a) Right(a)
-  filter = @(fn) Either.fromNullable(fn(this._value) ? this._value : null)
+  filter = @(fn) this.isLeft() ? this : Either.fromNullable(fn(this._value) ? this._value : null)
   function tryFilter(fn) {
     try{
+      if (this.isLeft())
+        return this
       return Either.fromNullable(fn(this._value) ? this._value : null)
     }
     catch(e)

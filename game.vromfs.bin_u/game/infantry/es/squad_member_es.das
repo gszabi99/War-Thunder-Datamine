@@ -3,9 +3,7 @@ require DngWalkerai
 require %appGame.infantry.es.walker_common
 require %appGame.infantry.es.squad_order_common
 require HumanPhys
-require CollRes
 require DagorMath
-require DagorMathUtils
 require AnimV20
 require DngHuman
 require Grid
@@ -15,7 +13,6 @@ require DagorRandom
 require vehicle
 require BehNodes
 require human_net_speech.modules.human_net_speech_request_common
-require %appGame.infantry.es.squad_common
 
 
 def is_timer_hit(var timer : float&; dt : float) : bool

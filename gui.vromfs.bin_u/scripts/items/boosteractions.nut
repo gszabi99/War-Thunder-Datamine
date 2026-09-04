@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "gameplayBinding" import isInFlight
+from "mission" import get_mission_time
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register_ex
 from "%scripts/dagui_library.nut" import *
-
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInFlight } = require("gameplayBinding")
-let { get_mission_time } = require("mission")
+from "%globalScripts/periodicTaskConsts.nut" import *
 
 local refreshBoostersTask = -1
 local boostersTaskUpdateFlightTime = -1

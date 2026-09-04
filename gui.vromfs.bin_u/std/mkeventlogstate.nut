@@ -3,12 +3,13 @@ from "dagor.workcycle" import setTimeout, clearTimer
 from "%sqstd/functools.nut" import kwarg
 from "dagor.time" import get_time_msec
 from "%sqstd/frp.nut" import Watched
+from "types" import Integer
 
 
 
 
 function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEqual = null
-) {
+): table {
   let savedEvents = persist(persistId, @() { v = [] })
   let curEvents = Watched(savedEvents.v)
   curEvents.subscribe(@(v) savedEvents.v = v)
@@ -18,7 +19,7 @@ function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEq
     : curEvents.get().findindex(@(e) isEventsEqual(event, e))
 
   function removeEvent(uidOrEvent) {
-    let idx = type(uidOrEvent) == "integer" ? curEvents.get().findindex(@(e) e.uid == uidOrEvent)
+    let idx = uidOrEvent instanceof Integer ? curEvents.get().findindex(@(e) e.uid == uidOrEvent)
       : getEqualIndex(uidOrEvent)
     if (idx != null)
       curEvents.mutate(@(list) list.remove(idx))
@@ -45,7 +46,7 @@ function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEq
   }
   curEvents.get().each(startRemoveTimer)
 
-  function findFirstRemoveHint() {
+  function findFirstRemoveHint(): int|null {
     local time = null
     local resIdx = null
     foreach(idx, evt in curEvents.get()) {

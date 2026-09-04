@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqStdLibs/helpers/u.nut" import isEmpty, copy
+from "mission" import get_game_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+
 let psnsm = require("%scripts/social/psnGameSessionManager/psnGameSessionManagerApi.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
-let { get_game_mode } = require("mission")
-let { isInSessionRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyIsSpectator,
-  getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount, getExternalSessionId
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount, getExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { setExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 let getSessionData = @(pushContextId) {

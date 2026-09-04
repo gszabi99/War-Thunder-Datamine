@@ -1,14 +1,14 @@
+from "%sqStdLibs/helpers/u.nut" import isArray
+from "math" import pow
+from "dagor.random" import frnd
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
-let { isArray } = require("%sqStdLibs/helpers/u.nut")
-let { pow } = require("math")
-let { frnd } = require("dagor.random")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
-let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
+let { updateTransparencyRecursive } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
 let { findItemById, getItemGenerator } = require("%scripts/items/itemsManagerModule.nut")
 let { getContentFixedAmount, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
@@ -163,7 +163,7 @@ function generateItemsArray(trophyName) {
       let trophyData = generateItemsArray(block.trophy)
       table.trophy <- trophyData.trophy
       table.trophyId <- block.trophy
-      table.count <- getTblValue("count", block, 1)
+      table.count <- (block?.count ?? 1)
       table.rewardsCount <- 0
       table.trophiesCount <- 0
       itemsArray.append(table)
@@ -265,7 +265,7 @@ function fillDropChances(trophyBlock) {
 
   let dropTrophy = max(drop, trophyBlockItemsCount * itemRouletteParams.items_roulette_min_trophy_drop_mult)
 
-  trophyBlock.dropChance = dropTrophy / getTblValue("count", trophyBlock, 1)
+  trophyBlock.dropChance = dropTrophy / (trophyBlock?.count ?? 1)
   trophyBlock.multDiff = 1 - getChanceMultiplier(true, trophyBlock.dropChance)
   debugData.beginChances.append({ [dbgTrophyNewId] = trophyBlock.dropChance })
 
@@ -275,7 +275,7 @@ function fillDropChances(trophyBlock) {
     trophiesItemsLength = trophyBlockTrophiesItemsCount
     defaultDrop = trophyBlockItemsCount * itemRouletteParams.items_roulette_min_trophy_drop_mult
     dropTrophy = dropTrophy
-    count = getTblValue("count", trophyBlock, 1)
+    count = (trophyBlock?.count ?? 1)
     dropChance = trophyBlock.dropChance
   }
 }
@@ -313,7 +313,7 @@ function gatherItemsArray(trophyData, mainLength) {
     let tablesArray = getItemsStack(trophyData)
     foreach (table in tablesArray) {
       if (shouldSearchTopReward)
-        topRewardFound = topRewardFound || topRewardKey == getTblValue("tKey", table)
+        topRewardFound = topRewardFound || topRewardKey == table?.tKey
     }
 
     debugData.step.append(tablesArray)

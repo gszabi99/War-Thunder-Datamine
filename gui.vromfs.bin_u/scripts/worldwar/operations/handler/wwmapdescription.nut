@@ -1,10 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
 
@@ -13,7 +14,7 @@ let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 
-gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwMapDescription = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   descItem = null 
@@ -33,9 +34,9 @@ gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if ((!v_descItem && v_map) || (v_descItem instanceof WwOperation))
-      return handlersManager.loadHandler(gui_handlers.WwOperationDescriptionCustomHandler, params)
+      return handlersManager.loadHandler(get_gui_handler("WwOperationDescriptionCustomHandler"), params)
     else if (v_descItem instanceof WwQueue)
-      return handlersManager.loadHandler(gui_handlers.WwQueueDescriptionCustomHandler, params)
+      return handlersManager.loadHandler(get_gui_handler("WwQueueDescriptionCustomHandler"), params)
   }
 
   function initScreen() {
@@ -152,3 +153,6 @@ gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   onBackOperation = @(obj) this.descParams?.onBackOperationCb(obj)
   onBackOperationForSelectSide = @() this.descParams?.onBackOperationForSelectSideCb()
 }
+register_gui_handler("WwMapDescription", WwMapDescription)
+
+return { WwMapDescription }

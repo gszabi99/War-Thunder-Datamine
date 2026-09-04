@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "auth_wt" import get_player_tags
 from "%scripts/dagui_library.nut" import *
-
-let { get_player_tags } = require("auth_wt")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+from "types" import String
 
 let userName = mkWatched(persist, "userName", "")
 let userIdStr = mkWatched(persist, "userIdStr", "-1")
@@ -9,11 +9,18 @@ let userIdInt64 = Computed(@() userIdStr.get().tointeger())
 
 let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
 
+function haveAnyPlayerTag(tags) {
+  foreach (tag in tags)
+    if (havePlayerTag(tag))
+      return true
+  return false
+}
+
 let isGuestLogin = Watched(havePlayerTag("guestlogin"))
 let updateGuestLogin = @() isGuestLogin.set(havePlayerTag("guestlogin"))
 
 function isMyUserId(userId) {
-  if (type(userId) == "string")
+  if (userId instanceof String)
     return userId == userIdStr.get()
   return userId == userIdInt64.get()
 }
@@ -28,5 +35,6 @@ return {
   userIdInt64
   isGuestLogin
   havePlayerTag
+  haveAnyPlayerTag
   isMyUserId
 }

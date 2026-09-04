@@ -1,10 +1,10 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "chard" import getTopUnitsInfo
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
-let { getTopUnitsInfo } = require("chard")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let DataBlock = require("DataBlock")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")

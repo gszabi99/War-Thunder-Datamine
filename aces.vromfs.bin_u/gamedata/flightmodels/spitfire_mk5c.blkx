@@ -1,7 +1,7 @@
 {
   "fmFile": "fm/spitfire_mk5c.blk",
   "model": "spitfire_mk5c",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.145,
   "gearSinkRangeC": 0.085,
@@ -2151,62 +2151,295 @@
     }
   },
   "commonWeapons": {
-    "Weapon": [
+    "Weapon": {
+      "slot": 0,
+      "preset": "default_common"
+    }
+  },
+  "weapon_presets": {
+    "preset": [
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": true,
-        "isWingRPositioned": false,
-        "bullets": 120,
-        "spread": 2.0
+        "name": "spitfire_v_default",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_default.blk"
       },
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "isWingLPositioned": true,
-        "isWingRPositioned": false,
-        "bullets": 120,
-        "spread": 2.0
+        "name": "spitfire_v_bombs_250lb_anm57_wing",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_250lb_anm57_wing.blk"
       },
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon3_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 120,
-        "traceOffset": 1,
-        "spread": 2.0
+        "name": "spitfire_v_bombs_250lb_gp_wing",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_250lb_gp_wing.blk"
       },
       {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "dm": "cannon4_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 120,
-        "traceOffset": 1,
-        "spread": 2.0
+        "name": "spitfire_v_bombs_250lb_anm57",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_250lb_anm57.blk"
+      },
+      {
+        "name": "spitfire_v_bombs_250lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_250lb_gp.blk"
+      },
+      {
+        "name": "spitfire_v_bombs_500lb_anm64a1",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_500lb_anm64a1.blk"
+      },
+      {
+        "name": "spitfire_v_bombs_500lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_500lb_gp.blk"
+      },
+      {
+        "name": "spitfire_v_bombs_500lb_sap",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_v_bombs_500lb_sap.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
-  "weapon_presets": {
-    "preset": {
-      "name": "Spitfire_mk5c_default",
-      "blk": "gameData/FlightModels/weaponPresets/Spitfire_mk5c_default.blk"
-    }
+  "WeaponSlots": {
+    "maxloadMass": 500.0,
+    "maxloadMassLeftConsoles": 150.0,
+    "maxloadMassRightConsoles": 150.0,
+    "maxDisbalance": 150.0,
+    "HideNodes": {
+      "node": [
+        "pylon_bomb1",
+        "pylon_bomb2",
+        "pylon_bomb3"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "WeaponPreset": {
+          "name": "default_common",
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkII.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "shell": "emtr_shellrejection1",
+              "dm": "cannon1_dm",
+              "isWingLPositioned": true,
+              "isWingRPositioned": false,
+              "bullets": 120,
+              "spread": 2.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkII.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "isWingLPositioned": true,
+              "isWingRPositioned": false,
+              "bullets": 120,
+              "spread": 2.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkII.blk",
+              "emitter": "flare3",
+              "flash": "flare3",
+              "shell": "emtr_shellrejection2",
+              "dm": "cannon3_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 120,
+              "traceOffset": 1,
+              "spread": 2.0
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonHispanoMkII.blk",
+              "emitter": "flare4",
+              "flash": "flare4",
+              "dm": "cannon4_dm",
+              "isWingLPositioned": false,
+              "isWingRPositioned": false,
+              "bullets": 120,
+              "traceOffset": 1,
+              "spread": 2.0
+            }
+          ]
+        }
+      },
+      {
+        "index": 1,
+        "tier": 7,
+        "order": 1,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_anm57_slot1",
+            "reqModification": "spitfire_sbc_additional",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_gp_slot1",
+            "reqModification": "spitfire_sbc_additional",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "separate": true,
+              "emitter": "bomb2",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 6,
+        "order": 3,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_anm57_slot2",
+            "reqModification": "spitfire_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57_default.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_gp_slot2",
+            "reqModification": "spitfire_sbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs_default.blk",
+              "separate": true,
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_anm64a1_slot2",
+            "reqModification": "spitfire_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_anm64a1.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "500lb_gp_slot2",
+            "reqModification": "spitfire_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/bombGuns/uk_500lbs.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "500lb_sap_slot2",
+            "reqModification": "spitfire_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
+              "emitter": "bomb1",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 5,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_anm57_slot3",
+            "reqModification": "spitfire_sbc_additional",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_250lb_anm57.blk",
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_small",
+            "name": "250lb_gp_slot3",
+            "reqModification": "spitfire_sbc_additional",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_250lbs.blk",
+              "separate": true,
+              "emitter": "bomb3",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          }
+        ]
+      }
+    ]
   },
   "turbulence": {
     "segmentlength": 100.0,
@@ -2267,6 +2500,20 @@
     "hispano_mk_2_1943_new_gun": {
       "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
       "tier": 4
+    },
+    "spitfire_sbc": {
+      "tier": 3,
+      "modClass": "weapon"
+    },
+    "spitfire_sbc_additional": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "spitfire_sbc"
+    },
+    "spitfire_mbc": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "spitfire_sbc"
     }
   },
   "user_skin": {

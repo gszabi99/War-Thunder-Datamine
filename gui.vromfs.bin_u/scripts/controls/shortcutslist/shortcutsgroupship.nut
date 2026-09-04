@@ -1,18 +1,13 @@
+from "gameOptions" import get_option_multiplier, set_option_multiplier, OPTION_AIM_TIME_NONLINEARITY_SHIP, OPTION_AIM_ACCELERATION_DELAY_SHIP, OPTION_MOUSE_Z_SHIP_MULT
+from "controls" import ActionGroup, hasXInputDevice, isXInputDevice
 from "%scripts/dagui_library.nut" import *
-let { get_option_multiplier, set_option_multiplier,
-  OPTION_AIM_TIME_NONLINEARITY_SHIP, OPTION_AIM_ACCELERATION_DELAY_SHIP,
-  OPTION_MOUSE_Z_SHIP_MULT
-} = require("gameOptions")
+
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE, AxisDirection } = require("%scripts/controls/controlsConsts.nut")
-let { USEROPT_WHEEL_CONTROL_SHIP,
-  USEROPT_SINGLE_SHOT_BY_TURRET, USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS,
-  USEROPT_INVERTY_SHIP
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_WHEEL_CONTROL_SHIP, USEROPT_SINGLE_SHOT_BY_TURRET, USEROPT_SHIP_COMBINE_PRI_SEC_TRIGGERS, USEROPT_INVERTY_SHIP } = require("%scripts/options/optionsExtNames.nut")
 
 return [
   {
@@ -484,6 +479,10 @@ return [
     checkAssign = false
   }
   
+
+
+
+
 
 
 

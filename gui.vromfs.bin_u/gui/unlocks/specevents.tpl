@@ -43,7 +43,7 @@ tdiv {
         top:t='(ph-h)/2'
         background-image:t='#ui/gameuiskin#locked.svg'
         background-svg-size:t='@sIco, @sIco'
-        display:t='<<#isLocked>>hide<</isLocked>><<^isLocked>>show<</isLocked>>'
+        display:t='<<#isLocked>>show<</isLocked>><<^isLocked>>hide<</isLocked>>'
       }
 
       tdiv {
@@ -69,12 +69,23 @@ tdiv {
       smallFont:t='yes'
     }
 
+    <<#isActive>>
+    tdiv {
+      size:t='pw, pw'
+      position:t='absolute'
+      top:t='ph-h+@blockInterval'
+      background-image:t='#ui/gameuiskin#fade_to_dark.svg'
+      background-svg-size:t="@eventSlotWidth, @eventSlotWidth"
+      bgcolor:t="#DDDDDD"
+      rotation:t="270"
+    }
+
     tdiv {
       position:t="absolute"
       flow:t='vertical'
       top:t='ph-h'
       width:t='pw'
-      display:t='<<#isLocked>>show<</isLocked>><<^isLocked>>hide<</isLocked>>'
+      display:t='<<#isLocked>>hide<</isLocked>><<^isLocked>>show<</isLocked>>'
 
       textareaNoTab {
         position:t="relative"
@@ -109,6 +120,7 @@ tdiv {
         <</progBar>>
       }
     }
+    <</isActive>>
 
     hover_dark_border {}
     focus_border {}

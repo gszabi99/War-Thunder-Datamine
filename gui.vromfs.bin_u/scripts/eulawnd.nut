@@ -1,24 +1,25 @@
+import "%globalScripts/wordHyphenation.nut" as wordHyphenation
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "dagor.localize" import getLocTextForLang
+from "sqEulaUtils" import setAgreedEulaVersion
+from "dagor.workcycle" import defer
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "dagor.fs" import read_text_from_file, file_exists
 from "%scripts/dagui_natives.nut" import ps4_get_region
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/sceRegionConsts.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLocTextForLang } = require("dagor.localize")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { setAgreedEulaVersion } = require("sqEulaUtils")
 let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { defer } = require("dagor.workcycle")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { read_text_from_file, file_exists } = require("dagor.fs")
-let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" 
 
@@ -62,7 +63,7 @@ function loadAndProcessText(){
   return wordHyphenation(read_text_from_file(fileName))
 }
 
-gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
+let EulaWndHandler = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/eulaFrame.blk"
   isForView = true
@@ -145,6 +146,7 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
     sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", { action })
   }
 }
+register_gui_handler("EulaWndHandler", EulaWndHandler)
 
 addListenersWithoutEnv({
   SignOut = @(_p) localAgreedEulaVersion.set(0) 
@@ -154,5 +156,5 @@ return {
   LOCAL_AGREED_EULA_VERSION_SAVE_ID
   localAgreedEulaVersion
   getEulaVersion
-  openEulaWnd = @(param = {}) handlersManager.loadHandler(gui_handlers.EulaWndHandler, param)
+  openEulaWnd = @(param = {}) handlersManager.loadHandler(EulaWndHandler, param)
 }

@@ -1,12 +1,12 @@
+from "%rGui/style/screenState.nut" import bw, bh, rw, rh
+from "%rGui/twsState.nut" import CollapsedIcon
+from "%rGui/radarComponent.nut" import mkRadar
+from "%rGui/fcsComponent.nut" import mkFCSComponent
+from "%rGui/radarState.nut" import IsRadarVisible, IsRadar2Visible, IsRadarHudVisible
+from "%rGui/fcsState.nut" import HasFcsIndication, IsFcsVisible, IsVisible
+from "%rGui/radar.nut" import radarHud, radarIndication
 from "%rGui/globals/ui_library.nut" import *
 
-let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
-let { CollapsedIcon } = require("%rGui/twsState.nut")
-let { mkRadar } = require("%rGui/radarComponent.nut")
-let { mkFCSComponent } = require("%rGui/fcsComponent.nut")
-let { IsRadarVisible, IsRadar2Visible, IsRadarHudVisible } = require("%rGui/radarState.nut")
-let { HasFcsIndication, IsFcsVisible, IsVisible } = require("%rGui/fcsState.nut")
-let { radarHud, radarIndication } = require("%rGui/radar.nut")
 
 
 
@@ -34,7 +34,7 @@ let fcsCollapsed = mkCollapsedIcon(fcsPic)
 let radarCollapsed = mkCollapsedIcon(radarPic)
 
 let radarComponent = @() {
-  watch = [radarVisible, IsRadarHudVisible, IsFcsVisible, isFcsAvailable]
+  watch = [radarVisible, IsRadarHudVisible, IsFcsVisible, isFcsAvailable, radarPos]
   children = radarVisible.get() && IsRadarHudVisible.get() ? [
     mkRadar()
     radarHud(sh(30), sh(30), radarPos.get()[0], radarPos.get()[1], radarColor, {

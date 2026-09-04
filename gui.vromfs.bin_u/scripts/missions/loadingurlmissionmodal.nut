@@ -1,12 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/ranks_common_shared.nut" import validate_custom_mission
+from "string" import format
 from "%scripts/dagui_natives.nut" import abort_all_downloads, abort_download, download_blk
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { validate_custom_mission } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { hasUnitInFullMissionBlk } = require("%scripts/missions/missionsUtils.nut")
 
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -21,10 +22,10 @@ function upgradeUrlMission(fullMissionBlk) {
 
   foreach (unitType in unitTypes.types)
     if (unitType.isAvailable() && !(unitType.missionSettingsAvailabilityFlag in misBlk))
-      misBlk[unitType.missionSettingsAvailabilityFlag] = hasUnitInFullMissionBlk(fullMissionBlk, unitType.esUnitType)
+      misBlk[unitType.missionSettingsAvailabilityFlag] = hasUnitInFullMissionBlk(fullMissionBlk, unitType)
 }
 
-gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("LoadingUrlMissionModal", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/msgBox.blk"
   timeToShowCancel = 3
@@ -155,4 +156,4 @@ gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.callback != null)
       this.callback(this.requestSuccess, this.curMission)
   }
-}
+})

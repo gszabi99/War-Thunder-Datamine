@@ -161,6 +161,7 @@
   "attachable_knee": {
     "_use": "attachable_wear",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": "pants"
@@ -191,6 +192,7 @@
     "collres__res": "facemask_collision",
     "item__uniqueName": "facemask_item",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "disabledFaceGenParams:shared:array": {
       "param": [
         "forehead_pos_y",
@@ -255,7 +257,23 @@
     }
   },
   "attachable_cape": {
-    "_use": "attachable_wear",
+    "_use": [
+      "attachable_wear",
+      "node_collapser"
+    ],
+    "animchar_node_collapser__camThreshold": 0.35,
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine": "Bip01 Pelvis",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
+      }
+    },
     "item__equipToSlots:array": {
       "slot": "cape"
     },
@@ -331,28 +349,14 @@
   "attachable_wear_alligator_sniper_cape_stripes_item": {
     "_use": [
       "attachable_cape",
-      "sleeves_collapser_in_sleeves",
-      "node_collapser"
+      "sleeves_collapser_in_sleeves"
     ],
     "item__uniqueName": "attachable_wear_alligator_sniper_cape_stripes_item",
     "animchar__res": "alligator_sniper_cape_stripes_char",
     "collres__res": "alligator_sniper_cape_stripes_collision",
     "animchar_fast_phys__res": "alligator_sniper_cape_stripes_fastphys",
-    "animchar_node_collapser__camThreshold": 0.25,
     "animchar_fast_phys": {
       "_tags": "gameClient"
-    },
-    "_group": {
-      "_tags": "render",
-      "animchar_node_collapser__nodes:object": {
-        "Bip01 Spine1": "Bip01 Neck",
-        "Bip01 R UpperArm": "Bip01 Neck",
-        "Bip01 L UpperArm": "Bip01 Neck"
-      },
-      "animchar_node_collapser__thresholds:object": {
-        "Bip01 R UpperArm": 0.1,
-        "Bip01 L UpperArm": 0.08
-      }
     },
     "hides:array": {
       "hides": [
@@ -776,6 +780,7 @@
     "animchar__res": "tactical_belt_char",
     "collres__res": "tactical_belt_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -896,6 +901,7 @@
     "animchar__res": "uk_belt_m37_char",
     "collres__res": "uk_belt_m37_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -914,6 +920,7 @@
     "animchar__res": "narrow_tactical_belt_char",
     "collres__res": "narrow_tactical_belt_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -1064,6 +1071,7 @@
     "animchar__res": "rebel_leather_belt_char",
     "collres__res": "rebel_leather_belt_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -1095,6 +1103,7 @@
     "animchar__res": "uk_p58_webbing_belt_char",
     "collres__res": "uk_p58_webbing_belt_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -1114,6 +1123,7 @@
     "animchar__res": "uk_p58_webbing_belt_frag_jacket_char",
     "collres__res": "uk_p58_webbing_belt_frag_jacket_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -2641,6 +2651,7 @@
     "collres__res": "mnla_belt_collision",
     "animchar_fast_phys__res": "mnla_belt_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_fast_phys": {
       "_tags": "gameClient"
     },

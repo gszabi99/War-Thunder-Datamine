@@ -1,7 +1,6 @@
-
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "%scripts/dagui_library.nut" import *
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { canBuyNotResearched, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { get_balance } = require("%scripts/user/balance.nut")
 let { getUnitCost } = require("%scripts/unit/unitInfo.nut")

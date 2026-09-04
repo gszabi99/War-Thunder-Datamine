@@ -43,7 +43,6 @@ shopItem {
   }
 
   slotHoverHighlight {}
-  focus_border {}
 
   <<#crewImage>>
   img {
@@ -126,6 +125,7 @@ shopItem {
 
   <<@itemButtons>>
   slotSelectionRectangle {}
+  focus_border {}
   on_hover:t='onUnitHover'
 }
 <<#needDnD>>

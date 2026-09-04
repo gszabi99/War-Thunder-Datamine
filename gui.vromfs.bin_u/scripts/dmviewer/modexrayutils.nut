@@ -1,21 +1,21 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce, copy
+from "%globalScripts/modeXrayLib.nut" import S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeaponFunc
+  , mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc, mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc, mkAircraftFuelTankDesc
+  , mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc, mkCountermeasureDesc, mkApsSensorDesc
+  , mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc, mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc, mkFireControlSystemDesc
+  , mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType, mkSupportPlaneDesc, mkOpticBodyDesc
+  , getPartPressureCompartmentDesc
+from "blkGetters" import get_modifications_blk, get_wpcost_blk
+from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
-let { get_modifications_blk, get_wpcost_blk } = require("blkGetters")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { appendOnce, copy } = require("%sqStdLibs/helpers/u.nut")
-let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeaponFunc,
-  mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc, mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc,
-  mkAircraftFuelTankDesc, mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc,
-  mkCountermeasureDesc, mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
-  mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc, mkFireControlSystemDesc,
-  mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType, mkSupportPlaneDesc
-} = require("%globalScripts/modeXrayLib.nut")
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%scripts/debugTools/dbgXrayMode.nut" import isDebugXrayModeActive
+
 let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getLastWeapon,
-  getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getLastWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitWeapons, getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponXrayDescText, getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
@@ -90,6 +90,7 @@ let xrayDescCtorsMap = {
   aps_sensor = mkApsSensorDesc
   aps_launcher = mkApsLauncherDesc
   ex_aps_launcher = mkApsLauncherDesc
+  optic_body = mkOpticBodyDesc
   
   electronic_block = mkAvionicsDesc
   optic_block = mkAvionicsDesc
@@ -303,6 +304,7 @@ let xrayCommonGetters = {
   getAircraftFuelTankPartInfo
   getWeaponInfoText
   makeWeaponInfoData
+  getXrayDevMode = isDebugXrayModeActive
 
   
   getProp_maxSpeed
@@ -349,8 +351,13 @@ function getDescriptionInXrayMode(partType, params, commonData) {
     partLocId = partType
     desc = []
   }
-  return (commonData.unit == null || commonData.unitBlk == null || params?.name == null) ? res
-    : res.__update(xrayDescCtorsMap?[partType](partType, params, commonData) ?? {})
+  if (commonData.unit == null || commonData.unitBlk == null || params?.name == null)
+    return res
+
+  res.__update(xrayDescCtorsMap?[partType](partType, params, commonData) ?? {})
+  res.desc.extend(getPartPressureCompartmentDesc(params.name, commonData))
+
+  return res
 }
 
 return {

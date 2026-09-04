@@ -1,11 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqstd/math.nut" import lerp, sqrt
+from "%sqstd/datablock.nut" import isDataBlock, eachBlock
+from "dagor.math" import Point2
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
-let { lerp, sqrt } = require("%sqstd/math.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isDataBlock, eachBlock } = require("%sqstd/datablock.nut")
-let { Point2 } = require("dagor.math")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 
 const DEFAULT_ARMOR_FOR_PENETRATION_RADIUS = 50
@@ -284,14 +284,15 @@ function getXrayFilter() {
     return xrayFilterCached
 
   eachBlock(xrayFilterBlk, function(block, name, idx) {
-    let { isTank = null, isShip = null } = block
-    let isForAllUnitTypes = isTank == null && isShip == null
+    let { isTank = null, isShip = null, isAir = null } = block
+    let isForAllUnitTypes = isTank == null && isShip == null && isAir == null
     let units = block % "unit"
     xrayFilterCached.append({
       name
       bit = 1 << idx
       isTank = isTank || isForAllUnitTypes
       isShip = isShip || isForAllUnitTypes
+      isAir = isAir || isForAllUnitTypes
       units
     })
   })
@@ -303,6 +304,9 @@ let getTankXrayFilter = @(unitName) getXrayFilter()
 
 let getShipXrayFilter = @(unitName) getXrayFilter()
   .filter(@(f) f.isShip && (f.units.len() == 0 || f.units.contains(unitName)))
+
+let getAirXrayFilter = @(unitName) getXrayFilter()
+  .filter(@(f) f.isAir && (f.units.len() == 0 || f.units.contains(unitName)))
 
 local shipDamageControl = null
 function getShipDamageControl() {
@@ -385,6 +389,7 @@ return {
   getDestructionInfoTexts
   getTankXrayFilter
   getShipXrayFilter
+  getAirXrayFilter
   getMaxArmorPiercing
   getShipDamageControl
   getNuclearWeaponAdditionalInfo

@@ -1,5 +1,6 @@
-let { min, max, abs } = require("math")
-let { Point2 } = require("dagor.math")
+from "math" import min, max, abs
+from "dagor.math" import Point2
+
 let { GuiBox } = require("%globalScripts/guiGeom/guiBox.nut")
 
 

@@ -1,25 +1,23 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/platform.nut" import is_gdk
+from "console" import register_command
+from "auth_wt" import getPlayerSsoShortTokenAsync, live_link_email
+from "%sqstd/string.nut" import validateEmail
+from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
+from "chard" import get_charserver_time_sec
+from "steam" import steam_is_running
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, get_steam_link_token
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isPlatformSony, isPlatformPC
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
-let { register_command } = require("console")
-let { getPlayerSsoShortTokenAsync, live_link_email } = require("auth_wt")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { validateEmail } = require("%sqstd/string.nut")
-let { eventbus_subscribe, eventbus_subscribe_onehit } = require("eventbus")
-let { get_charserver_time_sec } = require("chard")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { steam_is_running } = require("steam")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
@@ -134,7 +132,7 @@ function checkShowPS4EmailRegistration() {
 
 function sendXboxEmailBind(val) {
   showWaitScreen("msgbox/please_wait")
-  let eventName = "live_link_email_event"
+  const eventName = "live_link_email_event"
   eventbus_subscribe_onehit(eventName, function(data) {
     let status = data?.status ?? YU2_FAIL
     closeWaitScreen()

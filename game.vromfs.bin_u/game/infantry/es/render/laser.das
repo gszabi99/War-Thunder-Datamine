@@ -6,7 +6,6 @@ require %game.events
 require GeomNodeTree
 require Dacoll
 require PhysMat
-require DagorSystem
 require %appGame.infantry.es.camera_common
 
 [es(tag=render, before=update_lasers_es, after=slot_attach_init_tms_es, parallel_for=1)]

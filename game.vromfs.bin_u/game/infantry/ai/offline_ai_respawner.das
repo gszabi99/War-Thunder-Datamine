@@ -1,6 +1,5 @@
 require ecs
 require app
-require math.base
 
 [es(tag=server, no_order)]
 def offline_ai_respawner_es(act : UpdateStageInfoAct;

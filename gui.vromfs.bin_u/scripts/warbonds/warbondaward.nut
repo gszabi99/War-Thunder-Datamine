@@ -1,10 +1,11 @@
+import "DataBlock" as DataBlock
+import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 from "%scripts/dagui_natives.nut" import get_max_unit_rank
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
-import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
+from "%globalScripts/shopItemConsts.nut" import *
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let DataBlock = require("DataBlock")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { FULL_ID_SEPARATOR } = require("%scripts/warbonds/warbondsState.nut")
 let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")

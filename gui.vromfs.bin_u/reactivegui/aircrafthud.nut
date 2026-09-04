@@ -1,49 +1,43 @@
+import "%rGui/planeMfd.nut" as planeMfd
+import "%rGui/opticAtgmSight.nut" as opticAtgmSight
+import "%rGui/laserAtgmSight.nut" as laserAtgmSight
+import "%rGui/rocketAamAim.nut" as aamAim
+import "%rGui/agmAim.nut" as agmAim
+import "%rGui/gbuAim.nut" as gbuAim
+import "%rGui/fpvShellHud.nut" as fpvShellHud
+from "%rGui/planeIls.nut" import planeIlsSwitcher
+from "%rGui/planeHmd.nut" import planeHmdElem
+from "%rGui/style/screenState.nut" import bw, bh, rw, rh
+from "%rGui/targetingPodSight.nut" import aircraftTargetingPodSight
+from "%rGui/airHudLeftPanel.nut" import leftPanel
+from "%rGui/planeState/planeWeaponState.nut" import OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible, LaserAtgmSightVisible, TargetingPodSightVisible, ShellFPVModeEnabled
+from "%rGui/airState.nut" import IndicatorsVisible, MainMask, SecondaryMask, IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible, HudColor
+  , AlertColorHigh, IsBomberViewHudVisible, HudParamColor, isBombSightActivated, isAAMSightActivated, isRocketSightActivated, isCanonSightActivated
+  , isTurretSightActivated, isParamTableActivated
+from "%rGui/airHudElems.nut" import paramsTable, agmLaunchZoneTps, compassElem
+from "%rGui/airSight.nut" import aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight, laserPointComponent, bombSightComponent, getTooFastText
+from "%rGui/airHudComponents.nut" import radarElement, twsElement
+from "%rGui/twsState.nut" import IsMlwsLwsHudVisible, IsTwsDamaged
+from "%rGui/options/options.nut" import crosshairColorOpt
+from "%rGui/radarComponent.nut" import maxLabelWidth, maxLabelHeight
+from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
+from "%rGui/globals/panelIds.nut" import PNL_ID_ILS, PNL_ID_MFD
+from "%rGui/radar.nut" import radarHud, radarIndication
+from "%rGui/hudState.nut" import isPlayingReplay, isSpectatorMode
+from "%rGui/radarState.nut" import isCollapsedRadarInReplay, IsRadarDamaged, ViewMode
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth
+from "%rGui/agmAimState.nut" import AgmBlockedState, AgmMachLimit
 from "%rGui/globals/ui_library.nut" import *
 
-let planeMfd = require("%rGui/planeMfd.nut")
-let { planeIlsSwitcher } = require("%rGui/planeIls.nut")
-let { planeHmdElem } = require("%rGui/planeHmd.nut")
-let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
-let opticAtgmSight = require("%rGui/opticAtgmSight.nut")
-let laserAtgmSight = require("%rGui/laserAtgmSight.nut")
-let { aircraftTargetingPodSight } = require("%rGui/targetingPodSight.nut")
-let { leftPanel } = require("%rGui/airHudLeftPanel.nut")
-
-let { OpticAtgmSightVisible, AtgmTrackerVisible, IsWeaponHudVisible,
-  LaserAtgmSightVisible, TargetingPodSightVisible, ShellFPVModeEnabled } = require("%rGui/planeState/planeWeaponState.nut")
-let {
-  IndicatorsVisible, MainMask, SecondaryMask, TertiaryMask IsArbiterHudVisible,
-  IsPilotHudVisible, IsMainHudVisible, IsGunnerHudVisible,
-  HudColor, AlertColorHigh, IsBomberViewHudVisible, HudParamColor,
-  isBombSightActivated, isAAMSightActivated, isRocketSightActivated,
-  isCanonSightActivated, isTurretSightActivated, isParamTableActivated } = require("%rGui/airState.nut")
-let aamAim = require("%rGui/rocketAamAim.nut")
-let agmAim = require("%rGui/agmAim.nut")
-let gbuAim = require("%rGui/gbuAim.nut")
+let { TertiaryMask IsArbiterHudVisible } = require("%rGui/airState.nut")
 let { styleText } = require("%rGui/style/airHudStyle.nut")
-let { paramsTable, agmLaunchZoneTps, compassElem }  = require("%rGui/airHudElems.nut")
-let {
-  aircraftTurretsComponent, fixedGunsDirection, aircraftRocketSight,
-  laserPointComponent, bombSightComponent } = require("%rGui/airSight.nut")
-let { radarElement, twsElement } = require("%rGui/airHudComponents.nut")
-let { IsMlwsLwsHudVisible, IsTwsDamaged } = require("%rGui/twsState.nut")
-let { crosshairColorOpt } = require("%rGui/options/options.nut")
-let { maxLabelWidth, maxLabelHeight } = require("%rGui/radarComponent.nut")
-let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
-let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
-let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
-let { isPlayingReplay, isSpectatorMode } = require("%rGui/hudState.nut")
-let { isCollapsedRadarInReplay, IsRadarDamaged, ViewMode } = require("%rGui/radarState.nut")
-let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
-let fpvShellHud = require("%rGui/fpvShellHud.nut")
-let { AgmBlockedState } = require("%rGui/agmAimState.nut")
 
 let compassSize = [hdpx(420), hdpx(40)]
 
-let paramsTableWidthAircraft = hdpx(600)
-let arbiterParamsTableWidthAircraft = hdpx(200)
-let paramsTableHeightAircraft = hdpx(22)
+const paramsTableWidthAircraft = hdpx(600)
+const arbiterParamsTableWidthAircraft = hdpx(200)
+const paramsTableHeightAircraft = hdpx(22)
 
 let aircraftParamsTablePos = Computed(@() [max(bw.get(), sw(20) - hdpx(660)), max(bh.get(), sh(10) - hdpx(100))])
 
@@ -99,10 +93,10 @@ let aircraftParamsTableView = @(color, isReplayVal, isRefereeModeVal)
   ((isReplayVal || isRefereeModeVal) ? aircraftArbiterParamsTable : aircraftParamsTable)(color)
 
 let agmHighSpeedWarning = @() styleText.__merge({
-  watch = AgmBlockedState
+  watch = [AgmBlockedState, AgmMachLimit]
   rendObj = ROBJ_TEXT
-  pos = [sw(50) + sw(5), sh(50) - sw(5)]
-  text = AgmBlockedState.get() ? loc("HUD/AGM_HIGH_SPEED") : ""
+  pos = const [sw(50) + sw(5), sh(50) - sw(5)]
+  text = AgmBlockedState.get() ? getTooFastText(AgmMachLimit.get(), "HUD/AGM_HIGH_SPEED") : ""
 })
 
 function mkAircraftMainHud() {
@@ -183,7 +177,7 @@ function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
   return function() {
     return {
       watch = AtgmTrackerVisible
-      size = flex()
+      size = FLEX
       children = AtgmTrackerVisible.get() ? [
         agmAim(watchedColor, watchedAlertColor, false)
         gbuAim(watchedColor, watchedAlertColor, false)
@@ -195,7 +189,7 @@ function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
 let aircraftDefaultHud = @(){
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = flex()
+  size = FLEX
   watch = [IsRadarDamaged, isCollapsedRadarInReplay, IsTwsDamaged, radarPosWatched, LaserAtgmSightVisible,
     radarSizeComp, isSquareRadarEnabled]
   children = [
@@ -217,7 +211,7 @@ let aircraftHud = {
   size = const [sw(100), sh(100)]
   children = @() {
     watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, TargetingPodSightVisible, ShellFPVModeEnabled]
-    size = flex()
+    size = FLEX
     children = ShellFPVModeEnabled.get() ? fpvShellHud :
     [
       mkAircraftMainHud()

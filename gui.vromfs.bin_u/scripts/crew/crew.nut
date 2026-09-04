@@ -1,17 +1,18 @@
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "math" import ceil
+from "%sqstd/datablock.nut" import eachBlock
+from "blkGetters" import get_skills_blk
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import purchase_crew_slot, get_training_cost, get_aircraft_crew_by_id
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let stdMath = require("%sqstd/math.nut")
-let { ceil } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { get_skills_blk } = require("blkGetters")
-let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
@@ -42,7 +43,7 @@ let maxCrewLevel = {
 }
 
 function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
-  let typesList = getTblValue(country, getUnitTypesInCountries(), {})
+  let typesList = (getUnitTypesInCountries()?[country] ?? {})
   foreach (esUnitType, isInCountry in typesList)
     if (isInCountry && (esUnitTypeMask & (1 << esUnitType)))
       return true
@@ -66,7 +67,7 @@ function getCrew(countryId, idInCountry, singleCountry = null) {
 }
 
 function createCrewBuyPointsHandler(crew) {
-  return loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
+  return loadHandler(get_gui_handler("CrewBuyPointsHandler"), { crew })
 }
 
 
@@ -92,13 +93,6 @@ function getCrewButtonRow(obj, scene, tblObj = null) {
   return curRow
 }
 
-function createCrewUnitSpecHandler(containerObj) {
-  let scene = containerObj.findObject("specs_table")
-  if (!checkObj(scene))
-    return null
-  return loadHandler(gui_handlers.CrewUnitSpecHandler, { scene })
-}
-
 function getCrewSkillItem(memberName, skillName) {
   foreach (page in crewSkillPages)
     if (page.id == memberName) {
@@ -116,7 +110,7 @@ function getCrewSkillValue(crewId, unit, memberName, skillName) {
 }
 
 function getCrewSkillNewValue(skillItem, crew, unit) {
-  let res = getTblValue("newValue", skillItem, null)
+  let res = skillItem?.newValue
   if (res != null)
     return res
   return getCrewSkillValue(crew.id, unit, skillItem.memberName, skillItem.name)
@@ -127,15 +121,15 @@ function getCrewMaxSkillValue(skillItem) {
 }
 
 function getCrewSkillCost(skillItem, value, prevValue = -1) {
-  let cost = getTblValue(value - 1, skillItem.costTbl, 0)
+  let cost = (skillItem.costTbl?[value - 1] ?? 0)
   if (prevValue < 0)
     prevValue = value - 1
-  let prevCost = getTblValue(prevValue - 1, skillItem.costTbl, 0)
+  let prevCost = (skillItem.costTbl?[prevValue - 1] ?? 0)
   return cost - prevCost
 }
 
 function getCrewName(crew) {
-  let number =  getTblValue("idInCountry", crew, -1) + 1
+  let number =  (crew?.idInCountry ?? -1) + 1
   return $"{loc("options/crewName")}{number}"
 }
 
@@ -144,7 +138,7 @@ function getCrewUnit(crew) {
 }
 
 function getCrewCountry(crew) {
-  let countryData = getTblValue(crew.idCountry, getCrewsList())
+  let countryData = getCrewsList()?[crew.idCountry]
   return countryData ? countryData.country : ""
 }
 
@@ -160,7 +154,7 @@ function getCrewTrainCost(crew, unit) {
 }
 
 function getCrewSkillPoints(crew) {
-  return getTblValue("skillPoints", crew, 0)
+  return (crew?.skillPoints ?? 0)
 }
 
 function purchaseNewCrewSlot(country, onTaskSuccess, onTaskFail = null) {
@@ -290,7 +284,7 @@ function getCrewLevel(crew, unit, crewUnitType, countByNewValues = false) {
 
         local skill = getCrewSkillValue(crew?.id, unit, page.id, item.name)
         if (countByNewValues)
-          skill = getTblValue("newValue", item, skill)
+          skill = (item?.newValue ?? skill)
         res += getSkillCrewLevel(item, skill)
       }
   return res
@@ -536,7 +530,8 @@ function getCrewStatus(crew, unit) {
     unit = unit ?? getAircraftByName(crew?.aircraft ?? "")
     if (unit == null)
       break
-    let crewUnitType = unit.getCrewUnitType()
+    
+    let crewUnitType = unit?.getCrewUnitType()
     if (!(crewUnitType in data))
       break
 
@@ -560,8 +555,8 @@ function gui_modal_crew(params = {}) {
     return
   }
   let curHandler = handlersManager.getActiveBaseHandler()
-  let needModal = curHandler != null && (curHandler instanceof gui_handlers.MPLobby)
-  loadHandler(needModal ? gui_handlers.CrewWndModal : gui_handlers.CrewHandler, params)
+  let needModal = is_gui_handler_instance(curHandler, "MPLobby")
+  loadHandler(needModal ? get_gui_handler("CrewWndModal") : get_gui_handler("CrewHandler"), params)
 }
 
 addListenersWithoutEnv({
@@ -575,7 +570,6 @@ return {
   maxCrewLevel
   createCrewBuyPointsHandler
   getCrewButtonRow
-  createCrewUnitSpecHandler
   getCrewSkillValue
   getCrewSkillItem
   getCrewSkillNewValue

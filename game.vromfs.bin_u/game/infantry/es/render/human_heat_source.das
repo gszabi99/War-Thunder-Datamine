@@ -2,14 +2,12 @@ require ecs
 require ecs.common
 require math
 require math.base
-require DagorSystem
 require DagorMath
 require AnimV20
 require GeomNodeTree
 require strings
 require CollRes
 require %game.events
-require WTCamera
 require Unit
 
 [export]
@@ -116,7 +114,6 @@ def human_gun_heat_source_init_es(evt : Event;
       set(init, "heat_source__basicRad", rad)
       set(init, "heat_source__basicScale", heat_source__human_gun_size)
       set(init, "heat_source__scale", heat_source__human_gun_size)
-      set(init, "heat_source__rad", rad * heat_source__human_gun_size)
       set(init, "heat_source__offset", heat_source__human_gun_offset)
       set(init, "heat_source__temperature", partTemperature)
       set(init, "heat_source__type", int(partType.HUMAN_GUN))
@@ -223,7 +220,6 @@ def human_heat_source_init_es(evt : Event;
       heatEid = createEntity("heat_source_item") <| $(var init : ComponentsInitializer)
         set(init, "transform", tm)
         set(init, "heat_source__basicRad", basicRad)
-        set(init, "heat_source__rad", basicRad * scale)
         set(init, "heat_source__basicScale", scale)
         set(init, "heat_source__scale", scale)
         set(init, "heat_source__offset", offset)
@@ -317,9 +313,13 @@ def human_heat_source_on_death_es(evt : Event;
   for eid in heat_source__bodyEid
     query(eid) <| $ [es] (var heat_source__fadeout : bool&;
                           var heat_source__fadeoutTime : float&;
+                          var heat_source__fadeoutEndTime : float&;
                           heat_source__temperature : float4)
       heat_source__fadeout = !isAlive
       heat_source__fadeoutTime = heat_source__temperature.y / heat_source__human_cooling_speed
+      
+      if isAlive
+        heat_source__fadeoutEndTime = -1.0
 
 [es(tag=render, on_event=(CmdNetShot, EventShot))]
 def human_gun_set_temp_on_shot(evt : Event;

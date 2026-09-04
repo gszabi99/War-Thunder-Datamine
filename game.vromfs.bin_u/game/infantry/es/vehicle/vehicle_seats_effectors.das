@@ -8,7 +8,6 @@ require GeomNodeTree
 require EffectorData
 require Unit
 require %appGame.infantry.es.vehicle.vehicle_events
-require HumanPhys
 require WTPhysActor
 require DngHuman
 

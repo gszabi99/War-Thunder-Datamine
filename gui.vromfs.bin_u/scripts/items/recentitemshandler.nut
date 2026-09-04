@@ -1,11 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/recentItems.nut" import getRecentItems, getNumOtherItems
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
+let { EveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj } = require("%sqDagui/daguiUtil.nut")
+let { show_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
@@ -15,7 +18,7 @@ let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisi
 } = require("%scripts/promo/promo.nut")
 let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
 
-gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let RecentItemsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   scene = null
@@ -67,7 +70,7 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.type = "recentItems"
     this.numOtherItems = getNumOtherItems()
 
-    let promoView = getTblValue(this.scene.id, getPromoConfig(), {})
+    let promoView = (getPromoConfig()?[this.scene.id] ?? {})
     let otherItemsText = this.createOtherItemsText(this.numOtherItems)
     let view = {
       id = getPromoActionParamsKey(this.scene.id)
@@ -86,7 +89,7 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onItemAction(obj) {
-    let itemIndex = to_integer_safe(getTblValue("holderId", obj), -1)
+    let itemIndex = to_integer_safe(obj?.holderId, -1)
     if (itemIndex == -1 || !(itemIndex in this.recentItems))
       return
 
@@ -143,22 +146,23 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onToggleItem(obj) { togglePromoItem(obj) }
 
   function updateVisibility() {
-    let isVisible = !handlersManager.findHandlerClassInScene(gui_handlers.EveryDayLoginAward)
-      && !handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd)
+    let isVisible = !handlersManager.findHandlerClassInScene(EveryDayLoginAward)
+      && !handlersManager.findHandlerClassInScene(trophyRewardWnd)
       && getRecentItems().len()
     show_obj(this.scene, isVisible)
   }
 
   onEventActiveHandlersChanged = @(_p) this.updateVisibility()
 }
+register_gui_handler("RecentItemsHandler", RecentItemsHandler)
 
 function createRecentItemsHandler(_owner, containerObj, defShow) {
   if (!checkObj(containerObj))
     return null
-  return handlersManager.loadHandler(gui_handlers.RecentItemsHandler, { scene = containerObj, defShow = defShow })
+  return handlersManager.loadHandler(RecentItemsHandler, { scene = containerObj, defShow = defShow })
 }
 
-let promoButtonId = "recent_items_mainmenu_button"
+const promoButtonId = "recent_items_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId

@@ -1,6 +1,7 @@
 {
   "fmFile": "fm/do_335a_0.blk",
   "model": "do_335a_0",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_fighter_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
@@ -48,7 +49,7 @@
     "armor_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 39.5
+        "hp": 36.1
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
@@ -101,13 +102,16 @@
     },
     "c_dural7": {
       "fuse1_dm": {
-        "hp": 70.9
+        "hp": 70.9,
+        "deadExplProb": 0.5
       },
       "fuse2_dm": {
-        "hp": 92.6
+        "hp": 92.6,
+        "deadExplProb": 0.5
       },
       "fuse_dm": {
-        "hp": 64.2
+        "hp": 64.2,
+        "deadExplProb": 0.5
       },
       "tail_dm": {
         "genericDamageMult": 0.5,
@@ -170,6 +174,12 @@
       }
     },
     "protected_controls": {
+      "propeller_shaft1_dm": {
+        "hp": 60.5
+      },
+      "propeller_shaft2_dm": {
+        "hp": 60.5
+      },
       "tailcontrol_dm": {
         "hp": 60.5
       },
@@ -196,7 +206,7 @@
     },
     "steel_cooling_sys": {
       "oil1_dm": {
-        "hp": 17.5
+        "hp": 16.5
       },
       "oil2_dm": {
         "hp": 11.5
@@ -222,7 +232,6 @@
     },
     "steel_pilot": {
       "pilot_dm": {
-        "fireProtectionHp": 20.0,
         "hp": 20.0
       }
     },
@@ -1000,6 +1009,12 @@
       },
       {
         "name": "pilot_dm"
+      },
+      {
+        "name": "propeller_shaft1_dm"
+      },
+      {
+        "name": "propeller_shaft2_dm"
       },
       {
         "name": "rudder0_dm",
@@ -1965,6 +1980,7 @@
       },
       {
         "name": "wing_l_dm",
+        "defaultEffectPart": "spar_l_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -2026,6 +2042,7 @@
       },
       {
         "name": "wing_r_dm",
+        "defaultEffectPart": "spar_r_dm",
         "onHit": [
           {
             "smoke": 0.1,
@@ -2697,6 +2714,7 @@
     "mg15115_universal": {},
     "mg15115_air_targets": {},
     "mg15115_armor_targets": {},
+    "mg15115_stealth": {},
     "mg151_universal": {},
     "mg151_air_targets": {},
     "mg151_armor_targets": {},

@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "matching.errors" import INVALID_SQUAD_ID
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { INVALID_SQUAD_ID } = require("matching.errors")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getSessionLobbyGameMode, getSessionLobbyPlayersInfo
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getSessionLobbyGameMode, getSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1 }
@@ -88,7 +88,7 @@ let isShowSquad = @() getSessionLobbyGameMode() != GM_SKIRMISH
 function updateTopSquadScore(mplayers) {
   if (!isShowSquad())
     return
-  let teamId = mplayers.len() ? getTblValue("team", mplayers[0], null) : null
+  let teamId = mplayers.len() ? mplayers[0]?.team : null
   if (teamId == null)
     return
 
@@ -97,17 +97,17 @@ function updateTopSquadScore(mplayers) {
   local topSquadScore = 0
   let squads = {}
   foreach (player in mplayers) {
-    let squadScore = getTblValue("squadScore", player, 0)
+    let squadScore = (player?.squadScore ?? 0)
     if (!squadScore || squadScore < topSquadScore)
       continue
-    let squadId = getTblValue("squadId", getSquadInfoByMemberId(player?.userId.tointeger()), INVALID_SQUAD_ID)
+    let squadId = (getSquadInfoByMemberId(player?.userId.tointeger())?.squadId ?? INVALID_SQUAD_ID)
     if (squadId == INVALID_SQUAD_ID)
       continue
     if (squadScore > topSquadScore) {
       topSquadScore = squadScore
       squads.clear()
     }
-    let score = getTblValue("score", player, 0)
+    let score = (player?.score ?? 0)
     if (!(squadId in squads))
       squads[squadId] <- { playerScore = 0, members = 0 }
     squads[squadId].playerScore += score

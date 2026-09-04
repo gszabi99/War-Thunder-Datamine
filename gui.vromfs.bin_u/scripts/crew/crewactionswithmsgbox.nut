@@ -1,16 +1,15 @@
+import "chard" as chard
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
 from "%scripts/dagui_natives.nut" import shop_specialize_crew
 from "%scripts/dagui_library.nut" import *
 
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let chard = require("chard")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getCrewTrainCost, getCrewLevel } = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSkillsNotAffectedBySpecDesc
-} = require("%scripts/crew/crewSpecType.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSkillsNotAffectedBySpecDesc } = require("%scripts/crew/crewSpecType.nut")
 let { canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitShopInfo.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
@@ -63,7 +62,7 @@ function upgradeUnitSpecImpl(crew, unit, upgradesAmount = 1) {
 
     if (upgradesAmount > 0)
       return self(crew, unit, upgradesAmount)
-    if (getTblValue("aircraft", crew) != unit.name)
+    if (crew?.aircraft != unit.name)
       showInfoMsgBox(format(loc("msgbox/qualificationIncreased"), getUnitName(unit)))
   }
 

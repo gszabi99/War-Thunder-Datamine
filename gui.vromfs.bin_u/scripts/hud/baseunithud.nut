@@ -1,11 +1,12 @@
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "hudCompassState" import hasCompassObservable
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { hasCompassObservable } = require("hudCompassState")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 function updatePosMultiplayerScore(obj, hasCompass, isInAntiAirMenu) {
   let top = hasCompass && !isInAntiAirMenu
@@ -14,7 +15,7 @@ function updatePosMultiplayerScore(obj, hasCompass, isInAntiAirMenu) {
   obj.top = top
 }
 
-gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
+let BaseUnitHud = class (BaseGuiHandlerWT) {
   scene = null
   wndType = handlerType.CUSTOM
 
@@ -64,3 +65,6 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onControlsChanged = @() null
 }
+register_gui_handler("BaseUnitHud", BaseUnitHud)
+
+return { BaseUnitHud }

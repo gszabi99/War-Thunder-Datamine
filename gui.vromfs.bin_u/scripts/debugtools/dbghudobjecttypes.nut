@@ -1,18 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "dagor.random" import rnd, frnd
+from "hudMessages" import HUD_MSG_DEATH_REASON
+from "string" import format
+from "guiMission" import GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP, OBJECTIVE_TYPE_PRIMARY
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_TYPE
 
 let { g_hud_reward_message } = require("%scripts/hud/hudRewardMessage.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { rnd, frnd } = require("dagor.random")
-let { HUD_MSG_DEATH_REASON } = require("hudMessages")
-let { format } = require("string")
-let { GO_FAIL, GO_WIN, MISSION_CAPTURING_ZONE, MISSION_CAPTURED_ZONE, MISSION_CAPTURING_STOP,
-  OBJECTIVE_TYPE_PRIMARY } = require("guiMission")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug,
-  hud_debug_streak
-} = require("%scripts/debugTools/dbgHud.nut")
+let { hud_message_objective_debug, hud_message_player_damage_debug, hud_message_kill_log_debug, hud_debug_streak } = require("%scripts/debugTools/dbgHud.nut")
 
 let getFakePlayer = @(id) {
   name = "somebodyName"

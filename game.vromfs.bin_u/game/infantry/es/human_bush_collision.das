@@ -6,7 +6,6 @@ require DagorMath
 require DagorRandom
 require PhysMat
 require math.base
-require DagorSystem
 
 def spawn_effect_aux(pos : float3; fx_name : string; rendinst_pool : int)
   var tm = IDENT_TM

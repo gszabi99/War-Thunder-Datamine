@@ -1,15 +1,16 @@
+import "string" as string
+from "%rGui/planeState/planeFlyState.nut" import Speed, Altitude, Roll, Tangage, Mach
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, BombingMode, TargetPosValid, TargetPos, BombCCIPMode, IlsLineScale, RocketMode
+  , CannonMode, AamAccelLock, RadarTargetDist
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKmh, baseLineWidth
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkEP, generateCompassMarkEP08
+from "%rGui/rocketAamAimState.nut" import IlsTrackerVisible, GuidanceLockState
+from "%rGui/planeIlses/commonElements.nut" import flyDirection
+from "%rGui/planeState/planeWeaponState.nut" import ShellCnt, BulletImpactPoints, BulletImpactLineEnable
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 
-let string = require("string")
-let { Speed, Altitude, Roll, Tangage, Mach } = require("%rGui/planeState/planeFlyState.nut");
-let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode, AamAccelLock, RadarTargetPos, IlsPosSize, RadarTargetDist} = require("%rGui/planeState/planeToolsState.nut")
-let { mpsToKmh, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { compassWrap, generateCompassMarkEP, generateCompassMarkEP08 } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { IlsTrackerVisible, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { flyDirection } = require("%rGui/planeIlses/commonElements.nut")
-let { ShellCnt, BulletImpactPoints, BulletImpactLineEnable }  = require("%rGui/planeState/planeWeaponState.nut");
+let { RadarTargetPos, IlsPosSize } = require("%rGui/planeState/planeToolsState.nut")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 
@@ -30,8 +31,8 @@ let EPAltCCIPWatched = Computed(@() string.format(Altitude.get() < 1000 ? "%d" :
 let EPAltCCIP = @() {
   watch = [EPAltCCIPWatched, IlsColor]
   rendObj = ROBJ_TEXT
-  pos = [pw(-150), ph(-20)]
-  size = flex()
+  pos = const [pw(-150), ph(-20)]
+  size = FLEX
   color = IlsColor.get()
   fontSize = 50
   text = EPAltCCIPWatched.get()
@@ -45,7 +46,7 @@ function generatePitchLineEP(num, isEP12, textPad) {
     flow = FLOW_VERTICAL
     children = num >= 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -74,7 +75,7 @@ function generatePitchLineEP(num, isEP12, textPad) {
     ] :
     [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -126,13 +127,13 @@ let EP12SpeedValue = Computed(@() Mach.get() < 0.5 ? (Speed.get() * mpsToKmh).to
 let EP12SpeedVis = Computed(@() Speed.get() > 20.8)
 let EP12Speed = @() {
   watch = EP12SpeedVis
-  size = flex()
+  size = FLEX
   children = EP12SpeedVis.get() ?
   @() {
     watch = [EP12SpeedValue, IlsColor]
     size = SIZE_TO_CONTENT
     rendObj = ROBJ_TEXT
-    pos = [pw(46), ph(80)]
+    pos = const [pw(46), ph(80)]
     color = IlsColor.get()
     fontSize = 50
     font = Fonts.hud
@@ -143,7 +144,7 @@ let EP12Speed = @() {
 let EP12RadarTargetVisible = Computed(@() RadarTargetDist.get() > 0.0 && !BombingMode.get())
 let EP12RadarTargetMark = @(){
   watch = EP12RadarTargetVisible
-  size = flex()
+  size = FLEX
   children = EP12RadarTargetVisible.get() ? [
     {
       size = const [pw(3), ph(3)]
@@ -183,7 +184,7 @@ let generateAltMarkEP = function(num) {
   let small = num % 10 > 0
   return {
     size = const [pw(100), ph(10)]
-    pos = [pw(10), 0]
+    pos = const [pw(10), 0]
     flow = FLOW_HORIZONTAL
     children = [
       @() {
@@ -239,7 +240,7 @@ function EPAltitudeWrap(width, height, generateFunc) {
     children = [
       EPAltitude(height * 0.4, generateFunc)
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -274,7 +275,7 @@ function EP08Alt(width, height) {
 
 function navigationInfo(width, height, isEP08) {
   return @() {
-    size = flex()
+    size = FLEX
     children = [
       pitchEP(width, height * 0.7, !isEP08),
       !isEP08 ? EP12Speed : EP08Alt(width, height),
@@ -306,12 +307,12 @@ function getBulletImpactLineCommand() {
 
 let bulletsImpactLine = @() {
   watch = [CCIPMode, BulletImpactLineEnable]
-  size = flex()
+  size = FLEX
   children = BulletImpactLineEnable.get() && !CCIPMode.get() ? [
     @() {
       watch = [BulletImpactPoints, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
-      size = flex()
+      size = FLEX
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
       commands = getBulletImpactLineCommand()
@@ -323,7 +324,7 @@ let haveShell = Computed(@() ShellCnt.get() > 0)
 function EPAimMark(width, height, is_need_gun_ret) {
   return @() {
     watch = [CCIPMode, BombingMode]
-    size = flex()
+    size = FLEX
     children = CCIPMode.get() || BombingMode.get() ?
       @() {
         watch = [IlsColor, TargetPosValid, haveShell]
@@ -352,7 +353,7 @@ function EPAimMark(width, height, is_need_gun_ret) {
         }
       } :
       ( is_need_gun_ret ? @() {
-        watch = [IlsColor, TargetPosValid]
+        watch = IlsColor
         size = const [pw(7), ph(7)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
@@ -382,7 +383,7 @@ function EPAimMark(width, height, is_need_gun_ret) {
 function EPCCRPTargetMark(width, height) {
   return @() {
     watch = [TargetPosValid, BombCCIPMode]
-    size = flex()
+    size = FLEX
     children = BombCCIPMode.get() || BombingMode.get() ?
       @() {
         watch = IlsColor
@@ -406,11 +407,11 @@ function EPCCRPTargetMark(width, height) {
 
 let EP08AAMMarker = @() {
   watch = IlsTrackerVisible
-  size = flex()
+  size = FLEX
   children = IlsTrackerVisible.get() ?
   @() {
     watch = [GuidanceLockState, IlsColor]
-    size = flex()
+    size = FLEX
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     fillColor = IlsColor.get()
@@ -429,7 +430,7 @@ let EP08AAMMarker = @() {
     children =
       @() {
         watch = AamAccelLock
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()

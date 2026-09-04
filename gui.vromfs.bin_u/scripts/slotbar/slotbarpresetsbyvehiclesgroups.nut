@@ -1,18 +1,18 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "chard" import getProfileCountry
+from "%sqstd/string.nut" import split
 from "%scripts/dagui_natives.nut" import get_crew_count
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
-let { getProfileCountry } = require("chard")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCrew, getCrewUnit } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let DataBlock = require("DataBlock")
-let { split } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local curPreset = {
@@ -169,7 +169,7 @@ function updatePresets(presetId, countryPresets) {
   savePresets(presetId, countryPresets)
 }
 
-let groupInSlotMsgBoxlocId = "msgbox/groupAlreadyInOtherSlot"
+const groupInSlotMsgBoxlocId = "msgbox/groupAlreadyInOtherSlot"
 
 let setUnit = kwarg(function setUnit(crew, unit, onFinishCb = null, showNotification = true, needEvent = true) {
   let country = crew.country

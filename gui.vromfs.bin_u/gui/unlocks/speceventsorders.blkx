@@ -4,6 +4,8 @@
   "padding": "@blockInterval, @blockInterval",
   "css-hier-invalidate": "yes",
   "tooltip": "",
+  "on_hover": "onOrderRewardHover",
+  "on_unhover": "onOrderRewardUnhover",
   "tdiv": {
     "position": "relative",
     "size": "pw, ph",
@@ -49,6 +51,7 @@
         }
       },
       "hiddenDiv": {
+        "id": "rewardBtnsNest",
         "position": "absolute",
         "top": "ph-h",
         "width": "pw",
@@ -61,6 +64,7 @@
             "text": "#mainmenu/UnlockAchievementsToFavorite",
             "tooltip": "",
             "on_click": "unlockToFavorites",
+            "on_unhover": "onOrderRewardBtnsUnhover",
             "not-input-transparent": "yes",
             "unlockId": "",
             "btnName": "LT",
@@ -76,6 +80,7 @@
             "hideText": "yes",
             "visualStyle": "purchase",
             "on_click": "onBuyUnlock",
+            "on_unhover": "onOrderRewardBtnsUnhover",
             "not-input-transparent": "yes",
             "tooltip": "#mainmenu/btnBuyInstantly/tooltip",
             "unlockId": "",

@@ -2,7 +2,7 @@
   "model": "f_4ej_kai",
   "fmFile": "fm/f-4ej.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "gyroSight": true,
@@ -10,6 +10,7 @@
   "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsElbit967": true,
   "rwrIndicator": "AN/ALR-67 MFD",
   "gearSinkRangeLR": 0.42,
@@ -3604,6 +3605,7 @@
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "AN/APG-79",
+              "AN/APG-83",
               "Thales RDY",
               "N019",
               "N001",
@@ -3829,7 +3831,8 @@
               "AN/APG-66",
               "AN/APG-68",
               "PS-37",
-              "Type 1492"
+              "Type 1492",
+              "AN/APG-83"
             ]
           },
           {
@@ -6822,8 +6825,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

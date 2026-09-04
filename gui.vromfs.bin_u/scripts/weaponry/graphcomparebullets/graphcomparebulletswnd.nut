@@ -1,19 +1,20 @@
+from "eventbus" import eventbus_send
+from "dagor.time" import get_time_msec
+from "%sqstd/string.nut" import cutPrefix
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/time.nut" import secondsToMilliseconds, millisecondsToSeconds
 from "%scripts/dagui_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { loadProtectionAnalysisOptionsHandler } = require("%scripts/dmViewer/protectionAnalysisOptionsHandler.nut")
 let bulletsBallisticOptions = require("%scripts/weaponry/graphCompareBullets/bulletsBallisticOptions.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { graphColorList, getBulletCacheSaveId
-} = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
-let { round_by_value } = require("%sqstd/math.nut")
-let { secondsToMilliseconds, millisecondsToSeconds } = require("%sqstd/time.nut")
+let { enableObjsByTable } = require("%scripts/sqDagui/daguiUtil.nut")
+let { graphColorList, getBulletCacheSaveId } = require("%scripts/weaponry/graphCompareBullets/bulletsGraphState.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 
@@ -51,7 +52,7 @@ function getStartPlayingTime(curPlayValue, maxPlayTimeMs) {
   return curTimeMs - getPlayTimeMs(curPlayValue, maxPlayTimeMs)
 }
 
-let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
+let GraphCompareBulletsWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/weaponry/bulletsBallisticParametersWnd.blk"
   widgetsList = [
@@ -103,6 +104,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.registerSubHandler(optionsHandler)
     this.optionsHandler = optionsHandler.weakref()
     this.curBullet = bulletsBallisticOptions.BULLET.value
+    this.updateButtons()
     this.fillTabs()
     if (this.applySelectedOptionAfterInit)
       this.guiScene.performDelayed(this, @() this.onAddBulletForCompare())
@@ -133,11 +135,11 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasSubPages)
       return
 
-    let tabs = subPages.map(@(v) {
+    let radioButtons = subPages.map(@(v) {
       id = v.id
-      tabName = loc(v.locId)
+      text = loc(v.locId)
     })
-    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", { tabs })
+    let data = handyman.renderCached("%gui/commonParts/radiobutton.tpl", { radiobutton = radioButtons })
     let subPagesObj = subPagesNestObj.findObject("sub_pages_list")
     this.guiScene.replaceContentFromText(subPagesObj, data, data.len(), this)
     subPagesObj.setValue(this.curSubPageIdx ?? 0)
@@ -167,16 +169,19 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasShotSetting)
       return
 
-    let needFill = settingsObj.childrenCount() == 0
-    if (!needFill)
-      return
+    if (settingsObj.childrenCount() == 0)
+      this.fillShotSettings(settingsObj)
 
+    this.updateShotSettingsVisibility(settingsObj)
+  }
+
+  function fillShotSettings(settingsObj) {
     let rows = []
     foreach (option in this.shotSettings) {
-      let { id = null, locId, getControlMarkup = null, getValueText = null,
+      let { id = null, locId = null, getControlMarkup = null, getValueText = null,
         value = null, isHeader = false } = option
 
-      let title = loc(locId)
+      let title = locId == null ? null : loc(locId)
       rows.append({
         id
         name = isHeader ? "".concat(title, loc("ui/colon")) : title
@@ -188,6 +193,17 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     }
     let data = handyman.renderCached("%gui/options/verticalOptions.tpl", { rows })
     this.guiScene.replaceContentFromText(settingsObj, data, data.len(), this)
+  }
+
+  function updateShotSettingsVisibility(shotSettingsObj = null) {
+    let settingsObj = shotSettingsObj ?? this.scene.findObject("shot_settings")
+    let settings = getShotSettingsValues(this.shotSettings)
+    foreach (option in this.shotSettings) {
+      let { id = null, isVisible = null } = option
+      if (id == null || isVisible == null)
+        continue
+      showObjById($"tr_{id}", isVisible(settings), settingsObj)
+    }
   }
 
   function requestGraphDataImpl() {
@@ -358,6 +374,11 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onAddBulletForCompare() {
+    if (bulletsBallisticOptions.BULLET.values.len() == 0) {
+      showInfoMsgBox(loc("msg/bulletForCompare/noShellsAvailable"))
+      return
+    }
+
     if (this.curBullet == null) {
       showInfoMsgBox(loc("msg/bulletForCompare/needSelectBullet"))
       return
@@ -487,6 +508,24 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
     this.updateBulletsGraphDataDelayed()
   }
 
+  function onChangeShotSettingMode(obj) {
+    let containerObj = obj.getParent()
+    let option = this.getShotSettingById(containerObj.id)
+    if (option == null)
+      return
+
+    let idx = obj.holderId.tointeger()
+    let newValue = option.values?[idx]
+    if (newValue == null || option.value == newValue)
+      return
+
+    option.value = newValue
+    for (local i = 0; i < containerObj.childrenCount(); i++)
+      containerObj.getChild(i).selected = i == idx ? "yes" : "no"
+    this.updateShotSettingsVisibility()
+    this.updateBulletsGraphData()
+  }
+
   function onChangeSubPage(obj) {
     let { subPages = null } = this.curPage
     if (subPages == null)
@@ -548,7 +587,7 @@ let GraphCompareBulletsWnd = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.GraphCompareBulletsWnd <- GraphCompareBulletsWnd
+register_gui_handler("GraphCompareBulletsWnd", GraphCompareBulletsWnd)
 
 return {
   GraphCompareBulletsWnd

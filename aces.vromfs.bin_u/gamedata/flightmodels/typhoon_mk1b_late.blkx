@@ -1,7 +1,7 @@
 {
   "model": "typhoon_mk1b_late",
   "fmFile": "fm/typhoon_mk1b_late.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": "typeFighter",
@@ -2341,6 +2341,51 @@
             "iconType": "rockets_he_small"
           }
         }
+      },
+      {
+        "name": "typhoon_mk1b_late_16x_rockets",
+        "blk": "gameData/FlightModels/weaponPresets/typhoon_mk1b_16x_rockets.blk",
+        "reqModification": "halker_rc",
+        "Weapon": [
+          {
+            "blk": "gameData/Weapons/rocketGuns/uk_rp3_3.blk",
+            "amountPerTier": 4.0,
+            "iconType": "rockets_he_large_group_x2",
+            "tier": [
+              {
+                "idx": 2
+              },
+              {
+                "idx": 3
+              },
+              {
+                "idx": 4
+              },
+              {
+                "idx": 5
+              }
+            ]
+          },
+          {
+            "blk": "gameData/Weapons/rocketGuns/uk_rp3_4b.blk",
+            "amountPerTier": 4.0,
+            "iconType": "rockets_he_large_group_x2",
+            "tier": [
+              {
+                "idx": 7
+              },
+              {
+                "idx": 8
+              },
+              {
+                "idx": 9
+              },
+              {
+                "idx": 10
+              }
+            ]
+          }
+        ]
       }
     ]
   },

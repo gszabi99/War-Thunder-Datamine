@@ -1,5 +1,4 @@
 require ecs
-require %game.events
 require pathfinder
 require DagorRandom
 require DagorMath

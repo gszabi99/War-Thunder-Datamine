@@ -32,7 +32,7 @@ function modifyReduceExtends(arr) {
   arr.pop()
 }
 
-function getTemplateExtendsReduced(templ, path) {
+function getTemplateExtendsReduced(templ, path): array {
   local result = []
   let numParents = templ.getNumParentTemplates()
   if (numParents > 0 && (numParents <= (5-path.len()) || path.len() < 1)) {
@@ -56,7 +56,7 @@ function getTemplateExtendsReduced(templ, path) {
 }
 
 
-function getTemplateTemplsDescs(templ, addedTempls, need_tpl_desc, extendBy, insertTo) {
+function getTemplateTemplsDescs(templ, addedTempls, need_tpl_desc, extendBy, insertTo): array {
   local result = []
 
   let templName = templ.getName()
@@ -153,7 +153,7 @@ function mkCompMetaInfoText(metaInfo, format="oneLiner") {
 }
 
 
-function getTemplateCompsDescs(templ, addedTempls, addedComps, valueComps) {
+function getTemplateCompsDescs(templ, addedTempls, addedComps, valueComps): array {
   local result = []
 
   let templName = templ.getName()
@@ -198,18 +198,17 @@ function getTemplateCompsDescs(templ, addedTempls, addedComps, valueComps) {
 
 
 let categories = {}
-function getCategoryTemplates(category) {
+function getCategoryTemplates(category): array {
   if (categories?[category] != null)
     return categories[category]
-
-  if (categories?[category] == null)
-    categories[category] <- []
 
   let db = ecs.g_entity_mgr.getTemplateDB()
 
   let tpls = entity_editor?.get_instance()?.getEcsTemplates("*")
   if (tpls == null)
     return []
+
+  categories[category] <- []
 
   foreach(tpl_name in tpls) {
     let metaInfo = db.getTemplateMetaInfo(tpl_name)
@@ -221,7 +220,7 @@ function getCategoryTemplates(category) {
 }
 
 
-function getTemplateInfo(templName) {
+function getTemplateInfo(templName: string|null): table {
   local extendsListReduced = []
   local extendBy = []
   local insertTo = []
@@ -297,9 +296,9 @@ let mkTemplateInfoTag = @(text, fillColor = Color(100,100,200), size = SIZE_TO_C
   borderWidth = 0
   borderRadius = hdpx(4)
   fillColor
-  padding = [0,hdpx(1)]
+  padding = const [0,hdpx(1)]
   vplace = ALIGN_CENTER
-  margin = [hdpx(2),0]
+  margin = const [hdpx(2),0]
   children = {
     rendObj = ROBJ_TEXT
     size
@@ -505,7 +504,7 @@ function mkTemplateTooltip(templName, sceneText="") {
     }
   }
 
-  let displayDelay = 0.2
+  const displayDelay = 0.2
 
   return {
     rendObj = ROBJ_WORLD_BLUR_PANEL

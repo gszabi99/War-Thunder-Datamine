@@ -1,15 +1,16 @@
+from "%rGui/radarState.nut" import Irst, Radar2ModeNameId
+from "%rGui/hints/shortcuts.nut" import antiAirMenuShortcutHeight, getShortcut
+from "%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut" import mkShortcutButton, mkShortcutButtonContinued, mkShortcutText, mkShortcutHint
+from "%rGui/components/gamepadImgByKey.nut" import mkImageCompByDargKey
+from "%rGui/ctrlsState.nut" import showConsoleButtons
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
 from "%rGui/globals/ui_library.nut" import *
-let { Irst, Radar2ModeNameId, modeNames } = require("%rGui/radarState.nut")
-let { antiAirMenuShortcutHeight, getShortcut } = require("%rGui/hints/shortcuts.nut")
-let { mkShortcutButton, mkShortcutButtonContinued, mkShortcutText, mkShortcutHint
-} = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
-let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
-let JB = require("%rGui/control/gui_buttons.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 
-let radarColor = 0xFF00FF07
-let radarColorInactive = 0x66006602
+let { modeNames } = require("%rGui/radarState.nut")
+let JB = require("%rGui/control/gui_buttons.nut")
+
+const radarColor = 0xFF00FF07
+const radarColorInactive = 0x66006602
 
 let mkGamepadImageByHotkey = @(hotkey, scale = 1) mkImageCompByDargKey(hotkey,
   0, { height = antiAirMenuShortcutHeight * scale })

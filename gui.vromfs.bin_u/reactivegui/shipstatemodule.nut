@@ -1,19 +1,20 @@
+from "%rGui/shipState.nut" import brokenEnginesCount, enginesInCooldown, enginesCount, transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount
+  , brokenTorpedosCount, artilleryType, artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire
+  , aiGunnersState, buoyancy, steering, sightAngle, fwdAngle, hasAiGunners, fov
+  , blockMoveControl, burningParts
+from "%rGui/hud/shipStateView.nut" import speedValue, speedUnits, machineSpeed
+from "%rGui/crewState.nut" import driverAlive
+from "%rGui/hudState.nut" import needShowDmgIndicator, isUnitAlive, isSpectatorMode
+from "%rGui/options/options.nut" import damageIndicatorScale
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth, updateDmgIndicatorElement
+from "%sqstd/math.nut" import sin
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/gameRendObjs.nut" import *
+from "%globalScripts/weaponConsts.nut" import *
 
-let { brokenEnginesCount, enginesInCooldown, enginesCount,
-  transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
-  artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
-  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, burningParts
-} = require("%rGui/shipState.nut")
-let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
-let { driverAlive } = require("%rGui/crewState.nut")
-let { needShowDmgIndicator, isUnitAlive, isSpectatorMode } = require("%rGui/hudState.nut")
 let dmModule = require("%rGui/dmModule.nut")
 let { crewLifebar } = require("%rGui/crewLifebar.nut")
-let { sin } = require("%sqstd/math.nut")
 let { hud } = require("%rGui/style/colors.nut")
-let { damageIndicatorScale } = require("%rGui/options/options.nut")
-let { dmgIndicatorWidth, updateDmgIndicatorElement } = require("%rGui/hud/dmgIndicatorState.nut")
 
 const STATE_ICON_SIZE = 54
 const FIRE_ICON_SIZE = 24
@@ -26,7 +27,7 @@ let iconGearSize = Computed(@() hdpxi(damageIndicatorScale.get() * STEERING_GEAR
 let { damageModule, shipSteeringGauge, hudLogBgColor } = hud
 let boxWidth = Computed(@() hdpx(damageIndicatorScale.get() < 1 ? 150 * damageIndicatorScale.get() : 200))
 
-let maxFontBoxHeight = hdpx(18.5)
+const maxFontBoxHeight = hdpx(18.5)
 
 let speedComp = {
   size = FLEX_H
@@ -36,7 +37,7 @@ let speedComp = {
   valign = ALIGN_CENTER
 
   children = [
-    { size = flex() }
+    { size = FLEX }
     @() {
       watch = boxWidth
       size = const [flex(2.9), SIZE_TO_CONTENT]
@@ -198,7 +199,7 @@ let driverIndicator = @() {
 }
 
 let steeringLine = {
-  size = const [hdpx(1), flex()]
+  size = const [hdpx(1), FLEX]
   rendObj = ROBJ_SOLID
   color = shipSteeringGauge.serif
 }
@@ -209,12 +210,12 @@ let steeringComp = {
 
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_SOLID
       color = shipSteeringGauge.background
       flow = FLOW_HORIZONTAL
       gap = {
-        size = flex()
+        size = FLEX
       }
       valign = ALIGN_BOTTOM
       children = [
@@ -265,13 +266,13 @@ let dollFov = @() {
   }
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture("+ui/gameuiskin#map_camera")
       color = Color(155, 255, 0, 120)
     }
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_IMAGE
       image = Picture("+ui/gameuiskin#map_camera")
       color = Color(155, 255, 0)
@@ -284,7 +285,7 @@ function makeFireIcons(burningPartsTable, dollSizeVals, iconFireSizeVal) {
   if (burningPartsTable.len() == 0)
     return []
 
-  let blinkTime = 1.3
+  const blinkTime = 1.3
   let icons = []
   let scaleFactor = max(dollSizeVals[0], dollSizeVals[1])
   foreach (partId, pos in burningPartsTable) {
@@ -386,7 +387,7 @@ let shipStateDisplay = {
         rightBlock
       ]
     }
-    { size = [flex(), hdpx(7)] }
+    { size = const [FLEX, hdpx(7)] }
     steeringGears
     steeringComp
   ]
@@ -404,7 +405,7 @@ let mainPanel = {
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
   flow = FLOW_VERTICAL
-  gap = { size = const [flex(), hdpx(5)] }
+  gap = { size = const [FLEX, hdpx(5)] }
   children = [
     speedComp
     shipStateDisplay

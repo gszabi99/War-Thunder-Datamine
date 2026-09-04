@@ -1,14 +1,16 @@
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "chard" import save_profile
+from "guiMission" import get_meta_mission_info_by_name, select_training_mission
+from "mission" import set_game_mode
+from "guiOptions" import set_gui_option, setGuiOptionsMode
 from "%scripts/dagui_natives.nut" import enable_bullets_modifications
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { save_profile } = require("chard")
-let { get_meta_mission_info_by_name, select_training_mission } = require("guiMission")
-let { set_game_mode } = require("mission")
-let { set_gui_option, setGuiOptionsMode } = require("guiOptions")
+
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN
-} = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { OPTIONS_MODE_TRAINING, USEROPT_AIRCRAFT, USEROPT_WEAPONS, USEROPT_SKIN } = require("%scripts/options/optionsExtNames.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getPvpRespawnsOnUnitType, isStatsLoaded } = require("%scripts/myStats.nut")
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
@@ -17,7 +19,6 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { enable_current_modifications, updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
@@ -128,4 +129,5 @@ function startFleetTrainingMission(misName) {
 return {
   startFleetTrainingMission
   getFleetTrainingMissionName
+  fleetTrainingMissionMap = esUnitTypeMisNameMap
 }

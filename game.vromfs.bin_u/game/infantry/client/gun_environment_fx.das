@@ -84,7 +84,7 @@ def draw_effect_trace(evt : Event;
           if templ == null
             continue
           
-          let needPaintFromBiome = false 
+          let _needPaintFromBiome = false 
 
           
           

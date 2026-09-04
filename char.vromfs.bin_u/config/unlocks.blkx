@@ -135124,6 +135124,28 @@
       }
     },
     {
+      "id": "cn_object_211/fr_camo_jaune_sahara",
+      "type": "skin",
+      "mode": {
+        "type": "killedPlayersScore",
+        "typeLocID": "conditions/skinUnlockProgress",
+        "locMultDescId": "skinUnlockMulSingle/killedPlayersScore/desc",
+        "mulArcade": 5,
+        "mulRealistic": 5,
+        "mulHardcore": 5,
+        "num": 150,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnit",
+            "class": "cn_object_211"
+          }
+        ]
+      }
+    },
+    {
       "id": "cn_object_211/winter",
       "type": "skin",
       "mode": {
@@ -188507,9 +188529,28 @@
       "type": "achievement",
       "hidden": true,
       "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "first_battle_online",
+          "first_battle_offline"
+        ]
+      }
+    },
+    {
+      "id": "first_battle_online",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
         "type": "char_versus_battles_end_count_and_rank_test",
         "num": 1
       }
+    },
+    {
+      "id": "first_battle_offline",
+      "type": "achievement",
+      "hidden": true,
+      "isAllowByClient": true
     },
     {
       "id": "player_is_out_of_air_sandbox",
@@ -199998,6 +200039,20 @@
     },
     {
       "id": "ship_flag_ussr_05",
+      "type": "award",
+      "chapter": "ship_flags",
+      "group": "other",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "flag_york_city",
+      "type": "award",
+      "chapter": "ship_flags",
+      "group": "other",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "ship_flag_genoa_city_01",
       "type": "award",
       "chapter": "ship_flags",
       "group": "other",

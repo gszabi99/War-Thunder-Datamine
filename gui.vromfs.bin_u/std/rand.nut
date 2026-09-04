@@ -13,11 +13,11 @@ function new_rnd_seed() {
 }
 
 const DEFAULT_MAX_INT_RAND = 32767
-const maxrndfloat = 16777215.0 
+const maxrndfloat = 16777216.0 
 const maxrndfloatmask = 16777215 
 const maxnoiseint = 0xffffffff 
 
-function randint_uniform(lo, hi, rand) { 
+function randint_uniform(lo: number, hi: number, rand: function): number { 
   let n = hi - lo + 1
   assert(n != 0)
   let maxx = maxnoiseint - (maxnoiseint % n)
@@ -45,7 +45,7 @@ class Rand{
     this._count = 0
   }
 
-  function rfloat(start=0.0, end=1.0){ 
+  function rfloat(start: number = 0.0, end: number = 1.0): float { 
     this._count += 1
     let start_ = math.min(end,start)
     let end_ = math.max(end,start)

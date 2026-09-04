@@ -1,18 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { QiHandlerBase } = require("%scripts/queue/queueInfo/qiHandlerBase.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getClusterShortName, isClusterUnstable
-} = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClusterShortName, isClusterUnstable } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 let { getQueueCountry, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
 
-gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
+register_gui_handler("QiHandlerByCountries", class (QiHandlerBase) {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
 
   timerUpdateObjId = "queue_box"
@@ -147,4 +146,4 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
   }
 
   onEventQueueStatsClusterAdded = @(_) this.createClustersList()
-}
+})

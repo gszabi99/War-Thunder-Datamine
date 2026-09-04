@@ -28,8 +28,8 @@
   "ikPilotMaxUpdateDistance": 200.0,
   "ikPilotMaxRenderDistance": 200.0,
   "useSimpleDeathConditionsAndEffects": false,
-  "type": "typeShip",
-  "expClass": "exp_cv_ship",
+  "type": "typeDestroyer",
+  "expClass": "exp_cruiser",
   "timeToFire": 40.0,
   "timeToSmoke": 300.0,
   "hasExpl": false,
@@ -37,6 +37,7 @@
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
+  "boilerOverpressureStartFx": "steam_leak",
   "deadCoverCountToDelayedSinking": 3,
   "delayedSinkingBreachesFreq": 4.0,
   "delayedSinkingBreachesSize": [
@@ -67,7 +68,10 @@
   "airfield": {
     "catapultAccel": 0.0,
     "catapultLength": 1.0,
-    "runwayWidth": 22.0
+    "runwayWidth": 22.0,
+    "spawnTags": {
+      "vtol_jet": true
+    }
   },
   "default_skin_tomoe": {
     "replace_tex": [
@@ -5787,15 +5791,11 @@
       "shells": [
         {
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_01_dm": {
-            "count": 300
-          }
+          "ammunition_storage_01_dm": {}
         },
         {
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_02_dm": {
-            "count": 300
-          }
+          "ammunition_storage_02_dm": {}
         }
       ]
     },
@@ -5814,15 +5814,11 @@
       "shells": [
         {
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_03_dm": {
-            "count": 300
-          }
+          "ammunition_storage_03_dm": {}
         },
         {
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_04_dm": {
-            "count": 300
-          }
+          "ammunition_storage_04_dm": {}
         }
       ]
     },
@@ -5850,9 +5846,7 @@
       "splashPenetrationConstraint": 15.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_02_dm": {
-          "count": 48000
-        }
+        "ammunition_storage_aux_02_dm": {}
       }
     },
     "ammo4": {
@@ -5875,9 +5869,7 @@
       "splashPenetrationConstraint": 15.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_03_dm": {
-          "count": 24000
-        }
+        "ammunition_storage_aux_03_dm": {}
       }
     },
     "ammo5": {
@@ -5900,9 +5892,7 @@
       "splashPenetrationConstraint": 15.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_04_dm": {
-          "count": 24000
-        }
+        "ammunition_storage_aux_04_dm": {}
       }
     }
   },

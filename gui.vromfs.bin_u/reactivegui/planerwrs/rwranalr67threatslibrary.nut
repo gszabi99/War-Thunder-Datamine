@@ -1,6 +1,5 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
 from "%rGui/globals/ui_library.nut" import *
-
-let rwrSetting = require("%rGui/rwrSetting.nut")
 
 let ThreatType = {
   AI = 0,

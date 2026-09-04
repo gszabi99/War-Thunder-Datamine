@@ -1,8 +1,8 @@
+from "%appGlobals/login/loginState.nut" import loginState
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
 let { bitMaskToSstring } = require("%scripts/debugTools/dbgEnum.nut")
-let { loginState } = require("%appGlobals/login/loginState.nut")
 
 local curLoginProcess = null
 

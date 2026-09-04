@@ -1,20 +1,23 @@
+from "console" import register_command
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockTypeText, getUnlockTypeFromConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
-let { register_command } = require("console")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { MAX_REWARDS_SHOW_IN_TROPHY } = require("%scripts/items/trophyReward.nut")
 let { getPrizeTooltipConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
@@ -39,7 +42,7 @@ register_command(
       title_brother_in_arms = true
       simple_01 = true
     }
-    handlersManager.loadHandler(gui_handlers.UnlockRewardWnd, { unlocksRewards })
+    handlersManager.loadHandler(get_gui_handler("UnlockRewardWnd"), { unlocksRewards })
     return
   },
   "ui.debug_unlocks_reward")
@@ -48,12 +51,12 @@ function showUnlocks(unlocksRewards) {
   if (unlocksRewards.len() == 0)
     return
 
-  if (isHandlerInScene(gui_handlers.UnlockRewardWnd)) {
+  if (isHandlerInScene(get_gui_handler("UnlockRewardWnd"))) {
     delayedUnlocksQueue.__update(unlocksRewards)
     return
   }
 
-  handlersManager.loadHandler(gui_handlers.UnlockRewardWnd, { unlocksRewards = unlocksRewards.__merge(delayedUnlocksQueue) })
+  handlersManager.loadHandler(get_gui_handler("UnlockRewardWnd"), { unlocksRewards = unlocksRewards.__merge(delayedUnlocksQueue) })
   delayedUnlocksQueue.clear()
 }
 
@@ -67,7 +70,7 @@ register_command(function(id) {
   showUnlocks({ [id] = true })
 }, "debug.new_unlockId_received")
 
-gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let UnlockRewardWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/trophyReward.blk"
   unlocksRewards = null
@@ -336,6 +339,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateButtons()
   }
 }
+register_gui_handler("UnlockRewardWnd", UnlockRewardWnd)
 
 return {
   showUnlocks

@@ -162,16 +162,18 @@
       "phys_obj_collision_sound__event:SoundEvent": {}
     }
   },
-  "phys_obj_fall_sound": {
+  "phys_obj_shake_sound": {
     "_group": {
       "_tags": "sound",
-      "phys_obj_fall_sound__prevSpeed": 0.0,
-      "phys_obj_fall_sound__nextTime": 0.0,
-      "phys_obj_fall_sound__path": "missing phys_obj_fall_sound__path",
-      "phys_obj_fall_sound__minSpeedDrop": 3.0,
-      "phys_obj_fall_sound__minSpeed": 2.0,
-      "phys_obj_fall_sound__cooldown": 2.0,
-      "phys_obj_fall_sound__cooldownOnAppear": 1.0
+      "phys_obj_shake_sound__prevSpeed": 0.0,
+      "phys_obj_shake_sound__nextTime": 0.0,
+      "phys_obj_shake_sound__path": "missing phys_obj_shake_sound__path",
+      "phys_obj_shake_sound__minMaxSpeedDrop": [
+        3.0,
+        3.0
+      ],
+      "phys_obj_shake_sound__cooldown": 1.0,
+      "phys_obj_shake_sound__cooldownOnAppear": 1.0
     }
   },
   "fx_destruction_sound": {
@@ -291,8 +293,8 @@
     }
   },
   "game_effect_sound": {
-    "game_effect_sound__hero": "",
-    "game_effect_sound__enemy": "",
+    "game_effect_sound__watched": "",
+    "game_effect_sound__other": "",
     "game_effect_sound__event:SoundEvent": {
       "_tags": "sound"
     }

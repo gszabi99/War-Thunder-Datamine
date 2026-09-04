@@ -1,22 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "%sqstd/string.nut" import clearBorderSymbols
+from "chat" import is_chat_message_empty
 from "%scripts/dagui_natives.nut" import gchat_raw_command, gchat_escape_target
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let regexp2 = require("regexp2")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { is_chat_message_empty } = require("chat")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { CHAT_JOIN_ROOM } = require("%scripts/crossModuleEvents.nut")
 
-gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("CreateRoomWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chat/createChatroom.blk"
 
@@ -173,10 +175,10 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (pass != "")
       pass = clearBorderSymbols(pass, [" "])
     let invitationsOnly = this.guiScene["room_invitation"].getValue()
-    broadcastEvent("ChatJoinRoom", { id = name, password = pass, onJoinFunc = function() {
+    broadcastEvent(CHAT_JOIN_ROOM, { id = name, password = pass, onJoinFunc = function() {
       if (invitationsOnly)
         gchat_raw_command(format("MODE %s +i", gchat_escape_target(name)))
       }
     })
   }
-}
+})

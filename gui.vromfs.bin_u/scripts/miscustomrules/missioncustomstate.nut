@@ -1,11 +1,12 @@
+from "%sqStdLibs/helpers/u.nut" import isString
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent
+from "%sqstd/string.nut" import capitalize
+from "blkGetters" import get_current_mission_info_cached
+from "gameplayBinding" import isInFlight
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-let { isString } = require("%sqStdLibs/helpers/u.nut")
-let { capitalize } = require("%sqstd/string.nut")
-let { addListenersWithoutEnv, CONFIG_VALIDATION, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
-let { isInFlight } = require("gameplayBinding")
+
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 let missionRules = {}
 local curRules = null

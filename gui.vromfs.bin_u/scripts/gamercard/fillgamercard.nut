@@ -1,29 +1,27 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/platform.nut" import is_gdk
+from "string" import format
 from "%scripts/dagui_natives.nut" import entitlement_expires_in
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
-let { getLastGamercardScene, addGamercardScene, updateGcInvites, updateGamercardsChatInfo,
-  updateGcButton } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getLastGamercardScene, addGamercardScene, updateGcInvites, updateGamercardsChatInfo, updateGcButton } = require("%scripts/gamercard/gamercardHelpers.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { getProfileInfo, getCurExpTable } = require("%scripts/user/userInfoStats.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { checkClanTagForDirtyWords } = require("%scripts/clans/clanTextInfo.nut")
 let { Balance, Cost } = require("%scripts/money.nut")
-let { haveActiveBonusesByEffectType, getCurrentBonusesText
-} = require("%scripts/items/boosterEffect.nut")
+let { haveActiveBonusesByEffectType, getCurrentBonusesText } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { check_new_user_logs } = require("%scripts/userLog/userlogUtils.nut")
 let { getFriendsOnlineNum } = require("%scripts/contacts/contactsInfo.nut")
-let { format } = require("string")
 let { getRemainingPremiumTime, havePremium } = require("%scripts/user/premium.nut")
 let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
@@ -71,7 +69,7 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
       if (name == "country")
         obj["background-image"] = getCountryIcon(val)
       else if (name == "rankProgress") {
-        let value = val.tointeger()
+        let value = val?.tointeger() ?? 0
         let isProgressVisible = !isGamercard || value >= 0
         if (isProgressVisible)
           obj.setValue(value != -1 ? value : 1000)
@@ -100,7 +98,7 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
       }
       else if (name == "clanTag") {
         showClanTag = hasFeature("Clans") && val != ""
-        let clanTagName = checkClanTagForDirtyWords(val.tostring())
+        let clanTagName = checkClanTagForDirtyWords(val?.tostring() ?? "")
         let btnText = obj.findObject($"{prefix}{name}_name")
         if (checkObj(btnText))
           btnText.setValue(clanTagName)

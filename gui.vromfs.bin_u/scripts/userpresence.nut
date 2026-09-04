@@ -1,15 +1,14 @@
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { matchingApiFunc } = require("%scripts/matching/api.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getEvent, getEventDiffCode } = require("%scripts/events/eventsState.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { findQueue, isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
@@ -54,7 +53,7 @@ function setBattlePresence(presenceName = null, event = null) {
     setUserPresence({ status = {
       [presenceName] = {
         country = profileCountrySq.get()
-        diff = events.getEventDiffCode(event)
+        diff = getEventDiffCode(event)
         eventId = event.name
       }
     } })
@@ -71,7 +70,7 @@ function updateBattlePresence() {
     setBattlePresence("in_game", getRoomEvent())
   else if (isAnyQueuesActive()) {
     let queue = findQueue({})
-    let event = events.getEvent(getTblValue("name", queue, null))
+    let event = getEvent(queue?.name)
     setBattlePresence("in_queue", event)
   }
   else

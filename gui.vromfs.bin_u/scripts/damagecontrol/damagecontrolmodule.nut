@@ -1,9 +1,9 @@
+import "DataBlock" as DataBlock
+from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getShipDamageControl } = require("%scripts/weaponry/dmgModel.nut")
-let { round_by_value } = require("%sqstd/math.nut")
 
 let shipDamageControlDataCache = {}
 

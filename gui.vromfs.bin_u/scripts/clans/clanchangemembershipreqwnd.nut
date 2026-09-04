@@ -1,23 +1,20 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_clan_id, clan_validate_membership_requirements
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,
-  USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK,
-  USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS,
-  USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES,
-  USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_TANK_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_BLUEWATER_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK, USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS, USEROPT_CLAN_REQUIREMENTS_MIN_ARCADE_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_REAL_BATTLES, USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP } = require("%scripts/options/optionsExtNames.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { clan_request_set_membership_requirements } = require("%scripts/clans/clanRequests.nut")
@@ -25,7 +22,7 @@ let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 
-gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanChangeMembershipReqWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL;
   sceneBlkName = "%gui/clans/clanChangeMembershipReqWnd.blk";
   wndOptionsMode = OPTIONS_MODE_GAMEPLAY
@@ -301,3 +298,6 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
     this.reinitScreen()
   }
 }
+register_gui_handler("clanChangeMembershipReqWnd", clanChangeMembershipReqWnd)
+
+return { clanChangeMembershipReqWnd }

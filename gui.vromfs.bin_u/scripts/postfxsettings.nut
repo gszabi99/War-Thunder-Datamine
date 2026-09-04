@@ -1,39 +1,28 @@
+import "DataBlock" as DataBlock
+from "chard" import save_profile
+from "eventbus" import eventbus_subscribe
+from "string" import format
+from "math" import round
+from "postFxSettings" import setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFxVignetteMultiplier, setSharpenTps, getSharpenTps, getDefaultSharpenTps, setSharpenGunner
+  , getSharpenGunner, getDefaultSharpenGunner, setSharpenBomber, getSharpenBomber, getDefaultSharpenBomber, setSharpenCockpit, getSharpenCockpit
+  , getDefaultSharpenCockpit, setLutTexture, getLutTexture, setUA, getUA, getDefaultUA, setUB
+  , getUB, getDefaultUB, setUC, getUC, getDefaultUC, setUD, getUD
+  , getDefaultUD, setUE, getUE, getDefaultUE, setUF, getUF, getDefaultUF
+  , setLInvWhite, getLInvWhite, getDefaultLInvWhite, setUWhite, getUWhite, getDefaultUWhite, setTonemappingMode
+  , getTonemappingMode, getDefaultTonemappingMode, useLenseFlares, setLenseFlareHaloPower, getLenseFlareHaloPower, getDefaultLenseFlareHaloPower, setLenseFlareGhostsPower
+  , getLenseFlareGhostsPower, getDefaultLenseFlareGhostsPower, setLenseFlareMode, getLenseFlareMode, getDefaultLenseFlareMode, setIsUsingDynamicLut, getIsUsingDynamicLut
+  , setEnableFilmGrain, getEnableFilmGrain
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_slider, create_option_switchbox, create_option_list
 
-let { save_profile } = require("chard")
-let DataBlock = require("DataBlock")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { eventbus_subscribe } = require("eventbus")
 
-let { format } = require("string")
-let { round } = require("math")
-let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFxVignetteMultiplier,
-      setSharpenTps, getSharpenTps, getDefaultSharpenTps,
-      setSharpenGunner, getSharpenGunner, getDefaultSharpenGunner,
-      setSharpenBomber, getSharpenBomber, getDefaultSharpenBomber,
-      setSharpenCockpit, getSharpenCockpit, getDefaultSharpenCockpit,
-      setLutTexture, getLutTexture,
-      setUA, getUA, getDefaultUA,
-      setUB, getUB, getDefaultUB,
-      setUC, getUC, getDefaultUC,
-      setUD, getUD, getDefaultUD,
-      setUE, getUE, getDefaultUE,
-      setUF, getUF, getDefaultUF,
-      setLInvWhite, getLInvWhite, getDefaultLInvWhite,
-      setUWhite, getUWhite, getDefaultUWhite,
-      setTonemappingMode, getTonemappingMode, getDefaultTonemappingMode,
-      useLenseFlares,
-      setLenseFlareHaloPower, getLenseFlareHaloPower, getDefaultLenseFlareHaloPower,
-      setLenseFlareGhostsPower, getLenseFlareGhostsPower, getDefaultLenseFlareGhostsPower,
-      setLenseFlareMode, getLenseFlareMode, getDefaultLenseFlareMode,
-      setIsUsingDynamicLut, getIsUsingDynamicLut,
-      setEnableFilmGrain, getEnableFilmGrain } = require("postFxSettings")
 
-let tonemappingMode_list = freeze(["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"])
-let lenseFlareMode_list = freeze(["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"])
+const tonemappingMode_list = ["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"]
+const lenseFlareMode_list = ["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"]
 
 let lut_list = persist("lut_list", @() ["#options/hudDefault"])
 let lut_textures = persist("lut_textures", @() [""])
@@ -58,7 +47,7 @@ function check_cur_lut_texture() {
     setLutTexture(getDefaultLutTexture())
 }
 
-gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
+let PostFxSettings = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/postfxSettings.blk"
 
   function updateVisibility() {
@@ -387,6 +376,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     setEnableFilmGrain(obj.getValue());
   }
 }
+register_gui_handler("PostFxSettings", PostFxSettings)
 
 function init_postfx() {
   let blk = DataBlock()
@@ -406,5 +396,5 @@ eventbus_subscribe("on_renderer_init_environment", @(_) setTonemappingMode(getTo
 
 return {
   init_postfx
-  guiStartPostfxSettings = @() handlersManager.loadHandler(gui_handlers.PostFxSettings)
+  guiStartPostfxSettings = @() handlersManager.loadHandler(PostFxSettings)
 }

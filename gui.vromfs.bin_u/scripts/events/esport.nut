@@ -1,17 +1,16 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/timeLoc.nut" import secondsToString
+from "%sqstd/datablock.nut" import eachBlock, eachParam
+from "%sqstd/time.nut" import secondsToDays
+from "%sqstd/string.nut" import trim, utf8ToUpper
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import have_you_valid_tournament_ticket, is_subscribed_for_tournament, get_tournaments_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "types" import String
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { eachBlock, eachParam } = require("%sqstd/datablock.nut")
-let { buildTimeStr,  buildDateStrShort, isInTimerangeByUtcStrings,
-  getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { secondsToString } = require("%appGlobals/timeLoc.nut")
-let { secondsToDays } = require("%sqstd/time.nut")
-let { trim, utf8ToUpper } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { buildTimeStr, buildDateStrShort, isInTimerangeByUtcStrings, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 
@@ -368,7 +367,7 @@ function getTourActiveTicket(eName, tourId) {
 function getEventMission(curEvent) {
   let list = curEvent?.mission_decl.missions_list ?? {}
   foreach (key, _val in list)
-    if (type(key) == "string")
+    if (key instanceof String)
       return key
 
   return ""

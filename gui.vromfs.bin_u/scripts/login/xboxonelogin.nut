@@ -1,30 +1,30 @@
+from "%sqstd/string.nut" import stripTags
+from "guiOptions" import setGuiOptionsMode
+from "%gdkLib/impl/user.nut" import get_gamertag
+from "%sqstd/platform.nut" import is_xbox
 from "%scripts/dagui_natives.nut" import xbox_complete_login
 from "%scripts/dagui_library.nut" import *
 
-let { get_disable_autorelogin_once } = require("loginState.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { stripTags } = require("%sqstd/string.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
-let { get_gamertag } = require("%gdkLib/impl/user.nut")
 let { login } = require("%scripts/gdk/loginState.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
-let { is_xbox } = require("%sqstd/platform.nut")
 
 const AUTOLOGIN_DISABLED = true
 
-gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
+register_gui_handler("LoginWndHandlerXboxOne", class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false
@@ -109,7 +109,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     if (errCode == 0) { 
       if (this.shouldHideCursor)
         forceHideCursor.set(false)
-      loadHandler(gui_handlers.UpdaterModal,
+      loadHandler(get_gui_handler("UpdaterModal"),
         {
           configPath = "updater.blk"
           onFinishCallback = function() {
@@ -156,4 +156,4 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   }
 
   function goBack(_obj) {}
-}
+})

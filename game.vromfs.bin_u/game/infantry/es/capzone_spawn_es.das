@@ -1,6 +1,9 @@
 require ecs
 require %appGame.wt_events
 require %game.events
+require DagorRandom
+require math.base
+require Mission
 require %appGame.infantry.es.team_common
 
 
@@ -102,13 +105,8 @@ def infantry_spawn_proxy_update_es(info : ParallelUpdateFrameDelayed;
     let hasEnemy = totalCount > ownerCount
     if capzone__hasEnemyInside != hasEnemy
       capzone__hasEnemyInside = hasEnemy
-    var owningTeam = infantry_spawn__owningTeam
-    if capzone__owningTeam != TEAM_UNASSIGNED
-      owningTeam = capzone__owningTeam
-    elif capzone__capTeam != infantry_spawn__owningTeam
-      owningTeam = TEAM_UNASSIGNED
-    if infantry_spawn__owningTeam != owningTeam
-      infantry_spawn__owningTeam = owningTeam
+    if infantry_spawn__owningTeam != capzone__owningTeam
+      infantry_spawn__owningTeam = capzone__owningTeam
 
 
 [es(tag=server, REQUIRE=human)]
@@ -143,3 +141,57 @@ def squadmates_spawn_calculation_and_verify_zone(evt : EventCalcAndVerifySpawnTm
       print("[SPSQUAD] spawn unit {eid} on zone {proxyEid} REJECTED: requestPos=({evt.requestPos}) does not match any known position")
   if dynamic_respawn__spawnOnUnitEid != null
     *dynamic_respawn__spawnOnUnitEid = evt.verified ? proxyEid : INVALID_ENTITY_ID
+
+
+def private gather_enemy_points(bot_team : int; var points : array<float3>)
+  query() <| $ [es] (capzone__owningTeam : int; active : bool; transform : float3x4)
+    if active && capzone__owningTeam != bot_team && capzone__owningTeam != TEAM_UNASSIGNED
+      push(points, transform[3])
+  if empty(points)
+    get_respawn_points() <| $(active, resptype, team, pos)
+      if active && team != bot_team && team > 0 && resptype == "human"
+        push(points, pos)
+
+
+[es(tag=server)]
+def select_bot_spawn_zone_es(evt : EventSelectBotSpawnZone)
+  var candidates : array<EntityId>
+  query() <| $ [es(REQUIRE=infantry_spawn_zone_proxy)] (eid : EntityId;
+                                                        infantry_spawn__owningTeam : int;
+                                                        capzone__hasEnemyInside : bool;
+                                                        dynamic_respawn__prevPositions : Point3List)
+    if infantry_spawn__owningTeam == evt.team && !capzone__hasEnemyInside && !empty(dynamic_respawn__prevPositions)
+      push(candidates, eid)
+  let numZones = length(candidates)
+  if numZones == 0
+    return
+  let randomShare = rnd_float(0., 1.)
+  var chosenEid = INVALID_ENTITY_ID
+  if numZones == 1
+    if randomShare >= evt.frontZoneShare
+      return
+    chosenEid = candidates[0]
+  else
+    if randomShare >= evt.frontZoneShare + evt.otherZonesShare
+      return
+    var enemyPoints : array<float3>
+    gather_enemy_points(evt.team, enemyPoints)
+    var frontIdx = 0
+    var bestDistSq = FLT_MAX
+    for i in range(numZones)
+      query(candidates[i]) <| $ [es] (transform : float3x4)
+        for p in enemyPoints
+          let distSq = length_sq(transform[3] - p)
+          if distSq < bestDistSq
+            bestDistSq = distSq
+            frontIdx = i
+    if randomShare < evt.frontZoneShare
+      chosenEid = candidates[frontIdx]
+    else
+      var otherIdx = rnd_int(0, numZones - 2)
+      if otherIdx >= frontIdx
+        otherIdx++
+      chosenEid = candidates[otherIdx]
+  query(chosenEid) <| $ [es] (capture_zone__zoneId : int; dynamic_respawn__prevPositions : Point3List)
+    evt.zoneId = capture_zone__zoneId
+    evt.pos = dynamic_respawn__prevPositions[rnd_int(0, length(dynamic_respawn__prevPositions) - 1)]

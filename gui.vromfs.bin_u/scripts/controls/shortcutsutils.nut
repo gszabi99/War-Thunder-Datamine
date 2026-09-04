@@ -1,23 +1,22 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/u.nut" import find_in_array
+from "string" import format
+from "%sqstd/string.nut" import utf8ToLower
+from "globalEnv" import ControlHelpersMode
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { format } = require("string")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { setShortcutsAndSaveControls, joystickGetCurSettings,
-  getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { GAMEPAD_AXIS, MOUSE_AXIS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let { create_option_dropright, create_option_list, create_option_slider, create_option_switchbox
-} = require("%scripts/options/optionsCtors.nut")
+let { create_option_dropright, create_option_list, create_option_slider, create_option_switchbox } = require("%scripts/options/optionsCtors.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getCurrentHelpersMode } = require("%scripts/controls/aircraftHelpers.nut")
-let { ControlHelpersMode } = require("globalEnv")
 
 let axisMappedOnMouse = {
   elevator               = @(isMouseAimMode) isMouseAimMode ? MOUSE_AXIS.VERTICAL_AXIS : MOUSE_AXIS.NOT_AXIS
@@ -348,7 +347,7 @@ function buildHotkeyItem(rowIdx, shortcuts, item, params, rowParams = "") {
         value = value
       }
     }
-    config.cb <- getTblValue("onChangeValue", item)
+    config.cb <- item?.onChangeValue
     elemTxt = create_option_switchbox(config)
   }
   else if (item.type == CONTROL_TYPE.MOUSE_AXIS && (item.values.len() > 0) && ("axis_num" in item)) {

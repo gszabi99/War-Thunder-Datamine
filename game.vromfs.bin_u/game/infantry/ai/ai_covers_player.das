@@ -1,5 +1,4 @@
 require ecs
-require app
 require CollRes
 require Covers
 require math

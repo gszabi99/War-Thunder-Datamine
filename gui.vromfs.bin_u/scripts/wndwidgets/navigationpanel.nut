@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, getObjValue } = require("%sqDagui/daguiUtil.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value, getObjValue } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 
-gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
+let navigationPanel = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/wndWidgets/navigationPanel.tpl"
   sceneBlkName = null
@@ -238,3 +239,6 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.itemList?[currentIdx]
   }
 }
+register_gui_handler("navigationPanel", navigationPanel)
+
+return { navigationPanel }

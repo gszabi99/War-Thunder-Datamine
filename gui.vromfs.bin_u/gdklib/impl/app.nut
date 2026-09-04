@@ -13,16 +13,16 @@ function register_activation_callback(callback) {
 }
 
 
-function register_constrain_callback(callback) {
-  eventbus_subscribe(app.constrain_event_name, function(result) {
-    callback?(result?.active)
+function register_unconstrain_callback(callback) {
+  eventbus_subscribe(app.unconstrain_event_name, function(_) {
+    callback?()
   })
 }
 
 
-function register_suspend_callback(callback) {
-  eventbus_subscribe(app.suspend_event_name, function(result) {
-    callback?(result?.active)
+function register_resume_callback(callback) {
+  eventbus_subscribe(app.resume_event_name, function(_) {
+    callback?()
   })
 }
 
@@ -41,7 +41,7 @@ return freeze({
   get_region = app.get_region
 
   register_activation_callback
-  register_constrain_callback
-  register_suspend_callback
+  register_unconstrain_callback
+  register_resume_callback
   register_important_live_error_callback
 })

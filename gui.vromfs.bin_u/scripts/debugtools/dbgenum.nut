@@ -1,7 +1,6 @@
+import "%sqstd/math.nut" as stdMath
+from "string" import format
 from "%scripts/dagui_library.nut" import *
-
-let { format } = require("string")
-let stdMath = require("%sqstd/math.nut")
 
 function getEnumValName(strEnumName, enumTable, value, skipSynonyms = false) {
   let names = []

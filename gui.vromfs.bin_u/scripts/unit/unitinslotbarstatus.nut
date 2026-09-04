@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 

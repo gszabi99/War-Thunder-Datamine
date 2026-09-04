@@ -1,6 +1,6 @@
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetConfigurableValues
 from "%rGui/globals/ui_library.nut" import *
-let DataBlock = require("DataBlock")
-let { wwGetConfigurableValues } = require("worldwar")
 
 let configurableValues = DataBlock()
 

@@ -3,9 +3,7 @@ require ecs.common
 require AnimV20
 require DngHuman
 require HumanAnim
-require DngHumanAnim
 require DngWeapon
-require DagorSystem
 require MotionMatching
 require %gameLibs.anim.motionMatching.das.tags_common
 require %game.events
@@ -49,6 +47,7 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
                                     applied_ct : HumanControlState;
                                     wish_to_move : bool;
                                     is_fpv : bool;
+                                    is_crouch : bool;
                                     motion_matching__dataBaseEid : EntityId;
                                     var motion_matching__controller : MotionMatchingController)
   query(motion_matching__dataBaseEid) <| $ [es] (mm_tag_id__sprint : int;
@@ -70,9 +69,7 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
       remove_tag(motion_matching__controller, mm_tag_id__fullBodyMovement)
       remove_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch)
 
-    
-    
-    let wishStandState = (applied_ct.is_control_bit_set(HumanPhysControlType.HCT_CROUCH) ? WishStandState.CROUCH : WishStandState.STAND)
+    let wishStandState = (applied_ct.is_control_bit_set(HumanPhysControlType.HCT_CROUCH) || is_crouch) ? WishStandState.CROUCH : WishStandState.STAND
 
     if next_anim_state_id == human_anim__lowerStateLowerSprint
       set_tag(motion_matching__controller, mm_tag_id__sprint, true)
@@ -109,7 +106,7 @@ def update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint : int;
     elif next_anim_state_id == human_anim__comboStateFullBodyCrouch
       set_tag(motion_matching__controller, mm_tag_id__fullBodyCrouch, true)
 
-[es(tag=gameClient, after=(human_anim_es, force_anim_state_es, wait_motion_matching_job_es), before=(anim_state_es, update_tag_changes_es))]
+[es(tag=gameClient, after=(human_anim_es, force_anim_state_es, wait_motion_matching_job_es), before=(anim_state_es, update_tag_changes_es), REQUIRE_NOT=animchar__lockAnimStateChange)]
 def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                             animchar__animState : Object;
                             animchar__animStateDirty : bool;
@@ -135,12 +132,15 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
   if (motion_matching__dataBaseEid == INVALID_ENTITY_ID ||
       (!animchar__animStateDirty && motion_matching__prevLowerAnimState >= 0 &&
        int(phys.appliedCT.packedState) == motion_matching__prevControlState) &&
-       phys.previousState.isWishToMove == phys.currentState.isWishToMove)
+       phys.previousState.isWishToMove == phys.currentState.isWishToMove &&
+       phys.previousState.standState == phys.currentState.standState)
     return
 
   for state in animchar__animState
     if state.key == "lower"
       let nextLowerStateId = get_int(state.value) ?? 0
+      let isCrouching = phys.currentState.standState == HUStandState.ESS_CROUCH
+
       update_mm_tags_from_human_state(human_anim__lowerStateLowerSprint,
                                       human_anim__lowerStateRun,
                                       human_anim__lowerStateWalk,
@@ -156,6 +156,7 @@ def update_human_mm_tags_es(evt : ParallelUpdateFrameDelayed;
                                       phys.appliedCT,
                                       curState.isWishToMove,
                                       human_anim__isFpv,
+                                      isCrouching,
                                       motion_matching__dataBaseEid,
                                       motion_matching__controller)
       motion_matching__prevLowerAnimState = nextLowerStateId
@@ -190,7 +191,7 @@ def update_mm_tag_turn_in_move(evt : ParallelUpdateFrameDelayed;
     else
       remove_tag(motion_matching__controller, mm_tag_id__turnInMove)
 
-[es(tag=gameClient, on_event=AnimationDataBaseAssigned, track=human_anim__isFpv)]
+[es(tag=gameClient, on_event=AnimationDataBaseAssigned, track=human_anim__isFpv, REQUIRE_NOT=animchar__lockAnimStateChange)]
 def set_mm_view_mode_tag_es(evt : Event;
                             human_anim__isFpv : bool;
                             human_anim__lowerStateLowerSprint : int;

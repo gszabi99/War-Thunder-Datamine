@@ -1,7 +1,6 @@
 require ecs
 require WTInput
 require %game.input.input_events
-require %game.events
 require %appGame.infantry.es.squad_personal_order_common
 
 

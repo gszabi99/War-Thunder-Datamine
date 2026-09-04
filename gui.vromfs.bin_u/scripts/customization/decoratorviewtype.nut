@@ -1,15 +1,16 @@
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, getCachedType
+from "math" import floor
+from "string" import format
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let guidParser = require("%scripts/guidParser.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getDecorTypeBlk } = require("%scripts/customization/decoratorTypeUtils.nut")
-let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { floor } = require("math")
-let { format } = require("string")
 
 let decoratorViewTypes = {
   cache = {
@@ -85,7 +86,7 @@ addEnumDecoratorViewTypes({
     getImage = @(decorator) decorator ? (decorator?.blk.image ?? $"#ui/images/attachables/{decorator.id}") : ""
     getImageSize = function(...) { return "128@sf/@pf, 128@sf/@pf" }
     getLocParamsDesc = function(decorator) {
-      let paramPathPrefix = "attachables/param/"
+      const paramPathPrefix = "attachables/param/"
       let angle = decorator.blk?.maxSurfaceAngle
       if (!angle)
         return ""

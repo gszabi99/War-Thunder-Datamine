@@ -1,16 +1,14 @@
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease, BombingMode
+from "%rGui/planeState/planeFlyState.nut" import Tas, Roll
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, baseLineWidth
+from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
-
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, TimeBeforeBombRelease,
-       BombingMode } = require("%rGui/planeState/planeToolsState.nut")
-let { Tas, Roll } = require("%rGui/planeState/planeFlyState.nut");
-let { mpsToKnots, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { cvt } = require("dagor.math")
 
 let buccaneerSpdVal = Computed(@() cvt(Tas.get() * mpsToKnots, 300, 600, 0, 100).tointeger())
 let buccaneerSpeed = @() {
   watch = [buccaneerSpdVal, IlsColor]
   size = const [pw(20), ph(5)]
-  pos = [pw(40), ph(85)]
+  pos = const [pw(40), ph(85)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
@@ -28,7 +26,7 @@ let BucDistMarkVis = Computed(@() TargetPosValid.get() && BombingMode.get())
 let buccaneerCCRP = @() {
   watch = [BucDistMarkVis, DistToTargetBuc, IlsColor]
   size = pw(20)
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
@@ -42,12 +40,12 @@ let buccaneerCCRP = @() {
 
 function buccaneerAimMark(_width, _height) {
   return {
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = IlsColor
         size = const [pw(20), ph(20)]
-        pos = [pw(50), ph(50)]
+        pos = const [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()
@@ -65,7 +63,7 @@ function buccaneerAimMark(_width, _height) {
       @() {
         watch = IlsColor
         size = const [pw(30), ph(30)]
-        pos = [pw(50), ph(50)]
+        pos = const [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * 1.5 * IlsLineScale.get()

@@ -1,6 +1,6 @@
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
+from "dagor.localize" import getLangId
 from "%rGui/globals/ui_library.nut" import *
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
-let { getLangId } = require("dagor.localize")
 
 let ilsJ10aBase = {
   rendObj = ROBJ_DAS_CANVAS

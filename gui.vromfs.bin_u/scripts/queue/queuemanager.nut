@@ -1,19 +1,18 @@
+from "%sqStdLibs/helpers/u.nut" import isTable
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "matching.errors" import SERVER_ERROR_REQUEST_REJECTED
+from "dagor.random" import rnd
 from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
 from "%scripts/queue/queueConsts.nut" import queueStates
 from "%scripts/queue/queueType.nut" import g_queue_type
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { isEventMultiSlotEnabled } = require("%scripts/events/eventsState.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isTable } = require("%sqStdLibs/helpers/u.nut")
-let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { rnd } = require("dagor.random")
 let { checkMatchingError, matchingErrorString, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -23,12 +22,8 @@ let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManage
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
-let { isQueueActive, findQueue, findQueueByName, isAnyQueuesActive, getActiveQueueTypes,
-  addQueueToList, getQueuesList, removeQueueFromList, clearAllQueues, applyQueueInfo,
-  pushQueueInfoUpdatedEvent, findAllQueues
-} = require("%scripts/queue/queueState.nut")
-let { getQueueEvent, isClanQueue, getQueueMode, getQueueCountry, getMyRankInQueue
-} = require("%scripts/queue/queueInfo.nut")
+let { isQueueActive, findQueue, findQueueByName, isAnyQueuesActive, getActiveQueueTypes, addQueueToList, getQueuesList, removeQueueFromList, clearAllQueues, applyQueueInfo, pushQueueInfoUpdatedEvent, findAllQueues } = require("%scripts/queue/queueState.nut")
+let { getQueueEvent, isClanQueue, getQueueMode, getQueueCountry, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let lastQueueId = mkWatched(persist, "lastQueueId", -1)
@@ -49,7 +44,7 @@ function changeState(queue, queueState) {
   queue.setState(queueState)
   broadcastEvent("QueueChangeState", { queue = queue })
 
-  if (wasAnyActive != isAnyQueuesActive)
+  if (wasAnyActive != isAnyQueuesActive())
     updateGamercards()
 }
 
@@ -300,7 +295,7 @@ function isCanAirChange(...) {
   foreach (q in getQueuesList())
     if (isQueueActive(q)) {
       let event = getQueueEvent(q)
-      if (event && !events.isEventMultiSlotEnabled(event))
+      if (event && !isEventMultiSlotEnabled(event))
         return false
     }
   return true

@@ -4,7 +4,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 function fillSwitchMapTypeBtn(btnContainer, handler) {
-  let shortcutName = "ID_SWITCH_TACTICAL_MAP_TYPE"
+  const shortcutName = "ID_SWITCH_TACTICAL_MAP_TYPE"
   let shType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutName)
   let view = {
     accessKey = shType.getGuiAccessKeys(shortcutName)

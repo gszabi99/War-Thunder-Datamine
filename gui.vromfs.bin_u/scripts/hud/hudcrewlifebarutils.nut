@@ -1,7 +1,7 @@
+from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_library.nut" import *
 
 let sizeDelayTimerPid = dagui_propid_add_name_id("_size_delay")
-let { deferOnce } = require("dagor.workcycle")
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
 

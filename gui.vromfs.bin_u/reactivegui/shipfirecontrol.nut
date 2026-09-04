@@ -1,34 +1,34 @@
+import "%rGui/compass.nut" as compass
+from "%rGui/compassState.nut" import CompassValue
+from "%rGui/style/airHudStyle.nut" import greenColor, greenColorGrid
+from "%rGui/shipState.nut" import fov, gunStatesFirstNumber, gunStatesSecondNumber, artilleryType, showReloadedSignalFirstRow, showReloadedSignalSecondRow
+from "%rGui/radarState.nut" import IsRadarVisible
+from "%rGui/hud/actionBarState.nut" import actionBarPos, isActionBarCollapsed
+from "%rGui/fcsComponent.nut" import drawArrow
+from "%rGui/shipStateConsts.nut" import FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER, gunState
+from "string" import format
+from "%sqstd/math.nut" import PI, fabs, sqrt, lerpClamped
+from "mission" import get_mission_time
+from "eventbus" import eventbus_send
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/weaponConsts.nut" import *
 
-let compass = require("%rGui/compass.nut")
-let { format } = require("string")
-let { PI, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
-let { get_mission_time } = require("mission")
-let { CompassValue } = require("%rGui/compassState.nut")
-let { greenColor, greenColorGrid } = require("%rGui/style/airHudStyle.nut")
-let { fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow,
-  gunStatesSecondRow, artilleryType, showReloadedSignalFirstRow, showReloadedSignalSecondRow
-} = require("%rGui/shipState.nut")
-let { IsRadarVisible } = require("%rGui/radarState.nut")
+let { gunStatesFirstRow, gunStatesSecondRow } = require("%rGui/shipState.nut")
 let fcsState = require("%rGui/fcsState.nut")
-let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
-let { eventbus_send } = require("eventbus")
-let { drawArrow } = require("%rGui/fcsComponent.nut")
-let { FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER, gunState } = require("%rGui/shipStateConsts.nut")
 
-let redColor = Color(255, 109, 108, 255)
-let greyColor = Color(15, 25, 25, 255)
-let highlightColor = Color(255, 255, 255, 180)
-let highlightScale = 2.5
+const redColor = Color(255, 109, 108, 255)
+const greyColor = Color(15, 25, 25, 255)
+const highlightColor = Color(255, 255, 255, 180)
+const highlightScale = 2.5
 let compassSize = [hdpx(500), hdpx(32)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
-let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
-let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
-let reloadCircleSize = hdpxi(76)
-let reloadSignalSize = hdpxi(110)
-let firstGunsRowHeight = hdpx(38)
-let secondGunsRowHeight = hdpx(32)
-let noBulletsIconSize = hdpxi(32)
+const rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
+const rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
+const reloadCircleSize = hdpxi(76)
+const reloadSignalSize = hdpxi(110)
+const firstGunsRowHeight = hdpx(38)
+const secondGunsRowHeight = hdpx(32)
+const noBulletsIconSize = hdpxi(32)
 
 let gunStatusColors = {
   ready = Color(0, 255, 0, 255)
@@ -73,7 +73,7 @@ let progressBar = @() {
       children = [
         @() {
           watch = fcsState.CalcProgress
-          size = flex()
+          size = FLEX
           opacity = 0.25
           fValue = fcsState.CalcProgress.get()
           rendObj = ROBJ_PROGRESS_LINEAR
@@ -163,9 +163,9 @@ function drawForestallIndicator(
   showProgress,
   showCentral) {
 
-  let circleSize = sh(4)
-  let angleThreshold = 2
-  let verticalOffset = -sh(35.1)
+  const circleSize = sh(4)
+  const angleThreshold = 2
+  const verticalOffset = -sh(35.1)
 
   let isPitchMatch = fabs(pitchDelta) < angleThreshold
   let isYawMatch = fabs(yawDelta) < angleThreshold
@@ -178,7 +178,7 @@ function drawForestallIndicator(
   if (showMarker) {
     indicatorElements.append({
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [circleSize, circleSize]
+      size = const [circleSize, circleSize]
       pos = [forestallX - circleSize * 0.5, forestallY - circleSize * 0.5]
       color = greenColorGrid
       fillColor =  Color(0, 0, 0, 0)
@@ -190,7 +190,7 @@ function drawForestallIndicator(
         @() {
           watch = fcsState.CalcProgress
           rendObj = ROBJ_VECTOR_CANVAS
-          size = [circleSize * 0.7, circleSize * 0.7]
+          size = const [circleSize * 0.7, circleSize * 0.7]
           pos = [forestallX - circleSize * 0.35, forestallY - circleSize * 0.35]
           color = greenColorGrid
           fillColor =  Color(0, 0, 0, 0)

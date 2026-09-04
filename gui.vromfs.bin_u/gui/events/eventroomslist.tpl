@@ -1,9 +1,11 @@
 <<#items>>
-<<#isLocked>>mission_item_locked<</isLocked>><<^isLocked>>mission_item_unlocked<</isLocked>> {
+mission_item {
   id:t='<<id>>'
   <<#isSelected>>
   selected:t='yes'
   <</isSelected>>
+
+  missionItemType:t='<<#isLocked>>locked<</isLocked>>'
 
   <<#isCollapsable>>
   collapse_header:t='yes'

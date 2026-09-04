@@ -1,7 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import GAME_GROUP_NAME
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 
 let contactsWndSizes = Watched(null)
 

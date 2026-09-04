@@ -1,21 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+from "chard" import save_profile
+from "unitCustomization" import apply_skin
+from "%sqstd/string.nut" import clearBorderSymbols
 from "%scripts/dagui_natives.nut" import save_online_single_job, hangar_customization_preset_create, hangar_customization_preset_set_name, hangar_customization_preset_get_name, hangar_customization_preset_calc_usage, hangar_customization_preset_unassign_from_skin, hangar_customization_preset_assign_to_skin
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { save_profile } = require("chard")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let regexp2 = require("regexp2")
-let { apply_skin } = require("unitCustomization")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 const PRESET_MIN_USAGE = 2
 
-gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
+let DecorLayoutPresets = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/customization/decorLayoutPresetsWnd.tpl"
@@ -183,6 +184,7 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateMasterPreset()
   }
 }
+register_gui_handler("DecorLayoutPresets", DecorLayoutPresets)
 
 return {
   open = function (unit, skinId) {
@@ -191,7 +193,7 @@ return {
     let skinList = getSkinsOption(unit?.name, { showLocked = false, needAutoSkin = false })
     if (!isInArray(skinId, skinList.values))
       return
-    handlersManager.loadHandler(gui_handlers.DecorLayoutPresets, {
+    handlersManager.loadHandler(DecorLayoutPresets, {
       unit = unit
       masterSkinId = skinId
       skinList = skinList

@@ -9,7 +9,7 @@ from "%gdkLib/impl/permissions.nut" import check_anonymous
 
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSNET] ")
 
-function getGlobalState(key, def=null){
+function getGlobalState(key, def=null): array {
   local curval = def
   if (ndbExists(key))
     curval = ndbRead(key)
@@ -55,7 +55,7 @@ function dump_whole_state() {
 }
 
 
-function update_or_trigger(what, new_value, setter) {
+function update_or_trigger(what, new_value, setter: function) {
   let updated = what.get() != new_value
   if (updated)
     setter(new_value)

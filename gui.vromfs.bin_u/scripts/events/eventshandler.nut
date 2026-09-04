@@ -1,49 +1,47 @@
+import "DataBlock" as DataBlock
+from "string" import format
+from "%sqstd/datablock.nut" import eachParam
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "dagor.workcycle" import setTimeout, clearTimer
+from "%sqstd/string.nut" import cutPrefix
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { InfoWnd } = require("%scripts/wndLib/infoWnd.nut")
+let { FramedOptionsWnd } = require("%scripts/options/framedOptionsWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { getTextWithCrossplayIcon, isCrossPlayEnabled, needShowCrossPlayInfo
-} = require("%scripts/social/crossplay.nut")
+let { getTextWithCrossplayIcon, isCrossPlayEnabled, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName, isTeamSizeBalancedEvent,
-  isEventWithLobby, getEventReqPack, checkEventFeaturePacks, isEventPlatformOnlyAllowed
-} = require("%scripts/events/eventInfo.nut")
-let { eachParam } = require("%sqstd/datablock.nut")
+let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName, isTeamSizeBalancedEvent, isEventWithLobby, getEventReqPack, checkEventFeaturePacks, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { setPromoButtonText, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getPkgLocName, havePackage } = require("%scripts/clientState/contentPacks.nut")
@@ -56,8 +54,7 @@ let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueSt
 let { getQueueMode, getQueuePreferredViewClass } = require("%scripts/queue/queueInfo.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { profileCountrySq, switchProfileCountry } = require("%scripts/user/playerCountry.nut")
-let { remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
-let { get_charserver_time_sec } = require("chard")
+let { remove_scene_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
@@ -86,7 +83,7 @@ function guiStartModalEvents(options = {}) {
     return
 
   local eventId = null
-  local chapterId = getTblValue ("chapter", options, null)
+  local chapterId = options?.chapter
 
   if (chapterId) {
     let chapter = events.getChapter(chapterId)
@@ -96,22 +93,22 @@ function guiStartModalEvents(options = {}) {
     }
   }
 
-  eventId = eventId || getTblValue("event", options, null)
+  eventId = eventId || options?.event
 
   if (eventId == null) {
     local lastPlayedEvent = events.getLastPlayedEvent()
-    eventId = getTblValue("name", lastPlayedEvent, events.getFeaturedEvent())
+    eventId = (lastPlayedEvent?.name ?? events.getFeaturedEvent())
     chapterId = events.getEventsChapter(events.getEvent(eventId))
   }
 
-  loadHandler(gui_handlers.EventsHandler, {
+  loadHandler(get_gui_handler("EventsHandler"), {
     curEventId = eventId
     curChapterId = chapterId
     autoJoin = options?.autoJoin ?? false
   })
 }
 
-gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let EventsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   eventsListObj  = null
@@ -280,7 +277,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       [loc("ok"), @() thisCapture.changeTeam()],
       [loc("cancel"), @() null]
     ]
-    let defBtn = "cancel"
+    const defBtn = "cancel"
     let options = {cancel_fn = @() null}
     remove_scene_box(CHANGE_TEAM_BOX_ID)
     scene_msg_box(CHANGE_TEAM_BOX_ID, null, loc("multiplayer/ask_switch_team"), buttons, defBtn, options)
@@ -372,7 +369,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.canAskAboutRoomsList = false
-    gui_handlers.InfoWnd.openChecked({
+    InfoWnd.openChecked({
       checkId = "askOpenRoomsList"
       header = loc("multiplayer/hint")
       message = loc("multiplayer/rooms_list/askToOpen")
@@ -429,7 +426,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventAfterJoinEventRoom(_event) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, get_gui_handler("MainMenu"))
   }
 
   function backPointerToPrevHoveredItem() {
@@ -548,7 +545,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRoomsList() {
-    gui_handlers.EventRoomsHandler.open(events.getEvent(this.curEventId), true)
+    get_gui_handler("EventRoomsHandler")?.open(events.getEvent(this.curEventId), true)
     this.canAskAboutRoomsList = false
     saveLocalAccountSettings(ROOMS_LIST_OPEN_COUNT_SAVE_ID,
       loadLocalAccountSettings(ROOMS_LIST_OPEN_COUNT_SAVE_ID, 0) + 1)
@@ -572,7 +569,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       alignObj = obj
       columnsRatio = 0.6
     }
-    loadHandler(gui_handlers.FramedOptionsWnd, params)
+    loadHandler(FramedOptionsWnd, params)
   }
 
   function onCreateRoom() {}
@@ -589,7 +586,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventItemBought(params) {
-    let item = getTblValue("item", params)
+    let item = params?.item
     if (item && item.isForEvent(this.curEventId))
       this.updateButtons()
   }
@@ -727,7 +724,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (eventItems.len() > 0)
         eventItems.insert(0, {
-          itemTag = "campaign_item"
+          itemType = "campaign"
           id = chapter.name
           itemText = chapter.getLocName()
           isCollapsable = true
@@ -842,6 +839,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
   
 }
+register_gui_handler("EventsHandler", EventsHandler)
 
 function openEventsWndFromPromo(owner, params = []) {
   let eventId = params.len() > 0 ? params[0] : null
@@ -855,7 +853,7 @@ let getEventsPromoText = @() events.getEventsVisibleInEventsWindowCount() == 0
 
 addPromoAction("events", @(handler, params, _obj) openEventsWndFromPromo(handler, params))
 
-let promoButtonId = "events_mainmenu_button"
+const promoButtonId = "events_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -885,5 +883,6 @@ addPromoButtonConfig({
 })
 
 return {
+  EventsHandler
   guiStartModalEvents
 }

@@ -49,7 +49,6 @@
         "_replicate": true,
         "_track": true,
         "isAlive": true,
-        "drone__soundEnabled": false,
         "possessedByPlr:eid": {}
       },
       {
@@ -114,11 +113,17 @@
     "_tracked": "gun__owner",
     "_replicated": "gun__owner",
     "meleeSoundType": "",
+    "item__lootSoundType": "weapon",
     "drone_launcher__cooldown": 0.0,
     "drone_launcher__nextInfoMessageAtTime": 0.0,
     "drone_launcher__nextInfoMessageCooldown": 1.0,
     "drone_launcher__instantLaunchFromPhone": false,
     "drone_launcher__droneTemplate": "",
+    "drone_launcher_launch__positionOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
     "drone_launcher_anim__launchTime": 0.0,
     "item__weapSlots:array": {
       "slot": "tertiary"
@@ -131,24 +136,9 @@
       {
         "_tags": "server",
         "drone_launcher__behTreeName": "",
-        "drone_launcher_launch__positionOffset": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "drone_launcher_launch__velocityDir": [
-          0.0,
-          0.0,
-          0.0
-        ],
-        "drone_launcher_launch__speed": 0.0,
         "drone_launcher_launch__start": 0.0,
-        "drone_launcher_launch__enableSoundTime": 0.0,
         "drone_launcher_launch__replaceTime": 0.0,
-        "drone_launcher_launch__collisionEnableTime": 0.0,
         "drone_launcher_launch__controlTime": 0.0,
-        "drone_launcher_launch__applyTransformAndVelocityStatus": false,
-        "drone_launcher_launch__enableSoundStatus": false,
         "drone_launcher_launch__replaceStatus": false,
         "drone_launcher_launch__controlStatus": false
       },
@@ -180,7 +170,8 @@
         "drone_launcher_anim__launchEnd": 0.0,
         "drone_launcher_anim__replaceAnimationWithEntity": false
       }
-    ]
+    ],
+    "disableMelee:tag": {}
   },
   "drone_coverage": {
     "drone__coverageArea": [
@@ -237,6 +228,11 @@
   },
   "uav_inf_recon_drone_item": {
     "_use": "base_drone_launcher_gun",
+    "drone_launcher_launch__positionOffset": [
+      2.4,
+      1.8,
+      0.0
+    ],
     "item__name": "items/recon_drone",
     "item__template": "uav_inf_recon_drone_item",
     "item__weapTemplate": "uav_inf_recon_drone_item",
@@ -255,21 +251,8 @@
     "_group": {
       "_tags": "server",
       "drone_launcher__behTreeName": "quadcopter",
-      "drone_launcher_launch__positionOffset": [
-        2.4,
-        1.8,
-        0.0
-      ],
-      "drone_launcher_launch__velocityDir": [
-        0.0,
-        1.0,
-        0.0
-      ],
-      "drone_launcher_launch__speed": 1.0,
-      "drone_launcher_launch__enableSoundTime": 1.5,
       "drone_launcher_launch__replaceTime": 2.3,
-      "drone_launcher_launch__collisionEnableTime": 2.5,
-      "drone_launcher_launch__controlTime": 2.6
+      "drone_launcher_launch__controlTime": 2.25
     }
   },
   "uav_inf_strike_drone": {

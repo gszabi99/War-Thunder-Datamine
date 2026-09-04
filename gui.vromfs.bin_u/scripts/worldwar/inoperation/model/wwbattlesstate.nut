@@ -1,24 +1,21 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "worldwar" import wwGetPlayerSide
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { getBattles } = require("%scripts/worldWar/worldWarState.nut")
-let { wwGetPlayerSide } = require("worldwar")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findQueueByName } = require("%scripts/queue/queueState.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getPlayWorldwarConditionText, canJoinWorldwarBattle
-} = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData
-} = require("%scripts/squads/squadUtils.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { getPlayWorldwarConditionText, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
 
 
 function isStillInOperation(wwBattle) {
@@ -199,7 +196,7 @@ function tryToJoin(wwBattle, side) {
   let warningReasonData = wwBattle.getWarningReasonData(side)
   if (warningReasonData.needMsgBox &&
       !loadLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)) {
-    loadHandler(gui_handlers.SkipableMsgBox,
+    loadHandler(SkipableMsgBox,
       {
         parentHandler = wwBattle
         message = u.isEmpty(warningReasonData.fullWarningText)

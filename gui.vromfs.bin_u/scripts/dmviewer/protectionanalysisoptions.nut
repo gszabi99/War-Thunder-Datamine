@@ -1,34 +1,29 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "hangarEventCommand" import set_protection_checker_params
+from "string" import format
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "%sqstd/string.nut" import utf8Capitalize
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_empty_combobox
 
-let { set_protection_checker_params } = require("hangarEventCommand")
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let stdMath = require("%sqstd/math.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE,
-        getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getBulletsList, getLinkedGunIdx,
-        getBulletsSetData,
-        getBulletsSearchName,
-        getBulletsGroupCount,
-        getLastFakeBulletsIndex,
-        getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getBulletsList, getLinkedGunIdx, getBulletsSetData, getBulletsSearchName, getBulletsGroupCount, getLastFakeBulletsIndex, getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType, hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
-let { utf8Capitalize } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { enableObjsByTable } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
@@ -374,7 +369,11 @@ options.addTypes({
   }
   BULLET = {
     sortId = sortIdCount++
-    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue", tooltipOnHold = @() showConsoleButtons.get() }
+    controlMarkupParams = {
+      beforeSelectCb = "onBeforeSelectComboboxValue"
+      tooltipOnHold = @() showConsoleButtons.get()
+      hasInteractiveTooltip = true
+    }
     labelLocId = "mainmenu/shell"
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
 

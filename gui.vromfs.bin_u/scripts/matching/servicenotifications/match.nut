@@ -1,13 +1,13 @@
+from "dagor.random" import rnd
+from "console" import register_command
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import is_online_available, get_forced_network_mission
 from "%scripts/dagui_library.nut" import *
 
-let { rnd } = require("dagor.random")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { register_command } = require("console")
 let { matchingApiFunc, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { isInFlight } = require("gameplayBinding")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 let changedGameModes = persist("changedGameModes", @() [])
@@ -36,7 +36,7 @@ function onClustersChanged(params) {
 }
 
 function onGameModesChangedRndDelay(params) {
-  let maxFetchDelaySec = 30
+  const maxFetchDelaySec = 30
   let rndDelaySec = rnd() % maxFetchDelaySec
   log($"notify_game_modes_changed_rnd_delay {rndDelaySec}")
   addDelayedAction(@() notifyGameModesChanged(params), rndDelaySec * 1000)

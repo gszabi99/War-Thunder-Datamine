@@ -11,7 +11,18 @@
     "antiShipBomb": true
   },
   "torpedo": {
-    "armDistance": 50.0,
+    "bulletType": "torpedo",
+    "caliber": 0.45,
+    "mass": 550.0,
+    "explosiveMass": 197.0,
+    "explosiveType": "tnt",
+    "dragCx": 0.24,
+    "distToLive": 1200.0,
+    "maxSpeedInWater": 13.89,
+    "diveDepth": 1.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "startPropulsionDelay": 0.1,
     "dropSpeedRange": [
       -10.0,
       78.0
@@ -24,35 +35,11 @@
       -90.0,
       90.0
     ],
-    "bulletType": "torpedo",
-    "distToLive": 1200.0,
-    "maxSpeedInWater": 13.89,
-    "diveDepth": 1.0,
     "detonationRadius": 0.1,
     "detonationDepth": 1.0,
-    "caliber": 0.45,
-    "mass": 550.0,
-    "explosiveType": "tnt",
-    "explosiveMass": 197.0,
-    "splashFallBySquare": true,
-    "dragCx": 0.24,
-    "startSpeed": 0.0,
-    "startPropulsionDelay": 0.1,
-    "useStartSpeed": true,
+    "armDistance": 50.0,
     "autoaimEnabled": false,
-    "aaMaxAimAngle": 0.0,
-    "aaSpeedPrediction": 0.0,
-    "aaAccelPrediction": 0.0,
-    "aaAngleCorrection": 0.0,
-    "explodeTreshold": 0.00001,
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "splashFallBySquare": true,
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",

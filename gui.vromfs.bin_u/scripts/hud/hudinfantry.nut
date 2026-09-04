@@ -1,21 +1,22 @@
+from "%appGlobals/hudSquadMembers.nut" import hudSquadBlockCollapsed
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
+
+let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
-let { hudSquadBlockCollapsed } = require("%appGlobals/hudSquadMembers.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
-let { register_command } = require("console")
 
 const LOCAL_SQUAD_COLLAPSED_STATE_ID = "savedCollapsedHudSquad"
 hudSquadBlockCollapsed.subscribe(@(v) saveLocalAccountSettings(LOCAL_SQUAD_COLLAPSED_STATE_ID, v))
 
 const SEEN_HELP_ID = "seenInfantryHelpOnFirstGame"
 
-let HudInfantry = class (gui_handlers.BaseUnitHud) {
+let HudInfantry = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudInfantry.blk"
 
   function initScreen() {

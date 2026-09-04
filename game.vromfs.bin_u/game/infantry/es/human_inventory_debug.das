@@ -1,11 +1,14 @@
 options no_aot
 require ecs
 require ecs.safe
+require ecs.common
 require daslib/strings_boost
 require gameLibs.console_commands.main.console_common
 require %appGame.infantry.es.human_weap_common
+require %appGame.infantry.es.inventory_common
 require %appGame.infantry.es.console_debug_common
 require strings
+require inventory
 require %appGame.infantry.es.net_console_macro
 
 
@@ -223,3 +226,69 @@ def inventory_remove_weap_mod_debug_cmd(slot : string = "";
         remove_item_from_weap_impl(hero_eid, wishGunSlot, slotName, false )
     else
       remove_item_from_weap_impl(hero_eid, wishGunSlot, slot, false )
+
+
+[net_console_cmd(name="inventory.show_magazines", hint="Show magazines/ammo holders in inventory for current (or given) gun slot")]
+def inventory_show_magazines_debug_cmd(gun_slot_id : int = -1;
+                                       @net_hero hero_eid : EntityId)
+  query(hero_eid) <| $ [es] (human_weap__currentGunSlot : int;
+                             human_weap__gunEids : EidList;
+                             itemContainer : EidList)
+    let wishGunSlot = gun_slot_id >= 0 ? gun_slot_id : human_weap__currentGunSlot
+    if wishGunSlot < 0 || wishGunSlot > length(human_weap__gunEids) - 1
+      console_print("Invalid gun slot id {wishGunSlot}")
+      return
+
+    let gunEid = human_weap__gunEids[wishGunSlot]
+    if gunEid == INVALID_ENTITY_ID
+      console_print("No gun in slot {wishGunSlot}")
+      return
+
+    query(gunEid) <| $ [es] (gun__ammoHolderIds : IntList const?;
+                             gun__ammoHolderEid : EntityId = INVALID_ENTITY_ID;
+                             gun__maxAmmo : int = 0;
+                             gun__ammo : int = 0)
+      if gun__ammoHolderIds == null || length(*gun__ammoHolderIds) == 0
+        console_print("Gun slot {wishGunSlot}: {getEntityTemplateName(gunEid)} <{gunEid}> - not a magazine weapon")
+        return
+
+      console_print("Gun slot {wishGunSlot}: {getEntityTemplateName(gunEid)} <{gunEid}> - loaded {gun__ammo}/{gun__maxAmmo}")
+
+      var magCount = 0
+      var totalAmmo = gun__ammo
+      for itemEid in itemContainer
+        if itemEid == gun__ammoHolderEid
+          continue
+        query(itemEid) <| $ [es] (ammo_holder__id : int = INVALID_ITEM_ID;
+                                  ammo_holder__ammoCount : int = -1)
+          if ammo_holder__id == INVALID_ITEM_ID || find_index(*gun__ammoHolderIds, ammo_holder__id) < 0
+            return
+          magCount++
+          let ammoCount = ammo_holder__ammoCount >= 0 ? ammo_holder__ammoCount : gun__maxAmmo
+          totalAmmo += ammoCount
+          console_print("[{magCount}] {getEntityTemplateName(itemEid)} <{itemEid}>: {ammoCount} ammo")
+
+      if magCount == 0
+        console_print("No spare magazines in inventory")
+      console_print("Magazines in inventory: {magCount}, total ammo (incl. loaded): {totalAmmo}")
+
+
+[console_processor]
+def inventory_show_magazines_debug_processor(args : array<string>;
+                                             collect : bool;
+                                             var hints : ConsoleProcessorHints)
+  let cmd = "inventory.show_magazines"
+  if collect
+    let inputs <- args[0] |> split(" ")
+    if length(inputs) >= 2 && inputs[0] == cmd
+      let weaponHolderEid = try_get_hero_cmd_param(inputs, 2)
+      query(weaponHolderEid) <| $ [es] (human_weap__gunEids : EidList)
+        for slotId in range(0, length(human_weap__gunEids))
+          let slotGunEid = human_weap__gunEids[slotId]
+          if slotGunEid == INVALID_ENTITY_ID
+            continue
+          query(slotGunEid) <| $ [es] (gun__ammoHolderIds : IntList const?)
+            if gun__ammoHolderIds == null || length(*gun__ammoHolderIds) == 0
+              return
+            hints |> add_hint("{cmd} {slotId}", 0, 1, "(slot {slotId}: {getEntityTemplateName(slotGunEid)})")
+  return false

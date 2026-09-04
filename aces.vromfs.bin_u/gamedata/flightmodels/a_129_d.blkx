@@ -10,6 +10,7 @@
   "haveCCRPForRocket": false,
   "haveCCRPForGun": false,
   "haveCCRPForTurret": true,
+  "hasAimingPointsMemory": true,
   "hasHmdGunControl": true,
   "laserDesignator": true,
   "mfdCamTads": true,
@@ -1424,6 +1425,22 @@
     "sightOutFov": 28.5,
     "sightFov": 1.0,
     "staticAimPitch": 0.0,
+    "hmdScreenBlockRad": 0.06,
+    "hmdBlock": {
+      "full_devices": {
+        "pos": [
+          1.816,
+          -0.115,
+          0.0
+        ],
+        "norm": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "rad": 0.43
+      }
+    },
     "devices": {
       "stick_elevator": [
         -1.0,
@@ -1827,7 +1844,8 @@
         "mgun2_dm",
         "gun3_dm",
         "gun4_dm",
-        "transmission2_dm"
+        "transmission2_dm",
+        "ircm1_dm"
       ]
     },
     "WeaponSlot": [
@@ -2007,6 +2025,9 @@
                 "lipa",
                 "fuse2"
               ]
+            },
+            "ShowDmParts": {
+              "node": "ircm1_dm"
             },
             "Weapon": [
               {

@@ -1,9 +1,9 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_library.nut" import *
 
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let CollectionSet = require("collectionSet.nut")
-let DataBlock = require("DataBlock")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let CollectionSet = require("%scripts/collections/collectionSet.nut")
 
 let collectionsList = []
 local isInited = false

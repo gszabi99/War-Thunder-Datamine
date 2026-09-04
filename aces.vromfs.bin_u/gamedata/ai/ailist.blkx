@@ -5018,6 +5018,78 @@
       }
     },
     {
+      "name": "carrierWingman",
+      "selectStrategy": "ordered",
+      "selector": [
+        {
+          "selectStrategy": "ordered",
+          "name": "taxi_and_takeoff",
+          "reaction": [
+            {
+              "event": "groundAhead"
+            },
+            {
+              "event": "collisionAhead"
+            },
+            {
+              "event": "outsideBattleField"
+            }
+          ],
+          "sequencer": {
+            "isOnAirfield": {},
+            "findClosestAirfield": {},
+            "waitForAirfieldClearance": {},
+            "taxiOnAirfield": {},
+            "takeoff": {}
+          },
+          "waitOnLand": {}
+        },
+        {
+          "selectStrategy": "ordered",
+          "selectOnSuccess": true,
+          "reaction": [
+            {
+              "event": "groundAhead",
+              "parallel": {
+                "turnToEvasiveDir": {},
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            },
+            {
+              "event": "collisionAhead",
+              "parallel": {
+                "turnToEvasiveDir": {},
+                "stayAtSpeed": {
+                  "speedMode": "boostOn"
+                }
+              }
+            },
+            {
+              "event": "outsideBattleField",
+              "flyToPos": {
+                "speed": 550.0,
+                "dist": -1.0,
+                "minAlt": 100.0,
+                "destType": "battleField"
+              }
+            },
+            {
+              "event": "regularCheck",
+              "recalculateTree": {}
+            }
+          ],
+          "orbitHere": {
+            "speed": 250.0,
+            "rollFactor": 0.13,
+            "maxPitch": 30.0,
+            "maxRoll": 45.0
+          }
+        }
+      ]
+    },
+    {
       "name": "recon_micro",
       "selectStrategy": "ordered",
       "reaction": [

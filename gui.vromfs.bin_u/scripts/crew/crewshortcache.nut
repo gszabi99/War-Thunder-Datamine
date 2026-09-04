@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_library.nut" import *
 
 let { UNIT_CREW_CACHE_UPDATE } = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
@@ -30,7 +30,7 @@ function resetCache(newCrewId, newUnit = null) {
 function getCachedCrewData(crewId, newUnit, cacheUid) {
   if (crewId != cacheCrewId || newUnit != unit)
     return null
-  return getTblValue(cacheUid, cache)
+  return cache?[cacheUid]
 }
 
 function cacheCrewData(crewId, newUnit, cacheUid, data) {

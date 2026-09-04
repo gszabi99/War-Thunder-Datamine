@@ -1,25 +1,27 @@
-from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test, get_cur_gui_scene
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%sqstd/platform.nut" import isPC
+from "string" import format
+from "guiOptions" import set_gui_option
+from "soundOptions" import SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes, toggle_test_headphones_sound, stop_test_headphones_sound
+from "%sqstd/string.nut" import utf8ToLower
+from "gameplayBinding" import isInFlight
+from "dagor.workcycle" import setTimeout, clearTimer, defer
+from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import is_multiplayer
 
-let { isPC } = require("%sqstd/platform.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let webui = require_optional("webui")
+let { toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_gui_option } = require("guiOptions")
 let optionsListModule = require("%scripts/options/optionsList.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { fillSystemGuiOptions, resetSystemGuiOptions, resetSystemActiveTabDiffs,
-  getActiveTabDiffSectionTitles, onSystemGuiOptionChanged, onRestartClient,
-  onSystemOptionControlHover, updateGuiOptionsGroup, getOptionDiffTags,
-  getOptionSectionTitle, getOptionIdByObjId
-} = require("%scripts/options/systemOptions.nut")
+let { fillSystemGuiOptions, resetSystemGuiOptions, resetSystemActiveTabDiffs, getActiveTabDiffSectionTitles, onSystemGuiOptionChanged, onRestartClient, onSystemOptionControlHover, updateGuiOptionsGroup, getOptionDiffTags, getOptionSectionTitle, getOptionIdByObjId } = require("%scripts/options/systemOptions.nut")
 let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
@@ -27,20 +29,15 @@ let openTankSightSettings = require("%scripts/options/handlers/tankSightSettings
 let { isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsState.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes, toggle_test_headphones_sound, stop_test_headphones_sound } = require("soundOptions")
 let { showGpuBenchmarkWnd } = require("%scripts/options/gpuBenchmarkWnd.nut")
 let { canRestartClient } = require("%scripts/utils/restartClient.nut")
-let { isOptionReqRestartChanged, setOptionReqRestartValue
-} = require("%scripts/options/optionsUtils.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
+let { isOptionReqRestartChanged, setOptionReqRestartValue } = require("%scripts/options/optionsUtils.nut")
 let { setShortcutsAndSaveControls, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PTT, USEROPT_SKIP_WEAPON_WARNING } = require("%scripts/options/optionsExtNames.nut")
-let { isInFlight } = require("gameplayBinding")
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { guiStartPostfxSettings } = require("%scripts/postFxSettings.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMenu.nut")
 let { getShortcutText, hackTextAssignmentForR2buttonOnPS4 } = require("%scripts/controls/controlsVisual.nut")
@@ -80,10 +77,10 @@ function getOptionsWndOpenParams(group, initOptionId = "") {
 }
 
 function openOptionsWnd(group = null, initOptionId = "") {
-  return handlersManager.loadHandler(gui_handlers.Options, getOptionsWndOpenParams(group, initOptionId))
+  return handlersManager.loadHandler(get_gui_handler("Options"), getOptionsWndOpenParams(group, initOptionId))
 }
 
-gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
+let Options = class (GenericOptionsModal) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/options/optionsWnd.blk"
   sceneNavBlkName = "%gui/options/navOptions.blk"
@@ -102,6 +99,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   preloadOptionsImgTimer = null
   initOptionId = ""
   curTabIdx = -1
+  curTabUnitType = ""
 
   stickyHeaders = null
   curStickyId = ""
@@ -125,7 +123,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
         navImagesText = getNavigationImagesText(idx, this.optGroups.len())
       })
 
-      if (getTblValue("selected", gr) == true)
+      if (gr?.selected == true)
         curOption = idx
     }
 
@@ -136,7 +134,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     groupsObj.show(true)
     groupsObj.setValue(curOption)
 
-    let showWebUI = isPC && isInFlight() && ::WebUI.get_port() != 0
+    let showWebUI = isPC && isInFlight() && (webui?.get_port() ?? 0) != 0
     let showAssistantMapQr = isAssistantMapEnabled() && isAssistantMapAvailable()
     showObjById("web_ui_button", showWebUI, this.scene)
     showObjById("assistant_map_qr_button", showAssistantMapQr, this.scene)
@@ -185,6 +183,9 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     this.scene.findObject("option_info_container").show(false)
     this.lastHoveredRowId = null
+    this.curTabIdx = 0
+    this.curTabUnitType = ""
+
     clearTimer(this.preloadOptionsImgTimer)
 
     this.resetNavigation()
@@ -279,7 +280,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function isSearchInCurrentGroupAvaliable() {
-    return getTblValue("isSearchAvaliable", this.optGroups[this.curGroup])
+    return this.optGroups[this.curGroup]?.isSearchAvaliable
   }
 
   function onFilterEditBoxChangeValue() {
@@ -562,7 +563,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       return
 
     this.curTabIdx = tabIdx
-    this.switchUnitTypeTab(tabIdx, obj.getChild(tabIdx)?.unitTypeTag ?? "")
+    this.curTabUnitType = obj.getChild(tabIdx)?.unitTypeTag ?? ""
+    this.switchUnitTypeTab(tabIdx, this.curTabUnitType)
   }
 
   function passValueToParent(obj) {
@@ -715,7 +717,9 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     }
   }
 
-  onOpenGpuBenchmark = showGpuBenchmarkWnd
+  function onOpenGpuBenchmark() {
+    showGpuBenchmarkWnd(this.curTabUnitType)
+  }
   onPreloaderSettings = @() preloaderOptionsModal()
   onTankSightSettings = openTankSightSettings
   onDialogAddRadio = @() openAddRadioWnd()
@@ -734,10 +738,10 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onWebUiMap() {
-    if (::WebUI.get_port() == 0)
+    if ((webui?.get_port() ?? 0) == 0)
       return
 
-    ::WebUI.launch_browser()
+    webui.launch_browser()
   }
 
   function onAssistantMapQrCode() {
@@ -933,6 +937,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     }
   }
 }
+register_gui_handler("Options", Options)
 
 addPromoAction("options", @(_handler, params, _obj) openOptionsWnd(params?[0], params?[1] ?? ""))
 

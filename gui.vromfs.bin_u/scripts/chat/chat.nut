@@ -1,36 +1,32 @@
-from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
+from "%sqstd/platform.nut" import is_gdk
+from "dagor.time" import get_time_msec
+from "dagor.random" import rnd
+from "string" import format, split_by_chars
+from "%sqstd/string.nut" import endsWith, cutPrefix
+from "blkGetters" import get_game_settings_blk
+from "eventbus" import eventbus_subscribe
+from "%scripts/dagui_natives.nut" import gchat_raw_command, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-let { is_gdk } = require("%sqstd/platform.nut")
+
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { get_time_msec } = require("dagor.time")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { rnd } = require("dagor.random")
-let { format, split_by_chars } = require("string")
 let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
-let { endsWith, cutPrefix } = require("%sqstd/string.nut")
-let regexp2 = require("regexp2")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
 let { updateGamercardsChatInfo } = require("%scripts/gamercard/gamercardHelpers.nut")
-let {
-  canCreateThreads, getThreadInfo, chatRooms, chatThreadsInfo,
-  MAX_ROOM_MSGS, MAX_ROOM_MSGS_FOR_MODERATOR, getMaxRoomMsgAmount
-} = require("%scripts/chat/chatStorage.nut")
+let { canCreateThreads, getThreadInfo, chatRooms, chatThreadsInfo, MAX_ROOM_MSGS, MAX_ROOM_MSGS_FOR_MODERATOR, getMaxRoomMsgAmount } = require("%scripts/chat/chatStorage.nut")
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
 let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
 let { onNewThreadInfoToList } = require("%scripts/chat/chatLatestThreads.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { validateChatMessage, validateThreadTitle, prepareThreadTitleToSend } = require("%scripts/chat/chatUtils.nut")
+let { validateThreadTitle, prepareThreadTitleToSend } = require("%scripts/chat/chatUtils.nut")
 let { THREADS_INFO_CLEAN_PERIOD_MSEC, ChatThreadInfo } = require("%scripts/chat/chatThreadInfo.nut")
+let { MAX_MSG_LEN, LOCALIZED_MESSAGE_PREFIX } = require("%scripts/chat/localizedMessages.nut")
 
 let userCaps = persist("userCaps", @() {
   ALLOWPOST     = 0
@@ -43,7 +39,6 @@ let userCaps = persist("userCaps", @() {
 })
 let validateRoomNameRegexp = regexp2(@"[  !""#$%&'()*+,./\\:;<=>?@\^`{|}~-]")
 
-const MAX_MSG_LEN = 200
 const MAX_ROOMS_IN_SEARCH = 20
 const MAX_LAST_SEND_MESSAGES = 10
 const MAX_MSG_VC_SHOW_TIMES = 2
@@ -54,8 +49,6 @@ const MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME = 15
 const SYSTEM_MESSAGES_USER_ENDING = ".warthunder.com"
 
 const CHAT_ERROR_NO_CHANNEL = "chat/error/403"
-
-const LOCALIZED_MESSAGE_PREFIX = "LMSG "
 
 let storage = persist("storage", @() {
   userCapsGen = 1 
@@ -99,7 +92,7 @@ g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg) {
 
 
 g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link) {
-  let prefixLen = 6 
+  const prefixLen = 6 
   return link.slice(prefixLen).replace(nbsp, " ")
 }
 
@@ -144,22 +137,6 @@ g_chat.isSystemChatRoom <- function isSystemChatRoom(roomId) {
 
 g_chat.getSystemRoomId <- function getSystemRoomId() {
   return g_chat_room_type.SYSTEM.getRoomId("")
-}
-
-g_chat.joinSquadRoom <- function joinSquadRoom(callback) {
-  let name = g_chat_room_type.getMySquadRoomId()
-  if (u.isEmpty(name))
-    return
-
-  let password = g_squad_manager.getSquadRoomPassword()
-  if (u.isEmpty(password))
-    return
-
-  broadcastEvent("ChatJoinRoom", { id = name, password, onJoinFunc = callback })
-}
-
-g_chat.leaveSquadRoom <- function leaveSquadRoom() {
-  broadcastEvent("ChatLeaveSquadRoom")
 }
 
 g_chat.getMyClanRoomId <- function getMyClanRoomId() {
@@ -273,13 +250,13 @@ g_chat.openRoomCreationWnd <- function openRoomCreationWnd() {
   if (devoiceMsg)
     return showInfoMsgBox(devoiceMsg)
 
-  loadHandler(gui_handlers.CreateRoomWnd)
+  loadHandler(get_gui_handler("CreateRoomWnd"))
 }
 
 
 g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo) {
   if (threadInfo.canEdit())
-    loadHandler(gui_handlers.modifyThreadWnd, { threadInfo = threadInfo })
+    loadHandler(get_gui_handler("modifyThreadWnd"), { threadInfo = threadInfo })
 }
 
 g_chat.openModifyThreadWndByRoomId <- function openModifyThreadWndByRoomId(roomId) {
@@ -347,30 +324,6 @@ g_chat.onEventInitConfigs <- function onEventInitConfigs(_p) {
   storage.threadTitleLenMax = blk.chat?.threadTitleLenMax ?? storage.threadTitleLenMax
 }
 
-g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, needAssert = true) {
-  let message = systemMsg.configToJsonString(langConfig, validateChatMessage)
-  let messageLen = message.len() 
-  if (messageLen > MAX_MSG_LEN) {
-    local res = false
-    if (isSeparationAllowed && u.isArray(langConfig) && langConfig.len() > 1) {
-      needAssert = false
-      
-      let sliceIdx = (langConfig.len() + 1) / 2
-      res = this.sendLocalizedMessage(roomId, langConfig.slice(0, sliceIdx), false)
-      res = res && this.sendLocalizedMessage(roomId, langConfig.slice(sliceIdx), false)
-    }
-
-    if (!res && needAssert) {
-      let partsAmount = u.isArray(langConfig) ? langConfig.len() : 1
-      script_net_assert_once("too long json message", $"Too long json message to chat. partsAmount = {partsAmount}")
-    }
-    return res
-  }
-
-  gchat_chat_message(gchat_escape_target(roomId), "".concat(LOCALIZED_MESSAGE_PREFIX, message))
-  return true
-}
-
 g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message) {
   let jsonString = cutPrefix(message, LOCALIZED_MESSAGE_PREFIX)
   if (!jsonString)
@@ -380,12 +333,6 @@ g_chat.localizeReceivedMessage <- function localizeReceivedMessage(message) {
   if (!res)
     log($"Chat: failed to localize json message: {message}")
   return res ?? ""
-}
-
-g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRoom(langConfig) {
-  let squadRoomId = g_chat_room_type.getMySquadRoomId()
-  if (!u.isEmpty(squadRoomId))
-    this.sendLocalizedMessage(squadRoomId, langConfig)
 }
 
 subscribe_handler(g_chat, g_listener_priority.DEFAULT_HANDLER)

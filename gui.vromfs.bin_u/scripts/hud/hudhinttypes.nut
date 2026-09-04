@@ -1,7 +1,5 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
 from "%scripts/dagui_library.nut" import *
-
-
-let enums = require("%sqStdLibs/helpers/enums.nut")
 
 let g_hud_hint_types = {
   types = []

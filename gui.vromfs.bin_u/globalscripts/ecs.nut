@@ -1,11 +1,9 @@
+from "ecs.netevent" import server_send_net_sqevent, server_broadcast_net_sqevent, client_request_unicast_net_sqevent, client_request_broadcast_net_sqevent
+
 
 
 
 let ecs = require("%sqstd/ecs.nut")
-let {
-  server_send_net_sqevent, server_broadcast_net_sqevent,
-  client_request_unicast_net_sqevent, client_request_broadcast_net_sqevent
-} = require("ecs.netevent")
 
 let _get_msgSink = ecs.SqQuery("_get_msgSink", { comps_rq = ["msg_sink"] })
 function _get_msg_sink_eid() {

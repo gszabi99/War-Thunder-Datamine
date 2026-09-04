@@ -1,11 +1,12 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/hud/state/controlledHeroEid.nut" import controlledHeroEid
+from "%rGui/common_queries.nut" import find_local_player
+from "%rGui/hud/humanSquad/humanEnums.nut" import SquadBehaviourEnum
+from "%rGui/globals/ui_library.nut" import *
 
-let { controlledHeroEid } = require("%rGui/hud/state/controlledHeroEid.nut")
-let { find_local_player } = require("%rGui/common_queries.nut")
-let { SquadBehaviourEnum } = require("%rGui/hud/humanSquad/humanEnums.nut")
 
-let SQUAD_BEHAVIOUR_ID = "ai/squadBehaviour"
+
+const SQUAD_BEHAVIOUR_ID = "ai/squadBehaviour"
 
 
 let savedSquadBehaviours = mkWatched(persist, SQUAD_BEHAVIOUR_ID, {})
@@ -33,7 +34,7 @@ let squadProfileIdQuery = ecs.SqQuery("squadProfileIdQuery", {
 })
 
 function setSquadBehaviour(behaviour) {
-  heroSquadEidQuery(controlledHeroEid.value, function(_, comp) {
+  heroSquadEidQuery(controlledHeroEid.get(), function(_, comp) {
     let squadEid = comp.squad_member__squad
     applyNewBehaviour(squadEid, behaviour)
     squadProfileIdQuery(squadEid, @(_, squadComp)
@@ -47,8 +48,8 @@ function applyBehaviourOnSpawnSquad(eid, comp) {
     return
   let squadProfileId = comp.squad__squadProfileId
 
-  if (squadProfileId in savedSquadBehaviours)
-    applyNewBehaviour(eid, savedSquadBehaviours[squadProfileId])
+  if (squadProfileId in savedSquadBehaviours.get())
+    applyNewBehaviour(eid, savedSquadBehaviours.get()[squadProfileId])
   else
     squadBehaviour.set(DEFAULT_BEHAVIOUR)
 }

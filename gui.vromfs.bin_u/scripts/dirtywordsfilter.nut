@@ -1,9 +1,9 @@
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage
-let { eventbus_subscribe } = require("eventbus")
 
-let path = "%globalScripts/dirtyWords"
+const path = "%globalScripts/dirtyWords"
 let dirtyWordsFilter = require($"{path}/dirtyWords.nut")
 let { init } =  dirtyWordsFilter
 

@@ -101,7 +101,7 @@ def scan_recons_corners(pos : float3; radius : float; out_recons_cb : block<(pos
     box.bmin.xyz = boxCenter + float3(-radius, -3.5, -radius)
     covers_box_cull(covers, box) <| $ [unused_argument(tm)] (id : int; tm : mat44f#)
       assume extra = covers.coverExtra[id]
-      let reconType = recon_type(extra.info)
+      let _reconType = recon_type(extra.info)
       if (extra.info & int(RCXI_FLAG_CONTAINS)) == 0 || (extra.info >> RCXI_TYPE_SHIFT) != int(ReconType.CORNER)
         return
       
@@ -122,7 +122,7 @@ def scan_recons_corners_packed(pos : float3; radius : float; out_recons_cb : blo
     box.bmin.xyz = boxCenter + float3(-radius, -3.5, -radius)
     covers_box_cull(covers, box) <| $ [unused_argument(tm)] (id : int; tm : mat44f#)
       assume extra = covers.coverExtra[id]
-      let reconType = recon_type(extra.info)
+      let _reconType = recon_type(extra.info)
       if (extra.info & int(RCXI_FLAG_CONTAINS)) == 0 || (extra.info >> RCXI_TYPE_SHIFT) != int(ReconType.CORNER)
         return
       

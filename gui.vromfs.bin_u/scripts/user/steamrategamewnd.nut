@@ -1,16 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
+from "string" import format
+from "steam" import steam_get_app_id
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { format } = require("string")
-let { steam_get_app_id } = require("steam")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
-gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
+let SteamRateGame = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/steamRateGame/steamRateGame.tpl"
   onApplyFunc = null
@@ -51,9 +52,10 @@ gui_handlers.SteamRateGame <- class (gui_handlers.BaseGuiHandlerWT) {
     base.goBack()
   }
 }
+register_gui_handler("SteamRateGame", SteamRateGame)
 
 eventbus_subscribe("steam.overlay_activation", @(p) broadcastEvent("SteamOverlayStateChanged", p))
 
 return {
-  open = @(params = {}) handlersManager.loadHandler(gui_handlers.SteamRateGame, params)
+  open = @(params = {}) handlersManager.loadHandler(SteamRateGame, params)
 }

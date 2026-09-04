@@ -1,9 +1,10 @@
+from "dagor.fs" import file_exists
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { each_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 
-let { file_exists } = require("dagor.fs")
 require("%scripts/main.nut")
 
 let { loadScriptsAfterLoginOnce } = require("%scripts/loadScriptsAfterLogin.nut")
@@ -11,8 +12,7 @@ log("loadScriptsAfterLoginOnce()")
 loadScriptsAfterLoginOnce()
 
 
-foreach (name, hClass in gui_handlers) {
-  if (name == "__dynamic_content__") continue
+each_gui_handler(function(name, hClass) {
   assert(("sceneBlkName" in hClass) && ("sceneTplName" in hClass),
        @() $"handlerClass not instance of BaseGuiHandler: gui_handlers.{name}")
 
@@ -21,4 +21,4 @@ foreach (name, hClass in gui_handlers) {
     assert(file_exists(tplName), $"Failed to load sceneTplName {tplName} for gui_handlers.{name}")
     handyman.renderCached(tplName, {}) 
   }
-}
+})

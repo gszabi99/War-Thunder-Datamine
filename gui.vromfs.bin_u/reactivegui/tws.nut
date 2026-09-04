@@ -1,25 +1,28 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+import "math" as math
+from "%rGui/twsState.nut" import rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargetsAgeMin, lwsTargetsTriggers
+  , lwsTargetsAgeMin, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge
+  , CurrentTime
+from "%rGui/airState.nut" import MlwsLwsForMfd, MfdFontScale, RwrForMfd
+from "%rGui/planeState/planeToolsState.nut" import MfdRwrColor
+from "%rGui/style/airHudStyle.nut" import hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor
+from "%rGui/compassState.nut" import CompassValue
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
+from "dagor.math" import IPoint3
 from "%rGui/globals/ui_library.nut" import *
 
-let math = require("math")
-let { rwrTargetsTriggers, rwrTargetsPresenceTriggers, rwrTrackingTargetAgeMin, rwrLaunchingTargetAgeMin, mlwsTargetsTriggers, mlwsTargets, mlwsTargetsAgeMin, lwsTargetsTriggers, lwsTargets, rwrTargets, lwsTargetsAgeMin, rwrTargetsPresence, IsMlwsLwsHudVisible, MlwsLwsSignalHoldTimeInv, RwrSignalHoldTimeInv, RwrNewTargetHoldTimeInv, IsRwrHudVisible, LastTargetAge, CurrentTime } = require("%rGui/twsState.nut")
-let rwrSetting = require("%rGui/rwrSetting.nut")
-let { MlwsLwsForMfd, MfdFontScale, RwrForMfd } = require("%rGui/airState.nut");
-let { IPoint3 } = require("dagor.math")
-let { MfdRwrColor } = require("%rGui/planeState/planeToolsState.nut")
-let { hudFontHgt, isColorOrWhite, fontOutlineFxFactor, greenColor, fontOutlineColor } = require("%rGui/style/airHudStyle.nut")
-let { CompassValue } = require("%rGui/compassState.nut")
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
+let { mlwsTargets, lwsTargets, rwrTargets, rwrTargetsPresence } = require("%rGui/twsState.nut")
 
-let backgroundColor = Color(0, 0, 0, 50)
+const backgroundColor = Color(0, 0, 0, 50)
 const RADAR_LINES_OPACITY = 0.42
 
-let indicatorRadius = 70.0
-let trackRadarsRadius = 0.04
-let azimuthMarkLength = 50 * 3 * trackRadarsRadius
+const indicatorRadius = 70.0
+const trackRadarsRadius = 0.04
+const azimuthMarkLength = 50 * 3 * trackRadarsRadius
 let scaleLineWidth = hdpx(LINE_WIDTH)
-let targetLineWidth = hdpx(1)
-let sectorLineWidth = hdpx(30)
-let targetStateBorder = hdpx(3)
+const targetLineWidth = hdpx(1)
+const sectorLineWidth = hdpx(30)
+const targetStateBorder = hdpx(3)
 
 let txtStatePadding = [hdpx(9), hdpx(4), hdpx(6), hdpx(4)]
 
@@ -71,12 +74,12 @@ let targetsCommonOpacity = Computed(@() max(0.0, 1.0 - min(LastTargetAge.get() *
 
 function centeredIcon(colorWatched, centralCircleSizeMult) {
   return {
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = [targetsCommonOpacity, colorWatched]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
+        size = FLEX
         fillColor = 0
         color = colorWatched.get()
         opacity = targetsCommonOpacity.get()
@@ -94,7 +97,7 @@ function centeredIcon(colorWatched, centralCircleSizeMult) {
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         size = [pw(10 * centralCircleSizeMult), ph(10 * centralCircleSizeMult)]
-        pos = [0, 0]
+        pos = const [0, 0]
         opacity = RADAR_LINES_OPACITY
         commands = [
           [VECTOR_LINE, 10, 50, 90, 50],
@@ -106,18 +109,18 @@ function centeredIcon(colorWatched, centralCircleSizeMult) {
 }
 
 let aircraftVectorImageCommands = (function() {
-  let tailW = 25
-  let tailH = 10
-  let tailOffset1 = 10
-  let tailOffset2 = 5
-  let tailOffset3 = 25
-  let fuselageWHalf = 10
-  let wingOffset1 = 45
-  let wingOffset2 = 30
-  let wingW = 32
-  let wingH = 18
-  let wingOffset3 = 30
-  let noseOffset = 5
+  const tailW = 25
+  const tailH = 10
+  const tailOffset1 = 10
+  const tailOffset2 = 5
+  const tailOffset3 = 25
+  const fuselageWHalf = 10
+  const wingOffset1 = 45
+  const wingOffset2 = 30
+  const wingW = 32
+  const wingH = 18
+  const wingOffset3 = 30
+  const noseOffset = 5
 
   return [
     [VECTOR_POLY,
@@ -163,12 +166,12 @@ function centeredAircraftIcon(colorWatched, centralCircleSizeMult) {
   }
 
   return {
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = [targetsCommonOpacity, colorWatched]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
+        size = FLEX
         fillColor = 0
         color = colorWatched.get()
         opacity = targetsCommonOpacity.get()
@@ -200,7 +203,7 @@ let createCircle = @(colorWatched, backGroundColorEnabled, scale = 1.0, isForTan
     fillColor = backGroundColorEnabled ? backgroundColor : 0
     color = colorWatched.get()
     opacity = !isForTank ? 1.0 : targetsOpacity.get()
-    size = flex()
+    size = FLEX
     commands = circles
   }
 }
@@ -224,7 +227,7 @@ function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false, angleStep
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = targetLineWidth
     fillColor = 0
-    size = flex()
+    size = FLEX
     color = colorWatch.get()
     opacity = !isForTank ? RADAR_LINES_OPACITY : targetsOpacity.get() * RADAR_LINES_OPACITY
     commands = azimuthMarksCommands
@@ -239,7 +242,7 @@ let twsBackground = @(colorWatched, isForTank = false) function() {
     return res
 
   return res.__update({
-    size = flex()
+    size = FLEX
     children = [
       createCircle(colorWatched, true, 1, isForTank, -1),
       createAzimuthMark(colorWatched, 1, isForTank)
@@ -256,7 +259,7 @@ let rwrBackground = @(colorWatched, scale, forMfd) function() {
 
   return res.__update({
     size = const [pw(75), ph(75)]
-    pos = [pw(12.5), ph(12.5)]
+    pos = const [pw(12.5), ph(12.5)]
     children = [
       createCircle(colorWatched, !IsMlwsLwsHudVisible.get(), scale, false, forMfd ? mfdRwrSettings.get().circleCnt : -1)
       createAzimuthMark(colorWatched, scale, false, forMfd ? mfdRwrSettings.get().angleMarkStep : 30.0, forMfd ? mfdRwrSettings.get().circleCnt : -1)
@@ -321,7 +324,7 @@ function createMlwsTarget(index, colorWatch) {
           lineWidth = targetLineWidth
           fillColor = backgroundColor
           opacity = targetOpacity.get()
-          size = flex()
+          size = FLEX
           commands = [[VECTOR_ELLIPSE, 0, 0, 45, 45]]
         }
   }
@@ -343,8 +346,8 @@ function createMlwsTarget(index, colorWatch) {
   }
 
   return {
-    size = flex()
-    pos = [pw(50), ph(50)]
+    size = FLEX
+    pos = const [pw(50), ph(50)]
     transform = {
       pivot = [0.0, 0.0]
       rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
@@ -387,7 +390,7 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
     fillColor = 0
     opacity = targetOpacity.get()
     size = const [pw(50), ph(50)]
-    pos = [pw(100), ph(100)]
+    pos = const [pw(100), ph(100)]
     commands = isForTank ? cmdsLwsTargetTank : cmdsLwsTargetNonTank
 
     transform = lswTargetTransform
@@ -399,7 +402,7 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
           lineWidth = targetLineWidth
           fillColor = backgroundColor
           opacity = targetOpacity.get()
-          size = flex()
+          size = FLEX
           commands = [[VECTOR_ELLIPSE, 0, 0, 45, 45]]
         }
   }
@@ -422,8 +425,8 @@ function createLwsTarget(index, colorWatched, isForTank = false) {
   }
 
   return {
-    size = flex()
-    pos = [pw(50), ph(50)]
+    size = FLEX
+    pos = const [pw(50), ph(50)]
     transform = {
       pivot = [0.0, 0.0]
       rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45
@@ -469,7 +472,7 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
         watch = [colorWatched, MfdFontScale]
         rendObj = ROBJ_TEXT
         pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
-        size = flex()
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = forMfd ? (fontSizeMult * (MfdFontScale.get() > 0.0 ? MfdFontScale.get() : 1.0) * hudFontHgt) : hudFontHgt
@@ -492,23 +495,23 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
             color = isColorOrWhite(colorWatched.get())
             rendObj = ROBJ_VECTOR_CANVAS
             lineWidth = priorityTargetLineWidth
-            size = flex()
+            size = FLEX
             commands = [[VECTOR_LINE, -20, -40, -20, 40]]
           }
       }
 
   local trackLine = null
   if (target.track || target.launch) {
-    let nearRadius = -175
+    const nearRadius = -175
     let farRadius = target.groupId != null ? nearRadius + 90 * target.rangeRel : nearRadius + 110 * target.rangeRel
-    let dashLength = hdpx(5)
-    let spaceLength = hdpx(3)
+    const dashLength = hdpx(5)
+    const spaceLength = hdpx(3)
     trackLine = @() {
       watch = colorWatched
       color = isColorOrWhite(colorWatched.get())
       rendObj = ROBJ_VECTOR_CANVAS
       size = const [pw(50), ph(50)]
-      pos = [pw(100), ph(100)]
+      pos = const [pw(100), ph(100)]
       lineWidth = priorityTargetLineWidth
       commands = [
         [VECTOR_LINE_DASHED, nearRadius, nearRadius, farRadius, farRadius, dashLength, spaceLength]
@@ -559,7 +562,7 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = priorityTargetLineWidth
       fillColor = 0
-      size = flex()
+      size = FLEX
       pos = [pw(target.x * 100.0 * targetRange), ph(target.y * 100.0 * targetRange)]
       commands = [[VECTOR_LINE, 40, 35, 60, 35]]
     }
@@ -569,9 +572,9 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
   if (target.priority) {
     if (target.elev > 0.1)
       elevationMark = @() {
-        watch = targetOpacityRwr
+        watch = [targetOpacityRwr, colorWatched]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
+        size = FLEX
         color = colorWatched.get()
         fillColor = 0
         opacity = targetOpacityRwr.get()
@@ -582,9 +585,9 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
       }
     else if (target.elev < -0.1)
       elevationMark = @() {
-        watch = targetOpacityRwr
+        watch = [targetOpacityRwr, colorWatched]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
+        size = FLEX
         color = colorWatched.get()
         fillColor = 0
         opacity = targetOpacityRwr.get()
@@ -597,12 +600,12 @@ function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMu
 
   return @() {
     watch = targetOpacityRwr
-    size = flex()
+    size = FLEX
     opacity = targetOpacityRwr.get()
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = const [pw(50), ph(50)]
+        size = FLEX
         transform = {
           pivot = [0.0, 0.0]
           rotate = math.atan2(target.y, target.x) * (180.0 / math.PI) - 45.0
@@ -632,7 +635,7 @@ function createRwrTargetPresence(index, colorWatched) {
     styleText.__merge({
       watch = [rwrSetting, colorWatched]
       rendObj = ROBJ_TEXT
-      size = flex()
+      size = FLEX
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       text = index < rwrSetting.get().presence.len() ? rwrSetting.get().presence[index].text : ""
@@ -641,7 +644,7 @@ function createRwrTargetPresence(index, colorWatched) {
   local targetPresenceBorder = @() {
     watch = colorWatched
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = priorityLineWidth
     color = isColorOrWhite(colorWatched.get())
     fillColor = 0
@@ -650,7 +653,7 @@ function createRwrTargetPresence(index, colorWatched) {
     ]
   }
 
-  let colsMax = 3
+  const colsMax = 3
   let row = index / colsMax
   let col = index - row * colsMax
   let cols = min(rwrTargetsPresence.len() - row * colsMax, colsMax)
@@ -658,7 +661,7 @@ function createRwrTargetPresence(index, colorWatched) {
   return @() {
     watch = [IsMlwsLwsHudVisible, targetOpacityRwr]
     pos = [pw((cols - 1) * -42.5 + col * 85), IsMlwsLwsHudVisible.get() ? ph(200 + row * 50) : ph(150 + row * 50)]
-    size = flex()
+    size = FLEX
     opacity = targetOpacityRwr.get()
     children = [
       targetPresenceType,
@@ -670,7 +673,7 @@ function createRwrTargetPresence(index, colorWatched) {
 let mkTargetsStateBorder = @(colorWatched) @() {
   watch = colorWatched
   rendObj = ROBJ_BOX
-  size = flex()
+  size = FLEX
   borderWidth = targetStateBorder
   borderColor = isColorOrWhite(colorWatched.get())
 }
@@ -702,7 +705,7 @@ function mlwsTargetsComponent(colorWatch) {
 
   return @() {
     watch = mlwsTargetsTriggers
-    size = flex()
+    size = FLEX
     children = mlwsTargets.filter(@(t) t != null).map(@(_, i) createMlwsTarget(i, colorWatch))
   }
 }
@@ -734,7 +737,7 @@ function lwsTargetsComponent(colorWatched, isForTank = false) {
 
   return @() {
     watch = lwsTargetsTriggers
-    size = flex()
+    size = FLEX
     children = lwsTargets.filter(@(t) t != null).map(@(_, i) createLwsTarget(i, colorWatched, isForTank))
   }
 }
@@ -766,7 +769,7 @@ function rwrTargetsState(colorWatched) {
 let rwrTargetsComponent = function(colorWatched, fontSizeMult, centralCircleSizeMult, forMfd) {
   return @() {
     watch = rwrTargetsTriggers
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(target) createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMult, forMfd))
   }
 }
@@ -774,7 +777,7 @@ let rwrTargetsComponent = function(colorWatched, fontSizeMult, centralCircleSize
 let rwrTargetsPresenceComponent = function(colorWatched) {
   return @() {
     watch = rwrTargetsPresenceTriggers
-    size = flex()
+    size = FLEX
     children = rwrTargetsPresence.filter(@(t) t != null).map(@(_, i) createRwrTargetPresence(i, colorWatched))
   }
 }
@@ -802,7 +805,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
     azimuthMarks.append(
       {
         rendObj = ROBJ_TEXT
-        pos = [pw(48), ph(125)]
+        pos = const [pw(48), ph(125)]
         size = const [pw(4), SIZE_TO_CONTENT]
         color = mfdRwrSettings.get().textColor
         font = Fonts.hud
@@ -812,7 +815,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
       }
       {
         rendObj = ROBJ_TEXT
-        pos = [pw(48), ph(-32)]
+        pos = const [pw(48), ph(-32)]
         size = const [pw(4), SIZE_TO_CONTENT]
         color = mfdRwrSettings.get().textColor
         font = Fonts.hud
@@ -822,7 +825,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
       }
       {
         rendObj = ROBJ_TEXT
-        pos = [pw(-30), ph(46)]
+        pos = const [pw(-30), ph(46)]
         size = const [SIZE_TO_CONTENT, ph(8)]
         color = mfdRwrSettings.get().textColor
         font = Fonts.hud
@@ -832,7 +835,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
       }
       {
         rendObj = ROBJ_TEXT
-        pos = [pw(125), ph(46)]
+        pos = const [pw(125), ph(46)]
         size = const [SIZE_TO_CONTENT, ph(8)]
         color = mfdRwrSettings.get().textColor
         font = Fonts.hud
@@ -846,7 +849,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
     for (local i = 0; i < dashCount; ++i) {
       azimuthMarks.append({
         rendObj = ROBJ_TEXT
-        pos = [pw(40), ph(-33)]
+        pos = const [pw(40), ph(-33)]
         size = const [pw(20), ph(100)]
         color = mfdRwrSettings.get().textColor
         font = Fonts.hud
@@ -907,7 +910,7 @@ function centralBigCross(colorWatched, _centralCircleSizeMult) {
     color = colorWatched.get()
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    size = flex()
+    size = FLEX
     opacity = RADAR_LINES_OPACITY
     commands = [
       [VECTOR_LINE, 0, 50, 100, 50],
@@ -935,7 +938,7 @@ function scope(colorWatched, relativCircleRadius, scale, ratio, needDrawCentralI
   let lineColor = forMfd ? Computed(@() mfdRwrSettings.get().lineColor) : colorWatched
   return @(){
     watch = mfdRwrSettings
-    size = flex()
+    size = FLEX
     children = [
       twsBackground(colorWatched, !needDrawCentralIcon), 
       needDrawBackground ? rwrBackground(lineColor, scale, forMfd) : null, 

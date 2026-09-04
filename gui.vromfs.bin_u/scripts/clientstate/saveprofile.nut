@@ -1,17 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "chard" import save_profile, save_common_local_settings
+from "math" import ceil
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
-let { save_profile, save_common_local_settings } = require("chard")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { ceil } = require("math")
-let { get_time_msec } = require("dagor.time")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
-let MIN_SAVE_TIMEOUT = 5000
-let MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
+const MIN_SAVE_TIMEOUT = 5000
+const MIN_SAVE_TIMEOUT_NOT_LOGGED = 1000
 local nextAllowedSaveTime = 0
 let saveTask = persist("saveTask", @() { value = -1 })
 local isSaveDelayed = false

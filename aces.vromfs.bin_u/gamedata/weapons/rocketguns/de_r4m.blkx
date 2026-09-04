@@ -1,15 +1,16 @@
 {
   "rocketGun": true,
-  "preset_cost": 50,
-  "mesh": "de_r4m",
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "offsetForDemonstration": [
     0.0,
     0.015,
     0.0
   ],
-  "helicopterGroup": 2,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
+  "mesh": "de_r4m",
   "demonstrateDeployedMesh": true,
   "mesh_deployed": "de_r4m_deployed",
   "tags": {
@@ -17,8 +18,15 @@
     "antiShipRocket": true
   },
   "rocket": {
+    "dragCx": 0.04,
     "bulletName": "de_r4m",
+    "iconType": "rockets_he_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 3.5,
     "caliber": 0.132,
     "length": 1.5,
     "WdK": [
@@ -32,34 +40,19 @@
     "massEnd": 35.26,
     "timeFire": 0.7,
     "force": 20000.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 355.0,
-    "endSpeed": 0.0,
     "maxDistance": 7500.0,
     "minDistance": 30.0,
     "explosiveType": "tnt",
     "explosiveMass": 4.9,
-    "explodeTreshold": 0.00001,
-    "dragCx": 0.04,
-    "explodeHitPower": 600.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [
-      1.0,
-      3.0
-    ],
-    "amountPerTier": 1.0,
-    "iconType": "rockets_he_large",
-    "autoaimEnabled": false,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
     "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.5,
+    "stabilityThreshold": 0.05,
     "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.3,
+    "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "rocket_tank",
     "slopeEffectPreset": "ap",
@@ -70,8 +63,6 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "shellAnimation": "video/shells_animations/rocket_he.ivf",
-    "maxDeltaAngle": 3.5,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -109,6 +100,9 @@
       200.0,
       1000.0
     ],
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": true,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -129,23 +123,6 @@
       0.0,
       0.0
     ],
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        15.0,
-        0.7
-      ],
-      "mod3": [
-        30.0,
-        0.99
-      ]
-    },
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
     "DamageParts": {
       "body": {
         "hp": 50.0,
@@ -230,6 +207,23 @@
           }
         ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
+      ]
     },
     "explosionSmoke": {
       "radius": 5.0,

@@ -4,9 +4,7 @@ require ecs.safe
 require ecs.common
 require DagorDebug3D
 require DagorConsole
-require math.base
 require WTCamera
-require danetlibs.render_debug.render.draw_debug_common
 require strings
 require ecs.ecs_template
 

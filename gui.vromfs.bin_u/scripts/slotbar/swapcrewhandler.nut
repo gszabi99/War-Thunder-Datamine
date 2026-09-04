@@ -1,13 +1,16 @@
+from "math" import abs
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
-let { abs } = require("math")
 let { swapCrewsInCurrentPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 
-local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
+local class SwapCrewHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/slotbarSwapCrew.blk"
   slotbarWeak = null
@@ -32,7 +35,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
     let slotObj = getSlotObj(this.slotbarWeak.scene, this.countryId, this.crewIdInCountry)
     let tdObj = slotObj.getParent()
 
-    gui_handlers.ActionsList.removeActionsListFromObject(tdObj)
+    ActionsList.removeActionsListFromObject(tdObj)
 
     this.curClonObjId = tdObj.id
 
@@ -52,7 +55,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = 0; i < itemsCount; i++) {
       let item = this.airsTableSource.getChild(i)
-      gui_handlers.ActionsList.removeActionsListFromObject(item)
+      ActionsList.removeActionsListFromObject(item)
 
       let idParts = item.id.split("td_slot_")[1].split("_").map(@(part) part.tointeger())
       let slotCountryId = idParts[0]
@@ -122,7 +125,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
   onCrewMove = @() null
 }
 
-gui_handlers.SwapCrewHandler <- SwapCrewHandler
+register_gui_handler("SwapCrewHandler", SwapCrewHandler)
 
 return {
   open = @(crew, airsTableSource, slotbarWeak) handlersManager.loadHandler(SwapCrewHandler, { crew, airsTableSource, slotbarWeak })

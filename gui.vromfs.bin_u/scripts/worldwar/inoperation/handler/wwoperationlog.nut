@@ -1,18 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "worldwar" import wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones, wwUpdateHoverArmyName
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names, ww_update_hover_battle_id, ww_get_zone_idx_world, ww_mark_zones_as_outlined_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones, wwUpdateHoverArmyName } = require("worldwar")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattleResults } = require("%scripts/worldWar/inOperation/model/wwBattleResults.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperationLogView.nut")
-let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark,
-  getUnreadedWWLogsNumber, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
+let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark, getUnreadedWWLogsNumber, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { GuiBox } = require("%scripts/guiBox.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
@@ -21,7 +22,7 @@ let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
 
-gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwOperationLog = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = null
   sceneBlkName = "%gui/worldWar/worldWarOperationLogInfo"
@@ -62,7 +63,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWNewLogsAdded(params = {}) {
-    let isLogMarkUsed = getTblValue("isLogMarkUsed", params, false)
+    let isLogMarkUsed = (params?.isLogMarkUsed ?? false)
     if (!isLogMarkUsed && !this.isLogPageScrolledDown) {
       this.configShowNextLogsBlock({ isForcedShow = true })
       return
@@ -465,13 +466,13 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   function onClickArmy(obj) {
     this.clearSelectFromLogArmy()
 
-    let wwArmy = getTblValue(obj.armyId, this.wwLogsData.logsArmies)
+    let wwArmy = this.wwLogsData.logsArmies?[obj.armyId]
     if (wwArmy)
       wwEvent("ShowLogArmy", { wwArmy = wwArmy })
   }
 
   function onEventWWSelectLogArmyByName(params = {}) {
-    if (getTblValue("name", params))
+    if (params?.name)
       this.setArmyObjsSelected(this.findArmyObjsInLog(params.name), true)
   }
 
@@ -544,7 +545,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let logBlk = this.wwLogsData.logsBattles?[battleId].logBlk
-    gui_handlers.WwBattleResults.open(WwBattleResults(logBlk))
+    get_gui_handler("WwBattleResults")?.open(WwBattleResults(logBlk))
   }
 
   function onClickShowFirstLogs(_obj) {
@@ -590,7 +591,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (renderData in this.wwLogsData.logCategories)
       renderData.selected = this.wwLogsData.filter[renderData.value]
 
-    loadHandler(gui_handlers.MultiSelectMenu, {
+    loadHandler(MultiSelectMenu, {
       list = this.wwLogsData.logCategories
       onChangeValueCb = this.onApplyOperationLogFilters.bindenv(this)
       align = "bottom"
@@ -633,3 +634,6 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("WwOperationLog", WwOperationLog)
+
+return { WwOperationLog }

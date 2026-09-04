@@ -1,26 +1,24 @@
+from "%sqStdLibs/helpers/u.nut" import isTable
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/datablock.nut" import getBlkValueByPath, blkOptFromPath
+from "guiMission" import get_meta_mission_info_by_name, get_meta_missions_info_chapter, get_meta_missions_info_by_chapters, get_meta_missions_info_by_campaigns, get_mission_local_online_progress
+from "mission" import get_game_mode, get_cur_game_mode_name
+from "%sqstd/string.nut" import capitalize
 from "%scripts/dagui_natives.nut" import toggle_fav_mission, is_mission_favorite, has_entitlement, get_last_played, get_mission_progress, scan_user_missions
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
+from "dagor.workcycle" import defer
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
+let { isNotAloneOnline } = require("%scripts/squads/squadState.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
-  get_meta_missions_info_by_chapters, get_meta_missions_info_by_campaigns,
-  get_mission_local_online_progress } = require("guiMission")
-let { get_game_mode, get_cur_game_mode_name } = require("mission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { capitalize } = require("%sqstd/string.nut")
-let { isMissionComplete, getSessionLobbyMissionName
-} = require("%scripts/missions/missionsUtilsModule.nut")
+let { isMissionComplete, getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
 let { isInSessionRoom, getMissionUrl } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
@@ -33,34 +31,45 @@ enum mislistTabsOrder {
   UNKNOWN
 }
 
-let g_mislist_type = {
-  types = []
+function getMissionNameTextDefault(mission) {
+  let { id = "" } = mission
+  if (mission?.isHeader)
+    return mission?.isCampaign ? loc($"campaigns/{id}") : loc($"chapters/{id}")
+  if ("blk" in mission)
+    return getCombineLocNameMission(mission.blk)
+  return loc($"missions/{id}")
 }
 
-g_mislist_type._getMissionConfig <- function _getMissionConfig(id, isHeader = false, isCampaign = false, isUnlocked = true) {
+function sortMissionsByName(missions) {
+  let sortData = missions.map(@(m) { locName = m.getNameText(), mission = m })
+  sortData.sort(@(a, b) a.locName <=> b.locName)
+  return sortData.map(@(d) d.mission)
+}
+
+function getMissionConfig(id, misListType, ovr = {}) {
+  let { getMissionNameText } = misListType
   return {
     id = id
-    isHeader = isHeader
-    isCampaign = isCampaign
-    isUnlocked = isUnlocked
+    isHeader = false
+    isCampaign = false
+    isUnlocked = true
     campaign = ""
     chapter = ""
-    misListType = this
 
-    getNameText = function() { return this.misListType.getMissionNameText(this) }
-  }
+    getNameText = @() getMissionNameText(this)
+  }.__update(ovr)
 }
 
-g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaignName, missionBlkArray) {
+function getMissionsByBlkArray(misListType, campaignName, missionBlkArray) {
   let res = []
   let gm = get_game_mode()
-  let checkFunc = getTblValue("misBlkCheckFunc", this, function(_misBlk) { return true })
+  let checkFunc = misListType?.misBlkCheckFunc ?? @(_misBlk) true
 
   foreach (misBlk in missionBlkArray) {
     let missionId = misBlk?.name ?? ""
     if (!checkFunc(misBlk))
       continue
-    if ((gm == GM_SINGLE_MISSION) && g_squad_manager.isNotAloneOnline())
+    if ((gm == GM_SINGLE_MISSION) && isNotAloneOnline())
       if (!misBlk.getBool("gt_cooperative", false) || is_user_mission(misBlk))
         continue
     if (misBlk?.hideInSingleMissionList)
@@ -71,11 +80,12 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
     if (misBlk?.reqFeature && !hasFeature(misBlk.reqFeature))
       continue
 
-    let misDescr = this.getMissionConfig(missionId)
-    misDescr.blk <- misBlk
-    misDescr.chapter <- campaignName
-    misDescr.campaign <- misBlk.getStr("campaign", "")
-    misDescr.presetName <- misBlk.getStr("presetName", "")
+    let misDescr = getMissionConfig(missionId, misListType, {
+      blk = misBlk
+      chapter = campaignName
+      campaign = misBlk.getStr("campaign", "")
+      presetName = misBlk.getStr("presetName", "")
+    })
 
     if (is_user_mission(misBlk)) {
       
@@ -125,13 +135,12 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
   return res
 }
 
-g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
+function getMissionsList(isShowCampaigns, misListType, customChapterId = null, customChapters = null) {
   let gm = get_game_mode()
   if (customChapterId) {
     let missionBlkArray = get_meta_missions_info_chapter(gm, customChapterId)
-    let misList = this.getMissionsByBlkArray(customChapterId, missionBlkArray)
-    callback(misList)
-    return
+    let misList = getMissionsByBlkArray(misListType, customChapterId, missionBlkArray)
+    return misList
   }
 
   let res = []
@@ -150,7 +159,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
   }
 
   foreach (camp in campaigns) {
-    let campName = getTblValue("name", camp)
+    let campName = camp?.name
     let campMissions = []
     local lastMission = null
 
@@ -168,17 +177,16 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
       if (!canShowChapter)
         continue
 
-      let missions = this.getMissionsByBlkArray(chapterName, chapterMissions)
+      let missions = getMissionsByBlkArray(misListType, chapterName, chapterMissions)
       if (!missions.len())
         continue
 
-      if (this.showChapterHeaders) {
-        local isChapterUnlocked = true
-        if (lastMission && gm == GM_CAMPAIGN)
-          isChapterUnlocked = isChapterSpecial || isDebugModeEnabled.status || isMissionComplete(lastMission?.chapter, lastMission?.id)
-        let chapterHeader = this.getMissionConfig(chapterName, true, false, isChapterUnlocked)
-        campMissions.append(chapterHeader)
-      }
+      local isChapterUnlocked = true
+      if (lastMission && gm == GM_CAMPAIGN)
+        isChapterUnlocked = isChapterSpecial || isDebugModeEnabled.status || isMissionComplete(lastMission?.chapter, lastMission?.id)
+      let chapterHeader = getMissionConfig(chapterName, misListType,
+        { isHeader = true, isUnlocked = isChapterUnlocked })
+      campMissions.append(chapterHeader)
       campMissions.extend(missions)
 
       lastMission = missions.top()
@@ -187,8 +195,8 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
     if (!campMissions.len())
       continue
 
-    if (campName && this.showCampaignHeaders) {
-      let campHeader = this.getMissionConfig(campName, true, true)
+    if (campName) {
+      let campHeader = getMissionConfig(campName, misListType, { isHeader = true, isCampaign = true })
       res.append(campHeader)
     }
     res.extend(campMissions)
@@ -197,106 +205,80 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
     if (lastMission && gm == GM_CAMPAIGN
         && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43")) {
       let isVideoUnlocked = isDebugModeEnabled.status || isMissionComplete(lastMission?.chapter, lastMission?.id)
-      res.append(this.getMissionConfig("victory", true, false, isVideoUnlocked))
+      res.append(getMissionConfig("victory", misListType,
+        { isHeader = true, isUnlocked = isVideoUnlocked }))
     }
   }
-  callback(res)
+  return res
 }
 
-g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(namesList) {
-  let blkList = []
-  foreach (name in namesList) {
-    let misBlk = get_meta_mission_info_by_name(name)
-    if (misBlk)
-      blkList.append(misBlk)
-  }
-  return this.getMissionsByBlkArray("", blkList)
-}
-
-g_mislist_type._getCurMission <- function _getCurMission() {
+function getCurMission(misListType) {
   if (isInSessionRoom.get()) {
     let misName = getSessionLobbyMissionName(true)
     if (misName)
-      return this.getMissionConfig(misName)
+      return getMissionConfig(misName, misListType)
   }
   let lastPlayed = get_last_played("", get_game_mode())
   if (!lastPlayed)
     return null
 
-  let res = this.getMissionConfig(lastPlayed[1])
+  let res = getMissionConfig(lastPlayed[1], misListType)
   res.chapter = lastPlayed[0]
   return res
 }
 
-g_mislist_type._getMissionNameText <- function _getMissionNameText(mission) {
-  let { id = "" } = mission
-  if (mission?.isHeader)
-    return mission?.isCampaign ? loc($"campaigns/{id}") : loc($"chapters/{id}")
-  if ("blk" in mission)
-    return getCombineLocNameMission(mission.blk)
-  return loc($"missions/{id}")
-}
+let g_mislist_type = {
+  types = []
+  template = {
+    id = "" 
+    tabsOrder = mislistTabsOrder.UNKNOWN
 
-g_mislist_type.template <- {
-  id = "" 
-  tabsOrder = mislistTabsOrder.UNKNOWN
+    canBeEmpty = true
+    canRefreshList = false
+    canAddToList = false
 
-  canBeEmpty = true
-  canRefreshList = false
-  canAddToList = false
+    requestMissionsList = function(_isShowCampaigns, callback = null, _customChapterId = null, _customChapters = null) { if (callback) callback([]) }
+    canJoin = function(_gm) { return true }
+    canCreate = function(gm) { return this.canJoin(gm) }
 
-  showCampaignHeaders = true
-  showChapterHeaders  = true
+    getTabName = function() { return "" }
 
-  getMissionConfig = g_mislist_type._getMissionConfig
-  requestMissionsList = function(_isShowCampaigns, callback = null, _customChapterId = null, _customChapters = null) { if (callback) callback([]) }
-  getMissionsListByNames = function(_namesList) { return [] }
-  canJoin = function(_gm) { return true }
-  canCreate = function(gm) { return this.canJoin(gm) }
+    addToList = function() {}
+    canModify = function(_mission) { return false }
+    modifyMission = function(_mission) {}
+    canDelete = function(_mission) { return false }
+    deleteMission = function(_mission) {}
 
-  getTabName = function() { return "" }
-
-  addToList = function() {}
-  canModify = function(_mission) { return false }
-  modifyMission = function(_mission) {}
-  canDelete = function(_mission) { return false }
-  deleteMission = function(_mission) {}
-
-  canMarkFavorites = function() {
-    let gm = get_game_mode()
-    return gm == GM_DOMINATION || gm == GM_SKIRMISH
-  }
-
-  isMissionFavorite = function(mission) { return is_mission_favorite(mission.id) }
-  toggleFavorite = function(mission) { toggle_fav_mission(mission.id) }
-
-  getCurMission = function() { return null }
-  getMissionNameText = g_mislist_type._getMissionNameText
-
-  forceExternalLink = false
-  getInfoLink = @() ""
-  infoLinkTextLocId = ""
-  infoLinkTooltipLocId = ""
-  getInfoLinkData = function() {
-    if (isPlatformSony || isPlatformXbox)
-      return null
-
-    let infoLink = this.getInfoLink()
-    if (infoLink == "")
-      return null
-
-    return {
-      link = infoLink
-      text = loc(this.infoLinkTextLocId)
-      tooltip = loc(this.infoLinkTooltipLocId, "")
-      forceExternal = this.forceExternalLink
+    canMarkFavorites = function() {
+      let gm = get_game_mode()
+      return gm == GM_DOMINATION || gm == GM_SKIRMISH
     }
-  }
 
-  sortMissionsByName = function(missions) {
-    let sortData = missions.map((@(m) { locName = this.getMissionNameText(m), mission = m }).bindenv(this))
-    sortData.sort(@(a, b) a.locName <=> b.locName)
-    return sortData.map(@(d) d.mission)
+    isMissionFavorite = function(mission) { return is_mission_favorite(mission.id) }
+    toggleFavorite = function(mission) { toggle_fav_mission(mission.id) }
+
+    getCurMission = @() getCurMission(this)
+    getMissionNameText = getMissionNameTextDefault
+
+    forceExternalLink = false
+    getInfoLink = @() ""
+    infoLinkTextLocId = ""
+    infoLinkTooltipLocId = ""
+    getInfoLinkData = function() {
+      if (isPlatformSony || isPlatformXbox)
+        return null
+
+      let infoLink = this.getInfoLink()
+      if (infoLink == "")
+        return null
+
+      return {
+        link = infoLink
+        text = loc(this.infoLinkTextLocId)
+        tooltip = loc(this.infoLinkTooltipLocId, "")
+        forceExternal = this.forceExternalLink
+      }
+    }
   }
 }
 
@@ -306,13 +288,13 @@ enumsAddTypes(g_mislist_type, {
     canBeEmpty = false
     getTabName = function() { return loc("mainmenu/btnMissions") }
 
-    requestMissionsList = g_mislist_type._getMissionsList
-    getMissionsByBlkArray = g_mislist_type._getMissionsByBlkArray
-    getMissionsListByNames = g_mislist_type._getMissionsListByNames
+    function requestMissionsList(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
+      let misList = getMissionsList(isShowCampaigns, this, customChapterId, customChapters)
+      defer(@() callback(misList))
+    }
     misBlkCheckFunc = function(misBlk) {
       return !is_user_mission(misBlk)
     }
-    getCurMission = g_mislist_type._getCurMission
   }
 
   UGM = {
@@ -333,13 +315,13 @@ enumsAddTypes(g_mislist_type, {
     }
 
     requestMissionsList = function(isShowCampaigns, callback, customChapterId = null, customChapters = null) {
-      let fn = function() { this.getMissionsListImpl(isShowCampaigns, callback, customChapterId, customChapters); }
+      let fn = function() {
+        let misList = getMissionsList(isShowCampaigns, this, customChapterId, customChapters)
+        defer(@() callback(misList))
+      }
       scan_user_missions(this, fn.bindenv(this))
     }
-    getMissionsListImpl = g_mislist_type._getMissionsList
-    getMissionsByBlkArray = g_mislist_type._getMissionsByBlkArray
     misBlkCheckFunc = is_user_mission
-    getCurMission = g_mislist_type._getCurMission
   }
 
   URL = {
@@ -362,9 +344,8 @@ enumsAddTypes(g_mislist_type, {
       let list = g_url_missions.getList()
       let res = []
       foreach (urlMission in list) {
-        let mission = this.getMissionConfig(urlMission.name)
-        mission.urlMission <- urlMission
-        mission.blk <- urlMission.getMetaInfo()
+        let mission = getMissionConfig(urlMission.name, this,
+          { urlMission, blk = urlMission.getMetaInfo() })
         res.append(mission)
       }
       callback(res)
@@ -377,7 +358,7 @@ enumsAddTypes(g_mislist_type, {
     canModify = function(_mission) { return true }
 
     modifyMission = function(mission) {
-      let urlMission = getTblValue("urlMission", mission)
+      let urlMission = mission?.urlMission
       if (urlMission)
         g_url_missions.openModifyUrlMissionWnd(urlMission)
     }
@@ -385,20 +366,20 @@ enumsAddTypes(g_mislist_type, {
     canDelete = function(_mission) { return true }
 
     deleteMission = function(mission) {
-      let urlMission = getTblValue("urlMission", mission)
+      let urlMission = mission?.urlMission
       if (urlMission)
         g_url_missions.openDeleteUrlMissionConfirmationWnd(urlMission)
     }
 
     canMarkFavorites = function() { return true }
     isMissionFavorite = function(mission) {
-      let urlMission = getTblValue("urlMission", mission)
+      let urlMission = mission?.urlMission
       if (urlMission)
         return urlMission.isFavorite
       return false
     }
     toggleFavorite = function(mission) {
-      g_url_missions.toggleFavorite(getTblValue("urlMission", mission))
+      g_url_missions.toggleFavorite(mission?.urlMission)
     }
 
     getCurMission = function() {
@@ -406,7 +387,7 @@ enumsAddTypes(g_mislist_type, {
         let url = getMissionUrl()
         let urlMission = g_url_missions.findMissionByUrl(url)
         if (urlMission)
-          return this.getMissionConfig(urlMission.name)
+          return getMissionConfig(urlMission.name, this)
       }
 
       let lastPlayed = get_last_played("url", get_game_mode())
@@ -415,11 +396,11 @@ enumsAddTypes(g_mislist_type, {
 
       let urlMission = g_url_missions.findMissionByUrl(lastPlayed[1])
       if (urlMission)
-        return this.getMissionConfig(urlMission.name)
+        return getMissionConfig(urlMission.name, this)
       return null
     }
 
-    getMissionNameText = function(mission) { return mission.id }
+    getMissionNameText = @(mission) mission.id
   }
 }, null, "id")
 
@@ -429,15 +410,25 @@ g_mislist_type.types.sort(function(a, b) {
   return 0
 })
 
-g_mislist_type.getTypeByName <- function getTypeByName(typeName) {
-  let res = getTblValue(typeName, g_mislist_type)
-  return u.isTable(res) ? res : this.BASE
+function getMislistTypeByName(typeName) {
+  let res = g_mislist_type?[typeName]
+  return isTable(res) ? res : g_mislist_type.BASE
 }
 
-g_mislist_type.isUrlMission <- function isUrlMission(mission) {
-  return "urlMission" in mission
+function getSortedMissionsListByNames(namesList) {
+  let blkList = []
+  foreach (name in namesList) {
+    let misBlk = get_meta_mission_info_by_name(name)
+    if (misBlk)
+      blkList.append(misBlk)
+  }
+  let res = getMissionsByBlkArray(g_mislist_type.BASE, "", blkList)
+  return sortMissionsByName(res)
 }
 
 return {
   g_mislist_type
+  getMislistTypeByName
+  getSortedMissionsListByNames
+  getMissionsList
 }

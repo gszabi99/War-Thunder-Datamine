@@ -1,14 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "math" import round
 from "%scripts/dagui_natives.nut" import clan_get_exp_boost
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { round } = require("math")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { shortTextFromNum } = require("%scripts/langUtils/textFormat.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -25,12 +26,12 @@ let PROGRESS_PARAMS = {
   tooltip = ""
 }
 
-gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanAverageActivityModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   clanData = null
 
   static function open(clanData) {
-    loadHandler(gui_handlers.clanAverageActivityModal, { clanData = clanData })
+    loadHandler(get_gui_handler("clanAverageActivityModal"), { clanData = clanData })
   }
 
   function initScreen() {
@@ -159,3 +160,6 @@ gui_handlers.clanAverageActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 }
+register_gui_handler("clanAverageActivityModal", clanAverageActivityModal)
+
+return { clanAverageActivityModal }

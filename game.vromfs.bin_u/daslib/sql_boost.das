@@ -1,0 +1,2510 @@
+options gen2
+options indenting = 4
+options no_unused_block_arguments = false
+options no_unused_function_arguments = false
+options strict_smart_pointers
+
+
+options _comment_hygiene = true
+
+module sql_boost shared public
+
+require strings public
+require daslib/fio                  
+require daslib/contracts
+require daslib/option public
+require daslib/sql public
+require daslib/sql_provider public
+require daslib/ast_boost
+require daslib/macro_boost
+require daslib/templates
+require daslib/templates_boost
+require daslib/json public          
+require daslib/json_boost public    
+require daslib/archive public       
+
+require ?sqlite sqlite/sqlite_provider    
+require ?duckdb duckdb/duckdb_provider    
+require ?postgres postgres/postgres_provider    
+
+
+
+
+
+
+
+
+def public sql_register_present_providers {
+    
+    
+    
+    if (sql_register_present_providers_done()) return
+    static_if (typeinfo builtin_module_exists(sqlite)) {
+        register_sqlite_provider()
+    }
+    static_if (typeinfo builtin_module_exists(duckdb)) {
+        register_duckdb_provider()
+    }
+    static_if (typeinfo builtin_module_exists(postgres)) {
+        register_postgres_provider()
+    }
+}
+
+
+
+[_macro]
+def private _sql_boost_register_providers {
+    if (!is_compiling_macros_in_module("sql_boost")) return
+    sql_register_present_providers()
+}
+
+
+
+def like_escape_prefix(s : string) : string {
+    
+    
+    return (s |> replace("\\", "\\\\") |> replace("%", "\\%") |> replace("_", "\\_")) + "%"
+}
+
+def like_escape_suffix(s : string) : string {
+    
+    
+    return "%" + (s |> replace("\\", "\\\\") |> replace("%", "\\%") |> replace("_", "\\_"))
+}
+
+def like_escape_substring(s : string) : string {
+    
+    
+    return "%" + (s |> replace("\\", "\\\\") |> replace("%", "\\%") |> replace("_", "\\_")) + "%"
+}
+
+
+
+
+
+def sql_bind(v : int64) : int64 {
+    return v
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<int64>) : int64 {
+    return v
+}
+
+def sql_bind(v : double) : double {
+    return v
+}
+
+[unused_argument(t)]
+def sql_extract(v : double; t : type<double>) : double {
+    return v
+}
+
+def sql_bind(s : string) : string {
+    return s
+}
+
+[unused_argument(t)]
+def sql_extract(s : string; t : type<string>) : string {
+    return s
+}
+
+def sql_bind(b : array<uint8>) : array<uint8> {
+    
+    
+    return <- clone_to_move(b)
+}
+
+[unused_argument(t)]
+def sql_extract(b : array<uint8>; t : type<array<uint8>>) : array<uint8> {
+    return <- clone_to_move(b)
+}
+
+
+
+def sql_bind(v : int) : int64 {
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<int>) : int {
+    return int(v)
+}
+
+def sql_bind(v : int8) : int64 {
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<int8>) : int8 {
+    return int8(v)
+}
+
+def sql_bind(v : int16) : int64 {
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<int16>) : int16 {
+    return int16(v)
+}
+
+def sql_bind(v : uint) : int64 {
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<uint>) : uint {
+    return uint(v)
+}
+
+def sql_bind(v : uint8) : int64 {
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<uint8>) : uint8 {
+    return uint8(v)
+}
+
+def sql_bind(v : uint16) : int64 {
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<uint16>) : uint16 {
+    return uint16(v)
+}
+
+def sql_bind(v : uint64) : int64 {
+    
+    
+    
+    return int64(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<uint64>) : uint64 {
+    return uint64(v)
+}
+
+def sql_bind(v : float) : double {
+    return double(v)
+}
+
+[unused_argument(t)]
+def sql_extract(v : double; t : type<float>) : float {
+    return float(v)
+}
+
+def sql_bind(v : bool) : int64 {
+    return v ? 1l : 0l
+}
+
+[unused_argument(t)]
+def sql_extract(v : int64; t : type<bool>) : bool {
+    return v != 0l
+}
+
+
+
+def sql_bind(value : auto(TT)) : int64 {
+    static_if (typeinfo is_enum(value)) {
+        return int64(value)
+    } else {
+        concept_assert(false, "sql_bind: unsupported field type. Define `def sql_bind(v : YourType) : int64 | double | string | array<uint8>` (and a matching sql_extract) in YourType's module.")
+        return 0l
+    }
+}
+
+
+
+[unused_argument(value)]
+def sql_bind(value : $Option < auto(TT) >) {
+    return _::sql_bind(default<TT>)
+}
+
+[unused_argument(t)]
+def sql_extract(value : int64; t : type<auto(TT)>) : TT {
+    static_if (typeinfo is_enum(default<TT>)) {
+        
+        
+        
+        static_if (typeinfo sizeof(type<TT>) == 1) {
+            return unsafe(reinterpret<TT>(int8(value)))
+        } static_elif (typeinfo sizeof(type<TT>) == 2) {
+            return unsafe(reinterpret<TT>(int16(value)))
+        } else {
+            return unsafe(reinterpret<TT>(int(value)))
+        }
+    } else {
+        concept_assert(false, "sql_extract: unsupported field type. Define `def sql_extract(v : int64 | double | string | array<uint8>; t : type<YourType>) : YourType` (and a matching sql_bind) in YourType's module.")
+        return default<TT>
+    }
+}
+
+
+[unused_argument(witness)]
+def sql_storage_type_witness(witness : int64) : string {
+    return "INTEGER"
+}
+
+[unused_argument(witness)]
+def sql_storage_type_witness(witness : double) : string {
+    return "REAL"
+}
+
+[unused_argument(witness)]
+def sql_storage_type_witness(witness : string) : string {
+    return "TEXT"
+}
+
+[unused_argument(witness)]
+def sql_storage_type_witness(witness : array<uint8>) : string {
+    return "BLOB"
+}
+
+[unused_argument(witness)]
+def sql_storage_type_witness(witness : auto(SS)) : string {
+    concept_assert(false, "sql_bind must return one of int64 / double / string / array<uint8>")
+    return ""
+}
+
+[unused_argument(t)]
+def sql_storage_type_for(t : type<auto(TT)>) : string {
+    return sql_storage_type_witness(default<typedecl(_::sql_bind(default<TT>))>)
+}
+
+[unused_argument(t)]
+def sql_storage_type_for(t : type<$Option<auto(TT)>>) : string {
+    
+    
+    return sql_storage_type_for(type<TT>)
+}
+
+
+
+[unused_argument(witness)]
+def sql_storage_enum_witness(witness : int64) : SqlType {
+    return SqlType.Integer
+}
+
+[unused_argument(witness)]
+def sql_storage_enum_witness(witness : double) : SqlType {
+    return SqlType.Real
+}
+
+[unused_argument(witness)]
+def sql_storage_enum_witness(witness : string) : SqlType {
+    return SqlType.Text
+}
+
+[unused_argument(witness)]
+def sql_storage_enum_witness(witness : array<uint8>) : SqlType {
+    return SqlType.Blob
+}
+
+[unused_argument(witness)]
+def sql_storage_enum_witness(witness : auto(SS)) : SqlType {
+    concept_assert(false, "sql_bind must return one of int64 / double / string / array<uint8>")
+    return SqlType.Null
+}
+
+[unused_argument(t)]
+def sql_storage_enum_for(t : type<auto(TT)>) : SqlType {
+    return sql_storage_enum_witness(default<typedecl(_::sql_bind(default<TT>))>)
+}
+
+[unused_argument(t)]
+def sql_storage_enum_for(t : type<$Option<auto(TT)>>) : SqlType {
+    return sql_storage_enum_for(type<TT>)
+}
+[unused_argument(t), template(t)]
+def column_info(t : type<auto(TT)>) : array<ColumnInfo> {
+    
+    
+    return <- _::_sql_column_info(default<TT>)
+}
+
+
+def find_annotation(args : AnnotationArgumentList; argn : string; default_value : auto(TT)) : TT {
+    let v = find_arg(args, argn)
+    static_if (typeinfo is_string(default_value)) {
+        if (v is tString) return v as tString
+    } else {
+        if (v is tBool) return v as tBool
+    }
+    return default_value
+}
+
+def private find_string_array_annotation(args : AnnotationArgumentList; argn : string) : array<string> {
+    return <- [for (a in args); string(a.sValue); where a.name == argn && a.basicType == Type.tString]
+}
+
+
+let private SQL_DEFAULT_FN_WHITELIST = ["CURRENT_TIMESTAMP", "CURRENT_DATE", "CURRENT_TIME"]
+
+let private SQL_FK_ACTION_WHITELIST = ["cascade", "set_null", "set_default", "restrict", "no_action"]
+
+def private fk_action_to_sql(action : string) : string {
+    return "CASCADE" if (action == "cascade")
+    return "SET NULL" if (action == "set_null")
+    return "SET DEFAULT" if (action == "set_default")
+    return "RESTRICT" if (action == "restrict")
+    return "NO ACTION"
+}
+
+def private sql_quote_string_literal(s : string) : string {
+    let escaped = replace(s, "'", "''")
+    return "'{escaped}'"
+}
+
+def private literal_init_to_default_clause(init : ExpressionPtr) : string {
+    if (init == null) return ""
+    if (init is ExprConstBool) return (init as ExprConstBool).getValue ? " DEFAULT 1" : " DEFAULT 0"
+    if (init is ExprConstInt) return " DEFAULT {(init as ExprConstInt).getValue}"
+    if (init is ExprConstInt64) return " DEFAULT {(init as ExprConstInt64).getValue}"
+    if (init is ExprConstFloat) return " DEFAULT {(init as ExprConstFloat).getValue}"
+    if (init is ExprConstDouble) return " DEFAULT {(init as ExprConstDouble).getValue}"
+    if (init is ExprConstString) return " DEFAULT {sql_quote_string_literal(string((init as ExprConstString).value))}"
+    return ""
+}
+
+struct FieldInfo {
+    name : string
+    col_name : string
+    is_pk : bool
+    is_int_pk : bool
+    is_optional : bool
+    is_unique : bool
+    is_computed : bool
+    is_stored : bool
+    is_json : bool
+    is_blob : bool
+    is_fts_rank : bool   
+    is_fts_unindexed : bool   
+    computed_sql : string
+    default_clause : string
+    references_clause : string
+}
+
+
+
+
+def private affinity_to_typedecl(sql_type : SqlType; not_null : bool) : TypeDeclPtr {
+    
+    var inner : TypeDeclPtr
+    if (sql_type == SqlType.Integer) {
+        inner = qmacro_type(type<int64>)
+    } elif (sql_type == SqlType.Real) {
+        inner = qmacro_type(type<double>)
+    } elif (sql_type == SqlType.Text) {
+        inner = qmacro_type(type<string>)
+    } elif (sql_type == SqlType.Blob) {
+        inner = qmacro_type(type<array<uint8>>)
+    } else {
+        return null
+    }
+    if (not_null) return inner
+    return qmacro_type(type<$Option<$t(inner)>>)
+}
+
+def private resolve_schema_from_path(p : string) : string {
+    
+    if (is_absolute(p)) return p
+    return path_join(get_das_root(), p)
+}
+
+def is_option_field_type(td : TypeDeclPtr) : bool {
+    if (td == null) return false
+    
+    if (td.baseType == Type.typeMacro && !empty(td.typeMacroExpr) && (td.typeMacroExpr[0] is ExprConstString)) return (td.typeMacroExpr[0] as ExprConstString).value == "Option"
+    
+    
+    
+    return (td.baseType == Type.tTuple
+            && length(td.argTypes) == 2
+            && length(td.argNames) == 2
+            && td.argNames[0] == "_has_value"
+            && td.argNames[1] == "_value"
+            && td.argTypes[0].baseType == Type.tBool)
+}
+
+def unwrap_option_payload_type(var td : TypeDeclPtr) : TypeDeclPtr {
+    
+    
+    if (td == null) return td
+    if (td.baseType == Type.typeMacro) {
+        if (length(td.typeMacroExpr) < 2 || td.typeMacroExpr[0] == null || !(td.typeMacroExpr[0] is ExprConstString)
+            || (td.typeMacroExpr[0] as ExprConstString).value != "Option"
+            || td.typeMacroExpr[1] == null || !(td.typeMacroExpr[1] is ExprTypeDecl)) return td
+        return clone_type((td.typeMacroExpr[1] as ExprTypeDecl).typeexpr)
+    }
+    
+    if (td.baseType == Type.tTuple
+            && length(td.argTypes) == 2
+            && length(td.argNames) == 2
+            && td.argNames[0] == "_has_value"
+            && td.argNames[1] == "_value"
+            && td.argTypes[0].baseType == Type.tBool) return clone_type(td.argTypes[1])
+    return td
+}
+
+def private build_create_indexes_sql(st : StructurePtr; table_name : string; field_names : array<string>; var errors : das_string; var ok : bool&) : string {
+    ok = true
+    var stmt_count = 0
+    let sql = build_string() $(var w) {
+        for (ann in st.annotations) {
+            if (ann.annotation.name != "sql_index") continue
+            let idx_name_arg = find_annotation(ann.arguments, "name", "")
+            let is_unique = find_annotation(ann.arguments, "unique", false)
+            let cols = find_string_array_annotation(ann.arguments, "fields")
+            if (empty(cols)) {
+                errors := "[sql_index]: missing or empty `fields=` argument. Use `fields=\"ColName\"` for a single-column index or `fields=(\"A\", \"B\")` for a composite."
+                ok = false
+                return
+            }
+            for (col in cols) {
+                var found = false
+                for (fn in field_names) {
+                    if (fn == col) {
+                        found = true
+                    }
+                }
+                if (!found) {
+                    errors := "[sql_index]: field '{col}' is not a column of struct '{st.name}'. Available: {field_names}"
+                    ok = false
+                    return
+                }
+            }
+            let auto_name = build_string() $(var w2) {
+                w2 |> write("idx_")
+                w2 |> write(table_name)
+                for (col in cols) {
+                    w2 |> write("_")
+                    w2 |> write(col)
+                }
+            }
+            let idx_name = empty(idx_name_arg) ? auto_name : idx_name_arg
+            let kind = is_unique ? "UNIQUE INDEX" : "INDEX"
+            if (stmt_count > 0) {
+                w |> write("; ")
+            }
+            stmt_count++
+            w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
+            for (j in range(length(cols))) {
+                if (j > 0) {
+                    w |> write(", ")
+                }
+                w |> write("\"")
+                w |> write(cols[j])
+                w |> write("\"")
+            }
+            w |> write(")")
+        }
+    }
+    return sql
+}
+
+def private extract_string_return(var fn : FunctionPtr) : string {
+    if (fn == null || fn.body == null || !(fn.body is ExprBlock)) return ""
+    let blk = fn.body as ExprBlock
+    
+    for (stmt in blk.list) {
+        if (!(stmt is ExprReturn)) continue
+        let ret = stmt as ExprReturn
+        let val = ret.subexpr
+        if (val == null || !(val is ExprConstString)) return ""
+        return string((val as ExprConstString).value)
+    }
+    return ""
+}
+
+def private find_struct_helper_fn(name : string; st : StructurePtr) : FunctionPtr {
+    var found : FunctionPtr
+    for_each_function(compiling_module(), name) $(var fn) {
+        if (!empty(fn.arguments)
+                && fn.arguments[0]._type != null
+                && fn.arguments[0]._type.structType == st) {
+            found = fn
+        }
+    }
+    return found
+}
+
+def private derive_index_name(table_name : string; sql_cols : array<string>) : string {
+    
+    return build_string() $(var w) {
+        w |> write("idx_")
+        w |> write(table_name)
+        for (col in sql_cols) {
+            w |> write("_")
+            w |> write(col)
+        }
+    }
+}
+
+def private build_field_unique_indexes_sql(table_name : string; fields : array<FieldInfo>) : string {
+    var stmt_count = 0
+    return build_string() $(var w) {
+        for (info in fields) {
+            if (!info.is_unique || info.is_pk) continue
+            if (stmt_count > 0) {
+                w |> write("; ")
+            }
+            stmt_count++
+            w |> write("CREATE UNIQUE INDEX \"uq_{table_name}_{info.col_name}\"")
+            w |> write(" ON \"{table_name}\" (\"{info.col_name}\")")
+        }
+    }
+}
+
+[structure_macro(name=sql_index)]
+class SqlIndexMacro : AstStructureAnnotation {
+    
+    
+    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
+        
+        
+        if (find_struct_helper_fn("_sql_legacy_table_marker", st) != null) {
+            errors := "[sql_index] on '{st.name}': not supported on [sql_table(legacy=true)] structs (they don't define schema). Drop the [sql_index] annotation; the current (non-legacy) struct's indexes are reapplied automatically by ``convert_and_rename``."
+            return false
+        }
+        let cols = find_string_array_annotation(args, "fields")
+        if (empty(cols)) {
+            errors := "[sql_index]: missing or empty `fields=` argument. Use `fields=\"ColName\"` for a single-column index or `fields=(\"A\", \"B\")` for a composite."
+            return false
+        }
+        let is_unique = find_annotation(args, "unique", false)
+        let idx_name_arg = find_annotation(args, "name", "")
+
+        
+        var sql_cols : array<string>
+        sql_cols |> reserve(length(cols))
+        for (col in cols) {
+            var has_field = false
+            var resolved = col
+            for (field in st.fields) {
+                if (field.name == col) {
+                    has_field = true
+                    let ca = find_arg(field.annotation, "sql_column")
+                    if (ca is tString) {
+                        resolved = ca as tString
+                    }
+                }
+            }
+            if (!has_field) {
+                errors := "[sql_index]: field '{col}' is not a column of struct '{st.name}'."
+                return false
+            }
+            sql_cols |> push(resolved)
+        }
+
+        
+        var idx_fn = find_struct_helper_fn("_sql_create_indexes_sql", st)
+        if (idx_fn == null) {
+            errors := "[sql_index] on struct '{st.name}': no [sql_table] declared earlier in the annotation list. Use `[sql_table(...), sql_index(...), ...]` order so the index helper is in scope."
+            return false
+        }
+        var name_fn = find_struct_helper_fn("_sql_table_name", st)
+        if (name_fn == null) {
+            errors := "[sql_index] on struct '{st.name}': cannot resolve table name (no [sql_table] visible). Same source-order rule as above."
+            return false
+        }
+        let table_name = extract_string_return(name_fn)
+        if (empty(table_name)) {
+            errors := "[sql_index] on struct '{st.name}': internal - _sql_table_name body did not match expected shape."
+            return false
+        }
+
+        
+        let auto_name = derive_index_name(table_name, sql_cols)
+        let idx_name = empty(idx_name_arg) ? auto_name : idx_name_arg
+        let kind = is_unique ? "UNIQUE INDEX" : "INDEX"
+        let this_stmt = build_string() $(var w) {
+            w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
+            for (j in range(length(sql_cols))) {
+                if (j > 0) {
+                    w |> write(", ")
+                }
+                w |> write("\"")
+                w |> write(sql_cols[j])
+                w |> write("\"")
+            }
+            w |> write(")")
+        }
+
+        
+        let prev_sql = extract_string_return(idx_fn)
+        let new_sql = empty(prev_sql) ? this_stmt : "{prev_sql}; {this_stmt}"
+        idx_fn.body = qmacro_block() {
+            return $v(new_sql)
+        }
+        idx_fn.body |> force_at(st.at)
+        return true
+    }
+}
+
+def private find_parent_table_and_pk(var st : StructurePtr; parent_name : string) : tuple<tab_name : string; pk_col : string; found : bool> {
+    var found_st : StructurePtr
+    if (st.name == parent_name) {
+        found_st = st
+    } else {
+        for_each_structure(compiling_module()) $(var ps) {
+            if (ps.name == parent_name) {
+                found_st = ps
+            }
+        }
+    }
+    if (found_st == null) return (tab_name = "", pk_col = "", found = false)
+    var tab = string(found_st.name)
+    for (ann in found_st.annotations) {
+        if (ann.annotation.name == "sql_table") {
+            tab = find_annotation(ann.arguments, "name", tab)
+        }
+    }
+    for (pf in found_st.fields) {
+        if (find_annotation(pf.annotation, "sql_primary_key", false)) {
+            
+            var pk_col = string(pf.name)
+            let pk_anno = find_arg(pf.annotation, "sql_column")
+            if (pk_anno is tString) {
+                pk_col = pk_anno as tString
+            }
+            return (tab_name = tab, pk_col = pk_col, found = true)
+        }
+    }
+    return (tab_name = tab, pk_col = "", found = false)
+}
+
+[structure_macro(name=sql_table)]
+class SqlTableMacro : AstStructureAnnotation {
+    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {   
+        let table_name = find_annotation(args, "name", string(st.name))
+        
+        let is_legacy = find_annotation(args, "legacy", false)
+
+        var schema_assert_exprs : array<ExpressionPtr>
+        let schema_from_arg = find_arg(args, "schema_from")
+        if (schema_from_arg is tString) {
+            let raw_path = schema_from_arg as tString
+            if (empty(raw_path)) {
+                errors := "[sql_table]: schema_from=\"\" is invalid - provide a non-empty path to a SQLite database file."
+                return false
+            }
+            if (!apply_schema_from(st, raw_path, table_name, schema_assert_exprs, errors)) return false
+        }
+
+        var fields : array<FieldInfo>
+        fields |> reserve(length(st.fields))
+        for (field in st.fields) {
+            let fname = string(field.name)
+            let is_pk = find_annotation(field.annotation, "sql_primary_key", false)
+            let is_unique = find_annotation(field.annotation, "sql_unique", false)
+            let is_optional = is_option_field_type(field._type)
+
+            
+            let computed_sql = find_annotation(field.annotation, "sql_computed", "")
+            let is_computed = !empty(computed_sql)
+            let is_stored = find_annotation(field.annotation, "sql_stored", false)
+
+            
+            let is_json = find_annotation(field.annotation, "sql_json", false)
+            let is_blob = find_annotation(field.annotation, "sql_blob", false)
+
+            
+            let sql_default_fn = find_annotation(field.annotation, "sql_default_fn", "")
+
+            
+            let references = find_annotation(field.annotation, "sql_references", "")
+            let on_delete = find_annotation(field.annotation, "sql_on_delete", "no_action")
+            let on_update = find_annotation(field.annotation, "sql_on_update", "no_action")
+            let has_on_delete_attr = !empty(find_annotation(field.annotation, "sql_on_delete", ""))
+            let has_on_update_attr = !empty(find_annotation(field.annotation, "sql_on_update", ""))
+
+            
+            var col_name = fname
+            let col_anno = find_arg(field.annotation, "sql_column")
+            if (col_anno is tString) {
+                let cv = col_anno as tString
+                if (empty(cv)) {
+                    errors := "[sql_table]: field '{fname}' @sql_column = \"\" is invalid - provide a non-empty SQL column name."
+                    return false
+                }
+                if (find(cv, "\"") >= 0 || find(cv, "\\") >= 0) {
+                    errors := "[sql_table]: field '{fname}' @sql_column=\"{cv}\" - embedded `\"` / `\\` are rejected (SQL identifier hygiene). Use a plain identifier."
+                    return false
+                }
+                col_name = cv
+            }
+
+            
+            if (is_pk && is_optional) {
+                errors := "[sql_table]: @sql_primary_key on field '{fname}' must not be Option<T> - primary keys cannot be NULL in SQL. Use a non-optional type."
+                return false
+            }
+            if (is_computed && is_pk) {
+                errors := "[sql_table]: field '{fname}' cannot be both @sql_primary_key and @sql_computed - SQLite rejects PRIMARY KEY on a generated column."
+                return false
+            }
+            if (is_computed && is_unique) {
+                errors := "[sql_table]: field '{fname}' cannot be both @sql_unique and @sql_computed - declare an explicit [sql_index(fields=\"{fname}\", unique=true)] if the provider supports indexing that generated expression."
+                return false
+            }
+            if (is_computed && field.init != null) {
+                errors := "[sql_table]: field '{fname}' is @sql_computed; remove the daslang field initializer (the SQL expression provides the value)."
+                return false
+            }
+            if (is_computed && !empty(sql_default_fn)) {
+                errors := "[sql_table]: field '{fname}' is @sql_computed; @sql_default_fn does not apply (computed columns derive their value from the expression)."
+                return false
+            }
+            if (is_json && is_blob) {
+                errors := "[sql_table]: field '{fname}' has both @sql_json and @sql_blob - pick one. Use @sql_json for queryable, schema-tolerant TEXT storage; use @sql_blob for opaque, faster binary storage."
+                return false
+            }
+            let json_or_blob_kind = is_json ? "json" : "blob"
+            if ((is_json || is_blob) && is_pk) {
+                errors := "[sql_table]: field '{fname}' is @sql_{json_or_blob_kind} - non-scalar columns cannot be a PRIMARY KEY."
+                return false
+            }
+            if ((is_json || is_blob) && is_computed) {
+                errors := "[sql_table]: field '{fname}' is @sql_computed; @sql_{json_or_blob_kind} does not apply (computed columns derive their value from the SQL expression, not from a daslang adapter)."
+                return false
+            }
+            if (field.init != null && !empty(sql_default_fn)) {
+                errors := "[sql_table]: field '{fname}' has both a daslang field initializer and @sql_default_fn - pick one. Use the field init for literal defaults, @sql_default_fn for SQL built-ins like CURRENT_TIMESTAMP."
+                return false
+            }
+            if (!empty(sql_default_fn)) {
+                var fn_ok = false
+                for (allowed in SQL_DEFAULT_FN_WHITELIST) {
+                    if (allowed == sql_default_fn) {
+                        fn_ok = true
+                    }
+                }
+                if (!fn_ok) {
+                    errors := "[sql_table]: field '{fname}' @sql_default_fn=\"{sql_default_fn}\" is not in the supported set (CURRENT_TIMESTAMP / CURRENT_DATE / CURRENT_TIME). Use raw SQL via `db |> exec(...)` for other expressions."
+                    return false
+                }
+            }
+            if ((has_on_delete_attr || has_on_update_attr) && empty(references)) {
+                errors := "[sql_table]: field '{fname}' has @sql_on_delete / @sql_on_update without @sql_references - these annotations only apply to a foreign-key relationship."
+                return false
+            }
+            if (!empty(references)) {
+                var od_ok = false
+                var ou_ok = false
+                for (allowed in SQL_FK_ACTION_WHITELIST) {
+                    if (allowed == on_delete) {
+                        od_ok = true
+                    }
+                    if (allowed == on_update) {
+                        ou_ok = true
+                    }
+                }
+                if (!od_ok) {
+                    errors := "[sql_table]: field '{fname}' @sql_on_delete=\"{on_delete}\" must be one of cascade / set_null / set_default / restrict / no_action."
+                    return false
+                }
+                if (!ou_ok) {
+                    errors := "[sql_table]: field '{fname}' @sql_on_update=\"{on_update}\" must be one of cascade / set_null / set_default / restrict / no_action."
+                    return false
+                }
+                if (on_delete == "set_null" && !is_optional) {
+                    errors := "[sql_table]: field '{fname}' @sql_on_delete=\"set_null\" requires column type Option<T> so the column can hold NULL. Either change the column type or pick a different action (cascade / restrict / no_action)."
+                    return false
+                }
+                if (on_delete == "set_default" && field.init == null && empty(sql_default_fn)) {
+                    errors := "[sql_table]: field '{fname}' @sql_on_delete=\"set_default\" requires a daslang field initializer (`{fname} : T = <literal>`) or @sql_default_fn. Otherwise SET DEFAULT has nothing to set."
+                    return false
+                }
+            }
+
+            
+            var default_clause = ""
+            if (!empty(sql_default_fn)) {
+                default_clause = " DEFAULT {sql_default_fn}"
+            } elif (field.init != null) {
+                default_clause = literal_init_to_default_clause(field.init)
+            }
+
+            var references_clause = ""
+            if (!empty(references)) {
+                let pk_lookup = find_parent_table_and_pk(st, references)
+                if (!pk_lookup.found) {
+                    if (empty(pk_lookup.tab_name)) {
+                        errors := "[sql_table]: field '{fname}' @sql_references=\"{references}\" - no struct named '{references}' is visible in this module."
+                    } else {
+                        errors := "[sql_table]: field '{fname}' @sql_references=\"{references}\" - parent struct '{references}' has no @sql_primary_key field; FK target column cannot be resolved."
+                    }
+                    return false
+                }
+                references_clause = " REFERENCES \"{pk_lookup.tab_name}\"(\"{pk_lookup.pk_col}\") ON DELETE {fk_action_to_sql(on_delete)} ON UPDATE {fk_action_to_sql(on_update)}"
+            }
+
+            fields |> push(FieldInfo(
+                name = fname,
+                col_name = col_name,
+                is_pk = is_pk,
+                is_int_pk = is_pk && (field._type.baseType == Type.tInt || field._type.baseType == Type.tInt64),
+                is_optional = is_optional,
+                is_unique = is_unique,
+                is_computed = is_computed,
+                is_stored = is_stored,
+                is_json = is_json,
+                is_blob = is_blob,
+                computed_sql = computed_sql,
+                default_clause = default_clause,
+                references_clause = references_clause
+            ))
+        }
+
+        
+        {
+            var seen_cols : table<string; string>  
+            for (info in fields) {
+                if (key_exists(seen_cols, info.col_name)) {
+                    let first_owner = seen_cols[info.col_name]
+                    errors := "[sql_table]: SQL column name '{info.col_name}' is claimed by both field '{first_owner}' and field '{info.name}'. @sql_column renames must produce a unique column name across the struct."
+                    return false
+                }
+                seen_cols |> insert(info.col_name, info.name)
+            }
+        }
+
+        
+        if (!emit_json_blob_adapters_for_struct(st, fields, "[sql_table]", errors)) return false
+
+        
+        
+        
+        if (is_legacy) {
+            
+            var fn_legacy_marker = qmacro_function("_sql_legacy_table_marker") $(typ : $t(st)) : bool {
+                return true
+            }
+            fn_legacy_marker.flags.generated = true
+            fn_legacy_marker.body |> force_at(st.at)
+            compiling_module() |> add_function(fn_legacy_marker)
+        }
+        var fn_table_name = make_table_name_fn(st, table_name, schema_assert_exprs)
+        compiling_module() |> add_function(fn_table_name)
+        
+        
+        var fn_drop_named = make_drop_sql_named_fn(st)
+        compiling_module() |> add_function(fn_drop_named)
+        var fn_drop = make_drop_sql_fn(st, table_name)
+        compiling_module() |> add_function(fn_drop)
+        
+        var fn_select_all_named = make_select_all_sql_named_fn(st, fields)
+        compiling_module() |> add_function(fn_select_all_named)
+        var fn_select_all = make_select_all_sql_fn(st, table_name, fields)
+        compiling_module() |> add_function(fn_select_all)
+        var fn_read = make_read_row_fn(st, fields)
+        compiling_module() |> add_generic(fn_read)
+        var fn_col_info = make_column_info_fn(st, fields)
+        compiling_module() |> add_function(fn_col_info)
+
+        
+        if (!is_legacy) {
+            var fn_create_named = make_create_table_sql_named_fn(st, fields)
+            compiling_module() |> add_function(fn_create_named)
+            var fn_create = make_create_table_sql_fn(st, table_name, fields)
+            compiling_module() |> add_function(fn_create)
+            
+            
+            var fn_indexes_named = make_create_indexes_sql_named_fn(st, table_name)
+            compiling_module() |> add_function(fn_indexes_named)
+            
+            
+            let unique_indexes_sql = build_field_unique_indexes_sql(table_name, fields)
+            var fn_indexes = make_create_indexes_sql_fn(st, unique_indexes_sql)
+            compiling_module() |> add_function(fn_indexes)
+            var fn_ins_pk_named = make_insert_sql_named_fn(st, fields, true)
+            compiling_module() |> add_function(fn_ins_pk_named)
+            var fn_ins_pk = make_insert_sql_fn(st, table_name, fields, true)
+            compiling_module() |> add_function(fn_ins_pk)
+            var fn_ins_nopk_named = make_insert_sql_named_fn(st, fields, false)
+            compiling_module() |> add_function(fn_ins_nopk_named)
+            var fn_ins_nopk = make_insert_sql_fn(st, table_name, fields, false)
+            compiling_module() |> add_function(fn_ins_nopk)
+            var fn_pk_unset = make_pk_is_unset_fn(st, fields)
+            compiling_module() |> add_function(fn_pk_unset)
+            var fn_bind = make_bind_row_fn(st, fields)
+            compiling_module() |> add_generic(fn_bind)
+            var fn_upd_pk_named = make_update_by_pk_sql_named_fn(st, fields)
+            compiling_module() |> add_function(fn_upd_pk_named)
+            var fn_upd_pk = make_update_by_pk_sql_fn(st, table_name, fields)
+            compiling_module() |> add_function(fn_upd_pk)
+            var fn_del_pk_named = make_delete_by_pk_sql_named_fn(st, fields)
+            compiling_module() |> add_function(fn_del_pk_named)
+            var fn_del_pk = make_delete_by_pk_sql_fn(st, table_name, fields)
+            compiling_module() |> add_function(fn_del_pk)
+            var fn_bind_upd = make_bind_row_for_update_fn(st, fields)
+            compiling_module() |> add_generic(fn_bind_upd)
+            var fn_bind_pk = make_bind_row_pk_only_fn(st, fields)
+            compiling_module() |> add_generic(fn_bind_pk)
+        }
+
+        return true
+    }
+
+    def apply_schema_from(var st : StructurePtr;   
+                          raw_path : string;
+                          tbl_name : string;
+                          var assert_exprs : array<ExpressionPtr>&;
+                          var errors : das_string) : bool {
+        
+        
+        
+        let resolved = resolve_schema_from_path(raw_path)
+        var pidx = -1
+        for (i in range(sql_provider_count())) {
+            if (sql_provider_at(i).readTableSchema != null) {
+                if (pidx >= 0) {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - ambiguous: multiple registered providers support schema introspection ({sql_provider_names()})."
+                    return false
+                }
+                pidx = i
+            }
+        }
+        if (pidx < 0) {
+            errors := "[sql_table]: schema_from=\"{raw_path}\" - no registered SQL provider supports schema introspection (registered: {sql_provider_names()})."
+            return false
+        }
+        let provider = sql_provider_at(pidx)
+        var cols_result <- invoke(provider.readTableSchema, resolved, tbl_name)
+        if (cols_result |> is_err) {
+            errors := "[sql_table]: schema_from=\"{raw_path}\" - {cols_result |> unwrap_err}"
+            return false
+        }
+        let cols <- cols_result._value
+        if (empty(cols)) {
+            errors := "[sql_table]: schema_from=\"{raw_path}\" - table \"{tbl_name}\" has no columns or doesn't exist in this database."
+            return false
+        }
+        
+        var covered : array<bool>
+        covered |> resize(length(cols))
+        assert_exprs |> reserve(length(st.fields))
+        
+        for (ufi in range(length(st.fields))) {
+            let ufname = string(st.fields[ufi].name)
+            var matched_col_idx = -1
+            for (ci in range(length(cols))) {
+                if (cols[ci].name == ufname) {
+                    matched_col_idx = ci
+                    break
+                }
+            }
+            if (matched_col_idx < 0) {
+                errors := "[sql_table]: schema_from=\"{raw_path}\" - hand-declared field '{ufname}' not found in table \"{tbl_name}\". Either remove the field, rename it, or update the .db schema."
+                return false
+            }
+            covered[matched_col_idx] = true
+            let col_name_s = cols[matched_col_idx].name
+            let col_not_null = cols[matched_col_idx].not_null
+            let col_pk = cols[matched_col_idx].pk
+            
+            
+            let col_generated = cols[matched_col_idx].generated
+            let user_computed = find_arg(st.fields[ufi].annotation, "sql_computed")
+            let user_is_computed = user_computed is tString && !empty(user_computed as tString)
+            if (user_is_computed != col_generated) {
+                if (user_is_computed) {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - field '{ufname}' is @sql_computed but column \"{col_name_s}\" in \"{tbl_name}\" is not GENERATED."
+                } else {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - column \"{col_name_s}\" in \"{tbl_name}\" is GENERATED; declare field '{ufname}' with @sql_computed (the DB does not store the expression - copy it from your DDL)."
+                }
+                return false
+            }
+            
+            let user_is_pk = find_annotation(st.fields[ufi].annotation, "sql_primary_key", false)
+            if (user_is_pk != col_pk) {
+                if (user_is_pk) {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - field '{ufname}' is @sql_primary_key but column \"{col_name_s}\" in \"{tbl_name}\" is not PRIMARY KEY."
+                } else {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - column \"{col_name_s}\" in \"{tbl_name}\" is PRIMARY KEY but field '{ufname}' is missing @sql_primary_key."
+                }
+                return false
+            }
+            
+            
+            let user_is_nullable = is_option_field_type(st.fields[ufi]._type)
+            let col_is_nullable = !col_not_null && !col_pk
+            if (user_is_nullable != col_is_nullable) {
+                if (user_is_nullable) {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - field '{ufname}' is Option<T> but column \"{col_name_s}\" in \"{tbl_name}\" is NOT NULL. Drop the Option<> wrapper."
+                } else {
+                    errors := "[sql_table]: schema_from=\"{raw_path}\" - column \"{col_name_s}\" in \"{tbl_name}\" allows NULL but field '{ufname}' is non-optional. Use Option<T>."
+                }
+                return false
+            }
+            
+            
+            let expected_sql_type = cols[matched_col_idx].data_type
+            let storage_label = invoke(provider.sqlTypeFor, expected_sql_type)
+            var expected_native = ""
+            if (expected_sql_type == SqlType.Integer) {
+                expected_native = "int64"
+            } elif (expected_sql_type == SqlType.Real) {
+                expected_native = "double"
+            } elif (expected_sql_type == SqlType.Text) {
+                expected_native = "string"
+            } else {
+                expected_native = "array<uint8>"
+            }
+            let msg = "[sql_table] schema_from: field '{ufname}' SqlType does not match column \"{col_name_s}\" in \"{tbl_name}\" (expected {storage_label})."
+            assert_exprs |> push(qmacro_expr(${
+                static_if (typeinfo stripped_typename(default<typedecl(_::sql_bind(default<$t(st.fields[ufi]._type)>))>) != $v(expected_native)) {
+                    concept_assert(false, $v(msg));
+                }
+            }))
+        }
+        
+        for (is_covered, col in covered, cols) {
+            
+            
+            
+            if (is_covered || col.generated) continue
+            let sql_type = col.data_type
+            
+            
+            let effective_not_null = col.not_null || col.pk
+            var td = affinity_to_typedecl(sql_type, effective_not_null)
+            if (td == null) {
+                errors := "[sql_table]: schema_from=\"{raw_path}\" - column \"{col.name}\" declared type \"{col.decl_type}\" couldn't be mapped to a daslang type."
+                return false
+            }
+            let fi = st |> add_structure_field(col.name, td, default<ExpressionPtr>)
+            if (col.pk) {
+                st.fields[fi].annotation |> add_annotation_argument("sql_primary_key", true)
+            }
+        }
+        return true
+    }
+
+    def make_table_name_fn(var st : StructurePtr; table_name : string; var assert_exprs : array<ExpressionPtr>) : FunctionPtr {
+        var fn = qmacro_function("_sql_table_name") $(typ : $t(st)) : string {
+            $b(assert_exprs)
+            return $v(table_name)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_drop_sql_fn(var st : StructurePtr; table_name : string) : FunctionPtr {
+        
+        var fn = qmacro_function("_sql_drop_table_if_exists_sql") $(typ : $t(st)) : string {
+            return _sql_drop_table_if_exists_sql(default<$t(st)>, $v(table_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_drop_sql_named_fn(var st : StructurePtr) : FunctionPtr {
+        
+        
+        
+        var fn = qmacro_function("_sql_drop_table_if_exists_sql") $(typ : $t(st); name : string) : string {
+            return "DROP TABLE IF EXISTS " + sql_quote_id(name)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_create_indexes_sql_fn(var st : StructurePtr; indexes_sql : string) : FunctionPtr {
+        
+        
+        var fn = qmacro_function("_sql_create_indexes_sql") $(typ : $t(st)) : string {
+            return $v(indexes_sql)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_create_indexes_sql_named_fn(var st : StructurePtr; table_name : string) : FunctionPtr {
+        
+        
+        let orig_quoted = "\"{table_name}\""
+        let orig_idx_prefix = "\"idx_{table_name}_"
+        let orig_unique_prefix = "\"uq_{table_name}_"
+        var fn = qmacro_function("_sql_create_indexes_sql") $(typ : $t(st); name : string) : string {
+            let escaped_name = name |> replace("\"", "\"\"")
+            return (_sql_create_indexes_sql(default<$t(st)>)
+                |> replace($v(orig_quoted), "\"" + escaped_name + "\"")
+                |> replace($v(orig_idx_prefix), "\"idx_" + escaped_name + "_")
+                |> replace($v(orig_unique_prefix), "\"uq_" + escaped_name + "_"))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_create_table_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
+        
+        
+        var fn = qmacro_function("_sql_create_table_sql") $(typ : $t(st)) : string {
+            return _sql_create_table_sql(default<$t(st)>, $v(table_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_create_table_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        
+        
+        var write_exprs : array<ExpressionPtr>
+        write_exprs |> reserve(3 * length(fields) + 4)
+
+        
+        write_exprs |> push(qmacro_expr(${ writer |> write("CREATE TABLE "); }))
+        write_exprs |> push(qmacro_expr(${ writer |> write(sql_quote_id(name)); }))
+        write_exprs |> push(qmacro_expr(${ writer |> write("("); }))
+
+        for (i in range(length(fields))) {
+            let info = fields[i]
+            let prefix = i == 0 ? "\"{info.col_name}\" " : ", \"{info.col_name}\" "
+            
+            var suffix = ""
+            if (info.is_computed) {
+                let storage = info.is_stored ? "STORED" : "VIRTUAL"
+                suffix = " GENERATED ALWAYS AS ({info.computed_sql}) {storage}"
+            } else {
+                if (info.is_pk) {
+                    suffix = " PRIMARY KEY"
+                } elif (!info.is_optional) {
+                    suffix = " NOT NULL"
+                }
+                suffix += info.default_clause
+                suffix += info.references_clause
+            }
+            write_exprs |> push(qmacro_expr(${ writer |> write($v(prefix)); }))
+            
+            if (info.is_json) {
+                write_exprs |> push(qmacro_expr(${ writer |> write("TEXT"); }))
+            } elif (info.is_blob) {
+                write_exprs |> push(qmacro_expr(${ writer |> write("BLOB"); }))
+            } else {
+                write_exprs |> push(qmacro_expr(${ writer |> write(sql_storage_type_for(type<$t(st.fields[i]._type)>)); }))
+            }
+            write_exprs |> push(qmacro_expr(${ writer |> write($v(suffix)); }))
+        }
+        write_exprs |> push(qmacro_expr(${ writer |> write(")"); }))
+
+        var fn = qmacro_function("_sql_create_table_sql") $(typ : $t(st); name : string) : string {
+            return build_string() $(var writer) {
+                $b(write_exprs)
+            }
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_column_info_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        
+        var push_exprs : array<ExpressionPtr>
+        push_exprs |> reserve(length(fields))
+        for (info, i in fields, count()) {
+            let name = info.col_name
+            let is_pk = info.is_pk
+            let is_nullable = info.is_optional
+            
+            var default_expr = ""
+            if (length(info.default_clause) > length(" DEFAULT ")) {
+                default_expr = info.default_clause |> slice(length(" DEFAULT "))
+            }
+            let is_computed = info.is_computed
+            if (info.is_json) {
+                push_exprs |> push(qmacro_expr(${ result |> push(ColumnInfo(
+                    name = $v(name),
+                    data_type = SqlType.Text,
+                    is_pk = $v(is_pk),
+                    is_nullable = $v(is_nullable),
+                    default_expr = $v(default_expr),
+                    is_computed = $v(is_computed))); }))
+            } elif (info.is_blob) {
+                push_exprs |> push(qmacro_expr(${ result |> push(ColumnInfo(
+                    name = $v(name),
+                    data_type = SqlType.Blob,
+                    is_pk = $v(is_pk),
+                    is_nullable = $v(is_nullable),
+                    default_expr = $v(default_expr),
+                    is_computed = $v(is_computed))); }))
+            } else {
+                push_exprs |> push(qmacro_expr(${ result |> push(ColumnInfo(
+                    name = $v(name),
+                    data_type = sql_storage_enum_for(type<$t(st.fields[i]._type)>),
+                    is_pk = $v(is_pk),
+                    is_nullable = $v(is_nullable),
+                    default_expr = $v(default_expr),
+                    is_computed = $v(is_computed))); }))
+            }
+        }
+        var fn = qmacro_function("_sql_column_info") $(typ : $t(st)) : array<ColumnInfo> {
+            var result : array<ColumnInfo>
+            $b(push_exprs)
+            return <- result
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_insert_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>; include_pk : bool) : FunctionPtr {
+        
+        
+        let helper_name = include_pk ? "_sql_insert_with_pk_sql" : "_sql_insert_no_pk_sql"
+        var fn = qmacro_function(helper_name) $(typ : $t(st)) : string {
+            return $c(helper_name)(default<$t(st)>, $v(table_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_insert_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>; include_pk : bool) : FunctionPtr {
+        
+        
+        
+        let helper_name = include_pk ? "_sql_insert_with_pk_sql" : "_sql_insert_no_pk_sql"
+        let cols = build_string() $(var w) {
+            var first = true
+            for (info in fields) {
+                if (info.is_computed || (!include_pk && info.is_pk)) continue
+                if (!first) {
+                    w |> write(", ")
+                }
+                w |> write("\"")
+                w |> write(info.col_name)
+                w |> write("\"")
+                first = false
+            }
+        }
+        let placeholders = build_string() $(var w) {
+            var first = true
+            for (info in fields) {
+                if (info.is_computed || (!include_pk && info.is_pk)) continue
+                if (!first) {
+                    w |> write(", ")
+                }
+                w |> write("?")
+                first = false
+            }
+        }
+        
+        
+        let suffix = (empty(cols)
+            ? " DEFAULT VALUES"
+            : " ({cols}) VALUES ({placeholders})")
+        var fn = qmacro_function(helper_name) $(typ : $t(st); name : string) : string {
+            return "INSERT INTO " + sql_quote_id(name) + $v(suffix)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_pk_is_unset_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        var pk_field_index = -1
+        for (i in range(length(fields))) {
+            if (fields[i].is_int_pk) {
+                pk_field_index = i
+                break
+            }
+        }
+        if (pk_field_index >= 0) {
+            let pk_name = fields[pk_field_index].name
+            var fn = qmacro_function("_sql_pk_is_unset") $(row : $t(st)) : bool {
+                return row.$f(pk_name) == default<$t(st.fields[pk_field_index]._type)>
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        } else {
+            var fn = qmacro_function("_sql_pk_is_unset") $(row : $t(st)) : bool {
+                return false
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        }
+    }
+
+    def make_bind_row_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        var with_pk_exprs : array<ExpressionPtr>
+        var no_pk_exprs : array<ExpressionPtr>
+        with_pk_exprs |> reserve(length(fields))
+        no_pk_exprs |> reserve(length(fields))
+
+        var with_pk_idx = 0
+        for (info in fields) {
+            if (info.is_computed) continue
+            with_pk_idx++
+            let wi = with_pk_idx
+            let field_name = info.name
+            with_pk_exprs |> push(qmacro_expr(${
+                sql_bind_to_stmt(stmt, $v(wi), row.$f(field_name));
+            }))
+        }
+
+        var no_pk_idx = 0
+        for (info in fields) {
+            if (info.is_pk || info.is_computed) continue
+            no_pk_idx++
+            let field_name = info.name
+            no_pk_exprs |> push(qmacro_expr(${
+                sql_bind_to_stmt(stmt, $v(no_pk_idx), row.$f(field_name));
+            }))
+        }
+
+        
+        
+        var fn = qmacro_function("_sql_bind_row") $(var stmt; row : $t(st); include_pk : bool) : void {
+            if (include_pk) {
+                $b(with_pk_exprs)
+            } else {
+                $b(no_pk_exprs)
+            }
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_select_all_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
+        
+        var fn = qmacro_function("_sql_select_all_sql") $(typ : $t(st)) : string {
+            return _sql_select_all_sql(default<$t(st)>, $v(table_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_select_all_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        let col_list = build_string() $(var w) {
+            for (i in range(length(fields))) {
+                if (i > 0) {
+                    w |> write(", ")
+                }
+                w |> write("\"")
+                w |> write(fields[i].col_name)
+                w |> write("\"")
+            }
+        }
+        let prefix = "SELECT {col_list} FROM "
+        var fn = qmacro_function("_sql_select_all_sql") $(typ : $t(st); name : string) : string {
+            return $v(prefix) + sql_quote_id(name)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_read_row_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        var assign_exprs : array<ExpressionPtr>
+        assign_exprs |> reserve(length(fields))
+
+        for (i in range(length(fields))) {
+            let info = fields[i]
+            let col_idx = i
+            let field_name = info.name
+            assign_exprs |> push(qmacro_expr(${
+                static_if (typeinfo can_copy(default<$t(st.fields[i]._type)>)) {
+                    row.$f(field_name) = read_via_adapter(stmt, $v(col_idx), type<$t(st.fields[i]._type)>);
+                } else {
+                    var field_tmp <- clone_to_move(read_via_adapter(stmt, $v(col_idx), type<$t(st.fields[i]._type)>));
+                    row.$f(field_name) <- field_tmp;
+                }
+            }))
+        }
+
+        
+        
+        var fn = qmacro_function("_sql_read_row") $(stmt; typ : $t(st)) : $t(st) {
+            var row = default<$t(st)>
+            $b(assign_exprs)
+            return <- row
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def find_pk_field(fields : array<FieldInfo>) : int {
+        for (i in range(length(fields))) {
+            if (fields[i].is_pk) return i
+        }
+        return -1
+    }
+
+    def make_update_by_pk_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
+        
+        
+        var fn = qmacro_function("_sql_update_by_pk_sql") $(typ : $t(st)) : string {
+            return _sql_update_by_pk_sql(default<$t(st)>, $v(table_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_update_by_pk_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        
+        let pk_idx = find_pk_field(fields)
+        if (pk_idx < 0) {
+            let st_name = string(st.name)
+            let msg = "[sql_table] {st_name}: update(row) / delete_(row) / delete_by_id are unavailable - no @sql_primary_key field. Use the macro forms `_sql_update(type<{st_name}>, where, set)` / `_sql_delete(type<{st_name}>, where)` instead."
+            var fn = qmacro_function("_sql_update_by_pk_sql") $(typ : $t(st); name : string) : string {
+                panic($v(msg))
+                return ""
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        }
+        let pk_col = fields[pk_idx].col_name
+        let set_clause = build_string() $(var w) {
+            var first = true
+            for (info in fields) {
+                if (info.is_pk || info.is_computed) continue
+                if (!first) {
+                    w |> write(", ")
+                }
+                w |> write("\"")
+                w |> write(info.col_name)
+                w |> write("\" = ?")
+                first = false
+            }
+        }
+        
+        if (empty(set_clause)) {
+            let st_name = string(st.name)
+            let msg = "[sql_table] {st_name}: update(row) has nothing to SET - every non-PK column is missing or @sql_computed. Add at least one writable non-PK column, or use raw `exec`."
+            var fn = qmacro_function("_sql_update_by_pk_sql") $(typ : $t(st); name : string) : string {
+                panic($v(msg))
+                return ""
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        }
+        let prefix = "UPDATE "
+        let suffix = " SET {set_clause} WHERE \"{pk_col}\" = ?"
+        var fn = qmacro_function("_sql_update_by_pk_sql") $(typ : $t(st); name : string) : string {
+            return $v(prefix) + sql_quote_id(name) + $v(suffix)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_delete_by_pk_sql_fn(var st : StructurePtr; table_name : string; fields : array<FieldInfo>) : FunctionPtr {
+        
+        var fn = qmacro_function("_sql_delete_by_pk_sql") $(typ : $t(st)) : string {
+            return _sql_delete_by_pk_sql(default<$t(st)>, $v(table_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_delete_by_pk_sql_named_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        let pk_idx = find_pk_field(fields)
+        if (pk_idx < 0) {
+            let st_name = string(st.name)
+            let msg = "[sql_table] {st_name}: delete_(row) / delete_by_id require a @sql_primary_key field. Use `_sql_delete(type<{st_name}>, where)` instead."
+            var fn = qmacro_function("_sql_delete_by_pk_sql") $(typ : $t(st); name : string) : string {
+                panic($v(msg))
+                return ""
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        }
+        let pk_col = fields[pk_idx].col_name
+        let prefix = "DELETE FROM "
+        let suffix = " WHERE \"{pk_col}\" = ?"
+        var fn = qmacro_function("_sql_delete_by_pk_sql") $(typ : $t(st); name : string) : string {
+            return $v(prefix) + sql_quote_id(name) + $v(suffix)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_bind_row_for_update_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        let pk_idx = find_pk_field(fields)
+        if (pk_idx < 0) {
+            var fn = qmacro_function("_sql_bind_row_for_update") $(var stmt; row : $t(st)) : void {
+                pass
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        }
+
+        var bind_exprs : array<ExpressionPtr>
+        var bind_idx = 0
+        
+        for (field in fields) {
+            if (field.is_pk || field.is_computed) continue
+            bind_idx++
+            let bi = bind_idx
+            let field_name = field.name
+            bind_exprs |> push(qmacro_expr(${
+                sql_bind_to_stmt(stmt, $v(bi), row.$f(field_name));
+            }))
+        }
+        
+        bind_idx++
+        let pk_bind_idx = bind_idx
+        let pk_field_name = fields[pk_idx].name
+        bind_exprs |> push(qmacro_expr(${
+            sql_bind_to_stmt(stmt, $v(pk_bind_idx), row.$f(pk_field_name));
+        }))
+
+        var fn = qmacro_function("_sql_bind_row_for_update") $(var stmt; row : $t(st)) : void {
+            $b(bind_exprs)
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+    def make_bind_row_pk_only_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+        
+        let pk_idx = find_pk_field(fields)
+        if (pk_idx < 0) {
+            var fn = qmacro_function("_sql_bind_row_pk_only") $(var stmt; row : $t(st)) : void {
+                pass
+            }
+            fn.flags.generated = true
+            fn.body |> force_at(st.at)
+            return <- fn
+        }
+        let pk_field_name = fields[pk_idx].name
+        var fn = qmacro_function("_sql_bind_row_pk_only") $(var stmt; row : $t(st)) : void {
+            sql_bind_to_stmt(stmt, 1, row.$f(pk_field_name))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+
+}
+
+
+
+def private make_json_sql_bind_fn(field_type : TypeDeclPtr; at : LineInfo) : FunctionPtr {
+    
+    var t1 <- clone_type(field_type)
+    t1.flags.constant = true
+    var fn = qmacro_function("sql_bind") $(v : $t(t1)) : string {
+        return _::write_json(_::JV(v))
+    }
+    fn.body |> force_at(at)
+    return <- fn
+}
+
+def private make_json_sql_extract_fn(field_type : TypeDeclPtr; at : LineInfo) : FunctionPtr {
+    var t1 <- clone_type(field_type)
+    t1.flags.constant = true
+    var t2 <- clone_type(field_type)
+    var t3 <- clone_type(field_type)
+    
+    var fn = qmacro_function("sql_extract") $(v : string; t : type<$t(t1)>) : $t(t2) {
+        var err = ""
+        let jv = _::read_json(v, err)
+        if (err != "") {
+            panic("sql_extract: malformed JSON in column data: {err}")
+        }
+        return _::from_JV(jv, default<$t(t3)>)
+    }
+    fn.body |> force_at(at)
+    return <- fn
+}
+
+
+
+def private make_blob_sql_bind_fn(field_type : TypeDeclPtr; at : LineInfo) : FunctionPtr {
+    var t1 <- clone_type(field_type)
+    t1.flags.constant = true
+    var fn = qmacro_function("sql_bind") $(v : $t(t1)) : array<uint8> {
+        var v_local <- clone_to_move(v)
+        return <- _::mem_archive_save(v_local)
+    }
+    fn.body |> force_at(at)
+    return <- fn
+}
+
+def private make_blob_sql_extract_fn(field_type : TypeDeclPtr; at : LineInfo) : FunctionPtr {
+    var t1 <- clone_type(field_type)
+    t1.flags.constant = true
+    var t2 <- clone_type(field_type)
+    var t3 <- clone_type(field_type)
+    var fn = qmacro_function("sql_extract") $(v : array<uint8>; t : type<$t(t1)>) : $t(t2) {
+        var r = default<$t(t3)>
+        var v_local <- clone_to_move(v)
+        _::mem_archive_load(v_local, r)
+        return <- r
+    }
+    fn.body |> force_at(at)
+    return <- fn
+}
+
+
+enum private SqlAdapterKind {
+    None
+    Json
+    Blob
+    Other
+}
+
+def private classify_sql_bind_return(td : TypeDeclPtr) : SqlAdapterKind {
+    if (td == null) return SqlAdapterKind.None
+    if (td.baseType == Type.tString) return SqlAdapterKind.Json
+    if (td.baseType == Type.tArray && td.firstType != null && td.firstType.baseType == Type.tUInt8) return SqlAdapterKind.Blob
+    return SqlAdapterKind.Other
+}
+
+def private find_sql_bind_kind_for_type(mod : Module?; td : TypeDeclPtr) : SqlAdapterKind {
+    if (td == null) return SqlAdapterKind.None
+    var kind = SqlAdapterKind.None
+    for_each_function(mod, "sql_bind") $(var fn) {
+        if (!empty(fn.arguments)
+                && fn.arguments[0]._type != null
+                && is_same_type(td, fn.arguments[0]._type, RefMatters.no, ConstMatters.no, TemporaryMatters.no)) {
+            kind = classify_sql_bind_return(fn.result)
+        }
+    }
+    return kind
+}
+
+def private emit_json_blob_adapters_for_struct(var st : StructurePtr; fields : array<FieldInfo>; tag : string; var errors : das_string) : bool {
+    var seen_kinds : table<string; SqlAdapterKind>
+    for (i in range(length(fields))) {
+        let info = fields[i]
+        if (!info.is_json && !info.is_blob) continue
+        
+        let ft = unwrap_option_payload_type(st.fields[i]._type)
+        if (ft == null) continue
+        let key = describe(ft)
+        let expected_kind = info.is_json ? SqlAdapterKind.Json : SqlAdapterKind.Blob
+        let kind_label = info.is_json ? "@sql_json" : "@sql_blob"
+        let prev_kind = seen_kinds?[key] ?? SqlAdapterKind.None
+        if (prev_kind != SqlAdapterKind.None) {
+            if (prev_kind != expected_kind) {
+                let prev_label = prev_kind == SqlAdapterKind.Json ? "@sql_json" : "@sql_blob"
+                errors := "{tag}: field '{info.name}' is {kind_label}, but an earlier field of struct '{st.name}' already used type '{key}' with {prev_label}. Adapter dedup is per-(T, kind); the same T must be used with one storage kind across this struct. Pick one kind, or wrap '{key}' in a typedef so the two storage views are distinct types."
+                return false
+            }
+            continue
+        }
+        seen_kinds |> insert(key, expected_kind)
+        let existing_kind = find_sql_bind_kind_for_type(compiling_module(), ft)
+        if (existing_kind != SqlAdapterKind.None) {
+            if (existing_kind != expected_kind) {
+                let existing_label = existing_kind == SqlAdapterKind.Json ? "@sql_json (sql_bind returns string)" : (existing_kind == SqlAdapterKind.Blob ? "@sql_blob (sql_bind returns array<uint8>)" : "an unrelated `sql_bind` overload")
+                errors := "{tag}: field '{info.name}' is {kind_label}, but type '{key}' is already bound by {existing_label} (from a sibling annotation or a hand-written adapter). Adapter dedup is per-(T, kind); the same T must be used with one storage kind. Pick one kind, or wrap '{key}' in a typedef so the two storage views are distinct types."
+                return false
+            }
+            continue
+        }
+        if (info.is_json) {
+            var fn_b = make_json_sql_bind_fn(ft, st.at)
+            compiling_module() |> add_function(fn_b)
+            var fn_e = make_json_sql_extract_fn(ft, st.at)
+            compiling_module() |> add_function(fn_e)
+        } else {
+            var fn_b = make_blob_sql_bind_fn(ft, st.at)
+            compiling_module() |> add_function(fn_b)
+            var fn_e = make_blob_sql_extract_fn(ft, st.at)
+            compiling_module() |> add_function(fn_e)
+        }
+    }
+    return true
+}
+
+
+
+[structure_macro(name=sql_view)]
+class private SqlViewMacro : AstStructureAnnotation {
+    def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {   
+        let view_name = find_annotation(args, "name", string(st.name))
+        
+        for (annDecl in st.annotations) {
+            if (annDecl.annotation.name == "sql_index") {
+                errors := "[sql_view] on struct '{st.name}': [sql_index] cannot apply to a view - views are read-only and inherit indexing from the underlying table. Move the index to the underlying table's struct."
+                return false
+            }
+        }
+        
+        var fields : array<FieldInfo>
+        fields |> reserve(length(st.fields))
+        for (field in st.fields) {
+            let fname = string(field.name)
+            if (find_annotation(field.annotation, "sql_primary_key", false)) {
+                errors := "[sql_view]: field '{fname}' has @sql_primary_key - views are read-only and cannot declare keys; primary keys belong on the underlying table."
+                return false
+            }
+            if (find_annotation(field.annotation, "sql_unique", false)) {
+                errors := "[sql_view]: field '{fname}' has @sql_unique - uniqueness constraints belong on the underlying table, not the view."
+                return false
+            }
+            let computed_sql = find_annotation(field.annotation, "sql_computed", "")
+            if (!empty(computed_sql)) {
+                errors := "[sql_view]: field '{fname}' has @sql_computed - view bodies are arbitrary SELECT expressions (write the expression directly inside `_create_view`'s chain), not GENERATED ALWAYS columns."
+                return false
+            }
+            if (find_annotation(field.annotation, "sql_stored", false)) {
+                errors := "[sql_view]: field '{fname}' has @sql_stored - only @sql_computed columns can be STORED, and views don't have @sql_computed. Remove the annotation."
+                return false
+            }
+            if (!empty(find_annotation(field.annotation, "sql_default_fn", ""))) {
+                errors := "[sql_view]: field '{fname}' has @sql_default_fn - defaults belong on the underlying table, not the view."
+                return false
+            }
+            if (field.init != null) {
+                errors := "[sql_view]: field '{fname}' has a daslang field initializer - view fields are read-only projections of the SELECT body. Remove the initializer."
+                return false
+            }
+            if (!empty(find_annotation(field.annotation, "sql_references", ""))) {
+                errors := "[sql_view]: field '{fname}' has @sql_references - foreign keys belong on the underlying table, not the view."
+                return false
+            }
+            if (!empty(find_annotation(field.annotation, "sql_on_delete", ""))) {
+                errors := "[sql_view]: field '{fname}' has @sql_on_delete - FK actions belong on the underlying table, not the view."
+                return false
+            }
+            if (!empty(find_annotation(field.annotation, "sql_on_update", ""))) {
+                errors := "[sql_view]: field '{fname}' has @sql_on_update - FK actions belong on the underlying table, not the view."
+                return false
+            }
+            let is_optional = is_option_field_type(field._type)
+            let is_json = find_annotation(field.annotation, "sql_json", false)
+            let is_blob = find_annotation(field.annotation, "sql_blob", false)
+            if (is_json && is_blob) {
+                errors := "[sql_view]: field '{fname}' has both @sql_json and @sql_blob - pick one. Use @sql_json for queryable, schema-tolerant TEXT storage; use @sql_blob for opaque binary storage."
+                return false
+            }
+            
+            var col_name = fname
+            let col_anno = find_arg(field.annotation, "sql_column")
+            if (col_anno is tString) {
+                let cv = col_anno as tString
+                if (empty(cv)) {
+                    errors := "[sql_view]: field '{fname}' @sql_column = \"\" is invalid - provide a non-empty SQL column name."
+                    return false
+                }
+                if (find(cv, "\"") >= 0 || find(cv, "\\") >= 0) {
+                    errors := "[sql_view]: field '{fname}' @sql_column=\"{cv}\" - embedded `\"` / `\\` are rejected (SQL identifier hygiene). Use a plain identifier."
+                    return false
+                }
+                col_name = cv
+            }
+            fields |> push(FieldInfo(
+                name = fname,
+                col_name = col_name,
+                is_pk = false,
+                is_int_pk = false,
+                is_optional = is_optional,
+                is_unique = false,
+                is_computed = false,
+                is_stored = false,
+                is_json = is_json,
+                is_blob = is_blob,
+                computed_sql = "",
+                default_clause = "",
+                references_clause = ""))
+        }
+        
+        {
+            var seen_cols : table<string; string>
+            for (info in fields) {
+                if (key_exists(seen_cols, info.col_name)) {
+                    let first_owner = seen_cols[info.col_name]
+                    errors := "[sql_view]: SQL column name '{info.col_name}' is claimed by both field '{first_owner}' and field '{info.name}'. @sql_column renames must produce a unique column name across the struct."
+                    return false
+                }
+                seen_cols |> insert(info.col_name, info.name)
+            }
+        }
+        
+        if (!emit_json_blob_adapters_for_struct(st, fields, "[sql_view]", errors)) return false
+        
+        var fn_table_name = make_view_table_name_fn(st, view_name)
+        compiling_module() |> add_function(fn_table_name)
+        var fn_drop = make_view_drop_sql_fn(st, view_name)
+        compiling_module() |> add_function(fn_drop)
+        var fn_select_all = make_view_select_all_sql_fn(st, view_name, fields)
+        compiling_module() |> add_function(fn_select_all)
+        var fn_read = make_read_row_helper_fn(st, fields)
+        compiling_module() |> add_generic(fn_read)
+        var fn_col_info = make_view_column_info_fn(st, fields)
+        compiling_module() |> add_function(fn_col_info)
+        
+        let st_name = string(st.name)
+        var fn_ins_pk = make_view_string_panic_stub_fn(st, "_sql_insert_with_pk_sql", st_name, "insert")
+        compiling_module() |> add_function(fn_ins_pk)
+        var fn_ins_nopk = make_view_string_panic_stub_fn(st, "_sql_insert_no_pk_sql", st_name, "insert")
+        compiling_module() |> add_function(fn_ins_nopk)
+        var fn_upd_pk = make_view_string_panic_stub_fn(st, "_sql_update_by_pk_sql", st_name, "update")
+        compiling_module() |> add_function(fn_upd_pk)
+        var fn_del_pk = make_view_string_panic_stub_fn(st, "_sql_delete_by_pk_sql", st_name, "delete")
+        compiling_module() |> add_function(fn_del_pk)
+        var fn_pk_unset = make_pk_is_unset_returns_false_fn(st)
+        compiling_module() |> add_function(fn_pk_unset)
+        var fn_bind = make_view_bind_row_panic_stub_fn(st, "_sql_bind_row", st_name, "insert", true)
+        compiling_module() |> add_generic(fn_bind)
+        var fn_bind_upd = make_view_bind_row_panic_stub_fn(st, "_sql_bind_row_for_update", st_name, "update", false)
+        compiling_module() |> add_generic(fn_bind_upd)
+        var fn_bind_pk = make_view_bind_row_panic_stub_fn(st, "_sql_bind_row_pk_only", st_name, "delete", false)
+        compiling_module() |> add_generic(fn_bind_pk)
+        return true
+    }
+}
+
+
+
+
+def make_const_string_helper_fn(var st : StructurePtr; helper_name, val : string) : FunctionPtr {
+    var fn = qmacro_function(helper_name) $(typ : $t(st)) : string {
+        return $v(val)
+    }
+    fn.flags.generated = true
+    fn.body |> force_at(st.at)
+    return <- fn
+}
+
+def make_pk_is_unset_returns_false_fn(var st : StructurePtr) : FunctionPtr {
+    var fn = qmacro_function("_sql_pk_is_unset") $(row : $t(st)) : bool {
+        return false
+    }
+    fn.flags.generated = true
+    fn.body |> force_at(st.at)
+    return <- fn
+}
+
+def make_string_panic_stub_helper_fn(var st : StructurePtr; helper_name, msg : string) : FunctionPtr {
+    var fn = qmacro_function(helper_name) $(typ : $t(st)) : string {
+        panic($v(msg))
+        return ""
+    }
+    fn.flags.generated = true
+    fn.body |> force_at(st.at)
+    return <- fn
+}
+
+def make_void_panic_stub_helper_fn(var st : StructurePtr; helper_name, msg : string;
+                                   has_include_pk : bool) : FunctionPtr {
+    if (has_include_pk) {
+        var fn = qmacro_function(helper_name) $(var stmt; row : $t(st); include_pk : bool) : void {
+            panic($v(msg))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    } else {
+        var fn = qmacro_function(helper_name) $(var stmt; row : $t(st)) : void {
+            panic($v(msg))
+        }
+        fn.flags.generated = true
+        fn.body |> force_at(st.at)
+        return <- fn
+    }
+}
+
+def private make_view_table_name_fn(var st : StructurePtr; view_name : string) : FunctionPtr {
+    return <- make_const_string_helper_fn(st, "_sql_table_name", view_name)
+}
+
+def private make_view_drop_sql_fn(var st : StructurePtr; view_name : string) : FunctionPtr {
+    return <- make_const_string_helper_fn(st, "_sql_drop_view_if_exists_sql",
+                                          "DROP VIEW IF EXISTS \"{view_name}\"")
+}
+
+def private make_view_select_all_sql_fn(var st : StructurePtr; view_name : string; fields : array<FieldInfo>) : FunctionPtr {
+    let col_list = build_string() $(var w) {
+        for (i in range(length(fields))) {
+            if (i > 0) {
+                w |> write(", ")
+            }
+            w |> write("\"")
+            w |> write(fields[i].col_name)
+            w |> write("\"")
+        }
+    }
+    let sql = "SELECT {col_list} FROM \"{view_name}\""
+    var fn = qmacro_function("_sql_select_all_sql") $(typ : $t(st)) : string {
+        return $v(sql)
+    }
+    fn.flags.generated = true
+    fn.body |> force_at(st.at)
+    return <- fn
+}
+
+def make_read_row_helper_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+    
+    var assign_exprs : array<ExpressionPtr>
+    assign_exprs |> reserve(length(fields))
+    for (i in range(length(fields))) {
+        let info = fields[i]
+        let col_idx = i
+        let field_name = info.name
+        assign_exprs |> push(qmacro_expr(${
+            static_if (typeinfo can_copy(default<$t(st.fields[i]._type)>)) {
+                row.$f(field_name) = read_via_adapter(stmt, $v(col_idx), type<$t(st.fields[i]._type)>);
+            } else {
+                var field_tmp <- clone_to_move(read_via_adapter(stmt, $v(col_idx), type<$t(st.fields[i]._type)>));
+                row.$f(field_name) <- field_tmp;
+            }
+        }))
+    }
+    
+    var fn = qmacro_function("_sql_read_row") $(stmt; typ : $t(st)) : $t(st) {
+        var row = default<$t(st)>
+        $b(assign_exprs)
+        return <- row
+    }
+    fn.flags.generated = true
+    fn.body |> force_at(st.at)
+    return <- fn
+}
+
+def private make_view_column_info_fn(var st : StructurePtr; fields : array<FieldInfo>) : FunctionPtr {
+    var push_exprs : array<ExpressionPtr>
+    push_exprs |> reserve(length(fields))
+    for (info, i in fields, count()) {
+        let name = info.col_name
+        let is_nullable = info.is_optional
+        if (info.is_json) {
+            push_exprs |> push(qmacro_expr(${ result |> push(ColumnInfo(
+                name = $v(name),
+                data_type = SqlType.Text,
+                is_pk = false,
+                is_nullable = $v(is_nullable),
+                default_expr = "")); }))
+        } elif (info.is_blob) {
+            push_exprs |> push(qmacro_expr(${ result |> push(ColumnInfo(
+                name = $v(name),
+                data_type = SqlType.Blob,
+                is_pk = false,
+                is_nullable = $v(is_nullable),
+                default_expr = "")); }))
+        } else {
+            push_exprs |> push(qmacro_expr(${ result |> push(ColumnInfo(
+                name = $v(name),
+                data_type = sql_storage_enum_for(type<$t(st.fields[i]._type)>),
+                is_pk = false,
+                is_nullable = $v(is_nullable),
+                default_expr = "")); }))
+        }
+    }
+    var fn = qmacro_function("_sql_column_info") $(typ : $t(st)) : array<ColumnInfo> {
+        var result : array<ColumnInfo>
+        $b(push_exprs)
+        return <- result
+    }
+    fn.flags.generated = true
+    fn.body |> force_at(st.at)
+    return <- fn
+}
+
+def private make_view_string_panic_stub_fn(var st : StructurePtr; helper_name : string;
+                                           st_name : string; verb : string) : FunctionPtr {
+    let msg = "[sql_view] {st_name}: cannot {verb} into a view - views are read-only. Mutate the underlying table(s) and re-query the view."
+    return <- make_string_panic_stub_helper_fn(st, helper_name, msg)
+}
+
+def private make_view_bind_row_panic_stub_fn(var st : StructurePtr; helper_name : string;
+                                             st_name : string; verb : string;
+                                             has_include_pk : bool) : FunctionPtr {
+    let msg = "[sql_view] {st_name}: cannot {verb} into a view - views are read-only. Mutate the underlying table(s) and re-query the view."
+    return <- make_void_panic_stub_helper_fn(st, helper_name, msg, has_include_pk)
+}
+
+
+[macro_function]
+def private resolve_sql_table(prog : ProgramPtr; at : LineInfo; var typeArg : ExpressionPtr;
+                              macroName : string; var st : StructurePtr&; var table_name : string&) : bool {
+    
+    if (typeArg._type == null) {
+        macro_error(prog, at, "{macroName}: `type<T>` argument has no inferred type yet")
+        return false
+    }
+    if (typeArg._type.baseType != Type.tStructure || typeArg._type.structType == null) {
+        macro_error(prog, at, "{macroName}: second argument must be `type<SomeStruct>` - got '{describe(typeArg._type)}'")
+        return false
+    }
+    st = typeArg._type.structType
+    var tname_fn = find_struct_helper_fn("_sql_table_name", st)
+    if (tname_fn == null) {
+        macro_error(prog, at, "{macroName}: type '{st.name}' has no [sql_table] declaration; only [sql_table]-decorated structs can drive typed ALTER")
+        return false
+    }
+    table_name = extract_string_return(tname_fn)
+    if (empty(table_name)) {
+        macro_error(prog, at, "{macroName}: internal - _sql_table_name body did not match expected shape on '{st.name}'")
+        return false
+    }
+    return true
+}
+
+[macro_function]
+def private resolve_field_index(var st : StructurePtr; field_name : string) : int {
+    
+    for (i in range(length(st.fields))) {
+        if (st.fields[i].name == field_name) return i
+    }
+    return -1
+}
+
+[macro_function]
+def private field_sql_name_at(var st : StructurePtr; idx : int) : string {
+    
+    let ca = find_arg(st.fields[idx].annotation, "sql_column")
+    if (ca is tString) return ca as tString
+    return string(st.fields[idx].name)
+}
+
+[macro_function]
+def private decode_string_const(e : ExpressionPtr) : tuple<ok : bool; value : string> {
+    
+    var inner = e
+    if (inner != null && inner is ExprRef2Value) {
+        inner = (inner as ExprRef2Value).subexpr
+    }
+    if (inner == null || !(inner is ExprConstString)) return (ok = false, value = "")
+    return (ok = true, value = string((inner as ExprConstString).value))
+}
+
+[call_macro(name="add_column")]
+class private AddColumnMacro : AstCallMacro {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {   
+        
+        let nArgs = call.arguments |> length
+        macro_verify(nArgs == 3 || nArgs == 4, prog, call.at,
+            "add_column expects (db, type<T>, \"Field\" [, defaultLit]) — got {nArgs} args")
+        var st : StructurePtr
+        var table_name : string
+        if (!resolve_sql_table(prog, call.at, call.arguments[1], "add_column", st, table_name)) return null
+        
+        let nameRes = decode_string_const(call.arguments[2])
+        if (!nameRes.ok) {
+            macro_error(prog, call.at, "add_column: third argument must be a string literal naming the field - got '{describe(call.arguments[2])}'")
+            return null
+        }
+        let field_name = nameRes.value
+        let idx = resolve_field_index(st, field_name)
+        if (idx < 0) {
+            macro_error(prog, call.at, "add_column: field '{field_name}' is not a column of struct '{st.name}'")
+            return null
+        }
+        
+        let pk_arg = find_arg(st.fields[idx].annotation, "sql_primary_key")
+        if (pk_arg is tBool && (pk_arg as tBool)) {
+            macro_error(prog, call.at,
+                "add_column cannot add a PRIMARY KEY column to an existing table; recreate the table - see chunk 14c struct_convert")
+            return null
+        }
+        let uniq_arg = find_arg(st.fields[idx].annotation, "sql_unique")
+        if (uniq_arg is tBool && (uniq_arg as tBool)) {
+            macro_error(prog, call.at,
+                "add_column cannot add a UNIQUE column to an existing table; create_unique_index(type<T>, \"{field_name}\") instead")
+            return null
+        }
+        let computed_arg = find_arg(st.fields[idx].annotation, "sql_computed")
+        if (computed_arg is tString || (computed_arg is tBool && (computed_arg as tBool))) {
+            macro_error(prog, call.at,
+                "add_column cannot add a generated/computed column to an existing table; recreate the table - see chunk 14c struct_convert")
+            return null
+        }
+        let default_fn_arg = find_arg(st.fields[idx].annotation, "sql_default_fn")
+        if (default_fn_arg is tString) {
+            macro_error(prog, call.at,
+                "add_column does not support @sql_default_fn fields yet; use a literal default or `db |> exec(...)`")
+            return null
+        }
+        
+        let json_arg = find_arg(st.fields[idx].annotation, "sql_json")
+        let is_json = json_arg is tBool && (json_arg as tBool)
+        let blob_arg = find_arg(st.fields[idx].annotation, "sql_blob")
+        let is_blob = blob_arg is tBool && (blob_arg as tBool)
+        let is_optional = is_option_field_type(st.fields[idx]._type)
+        let col_name = field_sql_name_at(st, idx)
+        
+        var default_clause = ""
+        if (nArgs == 4) {
+            if (is_json || is_blob) {
+                macro_error(prog, call.at,
+                    "add_column: explicit default not supported for @sql_json / @sql_blob columns; the column accepts NULL by default - wrap the field in Option<T> if nullability is desired")
+                return null
+            }
+            var defArg = call.arguments[3]
+            if (defArg != null && defArg is ExprRef2Value) {
+                defArg = (defArg as ExprRef2Value).subexpr
+            }
+            default_clause = literal_init_to_default_clause(defArg)
+            if (empty(default_clause)) {
+                macro_error(prog, call.at,
+                    "add_column: DEFAULT must be a compile-time literal (int / int64 / float / double / bool / string); got '{describe(call.arguments[3])}'. Inline the value, or use `db |> exec(...)` for runtime expressions.")
+                return null
+            }
+        } elif (!is_optional && !is_json && !is_blob) {
+            
+            macro_error(prog, call.at,
+                "add_column: field '{field_name}' on '{st.name}' is non-nullable; provide a literal default (e.g. `add_column(type<T>, \"{field_name}\", 0)`) or wrap the field in Option<T>")
+            return null
+        }
+        
+        let null_clause = is_optional ? "" : " NOT NULL"
+        let prefix = "ALTER TABLE \"{table_name}\" ADD COLUMN \"{col_name}\" "
+        let suffix = "{null_clause}{default_clause}"
+        var dbExpr = call.arguments[0]
+        var res : ExpressionPtr
+        if (is_json) {
+            let full = "{prefix}TEXT{suffix}"
+            res = qmacro(_::exec($e(dbExpr), $v(full)))
+        } elif (is_blob) {
+            let full = "{prefix}BLOB{suffix}"
+            res = qmacro(_::exec($e(dbExpr), $v(full)))
+        } else {
+            var fieldType <- clone_type(st.fields[idx]._type)
+            res = qmacro(_::exec($e(dbExpr), build_string() $(var w) {
+                w |> write($v(prefix))
+                w |> write(_::sql_storage_type_for(type<$t(fieldType)>))
+                w |> write($v(suffix))
+            }))
+        }
+        res.force_at(call.at)
+        return res
+    }
+}
+
+[macro_function]
+def private resolve_field_columns(prog : ProgramPtr; at : LineInfo; var st : StructurePtr;
+                                  fieldsArg : ExpressionPtr; macroName : string;
+                                  var sql_cols : array<string>&) : bool {
+    
+    if (fieldsArg == null) {
+        macro_error(prog, at, "{macroName}: missing fields argument")
+        return false
+    }
+    var inner = fieldsArg
+    if (inner is ExprRef2Value) {
+        inner = (inner as ExprRef2Value).subexpr
+    }
+    var col_names : array<string>
+    if (inner is ExprConstString) {
+        col_names |> push(string((inner as ExprConstString).value))
+    } elif (inner is ExprMakeTuple) {
+        let mkt = inner as ExprMakeTuple
+        for (v in mkt.values) {
+            var item = v
+            if (item is ExprRef2Value) {
+                item = (item as ExprRef2Value).subexpr
+            }
+            if (item == null || !(item is ExprConstString)) {
+                macro_error(prog, at, "{macroName}: tuple fields entries must be string literals - got '{describe(v)}'")
+                return false
+            }
+            col_names |> push(string((item as ExprConstString).value))
+        }
+    } else {
+        macro_error(prog, at, "{macroName}: fields argument must be a string literal (\"Field\") or a tuple of string literals (\"A\", \"B\") - got '{describe(fieldsArg)}'")
+        return false
+    }
+    if (empty(col_names)) {
+        macro_error(prog, at, "{macroName}: empty fields list. Provide \"Field\" for a single-column index or (\"A\", \"B\") for a composite.")
+        return false
+    }
+    sql_cols |> reserve(length(col_names))
+    for (cn in col_names) {
+        let idx = resolve_field_index(st, cn)
+        if (idx < 0) {
+            macro_error(prog, at, "{macroName}: field '{cn}' is not a column of struct '{st.name}'")
+            return false
+        }
+        sql_cols |> push(field_sql_name_at(st, idx))
+    }
+    return true
+}
+
+[macro_function]
+def private emit_create_index(prog : ProgramPtr; var call : ExprCallMacro?; is_unique : bool) : ExpressionPtr {
+    let macroName = is_unique ? "create_unique_index" : "create_index"
+    let nArgs = call.arguments |> length
+    if (nArgs < 3 || nArgs > 4) {
+        macro_error(prog, call.at,
+            "{macroName} expects (db, type<T>, fields [, \"name\"]) - got {nArgs} args")
+        return null
+    }
+    var st : StructurePtr
+    var table_name : string
+    if (!resolve_sql_table(prog, call.at, call.arguments[1], macroName, st, table_name)) return null
+    var sql_cols : array<string>
+    if (!resolve_field_columns(prog, call.at, st, call.arguments[2], macroName, sql_cols)) return null
+    var idx_name = derive_index_name(table_name, sql_cols)
+    if (nArgs == 4) {
+        let nameRes = decode_string_const(call.arguments[3])
+        if (!nameRes.ok) {
+            macro_error(prog, call.at,
+                "{macroName}: optional `name` argument must be a string literal - got '{describe(call.arguments[3])}'")
+            return null
+        }
+        if (empty(nameRes.value)) {
+            macro_error(prog, call.at, "{macroName}: index name string is empty")
+            return null
+        }
+        idx_name = nameRes.value
+    }
+    let kind = is_unique ? "UNIQUE INDEX" : "INDEX"
+    let ddl = build_string() $(var w) {
+        w |> write("CREATE {kind} \"{idx_name}\" ON \"{table_name}\" (")
+        for (j in range(length(sql_cols))) {
+            if (j > 0) {
+                w |> write(", ")
+            }
+            w |> write("\"")
+            w |> write(sql_cols[j])
+            w |> write("\"")
+        }
+        w |> write(")")
+    }
+    var res = qmacro(_::exec($e(call.arguments[0]), $v(ddl)))
+    res.force_at(call.at)
+    return res
+}
+
+[call_macro(name="create_index")]
+class private CreateIndexMacro : AstCallMacro {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
+        return emit_create_index(prog, call, false)
+    }
+}
+
+[call_macro(name="create_unique_index")]
+class private CreateUniqueIndexMacro : AstCallMacro {
+    def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : Expression? {
+        return emit_create_index(prog, call, true)
+    }
+}
+
+
+
+
+
+enum public SqlFnTag : uint8 {
+    
+    
+    
+    Int = uint8(0)
+    Int64 = uint8(1)
+    Float = uint8(2)
+    Double = uint8(3)
+    Bool = uint8(4)
+    String = uint8(5)
+}
+
+typedef public SqlFnCarrier = function<() : void>
+
+
+
+
+struct public SqlFunctionEntry {
+    
+    
+    name : string
+    nArgs : int
+    tag0 : uint8
+    tag1 : uint8
+    tag2 : uint8
+    tag3 : uint8
+    retTag : uint8
+    deterministic : bool
+    directonly : bool
+    fn : SqlFnCarrier
+}
+
+
+
+var private g_sql_functions : array<SqlFunctionEntry>
+
+def public _add_sql_function_entry(name : string; nArgs : int;
+                                   tag0, tag1, tag2, tag3 : uint8;
+                                   retTag : uint8; deterministic : bool; directonly : bool;
+                                   fn : auto(FN)) : void {
+    
+    
+    var e <- SqlFunctionEntry(name = name, nArgs = nArgs,
+        tag0 = tag0, tag1 = tag1, tag2 = tag2, tag3 = tag3,
+        retTag = retTag, deterministic = deterministic, directonly = directonly,
+        fn = unsafe(reinterpret<SqlFnCarrier>(fn)))
+    g_sql_functions |> emplace(e)
+}
+
+def public for_each_sql_function(blk : block<(e : SqlFunctionEntry) : void>) : void {
+    
+    
+    for (e in g_sql_functions) {
+        invoke(blk, e)
+    }
+}
+
+def public sql_function_duplicate_error : SqlError {
+    
+    
+    var seen : table<string; bool>
+    for (e in g_sql_functions) {
+        let key = "{e.name}/{e.nArgs}"
+        if (key_exists(seen, key)) {
+            return some("[sql_function] duplicate registration: '{e.name}' with {e.nArgs} args is tagged in more than one place; the engine would silently replace the earlier binding")
+        }
+        seen |> insert(key, true)
+    }
+    return none(type<string>)
+}
+
+[macro_function]
+def public sql_fn_tag_for_type(td : TypeDeclPtr) : tuple<tag : uint8; ok : bool> {
+    
+    
+    
+    if (td == null || td.baseType == Type.tFixedArray) return (tag = uint8(0), ok = false)
+    if (td.baseType == Type.tInt) return (tag = uint8(SqlFnTag.Int), ok = true)
+    if (td.baseType == Type.tInt64) return (tag = uint8(SqlFnTag.Int64), ok = true)
+    if (td.baseType == Type.tFloat) return (tag = uint8(SqlFnTag.Float), ok = true)
+    if (td.baseType == Type.tDouble) return (tag = uint8(SqlFnTag.Double), ok = true)
+    if (td.baseType == Type.tBool) return (tag = uint8(SqlFnTag.Bool), ok = true)
+    if (td.baseType == Type.tString) return (tag = uint8(SqlFnTag.String), ok = true)
+    return (tag = uint8(0), ok = false)
+}
+
+def private _is_valid_sql_function_name(s : string) : bool {
+    
+    if (empty(s)) return false
+    var ok = true
+    peek_data(s) $(arr) {
+        let c0 = int(arr[0])
+        if (!(is_alpha(c0) || c0 == '_')) {
+            ok = false
+            return
+        }
+        for (i in range(1, length(arr))) {
+            let c = int(arr[i])
+            if (!(is_alnum(c) || c == '_')) {
+                ok = false
+                return
+            }
+        }
+    }
+    return ok
+}
+
+[function_macro(name="sql_function")]
+class SqlFunctionMacro : AstFunctionAnnotation {
+    
+    
+    
+    def override apply(var func : FunctionPtr; var group : ModuleGroup;   
+                       args : AnnotationArgumentList; var errors : das_string) : bool {
+        if (func.fromGeneric != null) {
+            errors := "[sql_function] is not supported on generic functions; instantiate with concrete types and tag the concrete instance"
+            return false
+        }
+        let nArgs = func.arguments |> length
+        if (nArgs > 4) {
+            errors := "[sql_function]: scalar SQL functions support up to 4 arguments; got {nArgs}"
+            return false
+        }
+        var tags : array<uint8>
+        tags |> reserve(4)
+        for (i in range(nArgs)) {
+            let r = sql_fn_tag_for_type(func.arguments[i]._type)
+            if (!r.ok) {
+                errors := "[sql_function]: argument #{i + 1} of '{func.name}' has unsupported type '{describe(func.arguments[i]._type)}' - supported: int, int64, float, double, bool, string"
+                return false
+            }
+            tags |> push(r.tag)
+        }
+        while (tags |> length < 4) {
+            tags |> push(uint8(0))
+        }
+        let retR = sql_fn_tag_for_type(func.result)
+        if (!retR.ok) {
+            errors := "[sql_function]: return type '{describe(func.result)}' of '{func.name}' is unsupported - supported: int, int64, float, double, bool, string"
+            return false
+        }
+        let funcDasName = "{func.name}"
+        var sqlName = funcDasName
+        let nameArg = args |> find_arg("name")
+        if (nameArg is tString) {
+            sqlName = nameArg as tString
+            if (empty(sqlName)) {
+                errors := "[sql_function]: name= cannot be empty"
+                return false
+            }
+            if (!_is_valid_sql_function_name(sqlName)) {
+                errors := "[sql_function]: name='{sqlName}' is not a valid SQL identifier (must match [A-Za-z_][A-Za-z0-9_]*)"
+                return false
+            }
+        } elif (!(nameArg is nothing)) {
+            errors := "[sql_function]: name= must be a string literal"
+            return false
+        }
+        var deterministic = false
+        let detArg = args |> find_arg("deterministic")
+        if (detArg is tBool) {
+            deterministic = detArg as tBool
+        } elif (!(detArg is nothing)) {
+            errors := "[sql_function]: deterministic= must be a bool literal (true/false)"
+            return false
+        }
+        var directonly = false
+        let donArg = args |> find_arg("directonly")
+        if (donArg is tBool) {
+            directonly = donArg as tBool
+        } elif (!(donArg is nothing)) {
+            errors := "[sql_function]: directonly= must be a bool literal (true/false)"
+            return false
+        }
+        var reg <- setup_call_list("register`sql`functions", func.at, true, true)
+        let nArgsLit = nArgs
+        let tag0 = tags[0]
+        let tag1 = tags[1]
+        let tag2 = tags[2]
+        let tag3 = tags[3]
+        let retTag = retR.tag
+        
+        var fnType = new TypeDecl(at = func.at, baseType = Type.tFunction)
+        for (a in func.arguments) {
+            fnType.argTypes |> emplace_new <| clone_type(a._type)
+        }
+        fnType.firstType = clone_type(func.result)
+        
+        
+        var fnAddr = new ExprAddr(at = func.at, target := "__::{funcDasName}", funcType <- fnType)
+        reg.list |> emplace_new <| qmacro_block() {
+            sql_boost::_add_sql_function_entry($v(sqlName), $v(nArgsLit),
+                $v(tag0), $v(tag1), $v(tag2), $v(tag3),
+                $v(retTag), $v(deterministic), $v(directonly), $e(fnAddr))
+        }
+        return true
+    }
+}

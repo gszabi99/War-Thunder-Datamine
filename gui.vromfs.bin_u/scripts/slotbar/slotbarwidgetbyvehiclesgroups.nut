@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
@@ -9,8 +10,9 @@ let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
 let { selectCrew } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
-local handlerClass = class (gui_handlers.SlotbarWidget) {
+local handlerClass = class (SlotbarWidget) {
   unitsGroupsByCountry = null
   countryPresets = null
   emptyText = "#mainmenu/changeUnitsGroup"
@@ -26,7 +28,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
     this.countryPresets = curPreset.countryPresets
   }
 
-  function gatherVisibleCrewsConfig(onlyForCountryIdx = null) {
+  function gatherVisibleCrewsConfig(onlyForCountryIdx = null, _presetIdx = null) {
     let res = []
     let country = this.getForcedCountry()
     foreach (idx, coutryCrews in getCrewsList()) {
@@ -86,6 +88,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
       return
     }
 
+    this.selectedCrewData = this.getSelectedCrewDataForCurSlot()
     let crewList = getCrewsList()?[this.curSlotCountryId]
     let country = crewList?.country ?? ""
     let crew = crewList?.crews[this.curSlotIdInCountry]
@@ -114,7 +117,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
   }
 
   function getCurSlotUnit() {
-    return this.countryPresets?[this.getCurCountry()].units[this.curSlotIdInCountry]
+    return this.countryPresets?[profileCountrySq.get()].units[this.curSlotIdInCountry]
   }
 
   function getCurCrewUnit(crew) {
@@ -122,9 +125,10 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
   }
 
   function getHangarFallbackUnitParams() {
+    let country = profileCountrySq.get()
     return {
-      country = this.getCurCountry()
-      slotbarUnits = (this.countryPresets?[this.getCurCountry()].units ?? [])
+      country
+      slotbarUnits = (this.countryPresets?[country].units ?? [])
         .filter(@(unit) unit != null)
     }
   }
@@ -172,7 +176,7 @@ local handlerClass = class (gui_handlers.SlotbarWidget) {
   getDefaultDblClickFunc = @() @(_crew) null
 }
 
-gui_handlers.slotbarWidgetByVehiclesGroups <- handlerClass
+register_gui_handler("slotbarWidgetByVehiclesGroups", handlerClass)
 
 function create(params) {
   let nest = params?.scene
@@ -180,7 +184,7 @@ function create(params) {
     return null
 
   if (params?.shouldAppendToObject ?? true) { 
-    let data = "slotbarDiv { id:t='nav-slotbar' }"
+    const data = "slotbarDiv { id:t='nav-slotbar' }"
     nest.getScene().appendWithBlk(nest, data)
     params.scene = nest.findObject("nav-slotbar")
   }

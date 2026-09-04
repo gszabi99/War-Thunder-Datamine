@@ -1,10 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-import "%sqStdLibs/helpers/enums.nut" as enums
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { wwStatusType } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
+let { wwStatusType, setStatusTypeLoadList } = require("%scripts/worldWar/operations/model/wwGlobalStatusType.nut")
 
 let WwOperationsGroup = class {
   mapId = ""
@@ -121,16 +120,9 @@ let WwOperationsGroup = class {
   }
 }
 
-enums.enumsAddTypes(wwStatusType, {
-  OPERATIONS_GROUPS = {
-    typeMask = WW_GLOBAL_STATUS_TYPE.OPERATIONS_GROUPS
-    invalidateByOtherStatusType = WW_GLOBAL_STATUS_TYPE.ACTIVE_OPERATIONS | WW_GLOBAL_STATUS_TYPE.MAPS
-
-    function loadList() {
-      let mapsList = wwStatusType.MAPS.getList()
-      this.cachedList = mapsList.map(@(map) WwOperationsGroup(map.name))
-    }
-  }
+setStatusTypeLoadList("OPERATIONS_GROUPS", function loadList() {
+  let mapsList = wwStatusType.MAPS.getList()
+  this.cachedList = mapsList.map(@(map) WwOperationsGroup(map.name))
 })
 
 let getOperationGroupByMapId = @(mapId)

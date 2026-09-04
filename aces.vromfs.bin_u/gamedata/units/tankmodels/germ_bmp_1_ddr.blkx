@@ -26,7 +26,7 @@
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
   "subclass": "heavyVehicle",
-  "onRadarAs": "tracked",
+  "onRadarAs": "ifv",
   "moveType": "vehicle",
   "maxFwdSpeed": 75.0,
   "maxRevSpeed": 10.0,
@@ -1146,7 +1146,13 @@
           "fuel_tank_exterior_r_01_dm",
           "fuel_tank_exterior_r_02_dm",
           "fuel_tank_exterior_l_01_dm",
-          "fuel_tank_exterior_l_02_dm"
+          "fuel_tank_exterior_l_02_dm",
+          "fuel_tank_exterior_r_03_dm",
+          "fuel_tank_exterior_r_04_dm",
+          "fuel_tank_exterior_l_03_dm",
+          "fuel_tank_exterior_l_04_dm",
+          "fuel_tank_exterior_r_05_dm",
+          "fuel_tank_exterior_l_05_dm"
         ],
         "onHit": [
           {
@@ -1714,15 +1720,26 @@
     "closed_fightning_compartment": {
       "part": [
         "driver_dm",
-        "loader_dm",
         "gunner_dm",
-        "commander_dm",
-        "machine_gunner_dm",
         "gunner_01_dm",
         "gunner_02_dm",
+        "commander_dm",
+        "machine_gunner_dm",
+        "machine_gunner_01_dm",
+        "machine_gunner_02_dm",
+        "machine_gunner_03_dm",
+        "machine_gunner_04_dm",
+        "machine_gunner_05_dm",
+        "machine_gunner_06_dm",
+        "machine_gunner_07_dm",
+        "machine_gunner_08_dm",
+        "machine_gunner_09_dm",
+        "machine_gunner_10_dm",
+        "machine_gunner_11_dm",
+        "machine_gunner_12_dm",
+        "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
-        "cannon_breech_dm",
         "radio_station_dm",
         "drive_turret_v_dm",
         "drive_turret_h_dm",
@@ -1730,6 +1747,10 @@
         "drive_turret_h_01_dm",
         "drive_turret_v_02_dm",
         "drive_turret_h_02_dm",
+        "fuel_tank_01_dm",
+        "fuel_tank_02_dm",
+        "fuel_tank_03_dm",
+        "fuel_tank_04_dm",
         "ammo_turret_dm",
         "ammo_turret_01_dm",
         "ammo_turret_02_dm",
@@ -1784,6 +1805,11 @@
         "ammo_turret_53_dm",
         "ammo_turret_54_dm",
         "ammo_turret_55_dm",
+        "ammo_turret_56_dm",
+        "ammo_turret_57_dm",
+        "ammo_turret_58_dm",
+        "ammo_turret_59_dm",
+        "ammo_turret_60_dm",
         "ammo_body_01_dm",
         "ammo_body_02_dm",
         "ammo_body_03_dm",
@@ -1836,7 +1862,12 @@
         "ammo_body_52_dm",
         "ammo_body_53_dm",
         "ammo_body_54_dm",
-        "ammo_body_55_dm"
+        "ammo_body_55_dm",
+        "ammo_body_56_dm",
+        "ammo_body_57_dm",
+        "ammo_body_58_dm",
+        "ammo_body_59_dm",
+        "ammo_body_60_dm"
       ],
       "effect": [
         {
@@ -3469,9 +3500,8 @@
           },
           "ammo2": {
             "weaponTrigger": "gunner2",
-            "removeLoadedAmmo": false,
-            "fatalFire": false,
-            "fatalExplosion": false,
+            "fatalFire": true,
+            "fatalExplosion": true,
             "shells": [
               {
                 "ammoLoadedInGun": true,
@@ -3925,9 +3955,8 @@
     },
     "ammo2": {
       "weaponTrigger": "gunner2",
-      "removeLoadedAmmo": false,
-      "fatalFire": false,
-      "fatalExplosion": false,
+      "fatalFire": true,
+      "fatalExplosion": true,
       "shells": [
         {
           "ammoLoadedInGun": true,

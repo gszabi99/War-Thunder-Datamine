@@ -1,15 +1,15 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%rGui/wwMap/wwMapUtils.nut" import sendToDagui
+from "%rGui/wwMap/wwOperationConfiguration.nut" import getMapAspectRatio, convertToRelativeMapCoords, getMapSize
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings, getSettingsArray
+from "%appGlobals/worldWar/wwMapHoverState.nut" import isMapHovered
+from "math" import pow
+from "worldwar" import wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArmyName, wwUpdateSelectedArmiesName
+from "eventbus" import subscribe
 from "%rGui/globals/ui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { pow } = require("math")
-let { wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArmyName, wwUpdateSelectedArmiesName } = require("worldwar")
-let { subscribe } = require("eventbus")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
-let { getMapAspectRatio, convertToRelativeMapCoords, getMapSize } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { armyIconByType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
-let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 
 let selectedArmy = Watched(null)
 let hoveredArmy = Watched(null)

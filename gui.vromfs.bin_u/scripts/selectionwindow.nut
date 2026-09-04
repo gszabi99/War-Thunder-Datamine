@@ -1,9 +1,10 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
@@ -14,14 +15,14 @@ let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 
 
 function openSelectionWindow(config, applyFunc, owner = null) {
-  handlersManager.loadHandler(gui_handlers.SelectionWindow, {
+  handlersManager.loadHandler(get_gui_handler("SelectionWindow"), {
                                   config = config
                                   owner = owner
                                   applyFunc = applyFunc
                                 })
 }
 
-gui_handlers.SelectionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+let SelectionWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/chooseImage/selectionWindow.tpl"
 
@@ -121,7 +122,8 @@ gui_handlers.SelectionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePaginator() {
     let paginatorObj = this.scene.findObject("paginator_place")
-    generatePaginator(paginatorObj, this, this.currentPage, (this.itemsData.len() - 1) / this.itemsPerPage)
+    generatePaginator(paginatorObj, this, this.currentPage,
+      ((this.searchItems ?? this.itemsData).len() - 1) / this.itemsPerPage)
   }
 
   function goToPage(obj) {
@@ -232,6 +234,7 @@ gui_handlers.SelectionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("SelectionWindow", SelectionWindow)
 
 return {
   openSelectionWindow

@@ -4,9 +4,18 @@ require DagorMath
 require DngHuman
 require DagorConsole
 require DagorSystem
+require Unit
 require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.net_console_macro
 
+
+def private teleport_unit_ref(eid : EntityId; pos : float3) : bool
+  var teleported = false
+  query(eid) <| $ [es] (var unit__ref : UnitRef&)
+    if unit__ref.unit != null
+      *unit__ref.unit |> teleportToPos(false, pos)
+      teleported = true
+  return teleported
 
 def private teleport_eid_to(eid : EntityId; pos : float3; use_camera_pos : bool = false)
   var targetTm : float3x4
@@ -24,6 +33,8 @@ def private teleport_eid_to(eid : EntityId; pos : float3; use_camera_pos : bool 
       targetTm[3] = pos
   elif !hasCamera
     logerr("Failed to get any transform")
+    return
+  if teleport_unit_ref(eid, targetTm[3])
     return
   query(eid) <| $ [es] (var human_net_phys : HumanActor&)
     human_net_phys.phys.currentState.location.P = DPoint3(targetTm[3])

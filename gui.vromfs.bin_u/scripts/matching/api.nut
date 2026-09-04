@@ -1,11 +1,12 @@
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "matching.api" import matching_call, matching_listen_notify, matching_notify, matching_listen_rpc, matching_send_response
+from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
+from "matching.errors" import OPERATION_COMPLETE, is_matching_error, matching_error_string
+from "%sqstd/string.nut" import replace
 from "%scripts/dagui_library.nut" import *
+from "types" import String, Table, Function
 
-let { matching_call, matching_listen_notify, matching_notify, matching_listen_rpc, matching_send_response } = require("matching.api")
-let { eventbus_subscribe, eventbus_subscribe_onehit } = require("eventbus")
-let { OPERATION_COMPLETE, is_matching_error, matching_error_string } = require("matching.errors")
-let { replace } = require("%sqstd/string.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 
  
@@ -17,7 +18,7 @@ let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 
 function matching_subscribe(evtName, handler) {
-  assert(type(evtName)=="string")
+  assert(evtName instanceof String)
   let handlertype = type(handler)
   assert(handler == null || handlertype == "function")
   let is_rpc_call = handlertype == "function" && handler.getfuncinfos().parameters.len() > 2
@@ -42,9 +43,9 @@ function matching_subscribe(evtName, handler) {
 }
 
 function matching_rpc_call(cmd, params = null, cb = null) {
-  assert(type(cmd)=="string")
-  assert(params == null || type(params)=="table")
-  assert(cb == null || type(cb) == "function")
+  assert(cmd instanceof String)
+  assert(params == null || params instanceof Table)
+  assert(cb == null || cb instanceof Function)
   let res = matching_call(cmd, params)
   
   if (cb == null)
@@ -59,7 +60,7 @@ function translateMatchingParams(params) {
   if (params == null)
     return params
   foreach (key, value in params) {
-    if (type(value) == "string") {
+    if (value instanceof String) {
       if (key == "userId" || key == "roomId") {
         params[key] = value.tointeger()
       }
@@ -90,12 +91,12 @@ function checkMatchingError(params, showError = true) {
   if (!showError || disableNetwork)
     return false
 
-  let errorId = getTblValue("error_id", params) || matching_error_string(params.error)
+  let errorId = params?.error_id || matching_error_string(params.error)
   local text = loc("".concat("matching/", replace(errorId, ".", "_")))
   if ("error_message" in params)
     text = "".concat(text, "\n<B>", params.error_message, "</B>")
 
-  let id = "sessionLobby_error"
+  const id = "sessionLobby_error"
 
   let options = { saved = true, checkDuplicateId = true, cancel_fn = function() {} }
   options["debug_string"] <- get_last_session_debug_info()
@@ -110,7 +111,7 @@ function checkMatchingError(params, showError = true) {
 
 
 function request_matching(functionName, onSuccess = null, onError = null, params = null, requestOptions = null) {
-  let showError = getTblValue("showError", requestOptions, true)
+  let showError = (requestOptions?.showError ?? true)
 
   let callback = function(response) {
                      if (!checkMatchingError(response, showError)) {

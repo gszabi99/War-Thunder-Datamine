@@ -9,7 +9,6 @@ spinnerListBox {
   margin:0;
   top:(ph-h)/2;
   left:0;
-  interval:0;
   slideTime:200;   tabStop:yes;
   width:0.5pw;
   selected-border:none;
@@ -125,6 +124,20 @@ optionImg {
   pos:0, 50%ph-50%h;
   position:relative;
   background-svg-size:@cIco, @cIco;
+}
+
+optionImg[iconType=respawnTimer] {
+  size:24*@sf/@pf, 27*@sf/@pf;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  background-svg-size:24*@sf/@pf, 27*@sf/@pf;
+}
+
+optionImg[iconType=respawnCloud] {
+  size:27*@sf/@pf, 27*@sf/@pf;
+  pos:0, 50%ph-50%h;
+  position:relative;
+  background-svg-size:27*@sf/@pf, 27*@sf/@pf;
 }
 
 [iconType=aircraft] optionImg {

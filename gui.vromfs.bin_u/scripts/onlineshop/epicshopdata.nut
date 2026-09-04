@@ -1,13 +1,13 @@
+import "statsd" as statsd
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_natives.nut" import epic_is_running, epic_update_purchases_on_auth, epic_get_shop_item_async, epic_get_shop_items_async
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let statsd = require("statsd")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { eventbus_subscribe } = require("eventbus")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")

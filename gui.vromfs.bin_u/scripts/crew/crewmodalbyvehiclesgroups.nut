@@ -1,22 +1,21 @@
+from "string" import format
 from "%scripts/dagui_natives.nut" import get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { CrewHandler } = require("%scripts/crew/crewWndHandler.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
-let { format } = require("string")
 let { getSlotItem, getCurPreset, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut")
 let { setColoredDoubleTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { purchaseNewCrewSlot } = require("%scripts/crew/crew.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 
-let class CrewModalByVehiclesGroups (gui_handlers.CrewHandler) {
+class CrewModalByVehiclesGroups (CrewHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/crew/crewModalByVehiclesGroups.blk"
 
@@ -29,34 +28,6 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewHandler) {
   }
 
   createSlotbarHandler = @(params) slotbarWidget.create(params)
-
-  function updateAirList() {
-    this.airList = []
-    let curPreset = getCurPreset()
-    let curCountryGroups =  curPreset?.groupsList[this.getCurCountryName()]
-    if (curCountryGroups == null)
-      return
-
-    let curUnit = this.getCurCrewUnit(this.crew)
-    let curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
-
-    let sortData = [] 
-    foreach (unit in (curCountryGroups.groups?[curGroupName].units ?? []))
-      if (unit.getCrewUnitType() == this.curCrewUnitType) {
-        let isCurrent = curUnit?.name == unit.name
-        if (isCurrent)
-          this.airList.append(unit)
-        else {
-          sortData.append({
-            unit = unit
-            locname = utf8ToLower(getUnitName(unit))
-          })
-        }
-      }
-
-    sortData.sort(@(a, b) a.locname <=> b.locname)
-    this.airList.extend(sortData.map(@(a) a.unit))
-  }
 
   onSlotDblClick = @(_slotCrew) null
   canUpgradeCrewSpec = @(_upgCrew) false
@@ -123,7 +94,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewHandler) {
   }
 }
 
-gui_handlers.CrewModalByVehiclesGroups <- CrewModalByVehiclesGroups
+register_gui_handler("CrewModalByVehiclesGroups", CrewModalByVehiclesGroups)
 
 return {
   open = function(params = {}) {

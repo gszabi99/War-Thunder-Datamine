@@ -1,15 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "ww_leaderboard" as ww_leaderboard
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "math" import round
+from "%sqstd/string.nut" import isStringInteger
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let ww_leaderboard = require("ww_leaderboard")
 let { getClansInfoByClanIds } = require("%scripts/clans/clanInfo.nut")
-let { round } = require("math")
-let { requestLeaderboardData, convertLeaderboardData
-} = require("%scripts/leaderboard/requestLeaderboardData.nut")
-let { isStringInteger } = require("%sqstd/string.nut")
+let { requestLeaderboardData, convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let modes = [

@@ -21,18 +21,40 @@ shellTooltipPenetrationBlock {
 
       tdiv {
         padding:t='0, 1@bulletTooltipPadding'
+        <<#primary>>
         activeText {
           pos:t='0, 0.5ph-0.5h'
           position:t='relative'
-          text:t='<<highEnergyPenetration>>'
+          text:t='<<value>>'
           smallFont:t='yes'
         }
         textareaNoTab {
-          text:t=' - <<?bullet_properties/armorPiercing/explosive>>'
+          text:t=' - <<label>>'
           valign:t='center'
           overlayTextColor:t='minor'
           smallFont:t='yes'
         }
+        <</primary>>
+        <<#secondary>>
+        textareaNoTab {
+          text:t=' ( '
+          valign:t='center'
+          overlayTextColor:t='minor'
+          smallFont:t='yes'
+        }
+        activeText {
+          pos:t='0, 0.5ph-0.5h'
+          position:t='relative'
+          text:t='<<value>>'
+          smallFont:t='yes'
+        }
+        textareaNoTab {
+          text:t=' - <<label>> )'
+          valign:t='center'
+          overlayTextColor:t='minor'
+          smallFont:t='yes'
+        }
+        <</secondary>>
         img {
           size:t='1@sIco, 1@sIco'
           pos:t='1@blockInterval, 0.5ph-0.5h'
@@ -111,12 +133,30 @@ shellTooltipPenetrationBlock {
       margin-bottom:t='1@bulletTooltipPadding'
       flow:t='vertical'
 
-      tdiv {
+      tooltipLink {
         width:t='pw'
+
+        <<^tooltipId>>
+        isNotLink:t='yes'
+        <</tooltipId>>
+        <<#tooltipId>>
+        <<#isTooltipByHold>>
+        tooltipId:t='<<tooltipId>>'
+        <</isTooltipByHold>>
+        <<^isTooltipByHold>>
+        tooltip:t='$tooltipObj'
+        tooltipObj {
+          tooltipId:t='<<tooltipId>>'
+          on_tooltip_open:t='onGenericTooltipOpen'
+          on_tooltip_close:t='onTooltipObjClose'
+          display:t='hide'
+        }
+        <</isTooltipByHold>>
+        <</tooltipId>>
+
         textareaNoTab {
           text:t='<<?bullet_properties/armorPiercing/kinetic>> (<<?bullet_properties/hitAngle>> / <<?distance>>)'
           valign:t='center'
-          overlayTextColor:t='minor'
           smallFont:t='yes'
           padding:t='0, 1@bulletTooltipPadding'
         }

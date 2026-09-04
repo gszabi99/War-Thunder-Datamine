@@ -4,16 +4,15 @@ require %appGame.infantry.es.action_common
 require app
 require %appGame.wt_events
 require %appGame.infantry.es.team_common
-require %game.events
 require PropsManager
 require ecs.common
 
 
-[es(tag=server, on_appear)]
+[es(tag=server, on_appear, REQUIRE_NOT=discardedItem)]
 def init_useful_box_refill_count_es(evt : Event; useful_box__maxUseCount : int; var useful_box__useCount : int&)
   useful_box__useCount = useful_box__maxUseCount
 
-[es(tag=server)]
+[es(tag=server, REQUIRE_NOT=discardedItem)]
 def useful_box_use_request_es(evt : CmdUse;
                               eid : EntityId;
                               useful_box__useCount : int;

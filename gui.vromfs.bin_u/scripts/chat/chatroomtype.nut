@@ -1,24 +1,23 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "string" import format
+from "%sqstd/string.nut" import startsWith, slice
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isCrossNetworkMessageAllowed, checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
-let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan,
-  hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
-let { startsWith, slice } = require("%sqstd/string.nut")
+let { SQUAD_ROOM_PREFIX, mkSquadRoomId } = require("%scripts/chat/squadChatRoom.nut")
+let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut")
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 let { langsList, globalChatRooms } = require("%scripts/chat/chatConsts.nut")
 
 enum chatRoomCheckOrder {
@@ -122,7 +121,8 @@ enumsAddTypes(g_chat_room_type, {
     checkRoomId  = function(roomId) { return !startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
     getRoomName  = function(roomId, isColored = false) { 
-      local res = getPlayerFullName(getPlayerName(roomId), clanUserTable.get()?[roomId] ?? "")
+      let pName = colorizeWhitePsnIcon(getPlayerName(roomId))
+      local res = getPlayerFullName(pName, clanUserTable.get()?[roomId] ?? "")
       if (isColored)
         res = colorize(getSenderColor(roomId), res)
       return res
@@ -149,7 +149,7 @@ enumsAddTypes(g_chat_room_type, {
   }
 
   SQUAD = { 
-    roomPrefix = "#_msquad_"
+    roomPrefix = SQUAD_ROOM_PREFIX
     roomNameLocId = "squad/name"
     inviteLocIdNoNick = "squad/receiveInvite/noNick"
     inviteLocIdFull = "squad/receiveInvite"
@@ -274,7 +274,7 @@ enumsAddTypes(g_chat_room_type, {
 
     hasChatHeader = true
     fillChatHeader = function(obj, roomData) {
-      let handler = handlersManager.loadHandler(gui_handlers.ChatThreadHeader,
+      let handler = handlersManager.loadHandler(get_gui_handler("ChatThreadHeader"),
                                                     {
                                                       scene = obj
                                                       roomId = roomData.id
@@ -303,7 +303,7 @@ enumsAddTypes(g_chat_room_type, {
 
     hasCustomViewHandler = true
     loadCustomHandler = @(scene, roomId, backFunc) handlersManager.loadHandler(
-      gui_handlers.ChatThreadsListView, {
+      get_gui_handler("ChatThreadsListView"), {
         scene = scene,
         roomId = roomId,
         backFunc = backFunc
@@ -328,11 +328,7 @@ g_chat_room_type.getMySquadRoomId <- function getMySquadRoomId() {
   if (!g_squad_manager.isInSquad())
     return null
 
-  let squadRoomName = g_squad_manager.getSquadRoomName()
-  if (u.isEmpty(squadRoomName))
-    return null
-
-  return g_chat_room_type.SQUAD.getRoomId(squadRoomName)
+  return mkSquadRoomId(g_squad_manager.getSquadRoomName())
 }
 
 function addChatRoomType(roomType) {

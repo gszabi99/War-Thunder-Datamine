@@ -557,57 +557,6 @@
     "autodeleteEffectEntity:tag": {},
     "staticEffect:tag": {}
   },
-  "hit_melee_metal_effect": {
-    "_use": "hit_effect_base",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_metal_ap_cmps_fx"
-    }
-  },
-  "hit_melee_sand_effect": {
-    "_use": "hit_effect_base",
-    "paint_from_biome": true,
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_sand_ap_cmps_fx"
-    }
-  },
-  "hit_melee_dirt_effect": {
-    "_use": "hit_effect_base",
-    "paint_from_biome": true,
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_dirt_ap_cmps_fx"
-    }
-  },
-  "hit_melee_snow_effect": {
-    "_use": "hit_effect_base",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_snow_ap_cmps_fx"
-    }
-  },
-  "hit_melee_stone_effect": {
-    "_use": "hit_effect_base",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_stone_ap_cmps_fx"
-    }
-  },
-  "hit_melee_wood_effect": {
-    "_use": "hit_effect_base",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_wood_ap_cmps_fx"
-    }
-  },
-  "hit_melee_fabric_effect": {
-    "_use": "hit_effect_base",
-    "_group": {
-      "_tags": "render",
-      "effect__name": "hit_5_7mm_fabric_cmps_fx"
-    }
-  },
   "hit_effect_group_melee": {
     "_tags": "render",
     "melee_fx__default": "hit_melee_dirt_effect",
@@ -616,19 +565,29 @@
       "flesh": "hit_melee_fabric_effect",
       "fabric": "hit_melee_fabric_effect",
       "metal": "hit_melee_metal_effect",
+      "steel": "hit_melee_metal_effect",
+      "train": "hit_melee_metal_effect",
       "softSteelDoor": "hit_melee_metal_effect",
       "barbwire": "hit_melee_metal_effect",
+      "steel_bullet_transparent": "hit_melee_metal_effect",
       "sand": "hit_melee_sand_effect",
+      "sand_slope": "hit_melee_sand_effect",
       "duneSand": "hit_melee_sand_effect",
       "roadSand": "hit_melee_sand_effect",
       "quickSand": "hit_melee_sand_effect",
+      "quarrySand": "hit_melee_sand_effect",
+      "moon_sand": "hit_melee_sand_effect",
+      "leaves": "hit_melee_sand_effect",
       "sandbag_grey": "hit_melee_sand_effect",
       "sandbag_biege": "hit_melee_sand_effect",
       "soil": "hit_melee_dirt_effect",
       "soil_brown": "hit_melee_dirt_effect",
       "soil_sand": "hit_melee_dirt_effect",
+      "hard_soil": "hit_melee_dirt_effect",
       "roadSoil": "hit_melee_dirt_effect",
       "dirt": "hit_melee_dirt_effect",
+      "mud": "hit_melee_dirt_effect",
+      "roadmud": "hit_melee_dirt_effect",
       "road": "hit_melee_dirt_effect",
       "steppe": "hit_melee_dirt_effect",
       "snow": "hit_melee_snow_effect",
@@ -638,7 +597,82 @@
       "rocks": "hit_melee_stone_effect",
       "rocksSlippery": "hit_melee_stone_effect",
       "rocksSlipperyHigh": "hit_melee_stone_effect",
-      "wood": "hit_melee_wood_effect"
+      "concrete": "hit_melee_stone_effect",
+      "stone": "hit_melee_stone_effect",
+      "gravel": "hit_melee_stone_effect",
+      "ceramic": "hit_melee_stone_effect",
+      "wood": "hit_melee_wood_effect",
+      "wood_solid": "hit_melee_wood_effect",
+      "wood_railway": "hit_melee_wood_effect",
+      "window_wood": "hit_melee_wood_effect",
+      "softWoodDoor": "hit_melee_wood_effect",
+      "wood_fall": "hit_melee_wood_effect",
+      "wood_palm": "hit_melee_wood_effect",
+      "wood_dead": "hit_melee_wood_effect",
+      "wood_snow": "hit_melee_wood_effect",
+      "wood_fall_solid": "hit_melee_wood_effect",
+      "wood_palm_solid": "hit_melee_wood_effect",
+      "wood_dead_solid": "hit_melee_wood_effect",
+      "wood_snow_solid": "hit_melee_wood_effect"
+    }
+  },
+  "hit_effect_group_knife": {
+    "_tags": "render",
+    "melee_fx__default": "hit_knife_dirt_effect",
+    "melee_fx__info:object": {
+      "default": "hit_knife_stone_effect",
+      "flesh": "hit_knife_fabric_effect",
+      "fabric": "hit_knife_fabric_effect",
+      "metal": "hit_knife_metal_effect",
+      "steel": "hit_knife_metal_effect",
+      "train": "hit_knife_metal_effect",
+      "softSteelDoor": "hit_knife_metal_effect",
+      "barbwire": "hit_knife_metal_effect",
+      "steel_bullet_transparent": "hit_knife_metal_effect",
+      "sand": "hit_knife_sand_effect",
+      "sand_slope": "hit_knife_sand_effect",
+      "duneSand": "hit_knife_sand_effect",
+      "roadSand": "hit_knife_sand_effect",
+      "quickSand": "hit_knife_sand_effect",
+      "quarrySand": "hit_knife_sand_effect",
+      "moon_sand": "hit_knife_sand_effect",
+      "leaves": "hit_knife_sand_effect",
+      "sandbag_grey": "hit_knife_sand_effect",
+      "sandbag_biege": "hit_knife_sand_effect",
+      "soil": "hit_knife_dirt_effect",
+      "soil_brown": "hit_knife_dirt_effect",
+      "soil_sand": "hit_knife_dirt_effect",
+      "hard_soil": "hit_knife_dirt_effect",
+      "roadSoil": "hit_knife_dirt_effect",
+      "dirt": "hit_knife_dirt_effect",
+      "mud": "hit_knife_dirt_effect",
+      "roadmud": "hit_knife_dirt_effect",
+      "road": "hit_knife_dirt_effect",
+      "steppe": "hit_knife_dirt_effect",
+      "snow": "hit_knife_snow_effect",
+      "snowLower": "hit_knife_snow_effect",
+      "roadSnow": "hit_knife_snow_effect",
+      "ice": "hit_knife_snow_effect",
+      "rocks": "hit_knife_stone_effect",
+      "rocksSlippery": "hit_knife_stone_effect",
+      "rocksSlipperyHigh": "hit_knife_stone_effect",
+      "concrete": "hit_knife_stone_effect",
+      "stone": "hit_knife_stone_effect",
+      "gravel": "hit_knife_stone_effect",
+      "ceramic": "hit_knife_stone_effect",
+      "wood": "hit_knife_wood_effect",
+      "wood_solid": "hit_knife_wood_effect",
+      "wood_railway": "hit_knife_wood_effect",
+      "window_wood": "hit_knife_wood_effect",
+      "softWoodDoor": "hit_knife_wood_effect",
+      "wood_fall": "hit_knife_wood_effect",
+      "wood_palm": "hit_knife_wood_effect",
+      "wood_dead": "hit_knife_wood_effect",
+      "wood_snow": "hit_knife_wood_effect",
+      "wood_fall_solid": "hit_knife_wood_effect",
+      "wood_palm_solid": "hit_knife_wood_effect",
+      "wood_dead_solid": "hit_knife_wood_effect",
+      "wood_snow_solid": "hit_knife_wood_effect"
     }
   },
   "hit_footstep_dirt_effect": {

@@ -1,33 +1,32 @@
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "math" import ceil, floor
+from "string" import format
 from "%scripts/dagui_natives.nut" import clan_get_requested_clan_id
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/options/optionsCtors.nut" import create_option_list
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LeaderboardTable } = require("%scripts/leaderboard/leaderboardTable.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { ceil, floor } = require("math")
-let { format } = require("string")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { getSeparateLeaderboardPlatformName } = require("%scripts/social/crossplay.nut")
-let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats,
-  addTimerForRefreshStatsWhenTableEnd,getTableActiveIndex
-} = require("%scripts/userstat/userstat.nut")
+let { refreshUserstatCustomLeaderboardStats, userstatCustomLeaderboardStats, addTimerForRefreshStatsWhenTableEnd, getTableActiveIndex } = require("%scripts/userstat/userstat.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig,
-  leaderboardsList, leaderboardModes
-} = require("%scripts/leaderboard/leaderboardCategoryType.nut")
+let { getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig, leaderboardsList, leaderboardModes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
@@ -35,14 +34,13 @@ let { requestMembership } = require("%scripts/clans/clanRequests.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { getEventLeaderboardModes, getLeagueNameByLevel } = require("%scripts/events/eventInfo.nut")
 
 function gui_modal_event_leaderboards(params) {
-  loadHandler(gui_handlers.EventsLeaderboardWindow, params)
+  loadHandler(get_gui_handler("EventsLeaderboardWindow"), params)
 }
 
-gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+let LeaderboardWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 
@@ -173,7 +171,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getLbPlayerName(rowData) {
-    return getTblValue("name", rowData, "")
+    return (rowData?.name ?? "")
   }
 
   function getLbClanUid(rowData) {
@@ -311,7 +309,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   
   function initTable() {
-    this.tableWeak = gui_handlers.LeaderboardTable.create({
+    this.tableWeak = LeaderboardTable.create({
       scene = this.scene.findObject("lb_table_nest")
       rowsInPage = this.rowsInPage
       onCategoryCb = Callback(this.onCategory, this)
@@ -329,10 +327,10 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local data = []
     foreach (_idx, mode in leaderboardModes) {
-      let diffCode = getTblValue("diffCode", mode)
+      let diffCode = mode?.diffCode
       if (!g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
         continue
-      let reqFeature = getTblValue("reqFeature", mode)
+      let reqFeature = mode?.reqFeature
       if (!hasAllFeatures(reqFeature))
         continue
 
@@ -395,7 +393,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getLbRows() {
-    return getTblValue("rows", this.pageData, [])
+    return (this.pageData?.rows ?? [])
   }
 
   function fillLeaderboard(pgData) {
@@ -441,8 +439,9 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   }
   
 }
+register_gui_handler("LeaderboardWindow", LeaderboardWindow)
 
-gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
+let EventsLeaderboardWindow = class (LeaderboardWindow) {
   eventId = null
   sharedEconomicName = null
 
@@ -518,7 +517,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     this.lbModesList = modes
     let curMode = this.request.lbContactIndex
     let curValue = modes.findindex(@(v) v == curMode) ?? 0
-    let modesObjId = "modes_list"
+    const modesObjId = "modes_list"
     let modesObj = showObjById(modesObjId, true, this.scene)
     modesObj.width = "0.4@sf"
     let markup = create_option_list(modesObjId, modesNames, curValue, "onModeSelect", false)
@@ -677,8 +676,10 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
     addTimerForRefreshStatsWhenTableEnd(lbContactTable)
   }
 }
+register_gui_handler("EventsLeaderboardWindow", EventsLeaderboardWindow)
 
 return {
-  openLeaderboardWindow = @() loadHandler(gui_handlers.LeaderboardWindow)
+  LeaderboardWindow
+  openLeaderboardWindow = @() loadHandler(LeaderboardWindow)
   gui_modal_event_leaderboards
 }

@@ -1,16 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent, CONFIG_VALIDATION
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/datablock.nut" import eachBlock
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-let { isUnlockVisibleOnCurPlatform, isUnlockVisible
-} = require("%scripts/unlocks/unlocksModule.nut")
-let { addListenersWithoutEnv, broadcastEvent, CONFIG_VALIDATION
-} = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let DataBlock = require("DataBlock")
+
+let { isUnlockVisibleOnCurPlatform, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 const CHECKBOX_BTN_ID = "checkbox_favorites"
@@ -103,7 +101,7 @@ function removeUnlockFromFavorites(unlockId) {
 
 function tryAddAddToFav(unlockId) {
   if (!canAddFavorite()) {
-    let num = FAVORITE_UNLOCKS_LIMIT
+    const num = FAVORITE_UNLOCKS_LIMIT
     let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
     addPopup("", colorize("warningTextColor", msg))
     return false

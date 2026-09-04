@@ -1,15 +1,14 @@
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import shouldDisableMenu
 from "%scripts/dagui_library.nut" import *
 
-let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBlocks
-} = require("%scripts/promo/promo.nut")
+let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBlocks } = require("%scripts/promo/promo.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let { isWorldWarEnabled, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { openMainWnd, hasNewNearestAvailableMapToBattle } = require("%scripts/worldWar/worldWarUtils.nut")
 let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 let { getPlayedOperationText } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 
 
@@ -30,7 +29,7 @@ function getWorldWarPromoText(isWwEnabled = null) {
 
 addPromoAction("world_war", @(_handler, params, _obj) openMainWnd(params?[0] == "openMainMenu"))
 
-let promoButtonId = "world_war_button"
+const promoButtonId = "world_war_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -38,7 +37,7 @@ addPromoButtonConfig({
   collapsedIconLocKey = "icon/worldWar"
   needUpdateByTimer = true
   updateFunctionInHandler = function() {
-    let id = promoButtonId
+    const id = promoButtonId
     let isWwEnabled = canJoinWorldwarBattle()
     let isVisible = getShowAllPromoBlocks()
       || (isWwEnabled && isWWSeasonActive())

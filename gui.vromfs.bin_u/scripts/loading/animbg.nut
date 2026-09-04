@@ -1,17 +1,17 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "dagor.fs" import file_exists
+from "dagor.random" import frnd
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { file_exists } = require("dagor.fs")
-let { frnd } = require("dagor.random")
-let DataBlock = require("DataBlock")
 let fileCheck = require("%scripts/clientState/fileCheck.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { getCurLoadingBgData, removeLoadingBgFromLists } = require("%scripts/loading/loadingBgData.nut")
 let { isLoadingScreenBanned } = require("%scripts/options/preloaderOptions.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const MODIFY_UNKNOWN = -1
@@ -131,7 +131,7 @@ function debugLoad(blkFilePath = "") {
   if (!isDebugMode)
     return
 
-  handlersManager.loadHandler(gui_handlers.LoadingHandler)
+  handlersManager.loadHandler(get_gui_handler("LoadingHandler"))
   load(blkFilePath)
   enableDebugUpdate()
 }

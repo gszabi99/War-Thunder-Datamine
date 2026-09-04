@@ -4,7 +4,6 @@ require soundHash
 require DaWeaponProps
 require PropsManager
 require common_sounds.modules.common_sounds_events
-require %game.events
 require sound_utils.modules.sound_player_common
 
 

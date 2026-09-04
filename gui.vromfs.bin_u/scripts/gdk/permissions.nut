@@ -1,8 +1,9 @@
+from "gdk.app" import is_retail_environment
+from "%gdkLib/impl/privileges.nut" import Privilege, State, retrieve_current_state, resolve_with_ui
+from "%gdkLib/impl/permissions.nut" import check_for_user, check_deny_reason, Permission, DenyReason
+from "%gdkLib/crossnetwork.nut" import communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser, CommunicationsState
+
 let logX = require("%sqstd/log.nut")().with_prefix("[PERMISSIONS] ")
-let {is_retail_environment} = require("gdk.app")
-let {Privilege, State, retrieve_current_state, resolve_with_ui} = require("%gdkLib/impl/privileges.nut")
-let {check_for_user, check_deny_reason, Permission, DenyReason} = require("%gdkLib/impl/permissions.nut")
-let {communicationsPrivilege, crossnetworkPrivilege, textWithAnonUser, CommunicationsState} = require("%gdkLib/crossnetwork.nut")
 
 
 function check_privilege_with_resolution(privilege, attempt_resolution, callback) {

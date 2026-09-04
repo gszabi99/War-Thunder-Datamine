@@ -198,6 +198,104 @@
       },
       "else_actions": {}
     },
+    "teamA_tickets_bleed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": {
+          "value": "bleeding tickets from team A: 1% per second"
+        },
+        "gameMPChangeScore": {
+          "value": -1,
+          "valueSystem": "percentage",
+          "team": "A"
+        }
+      },
+      "else_actions": {}
+    },
+    "teamB_tickets_bleed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "comment": {
+          "value": "bleeding tickets from team B: 1% per second"
+        },
+        "gameMPChangeScore": {
+          "value": -1,
+          "valueSystem": "percentage",
+          "team": "B"
+        }
+      },
+      "else_actions": {}
+    },
+    "t1_major_extra_task_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 11250.0,
+          "var": "team1_quest_score"
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_major_extra_task_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 11250.0,
+          "var": "team2_quest_score"
+        }
+      },
+      "else_actions": {}
+    },
     "t1_major_task_completed": {
       "is_enabled": false,
       "comments": "",
@@ -239,6 +337,52 @@
         "varModify": {
           "operator": "add",
           "value": 7500.0,
+          "var": "team2_quest_score"
+        }
+      },
+      "else_actions": {}
+    },
+    "t1_moderate_extra_task_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 6750.0,
+          "var": "team1_quest_score"
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_moderate_extra_task_completed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 6750.0,
           "var": "team2_quest_score"
         }
       },

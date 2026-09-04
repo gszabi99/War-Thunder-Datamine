@@ -2,7 +2,7 @@
   "model": "tornado_ids_de_mfg",
   "fmFile": "/fm/tornado_ids_de_mfg.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.11,
   "gearSinkRangeC": 0.212,
   "jetEnginePowerFullScale": true,
@@ -3548,12 +3548,11 @@
           },
           {
             "iconType": "missile_air_to_earth",
-            "name": "as_34",
-            "reqModification": "gr_as_34",
+            "name": "as_34_slot3",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": [
                 "pylon_bomb2",
-                "pylon_kormoran1",
                 "pylon_bomb2_lap"
               ]
             },
@@ -3561,9 +3560,8 @@
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/gr_as34_kormoran.blk",
-              "emitter": "kormoran1",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran.blk",
+              "emitter": "bomb1_ld",
               "startFx": "smoke_rocket_start_air"
             }
           },
@@ -3598,26 +3596,6 @@
         "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "bombs_large",
-            "name": "1000lbs_mk83",
-            "reqModification": "us_1000lb_mk83",
-            "ShowNodes": {
-              "node": [
-                "pylon_bomb3",
-                "pylon_bomb3"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "emitter": "bomb3_ld",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_default",
@@ -3691,21 +3669,17 @@
           },
           {
             "iconType": "missile_air_to_earth",
-            "name": "as_34_fuse",
-            "reqModification": "gr_as_34",
+            "name": "as_34_slot4",
+            "reqModification": "asm",
             "ShowNodes": {
-              "node": [
-                "pylon_kormoran2",
-                "pylon_bomb3"
-              ]
+              "node": "pylon_bomb3"
             },
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/gr_as34_kormoran.blk",
-              "emitter": "kormoran2",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran.blk",
+              "emitter": "bomb5_ld",
               "startFx": "smoke_rocket_start_air"
             },
             "BannedWeaponPreset": [
@@ -3714,28 +3688,8 @@
                 "preset": "1000lbs_mk83_x2"
               },
               {
-                "slot": 7,
-                "preset": "1000lbs_mk83_x2"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83_x2"
-              },
-              {
-                "slot": 5,
-                "preset": "1000lbs_mk83"
-              },
-              {
                 "slot": 5,
                 "preset": "1000lbs_mk83_default"
-              },
-              {
-                "slot": 7,
-                "preset": "1000lbs_mk83"
-              },
-              {
-                "slot": 8,
-                "preset": "1000lbs_mk83"
               },
               {
                 "slot": 5,
@@ -3755,26 +3709,6 @@
         "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "bombs_large",
-            "name": "1000lbs_mk83",
-            "reqModification": "us_1000lb_mk83",
-            "ShowNodes": {
-              "node": [
-                "pylon_bomb3",
-                "pylon_bomb3"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "emitter": "bomb9_ld",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_default",
@@ -3908,11 +3842,11 @@
               },
               {
                 "slot": 4,
-                "preset": "as_34_fuse"
+                "preset": "as_34_slot4"
               },
               {
                 "slot": 8,
-                "preset": "as_34_fuse"
+                "preset": "as_34_slot8"
               }
             ]
           },
@@ -3970,11 +3904,11 @@
               },
               {
                 "slot": 4,
-                "preset": "as_34_fuse"
+                "preset": "as_34_slot4"
               },
               {
                 "slot": 8,
-                "preset": "as_34_fuse"
+                "preset": "as_34_slot8"
               }
             ]
           }
@@ -3986,26 +3920,6 @@
         "order": 10,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
-          {
-            "iconType": "bombs_large",
-            "name": "1000lbs_mk83",
-            "reqModification": "us_1000lb_mk83",
-            "ShowNodes": {
-              "node": [
-                "pylon_bomb5",
-                "pylon_bomb5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "emitter": "bomb10_ld",
-              "bullets": 1
-            }
-          },
           {
             "iconType": "bombs_large",
             "name": "1000lbs_mk83_default",
@@ -4087,26 +4001,6 @@
         "WeaponPreset": [
           {
             "iconType": "bombs_large",
-            "name": "1000lbs_mk83",
-            "reqModification": "us_1000lb_mk83",
-            "ShowNodes": {
-              "node": [
-                "pylon_bomb5",
-                "pylon_bomb5"
-              ]
-            },
-            "Weapon": {
-              "trigger": "bombs",
-              "machLimit": 1.01,
-              "external": true,
-              "separate": true,
-              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
-              "emitter": "bomb4_ld",
-              "bullets": 1
-            }
-          },
-          {
-            "iconType": "bombs_large",
             "name": "1000lbs_mk83_default",
             "ShowNodes": {
               "node": [
@@ -4178,47 +4072,23 @@
           },
           {
             "iconType": "missile_air_to_earth",
-            "name": "as_34_fuse",
-            "reqModification": "gr_as_34",
+            "name": "as_34_slot8",
+            "reqModification": "asm",
             "ShowNodes": {
-              "node": [
-                "pylon_kormoran3",
-                "pylon_bomb5"
-              ]
+              "node": "pylon_bomb5"
             },
             "Weapon": {
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/gr_as34_kormoran.blk",
-              "emitter": "kormoran3",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran.blk",
+              "emitter": "bomb6_ld",
               "startFx": "smoke_rocket_start_air"
             },
             "BannedWeaponPreset": [
               {
-                "slot": 4,
-                "preset": "1000lbs_mk83_x2"
-              },
-              {
-                "slot": 5,
-                "preset": "1000lbs_mk83_x2"
-              },
-              {
                 "slot": 7,
                 "preset": "1000lbs_mk83_x2"
-              },
-              {
-                "slot": 4,
-                "preset": "1000lbs_mk83"
-              },
-              {
-                "slot": 5,
-                "preset": "1000lbs_mk83"
-              },
-              {
-                "slot": 7,
-                "preset": "1000lbs_mk83"
               },
               {
                 "slot": 7,
@@ -4315,12 +4185,11 @@
           },
           {
             "iconType": "missile_air_to_earth",
-            "name": "as_34",
-            "reqModification": "gr_as_34",
+            "name": "as_34_slot9",
+            "reqModification": "asm",
             "ShowNodes": {
               "node": [
                 "pylon_bomb6",
-                "pylon_kormoran4",
                 "pylon_bomb6_lap"
               ]
             },
@@ -4328,9 +4197,8 @@
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/gr_as34_kormoran.blk",
-              "emitter": "kormoran4",
-              "bullets": 1,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran.blk",
+              "emitter": "bomb2_ld",
               "startFx": "smoke_rocket_start_air"
             }
           },
@@ -4827,7 +4695,7 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "gr_as_34": {
+    "asm": {
       "prevModification": "us_1000lb_mk83",
       "modClass": "weapon",
       "tier": 2
@@ -5040,8 +4908,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

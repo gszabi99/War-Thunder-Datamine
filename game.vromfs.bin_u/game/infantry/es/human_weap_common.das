@@ -18,9 +18,7 @@ require %appGame.infantry.es.human_reload_common
 require daslib/enum_trait
 require %appGame.infantry.es.human_weapon_utils_common
 require %appGame.infantry.es.inventory_drop_common
-require %appGame.infantry.es.multiple_guns_slot_common
 require %appGame.infantry.es.walker_common
-require %appGame.infantry.es.gun_anim_common
 require DngWalkerai
 require Dacoll
 require daslib.strings_boost
@@ -162,24 +160,18 @@ def get_base_template_name(tmpl_name : string) : string
 
 
 
-def choose_weapon(human_eid : EntityId; slot : HUWeaponSlots; gun_eid : EntityId = INVALID_ENTITY_ID)
+def choose_weapon(human_eid : EntityId; slot : HUWeaponSlots)
   query(human_eid) <| $ [es] (human_weap__gunEids : EidList;
-                              multiple_guns_slots__active : BoolList;
                               var human_net_phys : HumanActor&)
-    let slotInt = int(slot)
-    if gun_eid != INVALID_ENTITY_ID && multiple_guns_slots__active?[slotInt] ?? false
-      try_multiple_guns_slot_equip_gun_server(human_eid, gun_eid, slotInt)
-      return
-
-    if human_weap__gunEids[slotInt] == INVALID_ENTITY_ID
+    if human_weap__gunEids[int(slot)] == INVALID_ENTITY_ID
       return
     human_net_phys.phys.producedCT |> set_chosen_weapon(slot)
 
-def choose_weapon(human_eid : EntityId; slot_name : string; gun_eid : EntityId = INVALID_ENTITY_ID)
+def choose_weapon(human_eid : EntityId; slot_name : string)
   let slot = get_weapon_slot_from_name(slot_name)
   if !slot.found
     return false
-  choose_weapon(human_eid, slot.slot, gun_eid)
+  choose_weapon(human_eid, slot.slot)
   return true
 
 
@@ -245,7 +237,7 @@ def check_gun_trace(var phys : HumanPhys;
     return false
   return true
 
-def check_ai_gun_trace(agent_eid : EntityId; var phys : HumanPhys)
+def check_ai_gun_trace(agent_eid : EntityId; phys : HumanPhys)
   var result = false
   query(agent_eid) <| $ [es] (squad_member__squad : EntityId = INVALID_ENTITY_ID;
                               human_weap__gunDownAIDists : float2 = float2(0.0, 1.0);
@@ -637,7 +629,7 @@ def throw_grenade_away(eid : EntityId;
   return res
 
 def human_weap_gun_update(var human_net_phys : HumanActor;
-                          var human_weap__gunEids : EidList;
+                          human_weap__gunEids : EidList;
                           var human_weap__throwMode : bool&;
                           ctx : GunUpdateCtx;
                           transform : float3x4;
@@ -1000,7 +992,7 @@ def take_grenade_in_hand(human_eid : EntityId;
         destroyEntity(human_weap__localProjectileEid)
         human_weap__localProjectileEid = newProjectileEid
 
-    choose_weapon(human_eid, HUWeaponSlots.EWS_GRENADE, grenade_thrower_eid)
+    choose_weapon(human_eid, HUWeaponSlots.EWS_GRENADE)
     return true
   return false
 

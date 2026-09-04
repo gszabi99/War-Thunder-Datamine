@@ -1,7 +1,7 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 
 function createBatchTrainCrewRequestBlk(requestData) {

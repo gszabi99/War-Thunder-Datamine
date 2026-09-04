@@ -1,14 +1,13 @@
+from "%appGlobals/login/loginState.nut" import isProfileReceived
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { ANY_CLICK } = require("%scripts/tutorials/tutorialActions.nut")
 let { isModMounted } = require("%scripts/weaponry/modificationInfo.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { getPvpRespawnsOnUnitType, isStatsLoaded, isMeNewbieOnUnitType
-} = require("%scripts/myStats.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { getPvpRespawnsOnUnitType, isStatsLoaded, isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 const MAX_WEAPONS_TUTOR_SHOWS = 2

@@ -1,6 +1,5 @@
 require ecs
 require ecs.common
-require DagorMath
 require WTInput
 require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.hitpoints_common

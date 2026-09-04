@@ -1,6 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+
+let { INVENTORY_UPDATE } = require("%scripts/crossModuleEvents.nut")
 let { getInventoryListByShopMask } = require("%scripts/items/itemsManagerModule.nut")
 
 let unitCoupons = persist("unitCoupons", @() { valid = false })
@@ -28,7 +30,7 @@ function hasUnitCoupon(unitName) {
 }
 
 addListenersWithoutEnv({
-  InventoryUpdate = function(_) {
+  [INVENTORY_UPDATE] = function(_) {
     unitCoupons.clear()
     unitCoupons.valid <- false
   }

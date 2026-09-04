@@ -5,7 +5,6 @@ require math.base
 
 require %appGame.wt_events
 require %appGame.infantry.es.riextra_common
-require %game.events
 require RendInst
 require RendInstPhys
 require DagorMath

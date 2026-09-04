@@ -73,7 +73,7 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
                                           ammo_clusters__typeAndStage : UInt16List;
                                           ammo_clusters__slotsRange : IPoint2List;
                                           ammo_clusters__relatedPartsRange : IPoint2List;
-                                          ammo_slots__numAmmo : IPoint2List -const;
+                                          ammo_slots__numAmmo : IPoint2List const;
                                           ammo_slots__ammoMaskAndType : UInt32List;
                                           ammo_per_type_data__state : UInt32List -const;
                                           ammo_per_type_data__numAmmoFs : IntList -const
@@ -529,6 +529,7 @@ def find_next_slots_to_replenish(weap : WeaponController const?; stowage_id : in
 [es, with_bundle(v)]
 def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDelayed;
                                                    eid : EntityId;
+                                                   curUnitTickDt : float;
                                                    var unit__ref : UnitRef;
                                                    v : tuple<
                                                      ammo_stowage__ammoState : uint;
@@ -560,6 +561,8 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
                                                      ammo_per_type_data__state : UInt32List -const;
                                                      ammo_per_type_data__numAmmoFs : IntList -const
                                                      >)
+  if curUnitTickDt == 0.f
+    return
   var unit = unit__ref.unit
   if unit.isDelayed
     return
@@ -776,6 +779,7 @@ def get_source_stowage_for_sharing_ammo(weap : WeaponController const?; stowage_
 [es, with_bundle(v)]
 def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                                         eid : EntityId;
+                                        curUnitTickDt : float;
                                         var unit__ref : UnitRef;
                                         v : tuple<
                                           ammo_stowage__ammoState : uint;
@@ -801,12 +805,14 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                                           >)
   if !get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_AMMO_SHARING)
     return
+  if curUnitTickDt == 0.f
+    return
   var unit = unit__ref.unit
   if unit.isAlive && !unit.isDelayed
     for stowage_id, clusters_range in iter_range(v.ammo_stowages__clustersRange), v.ammo_stowages__clustersRange
       if get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.RESTORING_STOWAGE)
         if v.ammo_stowages__restoreTimers[stowage_id].x > 0.0f
-          v.ammo_stowages__restoreTimers[stowage_id].x -= info.dt
+          v.ammo_stowages__restoreTimers[stowage_id].x -= curUnitTickDt
           if v.ammo_stowages__restoreTimers[stowage_id].x <= 0.0f
             for restoreClusterId  in v.ammo_stowages__clustersRange[stowage_id].x..v.ammo_stowages__clustersRange[stowage_id].y
               let slots_range = v.ammo_clusters__slotsRange[restoreClusterId]
@@ -818,8 +824,8 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                 ))
         else
           if v.ammo_stowages__restoreTimers[stowage_id].y > 0.0f
-            v.ammo_stowages__restoreTimers[stowage_id].y -= info.dt
-            v.ammo_stowages__restoreTimers[stowage_id].w -= info.dt
+            v.ammo_stowages__restoreTimers[stowage_id].y -= curUnitTickDt
+            v.ammo_stowages__restoreTimers[stowage_id].w -= curUnitTickDt
             if v.ammo_stowages__restoreTimers[stowage_id].y <= 0.0f
               var ammoRestoring = false
               for restoreClusterId  in v.ammo_stowages__clustersRange[stowage_id].x..v.ammo_stowages__clustersRange[stowage_id].y
@@ -837,7 +843,7 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                       var bulletModId = -1
                       let removed_ammo = ammo_stowage_change_weapon_ammo_for_weapon(unit.weap, source_weapon_idx, source_bullet_set_idx, false, -numAmmoRequest, bulletModId)
                       if removed_ammo > 0
-                        let added_ammo = ammo_stowage_change_weapon_ammo(unit.weap, get_ammo_slot_type(restoreSlotId, v), false, removed_ammo, bulletModId, v)
+                        let added_ammo = ammo_stowage_change_weapon_ammo(unit.weap, get_ammo_slot_type(restoreSlotId, v), false, false, removed_ammo, bulletModId, v)
                         if added_ammo < removed_ammo
                           let ammo_to_restore = removed_ammo - added_ammo
                           ammo_stowage_change_weapon_ammo_for_weapon(unit.weap, source_weapon_idx, source_bullet_set_idx, false, ammo_to_restore, bulletModId)
@@ -852,7 +858,7 @@ def ammo_stowage_update_sharing_ammo_es(info : ParallelUpdateFrameDelayed;
                 set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.RESTORING_STOWAGE, false)
                 v.ammo_stowages__restoreTimers[stowage_id].y = -1.0f
       else
-        v.ammo_stowages__restoreTimers[stowage_id].z -= info.dt
+        v.ammo_stowages__restoreTimers[stowage_id].z -= curUnitTickDt
         if v.ammo_stowages__restoreTimers[stowage_id].z < 0.0f
           v.ammo_stowages__restoreTimers[stowage_id].z = 1.0f
           for cluster_id in clusters_range.x..clusters_range.y
@@ -882,13 +888,21 @@ def ammo_stowage_sync_es(act : UpdateStageInfoAct;
                          var ammo_stowages__replenishmentTimeSync : Point2List&;
                          ammo_stowages__replenishmentTime : Point2List;
                          var ammo_stowage__ammoLostSync : int&;
-                         ammo_stowage__ammoLost : int)
+                         ammo_stowage__ammoLost : int;
+                         ammo_stowages__restoreTimers : Point4List;
+                         var ammo_stowage__timeMovingAmmoSync : float&)
   
   
   ammo_per_type_data__numAmmoFsSync := ammo_per_type_data__numAmmoFs
   ammo_stowages__replenishmentStartEndSync := ammo_stowages__replenishmentStartEnd
   ammo_stowages__replenishmentTimeSync := ammo_stowages__replenishmentTime
   ammo_stowage__ammoLostSync = ammo_stowage__ammoLost
+
+  var minTimeRestore = FLT_MAX
+  for timer in ammo_stowages__restoreTimers
+    if timer.x <= 0.0f && timer.y > 0.0f && timer.y < minTimeRestore
+      minTimeRestore = timer.y
+  ammo_stowage__timeMovingAmmoSync = minTimeRestore == FLT_MAX ? -1.0f : minTimeRestore
 
 
 [es(on_event=EventOnStopBurn)]

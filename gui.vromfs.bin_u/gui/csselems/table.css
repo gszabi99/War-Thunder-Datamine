@@ -590,6 +590,10 @@ tr[hiddenTr=yes] {
   color:@commonTextColor;
 }
 
+.lbTable > tr textareaNoTab {
+  color:@activeTextColor;
+}
+
 tr > td > optiontext {
   auto-scroll:fast;
   move-start:no;
@@ -700,6 +704,7 @@ tr[totalColor=yes] > td > textareaNoTab {
 tr[winAwardColor=yes] > td > activeText, tr[winAwardColor=yes] > td > textareaNoTab {
   color:@userlogColoredText;
 }
+.lbTable td[active=yes] textareaNoTab,
 .lbTable td[active=yes] activeText {
   color:@lbActiveColumnColor;
 }

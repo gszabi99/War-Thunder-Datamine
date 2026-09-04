@@ -1,23 +1,23 @@
+import "%rGui/shipStateModule.nut" as shipStateModule
+import "%rGui/hudLogs.nut" as hudLogs
+import "%rGui/submarineFireControl.nut" as fireControl
+import "%rGui/chat/voiceChat.nut" as voiceChat
+import "%rGui/shipObstacleRangefinder.nut" as shipObstacleRf
+import "string" as string
+from "%rGui/options/measureUnits.nut" import DISTANCE_SHORT
+from "%rGui/activeOrder.nut" import activeOrderComps
+from "%rGui/hudState.nut" import missionProgressHeight
+from "%rGui/shellState.nut" import isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor, remainingDist
+  , isOperated, isTrackingTarget, wireLoseTime, isWireConnected, IsGimbalVisible, TrackerSize, TrackerX
+  , TrackerY, IsTrackerVisible
+from "%rGui/style/screenState.nut" import safeAreaSizeHud
+from "%rGui/hud/depthRoulette.nut" import depthRoulette
+from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
-let { DISTANCE_SHORT } = require("%rGui/options/measureUnits.nut")
-
-let string = require("string")
-let { floor } = require("math")
-let { activeOrderComps }= require("%rGui/activeOrder.nut")
-let shipStateModule = require("%rGui/shipStateModule.nut")
-let hudLogs = require("%rGui/hudLogs.nut")
-let fireControl = require("%rGui/submarineFireControl.nut")
 
 
 
-let { missionProgressHeight } = require("%rGui/hudState.nut")
-let { isAimCamera, GimbalX, GimbalY, GimbalSize, altitude, isActiveSensor,
-  remainingDist, isOperated, isTrackingTarget, wireLoseTime, isWireConnected,
-  IsGimbalVisible, TrackerSize, TrackerX, TrackerY, IsTrackerVisible } = require("%rGui/shellState.nut")
-let voiceChat = require("%rGui/chat/voiceChat.nut")
-let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let shipObstacleRf = require("%rGui/shipObstacleRangefinder.nut")
-let { depthRoulette } = require("%rGui/hud/depthRoulette.nut")
+
 let styleShipHudText = {
   rendObj = ROBJ_TEXT
   color = Color(255, 255, 255, 255)
@@ -106,13 +106,13 @@ let shellChildren = [
 function ShipShellState() {
   return {
     watch = isAimCamera
-    pos = [sw(60), 0]
+    pos = const [sw(60), 0]
     flow = FLOW_VERTICAL
     children = isAimCamera.get() ? shellChildren : null
   }
 }
 
-let shellAimColor = Color(255, 255, 255, 250)
+const shellAimColor = Color(255, 255, 255, 250)
 let getColor = @() shellAimColor
 
 let styleShellAim = {
@@ -160,7 +160,7 @@ let aimHud = {
 }
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     shipHud
     fireControl

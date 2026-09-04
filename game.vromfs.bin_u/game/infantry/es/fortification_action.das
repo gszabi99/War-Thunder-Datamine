@@ -44,20 +44,20 @@ def find_server_preview(is_engineer, trace_from, trace_to, trace_max_len)
 
 def find_usable_buildings(is_engineer, trace_from, trace_to, trace_max_len)
   var buildingEid = INVALID_ENTITY_ID
-  find_query() <| $ [es(REQUIRE=(engineer_building__isUsable), REQUIRE_NOT=(builder_additive_preview, builder_server_preview))] (eid : EntityId;
-                                                                                                                                 transform : float3x4;
-                                                                                                                                 buildingRadius : float;
-                                                                                                                                 object__useDist : float const?)
+  find_query() <| $ [es(REQUIRE=(engineer_building__isUsable), REQUIRE_NOT=(builder_additive_preview, builder_server_preview, discardedItem))] (eid : EntityId;
+                                                                                                                                                transform : float3x4;
+                                                                                                                                                buildingRadius : float;
+                                                                                                                                                object__useDist : float const?)
     buildingEid = find_fortification_object_impl(eid, is_engineer, transform[3], buildingRadius, trace_from, trace_to, object__useDist ?? trace_max_len)
     return !!buildingEid
   return buildingEid
 
 def find_destroyable_buildings(is_engineer, trace_from, trace_to, trace_max_len)
   var previewEid = INVALID_ENTITY_ID
-  find_query() <| $ [es(REQUIRE=buildByPlayer, REQUIRE_NOT=(builder_additive_preview, builder_server_preview))] (eid : EntityId;
-                                                                                                                 transform : float3x4;
-                                                                                                                 buildingRadius : float;
-                                                                                                                 object__useDist : float const?)
+  find_query() <| $ [es(REQUIRE=buildByPlayer, REQUIRE_NOT=(builder_additive_preview, builder_server_preview, discardedItem))] (eid : EntityId;
+                                                                                                                                transform : float3x4;
+                                                                                                                                buildingRadius : float;
+                                                                                                                                object__useDist : float const?)
     previewEid = find_fortification_object_impl(eid, is_engineer, transform[3], buildingRadius, trace_from, trace_to, object__useDist ?? trace_max_len)
     return !!previewEid
   return previewEid

@@ -1,14 +1,15 @@
+from "dagor.workcycle" import defer
+from "%sqstd/json.nut" import saveJson
+from "dagor.fs" import mkpath
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
+from "types" import Array
 
-let { defer } = require("dagor.workcycle")
-let { saveJson } = require("%sqstd/json.nut")
-let { mkpath } = require("dagor.fs")
 let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-let { doesLocTextExist } = require("dagor.localize")
 
 const TARGET_WEAPONS_LOC = "weaponsLoc"
 
-let class ExporterStatus {
+class ExporterStatus {
   static DETAILS_FIELD = "details"
   static SUCCESS_FIELD = "success"
 
@@ -138,7 +139,7 @@ function makeLocOutPath(path, fileName, langId) {
 }
 
 function resolveLangsInfo(requestedLangs) {
-  if (requestedLangs == null || type(requestedLangs) != "array" || requestedLangs.len() == 0)
+  if (requestedLangs == null || !(requestedLangs instanceof Array) || requestedLangs.len() == 0)
     return []
   return getGameLocalizationInfo().filter(@(value) requestedLangs.contains(value.id))
 }

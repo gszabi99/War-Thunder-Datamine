@@ -1,7 +1,7 @@
+from "fonts" import getFontName
 from "%rGui/globals/ui_library.nut" import *
 
 let fontsState = require("%rGui/style/fontsState.nut")
-let { getFontName } = require("fonts")
 let colors = require("%rGui/style/colors.nut")
 
 let antiAirMenuShortcutHeight = evenPx(30)
@@ -240,7 +240,9 @@ let shortcutByInputName = {
     }
   }
 
-  doubleAxis = @(shortcutConfig, override, _addChildrend) gamepadButton(shortcutConfig, override, true)
+  doubleAxis = @(shortcutConfig, override, addChildrend = []) hasImage(shortcutConfig)
+    ? gamepadButton(shortcutConfig, override, true, addChildrend)
+    : keyboardButton(shortcutConfig, override, addChildrend)
 
   inputImage = @(shortcutConfig, override, _addChildrend) gamepadButton(shortcutConfig, override, false)
 

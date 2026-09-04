@@ -1,7 +1,7 @@
+from "hangar" import hangar_get_current_unit_name
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { hangar_get_current_unit_name } = require("hangar")
-let { eventbus_subscribe } = require("eventbus")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")

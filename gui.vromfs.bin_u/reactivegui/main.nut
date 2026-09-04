@@ -1,9 +1,12 @@
+
 #default:forbid-root-table
+from "%rGui/components/modalWindowsMngr.nut" import modalWindowsComponent
+from "%rGui/components/tooltip.nut" import tooltipComp
+from "%darg/helpers/inspector.nut" import inspectorRoot
 from "%rGui/globals/ui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "frp" import warn_on_deprecated_methods, set_slow_subscriber_threshold_usec
 from "dagor.system" import DBGLEVEL
-
 warn_on_deprecated_methods(DBGLEVEL > 0)
 set_slow_subscriber_threshold_usec(1000000) 
 
@@ -21,14 +24,11 @@ require("%rGui/consoleCmd.nut")
 require("%sqstd/regScriptProfiler.nut")("darg", dlog) 
 
 let widgets = require("%rGui/widgets.nut")
-let { inspectorRoot } = require("%darg/helpers/inspector.nut")
-let { modalWindowsComponent } = require("%rGui/components/modalWindowsMngr.nut")
-let { tooltipComp } = require("%rGui/components/tooltip.nut")
 
 end_es_loading()
 
 return {
-  size = flex()
+  size = FLEX
   children = [
     widgets
     modalWindowsComponent

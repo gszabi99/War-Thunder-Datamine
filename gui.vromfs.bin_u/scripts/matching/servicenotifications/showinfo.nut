@@ -1,10 +1,9 @@
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/webRPC.nut" import webRpcRegister
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { isInFlight } = require("gameplayBinding")
 
 function showMessageBox(params) {
   if (isInFlight())
@@ -43,5 +42,5 @@ function showUrl(params) {
 }
 
 
-web_rpc.register_handler("show_message_box", showMessageBox)
-web_rpc.register_handler("open_url", showUrl)
+webRpcRegister("show_message_box", showMessageBox)
+webRpcRegister("open_url", showUrl)

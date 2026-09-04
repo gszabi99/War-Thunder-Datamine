@@ -1,8 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
 let g_order_award_mode = {
   types = []
@@ -63,7 +63,7 @@ enumsAddTypes(g_order_award_mode, {
 
 g_order_award_mode.getAwardModeByOrderParams <- function getAwardModeByOrderParams(orderParams) {
   foreach (awardMode in g_order_award_mode.types)
-    if (u.isTable(awardMode) && getTblValue(awardMode.name, orderParams, false))
+    if (u.isTable(awardMode) && (orderParams?[awardMode.name] ?? false))
       return awardMode
   return this.UNKNOWN
 }

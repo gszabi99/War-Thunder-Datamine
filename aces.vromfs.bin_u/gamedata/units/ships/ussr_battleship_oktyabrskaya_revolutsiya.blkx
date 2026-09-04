@@ -30,6 +30,7 @@
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
+  "boilerOverpressureStartFx": "steam_leak",
   "deadCoverCountToDelayedSinking": 3,
   "delayedSinkingBreachesFreq": 4.0,
   "delayedSinkingBreachesSize": [
@@ -44,9 +45,9 @@
   "debrisPreset": "debris_preset_battleship",
   "haveAnchor": true,
   "anchorPos": [
-    76.119,
-    3.893,
-    -3.398
+    79.83,
+    4.996,
+    -3.284
   ],
   "hideNodesInDmg": {
     "node": "flag"
@@ -3499,7 +3500,13 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 5.0,
       "dmgState": 0.0,
-      "napalmDamageMult": 1.0
+      "napalmDamageMult": 1.0,
+      "antenna_target_location_01_dm": {
+        "hp": 350.0
+      },
+      "antenna_target_location_02_dm": {
+        "hp": 350.0
+      }
     },
     "fire_control": {
       "armorClass": "ship_structural_steel",
@@ -5649,20 +5656,38 @@
       {
         "dmPartMain": "fire_control_room_01_dm",
         "dmPart": [
-          "rangefinder_01_dm",
           "rangefinder_02_dm",
           "rangefinder_03_dm",
-          "rangefinder_04_dm",
-          "rangefinder_05_dm",
           "rangefinder_06_dm",
           "rangefinder_07_dm",
-          "rangefinder_08_dm",
-          "rangefinder_09_dm"
+          "rangefinder_08_dm"
         ],
         "measureAccuracy": 0.85,
         "targetLockTime": 20.0,
         "calcTime": 12.0,
         "rotationSpeed": 20.0,
+        "shipIndicationOn": true,
+        "triggerGroupUse": {
+          "primary": false,
+          "secondary": true,
+          "machinegun": false
+        }
+      },
+      {
+        "dmPartMain": "fire_control_room_01_dm",
+        "dmPart": [
+          "rangefinder_01_dm",
+          "rangefinder_04_dm",
+          "rangefinder_05_dm",
+          "rangefinder_09_dm"
+        ],
+        "rotationSpeed": [
+          0.0,
+          20.0
+        ],
+        "measureAccuracy": 0.85,
+        "targetLockTime": 20.0,
+        "calcTime": 12.0,
         "shipIndicationOn": true,
         "triggerGroupUse": {
           "primary": false,
@@ -12774,27 +12799,21 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_01_dm": {
-            "count": 100
-          }
+          "ammunition_storage_shells_01_dm": {}
         },
         {
           "entityMunition": "shells",
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_05_dm": {
-            "count": 100
-          }
+          "ammunition_storage_shells_05_dm": {}
         },
         {
           "entityMunition": "shells",
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_06_dm": {
-            "count": 100
-          }
+          "ammunition_storage_shells_06_dm": {}
         }
       ],
       "charges": [
@@ -12802,41 +12821,31 @@
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_01_dm": {
-            "count": 60
-          }
+          "ammunition_storage_charges_01_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_05_dm": {
-            "count": 60
-          }
+          "ammunition_storage_charges_05_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_06_dm": {
-            "count": 60
-          }
+          "ammunition_storage_charges_06_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_07_dm": {
-            "count": 60
-          }
+          "ammunition_storage_charges_07_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_08_dm": {
-            "count": 60
-          }
+          "ammunition_storage_charges_08_dm": {}
         }
       ]
     },
@@ -12868,26 +12877,20 @@
         "fatalFire": false,
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_02_dm": {
-          "count": 300
-        }
+        "ammunition_storage_shells_02_dm": {}
       },
       "charges": [
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_02_dm": {
-            "count": 150
-          }
+          "ammunition_storage_charges_02_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_09_dm": {
-            "count": 150
-          }
+          "ammunition_storage_charges_09_dm": {}
         }
       ]
     },
@@ -12919,26 +12922,20 @@
         "fatalFire": false,
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_03_dm": {
-          "count": 300
-        }
+        "ammunition_storage_shells_03_dm": {}
       },
       "charges": [
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_03_dm": {
-            "count": 150
-          }
+          "ammunition_storage_charges_03_dm": {}
         },
         {
           "entityMunition": "charges",
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_10_dm": {
-            "count": 150
-          }
+          "ammunition_storage_charges_10_dm": {}
         }
       ]
     },
@@ -12970,17 +12967,13 @@
         "fatalFire": false,
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
-        "ammunition_storage_shells_04_dm": {
-          "count": 300
-        }
+        "ammunition_storage_shells_04_dm": {}
       },
       "charges": {
         "entityMunition": "charges",
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
-        "ammunition_storage_charges_04_dm": {
-          "count": 300
-        }
+        "ammunition_storage_charges_04_dm": {}
       }
     },
     "ammo5": {
@@ -13014,9 +13007,7 @@
       "shatterRadiusConstraint": 10.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_01_dm": {
-          "count": 1000
-        }
+        "ammunition_storage_aux_01_dm": {}
       }
     },
     "ammo6": {
@@ -13057,9 +13048,7 @@
       "shatterRadiusConstraint": 10.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_07_dm": {
-          "count": 29500
-        }
+        "ammunition_storage_aux_07_dm": {}
       }
     },
     "ammo7": {
@@ -13084,9 +13073,7 @@
       "shareDuration": 120,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_02_dm": {
-          "count": 500
-        }
+        "ammunition_storage_aux_02_dm": {}
       }
     },
     "ammo8": {
@@ -13118,9 +13105,7 @@
       "shatterRadiusConstraint": 10.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_03_dm": {
-          "count": 500
-        }
+        "ammunition_storage_aux_03_dm": {}
       }
     },
     "ammo9": {
@@ -13152,9 +13137,7 @@
       "shatterRadiusConstraint": 10.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_04_dm": {
-          "count": 500
-        }
+        "ammunition_storage_aux_04_dm": {}
       }
     },
     "ammo10": {
@@ -13188,9 +13171,7 @@
       "shatterRadiusConstraint": 10.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_05_dm": {
-          "count": 1000
-        }
+        "ammunition_storage_aux_05_dm": {}
       }
     },
     "ammo11": {
@@ -13237,9 +13218,7 @@
       "shatterRadiusConstraint": 10.0,
       "shells": {
         "damageEffect": "ammunition_storage_aux",
-        "ammunition_storage_aux_06_dm": {
-          "count": 28100
-        }
+        "ammunition_storage_aux_06_dm": {}
       }
     }
   },
@@ -15101,6 +15080,18 @@
       "unlockId": "ship_flag_ussr_04",
       "nameLocId": "ship_flag_ussr_04/name",
       "texture": "ship_flag_ussr_04_c*"
+    },
+    "flag_york_city": {
+      "category": "other",
+      "unlockId": "flag_york_city",
+      "nameLocId": "flag_york_city/name",
+      "texture": "flag_york_city_c*"
+    },
+    "ship_flag_genoa_city_01": {
+      "category": "other",
+      "unlockId": "ship_flag_genoa_city_01",
+      "nameLocId": "ship_flag_genoa_city_01/name",
+      "texture": "ship_flag_genoa_city_01_c*"
     }
   }
 }

@@ -1,7 +1,7 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+import "%globalScripts/sharedWatched.nut" as sharedWatched
 
-return {
+return freeze({
   mapCellUnderCursor = sharedWatched("mapCellUnderCursor", @() {})
   armyUnderCursor = sharedWatched("armyUnderCursor", @() {})
   mapCoordsUnderCursor = sharedWatched("mapCoordsUnderCursor", @() {})
-}
+})

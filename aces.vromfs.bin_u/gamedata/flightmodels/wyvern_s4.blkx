@@ -2417,6 +2417,10 @@
         "blk": "gameData/FlightModels/weaponPresets/wyvern_s4_3x1000lb.blk"
       },
       {
+        "name": "wyvern_s4_1000lb_gp",
+        "blk": "gameData/FlightModels/weaponPresets/wyvern_s4_1000lb_gp.blk"
+      },
+      {
         "name": "wyvern_s4_1x2000lb_sap",
         "blk": "gameData/FlightModels/weaponPresets/wyvern_s4_1x2000lb_sap.blk",
         "weaponConfig": {
@@ -2548,6 +2552,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2583,6 +2591,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2629,6 +2641,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2675,6 +2691,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           }
@@ -2717,6 +2737,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2752,6 +2776,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2798,6 +2826,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2844,6 +2876,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           }
@@ -2886,6 +2922,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2921,6 +2961,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -2967,6 +3011,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -3013,6 +3061,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           }
@@ -3055,6 +3107,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -3090,6 +3146,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -3136,6 +3196,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           },
@@ -3182,6 +3246,10 @@
               {
                 "slot": 5,
                 "preset": "1000lbs_slot5"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_gp_slot5"
               }
             ]
           }
@@ -3440,6 +3508,93 @@
           },
           {
             "iconType": "bombs_large",
+            "name": "1000lbs_gp_slot5",
+            "reqModification": "halker_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "bomb_1000lb_2",
+              "emitterOffset": [
+                -0.25,
+                0.0,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 4,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 4,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 4,
+                "preset": "60lbs_16"
+              },
+              {
+                "slot": 3,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 3,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 3,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 3,
+                "preset": "60lbs_16"
+              },
+              {
+                "slot": 2,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 2,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 2,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 2,
+                "preset": "60lbs_16"
+              },
+              {
+                "slot": 1,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 1,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 1,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 1,
+                "preset": "60lbs_16"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
             "name": "1000lbs_slot5",
             "reqModification": "halker_mbc",
             "ShowNodes": {
@@ -3555,6 +3710,27 @@
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/uk_500lb_sap_mkII_ap.blk",
               "emitter": "bomb_500lb_1",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "1000lbs_gp",
+            "reqModification": "halker_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "bomb_1000lb_1",
+              "emitterOffset": [
+                -0.25,
+                0.0,
+                0.0
+              ],
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3862,6 +4038,93 @@
           },
           {
             "iconType": "bombs_large",
+            "name": "1000lbs_gp_slot7",
+            "reqModification": "halker_mbc",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+              "emitter": "bomb_1000lb_3",
+              "emitterOffset": [
+                -0.25,
+                0.0,
+                0.0
+              ],
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 8,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 8,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 8,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 8,
+                "preset": "60lbs_16"
+              },
+              {
+                "slot": 9,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 9,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 9,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 9,
+                "preset": "60lbs_16"
+              },
+              {
+                "slot": 10,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 10,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 10,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 10,
+                "preset": "60lbs_16"
+              },
+              {
+                "slot": 11,
+                "preset": "25lbs_8"
+              },
+              {
+                "slot": 11,
+                "preset": "60lbs_8"
+              },
+              {
+                "slot": 11,
+                "preset": "25lbs_16"
+              },
+              {
+                "slot": 11,
+                "preset": "60lbs_16"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
             "name": "1000lbs_slot7",
             "reqModification": "halker_mbc",
             "ShowNodes": {
@@ -3981,6 +4244,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4016,6 +4283,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4062,6 +4333,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4108,6 +4383,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           }
@@ -4150,6 +4429,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4185,6 +4468,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4231,6 +4518,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4277,6 +4568,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           }
@@ -4319,6 +4614,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4354,6 +4653,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4400,6 +4703,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4446,6 +4753,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           }
@@ -4488,6 +4799,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4523,6 +4838,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4569,6 +4888,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           },
@@ -4615,6 +4938,10 @@
               {
                 "slot": 7,
                 "preset": "1000lbs_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_gp_slot7"
               }
             ]
           }

@@ -1,10 +1,8 @@
 require ecs
-require app
 require sound_utils.modules.sound_player_common
 require soundEvent
 require soundSystem
 require GuidanceLock
-require DagorSystem
 
 
 def gun_guidance_state_sound_track(gun_guidance_state_sound__warmingUpPath : string;

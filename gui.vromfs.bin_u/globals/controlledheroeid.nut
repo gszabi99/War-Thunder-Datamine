@@ -1,8 +1,8 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+import "%globalScripts/sharedWatched.nut" as sharedWatched
 
 
 let controlledHeroEid = sharedWatched("controlledHeroEid", @() 0)
 
-return {
+return freeze({
   controlledHeroEid
-}
+})

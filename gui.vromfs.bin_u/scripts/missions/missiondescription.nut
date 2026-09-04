@@ -1,31 +1,33 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "string" import format
+from "mission" import get_game_mode, get_game_type_by_mode
+from "blkGetters" import get_pve_awards_blk
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_player_multipliers, map_to_location
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let DataBlock = require("DataBlock")
-let { get_game_mode, get_game_type_by_mode } = require("mission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_pve_awards_blk } = require("blkGetters")
-let { buildRewardText, getMissionLocName, getMissionTimeText, getWeatherLocName
-} = require("%scripts/missions/missionsText.nut")
+let { buildRewardText, getMissionLocName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
-let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
+let { is_user_mission, isUrlMission } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
-let { isMissionForUnitType, canPlayGamemodeBySquad, getLevelMapBackgroundColors
-} = require("%scripts/missions/missionsUtils.nut")
+let { isMissionForUnitType, canPlayGamemodeBySquad, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
@@ -41,7 +43,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 
 
 
-gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
+let MissionDescription = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
 
@@ -65,7 +67,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       scene = nest
       curMission = mission
     }
-    return handlersManager.loadHandler(gui_handlers.MissionDescription, params)
+    return handlersManager.loadHandler(get_gui_handler("MissionDescription"), params)
   }
 
   function initScreen() {
@@ -93,7 +95,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function update() {
     local config = {}
     if (this.curMission) {
-      if (g_mislist_type.isUrlMission(this.curMission))
+      if (isUrlMission(this.curMission))
         config = this.getUrlMissionDescConfig(this.curMission)
       else if (this.curMission.isHeader)
         config = this.getHeaderDescConfig(this.curMission)
@@ -106,7 +108,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    showObjById("btn_url_mission_refresh", g_mislist_type.isUrlMission(this.curMission), this.scene)
+    showObjById("btn_url_mission_refresh", isUrlMission(this.curMission), this.scene)
   }
 
   function updateTacticalMapBg(level) {
@@ -116,7 +118,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function applyDescConfig(config) {
-    let previewBlk = getTblValue("previewBlk", config)
+    let previewBlk = config?.previewBlk
     setMapPreview(this.scene.findObject("tactical-map"), previewBlk)
     let level = previewBlk?.mission_settings.mission.level ?? ""
     if (level != "")
@@ -164,7 +166,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getUrlMissionDescConfig(mission) {
-    let urlMission = getTblValue("urlMission", mission)
+    let urlMission = mission?.urlMission
     if (!urlMission)
       return {}
 
@@ -176,9 +178,9 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getBlkMissionDescConfig(mission, previewBlk = null) {
     let config = {}
-    let blk = g_mislist_type.isUrlMission(this.curMission)
+    let blk = isUrlMission(this.curMission)
                 ? this.curMission.urlMission.getMetaInfo()
-                : getTblValue("blk", mission)
+                : mission?.blk
     if (!blk)
       return config
 
@@ -191,7 +193,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       config.previewBlk <- m
     }
 
-    config.name <- mission.misListType.getMissionNameText(mission)
+    config.name <- mission.getNameText()
 
     if (this.gm == GM_CAMPAIGN)
         config.date <- loc($"mb/{mission.id}/date")
@@ -318,8 +320,8 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     else if (this.gm == GM_DYNAMIC && rBlk?.dynamic) {
       let dataBlk = rBlk.dynamic
       let rewMoney = Cost()
-      let xpId = "xpEarnedWinDiff0"
-      let wpId = "wpEarnedWinDiff0"
+      const xpId = "xpEarnedWinDiff0"
+      const wpId = "wpEarnedWinDiff0"
       let muls = get_player_multipliers()
 
       rewMoney.rp = (dataBlk?[xpId] != null)
@@ -359,7 +361,10 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUrlMissionRefresh(_obj) {
-    if (g_mislist_type.isUrlMission(this.curMission))
+    if (isUrlMission(this.curMission))
       g_url_missions.loadBlk(this.curMission)
   }
 }
+register_gui_handler("MissionDescription", MissionDescription)
+
+return { MissionDescription }

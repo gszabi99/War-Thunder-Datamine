@@ -1045,11 +1045,11 @@
   "75mm_ger_kwk40_HEAT": {
     "bullet": {
       "bulletCount": 30,
-      "mass": 4.4,
+      "mass": 4.8,
       "explosiveType": "h5",
-      "explosiveMass": 0.513,
+      "explosiveMass": 0.515,
       "caliber": 0.075,
-      "speed": 550.0,
+      "speed": 450.0,
       "maxDistance": 7000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat",
@@ -1078,12 +1078,12 @@
         200.0,
         1000.0
       ],
-      "fuseOnWater": true,
-      "fuseOnWaterProbability": 1.0,
-      "ricochetTimeToLive": 0.085,
       "hitPower": 260.0,
       "fuseDelayDist": 0.05,
       "explodeTreshold": 0.1,
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
       "selfDestructionFx": "hit_81_132mm_heat",
       "groundCollisionEffect": "hit_59_80mm_dirt_he",
       "ricochetEffect": "hit_39_58mm_metal_ap",
@@ -1160,6 +1160,12 @@
           4.0,
           10000.0
         ]
+      },
+      "cumulativeDamage": {
+        "armorPower": 115.0,
+        "distance": 2.5,
+        "damage": 170.0,
+        "onHitChanceMultFire": 25.0
       },
       "damage": {
         "explosive": {
@@ -1619,11 +1625,6 @@
         "stone_snow": {
           "fx": "hit_8_11mm_snow_ap"
         }
-      },
-      "cumulativeDamage": {
-        "armorPower": 80.0,
-        "distance": 2.5,
-        "damage": 120.0
       }
     }
   }

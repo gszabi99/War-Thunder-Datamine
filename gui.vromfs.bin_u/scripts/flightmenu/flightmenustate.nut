@@ -1,10 +1,10 @@
+from "mission" import is_benchmark_game_mode, is_restart_option_hidden, get_game_mode, get_game_type
+from "guiMission" import ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, get_mission_restore_type, get_mission_status
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 from "gameplayBinding" import isCameraNotFlight, isPlayerCanBailout
-
-let { is_benchmark_game_mode, is_restart_option_hidden, get_game_mode, get_game_type } = require("mission")
-let { ERT_MANUAL, MISSION_STATUS_RUNNING, MISSION_STATUS_SUCCESS, get_mission_restore_type,
-  get_mission_status } = require("guiMission")
 
 function canRestart() {
   return !is_multiplayer()

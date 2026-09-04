@@ -15,7 +15,6 @@ require DagorMath
 require DagorMathUtils
 require DagorRandom
 
-require DagorDebug3D
 
 require Grid
 require GridCollision
@@ -66,7 +65,6 @@ require %appGame.infantry.es.loc_squad_common
 
 require %appGame.infantry.ai.ai_covers_common
 require %appGame.infantry.ai.ai_combat_common
-require %appGame.infantry.es.dm_ai_common
 
 require Mission
 require pathfinder

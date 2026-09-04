@@ -1,39 +1,35 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "hangar" import hangar_focus_model, hangar_set_camera_screen_offset, hangar_set_xray_filter_by_parts, hangar_reset_xray_filter, hangar_toggle_xray_filter, DM_VIEWER_CREW
+from "dagor.math" import Point2
+from "%sqstd/math.nut" import round_by_value, abs
+from "%sqstd/underscore.nut" import deep_clone
 from "%scripts/dagui_natives.nut" import get_cur_warpoints, shop_upgrade_crew
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
-let { hangar_focus_model, hangar_set_camera_screen_offset,
-  hangar_set_xray_filter_by_parts, hangar_reset_xray_filter, hangar_toggle_xray_filter,
-  DM_VIEWER_CREW
-} = require("hangar")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
-let { Point2 } = require("dagor.math")
-let DataBlock = require("DataBlock")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { purchaseConfirmationHandler } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { round_by_value, abs } = require("%sqstd/math.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getPageStatus } = require("%scripts/crew/skillsPageStatus.nut")
 let { getPartsListToHighlight } = require("%scripts/crew/crewWndRoleToXrayParts.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
-let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
-} = require("%scripts/crew/crewSpecType.nut")
+let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName } = require("%scripts/crew/crewSpecType.nut")
 let crewSkillsPageHandler = require("%scripts/crew/crewSkillsPageHandler.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isAllCrewsMinLevel, getCrewName, getCrewLevel, getMaxCrewLevel,
-  getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
-  getCrewSkillPointsToMaxAllSkills
-  createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages,
-  loadCrewSkills } = require("%scripts/crew/crew.nut")
+let { isAllCrewsMinLevel, getCrewName, getCrewLevel, getMaxCrewLevel, getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel, getCrewSkillPointsToMaxAllSkills, createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages, loadCrewSkills } = require("%scripts/crew/crew.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { setDoubleTextToButton, setColoredDoubleTextToButton
-} = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { setDoubleTextToButton, setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { Cost } = require("%scripts/money.nut")
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
@@ -47,8 +43,9 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let unitTypes = require("%scripts/unit/unitTypesList.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
 
 const CREW_MAX_PROGRESS_BAR_VALUE = 1000
 
@@ -57,6 +54,13 @@ const CREW_MAX_PROGRESS_BAR_VALUE = 1000
 const SKILLS_TABLE_CONTAINER_BASE_HEIGHT = "350@sf/@pf"
 const QUAL_REQ_DESCR_BASE_HEIGHT = "92@sf/@pf"
 const UPGRADE_BUTTON_AND_PROGRESS_BASE_HEIGHT = "83@sf/@pf"
+
+let unitTypesBtnsData = {
+  [CUT_AIRCRAFT] = { text = "#unit_type/air", img = "#ui/gameuiskin#slot_testflight.svg", type = CUT_AIRCRAFT },
+  [CUT_TANK] = { text = "#unit_type/tank", img = "#ui/gameuiskin#slot_testdrive.svg", type = CUT_TANK },
+  [CUT_SHIP] = { text = "#unit_type/ship", img = "#ui/gameuiskin#slot_test_out_to_sea.svg", type = CUT_SHIP },
+  [CUT_HUMAN] = { text = "#unit_type/human", img = "#ui/gameuiskin#infantry_ico.svg", type = CUT_HUMAN }
+}
 
 let crewHelpPageLinks = [
   { obj = "btn_apply"
@@ -114,7 +118,7 @@ function isAllCrewsHasBasicSpec() {
   return true
 }
 
-gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let CrewHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/crew/crewWndow.blk"
 
@@ -155,6 +159,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   isMaxLevel = false
   crewMemberSkillsMaxAmount = null
+  crewUnitTypesTabs = null
 
   function initScreen() {
     this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
@@ -170,7 +175,8 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.toggleXrayFilterMode(true)
 
-    this.initMainParams(true, true)
+    this.initUnitTypeSelector()
+    this.initMainParams(true)
 
     this.checkAndSetWindowSizeAndPos()
     this.createSlotbar({
@@ -198,13 +204,15 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     showNewSlot = false
   }
 
-  function initMainParams(reloadSkills = true, reinitUnitType = false) {
+  function initMainParams(reloadSkills = true) {
     if (!this.scene?.isValid())
       return
 
+    let prevUnitName = this.curUnit?.name
     this.curUnit = this.getCurCrewUnit(this.crew)
+    let isUnitChanged = prevUnitName != this.curUnit?.name
 
-    this.curCrewUnitType = reinitUnitType
+    this.curCrewUnitType = isUnitChanged
       ? (this.curUnit?.getCrewUnitType?() ?? this.curCrewUnitType)
       : this.curCrewUnitType
 
@@ -216,6 +224,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateUnitType()
     this.updateButtons()
+    this.updateUnitTypeSelector()
   }
 
   function getWndSizes() {
@@ -768,7 +777,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp() {
-    gui_handlers.HelpInfoHandlerModal.openHelp(this)
+    HelpInfoHandlerModal.openHelp(this)
   }
 
   function getCrewHelpHintParams() {
@@ -912,9 +921,12 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.crew = newCrew
+    let isCountryChanged = this.countryId != this.crew.idCountry
     this.countryId = this.crew.idCountry
     this.idInCountry = this.crew.idInCountry
-    this.initMainParams(true, true)
+    if (isCountryChanged)
+      this.initUnitTypeSelector()
+    this.initMainParams(true)
   }
 
   function onButtonIncForSkillTutor(rowIdx) {
@@ -1034,7 +1046,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       { mustShowConfirmationWnd = true })
 
     let purchaseHandler = handlersManager.findHandlerClassInScene(
-      gui_handlers.purchaseConfirmationHandler)
+      purchaseConfirmationHandler)
     if (!(purchaseHandler?.isValid() ?? false)) {
       let curSpec = getSpecTypeByCrewAndUnit(this.crew, this.curUnit)
       let message = "\n".concat("Error: Empty MessageBox List for upgrade crew spec tutorial",
@@ -1075,7 +1087,53 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     gui_modal_tutor(steps, this)
   }
 
-    function onButtonInc(obj) {
+  function onUnitTypeSelector(obj) {
+    let val = obj.getValue()
+    if ((val < 0) || (val >= this.crewUnitTypesTabs.len()))
+      return
+    if (this.crewUnitTypesTabs[val].type == this.curCrewUnitType)
+      return
+    this.curCrewUnitType = this.crewUnitTypesTabs[val].type
+
+    this.updateUnitType()
+    this.updateButtons()
+  }
+
+  function updateUnitTypeSelector() {
+    let currentUnitType = this.curCrewUnitType
+    let selectedTypeIndex = this.crewUnitTypesTabs.findindex(@(a) a.type == currentUnitType) ?? 0
+    let selectorObj = this.scene.findObject("unit_type_selector")
+    selectorObj.setValue(selectedTypeIndex)
+  }
+
+  function initUnitTypeSelector() {
+    let selectorObj = this.scene.findObject("unit_type_selector")
+    let visibleUnitTypes = []
+    foreach (unitType in unitTypes.types) {
+      if (!unitType.isVisibleInShop())
+        continue
+      if (!isCountryHaveUnitType(this.getCurCountryName(), unitType.esUnitType))
+        continue
+      visibleUnitTypes.append(unitType)
+    }
+    visibleUnitTypes.sort(@(a, b) a.visualSortOrder <=> b.visualSortOrder)
+    let currentCrewTypes = []
+    foreach (unitType in visibleUnitTypes)
+      appendOnce(unitType.crewUnitType, currentCrewTypes)
+
+    this.crewUnitTypesTabs = currentCrewTypes.map(@(a) unitTypesBtnsData[a])
+
+    local markup = ""
+    foreach (data in this.crewUnitTypesTabs) {
+      markup = "".concat(markup, "crewUnitTypeTab { img { background-image:t='",
+        data.img,
+        "'; size:t='30@sf/@pf, 30@sf/@pf'}}"
+      )
+    }
+    this.guiScene.replaceContentFromText(selectorObj, markup, markup.len(), this)
+  }
+
+  function onButtonInc(obj) {
     if (handlersManager.isHandlerValid(this.skillsPageHandler) && this.skillsPageHandler.isHandlerVisible)
       this.skillsPageHandler.onButtonInc(obj)
   }
@@ -1168,7 +1226,6 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.baseGoBack()
   }
 
-    
   function onEventQualificationIncreased(_params) {
     this.crew = this.getSlotCrew()
     this.initMainParams()
@@ -1182,7 +1239,7 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.openSelectedCrew()
     else {
       this.crew = this.getSlotCrew()
-      this.initMainParams(false, true)
+      this.initMainParams(false)
     }
     this.updatePage()
   }
@@ -1192,8 +1249,9 @@ gui_handlers.CrewHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updatePage()
   }
 }
+register_gui_handler("CrewHandler", CrewHandler)
 
-gui_handlers.CrewWndModal <- class (gui_handlers.CrewHandler) {
+let CrewWndModal = class (CrewHandler) {
   wndType = handlerType.MODAL
 
   function initScreen() {
@@ -1210,3 +1268,6 @@ gui_handlers.CrewWndModal <- class (gui_handlers.CrewHandler) {
     base.onDestroy()
   }
 }
+register_gui_handler("CrewWndModal", CrewWndModal)
+
+return { CrewWndModal, CrewHandler }

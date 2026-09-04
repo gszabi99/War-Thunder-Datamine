@@ -18,32 +18,6 @@ require walkerai
 require Mission
 
 
-
-
-
-def cover_num_slots(desc : CoverDesc)
-  static_if typeinfo(builtin_function_exists @@ < (var covers : CoversComponent&; cover_idx : int; slot_idx : int) : void > _::occupySlot)
-    return desc.numSlots
-  else
-    return length(desc.slots)
-
-[unused_argument(covers)]
-def cover_slot_at(covers : CoversComponent; desc : CoverDesc; slot_idx : int)
-  static_if typeinfo(builtin_function_exists @@ < (var covers : CoversComponent&; cover_idx : int; slot_idx : int) : void > _::occupySlot)
-    return cover_slot(covers, desc, slot_idx)
-  else
-    return desc.slots[slot_idx]
-
-def occupy_cover_slot(var covers : CoversComponent&; cover_idx : int; slot_idx : int)
-  static_if typeinfo(builtin_function_exists @@ < (var covers : CoversComponent&; cover_idx : int; slot_idx : int) : void > _::occupySlot)
-    covers |> occupySlot(cover_idx, slot_idx)
-  else
-    assume desc = covers.coverDescs[cover_idx]
-    desc.slots[slot_idx].numUsed += 1
-    if desc.slots[slot_idx].numUsed == 1
-      desc.numUsedSlots += 1
-
-
 struct FilterCoversInfo
   waterLevel : float
   waterWalkH : float
@@ -59,7 +33,7 @@ def get_filter_covers_info()
 
 
 def filter_cover(cover : Cover; var cover_desc : CoverDesc&; bbox, max_occupied, filter_info)
-  if cover_desc.numUsedSlots >= cover_num_slots(cover_desc)
+  if cover_desc.numUsedSlots >= cover_desc.numSlots
     return true
   if max_occupied >= 0 && cover_desc.numUsedSlots > max_occupied
     return true
@@ -90,7 +64,7 @@ def filter_cover(cover : Cover; var cover_desc : CoverDesc&; bbox, max_occupied,
 
 def get_cover_slot_pos(cover, cover_desc, covers, slot_idx)
   let wallOffset = 0.25
-  return cover_slot_at(covers, cover_desc, slot_idx).pos - cover.dir * wallOffset
+  return cover_slot(covers, cover_desc, slot_idx).pos - cover.dir * wallOffset
 
 def get_cover_walkout_pos(cover, side)
   let shootWallOffset = 0.35
@@ -116,8 +90,8 @@ def check_cover_slots_near(pos, cover_id, covers_list, covers_descs, covers, che
     return false
 
   assume cover = covers_list[cover_id]
-  for i in range(0, cover_num_slots(cdesc))
-    if cover_slot_at(covers, cdesc, i).numUsed > 0
+  for i in range(0, cdesc.numSlots)
+    if cover_slot(covers, cdesc, i).numUsed > 0
       let pos2 = get_cover_slot_pos(cover, cdesc, covers, i)
       if distance_sq(pos, pos2) < check_radius_sq
         return true
@@ -131,20 +105,20 @@ def check_covers_nearby_occupied(pos, cover_id, slot_idx, covers_list, covers_de
   assume cdesc = covers_descs[cover_id]
 
   if cdesc.numUsedSlots > 0
-    if cover_slot_at(covers, cdesc, slot_idx).numUsed > 0
+    if cover_slot(covers, cdesc, slot_idx).numUsed > 0
       return true
-    if slot_idx > 0 && cover_slot_at(covers, cdesc, slot_idx - 1).numUsed > 0
+    if slot_idx > 0 && cover_slot(covers, cdesc, slot_idx - 1).numUsed > 0
       return true
-    if slot_idx > 1 && cover_slot_at(covers, cdesc, slot_idx - 2).numUsed > 0
+    if slot_idx > 1 && cover_slot(covers, cdesc, slot_idx - 2).numUsed > 0
       return true
-    let numSlots = cover_num_slots(cdesc)
-    if slot_idx < numSlots - 1 && cover_slot_at(covers, cdesc, slot_idx + 1).numUsed > 0
+    let numSlots = cdesc.numSlots
+    if slot_idx < numSlots - 1 && cover_slot(covers, cdesc, slot_idx + 1).numUsed > 0
       return true
-    if slot_idx < numSlots - 2 && cover_slot_at(covers, cdesc, slot_idx + 2).numUsed > 0
+    if slot_idx < numSlots - 2 && cover_slot(covers, cdesc, slot_idx + 2).numUsed > 0
       return true
 
   let numCovers = length(covers_list)
-  assume slot = cover_slot_at(covers, cdesc, slot_idx)
+  assume slot = cover_slot(covers, cdesc, slot_idx)
   if slot.near1 >= 0 && slot.near1 < numCovers
     if check_cover_slots_near(pos, slot.near1, covers_list, covers_descs, covers, checkRadiusSq)
       return true
@@ -307,8 +281,8 @@ def check_cover_near_enemies(pos, radius, agent_eid)
 
 
 def eval_cover_attack_type_and_score(cover, desc, covers, slot; var out_type : CoverAttackType&)
-  let numSlots = cover_num_slots(desc)
-  if cover_slot_at(covers, desc, slot).numUsed > 0
+  let numSlots = desc.numSlots
+  if cover_slot(covers, desc, slot).numUsed > 0
     out_type = CoverAttackType.NONE
     return 0
   let isWalkoutCover = cover.hasLeftPos || cover.hasRightPos
@@ -334,8 +308,8 @@ def eval_cover_attack_type_and_score(cover, desc, covers, slot; var out_type : C
   return 1
 
 def eval_cover_score_stay(cover, desc, covers, slot)
-  let numSlots = cover_num_slots(desc)
-  if cover_slot_at(covers, desc, slot).numUsed > 0
+  let numSlots = desc.numSlots
+  if cover_slot(covers, desc, slot).numUsed > 0
     return 0
   let freeEnough = desc.numUsedSlots < (numSlots + 1) / 2
   let isWalkoutCover = cover.hasLeftPos || cover.hasRightPos

@@ -1,15 +1,16 @@
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
 from "%scripts/dagui_library.nut" import *
 
 log($"onScriptLoadAfterLogin: wt")
 
 
-require("unit/initUnitTypes.nut")
-require("controls/shortcutsList/updateShortcutsModulesList.nut")
-require("slotInfoPanel/updateSlotInfoPanelButtons.nut")
-require("mainmenu/instantActionHandler.nut")
-require("mainmenu/mainMenuHandler.nut")
-require("flightMenu/updateFlightMenuButtonTypes.nut")
-require("mainmenu/autoStartBattleHandler.nut")
+require("%scripts/controls/shortcutsList/updateShortcutsModulesList.nut")
+require("%scripts/slotInfoPanel/updateSlotInfoPanelButtons.nut")
+require("%scripts/mainmenu/instantActionHandler.nut")
+require("%scripts/mainmenu/mainMenuHandler.nut")
+require("%scripts/flightMenu/updateFlightMenuButtonTypes.nut")
+require("%scripts/mainmenu/autoStartBattleHandler.nut")
 require("%scripts/items/itemsClasses/itemsClasses.nut")
 require("%scripts/weaponry/initWeaponryTypes.nut")
 
@@ -149,6 +150,7 @@ foreach (fn in [
   "%scripts/debriefing/rankUpModal.nut"
   "%scripts/unlocks/showUnlockHandler.nut"
   "%scripts/promo/battleTasksPromoHandler.nut"
+  "%scripts/promo/commandersHandbookPromoHandler.nut"
   "%scripts/unlocks/battleTasksHandler.nut"
   "%scripts/unlocks/battleTasksSelectNewTask.nut"
   "%scripts/unlocks/favoriteUnlocksListView.nut"
@@ -232,7 +234,6 @@ foreach (fn in [
   "%scripts/crew/skillsPageStatus.nut"
   "%scripts/crew/crewPointsBuyActions.nut"
   "%scripts/crew/crewBuyPointsHandler.nut"
-  "%scripts/crew/crewUnitSpecHandler.nut"
   "%scripts/crew/crewSpecType.nut"
   "%scripts/crew/crew.nut"
   "%scripts/crew/skillParametersType.nut"
@@ -293,7 +294,6 @@ require("%scripts/queue/queueInfo/qiHandlerByCountries.nut")
 require("%scripts/queue/queueInfo/qiHandlerTeamBalanced.nut")
 require("%scripts/queue/queueTable.nut")
 
-require("%scripts/controls/controlsFootballNy2021Hack.nut")
 require("%scripts/slotbar/elems/unlockMarkerElem.nut")
 require("%scripts/slotbar/elems/nationBonusMarkerElem.nut")
 require("%scripts/slotbar/elems/newsMarkerElement.nut")
@@ -335,6 +335,7 @@ require("%scripts/debugTools/dbgVoiceChat.nut")
 require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
+require("%scripts/debugTools/dbgWeaponryPresetsRepair.nut")
 require("%scripts/dmViewer/modeXrayDebugExport.nut")
 
 require("%scripts/exportInfo/skinsLocExporter.nut")
@@ -350,7 +351,5 @@ require("%scripts/options/tankSightMigrate.nut")
 require("%scripts/hangar/initHangarSceneOption.nut")
 require("%scripts/weaponry/graphCompareBullets/missileTrajectoryWnd.nut")
 
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 if (isAuthorized.get() || disableNetwork) 
   require("%scripts/worldWar/worldWar.nut")

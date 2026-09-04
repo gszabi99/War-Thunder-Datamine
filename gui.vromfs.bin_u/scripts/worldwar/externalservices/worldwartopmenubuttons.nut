@@ -1,17 +1,16 @@
+from "worldwar" import wwGetOperationId, wwIsOperationLoaded
+from "worldwarConst" import RenderCategory
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { WwLeaderboard } = require("%scripts/worldWar/handler/wwLeaderboard.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
-let { getOperationById, hasAvailableMapToBattle, getMapByName
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getOperationById, hasAvailableMapToBattle, getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
-let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let template = {
@@ -85,7 +84,7 @@ let list = {
   }
   WW_LEADERBOARDS = {
     text = "#mainmenu/titleLeaderboards"
-    onClickFunc = @(_obj, _handler) loadHandler(gui_handlers.WwLeaderboard,
+    onClickFunc = @(_obj, _handler) loadHandler(WwLeaderboard,
       { beginningMode = "ww_clans" })
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }

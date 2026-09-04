@@ -5,8 +5,6 @@ require DagorConsole
 require DagorDebug3D
 require Sound
 require DagorMath
-require Dacoll
-require PhysMat
 require strings
 require DagorMath
 require ecs.ecs_template

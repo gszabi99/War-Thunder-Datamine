@@ -1,32 +1,30 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import getMaxEconomicRank
+from "%sqstd/datablock.nut" import fillBlock
+from "string" import format
+from "dagor.random" import rnd
+from "guiOptions" import setGuiOptionsMode, set_gui_option
+from "mission" import is_benchmark_game_mode, get_game_mode, get_game_type
+from "guiMission" import ERT_ATTEMPTS, ERT_TACTICAL_CONTROL, get_meta_mission_info_by_gm_and_name, select_mission, select_mission_full, quit_to_debriefing
+from "dynamicMission" import dynamicSetTakeoffMode
+from "blkGetters" import get_current_mission_info
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import add_last_played, show_gui, string_to_restore_type, map_to_location
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
-from "%scripts/mainConsts.nut" import global_max_players_versus
+from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 
-let { currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings,
-  is_user_mission, isCustomMissionFlight
-} = require("%scripts/missions/missionsStates.nut")
-let { fillBlock } = require("%sqstd/datablock.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
-let { rnd } = require("dagor.random")
+let { currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings, is_user_mission, isCustomMissionFlight } = require("%scripts/missions/missionsStates.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { GenericOptions } = require("%scripts/genericOptions.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
-let { setGuiOptionsMode, set_gui_option } = require("guiOptions")
-let { is_benchmark_game_mode, get_game_mode, get_game_type } = require("mission")
-let { ERT_ATTEMPTS, ERT_TACTICAL_CONTROL, get_meta_mission_info_by_gm_and_name,
-  select_mission, select_mission_full, quit_to_debriefing
-} = require("guiMission")
-let { dynamicSetTakeoffMode } = require("dynamicMission")
-let { loc_current_mission_desc, getWeatherLocName, locCurrentMissionName, getMissionTimeText
-} = require("%scripts/missions/missionsText.nut")
+let { loc_current_mission_desc, getWeatherLocName, locCurrentMissionName, getMissionTimeText } = require("%scripts/missions/missionsText.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isInSessionRoom, getSessionLobbyMaxMembersCount } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { create_options_container, get_option, registerOption } = require("%scripts/options/optionsExt.nut")
@@ -219,7 +217,7 @@ function get_mission_desc_text(missionBlk) {
   return descrAdd
 }
 
-gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
+let Briefing = class (GenericOptions) {
   sceneBlkName = "%gui/briefing.blk"
   sceneNavBlkName = "%gui/navBriefing.blk"
 
@@ -506,8 +504,8 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
         set_mission_settings("players", getSessionLobbyMaxMembersCount())
       }
       else {
-        set_mission_settings("players", global_max_players_versus)
-        misBlk.setInt("_players", global_max_players_versus)
+        set_mission_settings("players", MAX_PLAYERS_VERSUS)
+        misBlk.setInt("_players", MAX_PLAYERS_VERSUS)
       }
     }
 
@@ -652,6 +650,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
   missionBlk = null
   picture = ""
 }
+register_gui_handler("Briefing", Briefing)
 
 function fillUseroptNamePostfix(_optionId, descr, _context) {
   descr.id = "mission_name_postfix"
@@ -690,5 +689,6 @@ function setUseroptUseroptNamePostfix(value, descr, optionId) {
 registerOption(USEROPT_MISSION_NAME_POSTFIX, fillUseroptNamePostfix, setUseroptUseroptNamePostfix)
 
 return {
+  Briefing
   getBriefingOptions
 }

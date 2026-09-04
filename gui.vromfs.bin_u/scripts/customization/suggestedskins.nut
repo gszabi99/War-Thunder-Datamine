@@ -1,13 +1,12 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { getSuggestedSkins } = require("%scripts/customization/downloadableDecorators.nut")
-let DataBlock = require("DataBlock")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { get_charserver_time_sec } = require("chard")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"

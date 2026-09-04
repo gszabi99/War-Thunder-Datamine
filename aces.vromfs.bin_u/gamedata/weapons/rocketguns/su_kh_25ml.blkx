@@ -1,6 +1,10 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "su_kh_25ml_missile",
   "rollForDemonstration": 90.0,
   "offsetForDemonstration": [
@@ -8,14 +12,17 @@
     0.15,
     0.0
   ],
-  "bullets": 1,
-  "shotFreq": 1000.25,
-  "sound": "weapon.rocketgun_132",
-  "helicopterGroup": 2,
   "tags": {},
   "rocket": {
+    "dragCx": 0.025,
     "bulletName": "su_kh_25ml",
+    "iconType": "missile_air_to_uni_middle",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.275,
     "length": 3.75,
     "WdK": [
@@ -37,11 +44,9 @@
     "force1": 17300.0,
     "fireDelay": 0.0,
     "timeLife": 45.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 2.0,
     "maxSpeed": 530.0,
-    "endSpeed": 0.0,
     "maxDistance": 10000.0,
     "minDistance": 500.0,
     "rangeMax": 10000.0,
@@ -49,6 +54,8 @@
     "isHasLaserChannel": true,
     "guidanceType": "laser",
     "launchZoneDistance": 200.0,
+    "explosiveType": "tg_40",
+    "explosiveMass": 93.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -66,18 +73,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tg_40",
-    "explosiveMass": 93.0,
-    "maxDeltaAngle": 0.02,
-    "dragCx": 0.025,
-    "shellCollision": true,
-    "distanceFuse": false,
     "hitPowerMult": 400.0,
+    "shellCollision": true,
     "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni_middle",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_big",
     "groundCollisionEffect": "bomb_expl_200kg",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -95,10 +95,6 @@
       -0.16,
       0.0
     ],
-    "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
-    },
     "guidance": {
       "breakLockMaxTime": 120.0,
       "warmUpTime": 1.0,
@@ -314,7 +310,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 1.0
+        "offset": 0.75
       }
     },
     "DamageParts": {

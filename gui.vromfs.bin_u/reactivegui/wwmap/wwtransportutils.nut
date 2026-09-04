@@ -1,7 +1,8 @@
+from "%rGui/wwMap/wwArmyStates.nut" import selectedArmy
+from "worldwar" import wwGetCurrActionType
 from "%rGui/globals/ui_library.nut" import *
-let { wwGetCurrActionType } = require("worldwar")
+
 let { actionType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { selectedArmy } = require("%rGui/wwMap/wwArmyStates.nut")
 
 let transportReadyToUnload = Watched(null)
 let transportReadyToLoad = Watched(null)

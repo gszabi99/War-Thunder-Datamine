@@ -9,6 +9,19 @@
     "antiShipBomb": true
   },
   "torpedo": {
+    "bulletType": "torpedo",
+    "caliber": 0.571,
+    "mass": 1005.16,
+    "mass_lbs": 2216.0,
+    "explosiveMass": 272.16,
+    "explosiveType": "torpex",
+    "dragCx": 0.01,
+    "distToLive": 5760.0,
+    "maxSpeedInWater": 17.2,
+    "diveDepth": 1.0,
+    "useStartSpeed": true,
+    "startSpeed": 20.0,
+    "startPropulsionDelay": 0.1,
     "dropSpeedRange": [
       0.0,
       300.0
@@ -21,71 +34,11 @@
       -20.0,
       20.0
     ],
-    "bulletType": "torpedo",
-    "distToLive": 5760.0,
-    "maxSpeedInWater": 17.2,
-    "diveDepth": 1.0,
     "detonationRadius": 0.1,
     "detonationDepth": 1.0,
-    "caliber": 0.571,
-    "mass": 1005.16,
-    "mass_lbs": [
-      2216.0,
-      2216.0
-    ],
-    "explosiveType": "torpex",
-    "explosiveMass": 272.16,
-    "dragCx": 0.01,
-    "startPropulsionDelay": 0.1,
+    "armDistance": 50.0,
     "autoaimEnabled": false,
-    "aaMaxAimAngle": 0.0,
-    "aaSpeedPrediction": 0.0,
-    "aaAccelPrediction": 0.0,
-    "aaAngleCorrection": 0.0,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "explodeTreshold": 0.00001,
-    "explodeHitPower": 18000.0,
-    "explodeArmorPower": 463.0,
-    "explodeRadius": [
-      23.0,
-      46.0
-    ],
+    "splashFallBySquare": true,
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",
@@ -117,6 +70,37 @@
         "hp": 100.0,
         "armorClass": "ship_structural_steel",
         "armorThickness": 1.0
+      }
+    },
+    "pressureDamage": {
+      "damageType": "hydroShock"
+    },
+    "damage": {
+      "shatter": {
+        "useRealShatters": true,
+        "countPortion": 0.0,
+        "segment": [
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              0.0,
+              90.0
+            ],
+            "countPortion": 0.5
+          },
+          {
+            "radiusScale": 0.1,
+            "penetrationScale": 0.5,
+            "damageScale": 1.0,
+            "angles": [
+              270.0,
+              359.0
+            ],
+            "countPortion": 0.5
+          }
+        ]
       }
     },
     "collisions": {

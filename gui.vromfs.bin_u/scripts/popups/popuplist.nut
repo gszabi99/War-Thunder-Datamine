@@ -1,10 +1,11 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 
-let popupList = class (gui_handlers.BaseGuiHandlerWT) {
+let popupList = class (BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneBlkName         = null
   needVoiceChat        = false
@@ -50,7 +51,7 @@ let popupList = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.popupList <- popupList
+register_gui_handler("popupList", popupList)
 
 return {
   popupList

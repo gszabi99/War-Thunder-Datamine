@@ -1,15 +1,17 @@
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ChooseMissionsListWnd } = require("%scripts/missions/chooseMissionsListWnd.nut")
+let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 let { EventRoomCreationContext } = require("%scripts/events/eventRoomCreationContext.nut")
 
-gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
+register_gui_handler("CreateEventRoomWnd", class (GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneNavBlkName = null
   wndOptionsMode = OPTIONS_MODE_MP_DOMINATION
@@ -117,7 +119,7 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
       else if (chosenAmount == 1) {
         let selMission = this.roomCreationContext.chosenMissionsList[0]
         misBtnText = loc("misList/oneMissionSelected",
-          { mission = this.roomCreationContext.misListType.getMissionNameText(selMission) })
+          { mission = selMission.getNameText() })
       }
       else
         misBtnText = loc("misList/severalMissionsSelected", { amount = chosenAmount })
@@ -140,7 +142,7 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
     if (!this.roomCreationContext.fullMissionsList.len())
       return
 
-    gui_handlers.ChooseMissionsListWnd.open({
+    ChooseMissionsListWnd.open({
       missionsList = this.roomCreationContext.fullMissionsList
       selMissions = this.roomCreationContext.chosenMissionsList
       onApplyListCb = Callback(function(selList) {
@@ -162,4 +164,4 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   function applyFunc() {
     this.roomCreationContext.createRoom()
   }
-}
+})

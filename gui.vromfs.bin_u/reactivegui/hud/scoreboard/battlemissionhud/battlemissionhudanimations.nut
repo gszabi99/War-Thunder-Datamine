@@ -2,13 +2,13 @@ from "%rGui/globals/ui_library.nut" import *
 let { gradTranspDoubleSideX } = require("%rGui/style/gradients.nut")
 
 let REFLECTION_LINE_SIZE          = [hdpx(20), hdpx(40)]
-let REFLECTION_LINE_START_OFFSET  = -hdpx(35)
-let REFLECTION_LINE_END_OFFSET    = hdpx(50)
-let REFLECTION_LINE_ANIM_DELAY    = 0.25
-let REFLECTION_LINE_ANIM_DURATION = 0.5
+const REFLECTION_LINE_START_OFFSET  = -hdpx(35)
+const REFLECTION_LINE_END_OFFSET    = hdpx(50)
+const REFLECTION_LINE_ANIM_DELAY    = 0.25
+const REFLECTION_LINE_ANIM_DURATION = 0.5
 let REFLECTION_LINE_ANIM_EASING   = InOutCubic
 
-let SCORE_TEXT_ANIM_DURATION  = 0.4
+const SCORE_TEXT_ANIM_DURATION  = 0.4
 let SCORE_TEXT_ANIM_EASING    = InCubic
 
 let mkScoreBlinkAnim = @(trigger) {

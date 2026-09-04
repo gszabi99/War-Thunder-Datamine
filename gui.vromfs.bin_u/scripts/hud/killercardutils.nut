@@ -1,20 +1,19 @@
+from "mission" import get_local_mplayer, get_mplayer_by_id
+from "string" import format
+from "%sqstd/string.nut" import utf8Capitalize, cutPostfix
+from "json" import parse_json
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import UT_Unknown, UT_Human
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { getUnitTooltipImage, genUnitTooltipWeaponIcon
-} = require("%scripts/unit/unitInfoTexts.nut")
-let { get_local_mplayer, get_mplayer_by_id } = require("mission")
+
+let { events } = require("%scripts/events/eventsManager.nut")
+let { getUnitTooltipImage, genUnitTooltipWeaponIcon } = require("%scripts/unit/unitInfoTexts.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { format } = require("string")
-let { utf8Capitalize, cutPostfix } = require("%sqstd/string.nut")
 let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
 let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { parse_json } = require("json")
-let mkKillerCardXray = require("scripts/hud/mkKillerCardXray.nut")
-let { doesLocTextExist } = require("dagor.localize")
+let mkKillerCardXray = require("%scripts/hud/mkKillerCardXray.nut")
 
 let offenderHitsOrder = ["armor", "head", "torso", "hand", "leg"]
 

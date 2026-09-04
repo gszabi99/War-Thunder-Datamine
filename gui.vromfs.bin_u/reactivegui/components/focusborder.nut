@@ -1,15 +1,14 @@
+from "%rGui/ctrlsState.nut" import showConsoleButtons
 from "%rGui/globals/ui_library.nut" import *
-
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 
 let focusBorder = @(override = {})
   @() {
-    size = flex()
+    size = FLEX
     watch = showConsoleButtons
     children = showConsoleButtons.get()
       ? {
         rendObj = ROBJ_9RECT
-        size = flex()
+        size = FLEX
         image = Picture("!ui/gameuiskin#item_selection")
         color = Color(255, 211, 75)
         screenOffs = 8

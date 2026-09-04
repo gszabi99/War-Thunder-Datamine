@@ -1,9 +1,9 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-const MY_CLAN_UPDATE_DELAY_MSEC = -60000
+const MY_CLAN_UPDATE_DELAY_MSEC = 60000
 
-let lastUpdateMyClanTime = mkWatched(persist, "lastUpdateMyClanTime", MY_CLAN_UPDATE_DELAY_MSEC)
+let lastUpdateMyClanTime = mkWatched(persist, "lastUpdateMyClanTime", -MY_CLAN_UPDATE_DELAY_MSEC)
 let myClanInfo = mkWatched(persist, "myClanInfo", null)
 
 let is_in_clan = @() clan_get_my_clan_id() != "-1"

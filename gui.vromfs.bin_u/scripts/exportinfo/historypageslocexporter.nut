@@ -1,19 +1,14 @@
+import "DataBlock" as DataBlock
+from "dagor.workcycle" import defer
+from "language" import getLocalLanguage
+from "%sqstd/json.nut" import saveJson
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
-
+from "%scripts/webRPC.nut" import webRpcRegister
 let { getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { defer } = require("dagor.workcycle")
-let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
-
-let DataBlock  = require("DataBlock")
-
-let { getLocalLanguage } = require("language")
-
-let { saveJson } = require("%sqstd/json.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
-
-let { register_command } = require("console")
+let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
 function genHPLocksToBlkCurLang(path) {
   let fullPath = $"{path}/history_pages{getLocalLanguage()}.blk"
@@ -71,5 +66,5 @@ function exportHPLocInfo(params) {
   return "ok"
 }
 
-web_rpc.register_handler("exportHPLocInfo", exportHPLocInfo)
+webRpcRegister("exportHPLocInfo", exportHPLocInfo)
 register_command(@(filePath) exportHPLocInfo({path = filePath, langs = ["English", "Russian", "Japanese"]}), "debug.print_hp_loc_info")

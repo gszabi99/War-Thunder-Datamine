@@ -1,20 +1,31 @@
-from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_my_clan_tag, gchat_is_connected, ps4_is_ugc_enabled, is_myself_clan_moderator, clan_request_info, clan_request_leave, clan_get_my_role, sync_handler_simulate_signal, clan_get_requested_clan_id, clan_get_role_rights, clan_get_my_clan_name, clan_set_admin_editor_mode, set_char_cb, clan_get_researching_unit, clan_get_my_clan_id, clan_get_admin_editor_mode
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "%sqstd/string.nut" import cutPrefix
+from "blkGetters" import get_warpoints_blk
+from "%globalScripts/chardConsts.nut" import *
+from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_my_clan_tag, gchat_is_connected, ps4_is_ugc_enabled, is_myself_clan_moderator, clan_request_info, clan_request_leave
+  , clan_get_my_role, sync_handler_simulate_signal, clan_get_requested_clan_id, clan_get_role_rights, clan_get_my_clan_name, clan_set_admin_editor_mode, set_char_cb
+  , clan_get_researching_unit, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
+from "types" import Array
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LeaderboardTable } = require("%scripts/leaderboard/leaderboardTable.nut")
+let { MyClanSquadsListModal } = require("%scripts/clans/clanSquadsModal.nut")
+let { clanChangeMembershipReqWnd } = require("%scripts/clans/clanChangeMembershipReqWnd.nut")
+let { clanAverageActivityModal } = require("%scripts/clans/clanAverageActivityModal.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
-let { isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXbox
-} = require("%scripts/clientState/platform.nut")
+let { isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
@@ -23,12 +34,10 @@ let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { create_option_switchbox } = require("%scripts/options/optionsCtors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { get_warpoints_blk } = require("blkGetters")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openClanBlacklistWnd } = require("%scripts/clans/clanBlacklistModal.nut")
@@ -54,7 +63,7 @@ let { getMyClanMemberPresence, requestMyClanData } = require("%scripts/clans/cla
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
-  { id = "nick", lbDataType = lbDataType.NICK, align = "left" }
+  { id = "nick", lbDataType = lbDataType.NICK, align = "left", textType = "textareaNoTab" }
   { id = ranked_column_prefix, lbDataType = lbDataType.NUM, loc = "rating", byDifficulty = true
     tooltip = "#clan/personal/dr_era/desc" }
   {
@@ -97,7 +106,7 @@ foreach (idx, item in clan_member_list) {
     item.tooltip <- $"#clan/personal/{item.id}/desc"
 }
 
-gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanPageModal = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanPageModal.blk"
 
@@ -193,7 +202,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initLbTable() {
-    this.lbTableWeak = gui_handlers.LeaderboardTable.create({
+    this.lbTableWeak = LeaderboardTable.create({
       scene = this.scene.findObject("lb_table_nest")
       onCategoryCb = Callback(this.onCategory, this)
       onRowSelectCb = Callback(this.onSelectedPlayerIdxLb, this)
@@ -776,6 +785,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       tdalign = column?.align ?? "center"
     }
 
+    if ("textType" in column)
+      res.textType <- column.textType
     if ("getCellTooltipText" in column)
       res.tooltip <- column.getCellTooltipText(member)
 
@@ -804,7 +815,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function sortMembers(members) {
-    if (type(members) != "array")
+    if (!(members instanceof Array))
       return
 
     let columnData = this.getColumnDataById(this.statsSortBy)
@@ -953,7 +964,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onChangeMembershipRequirementsWnd() {
     if (hasFeature("Clans") && hasFeature("ClansMembershipEditor")) {
-      loadHandler(gui_handlers.clanChangeMembershipReqWnd,
+      loadHandler(clanChangeMembershipReqWnd,
         {
           clanData = this.clanData,
           owner = this,
@@ -999,7 +1010,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onClanAverageActivity(_obj = null) {
     if (this.clanData)
-      gui_handlers.clanAverageActivityModal.open(this.clanData)
+      clanAverageActivityModal.open(this.clanData)
   }
 
   function onClanVehicles(_obj = null) {
@@ -1012,7 +1023,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onClanSquads(_obj = null) {
     if (this.clanData)
-      gui_handlers.MyClanSquadsListModal.open()
+      MyClanSquadsListModal.open()
   }
 
   function onClanLog(_obj = null) {
@@ -1193,3 +1204,6 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       this.fillClanWwMemberList()
   }
 }
+register_gui_handler("clanPageModal", clanPageModal)
+
+return { clanPageModal }

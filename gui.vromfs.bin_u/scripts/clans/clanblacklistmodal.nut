@@ -1,12 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_natives.nut" import clan_get_admin_editor_mode, clan_get_my_role, clan_get_role_rights
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow
+from "types" import Table
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
@@ -20,7 +23,7 @@ local clanBlackList = [
   { id = "initiator_nick", type = lbDataType.NICK },
   { id = "date", type = lbDataType.DATE }]
 
-gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let clanBlacklistModal = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/clans/clanRequests.blk"
   wndType = handlerType.MODAL
 
@@ -56,7 +59,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let headerRow = []
     foreach (item in this.blacklistRow) {
-      let itemName = (type(item) != "table") ? item : item.id
+      let itemName = (!(item instanceof Table)) ? item : item.id
       let name = "".concat("#clan/", (itemName == "date" ? "bannedDate" : itemName))
       headerRow.append({
         id = itemName,
@@ -74,7 +77,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
       let rowData = []
 
       foreach (item in this.blacklistRow) {
-         let itemName = (type(item) != "table") ? item : item.id
+         let itemName = (!(item instanceof Table)) ? item : item.id
          rowData.append({
           id = itemName,
           text = "",
@@ -200,13 +203,14 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hideCandidateByName(candidate?.nick)
   }
 }
+register_gui_handler("clanBlacklistModal", clanBlacklistModal)
 
 function openClanBlacklistWnd(clanData = null) {
   clanData = clanData ?? myClanInfo.get()
   if (!clanData)
     return
 
-  loadHandler(gui_handlers.clanBlacklistModal, { clanData = clanData })
+  loadHandler(clanBlacklistModal, { clanData = clanData })
 }
 
 return {

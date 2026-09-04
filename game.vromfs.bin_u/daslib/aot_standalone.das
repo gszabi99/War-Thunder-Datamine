@@ -10,7 +10,6 @@ require daslib/strings_boost
 require daslib/ast_boost
 require daslib/templates_boost
 require daslib/functional
-require daslib/algorithm
 
 require daslib/ast_print_flags
 require daslib/aot_constants
@@ -31,7 +30,7 @@ def aotFunctionName(str : string) {
     return replace(str, "`", "__")
 }
 
-def getInitSemanticHash(ctx : Context) {
+def getInitSemanticHash(_ctx : Context) {
     
 
 
@@ -53,8 +52,7 @@ def writeStandaloneContextMethods(var prog : ProgramPtr; var logs : StringBuilde
     var coll = new BlockVariableCollector();
 
     for (fn in fnn) {
-        if (!fn.flags.exports) continue;
-        if (fn._module != prog.getThisModule) continue;
+        if (!fn.flags.exports || fn._module != prog.getThisModule) continue;
         if (declare_only) {
             write(logs, "    ");
         }
@@ -89,7 +87,7 @@ def writeStandaloneContextMethods(var prog : ProgramPtr; var logs : StringBuilde
             let args_str = (fn.arguments |> each()
                                         |> map(@(v : VariablePtr) { return coll.getVarName(v); })
                                         |> join(", "))
-            let maybe_comma = args_str |> length() > 0 ? ", " : "";
+            let maybe_comma = args_str |> !empty(args_str) ? ", " : "";
             write(logs, " \{\n    return {aotFuncName(fn)}(this{maybe_comma}{args_str});\n\}\n\n");
         }
     }
@@ -144,7 +142,7 @@ def writeStandaloneCtor(cfg : StandaloneContextCfg; initFunctions : string; var 
     write(tw, "    context.tabMnLookup->clear();\n");
 
     
-    if (initFunctions |> length() != 0) {
+    if (initFunctions |> !empty(initFunctions)) {
         write(tw, "     // start totalFunctions\n");
         write(tw, "    struct FunctionStorage \{ int idx; FunctionInfo funcInfo; FuncInfo* debugInfo; \};\n");
         write(tw, "    FunctionStorage usedFunctions[] = \{\n");
@@ -184,7 +182,7 @@ def writeStandaloneCtor(cfg : StandaloneContextCfg; initFunctions : string; var 
         write(tw, "    \}\n");
     }
 
-    if (initFunctions |> length() != 0) {
+    if (initFunctions |> !empty(initFunctions)) {
         write(tw, " FillFunction(context, getGlobalAotLibrary(), id_to_funcs);\n");
         write(tw, "    context.runInitScript();\n");
         write(tw, "\}\n");
@@ -222,7 +220,6 @@ class StandaloneContextGen : CppAot {
         cross_platform = cp;
         prologue = program._options |> find_arg("aot_prologue") ?as tBool ?? false;
         solidContext = program.policies.solid_context || (program._options |> find_arg("solid_context") ?as tBool ?? false);
-        helper.helper.rtti = program._options  |> find_arg("rtti") ?as tBool ?? false;
         helper.cross_platform = cp;
     }
 
@@ -232,8 +229,8 @@ class StandaloneContextGen : CppAot {
         var globals : array<Variable?>;
         prog.get_ptr() |> for_each_module_no_order($(pm) {
             pm |> for_each_global($(pvar) {
-                if (pvar.index < 0 || !pvar.flags.used) return ;
-                if (pvar._module == prog.getThisModule) return ;
+                if (pvar.index < 0 || !pvar.flags.used
+                        || pvar._module == prog.getThisModule) return ;
                 globals.push(pvar);
             });
         });
@@ -310,8 +307,7 @@ def GetFunctionInfo(pfun : Function?, info : string) {
     }
 }
 
-def addFunctionInfo(disableInit : bool; rtti : bool, fnn : array<Function?>, var helper : AotDebugInfoHelper?) {
-    helper.helper.rtti = rtti;
+def addFunctionInfo(fnn : array<Function?>; var helper : AotDebugInfoHelper?) {
     var lookupFunctionTable : array<tuple<Function?, FuncInfo?>>
     lookupFunctionTable |> reserve(length(fnn))
     for (pfun in fnn) {
@@ -350,10 +346,7 @@ def genStandaloneSrc(var program : ProgramPtr;
                 program |> visit_module(adapter, program.getThisModule);
             }
 
-            initFunctions = addFunctionInfo(program._options |> find_arg("no_init") ?as tBool ?? program.policies.no_init,
-                                            program._options |> find_arg("rtti") ?as tBool ?? program.policies.rtti,
-                                            collectProgramUsedFunctions(program, false, false),
-                                            gen.helper);
+            initFunctions = addFunctionInfo(collectProgramUsedFunctions(program, false, false), gen.helper);
             write(tw, gen.str());
             unsafe {
                 delete gen.collector
@@ -361,6 +354,8 @@ def genStandaloneSrc(var program : ProgramPtr;
             }
         }
     }
+    
+    fail_on_aot_emit_error(program)
 
     write(source, "namespace {program.thisNamespace} \{\n");
     write(source, "{ctx_generated}");
@@ -397,12 +392,12 @@ def public runStandaloneVisitor(var program : ProgramPtr, modules : array<string
     var source_content = ""
     let header_content = build_string() $(header) {
     source_content = build_string() $(source) {
-        if (mod_name |> length() != 0) {
+        if (mod_name |> !empty(mod_name)) {
             write(header, "// Module {mod_name}\n");
         }
         write(header, "{AOT_INCLUDES}");
 
-        if (mod_name |> length() != 0) {
+        if (mod_name |> !empty(mod_name)) {
             write(source, "// Module {mod_name}\n");
         }
 
@@ -445,7 +440,7 @@ def public runStandaloneVisitor(var program : ProgramPtr, modules : array<string
     }
 }
 
-[export]
+[export, unused_argument(paranoid_validation)]
 def public standalone_aot(input : string; output_dir : string; cross_platform : bool, paranoid_validation : bool; cop : CodeOfPolicies) {
     
     let file_name = input |> split_by_chars("/\\") |> back()

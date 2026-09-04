@@ -1,7 +1,9 @@
 <<#items>>
-  <<itemTag>><<^itemTag>>mission_item_unlocked<</itemTag>> {
+  <<itemTag>><<^itemTag>>mission_item<</itemTag>> {
     id:t='<<id>>'
-
+    <<^itemTag>>
+    missionItemType:t=''
+    <</itemTag>>
     <<#isCollapsable>>
     collapse_header:t='yes'
     collapsed:t='no'

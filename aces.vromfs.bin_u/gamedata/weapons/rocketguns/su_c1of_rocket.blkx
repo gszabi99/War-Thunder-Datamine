@@ -1,14 +1,27 @@
 {
   "rocketGun": true,
-  "preset_cost": 25,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
+  "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
   "mesh": "su_c1of_rocket",
   "bombCart": "bomb_stand_c1of",
-  "helicopterGroup": 2,
-  "shotFreq": 20.0,
-  "sound": "weapon.rocketgun_132",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
   "rocket": {
+    "dragCx": 0.011,
     "bulletName": "su_c1of_rocket",
+    "iconType": "rockets_he_large_group",
+    "amountPerTier": 2.0,
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 1.3,
     "caliber": 0.212,
     "length": 1.255,
     "WdK": [
@@ -22,12 +35,12 @@
     "massEnd": 80.5,
     "timeFire": 0.8,
     "force": 50000.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 440.0,
-    "endSpeed": 0.0,
     "maxDistance": 6200.0,
     "minDistance": 30.0,
+    "explosiveType": "tnt",
+    "explosiveMass": 9.3,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -45,9 +58,6 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "tnt",
-    "explosiveMass": 9.3,
-    "maxDeltaAngle": 1.3,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -85,12 +95,9 @@
       200.0,
       1000.0
     ],
-    "explodeTreshold": 0.00001,
-    "dragCx": 0.011,
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "amountPerTier": 2.0,
-    "iconType": "rockets_he_large_group",
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -111,28 +118,6 @@
       0.0,
       0.0
     ],
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        20.0,
-        0.6
-      ],
-      "mod3": [
-        30.0,
-        1.0
-      ]
-    },
-    "damage": {
-      "explosive": {
-        "offset": 0.3
-      }
-    },
     "DamageParts": {
       "body": {
         "hp": 50.0,
@@ -217,6 +202,23 @@
           }
         ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
+      ]
     },
     "explosionSmoke": {
       "radius": 6.0,

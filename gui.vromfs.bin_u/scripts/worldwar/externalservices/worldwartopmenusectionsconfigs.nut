@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
 from "%scripts/dagui_library.nut" import *
 
 require("%scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") 
 
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtonsList.nut").get()
 let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
 

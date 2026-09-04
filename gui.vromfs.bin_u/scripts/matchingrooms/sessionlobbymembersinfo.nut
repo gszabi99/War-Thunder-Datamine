@@ -1,19 +1,17 @@
+from "matching.errors" import INVALID_ROOM_ID, INVALID_SQUAD_ID
+from "math" import abs
+from "mission" import get_local_mplayer
 from "%scripts/dagui_natives.nut" import script_net_assert
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
 
-let { getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom,
-  SessionLobbyState, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam,
-  getSessionLobbyMaxMembersCount, getMemberByName, isMemberHost
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom, SessionLobbyState, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam, getSessionLobbyMaxMembersCount, getMemberByName, isMemberHost } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { invitePlayerToRoom, kickMember } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
 let { isMyUserId } = require("%scripts/user/profileStates.nut")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
-let { INVALID_ROOM_ID, INVALID_SQUAD_ID } = require("matching.errors")
-let { abs } = require("math")
-let { get_local_mplayer } = require("mission")
 
 let memberDefaults = freeze({
   team = Team.Any
@@ -50,7 +48,7 @@ function getRoomMemberInfo(member) {
     userId = member.userId.tostring() 
     name = member.name
     isLocal = isMyUserId(member.userId)
-    spectator = getTblValue("spectator", member, false)
+    spectator = (member?.spectator ?? false)
     isBot = false
     pilotIcon = userInfo?.pilotIcon ?? ""
     pilotId = userInfo?.pilotId ?? ""
@@ -157,7 +155,7 @@ function getRoomMembersReadyStatus() {
 
   let areAllowedEmptyTeams = getSessionLobbyMissionParam("allowEmptyTeams", false)
   if (!res.ableToStart || (!haveBots && !areAllowedEmptyTeams)) {
-    let minInTeam = 1
+    const minInTeam = 1
     let teamAEnough = (teamsCount[Team.A] + teamsCount[Team.Any]) >= minInTeam
     let teamBEnough = (teamsCount[Team.B] + teamsCount[Team.Any]) >= minInTeam
     let teamsTotalEnough = teamsCount[Team.A] + teamsCount[Team.B] + teamsCount[Team.Any] >= minInTeam * 2
@@ -178,7 +176,6 @@ function isPlayerDedicatedSpectator(name = null) {
   }
   return !!get_local_mplayer()?.spectator
 }
-::cross_call_api.isPlayerDedicatedSpectator <- isPlayerDedicatedSpectator
 
 return {
   getRoomMemberPublicParam

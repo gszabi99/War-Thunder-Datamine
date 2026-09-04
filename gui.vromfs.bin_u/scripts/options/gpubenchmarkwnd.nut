@@ -1,19 +1,18 @@
+from "gpuBenchmark" import initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
+  closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality, getGpuName,
+  getPresetForMaxFPS, isGpuBenchmarkRunning
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
-  closeGraphicsAutodetect, getPresetFor60Fps, getPresetForMaxQuality, getGpuName
-  getPresetForMaxFPS, isGpuBenchmarkRunning } = require("gpuBenchmark")
-let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate,
-  localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
+let { setQualityPreset, canShowGpuBenchmark, onConfigApplyWithoutUiUpdate, localizaQualityPreset } = require("%scripts/options/systemOptions.nut")
 let { secondsToString } = require("%scripts/time.nut")
-let { get_charserver_time_sec } = require("chard")
-let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID, needShowGpuBenchmark
-} = require("%scripts/options/gpuBenchmarkUtils.nut")
+let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID, needShowGpuBenchmark } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
 let gpuBenchmarkPresets = [
   {
@@ -30,19 +29,29 @@ let gpuBenchmarkPresets = [
   }
 ]
 
-local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
+local class GpuBenchmarkWnd (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/gpuBenchmark.blk"
   needUiUpdate = false
   timeEndBenchmark = -1
   selectedPresetName = ""
   hasInitedGraphicsAutodetect = false
+  curTabUnitType = ""
 
   function initScreen() {
     saveLocalSharedSettings(GPU_BENCHMARK_SEEN_SAVE_ID, true)
-    initGraphicsAutodetect()
+    let bmInitBlockName = this.curTabUnitType == ""
+      ? "graphicsAutodetect"
+      : $"graphicsAutodetect_{this.curTabUnitType}"
+    initGraphicsAutodetect(bmInitBlockName)
     this.hasInitedGraphicsAutodetect = true
     showObjById("btnApply", false, this.scene)
+    let modeText = this.curTabUnitType == ""
+      ? loc("unlocks/group/common")
+      : loc($"unit_type/{this.curTabUnitType}")
+
+    this.scene.findObject("headerText").setValue(loc("gpuBenchmark/title", { modeText }))
+    this.scene.findObject("btnApply").setValue(loc("gpuBenchmark/btnApply", { modeText }))
   }
 
   function updateProgressText() {
@@ -144,7 +153,7 @@ local class GpuBenchmarkWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.GpuBenchmarkWnd <- GpuBenchmarkWnd
+register_gui_handler("GpuBenchmarkWnd", GpuBenchmarkWnd)
 
 function checkShowGpuBenchmarkWnd() {
   if (!needShowGpuBenchmark())
@@ -153,10 +162,11 @@ function checkShowGpuBenchmarkWnd() {
   handlersManager.loadHandler(GpuBenchmarkWnd)
 }
 
-function showGpuBenchmarkWnd() {
+function showGpuBenchmarkWnd(curTabUnitType) {
   if (!canShowGpuBenchmark())
     return
-  handlersManager.loadHandler(GpuBenchmarkWnd, { needUiUpdate = true })
+
+  handlersManager.loadHandler(GpuBenchmarkWnd, { curTabUnitType, needUiUpdate = true })
 }
 
 return {

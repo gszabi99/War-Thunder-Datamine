@@ -1,13 +1,14 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiAward.nut")
+let { TrophyMultiAward, isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/decoratorBaseType.nut")
 let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManagerModule.nut")
 
-let MAX_REWARDS_SHOW_IN_TROPHY = 5
+const MAX_REWARDS_SHOW_IN_TROPHY = 5
 
 
 let rewardTypes = [ "multiAwardsOnWorthGold", "modsForBoughtUnit",
@@ -18,14 +19,14 @@ let iconsRequired = [ "trophy", "item", "unlock", "entitlement", "resource", "un
 
 let specialPrizeParams = {
   rentedUnit = function(config, prize) {
-    prize.timeHours <- getTblValue("timeHours", config)
-    prize.numSpares <- getTblValue("numSpares", config)
+    prize.timeHours <- config?.timeHours
+    prize.numSpares <- config?.numSpares
   }
   unit = function(config, prize) {
     prize.numSpares <- config?.numSpares ?? 0
   }
   resource = function(config, prize) {
-    prize.resourceType <- getTblValue("resourceType", config)
+    prize.resourceType <- config?.resourceType
   }
 }
 
@@ -80,7 +81,7 @@ function processTrophyRewardsUserlogData(configsArray = []) {
     let typeVal = config?[rType]
     let count = config?.count ?? 1
 
-    local checkBuffer = type(typeVal) == "string" ? typeVal : $"{rType}_{typeVal}"
+    local checkBuffer = typeVal instanceof String ? typeVal : $"{rType}_{typeVal}"
     if (rType == "resourceType" && getTypeByResourceType(typeVal))
       checkBuffer = $"{checkBuffer}_{idx}"
     else if (isPrizeMultiAward(config) && "parentTrophyRandId" in config)
@@ -146,7 +147,7 @@ function getRewardList(config) {
     if (rewardType in config && showInResults(rewardType)) {
       let prize = {
         [rewardType] = config[rewardType]
-        count = getTblValue("count", config)
+        count = config?.count
       }
       if (!isInArray(rewardType, iconsRequired))
         prize.noIcon <- true

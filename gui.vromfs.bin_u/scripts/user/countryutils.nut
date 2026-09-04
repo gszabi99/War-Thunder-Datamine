@@ -1,8 +1,9 @@
+import "sony.user" as sonyUser
+from "auth_wt" import getCountryCode
+from "%gdkLib/impl/app.nut" import get_region
 from "%scripts/dagui_library.nut" import *
-let { getCountryCode } = require("auth_wt")
+
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let sonyUser = require("sony.user")
-let { get_region } = require("%gdkLib/impl/app.nut")
 
 function xboxGetCountryCode() {
   let xbox_code = get_region()

@@ -1,18 +1,16 @@
+from "string" import format
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { getFakeBulletsModByName, getModificationName, isModificationIsShell,
-} = require("%scripts/weaponry/bulletsInfo.nut")
+let { getFakeBulletsModByName, getModificationName, isModificationIsShell } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
-let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip,
-  validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip
-  getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc
-} = require("%scripts/weaponry/weaponryTooltipPkg.nut")
-let { isInFlight } = require("gameplayBinding")
+let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip, validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip, getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
+let { setPendingPenetrationGraph, clearPenetrationGraphWidget } = require("%scripts/weaponry/penetrationGraphWidgetState.nut")
+let { requestTooltipPenetrationGraphData } = require("%scripts/weaponry/penetrationGraphDataRequest.nut")
 
 const INFO_DELAY = 2.0
 local infoUnit = null
@@ -241,7 +239,7 @@ let tooltipTypes = {
         return false
 
       let unit = getAircraftByName(unitName)
-      let spare = getTblValue("spare", unit)
+      let spare = unit?.spare
       if (!spare)
         return false
 
@@ -275,6 +273,33 @@ let tooltipTypes = {
 
       return true
     }
+  }
+
+  PENETRATION_GRAPH = {
+    getTooltipId = @(bullet) this._buildId(bullet.bulletName, bullet)
+    isModalTooltip = true
+    isCustomTooltipFill = true
+    modalPreferredSide = "center"
+    fillTooltip = function(obj, handler, _id, params) {
+      let { weaponBlkName = "", bulletName = "", bulletNameTxt = "", esUnitType = null } = params ?? {}
+      if (bulletName == "")
+        return false
+
+      let data = handyman.renderCached("%gui/weaponry/penetrationGraphTooltip.tpl", {
+        bulletNameTxt = " ".concat(loc("mainmenu/shellPenetration"), bulletNameTxt)
+      })
+      let guiScene = obj.getScene()
+      guiScene.replaceContentFromText(obj, data, data.len(), handler)
+
+      
+      
+      setPendingPenetrationGraph(obj, handler)
+      
+      requestTooltipPenetrationGraphData({ weaponBlkName, bulletName, esUnitType })
+      return true
+    }
+
+    onClose = @(_obj) clearPenetrationGraphWidget()
   }
 
   MODIFICATION_DELAYED_TIER = { 

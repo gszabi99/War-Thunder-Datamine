@@ -1,17 +1,17 @@
+import "userstat" as userstat
+import "DataBlock" as DataBlock
+from "app" import APP_ID
+from "chard" import get_charserver_time_sec
+from "dagor.workcycle" import resetTimeout
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 
-let { APP_ID } = require("app")
-let userstat = require("userstat")
-let DataBlock = require("DataBlock")
 let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { userstatStats, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { curLangShortName } = require("%scripts/langUtils/language.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { get_charserver_time_sec } = require("chard")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
-let { resetTimeout } = require("dagor.workcycle")
 
 let allRegionalUnlocks = Computed(@() activeUnlocks.get()
   .filter(@(u) u?.meta.langLimits != null))

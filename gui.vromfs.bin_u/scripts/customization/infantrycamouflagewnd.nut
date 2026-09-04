@@ -1,23 +1,20 @@
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "unitCustomization" import apply_human_skin
+from "hangar" import hangar_is_model_loaded, hangar_focus_model, hangar_weapon_loaded
+from "%sqstd/string.nut" import lastIndexOf
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadFirearm } = require("%scripts/hangarModelLoadManager.nut")
 let { getBranchDataByPath } = require("%scripts/utils/listTreeUtils.nut")
-let { apply_human_skin } = require("unitCustomization")
-let { hangar_is_model_loaded, hangar_focus_model, hangar_weapon_loaded} = require("hangar")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getInfantrySkinsTree, saveInfantrySkinByPath, DEFAULT_SKINS, getRandomSkin, getApplyToAllState,
-  sortSkinsFn, getTiersRangeOnLocation, getSavedSkinByPatchArr, saveInfantrySkin, parseSkinPathArr,
-  getSeenListSubset, getSkinsSeenList, isSkinCanBeNew, getInfantrySkinOnLocation, getBranchName
-} = require("%scripts/customization/infantryCamouflageStorage.nut")
-let { convertFromTemplateName, getCamoNameById
-} = require("%scripts/customization/infantryCamouflageUtils.nut")
-let { lastIndexOf } = require("%sqstd/string.nut")
+let { getInfantrySkinsTree, saveInfantrySkinByPath, DEFAULT_SKINS, getRandomSkin, getApplyToAllState, sortSkinsFn, getTiersRangeOnLocation, getSavedSkinByPatchArr, saveInfantrySkin, parseSkinPathArr, getSeenListSubset, getSkinsSeenList, isSkinCanBeNew, getInfantrySkinOnLocation, getBranchName } = require("%scripts/customization/infantryCamouflageStorage.nut")
+let { convertFromTemplateName, getCamoNameById } = require("%scripts/customization/infantryCamouflageUtils.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
-let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 
 const TEAMS_COUNT = 2
 
@@ -46,7 +43,7 @@ let tierButtonsTemplate =
   }
 }"
 
-gui_handlers.InfantryCamouflageHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("InfantryCamouflageHandler", class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/customization/customizationInfantry.blk"
   unit = null
   unitInfoPanelWeak = null
@@ -392,4 +389,4 @@ gui_handlers.InfantryCamouflageHandler <- class (gui_handlers.BaseGuiHandlerWT) 
     return this.goBack()
   }
 
-}
+})

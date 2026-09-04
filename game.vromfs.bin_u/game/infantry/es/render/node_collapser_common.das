@@ -1,7 +1,6 @@
 module node_collapser_common shared
 require ecs
 require AnimV20
-require DagorSystem
 require math.base
 require ecs.soa_template
 
@@ -45,7 +44,6 @@ def collapser(position : float3;
 
   assume scene = animchar_render.sceneInstance
 
-  var zeroTm = float3x4()
   var from = 0
   for node in animchar_node_collapser
     var collide = false
@@ -57,13 +55,16 @@ def collapser(position : float3;
         collide = true
         break
 
+    
+    
+    
     if collide
-      let rootPos = scene_instance_getNodeWtm(*scene, uint(node.animchar_node_collapser__rootNode))[3]
-      zeroTm[3] = (node.animchar_node_collapser__targetNode > 0 ?
-                   scene_instance_getNodeWtm(*scene, uint(node.animchar_node_collapser__targetNode))[3] :
-                   rootPos)
+      let targetNode = (node.animchar_node_collapser__targetNode > 0 ?
+                        node.animchar_node_collapser__targetNode :
+                        node.animchar_node_collapser__rootNode)
+      *scene |> scene_instance_setNodeCollapserTarget(targetNode)
       for childIdx in range(from, from + node.animchar_node_collapser__childrenCount)
         let child = uint(animchar_node_collapser__children[childIdx])
-        *scene |> scene_instance_setNodeWtm(child, zeroTm)
+        *scene |> scene_instance_markNodeCollapserNode(child)
 
     from += node.animchar_node_collapser__childrenCount

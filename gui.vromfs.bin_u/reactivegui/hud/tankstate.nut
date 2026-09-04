@@ -1,8 +1,8 @@
+import "%rGui/interopGen.nut" as interopGen
+from "%sqstd/math.nut" import floor
 from "%rGui/globals/ui_library.nut" import *
 
 let { interop } = require("%rGui/globals/interop.nut")
-let interopGen = require("%rGui/interopGen.nut")
-let { floor } = require("%sqstd/math.nut")
 
 let IndicatorsVisible = Watched(false)
 let CurrentTime = Watched(false)

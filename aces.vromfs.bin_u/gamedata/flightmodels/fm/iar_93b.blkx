@@ -241,7 +241,7 @@
       "SweptAngle": 40.0,
       "TaperRatio": 3.0,
       "Angle": 0.5,
-      "VAngle": -2.0,
+      "VAngle": 1.0,
       "UseSpinLoss": true,
       "SpinCdloss": 0.06,
       "SpinClloss": 0.08,
@@ -424,7 +424,7 @@
       "Span": 13.0,
       "Angle": 0.0,
       "Arm": [
-        1.1,
+        2.0,
         -0.05,
         0.0
       ],
@@ -565,8 +565,8 @@
       "Span": 2.7,
       "Angle": 0.0,
       "Arm": [
-        -4.9,
-        1.3,
+        -5.3,
+        0.9,
         0.0
       ],
       "FlowInertia": 0.07,
@@ -668,7 +668,7 @@
       ],
       "SensitivityMultiplier1": [
         0.1,
-        0.7
+        0.9
       ],
       "SensitivityMultiplier2": [
         0.2,
@@ -790,7 +790,7 @@
       ],
       "AnglesMultiplierPitch2D15": [
         1200.0,
-        0.4,
+        0.6,
         -0.1,
         0.8
       ],
@@ -872,11 +872,11 @@
       "Sensitivity": 0.3,
       "SensitivityMultiplier0": [
         0.0,
-        0.01
+        0.4
       ],
       "SensitivityMultiplier1": [
         0.1,
-        0.4
+        0.7
       ],
       "SensitivityMultiplier2": [
         0.2,
@@ -888,7 +888,7 @@
       ],
       "SensitivityMultiplier4": [
         1.1,
-        0.5
+        0.7
       ],
       "ArcadeSensitivityMultiplier": 1.0,
       "SensitivityCl": [
@@ -1330,25 +1330,31 @@
         "WaterTemperature": 665.0,
         "OilTemperature": 75.0,
         "WorkTime": 7200.0,
-        "RecoverTime": 320.0
+        "RecoverTime": 60.0
       },
       "Load2": {
         "WaterTemperature": 715.0,
         "OilTemperature": 82.0,
-        "WorkTime": 1800.0,
-        "RecoverTime": 310.0
+        "WorkTime": 3600.0,
+        "RecoverTime": 60.0
       },
       "Load3": {
         "WaterTemperature": 735.0,
         "OilTemperature": 87.0,
-        "WorkTime": 1200.0,
-        "RecoverTime": 300.0
+        "WorkTime": 1600.0,
+        "RecoverTime": 30.0
       },
       "Load4": {
         "WaterTemperature": 760.0,
-        "OilTemperature": 95.0,
-        "WorkTime": 31.0,
-        "RecoverTime": 60.0
+        "OilTemperature": 92.0,
+        "WorkTime": 1200.0,
+        "RecoverTime": 30.0
+      },
+      "Load5": {
+        "WaterTemperature": 790.0,
+        "OilTemperature": 97.0,
+        "WorkTime": 180.0,
+        "RecoverTime": 30.0
       }
     },
     "Compressor": {
@@ -1604,7 +1610,7 @@
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
-    "Takeoff": 13000.0,
+    "Takeoff": 43000.0,
     "CenterOfGravity": [
       -0.56,
       -0.0,
@@ -2036,8 +2042,8 @@
     ],
     "limitOverload": true,
     "overloadMult": [
-      0.7,
-      0.77,
+      0.85,
+      0.92,
       0.85,
       0.92
     ],
@@ -2051,6 +2057,12 @@
       -5.0,
       12.0
     ],
+    "constPitchDerrCoeffMultByClLinearRatio": [
+      0.0,
+      1.0,
+      0.01,
+      2.0
+    ],
     "MouseAim": {
       "forceAdvanced": true,
       "preciseRotStopDetection": false,
@@ -2060,11 +2072,11 @@
       "rollandPullUpWishDirMin": 0.3,
       "allowedRollRateCoeff": [
         0.17,
-        0.1,
+        0.2,
         0.4,
-        1.5
+        0.8
       ],
-      "rollTimeMult": 0.144,
+      "rollTimeMult": 0.344,
       "rollPidKpMult": 1.25,
       "dirXZFactorPitch0": [
         0.15,

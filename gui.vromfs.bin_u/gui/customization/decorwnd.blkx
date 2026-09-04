@@ -21,10 +21,19 @@
       "EditBox": {
         "id": "filter_edit_box",
         "width": "pw",
-        "on_change_value": "applyFilter",
+        "on_change_value": "onSearchFieldChange",
         "on_cancel_edit": "onFilterCancel",
         "text": "",
         "edit-hint": "#contacts/search_placeholder"
+      },
+      "CheckBox": {
+        "id": "filter_only_avalible",
+        "btnName": "LB",
+        "text": "#mainmenu/itemReceived",
+        "value": "no",
+        "on_change_value": "filterOnlyRecieved",
+        "CheckBoxImg": {},
+        "ButtonImg": {}
       },
       "decorPanels": {
         "id": "panels",
@@ -49,8 +58,8 @@
           "canSelectNone": "yes",
           "position": "absolute"
         },
-        "decoratorsPanel": {
-          "id": "filtered_decorators",
+        "searchResultPanel": {
+          "id": "search_result",
           "behaviour": "flow",
           "width": "pw",
           "margin": "@buttonMargin",

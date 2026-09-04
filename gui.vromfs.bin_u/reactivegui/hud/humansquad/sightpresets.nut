@@ -1,11 +1,12 @@
+from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunInfo, humanCurGunModeInfo
+from "%appGlobals/hud/humanPhysState.nut" import canSightChange
+from "%rGui/style/colors.nut" import transparent
+from "%rGui/options/measureUnits.nut" import measureUnitsCfg, DISTANCE_SHORT
 from "%rGui/globals/ui_library.nut" import *
 from "math" import fabs
 
-let { humanCurGunInfo, humanCurGunModeInfo } = require("%rGui/hud/state/human_gun_info_es.nut")
-let { canSightChange } = require("%appGlobals/hud/humanPhysState.nut")
-let { hud, transparent } = require("%rGui/style/colors.nut")
+let { hud } = require("%rGui/style/colors.nut")
 let { infantryHudInactiveColor, infantryHudActiveColor } = hud
-let { measureUnitsCfg, DISTANCE_SHORT } = require("%rGui/options/measureUnits.nut")
 
 let sightPresetsData = Computed(@()
   humanCurGunModeInfo.get()?.activeModWeapon?.sightPresetsData
@@ -17,16 +18,16 @@ let currentPresetIdx = Computed(@()
   ?? 0)
 
 let presetPadding = const [hdpxi(1), hdpxi(6)]
-let lineHeight = hdpxi(16)
-let presetGap = hdpxi(2)
-let stepHeight = lineHeight + presetGap
+const lineHeight = hdpxi(16)
+const presetGap = hdpxi(2)
+const stepHeight = lineHeight + presetGap
 
-let visibleCount = 3
+const visibleCount = 3
 let sideCount = (visibleCount / 2.0).tointeger()
 
-let animViscosity = 0.1
-let animInterval = 1.0 / 60
-let animMult = 1.0 - clamp(animInterval / animViscosity, 0.0, 1.0)
+const animViscosity = 0.1
+const animInterval = 1.0 / 60
+const animMult = 1.0 - clamp(animInterval / animViscosity, 0.0, 1.0)
 
 let animOffset = Watched(0.0)
 local prevPresetIdx = 0
@@ -102,7 +103,7 @@ function colorFromDist(distVal) {
 
 function mkPresetLine(text, fractionalSlot) {
   return {
-    size = [SIZE_TO_CONTENT, lineHeight]
+    size = const [SIZE_TO_CONTENT, lineHeight]
     pos = [0, (fractionalSlot * stepHeight).tointeger() - lineHeight / 2]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
@@ -117,7 +118,7 @@ function mkPresetLine(text, fractionalSlot) {
 }
 
 let selectionFrame = {
-  size = [flex(), lineHeight]
+  size = const [flex(), lineHeight]
   rendObj = ROBJ_BOX
   borderWidth = hdpxi(1)
   borderColor = infantryHudActiveColor
@@ -149,7 +150,7 @@ function mkSightLines() {
 
   return {
     watch = [ sightPresetsData, currentPresetIdx, animOffset, cacheVersion ]
-    size = [SIZE_TO_CONTENT, 0]
+    size = const [SIZE_TO_CONTENT, 0]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = lines
@@ -160,7 +161,7 @@ return @() !canSightChange.get() || sightPresetsData.get().len() < 2
   ? { watch = [ canSightChange, sightPresetsData ] }
   : {
       watch = [ canSightChange, sightPresetsData ]
-      size = [SIZE_TO_CONTENT, stepHeight * visibleCount]
+      size = const [SIZE_TO_CONTENT, stepHeight * visibleCount]
       pos = [-shHud(12), 0]
       clipChildren = true
       halign = ALIGN_RIGHT

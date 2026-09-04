@@ -1,33 +1,32 @@
+import "%rGui/hud/tankGunsAmmo.nut" as tankGunsAmmo
+from "%rGui/hud/actionBarState.nut" import actionBarSize, actionBarPos, isActionBarVisible, collapseBtnPressedTime, isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText
+  , isCollapseBtnHidden, isCollapseHintVisible
+from "%rGui/style/screenState.nut" import bh
+from "%rGui/hudUnitType.nut" import isTank
+from "%rGui/options/options.nut" import isVisibleTankGunsAmmoIndicator
+from "%rGui/hudState.nut" import isUnitAlive, isPlayingReplay
+from "%rGui/radarButtons.nut" import isRadarGamepadNavEnabled
+from "eventbus" import eventbus_send, eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
-let tankGunsAmmo = require("%rGui/hud/tankGunsAmmo.nut")
-let { actionBarSize, actionBarPos, isActionBarVisible, collapseBtnPressedTime,
-  isActionBarCollapsed, isActionBarCollapsable, actionBarCollapseShText, isCollapseBtnHidden,
-  isCollapseHintVisible
-} = require("%rGui/hud/actionBarState.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let fontsState = require("%rGui/style/fontsState.nut")
-let { bh } = require("%rGui/style/screenState.nut")
-let { isTank } = require("%rGui/hudUnitType.nut")
-let { isVisibleTankGunsAmmoIndicator } = require("%rGui/options/options.nut")
-let { isUnitAlive, isPlayingReplay } = require("%rGui/hudState.nut")
-let { isRadarGamepadNavEnabled } = require("%rGui/radarButtons.nut")
 
-let BTN_BLINK_DURATION = 0.3
-let BTN_BLINK_ANIM_DELAY = 0.6
-let BTN_BETWEEN_BLINK_PAUSE = 0.2
+let fontsState = require("%rGui/style/fontsState.nut")
+
+const BTN_BLINK_DURATION = 0.3
+const BTN_BLINK_ANIM_DELAY = 0.6
+const BTN_BETWEEN_BLINK_PAUSE = 0.2
 
 let panelMarginBottom = shHud(0.6)
-let panelHeight = hdpx(60)
-let collapseIconWidth = hdpx(8)
-let collapseTimerSize = hdpx(17)
-let collapseIconHeight = hdpx(14)
+const panelHeight = hdpx(60)
+const collapseIconWidth = hdpx(8)
+const collapseTimerSize = hdpx(17)
+const collapseIconHeight = hdpx(14)
 let collapseButtonPadding = [hdpx(3), hdpx(7)]
 let collapseIcon = Picture($"ui/gameuiskin#icon_collapse_action_bar.svg:{collapseIconWidth}:{collapseIconHeight}")
 
 let collapseIconComp = @() {
   watch = isActionBarCollapsed
   rendObj = ROBJ_IMAGE
-  size = [collapseIconWidth, collapseIconHeight]
+  size = const [collapseIconWidth, collapseIconHeight]
   image = collapseIcon
   transform = {
     rotate = isActionBarCollapsed.get() ? 0 : 180
@@ -46,7 +45,7 @@ let shortcutText = @() actionBarCollapseShText.get().len() == 0 ? { watch = acti
 
 let collapseBtnTimer = @() {
   watch = collapseBtnPressedTime
-  size = [collapseTimerSize, collapseTimerSize]
+  size = const [collapseTimerSize, collapseTimerSize]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = 2
   fillColor = 0
@@ -69,7 +68,7 @@ let hintText = {
 
 let hintTextContainer = {
   halign = ALIGN_RIGHT
-  pos = [0, ph(-100)]
+  pos = const [0, ph(-100)]
   size = 0
   children = hintText
 }
@@ -149,7 +148,7 @@ function actionBarTopPanel() {
     children = [
       canShowTankGunsAmmo ? tankGunsAmmo : null
       isCollapsButtonVisible.get() ? {
-        size = flex()
+        size = FLEX
         minWidth = canShowTankGunsAmmo ? hdpx(10) : 0
       } : null
       isCollapsButtonVisible.get() ? collapseButton : null

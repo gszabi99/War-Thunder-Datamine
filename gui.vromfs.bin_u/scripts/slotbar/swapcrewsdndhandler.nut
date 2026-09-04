@@ -1,11 +1,13 @@
 from "%scripts/dagui_library.nut" import *
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { replaceCrewsInCurrentPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 
-let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
+class SwapCrewsHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/slotbar/swapCrews.blk"
 
@@ -38,7 +40,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
     let objPos = this.draggedObj.getPosRC()
     let objSize = this.draggedObj.getSize()
 
-    gui_handlers.ActionsList.removeActionsListFromObject(this.draggedObj) 
+    ActionsList.removeActionsListFromObject(this.draggedObj) 
     this.draggedClone = this.draggedObj.getClone(this.scene.findObject("itemsNest"), this)
     this.draggedClone.pos = ", ".join(objPos)
     this.draggedClone["class"] = "swapCrewsDnD"
@@ -112,7 +114,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
         continue
       }
 
-      gui_handlers.ActionsList.removeActionsListFromObject(originalItem)
+      ActionsList.removeActionsListFromObject(originalItem)
 
       let item = originalItem.getClone(this.scene.findObject("itemsNest"), this)
       item["class"] = "swapCrewsDnD"
@@ -186,6 +188,6 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   onCrewBlockHover = @(_obj) null
 }
 
-gui_handlers.SwapCrewsHandler <- SwapCrewsHandler
+register_gui_handler("SwapCrewsHandler", SwapCrewsHandler)
 
 return @(draggedObj, airsTableSource) handlersManager.loadHandler(SwapCrewsHandler, { draggedObj, airsTableSource })

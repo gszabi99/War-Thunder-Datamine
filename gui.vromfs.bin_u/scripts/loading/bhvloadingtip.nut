@@ -1,10 +1,11 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let { getTip } = require("%scripts/loading/loadingTips.nut")
 
 {
-  let class LoadingTip {
+  class LoadingTip {
     eventMask = EV_TIMER | EV_ON_CMD
     unitTypeMaskPID = dagui_propid_add_name_id("unitTypeMask")
     timerIntervalPID = dagui_propid_add_name_id("timer_interval_msec")

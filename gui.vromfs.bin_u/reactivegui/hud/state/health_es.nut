@@ -1,11 +1,10 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/globals/ec_to_watched.nut" import mkFrameIncrementObservable
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "%sqstd/frp.nut" import watchedTable2TableOfWatched
+from "%rGui/globals/ui_library.nut" import *
 
-let { mkFrameIncrementObservable } = require("%rGui/globals/ec_to_watched.nut")
-let { watchedTable2TableOfWatched } = require("%sqstd/frp.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-
-let defState = freeze({
+const defState = {
   hp = 0.0
   maxHp = 0.0
   scaleHp = 0.0
@@ -17,7 +16,7 @@ let defState = freeze({
   revivingEndTime = 0.0
   revivingUserName = ""
   totalDotAmount = 0.0
-})
+}
 
 let {healthState, healthStateSetValue} = mkFrameIncrementObservable(defState,"healthState")
 let { hp, maxHp, scaleHp, isAliveState, isDownedState, showHpUiState, isCalledForHelp,

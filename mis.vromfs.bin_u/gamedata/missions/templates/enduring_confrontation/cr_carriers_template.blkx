@@ -432,22 +432,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/carriers_spawn",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@cr_t1_carrier_name",
+            "team": "A",
             "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
             "isAirfield": true,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": false,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
+            "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@cr_t1_carrier_name",
-            "team": "A",
             "object": "@cr_t1_carrier_name",
             "separate_fuel_time": false,
             "modular_airfield": false,
@@ -552,22 +552,22 @@
           "missionMarkAsRespawnPoint": {
             "loc_name": "missions/carriers_spawn",
             "spawnEffect": false,
+            "radius": -1.0,
+            "target": "@cr_t2_carrier_name",
+            "team": "B",
             "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
             "isAirfield": true,
             "isUnit": false,
+            "forceCreate": false,
             "useExisting": false,
+            "ignoreTeamsOnReuse": false,
             "isIndividual": false,
             "onlyOnePlayerPerSpawnPoint": false,
             "removeAreas": false,
+            "replaceAreas": false,
             "canSpawnOnNeutral": false,
             "showOnMap": true,
-            "radius": -1.0,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
-            "target": "@cr_t2_carrier_name",
-            "team": "B",
             "object": "@cr_t2_carrier_name",
             "separate_fuel_time": false,
             "modular_airfield": false,
@@ -1713,7 +1713,7 @@
         },
         "actions": {
           "triggerEnable": {
-            "target": "t1_major_task_completed"
+            "target": "t1_major_extra_task_completed"
           },
           "comment": {
             "value": "razreshen kvest na ubijstvo avika"
@@ -1770,7 +1770,7 @@
         },
         "actions": {
           "triggerEnable": {
-            "target": "t2_major_task_completed"
+            "target": "t2_major_extra_task_completed"
           },
           "comment": {
             "value": "razreshen kvest na ubijstvo avika"
@@ -1876,7 +1876,7 @@
     "cr_is_detect_on": false,
     "cr_t1_detection_range": 0.0,
     "cr_t2_detection_range": 0.0,
-    "cr_detection_base_range": 4500.0,
+    "cr_detection_base_range": 10000.0,
     "cr_detection_quest_is_on": false,
     "cr_destroy_quest_is_on": false,
     "cr_t1_respawns_left": 5,

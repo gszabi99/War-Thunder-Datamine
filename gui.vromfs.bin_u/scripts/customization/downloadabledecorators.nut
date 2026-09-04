@@ -1,11 +1,12 @@
+import "DataBlock" as DataBlock
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
+from "types" import Integer
 
 let guidParser = require("%scripts/guidParser.nut")
-let DataBlock = require("DataBlock")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 let downloadableSkins = {} 
 
@@ -25,7 +26,7 @@ function updateDownloadableSkins(unitName, skinType) {
     let marketSkinsBlk = DataBlock()
     marketSkinsBlk.load("config/skins_market.blk")
     let blkList = marketSkinsBlk % unitName
-    let skinBlks = blkList.filter(@(blk) (type(blk?.marketplaceItemdefId) == "integer")
+    let skinBlks = blkList.filter(@(blk) (blk?.marketplaceItemdefId instanceof Integer)
       && (blk?.reqFeature == null || hasFeature(blk.reqFeature))
       && (blk?.hideFeature == null || !hasFeature(blk.hideFeature)))
 

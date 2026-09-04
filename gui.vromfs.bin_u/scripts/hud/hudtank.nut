@@ -1,18 +1,19 @@
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "hudTankStates" import uavCameraEnabled, canEnableUavCamera
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
-let { uavCameraEnabled, canEnableUavCamera } = require("hudTankStates")
-let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
+let { BaseUnitHud } = require("%scripts/hud/baseUnitHud.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { initIconedHints } = require("%scripts/hud/iconedHints.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
 let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 function updateTacticalMapSwitchingObj(obj, value) {
   obj.findObject("map_btn").toggled = value ? "no" : "yes"
@@ -29,7 +30,7 @@ function getShortcutIdForSwitchTacticalMap() {
   return "ID_SHOW_MULTIFUNC_WHEEL_MENU"
 }
 
-let HudTank = class (gui_handlers.BaseUnitHud) {
+let HudTank = class (BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudTank.blk"
 
   needForceUpdateTacticalMapHint = false

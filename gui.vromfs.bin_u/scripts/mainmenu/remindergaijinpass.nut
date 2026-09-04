@@ -1,14 +1,13 @@
+from "%sqstd/platform.nut" import isPC
+from "blkGetters" import get_game_settings_blk
+from "steam" import steam_is_running
 from "%scripts/dagui_library.nut" import *
 
-let { isPC } = require("%sqstd/platform.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let reminderGaijinPassModal = require("%scripts/mainmenu/reminderGaijinPassModal.nut")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { getUtcDays } = require("%scripts/time.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { isMeNewbie } = require("%scripts/myStats.nut")
-let { steam_is_running } = require("steam")
 
 function checkGaijinPassReminder() {
   let haveGP = havePlayerTag("GaijinPass")

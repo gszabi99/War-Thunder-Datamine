@@ -5,9 +5,7 @@ require darg
 require DagorStdGuiRender
 require DagorMath
 require math
-require DagorSystem
 require RadarHud
-require app
 require %rGui.utils.radar_common
 require strings
 require WTInput

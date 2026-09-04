@@ -1,22 +1,28 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%globalScripts/chatState.nut" import ReputationType
+from "eventbus" import eventbus_send
+from "chat" import set_chat_handler, CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode
+from "%sqstd/string.nut" import cutPrefix
+from "mission" import get_mission_time, get_mplayer_by_name
+from "chard" import get_charserver_time_sec
+from "console" import register_command
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/mpTeamConsts.nut" import *
+
 let { isChatEnabled, checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
-let { eventbus_send } = require("eventbus")
-let { set_chat_handler, CHAT_MODE_ALL, CHAT_MODE_PRIVATE, chat_set_mode } = require("chat")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { get_mission_time, get_mplayer_by_name } = require("mission")
-let { get_charserver_time_sec } = require("chard")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentModeId
-} = require("%scripts/chat/mpChatState.nut")
-let { register_command } = require("console")
-let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
+let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentModeId } = require("%scripts/chat/mpChatState.nut")
+let { g_mp_chat_mode } = require("%scripts/chat/mpChatMode.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { getUserReputation, updateUserReputationData } = require("%scripts/user/usersReputation.nut")
-let { ReputationType } = require("%globalScripts/chatState.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -82,9 +88,14 @@ function onIncomingMessageImpl(sender, msg, mode, automatic, complaints) {
 
   addMessageToLog(message)
   broadcastEvent("MpChatLogUpdated")
+  
+  
   eventbus_send("mpChatPushMessage", message.__merge({
     fullName = sender == "" ? ""
       : getPlayerFullName(getPlayerName(sender), message.clanTag)
+    isSquadMember = g_squad_manager.isInMySquadById(userId)
+    isSenderSpectator = isPlayerDedicatedSpectator(sender)
+    filteredText = automatic ? msg : (filterMessageText(msg, isMyself) ?? msg)
   }))
 }
 

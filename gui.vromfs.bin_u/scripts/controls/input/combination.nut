@@ -1,3 +1,4 @@
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")

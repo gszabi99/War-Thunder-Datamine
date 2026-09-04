@@ -1,19 +1,19 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/datablock.nut" import isDataBlock, convertBlk
+from "dagor.time" import get_time_msec
+from "eventbus" import eventbus_subscribe
+from "%sqstd/underscore.nut" import isArray
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
-let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
-let { get_time_msec } = require("dagor.time")
-let { eventbus_subscribe } = require("eventbus")
-let { isArray } = require("%sqstd/underscore.nut")
 
 enum allShowcasesEventName {
   UPDATED = "AllShowcasesDataUpdated"
 }
 
-let MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
-let MIN_TIME_BETWEEN_FREQUENT_REQUESTS_MSEC = 5000
+const MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
+const MIN_TIME_BETWEEN_FREQUENT_REQUESTS_MSEC = 5000
 
 local allShowcasesData = null
 local hasRequest = false

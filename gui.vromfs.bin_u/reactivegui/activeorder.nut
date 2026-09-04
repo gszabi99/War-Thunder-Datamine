@@ -1,20 +1,21 @@
+import "%rGui/style/teamColors.nut" as teamColors
+from "%rGui/ctrlsState.nut" import cursorVisible
+from "%rGui/orderState.nut" import showOrder, scoresTable, statusText, statusTextBottom
+from "%rGui/hud/hudPartVisibleState.nut" import isOrderStatusVisible
+from "%rGui/components/scrollbarBase.nut" import makeVertScroll
+from "eventbus" import eventbus_send
 from "%rGui/globals/ui_library.nut" import *
-let { eventbus_send } = require("eventbus")
-let { cursorVisible } = require("%rGui/ctrlsState.nut")
-let { showOrder, scoresTable, statusText, statusTextBottom } = require("%rGui/orderState.nut")
+
 let colors = require("%rGui/style/colors.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
-let { isOrderStatusVisible } = require("%rGui/hud/hudPartVisibleState.nut")
-let { makeVertScroll } = require("%rGui/components/scrollbarBase.nut")
 
 let isOrderVisible = Computed(@() isOrderStatusVisible.get() && showOrder.get())
 let isCollapsed = Watched(false)
 
 let pilotIcon = Picture("!ui/gameuiskin#player_in_queue")
 let rowHeight = scrn_tgt(0.0224)
-let collapseBtnSize = hdpx(45)
-let collapseIconSize = hdpx(30)
+const collapseBtnSize = hdpx(45)
+const collapseIconSize = hdpx(30)
 let collapseIcon = Picture($"ui/gameuiskin#spinnerListBox_arrow_up.svg:{collapseIconSize}:{collapseIconSize}")
 
 let lineSpacing = {
@@ -33,7 +34,7 @@ let shadow = {
 let collapseIconComp = @() {
   watch = isCollapsed
   rendObj = ROBJ_IMAGE
-  size = [collapseIconSize, collapseIconSize]
+  size = const [collapseIconSize, collapseIconSize]
   color = Color(192, 192, 192)
   image = collapseIcon
   transform = {
@@ -44,7 +45,7 @@ let collapseIconComp = @() {
 let collapseButton = watchElemState(@(sf) {
   behavior = Behaviors.Button
   rendObj = ROBJ_SOLID
-  size = [collapseBtnSize, collapseBtnSize]
+  size = const [collapseBtnSize, collapseBtnSize]
   color = (sf & S_ACTIVE) ? Color(2, 5, 9, 153)
     : (sf & S_HOVER) ? Color(58, 71, 79)
     : Color(3, 7, 12, 204)
@@ -57,7 +58,7 @@ let collapseButton = watchElemState(@(sf) {
 let orderIcon = {
   rendObj = ROBJ_TEXT
   text = loc("icon/orderSymbol")
-  size = [collapseBtnSize, collapseBtnSize]
+  size = const [collapseBtnSize, collapseBtnSize]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   font = fontsState.get("medium")
@@ -67,7 +68,7 @@ let orderIcon = {
 
 let collapsedOrder = {
   rendObj = ROBJ_SOLID
-  size = [collapseBtnSize, collapseBtnSize]
+  size = const [collapseBtnSize, collapseBtnSize]
   color = Color(3, 7, 12, 204)
   children = orderIcon
 }
@@ -189,17 +190,17 @@ function activeOrderComps() {
     gap = hdpx(4)
     children
 
-    onAttach = function(_) {
+    onAttach = function() {
       eventbus_send("active_order_enable")
       gui_scene.setInterval(1, undateOrderState)
     }
-    onDetach = @(_) gui_scene.clearTimer(undateOrderState)
+    onDetach = @() gui_scene.clearTimer(undateOrderState)
   }
 }
 
 let activeOrderLogContentInner = {
   rendObj = ROBJ_SOLID
-  size = const [flex(), SIZE_TO_CONTENT]
+  size = const [FLEX, SIZE_TO_CONTENT]
   minHeight = hdpx(158)
   padding = [scrn_tgt(0.005), scrn_tgt(0.005)]
   valign = ALIGN_TOP
@@ -208,7 +209,7 @@ let activeOrderLogContentInner = {
 }
 
 let activeOrderLogContent = makeVertScroll(activeOrderLogContentInner, {
-  size = [flex(), hdpx(158)]
+  size = const [FLEX, hdpx(158)]
   needReservePlace = false
 })
 

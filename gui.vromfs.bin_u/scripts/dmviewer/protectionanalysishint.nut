@@ -1,17 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "math" import round, sqrt, atan2, PI
+from "hangarEventCommand" import set_protection_analysis_editing
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let results = require("%scripts/dmViewer/protectionAnalysisHintResults.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { round, sqrt, atan2, PI } = require("math")
 
-let { set_protection_analysis_editing } = require("hangarEventCommand")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
-gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
+let ProtectionAnalysisHint = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/dmViewer/protectionAnalysisHint.blk"
 
@@ -169,7 +170,7 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
       this.sightLineObj.show(false)
       return
     }
-    let thickness = 2
+    const thickness = 2
     let cx = (p.sightX0 + p.sightX1) * 0.5
     let cy = (p.sightY0 + p.sightY1) * 0.5
     this.sightLineObj.width = length.tointeger()
@@ -184,8 +185,9 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
     dmViewer.placeHint(obj)
   }
 }
+register_gui_handler("ProtectionAnalysisHint", ProtectionAnalysisHint)
 
 return {
   open = @(scene) !checkObj(scene) ? null
-    : handlersManager.loadHandler(gui_handlers.ProtectionAnalysisHint, { scene })
+    : handlersManager.loadHandler(ProtectionAnalysisHint, { scene })
 }

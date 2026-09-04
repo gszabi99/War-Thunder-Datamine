@@ -1,16 +1,17 @@
+from "chard" import get_charserver_time_millisec
+from "eventbus" import subscribe, unsubscribe
+from "string" import format
+from "iostream" import blob
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, clearTimer
+from "dagor.udp" import send, last_error, close_socket
+from "dagor.random" import rnd_float
+from "%sqstd/math.nut" import median, number_of_set_bits
+from "%sqstd/underscore.nut" import isEqual
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
+
 let logOC = log_with_prefix("[CLUSTERS_RTT] ")
-let { get_charserver_time_millisec } = require("chard")
-let { subscribe, unsubscribe } = require("eventbus")
-let { format } =  require("string")
-let { blob } = require("iostream")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, clearTimer } = require("dagor.workcycle")
-let { send, last_error, close_socket } = require("dagor.udp")
-let { rnd_float } = require("dagor.random")
-let { median, number_of_set_bits } = require("%sqstd/math.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isInMenu, isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 let { clusterHosts } = require("%scripts/onlineInfo/clusterHosts.nut")
 

@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module lpipe shared private
@@ -23,7 +21,7 @@ def lpipe_expr(var fnCall : ExpressionPtr&; var arg : ExpressionPtr&) : Expressi
         var pVar = fnCall as ExprVar
         var pCall = make_call(pVar.at, "{pVar.name}")
         fnCall = null
-        var pCallFunc = unsafe(reinterpret<ExprLooksLikeCall?> pCall)
+        var pCallFunc = unsafe(reinterpret<ExprLooksLikeCall?>(pCall))
         pCallFunc.arguments |> emplace(arg)
         return pCall
     } elif (fnCall is ExprCopy) {
@@ -48,10 +46,8 @@ def lpipe_expr(var fnCall : ExpressionPtr&; var arg : ExpressionPtr&) : Expressi
         (cLet as ExprLet).variables[0].init = lpipe_expr(pLet.variables[0].init, arg)
         return cLet
     } elif (fnCall |> is_expr_like_call()) {
-        var pCall = unsafe(reinterpret<ExprLooksLikeCall?> fnCall)
-        if (pCall.name == "lpipe") {
-            return null
-        }
+        var pCall = unsafe(reinterpret<ExprLooksLikeCall?>(fnCall))
+        if (pCall.name == "lpipe") return null  
         pCall.arguments |> emplace(arg)
         return fnCall
     } else {
@@ -64,15 +60,6 @@ def lpipe_expr(var fnCall : ExpressionPtr&; var arg : ExpressionPtr&) : Expressi
 [call_macro(name="lpipe")]
 class LpipeMacro : AstCallMacro {
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     def override visit(prog : ProgramPtr; mod : Module?; var call : ExprCallMacro?) : ExpressionPtr {
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting lpipe(value)")
         var success = false
@@ -81,7 +68,7 @@ class LpipeMacro : AstCallMacro {
                 macro_error(prog, call.at, "can't get valid program context")
                 return
             }
-            if (astc.scopes |> length <= 0) {
+            if (empty(astc.scopes)) {
                 macro_error(prog, call.at, "missing scope")
                 return
             }
@@ -111,9 +98,7 @@ class LpipeMacro : AstCallMacro {
             blk.list[eidx] = null
             success = true
         }
-        if (!success) {
-            return null
-        }
+        if (!success) return null
         return quote() {
             pass
         }

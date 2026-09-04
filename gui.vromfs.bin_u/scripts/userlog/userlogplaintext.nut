@@ -1,27 +1,27 @@
+from "%sqStdLibs/helpers/toString.nut" import intToHexString
+from "%sqstd/math.nut" import roundToDigits
+from "string" import format
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { Cost } = require("%scripts/money.nut")
-let { roundToDigits } = require("%sqstd/math.nut")
-let { format } = require("string")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
 let getUserLogBattleRewardTooltip = require("%scripts/userLog/getUserLogBattleRewardTooltip.nut")
 let { getClearUnitName } = require("%scripts/userLog/unitNameSymbolRestrictions.nut")
-let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getMissionName } = require("%scripts/missions/missionsText.nut")
-let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
-} = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { getLogNameByType, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
 
-let tab = "    "
+const tab = "    "
 
 function getBonus(exp, wp) {
   exp = roundToDigits(exp, 2)
@@ -171,9 +171,9 @@ function get_userlog_plain_text(logObj) {
   res.name = format(loc(nameLoc), mission)
 
   local desc = ""
-  local wp = getTblValue("wpEarned", logObj, 0) + getTblValue("baseTournamentWp", logObj, 0)
-  local gold = getTblValue("goldEarned", logObj, 0) + getTblValue("baseTournamentGold", logObj, 0)
-  let xp = getTblValue("xpEarned", logObj, 0)
+  local wp = (logObj?.wpEarned ?? 0) + (logObj?.baseTournamentWp ?? 0)
+  local gold = (logObj?.goldEarned ?? 0) + (logObj?.baseTournamentGold ?? 0)
+  let xp = (logObj?.xpEarned ?? 0)
   local earnedText = Cost(wp, gold, xp).toPlainText({ isWpAlwaysShown = true })
   if (!isMissionExtrLog && earnedText != "")
     desc = "".concat(desc, "\n", loc("userlog/earned"), colon, earnedText)
@@ -217,15 +217,15 @@ function get_userlog_plain_text(logObj) {
       desc = "".concat(desc, "\n", loc("userlog/used_spare"), colon, ", ".join(aText))
   }
 
-  let containerLog = getTblValue("container", logObj)
+  let containerLog = logObj?.container
 
   local freeRepair = ("aircrafts" in logObj) && logObj.aircrafts.len() > 0
   let repairCost = { rCost = 0, notEnoughCost = 0 }
-  let aircraftsRepaired = getTblValue("aircraftsRepaired", containerLog)
+  let aircraftsRepaired = containerLog?.aircraftsRepaired
   if (aircraftsRepaired)
     updateRepairCost(aircraftsRepaired, repairCost);
 
-  let unitsRepairedManually = getTblValue("manuallySpentRepairCost", logObj)
+  let unitsRepairedManually = logObj?.manuallySpentRepairCost
   if (unitsRepairedManually)
     updateRepairCost(unitsRepairedManually, repairCost);
 
@@ -245,8 +245,8 @@ function get_userlog_plain_text(logObj) {
     desc = "".concat(desc, "\n", loc("shop/auto_repair_free_plain"))
   }
 
-  let wRefillWp = getTblValue("wpCostWeaponRefill", containerLog, 0)
-  let wRefillGold = getTblValue("goldCostWeaponRefill", containerLog, 0)
+  let wRefillWp = (containerLog?.wpCostWeaponRefill ?? 0)
+  let wRefillGold = (containerLog?.goldCostWeaponRefill ?? 0)
   if (wRefillWp || wRefillGold) {
     desc = "".concat(desc, "\n", loc("shop/auto_buy_weapons_cost"), colon,
       Cost(-wRefillWp, -wRefillGold).toPlainText())
@@ -297,7 +297,7 @@ function get_userlog_plain_text(logObj) {
       desc = "".concat(desc, "\n\n", loc("debriefing/research_list"), colon, descMods)
   }
 
-  if (getTblValue("haveTeamkills", logObj, false))
+  if ((logObj?.haveTeamkills ?? false))
     desc = "".concat(desc, "\n\n", loc("debriefing/noAwardsCaption"))
 
   if (containerLog?.noActivityPlayer)
@@ -307,8 +307,8 @@ function get_userlog_plain_text(logObj) {
 
   if ("affectedBoosters" in logObj) {
     local affectedBoosters = logObj.affectedBoosters
-    local activeBoosters = getTblValue("activeBooster", affectedBoosters, [])
-    if (type(activeBoosters) == "table")
+    local activeBoosters = (affectedBoosters?.activeBooster ?? [])
+    if (activeBoosters instanceof Table)
       activeBoosters = [ activeBoosters ]
 
     if (activeBoosters.len() > 0)
@@ -329,8 +329,8 @@ function get_userlog_plain_text(logObj) {
   }
 
   if (("tournamentResult" in logObj) && (events.getEvent(eventId)?.leaderboardEventTable == null)) {
-    let now = getTblValue("newStat", logObj.tournamentResult)
-    let was = getTblValue("oldStat", logObj.tournamentResult)
+    let now = logObj.tournamentResult?.newStat
+    let was = logObj.tournamentResult?.oldStat
     let lbDiff = getLbDiff(now, was)
     let items = []
     foreach (lbFieldsConfig in eventsTableConfig) {
@@ -340,7 +340,7 @@ function get_userlog_plain_text(logObj) {
 
       items.append(getLeaderboardItemView(lbFieldsConfig,
         now[lbFieldsConfig.field],
-        getTblValue(lbFieldsConfig.field, lbDiff, null)))
+        lbDiff?[lbFieldsConfig.field]))
     }
     let lbStatsBlk = getLeaderboardItemWidgets({ items = items })
     if (!("descriptionBlk" in res))
@@ -357,7 +357,7 @@ function get_userlog_plain_text(logObj) {
     desc = "".concat(desc, "\n", loc("debriefing/total"), colon, total)
   }
 
-  let ecSpawnScore = getTblValue("ecSpawnScore", logObj, 0)
+  let ecSpawnScore = (logObj?.ecSpawnScore ?? 0)
   if (ecSpawnScore > 0)
     desc = "".concat(desc, "\n", loc("debriefing/total/ecSpawnScore"), colon, ecSpawnScore)
   let wwSpawnScore = logObj?.wwSpawnScore ?? 0

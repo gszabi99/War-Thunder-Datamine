@@ -85,6 +85,30 @@
           "sideLobesSensitivity": -50.0
         }
       }
+    },
+    "sea": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1000.0,
+      "band": 8,
+      "rcs": 500.0,
+      "range": 110000.0,
+      "rangeMax": 150000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "azimuth": {
+          "angleHalfSens": 0.5,
+          "sideLobesSensitivity": -50.0
+        },
+        "elevation": {
+          "angleHalfSens": 3.5,
+          "sideLobesSensitivity": -50.0
+        }
+      }
     }
   },
   "illuminationTransmitter": {
@@ -722,6 +746,10 @@
           "setScopeRangeSet": {
             "scopeRangeSet": "common"
           },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
+          },
           "setFsmActive": {
             "fsm": "searchModes",
             "active": true
@@ -792,6 +820,10 @@
           "designateActiveDetectedTarget": {
             "type": "target",
             "self": true
+          },
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": true
           }
         },
         "resetBvrLockMode": {
@@ -817,6 +849,10 @@
           "addTargetOfInterest": {},
           "setLastTargetOfInterestActive": {},
           "updateActiveTargetOfInterest": {},
+          "setDesignatedTarget": {
+            "aiOnly": true,
+            "set": false
+          },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
           },
@@ -1445,7 +1481,7 @@
         "setSeaTwsStandbyMode": {
           "setSearchStandbyModeCommon": {},
           "setTransiver": {
-            "transiver": "GTM"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaSearch"
@@ -1470,7 +1506,7 @@
         "setSeaTwsSearchMode": {
           "setTwsSearchModeCommon": {},
           "setTransiver": {
-            "transiver": "GTM"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaSearch"
@@ -1492,7 +1528,7 @@
             "active": true
           },
           "setTransiver": {
-            "transiver": "GTM"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaTrack"
@@ -1545,7 +1581,7 @@
             "active": true
           },
           "setTransiver": {
-            "transiver": "GTM"
+            "transiver": "sea"
           },
           "setSignal": {
             "signal": "seaTrack"
@@ -3535,8 +3571,7 @@
         "su_25tm",
         "su_25_558arz",
         "su_25sm3",
-        "nt_su_25t",
-        "su_25_late"
+        "nt_su_25t"
       ]
     },
     {
@@ -3554,7 +3589,8 @@
         "su_30sm2",
         "su_30mkm",
         "su_30mkk",
-        "j_15t"
+        "j_15t",
+        "j_16"
       ]
     },
     {
@@ -3622,7 +3658,8 @@
         "mig_29_9_12",
         "mig_29m_9_15",
         "mig_29kr_9_41r",
-        "mig_29smt_9_19_killstreak"
+        "mig_29smt_9_19_killstreak",
+        "mig_35"
       ]
     },
     {
@@ -3655,7 +3692,8 @@
         "a_4e_early_iaf",
         "a_4e_late_iaf",
         "a_4h",
-        "a_4n"
+        "a_4n",
+        "a_4ptm_malaysia"
       ]
     },
     {
@@ -3681,7 +3719,8 @@
         "f-4e_iaf",
         "f-4e_kurnass_2000",
         "nt_f_4e",
-        "f_4e_event"
+        "f_4e_event",
+        "f_4e_aup_greece"
       ]
     },
     {
@@ -3726,7 +3765,9 @@
         "a_7e",
         "a_7e_thailand",
         "a_7k",
-        "nt_a_7e"
+        "nt_a_7e",
+        "a_7e_greece",
+        "a_7h_greece"
       ]
     },
     {
@@ -3787,7 +3828,10 @@
         "f-86k_late_german",
         "f-86k_late_italy",
         "fj_4b",
-        "fj_4b_agm_12b"
+        "fj_4b_agm_12b",
+        "ca_27_mk32_malaysia",
+        "ca_27_mk32_raaf",
+        "f_86em_greece"
       ]
     },
     {
@@ -3838,7 +3882,11 @@
     },
     {
       "name": "hud/f_106",
-      "targetType": "f_106a_1972"
+      "targetType": [
+        "f_106a_1972",
+        "f_102a_late",
+        "f_102a_greece"
+      ]
     },
     {
       "name": "hud/f_111",
@@ -3861,7 +3909,8 @@
         "f_14a_early",
         "f_14a_iriaf",
         "f_14b",
-        "f_14d"
+        "f_14d",
+        "f_14d_vf_11"
       ]
     },
     {
@@ -3905,7 +3954,6 @@
         "f_16a_block_10_norway",
         "f_16c_block_52_aesa",
         "f_16a_block_72v_china",
-        "f_16am_block_15_mlu_fs_belgium",
         "f_16am_block_20_mlu_netherlands",
         "f_16a_block_15_adf_italy_killstreak",
         "f_16a_block_15_adf_killstreak",
@@ -4197,7 +4245,8 @@
       "targetType": [
         "mirage_f1c_200",
         "mirage_f1c",
-        "mirage_f1ct"
+        "mirage_f1ct",
+        "mirage_f1cg_greece"
       ]
     },
     {
@@ -4227,7 +4276,7 @@
         "mirage_2000c_s5",
         "mirage_2000d_r1",
         "mirage_2000d_rmv",
-        "mirage_2000c_s3"
+        "mirage_2000_5eg_mk2_greece"
       ]
     },
     {
@@ -4238,7 +4287,8 @@
       "name": "hud/rafale",
       "targetType": [
         "rafale_c_f3",
-        "rafale_m_f3r"
+        "rafale_m_f3r",
+        "rafale_eg_greece"
       ]
     },
     {

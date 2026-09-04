@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.RestrictionsWeaponryPresetModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let RestrictionsWeaponryPresetModal = class (BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneBlkName         = "%gui/weaponry/restrictionsWeaponryPresetModal.blk"
   presets              = null
@@ -56,8 +57,9 @@ gui_handlers.RestrictionsWeaponryPresetModal <- class (gui_handlers.BaseGuiHandl
     base.goBack()
   }
 }
+register_gui_handler("RestrictionsWeaponryPresetModal", RestrictionsWeaponryPresetModal)
 
-let openRestrictionsWeaponryPreset = @(params) handlersManager.loadHandler(gui_handlers.RestrictionsWeaponryPresetModal, params)
+let openRestrictionsWeaponryPreset = @(params) handlersManager.loadHandler(RestrictionsWeaponryPresetModal, params)
 
 return {
   openRestrictionsWeaponryPreset

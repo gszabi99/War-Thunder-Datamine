@@ -6,7 +6,6 @@ require daslib/aot_cpp
 require daslib/macro_boost
 require daslib/templates_boost
 require daslib/ast_boost
-require strings
 require daslib/fio
 
 
@@ -18,7 +17,7 @@ class AstAot : AstSimulateMacro {
         
         return true if (is_in_completion() || is_compiling_macros() || is_folding())
         let res = run_aot(prog, ctx, prog.policies)
-        var is_ok = res |> length() > 0
+        var is_ok = res |> !empty(res)
         if (is_ok) {
             let fileName = "{prog.policies.aot_result}"
             print("Aot to {fileName}\n")

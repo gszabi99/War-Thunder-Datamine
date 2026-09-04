@@ -4,7 +4,7 @@ options no_aot
 require DagorSystem
 require daslib/strings_boost
 require daslib/ast_boost
-require rtti
+require daslib/rtti
 
 
 

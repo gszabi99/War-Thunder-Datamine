@@ -1,10 +1,11 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "colorCorrector" import getRgbStrFromHsv
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import locOrStrip
+from "types" import String
 
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getRgbStrFromHsv } = require("colorCorrector")
-let u = require("%sqStdLibs/helpers/u.nut")
 
 let checkArgument = function(id, arg, varType) {
   if (type(arg) == varType)
@@ -39,7 +40,7 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
     view.cb <- cb
 
   foreach (idx, item in items) {
-    let opt = type(item) == "string" ? { text = item } : clone item
+    let opt = item instanceof String ? { text = item } : clone item
     opt.selected <- idx == value
     if ("hue" in item)
       opt.hueColor <- getRgbStrFromHsv(item.hue, item?.sat ?? 0.7, item?.val ?? 0.7)
@@ -52,7 +53,7 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
     if ("name" in item)
       opt.optName <- item.name
 
-    if (type(item?.image) == "string") {
+    if (item?.image instanceof String) {
       opt.images <- [{ image = item.image }]
       opt.$rawdelete("image")
     }
@@ -84,7 +85,7 @@ function create_options_bar(id, value, text, items, cb, isFull = true, params = 
     hasTooltip = items.len() > 1
     onOptHoverFnName = params?.onOptHoverFnName
     options = items.map(function (item, idx) {
-      let option = type(item) == "string" ? { text = item } : clone item
+      let option = item instanceof String ? { text = item } : clone item
       if (params?.onOptHoverFnName)
         option.__update({ idx })
       return { option }
@@ -135,11 +136,11 @@ function create_option_row_listbox(id, items, value, cb, isFull, listClass = "op
       view.items.append({ text = item, selected = selected })
     else
       view.items.append({
-        text = getTblValue("text", item, "")
-        image = getTblValue("image", item)
+        text = (item?.text ?? "")
+        image = item?.image
         disabled = item?.enabled ?? false
         selected = selected
-        tooltip = getTblValue("tooltip", item, "")
+        tooltip = (item?.tooltip ?? "")
       })
   }
   data = "".concat(data, handyman.renderCached("%gui/commonParts/shopFilter.tpl", view))
@@ -171,7 +172,7 @@ function createOptionRowMultiselect(params) {
       view[key] <- locOrStrip(option[key])
 
   foreach (v in option.items) {
-    let item = type(v) == "string" ? { text = v, image = "" } : v
+    let item = v instanceof String ? { text = v, image = "" } : v
     let viewItem = {}
     foreach (key in [ "enabled", "isVisible" ])
       viewItem[key] <- item?[key] ?? true

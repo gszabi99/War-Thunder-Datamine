@@ -1,27 +1,27 @@
+from "%rGui/planeState/planeFlyState.nut" import CompassValue
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/twsState.nut" import rwrTargetsTriggers
+from "%rGui/planeRwrs/rwrL150Components.nut" import color, iconColorSearch, iconColorTrack, iconColorLaunch, baseLineWidth, settings, createCompass, rwrTargetsComponent
+from "string" import format
+from "math" import sin, cos
+from "%sqstd/math_ex.nut" import degToRad
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-let { sin, cos } = require("math")
-let { degToRad } = require("%sqstd/math_ex.nut")
+let { rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
 
-let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
-let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
+let { styleText } = require("%rGui/planeRwrs/rwrL150Components.nut")
 
-let { rwrTargetsTriggers, rwrTargets, rwrTargetsOrder } = require("%rGui/twsState.nut")
-
-let { color, iconColorSearch, iconColorTrack, iconColorLaunch, baseLineWidth, styleText, settings, createCompass, rwrTargetsComponent} = require("%rGui/planeRwrs/rwrL150Components.nut")
-
-let ecmSector = degToRad(120.0)
-let ecmHalfSectorSin = sin(ecmSector * 0.5)
-let ecmHalfSectorCos = cos(ecmSector * 0.5)
+const ecmSector = degToRad(120.0)
+const ecmHalfSectorSin = sin(ecmSector * 0.5)
+const ecmHalfSectorCos = cos(ecmSector * 0.5)
 
 function createRwrGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     children = [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS,
         color = color,
         lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
@@ -39,7 +39,7 @@ function createRwrGrid(gridStyle) {
   }
 }
 
-let obdFontScale = 2.0
+const obdFontScale = 2.0
 
 function makeTargetButtonColorAndText(priority) {
   let index = rwrTargetsOrder.len() - priority - 1
@@ -84,7 +84,7 @@ function scope(scale, style) {
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [pw(7), ph(0)],
+        pos = const [pw(7), ph(0)],
         size = const [pw(90), ph(90)],
         children = [
           {
@@ -103,14 +103,14 @@ function scope(scale, style) {
           watch = CompassValue
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
-          pos = [pw(45), ph(-40)]
+          pos = const [pw(45), ph(-40)]
           size = const [pw(15), ph(10)]
           halign = ALIGN_CENTER
           valign = ALIGN_TOP
           fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
           text = format("%d", CompassValue.get() > 0.0 ? CompassValue.get() : 360.0 + CompassValue.get())
           children = {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_BOX
             fillColor = Color(0, 0, 0, 0)
             borderColor = color
@@ -121,7 +121,7 @@ function scope(scale, style) {
       
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(120), ph(125)]
+        pos = const [pw(120), ph(125)]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -131,7 +131,7 @@ function scope(scale, style) {
         styleText.__merge({
           watch = ChaffsCount
           rendObj = ROBJ_TEXT
-          pos = [pw(135), ph(125)]
+          pos = const [pw(135), ph(125)]
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER
           fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -139,7 +139,7 @@ function scope(scale, style) {
         }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(120), ph(135)]
+        pos = const [pw(120), ph(135)]
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -149,7 +149,7 @@ function scope(scale, style) {
         styleText.__merge({
           watch = FlaresCount
           rendObj = ROBJ_TEXT
-          pos = [pw(135), ph(135)]
+          pos = const [pw(135), ph(135)]
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER
           fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
@@ -164,7 +164,7 @@ function scope(scale, style) {
       makeTargetButton(style, [pw(-50), ph(130)], 5),
       
       styleText.__merge({
-        pos = [pw(-30), ph(-50)],
+        pos = const [pw(-30), ph(-50)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -173,7 +173,7 @@ function scope(scale, style) {
         valign = ALIGN_TOP,
       }),
       styleText.__merge({
-        pos = [pw(10), ph(-50)],
+        pos = const [pw(10), ph(-50)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -182,7 +182,7 @@ function scope(scale, style) {
         valign = ALIGN_TOP,
       }),
       styleText.__merge({
-        pos = [pw(40), ph(-50)],
+        pos = const [pw(40), ph(-50)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -191,7 +191,7 @@ function scope(scale, style) {
         valign = ALIGN_TOP,
       }),
       styleText.__merge({
-        pos = [pw(75), ph(-50)],
+        pos = const [pw(75), ph(-50)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -200,7 +200,7 @@ function scope(scale, style) {
         valign = ALIGN_TOP,
       }),
       styleText.__merge({
-        pos = [pw(110), ph(-50)],
+        pos = const [pw(110), ph(-50)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -210,7 +210,7 @@ function scope(scale, style) {
       }),
       
       styleText.__merge({
-        pos = [pw(145), ph(-30)],
+        pos = const [pw(145), ph(-30)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -219,7 +219,7 @@ function scope(scale, style) {
         valign = ALIGN_CENTER,
       }),
       styleText.__merge({
-        pos = [pw(145), ph(10)],
+        pos = const [pw(145), ph(10)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -228,7 +228,7 @@ function scope(scale, style) {
         valign = ALIGN_CENTER,
       }),
       styleText.__merge({
-        pos = [pw(145), ph(45)],
+        pos = const [pw(145), ph(45)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -237,7 +237,7 @@ function scope(scale, style) {
         valign = ALIGN_CENTER,
       }),
       styleText.__merge({
-        pos = [pw(145), ph(85)],
+        pos = const [pw(145), ph(85)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -246,7 +246,7 @@ function scope(scale, style) {
         valign = ALIGN_CENTER,
       }),
       styleText.__merge({
-        pos = [pw(145), ph(115)],
+        pos = const [pw(145), ph(115)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -256,11 +256,11 @@ function scope(scale, style) {
       }),
       
       {
-        pos = [pw(-20), ph(145)],
-        size = flex(),
+        pos = const [pw(-20), ph(145)],
+        size = FLEX,
         children = [
           {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_VECTOR_CANVAS,
             color = color,
             lineWidth = baseLineWidth * 1 * style.grid.lineWidthScale,
@@ -272,7 +272,7 @@ function scope(scale, style) {
         ]
       },
       styleText.__merge({
-        pos = [pw(-10), ph(145)],
+        pos = const [pw(-10), ph(145)],
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
         fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale,
@@ -281,11 +281,11 @@ function scope(scale, style) {
         valign = ALIGN_BOTTOM,
       }),
       {
-        pos = [pw(10), ph(145)],
-        size = flex(),
+        pos = const [pw(10), ph(145)],
+        size = FLEX,
         children = [
           {
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_VECTOR_CANVAS,
             color = color,
             lineWidth = baseLineWidth * 1 * style.grid.lineWidthScale,
@@ -297,7 +297,7 @@ function scope(scale, style) {
         ]
       },
       styleText.__merge({
-        pos = [pw(35), ph(145)]
+        pos = const [pw(35), ph(145)]
         size = const [pw(25), ph(10)]
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
@@ -306,7 +306,7 @@ function scope(scale, style) {
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_BOX
           fillColor = Color(0, 0, 0, 0)
           borderColor = color
@@ -315,7 +315,7 @@ function scope(scale, style) {
         }
       }),
       styleText.__merge({
-        pos = [pw(70), ph(145)]
+        pos = const [pw(70), ph(145)]
         size = const [pw(25), ph(10)]
         rendObj = ROBJ_TEXTAREA,
         behavior = Behaviors.TextArea
@@ -324,7 +324,7 @@ function scope(scale, style) {
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_BOX
           fillColor = Color(0, 0, 0, 0)
           borderColor = color
@@ -333,7 +333,7 @@ function scope(scale, style) {
         }
       }),
       styleText.__merge({
-        pos = [pw(105), ph(145)]
+        pos = const [pw(105), ph(145)]
         size = const [pw(25), ph(10)]
         rendObj = ROBJ_TEXTAREA
         behavior = Behaviors.TextArea
@@ -342,7 +342,7 @@ function scope(scale, style) {
         halign = ALIGN_CENTER
         valign = ALIGN_BOTTOM
         children = {
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_BOX
           fillColor = Color(0, 0, 0, 0)
           borderColor = color
@@ -354,7 +354,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

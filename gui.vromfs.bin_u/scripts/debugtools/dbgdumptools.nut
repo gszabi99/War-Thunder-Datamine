@@ -1,23 +1,22 @@
 
+
+import "dagor.fs" as dagor_fs
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.system" import DBGLEVEL
+from "console" import register_command
+from "%sqstd/json.nut" import loadJson, saveJson
 from "%scripts/dagui_natives.nut" import copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
-
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { DBGLEVEL } = require("dagor.system")
 if (DBGLEVEL <= 0)
   return
 
 let { HudBattleLog, setBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let g_path = require("%sqstd/path.nut")
-let dagor_fs = require("dagor.fs")
-let { getDebriefingResult, setDebriefingResult, recountDebriefingResult
-} = require("%scripts/debriefing/debriefingFull.nut")
+let { getDebriefingResult, setDebriefingResult, recountDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { guiStartDebriefingFull } = require("%scripts/debriefing/debriefingModal.nut")
 let { setSquadPlayersInfo, initListLabelsSquad } = require("%scripts/statistics/squadIcon.nut")
-let { register_command } = require("console")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { loadJson, saveJson } = require("%sqstd/json.nut")
 
 function debug_dump_debriefing_save(fileName) {
   let debriefingResult = getDebriefingResult()
@@ -75,7 +74,7 @@ function debug_dump_debriefing_batch_load() {
   loadNext()
 }
 
-let defDebriefingFile = "debug_dump_debriefing.json"
+const defDebriefingFile = "debug_dump_debriefing.json"
 register_command(@() debug_dump_debriefing_save(defDebriefingFile), "debug.dump.debriefing_save")
 register_command(debug_dump_debriefing_save, "debug.dump.debriefing_save_to_file")
 register_command(@() debug_dump_debriefing_load(defDebriefingFile), "debug.dump.debriefing_load")

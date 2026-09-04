@@ -1,18 +1,25 @@
 {
   "rocketGun": true,
   "preset_cost": 20,
-  "mesh": "fr_matra_t_10_131b",
-  "helicopterGroup": 2,
   "bullets": 1,
   "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "fr_matra_t_10_131b",
   "tags": {
     "antiTankRocket": true,
     "antiShipRocket": true
   },
   "rocket": {
+    "dragCx": 0.012,
     "bulletName": "fr_matra_t_10_131a",
+    "iconType": "rockets_ap_small_group",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 1.3,
     "caliber": 0.12,
     "length": 1.682,
     "WdK": [
@@ -26,25 +33,12 @@
     "massEnd": 24.5,
     "timeFire": 0.9,
     "force": 9930.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 340.0,
-    "endSpeed": 0.0,
     "maxDistance": 7000.0,
     "minDistance": 30.0,
     "explosiveType": "tnt",
     "explosiveMass": 3.4,
-    "explodeTreshold": 0.01,
-    "explodeHitPower": 550.0,
-    "explodeArmorPower": 75.0,
-    "explodeRadius": [
-      1.0,
-      3.5
-    ],
-    "distanceFuse": false,
-    "dragCx": 0.012,
-    "price": 3000.0,
-    "iconType": "rockets_ap_small_group",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -99,7 +93,9 @@
       200.0,
       1000.0
     ],
-    "maxDeltaAngle": 1.3,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_106_132mm_dirt_ap",
     "ricochetEffect": "hit_81_105mm_metal_ap",
@@ -120,23 +116,6 @@
       -0.05,
       0.0
     ],
-    "pressureDamage": {
-      "damageType": "pressure"
-    },
-    "stabilityRicochetModifier": {
-      "mod1": [
-        0.0,
-        0.5
-      ],
-      "mod2": [
-        20.0,
-        0.6
-      ],
-      "mod3": [
-        30.0,
-        1.0
-      ]
-    },
     "DamageParts": {
       "body": {
         "hp": 50.0,
@@ -221,6 +200,23 @@
           }
         ]
       }
+    },
+    "pressureDamage": {
+      "damageType": "pressure"
+    },
+    "stabilityRicochetModifier": {
+      "mod1": [
+        0.0,
+        0.5
+      ],
+      "mod2": [
+        20.0,
+        0.6
+      ],
+      "mod3": [
+        30.0,
+        1.0
+      ]
     },
     "explosionSmoke": {
       "radius": 5.0,

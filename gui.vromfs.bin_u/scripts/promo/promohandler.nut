@@ -1,20 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, add_event_listener
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
-let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag,
-  selectNextPromoBlock, manualSwitchPromoBlock, switchPromoBlock, getPromoConfig, enablePromoPlayMenuMusic,
-  DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC, isWidgetSeenById, initWidgets, setSimpleWidgetData,
-  generatePromoBlockView, requestPromoUpdate, togglePromoItem, performPromoAction, getPromoActionParamsKey,
-  cutPromoActionParamsKey, getPromoVisibilityById, getPromoReturnCursorButtonId, setPromoReturnCursorButtonId
-} = require("%scripts/promo/promo.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
+let { getShowAllPromoBlocks, setShowAllPromoBlocks, canSwitchShowAllPromoBlocksFlag, selectNextPromoBlock, manualSwitchPromoBlock, switchPromoBlock, getPromoConfig, enablePromoPlayMenuMusic, DEFAULT_REQ_STOP_PLAY_TIME_SONG_SEC, isWidgetSeenById, initWidgets, setSimpleWidgetData, generatePromoBlockView, requestPromoUpdate, togglePromoItem, performPromoAction, getPromoActionParamsKey, cutPromoActionParamsKey, getPromoVisibilityById, getPromoReturnCursorButtonId, setPromoReturnCursorButtonId } = require("%scripts/promo/promo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { clearOldVotedPolls, setPollBaseUrl, isPollVoted, generatePollUrl } = require("%scripts/web/webpoll.nut")
 let { getPromoHandlerUpdateConfigs } = require("%scripts/promo/promoButtonsConfig.nut")
-let { subscribe_handler, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
@@ -180,7 +175,7 @@ let Promo = class {
   }
 
   function getPlaylistArray(block) {  
-    let defaultName = "playlist"
+    const defaultName = "playlist"
     let langKey = $"{defaultName}_{getCurLangShortName()}"
     let list = block?[langKey] ?? block?[defaultName]
     if (!list)
@@ -235,7 +230,7 @@ let Promo = class {
     if (!this.sourceDataBlock?[id][param])
       return null
 
-    local show = getTblValue(param, this.sourceDataBlock[id], defaultValue)
+    local show = (this.sourceDataBlock[id]?[param] ?? defaultValue)
     if (u.isString(show))
       show = show == "yes"
 
@@ -277,7 +272,7 @@ let Promo = class {
 
   function updateWebPollButton(param) {
     let pollId = param?.pollId
-    let objectId = getTblValue(pollId, this.pollIdToObjectId)
+    let objectId = this.pollIdToObjectId?[pollId]
     if (objectId == null)
       return
 
@@ -312,7 +307,7 @@ let Promo = class {
 
   function onEventShowAllPromoBlocksValueChanged(_p) { this.updatePromoBlocks() }
   function onEventPartnerUnlocksUpdated(_p) { this.updatePromoBlocks(true) }
-  function onEventShopWndVisible(p) { this.toggleSceneVisibility(!getTblValue("isShopShow", p, false)) }
+  function onEventShopWndVisible(p) { this.toggleSceneVisibility(!(p?.isShopShow ?? false)) }
   function onEventXboxMultiplayerPrivilegeUpdated(_p) { this.updatePromoBlocks(true) }
   function onEventWebPollAuthResult(p) { this.updateWebPollButton(p) }
   function onEventWebPollTokenInvalidated(p) {

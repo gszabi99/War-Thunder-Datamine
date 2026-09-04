@@ -1,7 +1,7 @@
 {
   "model": "av_8b_na",
   "fmFile": "fm/av_8b_na.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.119,
   "gearSinkRangeC": 0.248,
@@ -2881,6 +2881,7 @@
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "AN/APG-79",
+              "AN/APG-83",
               "Thales RDY",
               "N019",
               "N001",
@@ -3106,7 +3107,8 @@
               "AN/APG-66",
               "AN/APG-68",
               "PS-37",
-              "Type 1492"
+              "Type 1492",
+              "AN/APG-83"
             ]
           },
           {
@@ -4271,8 +4273,16 @@
         "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_mk83.blk"
       },
       {
+        "name": "av_8b_plus_gbu_32",
+        "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_gbu_32.blk"
+      },
+      {
         "name": "av_8b_plus_gbu_38",
         "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_gbu_38.blk"
+      },
+      {
+        "name": "av_8b_plus_gbu_54",
+        "blk": "gameData/FlightModels/weaponPresets/av_8b_plus_gbu_54.blk"
       },
       {
         "name": "av_8b_plus_gbu_38_aim_9l",
@@ -4699,8 +4709,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
               "emitter": "1000lb_gp_001",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -4712,8 +4721,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
               "emitter": "1000lb_gp_001",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -4761,6 +4769,55 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_32",
+            "reqModification": "us_jdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_gbu32_navy.blk",
+              "emitter": "1000lb_gp_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam",
+            "name": "us_gbu_54",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "1000lb_gp_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_54_x2",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/ter_us_gbu_54b_jdam_navy_x2.blk",
+              "emitter": "1000lb_gp_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -4951,8 +5008,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
               "emitter": "1000lb_gp_003",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -4964,8 +5020,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
               "emitter": "1000lb_gp_003",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -5013,6 +5068,68 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_32",
+            "reqModification": "us_jdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_gbu32_navy.blk",
+              "emitter": "1000lb_gp_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam_group_x2",
+            "name": "us_gbu_32_x2_left_wing",
+            "reqModification": "us_jdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/ter_us_gbu_32_navy_x2_left_wing.blk",
+              "emitter": "1000lb_gp_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam",
+            "name": "us_gbu_54",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "1000lb_gp_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_54_x2",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/ter_us_gbu_54b_jdam_navy_x2.blk",
+              "emitter": "1000lb_gp_003",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -5338,8 +5455,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
               "emitter": "1000lb_gp_004",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -5351,8 +5467,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
               "emitter": "1000lb_gp_004",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -5400,6 +5515,68 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_32",
+            "reqModification": "us_jdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_gbu32_navy.blk",
+              "emitter": "1000lb_gp_004",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam_group_x2",
+            "name": "us_gbu_32_x2_right_wing",
+            "reqModification": "us_jdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/ter_us_gbu_32_navy_x2_right_wing.blk",
+              "emitter": "1000lb_gp_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam",
+            "name": "us_gbu_54",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "1000lb_gp_004",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_54_x2",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/ter_us_gbu_54b_jdam_navy_x2.blk",
+              "emitter": "1000lb_gp_004",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -5589,8 +5766,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m151.blk",
               "emitter": "1000lb_gp_002",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -5602,8 +5778,7 @@
               "blk": "gameData/Weapons/containers/lau_131aa_us_apkws_m282.blk",
               "emitter": "1000lb_gp_002",
               "external": true,
-              "separate": true,
-              "machLimit": 1.01
+              "separate": true
             }
           },
           {
@@ -5651,6 +5826,55 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "us_gbu_32",
+            "reqModification": "us_jdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_gbu32_navy.blk",
+              "emitter": "1000lb_gp_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam",
+            "name": "us_gbu_54",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "1000lb_gp_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
+            "name": "us_gbu_54_x2",
+            "reqModification": "us_ljdam",
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/ter_us_gbu_54b_jdam_navy_x2.blk",
+              "emitter": "1000lb_gp_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -6276,13 +6500,13 @@
       "reqModification": "gau_12_belt_pack",
       "tier": 2
     },
-    "us_jdam": {
+    "us_aim_9l": {
       "prevModification": "gau_12_new_gun",
-      "modClass": "weapon",
-      "tier": 3
+      "tier": 3,
+      "modClass": "weapon"
     },
     "us_agm_65f": {
-      "prevModification": "us_jdam",
+      "prevModification": "us_aim_9l",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -6306,12 +6530,18 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "us_aim_9l": {
-      "tier": 2,
-      "modClass": "weapon"
+    "us_jdam": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_ljdam": {
+      "prevModification": "us_jdam",
+      "reqModification": "us_gbu_laser",
+      "modClass": "weapon",
+      "tier": 2
     },
     "anti_radiation_missile_agm_122": {
-      "prevModification": "us_aim_9l",
+      "prevModification": "us_ljdam",
       "modClass": "weapon",
       "tier": 3
     },

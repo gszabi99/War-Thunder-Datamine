@@ -1,10 +1,13 @@
+from "string" import format
+from "dagor.random" import rnd_int
+from "dagor.time" import get_time_msec
+from "console" import register_command
 from "%scripts/dagui_natives.nut" import periodic_task_register_ex, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/periodicTaskConsts.nut" import *
 
-let { format } = require("string")
-let { rnd_int } = require("dagor.random")
-let { get_time_msec } = require("dagor.time")
-let { register_command } = require("console")
+
+const LOST_DELAYED_ACTION_MSEC = 500
 
 
 
@@ -95,4 +98,5 @@ register_command(testDelayedAction, "debug.testDelayedAction")
 
 return {
   addDelayedAction
+  LOST_DELAYED_ACTION_MSEC
 }

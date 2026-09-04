@@ -1,10 +1,10 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
 
 let { defaultShowcaseType } = require("%scripts/user/showcase/showcaseValues.nut")
 let { getConditionsToUnlockShowcaseById } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 
-let DataBlock = require("DataBlock")
 
 let tankFootballer = {
   lines = [

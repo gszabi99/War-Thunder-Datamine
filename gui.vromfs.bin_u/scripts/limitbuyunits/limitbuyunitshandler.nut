@@ -1,20 +1,23 @@
+from "%appGlobals/timeLoc.nut" import hoursToString
+from "steam" import steam_is_overlay_active
+from "chard" import get_charserver_time_sec
+from "dagor.localize" import doesLocTextExist
+from "%sqstd/string.nut" import utf8ToUpper
+from "math" import floor
+from "string" import format
 from "%scripts/dagui_natives.nut" import is_online_available
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
-let { steam_is_overlay_active } = require("steam")
+
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
-let { get_charserver_time_sec } = require("chard")
-let { doesLocTextExist } = require("dagor.localize")
-let { hoursToString } = require("%appGlobals/timeLoc.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { floor } = require("math")
-let { format } = require("string")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getUnitCountry, getUnitCost, getUnitRealCost } = require("%scripts/unit/unitInfo.nut")
@@ -25,8 +28,7 @@ let { buildDateTimeStr, TIME_DAY_IN_SECONDS, TIME_HOUR_IN_SECONDS } = require("%
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 let { isUnitLocNameMatchSearchStr } = require("%scripts/shop/shopSearchCore.nut")
 let { getFiltersView, applyFilterChange, getSelectedFilters } = require("%scripts/limitBuyUnits/limitBuyUnitsFilter.nut")
-let { getUnitBuyTypes, isIntersects, isFullyIncluded,
-  getUnitAvailabilityForBuyType } = require("%scripts/limitBuyUnits/filterUtils.nut")
+let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/limitBuyUnits/filterUtils.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
@@ -231,7 +233,7 @@ function createUnitViewData(unitData) {
 
 let objectsToAjustWidth = ["unit_types", "units_list_div"]
 
-let class LimitBuyUnitsHandler (gui_handlers.BaseGuiHandlerWT) {
+class LimitBuyUnitsHandler (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/limitBuyUnits/limitBuyUnits.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -467,7 +469,7 @@ let class LimitBuyUnitsHandler (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  onEventBeforeStartShowroom = @(_p) handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+  onEventBeforeStartShowroom = @(_p) handlersManager.requestHandlerRestore(this, MainMenu)
   onEventProfileUpdated = @(_) this.updateItemsList()
   onEventInventoryUpdate = @(_) this.updateItemsList()
   onEventUnitBought = @(_) this.updateItemsList()
@@ -475,4 +477,4 @@ let class LimitBuyUnitsHandler (gui_handlers.BaseGuiHandlerWT) {
   onEventPromoteUnitsChanged = @(_) this.updateItemsList()
 }
 
-gui_handlers.LimitBuyUnitsHandler <- LimitBuyUnitsHandler
+register_gui_handler("LimitBuyUnitsHandler", LimitBuyUnitsHandler)

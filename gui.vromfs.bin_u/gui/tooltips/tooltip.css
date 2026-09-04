@@ -262,9 +262,9 @@ tooltipLink {
 
 [show_console_buttons=yes] tooltipLink {
   behavior: button;
-  on_pushed: "::gcb.delayedTooltipPush";
-  on_hold_start: "::gcb.delayedTooltipHoldStart";
-  on_hold_stop: "::gcb.delayedTooltipHoldStop";
+  on_pushed: "gcb.delayedTooltipPush";
+  on_hold_start: "gcb.delayedTooltipHoldStart";
+  on_hold_stop: "gcb.delayedTooltipHoldStop";
   shortcutActivate:"J:A | J:RT";
 }
 
@@ -275,9 +275,9 @@ tooltipLink {
 [show_console_buttons=yes] tooltipLink[isTooltipForChildren=yes] {
   behavior: PosNavigator;
   navigatorShortcuts: onlySelect;
-  on_pushed: "::gcb.delayedTooltipListPush";
-  on_hold_start: "::gcb.delayedTooltipListHoldStart";
-  on_hold_stop: "::gcb.delayedTooltipListHoldStop";
+  on_pushed: "gcb.delayedTooltipListPush";
+  on_hold_start: "gcb.delayedTooltipListHoldStart";
+  on_hold_stop: "gcb.delayedTooltipListHoldStop";
 }
 
 tooltipLink > textareaNoTab,

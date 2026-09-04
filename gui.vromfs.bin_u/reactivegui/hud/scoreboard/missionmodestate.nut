@@ -1,6 +1,5 @@
+from "%rGui/missionState.nut" import totalDomTeam, totalDomEnabled
 from "%rGui/globals/ui_library.nut" import *
-
-let { totalDomTeam, totalDomEnabled } = require("%rGui/missionState.nut")
 
 const TOTAL_DOMINATION_START_ANIM_ID = "totalDominationStarted"
 const TOTAL_DOMINATION_MULT_ANIM_ID = "totalDominationMultChanged"

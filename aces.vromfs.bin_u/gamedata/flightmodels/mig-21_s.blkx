@@ -1,7 +1,7 @@
 {
   "model": "mig_21_s",
   "fmFile": "fm/mig-21_s.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
@@ -2614,14 +2614,8 @@
             1.0
           ],
           "page": {
-            "type": "radar",
-            "scale": 0.98,
-            "color": [
-              27,
-              115,
-              255,
-              255
-            ]
+            "type": "custom",
+            "pageName": "mfdMig21Radar"
           }
         },
         {
@@ -2636,16 +2630,10 @@
             0.45,
             0.4
           ],
-          "page": [
-            {
-              "type": "night_vision",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            }
-          ]
+          "page": {
+            "type": "night_vision",
+            "turretIdx": 0
+          }
         }
       ]
     },
@@ -2659,6 +2647,19 @@
         "engine3",
         "engine4"
       ]
+    }
+  },
+  "nightVision": {
+    "sightIr": {
+      "resolution": [
+        500,
+        300
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.05,
+      "turretNo": 0,
+      "nvIndex": 1
     }
   },
   "gunnerOpticFps": {
@@ -2677,19 +2678,6 @@
         0.1
       ],
       "opticType": "tv",
-      "turretNo": 0,
-      "index": 1
-    }
-  },
-  "nightVision": {
-    "sightIr": {
-      "resolution": [
-        500,
-        300
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.05,
       "turretNo": 0,
       "nvIndex": 1
     }
@@ -2869,7 +2857,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot1",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_l1"
@@ -2879,7 +2867,37 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b003",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 2,
+                "preset": "r3s_default"
+              },
+              {
+                "slot": 2,
+                "preset": "r3r_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "fab250"
+              },
+              {
+                "slot": 2,
+                "preset": "fab500"
+              },
+              {
+                "slot": 2,
+                "preset": "zb500"
+              }
+            ]
           },
           {
             "iconType": "ptb",
@@ -2930,7 +2948,7 @@
           },
           {
             "iconType": "missile_air_to_air_special",
-            "name": "r3r",
+            "name": "r3r_slot2",
             "reqModification": "mig_21_r3r",
             "ShowNodes": {
               "node": [
@@ -2945,6 +2963,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 1,
+              "preset": "r3s"
             }
           },
           {
@@ -2967,7 +2989,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot2",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_l"
@@ -2977,6 +2999,10 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b001",
               "external": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 4,
+              "preset": "s24"
             }
           },
           {
@@ -3107,7 +3133,7 @@
           },
           {
             "iconType": "missile_air_to_air_special",
-            "name": "r3r",
+            "name": "r3r_slot4",
             "reqModification": "mig_21_r3r",
             "ShowNodes": {
               "node": [
@@ -3122,6 +3148,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 5,
+              "preset": "r3s"
             }
           },
           {
@@ -3144,7 +3174,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot4",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_r"
@@ -3154,6 +3184,10 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b002",
               "external": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "s24"
             }
           },
           {
@@ -3249,7 +3283,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot5",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_r1"
@@ -3259,7 +3293,37 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b004",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "r3s_default"
+              },
+              {
+                "slot": 4,
+                "preset": "r3r_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "fab250"
+              },
+              {
+                "slot": 4,
+                "preset": "fab500"
+              },
+              {
+                "slot": 4,
+                "preset": "zb500"
+              }
+            ]
           },
           {
             "iconType": "ptb",

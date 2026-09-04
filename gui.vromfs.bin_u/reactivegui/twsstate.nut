@@ -1,9 +1,9 @@
+import "%rGui/interopGen.nut" as interopGen
+import "%rGui/rwrSetting.nut" as rwrSetting
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGen = require("%rGui/interopGen.nut")
 let { interop } = require("%rGui/globals/interop.nut")
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
 
 let warningSystemState = {
   RwrBlkName = Watched(""),

@@ -1,9 +1,12 @@
-from "%scripts/dagui_natives.nut" import clan_is_role_allowed_for_type, clan_is_upgrade_allowed, clan_get_primary_info_gold_cost_param_name, clan_get_wp_cost_param_name, string_to_clan_type, clan_get_upgrade_wp_cost_param_name, clan_is_desc_allowed_for_type, clan_get_tag_length_limit, clan_type_to_string, clan_get_primary_info_wp_cost_param_name, clan_get_members_upgrade_cost, clan_get_secondary_info_gold_cost_param_name, clan_get_admin_editor_mode, clan_get_upgrade_gold_cost_param_name, clan_get_gold_cost_param_name, clan_is_announcement_allowed_for_type, clan_get_members_upgrade_step, clan_get_secondary_info_wp_cost_param_name
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
+from "blkGetters" import get_warpoints_blk
+from "%scripts/dagui_natives.nut" import clan_is_role_allowed_for_type, clan_is_upgrade_allowed, clan_get_primary_info_gold_cost_param_name, clan_get_wp_cost_param_name, string_to_clan_type, clan_get_upgrade_wp_cost_param_name, clan_is_desc_allowed_for_type
+  , clan_get_tag_length_limit, clan_type_to_string, clan_get_primary_info_wp_cost_param_name, clan_get_members_upgrade_cost, clan_get_secondary_info_gold_cost_param_name, clan_get_admin_editor_mode, clan_get_upgrade_gold_cost_param_name
+  , clan_get_gold_cost_param_name, clan_is_announcement_allowed_for_type, clan_get_members_upgrade_step, clan_get_secondary_info_wp_cost_param_name
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-let { get_warpoints_blk } = require("blkGetters")
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 
 let g_clan_type = {
   types = []

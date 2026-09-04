@@ -1,13 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/datablock.nut" import blkFromPath
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { blkFromPath } = require("%sqstd/datablock.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isAddeditemTypeSmoke, createItem } = require("%scripts/items/itemsTypeClasses.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 

@@ -13,7 +13,6 @@ require WTInput
 require DngHuman
 require %game.events
 require %game.input.input_events
-require DagorSystem
 require DagorDataBlock
 require hud
 
@@ -26,6 +25,7 @@ let
 def human_bipod_input_reset_es(evt : EventOnKeyDown;
                                var bipod__enabled : bool&;
                                var bipod__placeable : bool&;
+                               var bipod__standStateOnMount : int&;
                                input__enabled : bool = true)
   if !input__enabled
     return
@@ -34,6 +34,8 @@ def human_bipod_input_reset_es(evt : EventOnKeyDown;
   if action ==  int(ShortcutEventId.ID_HUMAN_JUMP) || action ==  int(ShortcutEventId.ID_HUMAN_MELEE) || action ==  int(ShortcutEventId.ID_HUMAN_CRAWL) || action ==  int(ShortcutEventId.ID_HUMAN_CROUCH)
     bipod__enabled = false
     bipod__placeable = false
+    if action == int(ShortcutEventId.ID_HUMAN_JUMP) || action == int(ShortcutEventId.ID_HUMAN_CRAWL)
+      bipod__standStateOnMount = 0
 
 [es(tag=input, after=human_common_input_action_triggered_es)]
 def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
@@ -46,6 +48,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
                                           human_cam__calculatedOffset : DPoint3 const?;
                                           human_cam__offsetMult : float = 1.0;
                                           var human_input__standState : int&;
+                                          var bipod__standStateOnMount : int&;
                                           var bipod__placeable : bool&;
                                           var bipod__placeCrawl : bool&;
                                           var bipod__placePos : float3&;
@@ -134,6 +137,7 @@ def human_bipod_input_action_triggered_es(evt : EventOnKeyDown;
   bipod__pitchLimit     = float2(BIPOD_DEFAULT_PITCH_MIN, BIPOD_DEFAULT_PITCH_MAX)
   bipod__validateTimer  = BIPOD_WAIT_BEFORE_VALIDATE
 
+  bipod__standStateOnMount = human_input__standState
   if human_input__standState == int(HumanPhysControlType.HCT_CROUCH)
     human_input__standState = 0
 
@@ -153,6 +157,18 @@ def human_bipod_check_es(info : ParallelUpdateFrameDelayed;
   bipod__nextCheckPlacingAtTime = info.curTime + bipod__checkPlacingInterval
 
   solve_bipod_placing(eid, false)
+
+
+[es(tag=input, REQUIRE=hero, after=human_input_es)]
+def bipod_restore_stance_es(evt : UpdateStageUpdateInput;
+                            bipod__enabled : bool;
+                            var bipod__standStateOnMount : int&;
+                            var human_input__standState : int&)
+  if bipod__enabled || bipod__standStateOnMount == 0
+    return
+  if human_input__standState == 0
+    human_input__standState = bipod__standStateOnMount
+  bipod__standStateOnMount = 0
 
 
 [es(tag=input, REQUIRE=hero, after=human_input_es)]
@@ -323,7 +339,7 @@ def human_request_placing_es(evt : Event;
                              bipod__anchorYawLimit : float2;
                              bipod__recoilMult : float;
                              bipod__isRest : bool)
-  send_net_event(eid, RequestBipodPlacingV2(enabled        = bipod__enabled,
+  send_net_event(eid, RequestBipodPlacing(enabled        = bipod__enabled,
                                             isCrawl        = bipod__isCrawl,
                                             anchorPos      = bipod__anchorPos,
                                             anchorDir      = bipod__anchorDir,

@@ -2,10 +2,8 @@ module canvas_interactables_common
 require darg
 require DagorStdGuiRender
 require DagorMath
-require DagorSystem
 require math
 require strings
-require %rGui.utils.helpers_common
 require app
 require WTInput
 require %rGui.utils.canvas_common

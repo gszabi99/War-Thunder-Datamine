@@ -1,21 +1,21 @@
+from "%sqstd/platform.nut" import isXbox, isSony, isPC
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { xboxPrefixNameRegexp, psnPrefixNameRegexp, xboxPostfixNameRegexp,
-  psnPostfixNameRegexp, steamPostfixNameRegexp, epicPostfixNameRegexp,
-  cutPlayerNamePrefix, cutPlayerNamePostfix } = require("%scripts/user/nickTools.nut")
-let { isXbox, isSony, isPC } = require("%sqstd/platform.nut")
+let { xboxPrefixNameRegexp, psnPrefixNameRegexp, xboxPostfixNameRegexp, psnPostfixNameRegexp,
+  steamPostfixNameRegexp, epicPostfixNameRegexp, cutPlayerNamePrefix, cutPlayerNamePostfix, PSN_ICON
+} = require("%scripts/user/nickTools.nut")
 let { getRealName, getFakeName } = require("%scripts/user/nameMapping.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK } = require("%scripts/options/optionsExtNames.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
-let PC_ICON = "⋆"
-let TV_ICON = "⋇"
-let PSN_ICON = "⋊"
-let NBSP = " " 
+const PC_ICON = "⋆"
+const TV_ICON = "⋇"
+const NBSP = " " 
 
 function remapNick(name) {
-  if (type(name) != "string" || name == "")
+  if (!(name instanceof String) || name == "")
     return ""
 
   let isXboxPrefix = xboxPrefixNameRegexp.match(name)

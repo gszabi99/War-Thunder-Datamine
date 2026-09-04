@@ -1,6 +1,6 @@
+from "%rGui/airState.nut" import HudColor
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
-let { GuidanceLockResult } = require("guidanceConstants")
-let { HudColor } = require("%rGui/airState.nut")
 
 function locShort(key) {
   let shortKey = $"{key}/short"
@@ -57,7 +57,7 @@ function() {
         watch = TrackerVisible
       }
 
-    let minMarkWidth = hdpx(20) / sw(1);
+    const minMarkWidth = hdpx(20) / sw(1);
     local width = TrackerSize.get() / sw(1)
     local height = TrackerSize.get() / sh(1)
 
@@ -105,7 +105,7 @@ function() {
         {
           pos = [0, 0 - height * sh(0.5) - hdpx(20)]
           halign = ALIGN_CENTER
-          size = [0, SIZE_TO_CONTENT]
+          size = const [0, SIZE_TO_CONTENT]
           children = {
             rendObj = ROBJ_TEXT
             text = TrackedTargetName.get() != "" ? locShort(TrackedTargetName.get()) : ""

@@ -1,15 +1,15 @@
-from "%scripts/dagui_natives.nut" import get_global_stats_blk, gather_and_build_aircrafts_list,
-  debug_unlock_all, add_warpoints
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "math" import floor
+from "blkGetters" import get_shop_blk
+from "console" import register_command
+from "%scripts/dagui_natives.nut" import get_global_stats_blk, gather_and_build_aircrafts_list, debug_unlock_all, add_warpoints
 from "%scripts/dagui_library.nut" import *
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 let Unit = require("%scripts/unit/unit.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { generateUnitShopInfo } = require("%scripts/shop/shopUnitsInfo.nut")
-let { floor } = require("math")
-let { get_shop_blk } = require("blkGetters")
-let { register_command } = require("console")
 let { usageRatingAmount } = require("%scripts/airInfo.nut")
 let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 let { calculateMaxRank } = require("%scripts/ranks.nut")

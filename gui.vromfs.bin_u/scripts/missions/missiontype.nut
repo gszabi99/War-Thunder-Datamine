@@ -1,13 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "%sqstd/datablock.nut" import blkOptFromPath
+from "mission" import get_current_mission_name, get_game_mode
+from "blkGetters" import get_current_mission_info_cached
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
-let regexp2 = require("regexp2")
-let { get_current_mission_name, get_game_mode } = require("mission")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_GROUP, chapterToGroup, missionGroupToLocKey } = require("%scripts/missions/missionsFilterData.nut")
 let { MISSION_OBJECTIVE, getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_current_mission_info_cached } = require("blkGetters")
 let { isMissionForUnitType } = require("%scripts/missions/missionsUtils.nut")
 
 let g_mission_type = {
@@ -24,7 +25,7 @@ g_mission_type.template <- {
   isShipMission = false
   filterGroup = MISSION_GROUP.OTHER
   getObjectives = function(misInfoBlk) {
-    return getTblValue("isWorldWar", misInfoBlk) ? this.objectivesWw : this.objectives
+    return misInfoBlk?.isWorldWar ? this.objectivesWw : this.objectives
   }
 }
 

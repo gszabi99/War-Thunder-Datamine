@@ -1,23 +1,22 @@
-from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, get_cur_gui_scene
+from "%sqstd/string.nut" import utf8ToLower, trim
+from "dagor.workcycle" import defer
+from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
-  getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
+let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg, getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { isLoadingScreenBanned,
-  toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
+let { isLoadingScreenBanned, toggleLoadingScreenBan } = require("%scripts/options/preloaderOptions.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { utf8ToLower, trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { defer } = require("dagor.workcycle")
 
-local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
+local class PreloaderOptionsModal (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/options/preloaderOptions.blk"
 
   isHovered = false
@@ -40,7 +39,7 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
     foreach (screenId in getFilterBgList()) {
       let isUnlocked = isBgUnlocked(screenId)
       view.items.append({
-        itemTag = isUnlocked ? "mission_item_unlocked" : "mission_item_locked"
+        itemType = isUnlocked ? "" : "locked"
         imgTag = isUnlocked ? "banImg" : null
         id = screenId
         itemText = getLoadingBgName(screenId)
@@ -201,6 +200,6 @@ local class PreloaderOptionsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.PreloaderOptionsModal <- PreloaderOptionsModal
+register_gui_handler("PreloaderOptionsModal", PreloaderOptionsModal)
 
 return @(selectedId = null) handlersManager.loadHandler(PreloaderOptionsModal, { selectedId })

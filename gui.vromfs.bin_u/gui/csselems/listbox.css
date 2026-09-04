@@ -22,6 +22,9 @@
 @const headerOptionSelectedTextColor: #e0e0e0;
 
 @const shopFilterFontColorDisabled: #26343434;
+@const crewTabBgColor: #000A0A0A;
+@const crewTabHoverColor: #00262626;
+@const crewTabSelectedColor: #00333333;
 
 listbox,
 listboxNoScroll {
@@ -212,7 +215,7 @@ HorizontalListBox > shopFilter {
 }
 
 crewTab {
-  background-color:#000A0A0A;
+  background-color:@crewTabBgColor;
   margin-bottom:1@dp;
   color:@commonTextColor;
 }
@@ -224,7 +227,7 @@ crewTab > textareaNoTab {
 
 crewTab:hover {
   color:@activeTextColor;
-  background-color: #00262626;
+  background-color:@crewTabHoverColor;
 }
 crewTab:hover, crewTab:hover > textareaNoTab {
   color:@activeTextColor;
@@ -232,7 +235,7 @@ crewTab:hover, crewTab:hover > textareaNoTab {
 
 crewTab[selected=yes] {
   color:@activeTextColor;
-  background-color: #00333333;
+  background-color:@crewTabSelectedColor;
 }
 crewTab[selected=yes] > textareaNoTab {
   color:@activeTextColor;
@@ -900,4 +903,38 @@ skinsListItem[selected=yes] > tdiv > textareaNoTab {
 crewTab > cornerImg {
   pos:0,0;
   size:24@sf/@pf,24@sf/@pf;
+}
+
+crewUnitTypeTab {
+  size:44@sf/@pf, 44@sf/@pf;
+  margin-top:1@sf/@pf;
+  css-hier-invalidate:yes;
+}
+
+crewUnitTypeTab {
+  background-color:@crewTabBgColor;
+}
+
+crewUnitTypeTab > img {
+  position:relative;
+  pos:(pw-w)/2, (ph-h)/2;
+  background-color:@commonTextColor;
+  background-svg-size:w, h;
+  background-repeat:aspect-ratio;
+}
+
+crewUnitTypeTab:hover {
+  background-color:@crewTabHoverColor;
+}
+
+crewUnitTypeTab:hover > img {
+  background-color:@activeTextColor;
+}
+
+crewUnitTypeTab[selected=yes] {
+  background-color:@crewTabSelectedColor;
+}
+
+crewUnitTypeTab[selected=yes] > img {
+  background-color:@white;
 }

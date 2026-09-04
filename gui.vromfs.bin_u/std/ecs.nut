@@ -1,6 +1,7 @@
 from "dagor.debug" import logerr
 from "%sqstd/functools.nut" import kwarg
 from "dagor.system" import DBGLEVEL
+from "types" import String, Array, Class, Integer
 
 let ecs = require("ecs")
 
@@ -37,10 +38,10 @@ function mkEsFuncNamed(esname, func) {
     return function(_evt, eid, comp) {func(eid, comp)}
 }
 
-function gatherComponentNames(component_list){
+function gatherComponentNames(component_list): array {
   let res = []
   foreach (component in component_list){
-    if (type(component) =="string")
+    if (component instanceof String)
       res.append(component)
     else
       res.append(component[0])
@@ -78,7 +79,7 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
         foreach (j in remap[k])
           remappedEvents[j] <- mkEsFunc(func)
       }
-      else if (type(k) == "array") {
+      else if (k instanceof Array) {
         foreach (e in k) {
           if (e in remap) {
             foreach (j in remap[e])
@@ -94,7 +95,7 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     assert(remappedEvents.len()>0, $"can't register ES '{name}' without any events")
     assert(!("OnUpdate" in remappedEvents), $"ES: {name}, OnUpdate is incorrect eventListener, should be onUpdate")
     foreach (k, _v in remappedEvents) {
-      assert(k in sqEvents || k in (const {"Timer":1, "onUpdate":1}) || (type(k) == "class") || (type(k) == "integer"), $"unknown event {k}. Script events should be registered via ecs.register_event()")
+      assert(k in sqEvents || k in (const {"Timer":1, "onUpdate":1}) || (k instanceof Class) || (k instanceof Integer), $"unknown event {k}. Script events should be registered via ecs.register_event()")
     }
     let isChangedTracked = ecs.EventComponentChanged in remappedEvents
     let comps_track = comps?.comps_track ?? []
@@ -108,10 +109,10 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
       comps.$rawdelete("comps_track")
       params = (clone params).__merge({track=",".join(gatherComponentNames(comps_track))})
     }
-    if ((comps?.comps_ro ?? []).filter(@(v) type(v)!="array").len()!=0)
+    if ((comps?.comps_ro ?? []).filter(@(v) !(v instanceof Array)).len()!=0)
      logerr($"{name} register error: all read only components should be specified with type")
-    if ((comps?.comps_rw ?? []).filter(@(v) type(v)!="array").len()!=0)
-      logerr($"{name} register error: all read only components should be specified with type")
+    if ((comps?.comps_rw ?? []).filter(@(v) !(v instanceof Array)).len()!=0)
+      logerr($"{name} register error: all read-write components should be specified with type")
     verbose_print($"registering {name};")
     ecs_register_entity_system(name, remappedEvents, comps, params)
     verbose_print($"ecs: {name} registered;")
@@ -127,14 +128,14 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     if ("onUpdate" in remappedEvents) {
       assert("before" in params || "after" in params, @() $"{name} need syncpoints ('before' and/or 'after' in params)")
     }
-    let comps_ro_optional_num = comps_ro.filter(@(v) type(v)=="array" && v.len() > 2).len()
+    let comps_ro_optional_num = comps_ro.filter(@(v) v instanceof Array && v.len() > 2).len()
     let comps_rw = comps?.comps_rw ?? []
     assert(
       comps_len == 0 || !(comps_ro_optional_num == comps_ro.len() && (comps_rw.len() + (comps?.comps_rq.len() ?? 0))==0),
       @() $"es {name} registered with all optional components"
     )
     assert(
-      comps_rw.filter(@(v) type(v) != "array" || v.len()==1).len()==0
+      comps_rw.filter(@(v) !(v instanceof Array) || v.len()==1).len()==0
       $"es {name} registered with rw components without type specified. should be [<name>:string, <type>:type]"
     )
     assert(
@@ -154,7 +155,7 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     foreach (_, compslist in comps){
       foreach (comp in compslist){
         local compName = comp
-        if (type(compName) == "array")
+        if (compName instanceof Array)
           compName = comp[0]
         if (compName?.contains(".")) {
           println($"dots in component {comp?[0]} es {name}")
@@ -168,7 +169,7 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
   }
 }
 
-function makeTemplate(params={}){
+function makeTemplate(params={}): string {
   let addTemplates = params?.addTemplates ?? []
   let removeTemplates = [].extend(params?.removeTemplates ?? [], addTemplates)
   let baseTemplates = params?.baseTemplate.split("+") ?? []
@@ -183,11 +184,11 @@ let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, remo
   let resRemoveTemplates = []
   if (removeTemplates != null && removeTemplates.len() > 0){
     foreach (templN in removeTemplates){
-      let templName = type(templN)=="string" ? templN : templN?.template
+      let templName = templN instanceof String ? templN : templN?.template
       if (checkComps) {
-        let templComps = type(templN)=="string" ? [templN] : templN?.comps
+        let templComps = templN instanceof String ? [templN] : templN?.comps
         if (templComps == null || templName == null) {
-          logerr($"addTemplates should have specified components that should be added. {templName}") 
+          logerr($"removeTemplates should have specified components that should be removed. {templName}") 
         }
         else {
           let templ = templName != null ? ecs.g_entity_mgr.getTemplateDB().getTemplateByName(templName) : null
@@ -208,9 +209,9 @@ let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, remo
   let resAddTemplates = []
   if (addTemplates != null && addTemplates.len() > 0) {
     foreach (templN in addTemplates){
-      let templName = type(templN)=="string" ? templN : templN?.template
+      let templName = templN instanceof String ? templN : templN?.template
       if (checkComps) {
-        let templComps = type(templN)=="string" ? [templN] : templN?.comps
+        let templComps = templN instanceof String ? [templN] : templN?.comps
         if (templComps == null || templName == null) {
           logerr($"addTemplates should have specified components that should be added. {templName}") 
         }
@@ -242,9 +243,9 @@ let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, remo
     ecs.g_entity_mgr.reCreateEntityFrom(eid, newTemplatesName, comps, callback)
 })
 
-function query_map(query, func, filter_str = null){
+function query_map(query, func, filter_str = null): array {
   assert(query instanceof ecs.SqQuery, "need SqQuery instance as first argument")
-  assert(filter_str == null  || type(filter_str) == "string", "filter string should be string or null")
+  assert(filter_str == null  || filter_str instanceof String, "filter string should be string or null")
   let res = []
   if (filter_str != null)
     query.perform(function(eid, comp) {res.append(func(eid, comp))}, filter_str)
@@ -253,7 +254,7 @@ function query_map(query, func, filter_str = null){
   return res
 }
 
-function list2array(list){
+function list2array(list): array {
   let res = []
   foreach (v in list){
     res.append(v)
@@ -268,12 +269,12 @@ function set_array2list(array_, list){
   return list
 }
 
-function register_event(name, eventType, structure=null){
+function register_event(name, eventType, structure=null): table {
 
   assert(ecs.EVCAST_UNICAST == eventType || ecs.EVCAST_BROADCAST == eventType,
             "eventType should be ecs.EVCAST_UNICAST or ecs.EVCAST_BROADCAST")
   verbose_print($"registering sq event {name}; ")
-  assert (type(name) =="string", "event name should be string")
+  assert (name instanceof String, "event name should be string")
   assert(!(name in sqEvents), @() $"event: '{name}' already registered!")
   sqEvents[name] <- name
   let eventRegisteredName = ecs.register_sq_event(name, eventType)
@@ -292,14 +293,14 @@ function register_event(name, eventType, structure=null){
 }
 
 
-let mkRegisterEventByType = @(eventType) function(payload, eventName){
+let mkRegisterEventByType = @(eventType) function(payload, eventName): table {
   if (payload == null)
     return register_event(eventName, eventType)
   return register_event(eventName, eventType, payload)
 }
 let _registerUnicastEvent = mkRegisterEventByType(ecs.EVCAST_UNICAST)
 unicastSqEvents.clear()
-function registerUnicastEvent(payload, eventName){
+function registerUnicastEvent(payload, eventName): table {
   unicastSqEvents[eventName] <- payload
   return _registerUnicastEvent(payload, eventName)
 }
@@ -321,7 +322,7 @@ return freeze(ecs.__merge({
   
   query_map
 
-  map_list2array = @(list,func) list2array(list).map(func)
+  map_list2array = @(list,func): array list2array(list).map(func)
   array2list = set_array2list
   list2array
 }))

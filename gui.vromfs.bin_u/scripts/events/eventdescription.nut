@@ -1,26 +1,28 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "string" import format
+from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, EVENTS_SHORT_LB_VISIBLE_ROWS
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 from "%scripts/utils_sa.nut" import buildTableRow
 
 let { zero_money } = require("%scripts/money.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MRoomMembersWnd } = require("%scripts/matchingRooms/mRoomMembersWnd.nut")
+let { EventRewardsWnd } = require("%scripts/events/eventRewardsWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format } = require("string")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isPlatformXbox, isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance, getCustomViewCountryData
-} = require("%scripts/events/eventInfo.nut")
+let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
 let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
 let { setMapPreview } = require("%scripts/missions/mapPreview.nut")
 let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -29,12 +31,9 @@ let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { loadCustomCraftTree } = require("%scripts/items/workshop/workshopCraftTreeWnd.nut")
 let { getSetById } = require("%scripts/items/workshop/workshop.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { getRoomSessionStartTime } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit,
-  getRoomSpecialRules, getRoomRequiredCrafts, getMembersCountByTeams
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit, getRoomSpecialRules, getRoomRequiredCrafts, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
@@ -42,8 +41,7 @@ let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
-let { addTimerForRefreshStatsWhenTableEnd, actualizeStats, getTableActiveIndex
-} = require("%scripts/userstat/userstat.nut")
+let { addTimerForRefreshStatsWhenTableEnd, actualizeStats, getTableActiveIndex } = require("%scripts/userstat/userstat.nut")
 
 function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -54,11 +52,11 @@ function create_event_description(parent_scene, event = null, needEventHeader = 
     selectedEvent = event
     needEventHeader = needEventHeader
   }
-  local handler = handlersManager.loadHandler(gui_handlers.EventDescription, params)
+  local handler = handlersManager.loadHandler(get_gui_handler("EventDescription"), params)
   return handler
 }
 
-gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
+let EventDescription = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
 
@@ -175,9 +173,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     
     let eventDifficultyObj = this.getObject("event_difficulty")
     if (eventDifficultyObj != null) {
-      let difficultyText = events.isDifficultyCustom(this.selectedEvent)
-        ? loc("options/custom")
-        : events.getDifficultyText(this.selectedEvent.name)
+      let difficultyText = events.getDifficultyText(this.selectedEvent.name)
       let respawnText = events.getRespawnsText(this.selectedEvent)
       eventDifficultyObj.setValue(format(" %s %s", difficultyText, respawnText))
     }
@@ -205,7 +201,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     
     let allowSwitchClanObj = this.getObject("allow_switch_clan")
     if (allowSwitchClanObj != null) {
-      let eventType = getTblValue("type", this.selectedEvent, 0)
+      let eventType = (this.selectedEvent?.type ?? 0)
       let clanTournamentType = EVENT_TYPE.TOURNAMENT | EVENT_TYPE.CLAN
       let showMessage = (eventType & clanTournamentType) == clanTournamentType
       allowSwitchClanObj.show(showMessage)
@@ -283,7 +279,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     let locParams = {
       players = countText
       maxPlayers = events.getMaxTeamSize(roomMGM)
-      unready = max(0, getTblValue(team, countTbl, 0) - countTblReady[team])
+      unready = max(0, (countTbl?[team] ?? 0) - countTblReady[team])
     }
     if (locParams.unready)
       locId = "multiplayer/teamPlayers/hasUnready"
@@ -515,7 +511,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     ]
 
     if (lbCategory) {
-      let td = lbCategory.getItemCell(getTblValue(lbCategory.field, row, -1))
+      let td = lbCategory.getItemCell((row?[lbCategory.field] ?? -1))
       td.tdalign <- "right"
       rowData.append(td)
     }
@@ -535,7 +531,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventEventlbDataRenewed(params) {
-    if (getTblValue("eventId", params) == getTblValue("name", this.selectedEvent))
+    if (params?.eventId == this.selectedEvent?.name)
       this.fetchLbData()
   }
 
@@ -564,8 +560,8 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventItemBought(params) {
-    let item = getTblValue("item", params)
-    if (item && item.isForEvent(getTblValue("name", this.selectedEvent)))
+    let item = params?.item
+    if (item && item.isForEvent(this.selectedEvent?.name))
       this.updateCostText()
   }
 
@@ -590,14 +586,14 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       })
     }
     else
-      gui_handlers.EventRewardsWnd.open([{
+      EventRewardsWnd.open([{
           header = loc("tournaments/rewards")
           event = this.selectedEvent
         }])
   }
 
   function onPlayersList() {
-    gui_handlers.MRoomMembersWnd.open(this.room)
+    MRoomMembersWnd.open(this.room)
   }
 
   function onHelp() {
@@ -642,6 +638,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fetchLbData()
   }
 }
+register_gui_handler("EventDescription", EventDescription)
 
 return {
   create_event_description

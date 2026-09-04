@@ -1,37 +1,38 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "math" import abs, ceil, fabs, floor
+from "globalEnv" import ControlHelpersMode
+from "steam" import steam_is_overlay_active
+from "controls" import setBindMode
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_natives.nut" import joystick_get_default, is_axis_digital, get_axis_index
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+from "types" import String, Array, Integer
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_child, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 
 let { MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { format } = require("string")
-let { abs, ceil, fabs, floor } = require("math")
-let { ControlHelpersMode } = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getHelpPreviewHandler } = require("%scripts/help/helpPreview.nut")
-let { recommendedControlPresets, getControlsPresetBySelectedType, canChangeHelpersMode
-} = require("%scripts/controls/controlsUtils.nut")
-let { joystickSetCurSettings, setShortcutsAndSaveControls,
-  joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { recommendedControlPresets, getControlsPresetBySelectedType, canChangeHelpersMode } = require("%scripts/controls/controlsUtils.nut")
+let { joystickSetCurSettings, setShortcutsAndSaveControls, joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
-  USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
-let { getLocalizedControlName, remapAxisName, getShortcutText,
-  addHotkeyTxt } = require("%scripts/controls/controlsVisual.nut")
-let { steam_is_overlay_active } = require("steam")
+let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM, USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
+let { getLocalizedControlName, remapAxisName, getShortcutText, addHotkeyTxt } = require("%scripts/controls/controlsVisual.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset, setPreviewControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
-let { setBindMode } = require("controls")
 let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
 let aircraft_controls_wizard_config = [
@@ -113,6 +114,7 @@ let aircraft_controls_wizard_config = [
     "ID_FLARES"
     "ID_COUNTERMEASURES_FLARES"
     "ID_COUNTERMEASURES_CHAFF"
+    "ID_COUNTERMEASURES_TOWED_DECOY"
     "ID_FUEL_TANKS"
     "ID_AIR_DROP"
     "ID_SENSOR_SWITCH"
@@ -308,7 +310,7 @@ let tank_controls_wizard_config = [
 
 function initControlsWizardConfig(arr) {
   for (local i = 0; i < arr.len(); i++) {
-    if (type(arr[i]) == "string")
+    if (arr[i] instanceof String)
       arr[i] = { id = arr[i] }
     if (!("type" in arr[i]))
       arr[i].type <- CONTROL_TYPE.SHORTCUT
@@ -334,13 +336,13 @@ function isInArrayRecursive(v, arr) {
   foreach (i in arr) {
     if (v == i)
       return true
-    else if (type(i) == "array" && isInArrayRecursive(v, i))
+    else if (i instanceof Array && isInArrayRecursive(v, i))
         return true
   }
   return false
 }
 
-gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("controlsWizardModalHandler", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlsWizard.blk"
   sceneNavBlkName = null
@@ -896,11 +898,11 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function doBind(devs, btns, shortcutId) {
-    if (type(shortcutId) == "array") {
+    if (shortcutId instanceof Array) {
       foreach (id in shortcutId)
         this.doBind(devs, btns, id)
     }
-    else if (type(shortcutId) == "integer" && devs.len() > 0) {
+    else if (shortcutId instanceof Integer && devs.len() > 0) {
       let isKbd = this.isKbdOrMouse(devs)
       if (isKbd == null)
         this.shortcuts[shortcutId] = [{ dev = devs, btn = btns }]
@@ -952,7 +954,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function findButtons(devs, btns, shortcutId) {
-    let firstSc = (type(shortcutId) == "integer") ? shortcutId : shortcutId[0]
+    let firstSc = (shortcutId instanceof Integer) ? shortcutId : shortcutId[0]
     let scItem = this.shortcutItems[firstSc]
     if (firstSc > this.maxCheckSc)
       this.maxCheckSc = firstSc
@@ -960,7 +962,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     let foundedItems = []
 
     for (local i = 0; i < this.maxCheckSc; i++) {
-      if (firstSc == i || ((type(shortcutId) == "array") && isInArray(i, shortcutId)))
+      if (firstSc == i || ((shortcutId instanceof Array) && isInArray(i, shortcutId)))
         continue
       let item = this.shortcutItems[i]
       if (item == scItem && (item.type != CONTROL_TYPE.AXIS || i == scItem.modifiersId[this.axisMaxChosen ? "rangeMin" : "rangeMax"]))
@@ -1367,7 +1369,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
       let view = { items = [] }
       foreach (idx, btn in this.msgButtons) {
-        local text = getTblValue("text", btn, "")
+        local text = (btn?.text ?? "")
         if (u.isString(btn))
           text = btn
 
@@ -1416,7 +1418,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       if (("skipAllBefore" in this.curItem) && (value in this.curItem.skipAllBefore))
         this.skipAllBefore = this.curItem.skipAllBefore[value]
       if (("skip" in this.curItem) && (value in this.curItem.skip) && this.curItem.skip[value])
-        if (type(this.curItem.skip[value]) == "array")
+        if (this.curItem.skip[value] instanceof Array)
           this.skipList.extend(this.curItem.skip[value])
         else
           this.skipList.append(this.curItem.skip[value])
@@ -1557,15 +1559,15 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.msgBox("ask_save", loc("hotkeys/msg/wizardSaveUnfinished"),
         [
           ["yes", function() { this.doApply() } ],
-          ["no", function() { gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)() }],
+          ["no", function() { BaseGuiHandlerWT.goBack.bindenv(this)() }],
           ["cancel", @() null ],
         ], "yes", { cancel_fn = function() {} })
     else
-      gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+      BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function afterSave() {
-    gui_handlers.BaseGuiHandlerWT.goBack.bindenv(this)()
+    BaseGuiHandlerWT.goBack.bindenv(this)()
   }
 
   function onEventActiveHandlersChanged(_p) {
@@ -1617,4 +1619,4 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     else
       this.nextItem()
   }
-}
+})

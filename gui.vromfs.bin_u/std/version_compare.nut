@@ -1,9 +1,10 @@
 from "dagor.debug" import logerr
 from "string.nut" import startsWith, toIntegerSafe
+from "types" import String
 
 let maskAny = const { x = true, X = true, ["*"] = true }
 
-let arrToInt = @(list) list.reduce(@(res, val)
+let arrToInt = @(list): int list.reduce(@(res, val)
   (res << 16) + toIntegerSafe(val), 0)
 
 let typeMap = [
@@ -16,7 +17,7 @@ let typeMap = [
   ["",        @(a, b) b == a],
 ]
 
-function checkVersion(verWildcard, verCurrent, compFn) {
+function checkVersion(verWildcard, verCurrent, compFn: function) {
   if (arrToInt(verCurrent) == 0)
     return true
 
@@ -38,7 +39,7 @@ function checkVersion(verWildcard, verCurrent, compFn) {
 }
 
 function stripVerCondition(str) {
-  const allowed = "0123456789Xx"
+  const allowed = "0123456789Xx*"
   for (local i = 0; i < str.len(); ++i) {
     let char = str.slice(i, i + 1)
     if (allowed.contains(char))
@@ -48,7 +49,7 @@ function stripVerCondition(str) {
 }
 
 function check_version_impl(vermask, game_version) {
-  if (type(vermask) != "string" || type(game_version) != "string") {
+  if (!(vermask instanceof String) || !(game_version instanceof String)) {
     logerr($"Try to call check_version with not string parameters. (vermask = {vermask}, game_version = {game_version})")
     return false
   }
@@ -71,7 +72,8 @@ function check_version(version1, version2) {
   if (version1 != ""
       && ("><=!".contains(version1.slice(0, 1))
         || version1.contains("X")
-        || version1.contains("x")))
+        || version1.contains("x")
+        || version1.contains("*")))
     return check_version_impl(version1, version2)
   return check_version_impl(version2, version1)
 }

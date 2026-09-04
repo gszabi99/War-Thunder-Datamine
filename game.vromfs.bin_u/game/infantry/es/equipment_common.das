@@ -92,7 +92,7 @@ def try_rotate_to_linked_slot(slot_name : string;
   if rotateToItem == INVALID_ENTITY_ID
     return false
 
-  let rotateToSlot := rotate 
+  let rotateToSlot = clone_string(rotate) 
   swap_equipment(itemEid, slot_name, rotateToSlot, human_equipment__slots)
   return true
 
@@ -197,7 +197,7 @@ def attach_vis_entity(animchar_slot : string;
       init |> set("slot_attach__slotName", animchar_slot)
     init |> set("animchar_attach__attachedTo", to_eid)
 
-    var templName := template_name
+    var templName = template_name
     if item_remap[template_name] != null
       templName = item_remap[template_name] ?? ""
 

@@ -1,11 +1,9 @@
+from "%rGui/hud/shipStateView.nut" import speedValue, speedUnits, machineSpeed
+from "%rGui/style/screenState.nut" import safeAreaSizeHud, rh
+from "%rGui/hudState.nut" import missionProgressHeight
+from "%rGui/networkState.nut" import isMultiplayer
+from "%rGui/hud/hudTouchButton.nut" import mkTouchButton, touchButtonSize, bigTouchButtonSize, touchButtonMargin
 from "%rGui/globals/ui_library.nut" import *
-
-let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
-let { safeAreaSizeHud, rh } = require("%rGui/style/screenState.nut")
-let { missionProgressHeight } = require("%rGui/hudState.nut")
-let { isMultiplayer } = require("%rGui/networkState.nut")
-let { mkTouchButton, touchButtonSize, bigTouchButtonSize, touchButtonMargin
-} = require("%rGui/hud/hudTouchButton.nut")
 
 let speedHeight = 2.5 * touchButtonMargin
 let bottomLeftBlockHeigh = 2 * bigTouchButtonSize + speedHeight

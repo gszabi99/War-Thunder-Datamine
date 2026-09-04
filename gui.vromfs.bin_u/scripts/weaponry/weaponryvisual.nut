@@ -1,3 +1,6 @@
+from "string" import format
+from "dagor.debug" import debug_dump_stack
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 from "%scripts/items/itemsConsts.nut" import itemType
@@ -5,23 +8,14 @@ from "%scripts/utils_sa.nut" import getAmountAndMaxAmountText
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 let modUpgradeElem = require("%scripts/weaponry/elems/modUpgradeElem.nut")
-let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch,
-  getDiscountPath, getItemStatusTbl, getItemUpgradesStatus
-} = require("%scripts/weaponry/itemInfo.nut")
-let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWithoutTracer
-} = require("%scripts/weaponry/bulletsInfo.nut")
+let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCanBeDisabled, isModInResearch, getDiscountPath, getItemStatusTbl, getItemUpgradesStatus } = require("%scripts/weaponry/itemInfo.nut")
+let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWithoutTracer } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
-let { getModItemName, getFullItemCostText } = require("weaponryDescription.nut")
-let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON, INFANTRY_WEAPON, INFANTRY_ARMOR
-} = require("%scripts/weaponry/weaponryTooltips.nut")
-let { debug_dump_stack } = require("dagor.debug")
+let { getModItemName, getFullItemCostText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON, INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isInFlight } = require("gameplayBinding")
-let { canGoToNightBattleOnUnit, needShowUnseenNightBattlesForUnit
-} = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnitMod, hasAvailableModTutorial } = require("%scripts/missions/modificationTutorial.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -59,7 +53,7 @@ function getFixedBulletsCountText(curVal, valueMultiplier) {
 }
 
 function getStatusIcon(unit, item) {
-  if (needShowUnseenNightBattlesForUnit(unit, item.name) || needShowUnseenModTutorialForUnitMod(unit, item))
+  if (needShowUnseenModTutorialForUnitMod(unit, item))
     return "#ui/gameuiskin#new_icon.svg"
   let misRules = getCurMissionRules()
   if (item.type == weaponsItem.weapon
@@ -187,8 +181,6 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     actionBtnCanShow          = ""
     actionBtnText             = ""
     altBtnCanShow             = ""
-    altBtnCommonCanShow       = ""
-    hasUnseenAltBtn           = false
     altBtnTooltip             = ""
     altBtnBuyText             = ""
     itemTextColor             = ""
@@ -388,7 +380,8 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     let { cartridge } = gunInfo
     let maxVal = maxBulletsCount * maxCntPerPilon
     let curVal = bulletsCount * maxCntPerPilon
-    let unallocated = bulletsManager.getUnallocatedBulletCount(bulGroup)
+    
+    let unallocated = bulletsManager?.getUnallocatedBulletCount(bulGroup) ?? 0
     let canChangePairBulletsCount = bulGroup.canChangePairBulletsCount()
 
     res.bulletsCountText = !isPairBulletsGroup
@@ -410,7 +403,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.invSliderMax = maxBulletsCount.tostring()
     res.invSliderValue = bulletsCount
     let linkedBulGroup = !isPairBulletsGroup || !canChangePairBulletsCount ? null
-      : bulletsManager.getLinkedBulletsGroup(bulGroup)
+      : bulletsManager?.getLinkedBulletsGroup(bulGroup)
     if (linkedBulGroup != null) {
       res.sliderProgressType = "doubleProgress"
       let pairVisualItem = linkedBulGroup.getSelBullet()
@@ -488,16 +481,11 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       if (statusTbl.curUpgrade < statusTbl.maxUpgrade
           && getInventoryList(itemType.MOD_UPGRADE).len())
         altBtnText = loc("mainmenu/btnUpgrade")
-      else if (statusTbl.unlocked && canGoToNightBattleOnUnit(unit, visualItem.name)) {
-        altBtnText = loc("night_battles")
-        res.altBtnCommonCanShow = "yes"
-        res.hasUnseenAltBtn = needShowUnseenNightBattlesForUnit(unit, visualItem.name)
-      }
     }
     res.canShowGoToModTutorialBtn = hasAvailableModTutorial(unit, item) ? "yes" : "no"
     res.hasUnseenTutorial = needShowUnseenModTutorialForUnitMod(unit, item)
 
-    res.altBtnCanShow = (altBtnText == "" || res.altBtnCommonCanShow == "yes") ? "no" : "yes"
+    res.altBtnCanShow = altBtnText == "" ? "no" : "yes"
     res.altBtnTooltip = altBtnTooltip
     res.altBtnBuyText = altBtnText
     res.actionBtnStyle <- actionBtnStyle
@@ -659,7 +647,7 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
   actionBtn.setValue(viewParams.actionBtnText)
   actionBtn.visualStyle = viewParams.actionBtnStyle
 
-  let { altBtnCanShow, altBtnCommonCanShow, altBtnTooltip, altBtnBuyText, canShowGoToModTutorialBtn, hasUnseenTutorial
+  let { altBtnCanShow, altBtnTooltip, altBtnBuyText, canShowGoToModTutorialBtn, hasUnseenTutorial
   } = viewParams
   let altBtn = itemObj.findObject("altActionBtn")
   altBtn.canShow = altBtnCanShow
@@ -673,19 +661,11 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
       textObj.setValue(altBtnBuyText)
   }
 
-  let altBtnCommon = itemObj.findObject("altActionBtnCommon")
-  altBtnCommon.canShow = altBtnCommonCanShow
-  if (altBtnCommonCanShow == "yes") {
-    if (altBtnTooltip != "")
-      altBtnCommon.tooltip = altBtnTooltip
-    altBtnCommon.findObject("altActionBtnCommon_text").setValue(altBtnBuyText)
-  }
-
   let goToModTutorBtn = itemObj.findObject("goToModTutorial")
   goToModTutorBtn.canShow = canShowGoToModTutorialBtn
   if (canShowGoToModTutorialBtn == "yes")
     goToModTutorBtn.btnName = actionBtnCanShow == "no" ? "A"
-      : altBtnCanShow == "no" && altBtnCommonCanShow == "no" ? "X"
+      : altBtnCanShow == "no" ? "X"
       : "RT"
   itemObj.findObject("goToModTutorial_new_icon").show(hasUnseenTutorial)
 }
@@ -855,7 +835,7 @@ function getWeaponModsInfoIcons(unit, usedMods) {
   let groupsByType = getModsListByType(usedMods)
   let res = []
   let unlocked = true
-  let imgSize = "1@cIco"
+  const imgSize = "1@cIco"
   foreach (modGroup in groupsByType)
     foreach (idx in modGroup) {
       let mod = usedMods[idx]

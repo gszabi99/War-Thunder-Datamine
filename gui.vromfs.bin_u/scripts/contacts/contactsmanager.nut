@@ -1,23 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/platform.nut" import is_gdk
+from "chard" import get_charserver_time_sec
+from "%sqstd/datablock.nut" import convertBlk
+from "%sqstd/underscore.nut" import isDataBlock
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME, EPLX_SEARCH, EPLX_PS4_FRIENDS, EPLX_STEAM,
-  getMaxContactsByGroup
+from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME, EPLX_SEARCH, EPLX_PS4_FRIENDS, EPLX_STEAM, getMaxContactsByGroup
 
-let { is_gdk } = require("%sqstd/platform.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { get_charserver_time_sec } = require("chard")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { predefinedContactsGroupToWtGroup, steamContactsGroup, recentGroup, blockedMeUids,
-  psnApprovedUids, psnBlockedUids, xboxApprovedUids, xboxBlockedUids, contactsGroups,
-  contactsByGroups, getContactByName
-} = require("%scripts/contacts/contactsListState.nut")
+let { predefinedContactsGroupToWtGroup, steamContactsGroup, recentGroup, blockedMeUids, psnApprovedUids, psnBlockedUids, xboxApprovedUids, xboxBlockedUids, contactsGroups, contactsByGroups, getContactByName } = require("%scripts/contacts/contactsListState.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]

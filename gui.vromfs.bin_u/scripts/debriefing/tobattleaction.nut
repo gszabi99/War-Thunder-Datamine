@@ -1,17 +1,17 @@
+from "dagor.workcycle" import defer
 from "%scripts/dagui_library.nut" import *
 
-let { defer } = require("dagor.workcycle")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MainMenu } = require("%scripts/mainmenu/mainMenuHandler.nut")
+let { EventsHandler, guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let eSportTournamentModal = require("%scripts/events/eSportTournamentModal.nut")
 let { getTourById, getTourParams, isTournamentWndAvailable, getSharedTourNameByEvent } = require("%scripts/events/eSport.nut")
 let { hasAlredyActiveJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
 
 function openLastTournamentWnd(eventParams) {
   gui_start_mainmenu()
@@ -42,10 +42,10 @@ function goToBattleAction(eventParams) {
     }
 
     let eventDisplayType = getEventDisplayType(lastEvent)
-    let handlerClass = eventDisplayType.showInGamercardDrawer ? gui_handlers.MainMenu
+    let handlerClass = eventDisplayType.showInGamercardDrawer ? MainMenu
       : !eventDisplayType.showInEventsWindow ? null
-      : lastEvent?.chapter == "competitive" ? gui_handlers.ESportTournament
-      : gui_handlers.EventsHandler
+      : lastEvent?.chapter == "competitive" ? get_gui_handler("ESportTournament")
+      : EventsHandler
 
     if (!handlerClass)
       return
@@ -61,7 +61,7 @@ function goToBattleAction(eventParams) {
       defer(function() {
         if (hasAlredyActiveJoinProcess())
           return
-        handler = handlersManager.findHandlerClassInScene(gui_handlers.EventsHandler)
+        handler = handlersManager.findHandlerClassInScene(EventsHandler)
         if (handler)
           handler.goToBattleFromDebriefing()
       })

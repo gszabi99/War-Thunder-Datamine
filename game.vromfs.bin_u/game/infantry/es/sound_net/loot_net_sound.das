@@ -2,7 +2,6 @@ require ecs
 require app
 require net
 require soundHash
-require %game.events
 
 require %appGame.wt_events
 require human_sounds.modules.human_sounds_events

@@ -1,5 +1,6 @@
+from "%sqstd/math.nut" import number_of_set_bits
 from "%scripts/dagui_library.nut" import *
-let { number_of_set_bits } = require("%sqstd/math.nut")
+
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 
 const BASE_ITEM_TYPE_ICON = "#ui/gameuiskin#item_type_placeholder.svg"

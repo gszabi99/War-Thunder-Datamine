@@ -1,12 +1,12 @@
+from "controls" import hasXInputDevice, ActivationCondition
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "controls" import ActivationCondition
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
-let { getLocalizedControlName, getShortLocalizedControlName, getActivationTypeImg
-} = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, getShortLocalizedControlName, getActivationTypeImg } = require("%scripts/controls/controlsVisual.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-let { hasXInputDevice } = require("controls")
 
 let Button = class (InputBase) {
   deviceId = -1

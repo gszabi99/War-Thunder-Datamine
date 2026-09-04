@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-
-let { isInFlight } = require("gameplayBinding")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 let usedItemsInBattle = persist("usedItemsInBattle", @() {})
 

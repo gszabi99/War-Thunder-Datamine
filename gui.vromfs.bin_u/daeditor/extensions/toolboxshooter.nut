@@ -53,7 +53,7 @@ function toolboxCmd_toggleGroups() {
   setToolboxState("showGroups", !getToolboxState("showGroups"))
 }
 
-function respawnsBtnText() {
+function respawnsBtnText(): string {
   let mode = getToolboxState("respawns")
   return mode == 1 ? "Respawns +" : mode == 2 ? "Respawns..." : "Respawns"
 }
@@ -83,7 +83,7 @@ function groupsContent() {
   childs.append(toolboxStyles.rowDiv)
   return {
     flow = FLOW_VERTICAL
-    pos = [hdpx(16), 0]
+    pos = const [hdpx(16), 0]
     gap = hdpx(5)
     watch = [groupsList]
     children = childs

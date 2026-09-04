@@ -1,13 +1,14 @@
+from "%sqstd/string.nut" import utf8ToLower
+from "dagor.workcycle" import setTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
 
 
-let NameFilterHandler = class (gui_handlers.BaseGuiHandlerWT) {
+let NameFilterHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/wndLib/nameFilterHandler.blk"
   sceneTplName = null
@@ -39,7 +40,7 @@ let NameFilterHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.NameFilterHandler <- NameFilterHandler
+register_gui_handler("NameFilterHandler", NameFilterHandler)
 
 return {
   loadNameFilterHandler = @(params) handlersManager.loadHandler(NameFilterHandler, params)

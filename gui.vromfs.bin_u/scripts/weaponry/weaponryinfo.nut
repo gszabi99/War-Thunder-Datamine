@@ -1,47 +1,43 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%globalScripts/modeXrayLib.nut" import addBandsText
+from "blkGetters" import get_game_params_blk
+from "dagor.math" import Point2
+from "string" import format
+from "mission" import get_current_mission_name, get_game_mode
+from "unitCustomization" import set_last_weapon
+from "%sqstd/datablock.nut" import eachBlock
+from "guiOptions" import set_unit_option
+from "%sqstd/string.nut" import lastIndexOf, INVALID_INDEX, endsWith
+from "chardResearch" import shopIsModificationPurchased
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import shop_is_weapon_purchased, shop_is_weapon_available
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "weaponryOptions" import get_option_torpedo_dive_depth, get_option_torpedo_dive_depth_auto
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
+from "types" import String
 
-let { get_game_params_blk } = require("blkGetters")
 let { zero_money } = require("%scripts/money.nut")
 let { get_difficulty_by_ediff, g_difficulty } = require("%scripts/difficulty.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { Point2 } = require("dagor.math")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { get_current_mission_name, get_game_mode } = require("mission")
-let { set_last_weapon } = require("unitCustomization")
-let { eachBlock } = require("%sqstd/datablock.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
-let { AMMO,
-        getAmmoCost,
-        getAmmoAmount,
-        checkAmmoAmount,
-        getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
+let { AMMO, getAmmoCost, getAmmoAmount, checkAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams
-} = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getTntEquivalentText, getDestructionInfoTexts, getNuclearWeaponAdditionalInfo } = require("%scripts/weaponry/dmgModel.nut")
-let { set_unit_option } = require("guiOptions")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { lastIndexOf, INVALID_INDEX, endsWith } = require("%sqstd/string.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitUsable, isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
-let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
-let { getRandUnitOptPath, saveLocalUnitSettings, loadLocalUnitSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { getRandUnitOptPath, saveLocalUnitSettings, loadLocalUnitSettings } = require("%scripts/clientState/localProfile.nut")
 let { mkRadarBandsListMarkup } = require("%scripts/weaponry/radarBandsView.nut")
-let { addBandsText } = require("%globalScripts/modeXrayLib.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -234,7 +230,7 @@ function getTorpedoSpeedMultByDiff(ediff) {
 }
 
 function getScoutScoreMuliplierWithUavByDiff(unit, ediff) {
-  let defValue = 1
+  const defValue = 1
   if (!getModificationByName(unit, "tank_support_ucav"))
     return defValue
   let diff = get_difficulty_by_ediff(ediff)
@@ -498,7 +494,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
         TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES])) { 
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && type(weaponBlk?.bullet) == "instance"
-          && isCaliberCannon(1000 * getTblValue("caliber", weaponBlk?.bullet, 0)))
+          && isCaliberCannon(1000 * (weaponBlk?.bullet?.caliber ?? 0)))
         currentTypeName = WEAPON_TYPE.CANNON
     }
     else if (!(weapon?.showInWeaponMenu ?? false)
@@ -627,6 +623,8 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
         item.maxSpeed <- (itemBlk?.maxSpeed ?? 0) || (itemBlk?.endSpeed ?? 0)
         if ((itemBlk?.guaranteedRange ?? 0) != 0)
           item.guaranteedRange <- itemBlk.guaranteedRange
+        if (itemBlk?.hasProximityFuse)
+          item.proximityFuseRadius <- itemBlk?.proximityFuse.radius ?? 0
 
         if (itemBlk?.guidance != null || itemBlk?.operated == true) {
           if (itemBlk?.operated == true) {
@@ -704,6 +702,8 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
                 let range = radarSeekerBlk.receiver?.range ?? 0
                 item.seekerRange <- range
               }
+              if (radarSeekerBlk?.distance != null)
+                item.distanceGate <- radarSeekerBlk.distance?.presents ?? false
             }
             else {
               item.groundClutter <- true
@@ -902,6 +902,10 @@ function getWeaponExtendedInfo(weapon, unit, par) {
       addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRange), loc("missile/seekerRange"))
     if (weapon?.seekerIRCCM)
       addParamsToRes(loc("options/yes"), loc("missile/irccm"))
+    if (weapon?.distanceGate)
+      addParamsToRes(loc("options/yes"), loc("missile/rangeGate"))
+    if (weapon?.dopplerSpeed)
+      addParamsToRes(loc("options/yes"), loc("missile/speedGate"))
     if (weapon?.launchRange)
       addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.launchRange), loc("missile/launchRange"))
     if (weapon?.machMax)
@@ -926,9 +930,12 @@ function getWeaponExtendedInfo(weapon, unit, par) {
     }
     if (weapon?.armDistance)
       addParamsToRes(measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance), loc("missile/armingDistance"))
+    if (weapon?.proximityFuseRadius)
+      addParamsToRes(measureType.DEPTH.getMeasureUnitsText(weapon.proximityFuseRadius),
+        loc("bullet_properties/proximityFuze/triggerRadius"))
   }
   else if (weaponType == "torpedoes") {
-    let torpedoMod = "torpedoes_movement_mode"
+    const torpedoMod = "torpedoes_movement_mode"
     if (isModificationEnabled(unit.name, torpedoMod)) {
       let mod = getModificationByName(unit, torpedoMod)
       let diffId = get_difficulty_by_ediff(activeEdiff).crewSkillName
@@ -1088,7 +1095,7 @@ function getUnitWeaponry(unit, params = WEAPON_TEXT_PARAMS) {
   params = WEAPON_TEXT_PARAMS.__merge(params)
   local primaryMod = ""
 
-  let weaponPresetName = (type(params.weaponPreset) == "string") ? params.weaponPreset : null
+  let weaponPresetName = (params.weaponPreset instanceof String) ? params.weaponPreset : null
   local presets = null
   local presetOrWeapon = null
   local curPreset = null

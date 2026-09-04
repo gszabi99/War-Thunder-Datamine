@@ -1,9 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/underscore.nut" import isEqualSimple
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
 let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isEqualSimple } = require("%sqstd/underscore.nut")
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
@@ -12,7 +13,6 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null 

@@ -1,30 +1,30 @@
+from "%rGui/wwMap/wwMapStates.nut" import loadedTransport, isShiftPressed
+from "%rGui/wwMap/wwOperationStates.nut" import isPlayerSide, isOperationPausedWatch
+from "%rGui/wwMap/wwArmyGroups.nut" import getArmyGroupsInfo
+from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords, activeAreaBounds, mapZoom
+from "%rGui/wwMap/wwMapUtils.nut" import convertColor4, getMapColor
+from "%rGui/wwMap/wwArmyStates.nut" import selectedArmy, hoveredArmy, getArmyIcon, armiesList, armiesData, isShowArmiesIndex, movingArmiesPositions
+  , newPartOfArmyPath, getArmyByName
+from "%appGlobals/worldWar/wwArtilleryStatus.nut" import artilleryReadyState
+from "%rGui/wwMap/wwTransportUtils.nut" import isTransport, getLoadedArmyType
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwUtils.nut" import calcAngleBetweenVectors, even
+from "%rGui/wwMap/wwArtilleryStrikeStates.nut" import artilleryStrikesInfo
+from "%appGlobals/worldWar/wwMapFilters.nut" import isShowPathForSelectedArmyFilter
+from "math" import sin, cos, PI, floor
+from "worldwar" import wwGetOperationTimeMillisec
+from "dagor.workcycle" import setTimeout
 from "%rGui/globals/ui_library.nut" import *
 
-let { sin, cos, PI, floor } = require("math")
-let { wwGetOperationTimeMillisec } = require("worldwar")
-let { loadedTransport, isShiftPressed } = require("%rGui/wwMap/wwMapStates.nut")
-let { isPlayerSide, isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
-let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { convertColor4, getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { selectedArmy, hoveredArmy, getArmyIcon, armiesList, armiesData, isShowArmiesIndex,
-  movingArmiesPositions, newPartOfArmyPath, getArmyByName } = require("%rGui/wwMap/wwArmyStates.nut")
-let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
-let { isTransport, getLoadedArmyType } = require("%rGui/wwMap/wwTransportUtils.nut")
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
-let { calcAngleBetweenVectors, even } = require("%rGui/wwMap/wwUtils.nut")
-let { artilleryStrikesInfo } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
-let { setTimeout } = require("dagor.workcycle")
-let { isShowPathForSelectedArmyFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
 let entrenchIconColors = {
   spriteColor = 0
   blinkColor = 0
 }
 
-let function mkArmyNewPartOfPath(areaBounds) {
+function mkArmyNewPartOfPath(areaBounds) {
   return function() {
     if (newPartOfArmyPath.get() == null || !isShiftPressed.get())
       return {
@@ -72,7 +72,7 @@ let function mkArmyNewPartOfPath(areaBounds) {
         }
         children = {
           rendObj = ROBJ_VECTOR_CANVAS
-          size = flex()
+          size = FLEX
           color = arrowColor
           fillColor = arrowColor
           commands = [
@@ -84,7 +84,7 @@ let function mkArmyNewPartOfPath(areaBounds) {
   }
 }
 
-let function mkArmyPaths(armyWatch, areaBounds) {
+function mkArmyPaths(armyWatch, areaBounds) {
   let hasPathTracker = Computed(@() armyWatch.get()?.pathTracker.status == "ES_MOVING_BY_PATH"
     && ([selectedArmy.get(), hoveredArmy.get()].contains(armyWatch.get().name) || !isShowPathForSelectedArmyFilter.get()))
 
@@ -143,7 +143,7 @@ let function mkArmyPaths(armyWatch, areaBounds) {
         }
         children = {
           rendObj = ROBJ_VECTOR_CANVAS
-          size = flex()
+          size = FLEX
           color = arrowColor
           fillColor = arrowColor
           commands = [
@@ -284,7 +284,7 @@ function mkArmyBack(armyData, areaBounds) {
         let pointTo = { x = points[nextPathIdx].pos.x - armyData.pathTracker.pos.x, y = points[nextPathIdx].pos.y - armyData.pathTracker.pos.y }
         let angle = calcAngleBetweenVectors(pointTo).rad
 
-        let delta = PI * 30 / 180
+        const delta = PI * 30 / 180
         let point0 = { x = cos(angle), y = sin(angle) }
         let point1 = { x = cos(angle - delta), y = sin(angle - delta) }
         let point2 = { x = cos(angle + delta), y = sin(angle + delta) }

@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+from "types" import Function, Array
 
 let defStyling = {
   Bar = function(has_scroll) {
@@ -24,20 +25,20 @@ let defStyling = {
   }
 
   ContentRoot = {
-    size = flex()
+    size = FLEX
   }
 }
 
 
 function resolveBarClass(bar, has_scroll) {
-  if (type(bar) == "function") {
+  if (bar instanceof Function) {
     return bar(has_scroll)
   }
   return bar
 }
 
 function calcBarSize(bar_class, axis) {
-  return axis == 0 ? [flex(), bar_class._height] : [bar_class._width, flex()]
+  return axis == 0 ? [FLEX, bar_class._height] : [bar_class._width, FLEX]
 }
 
 
@@ -86,7 +87,7 @@ function scrollbar(scroll_handler, options = {}) {
     }
 
 
-    let minV = 0
+    const minV = 0
     let maxV = contentSize - elemSize
     let fValue = scrollPos
 
@@ -144,7 +145,7 @@ let DEF_SIDE_SCROLL_OPTIONS = {
   rootBase = null
   scrollAlign = ALIGN_RIGHT
   orientation = O_VERTICAL
-  size = flex()
+  size = FLEX
   maxWidth = null
   maxHeight = null
   needReservePlace = true 
@@ -162,7 +163,7 @@ function makeSideScroll(content, options = DEF_SIDE_SCROLL_OPTIONS) {
 
   function contentRoot() {
     local bhv = rootBase?.behavior ?? []
-    if (type(bhv) != "array")
+    if (!(bhv instanceof Array))
       bhv = [bhv]
     else
       bhv = clone bhv
@@ -204,7 +205,7 @@ function makeHVScrolls(content, options = {}) {
 
   function contentRoot() {
     local bhv = rootBase?.behavior ?? []
-    if (type(bhv) != "array")
+    if (!(bhv instanceof Array))
       bhv = [bhv]
     else
       bhv = clone bhv
@@ -220,12 +221,12 @@ function makeHVScrolls(content, options = {}) {
   }
 
   return {
-    size = flex()
+    size = FLEX
     flow = FLOW_VERTICAL
 
     children = [
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_HORIZONTAL
         clipChildren = true
         children = [

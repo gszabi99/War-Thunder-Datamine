@@ -1,14 +1,14 @@
+from "string" import format
 from "%scripts/dagui_natives.nut" import d3d_enable_vsync
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
-
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { isPlatformSony, isPs4VsyncEnabled } = require("%scripts/clientState/platform.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
-gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let BenchmarkResultModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/benchmark.blk"
 
@@ -58,3 +58,6 @@ gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
     return buildTableRowNoPad(id, rowData, null, "commonTextColor:t='yes'")
   }
 }
+register_gui_handler("BenchmarkResultModal", BenchmarkResultModal)
+
+return { BenchmarkResultModal }

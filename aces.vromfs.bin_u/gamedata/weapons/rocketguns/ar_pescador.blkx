@@ -14,8 +14,15 @@
   ],
   "tags": {},
   "rocket": {
+    "dragCx": 0.02,
     "bulletName": "us_agm_12b_bullpup",
+    "iconType": "missile_air_to_uni",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
+    "price": 3000.0,
     "statType": "hydra",
+    "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.22,
     "length": 2.94,
     "WdK": [
@@ -36,10 +43,8 @@
     "force": 53400.0,
     "fireDelay": 0.0,
     "timeLife": 30.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 762.0,
-    "endSpeed": 0.0,
     "maxDistance": 9000.0,
     "minDistance": 30.0,
     "operatedDist": 9000.0,
@@ -55,6 +60,8 @@
     "aimCorrectionVelMin": 500.0,
     "aimSensitivity": 22.1,
     "maxAxisValues": 1.0,
+    "explosiveType": "rdx",
+    "explosiveMass": 20.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -72,64 +79,11 @@
     ],
     "explodeOnRendinst": true,
     "useEffectiveArmorThicknessForShatter": true,
-    "explosiveType": "rdx",
-    "explosiveMass": 20.0,
-    "maxDeltaAngle": 3.5,
-    "dragCx": 0.02,
+    "hitPowerMult": 400.0,
     "shellCollision": true,
-    "distanceFuse": false,
-    "hitPowerMult": 1.0,
-    "nearHitPower": [
-      1.0,
-      50.0
-    ],
-    "midHitPower": [
-      0.9,
-      400.0
-    ],
-    "farHitPower": [
-      0.1,
-      1000.0
-    ],
-    "endHitPower": [
-      0.01,
-      1500.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
-    "nearArmorPower": [
-      10.0,
-      50.0
-    ],
-    "midArmorPower": [
-      7.0,
-      400.0
-    ],
-    "farArmorPower": [
-      0.2,
-      700.0
-    ],
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
+    "fuseDelayDist": 0.1,
     "explodeTreshold": 0.1,
-    "explodeHitPower": 1750.0,
-    "explodeArmorPower": 120.0,
-    "explodeRadius": [
-      3.8,
-      8.0
-    ],
-    "shutterDamage": true,
-    "shutterDamageRadius": 45.0,
-    "shutterAmount": 3000,
-    "shutterArmorPower": 12.0,
-    "shutterHit": 12.0,
-    "price": 3000.0,
-    "amountPerTier": 1.0,
-    "iconType": "missile_air_to_uni",
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_medium",
     "groundCollisionEffect": "hit_206_290mm_dirt_he",
     "ricochetEffect": "hit_161_205mm_metal_ap",
@@ -175,7 +129,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 0.8
+        "offset": 0.75
       }
     },
     "DamageParts": {

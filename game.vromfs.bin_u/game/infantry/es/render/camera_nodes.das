@@ -1,9 +1,5 @@
 require ecs
-require app
-require %game.events
 require math
-require math.base
-require DagorMath
 require DagorSystem
 require AnimV20
 require GeomNodeTree

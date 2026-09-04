@@ -103,6 +103,23 @@ def human_weap_mod_activate(eid : EntityId;
       human_weap__weapModActivateFinishTime = human_weap__weapModActivateStartTime + (activate ? weapon_mod__activateTime : weapon_mod__deactivateTime)
 
 
+[es(tag=gameClient, on_appear, track=(human_net_phys__isAiming, human_weap__currentGunModEids), REQUIRE=(human_weap, watchedByPlr))]
+def scope_activate_on_aim_es(evt : Event;
+                             human_net_phys__isAiming : bool;
+                             human_weap__currentGunModEids : EidList;
+                             human_weap__gunMods : Array)
+  for slotMods in human_weap__gunMods
+    let gunModEids = get_ecs_EidList(slotMods)
+    if gunModEids != null
+      for gunMod in *gunModEids
+        query(gunMod) <| $ [es(REQUIRE=gunScope)] (var weapon_mod__active : bool&)
+          if weapon_mod__active
+            weapon_mod__active = false
+  for gunMod in human_weap__currentGunModEids
+    query(gunMod) <| $ [es(REQUIRE=gunScope)] (var weapon_mod__active : bool&)
+      if weapon_mod__active != human_net_phys__isAiming
+        weapon_mod__active = human_net_phys__isAiming
+
 
 [es]
 def human_weap_mod_toggle_es(evt : CmdWeapModToggle; eid : EntityId; human_weap__gunMods : Array)
@@ -117,10 +134,25 @@ def human_weap_mod_toggle_es(evt : CmdWeapModToggle; eid : EntityId; human_weap_
 
 [es(tag=server, REQUIRE=human_weap__currentGunEid, track=human_weap__currentGunEid)]
 def human_weap_mod_toggle_cancel_es(evt : Event;
+                                    human_weap__gunMods : Array;
+                                    human_weap__currentGunEid : EntityId;
                                     var human_weap__weapModActivateStartTime : float&;
                                     var human_weap__weapModActivateFinishTime : float&)
   human_weap__weapModActivateStartTime = -1.0
   human_weap__weapModActivateFinishTime = -1.0
+  for slotMods in human_weap__gunMods
+    let gunModEids = slotMods as EidList
+    if gunModEids != null
+      for gunMod in *gunModEids
+        query(gunMod) <| $ [es] (var weapon_mod__active : bool&;
+                                 var weapon_mod__wantActiveState : bool&;
+                                 animchar_attach__attachedTo : EntityId)
+          if animchar_attach__attachedTo == human_weap__currentGunEid
+            if weapon_mod__active != weapon_mod__wantActiveState
+              weapon_mod__active = weapon_mod__wantActiveState
+          elif weapon_mod__active || weapon_mod__wantActiveState
+            weapon_mod__active = false
+            weapon_mod__wantActiveState = false
 
 
 [es(tag=server)]
@@ -305,7 +337,7 @@ def toogle_laser_es(evt : LaserToggle;
     query(eid) <| $ [es] (gunAttachable__slotTag : string;
                           var laserActive : bool&) 
       for kv in *gunModInSlot
-        let slotTag := get_string(kv.value, "")
+        let slotTag = get_string(kv.value, "")
         if slotTag == gunAttachable__slotTag
           laserActive = !laserActive
           query(squad_member__squad) <| $ [es] (var squad__laserActive : bool&)
@@ -324,7 +356,7 @@ def toogle_flash_light_es(evt : FlashLightToggle;
     query(eid) <| $ [es] (gunAttachable__slotTag : string;
                           var flashlight__on : bool&) 
       for kv in *gunModInSlot
-        let slotTag := get_string(kv.value, "")
+        let slotTag = get_string(kv.value, "")
         if slotTag == gunAttachable__slotTag
           flashlight__on = !flashlight__on
           query(squad_member__squad) <| $ [es] (var squad__flashlightOn : bool&)
@@ -359,7 +391,7 @@ def update_tactical_device_state_on_hero_change_es(evt : Event;
                              var flashlight__on : bool?;
                              var laserActive : bool?)
       for kv in *gunModInSlot
-        let slotTag := get_string(kv.value, "")
+        let slotTag = get_string(kv.value, "")
         if slotTag == gunAttachable__slotTag
           query(squad_member__squad) <| $ [es] (squad__flashlightOn, squad__laserActive : bool)
             if flashlight__on != null

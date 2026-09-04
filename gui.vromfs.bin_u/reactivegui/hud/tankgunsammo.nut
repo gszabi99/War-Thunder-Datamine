@@ -1,12 +1,9 @@
+from "%rGui/style/screenState.nut" import safeAreaSizeHud
+from "%rGui/hud/tankState.nut" import CoaxialBullets, CoaxialCartridges, CoaxialCartridgeSize, CoaxialGunStartLoadAtTime, CoaxialGunNextShotAtTime, MachineGunBullets, MachineGunCartridges
+  , MachineGunCartridgeSize, MachineGunStartLoadAtTime, MachineGunNextShotAtTime
+from "mission" import get_mission_time
+from "%sqstd/math.nut" import ceil
 from "%rGui/globals/ui_library.nut" import *
-
-let { get_mission_time } = require("mission")
-let { ceil } = require("%sqstd/math.nut")
-let { safeAreaSizeHud } = require("%rGui/style/screenState.nut")
-let { CoaxialBullets, CoaxialCartridges, CoaxialCartridgeSize,
-  CoaxialGunStartLoadAtTime, CoaxialGunNextShotAtTime,
-  MachineGunBullets, MachineGunCartridges, MachineGunCartridgeSize,
-  MachineGunStartLoadAtTime, MachineGunNextShotAtTime } = require("%rGui/hud/tankState.nut")
 
 let boxWidth = shHud(12.5)
 let boxHeight = shHud(2)
@@ -16,10 +13,10 @@ let itemsGap = shHud(0.4)
 let iconHeight = fontHeight
 let iconWidth = (48.0 / 20 * iconHeight).tointeger()
 
-let inactiveColor = Color(90, 90, 90)
-let activeColor = Color(255, 255, 255)
+const inactiveColor = Color(90, 90, 90)
+const activeColor = Color(255, 255, 255)
 
-let barsCount = 20
+const barsCount = 20
 
 let coaxialGunIcon = Picture($"!ui/gameuiskin#coaxial_ammo_indicator.svg:{iconWidth}:{iconHeight}")
 let machineGunIcon = Picture($"!ui/gameuiskin#aa_ammo_indicator.svg:{iconWidth}:{iconHeight}")
@@ -90,7 +87,7 @@ function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, re
         color = activeColor
       }
       {
-        size = [flex(), boxHeight]
+        size = [FLEX, boxHeight]
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         flow = FLOW_HORIZONTAL

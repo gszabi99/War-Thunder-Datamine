@@ -1,33 +1,21 @@
+from "globalEnv" import ControlHelpersMode
+from "gameparams" import get_game_params
+from "gameOptions" import get_option_multiplier, set_option_multiplier, get_option_int, set_option_int, OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER, OPTION_HELICOPTER_PEDALS_MULTIPLIER
+  , OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE, OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE, OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY, OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR, OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR, OPTION_AIM_TIME_NONLINEARITY_HELICOPTER
+  , OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, OPTION_MOUSE_Z_HELICOPTER_MULT, OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE
+from "controls" import ActionGroup, hasXInputDevice, isXInputDevice
+from "controlsOptions" import set_option_mouse_joystick_square_helicopter, get_option_mouse_joystick_square_helicopter
 from "%scripts/dagui_natives.nut" import is_mouse_available
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE, AxisDirection, ConflictGroups
 
-let { ControlHelpersMode } = require("globalEnv")
-let { get_game_params } = require("gameparams")
-let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
-  OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER,
-  OPTION_HELICOPTER_PEDALS_MULTIPLIER, OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE,
-  OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE, OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY,
-  OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, OPTION_HELICOPTER_MOUSE_AILERON_AILERON_FACTOR,
-  OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR, OPTION_AIM_TIME_NONLINEARITY_HELICOPTER,
-  OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, OPTION_MOUSE_Z_HELICOPTER_MULT,
-  OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE
-} = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
-let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
-  USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER,
-  USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE,
-  USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY,
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED, USEROPT_AUTOTRIM, USEROPT_ATGM_AIM_SENS_HELICOPTER, USEROPT_ATGM_AIM_ZOOM_SENS_HELICOPTER, USEROPT_INVERTY_HELICOPTER, USEROPT_INVERTY_HELICOPTER_GUNNER, USEROPT_INSTRUCTOR_GROUND_AVOIDANCE, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY } = require("%scripts/options/optionsExtNames.nut")
 let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
-let { set_option_mouse_joystick_square_helicopter,
- get_option_mouse_joystick_square_helicopter
-} = require("controlsOptions")
 
 return [
   {
@@ -317,6 +305,10 @@ return [
   }
   {
     id = "ID_COUNTERMEASURE_CHAFF_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_COUNTERMEASURE_TOWED_DECOY_HELICOPTER"
     checkAssign = false
   }
   {

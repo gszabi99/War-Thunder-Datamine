@@ -1,10 +1,9 @@
+from "%rGui/wwMap/wwArtilleryStrikeStates.nut" import samStrikesInfo
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwMapUtils.nut" import convertColor4
+from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords, activeAreaBounds, mapZoom
+from "%rGui/wwMap/wwArmyStates.nut" import movingArmiesPositions, getArmyByName
 from "%rGui/globals/ui_library.nut" import *
-
-let { samStrikesInfo } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
-let { convertColor4 } = require("%rGui/wwMap/wwMapUtils.nut")
-let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { movingArmiesPositions, getArmyByName } = require("%rGui/wwMap/wwArmyStates.nut")
 
 local samLineColor = null
 local samLineColor2 = null

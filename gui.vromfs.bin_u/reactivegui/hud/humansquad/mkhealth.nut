@@ -1,22 +1,21 @@
+from "%rGui/hud/state/health_es.nut" import hp, maxHp, totalDotAmount, showHpUi
+from "%rGui/style/colors.nut" import hpColor, bleedingColor, transparent
+from "%rGui/hud/humanSquad/humanConst.nut" import heroStateWidth, hpBarHeight
+from "%rGui/hud/state/armor_es.nut" import armorState
+from "%rGui/hud/state/human_gun_info_es.nut" import isWeaponsListVisible
 from "%rGui/globals/ui_library.nut" import *
 
-let { hp, maxHp, totalDotAmount, showHpUi
-} = require("%rGui/hud/state/health_es.nut")
-let { hpColor, bleedingColor, transparent } = require("%rGui/style/colors.nut")
-let { heroStateWidth, hpBarHeight } = require("%rGui/hud/humanSquad/humanConst.nut")
-let { armorState } = require("%rGui/hud/state/armor_es.nut")
 let { ticketHudBlurPanel, hudBlurPanel } = require("%rGui/components/blurPanel.nut")
-let { isWeaponsListVisible } = require("%rGui/hud/state/human_gun_info_es.nut")
 
 const bleedImgSize = shHud(2)
-let xrayGap = hdpxi(7)
-let xrayOpacity = 0.75
+const xrayGap = hdpxi(7)
+const xrayOpacity = 0.75
 let xrayImageSize = [hdpxi(81), hdpxi(152)]
 
 let isXrayBlockAttached = Watched(false)
 
-let XRAY_ANIM_START_DISAPPEAR = "xray_anim_start_disappear"
-let changeOpacityAnimTime = 0.2
+const XRAY_ANIM_START_DISAPPEAR = "xray_anim_start_disappear"
+const changeOpacityAnimTime = 0.2
 
 let mkAnimations = [
   { prop=AnimProp.opacity, to=0.0, playFadeOut=true,
@@ -464,7 +463,7 @@ return function() {
           @() {
             watch = isWeaponsListVisible
             size = xrayImageSize
-            margin = [0, bleedImgSize/2, 0,0]
+            margin = const [0, bleedImgSize/2, 0,0]
             animations = isWeaponsListVisible.get() ? [] : mkAnimations
             children = isWeaponsListVisible.get() ? null
               : [
@@ -492,13 +491,13 @@ return function() {
         ]
       }
       {
-        size = [ flex(), hpBarHeight ]
+        size = [ FLEX, hpBarHeight ]
         children = [
           ticketHudBlurPanel
           @() {
             watch = hpRatio
             rendObj = ROBJ_BOX
-            size = [ pw(hpRatio.get()*100), flex() ]
+            size = [ pw(hpRatio.get()*100), FLEX ]
             fillColor = hpColor
             hplace = ALIGN_RIGHT
             children = @() dotRatio.get() == 0
@@ -506,7 +505,7 @@ return function() {
               : {
                   watch = dotRatio
                   rendObj = ROBJ_BOX
-                  size = [ pw(dotRatio.get()*100), flex() ]
+                  size = [ pw(dotRatio.get()*100), FLEX ]
                   fillColor = bleedingColor
                   hplace = ALIGN_LEFT
                 }

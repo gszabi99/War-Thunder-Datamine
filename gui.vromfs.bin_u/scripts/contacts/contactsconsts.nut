@@ -1,3 +1,4 @@
+from "%globalScripts/externalPlayerListConsts.nut" import *
 enum contactEvent {
   CONTACTS_UPDATED = "ContactsUpdated"
   CONTACTS_GROUP_ADDED = "ContactsGroupAdd"

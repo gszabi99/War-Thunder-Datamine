@@ -1,29 +1,26 @@
+import "%rGui/compass.nut" as compass
+from "%rGui/options/measureUnits.nut" import ALTITUDE, SPEED, DISTANCE
+from "%rGui/style/airHudStyle.nut" import greenColor
+from "%rGui/radarState.nut" import IsRadarVisible
+from "%rGui/fcsState.nut" import OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable, IsForestallVisible
+  , IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength, TargetHeight, TargetDistance
+  , TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular, isHydrophoneMode
+from "%rGui/fcsComponent.nut" import drawArrow
+from "string" import format
+from "math" import fabs, floor
+from "%sqstd/string.nut" import cutPrefix
 from "%rGui/globals/ui_library.nut" import *
-let { ALTITUDE, SPEED, DISTANCE } = require("%rGui/options/measureUnits.nut")
-
-let { format } = require("string")
-let { fabs, floor } = require("math")
-let compass = require("%rGui/compass.nut")
-let { greenColor } = require("%rGui/style/airHudStyle.nut")
-let { IsRadarVisible } = require("%rGui/radarState.nut")
-let { OpticsWidth, StaticFov, CalcProgress, IsVisible, IsTargetSelected, IsTargetDataAvailable,
-  IsForestallVisible, IsForestallCalculating, TargetSpeed, TargetAzimuth, TargetType, TargetLength,
-  TargetHeight, TargetDistance, TorpedoDistToLive, BearingAngle, HeroAzimuthAngle, IsBinocular, isHydrophoneMode
-} = require("%rGui/fcsState.nut")
-let { drawArrow } = require("%rGui/fcsComponent.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-
 
 let compassSize = [hdpx(500), hdpx(32)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
-let progressBarWidth = hdpx(192)
-let fcsBarColor1 = 0x7F007F00
-let fcsBarColor2 = 0x19323232
-let textColor = Color(0, 0, 0, 255)
-let textPadding = hdpx(5)
-let greyColor = Color(15, 25, 25, 255)
-let highlightColor = Color(255, 255, 255, 180)
-let highlightScale = 2.5
+const progressBarWidth = hdpx(192)
+const fcsBarColor1 = 0x7F007F00
+const fcsBarColor2 = 0x19323232
+const textColor = Color(0, 0, 0, 255)
+const textPadding = hdpx(5)
+const greyColor = Color(15, 25, 25, 255)
+const highlightColor = Color(255, 255, 255, 180)
+const highlightScale = 2.5
 
 let hydrophoneDistance = Computed(@() floor(TargetDistance.get() / 100) * 100)
 
@@ -33,7 +30,7 @@ let compassComponent = {
 }
 
 let mkText = @(ovr) {
-  padding = [0, textPadding]
+  padding = const [0, textPadding]
   color = textColor
   rendObj = ROBJ_TEXT
   font = Fonts.tiny_text_hud
@@ -59,7 +56,7 @@ let attackBearingText = mkText({
 })
 
 let processingHint = {
-  pos = [sw(61), sh(37)]
+  pos = const [sw(61), sh(37)]
   children = mkText({ text = loc("fcs_keep_sight_on_target_hint") })
 }
 
@@ -70,8 +67,8 @@ let processingBlock = @() {
   children = [
     @() {
       watch = CalcProgress
-      size = [progressBarWidth, SIZE_TO_CONTENT]
-      margin = [0, 0, textPadding, 0]
+      size = const [progressBarWidth, SIZE_TO_CONTENT]
+      margin = const [0, 0, textPadding, 0]
       fValue = CalcProgress.get()
       rendObj = ROBJ_PROGRESS_LINEAR
       fgColor = fcsBarColor1
@@ -115,12 +112,18 @@ let hydrophoneProcessingBlock = @() {
   pos = [sw(52) + OpticsWidth.get(), StaticFov.get() > 6. ? sh(56.5) : sh(55)]
   flow = FLOW_VERTICAL
   children = [
-    @() {
-      watch = [TargetType, CalcProgress]
-      children = CalcProgress.get() < 0.10 ? null
-        : mkText({
-          text = "".concat(loc("fcs_target_class"), loc(format($"mainmenu/type_%s", cutPrefix(TargetType.get(), "exp_"))))
+    function() {
+      let res = { watch = [TargetType, CalcProgress] }
+      if (CalcProgress.get() < 0.10)
+        return res
+      let expClassName = cutPrefix(TargetType.get(), "exp_")
+      if (expClassName == null)
+        return res
+      return res.__update({
+        children = mkText({
+          text = "".concat(loc("fcs_target_class"), loc($"mainmenu/type_{expClassName}"))
         })
+      })
     }
     @() {
       watch = [TargetAzimuth, CalcProgress]
@@ -136,9 +139,9 @@ let hydrophoneProcessingBlock = @() {
   ]
 }
 
-let redColor = Color(210, 20, 20, 250)
-let yellowColor = Color(210,210,0)
-let orangeColor = Color(210,120,20)
+const redColor = Color(210, 20, 20, 250)
+const yellowColor = Color(210,210,0)
+const orangeColor = Color(210,120,20)
 
 function bearingAngleColor(delta) {
   return delta > 5.0 ? redColor
@@ -154,6 +157,10 @@ function distanceColor(current, total) {
     :  greenColor
 }
 
+function isReadyToLaunch(current, total) {
+  return current < total
+}
+
 let calculatingBlock = @() {
   watch = [OpticsWidth, StaticFov]
   pos = [sw(52) + OpticsWidth.get(), StaticFov.get() > 6. ? sh(56.5) : sh(55)]
@@ -161,8 +168,8 @@ let calculatingBlock = @() {
   children = [
     @() {
       watch = CalcProgress
-      size = [progressBarWidth, SIZE_TO_CONTENT]
-      margin = [0, 0, textPadding, 0]
+      size = const [progressBarWidth, SIZE_TO_CONTENT]
+      margin = const [0, 0, textPadding, 0]
       fValue = CalcProgress.get()
       rendObj = ROBJ_PROGRESS_LINEAR
       fgColor = fcsBarColor1
@@ -170,7 +177,7 @@ let calculatingBlock = @() {
       children = calculatingText
     }
     @() {
-      watch = CalcProgress
+      watch = [CalcProgress, TargetDistance]
       flow = FLOW_HORIZONTAL
       children = CalcProgress.get() == 1.0 || TargetDistance.get() != 0.0
         ? [
@@ -185,7 +192,7 @@ let calculatingBlock = @() {
         ] : null
     }
     @() {
-      watch = CalcProgress
+      watch = [CalcProgress, BearingAngle]
       flow = FLOW_HORIZONTAL
       children = CalcProgress.get() == 1.0 || BearingAngle.get() != 0.0
         ? [
@@ -198,6 +205,17 @@ let calculatingBlock = @() {
             })
           }
         ] : null
+    }
+    @() {
+      watch = [CalcProgress, TargetDistance, TorpedoDistToLive]
+      children = CalcProgress.get() == 1.0
+        ? mkText({
+          text = isReadyToLaunch(TargetDistance.get(), TorpedoDistToLive.get())
+            ? loc("fcs_torpedo_ready_to_launch")
+            : loc("fcs_torpedo_too_far_to_launch")
+          color = isReadyToLaunch(TargetDistance.get(), TorpedoDistToLive.get()) ? greenColor : redColor
+        })
+        : null
     }
   ]
 }

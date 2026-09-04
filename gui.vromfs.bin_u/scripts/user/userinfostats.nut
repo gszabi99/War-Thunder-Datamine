@@ -1,25 +1,25 @@
+import "DataBlock" as DataBlock
+from "unlocks" import getNumUnlocked
+from "guiMission" import get_mp_session_info
+from "mission" import get_mp_local_team
+from "%sqstd/underscore.nut" import isDataBlock
+from "string" import format
+from "%sqstd/datablock.nut" import convertBlk, eachParam, eachBlock
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_cur_rank_info, clan_get_my_clan_id, clan_get_my_clan_type, shop_get_free_exp
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import buildTableRowNoPad
-from "%scripts/utils_sa.nut" import is_multiplayer
+from "%scripts/utils_sa.nut" import buildTableRowNoPad, is_multiplayer
+from "types" import String, Array
 
-let { getNumUnlocked } = require("unlocks")
-let { get_mp_session_info } = require("guiMission")
-let { get_mp_local_team } = require("mission")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let DataBlock = require("DataBlock")
-let { isDataBlock } = require("%sqstd/underscore.nut")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
-let { convertBlk, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
-let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank
-} = require("%scripts/ranks.nut")
+let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank } = require("%scripts/ranks.nut")
 let { isUnitEliteByStatus } = require("%scripts/unit/unitStatus.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsListState.nut")
 let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
@@ -167,7 +167,7 @@ let airStatsListConfig = [
   { id = "online_exp_total", icon = "lb_online_exp_gained_for_common", text = "multiplayer/online_exp_gained_for_common" },
 ]
 foreach (idx, val in airStatsListConfig) {
-  if (type(val) == "string")
+  if (val instanceof String)
     airStatsListConfig[idx] = { id = val }
   if ("type" not in airStatsListConfig[idx])
     airStatsListConfig[idx].type <- lbDataType.NUM
@@ -285,7 +285,7 @@ function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
   if (diff == g_difficulty.UNKNOWN)
     return null
 
-  let modeList = (type(config.mode) == "array") ? config.mode : [config.mode]
+  let modeList = (config.mode instanceof Array) ? config.mode : [config.mode]
   local value = 0
   foreach (mode in modeList) {
     let sumData = summary?[mode]?[diff.name]
@@ -404,6 +404,8 @@ function getPlayerStatsFromBlk(blk) {
     
     _statsBlk = blk
     
+    _summaryByMode = {}
+    
     summary = null
     leaderboard = null
     userstat = blk?.userstat ? getAirsStatsFromBlk(blk.userstat) : {}
@@ -512,6 +514,10 @@ function getLazyPlayerStats(player, field) {
     player[field] = blk?[field] && isDataBlock(blk[field])
       ? convertBlk(blk[field])
       : {}
+    
+    
+    if (field == "summary")
+      player._summaryByMode.clear()
     releaseStatsBlkIfFullyConverted(player)
   }
   return player[field]
@@ -520,11 +526,30 @@ function getLazyPlayerStats(player, field) {
 let getPlayerSummary = @(player) getLazyPlayerStats(player, "summary")
 let getPlayerLeaderboard = @(player) getLazyPlayerStats(player, "leaderboard")
 
+function getPlayerSummaryMode(player, modeName) {
+  if (player == null)
+    return null
+
+  let summary = player.summary
+  if (summary != null)
+    return summary?[modeName]
+
+  let playerSummaryByMode = player._summaryByMode
+  if (modeName in playerSummaryByMode)
+    return playerSummaryByMode[modeName]
+
+  let modeBlk = player._statsBlk?.summary[modeName]
+  let res = isDataBlock(modeBlk) ? convertBlk(modeBlk) : null
+  playerSummaryByMode[modeName] <- res
+  return res
+}
+
 return {
   fillProfileSummary
   getCountryMedals
   getPlayerStatsFromBlk
   getPlayerSummary
+  getPlayerSummaryMode
   getPlayerLeaderboard
   airStatsListConfig
   getProfileInfo

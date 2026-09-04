@@ -1,16 +1,15 @@
+import "DataBlock" as DataBlock
+from "guiMission" import get_current_mission_desc
+from "gameplayBinding" import isInFlight
+from "worldwar" import wwGetOperationId
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_local_player_country, ww_process_server_notification
 from "%scripts/dagui_library.nut" import *
-
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+from "%scripts/webRPC.nut" import webRpcRegister
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotify, unsubscribeOperationNotify } = require("%scripts/worldWar/services/wwService.nut")
-let DataBlock  = require("DataBlock")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
-let { get_current_mission_desc } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
-let { wwGetOperationId } = require("worldwar")
 let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
@@ -21,7 +20,7 @@ matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
   let operationId = params?.operationId ?? ""
   let team = params?.team ?? SIDE_1
   let country = params?.country ?? ""
-  let battleIds = getTblValue("battleIds", params, [])
+  let battleIds = (params?.battleIds ?? [])
   foreach (battleId in battleIds) {
     let queue = createQueue({
         operationId = operationId
@@ -97,7 +96,7 @@ matchingRpcSubscribe("worldwar.notify", function(params) {
     chatSystemMessage(text)
 })
 
-web_rpc.register_handler("worldwar_forced_subscribe", function(params) {
+webRpcRegister("worldwar_forced_subscribe", function(params) {
   let operationId = params?.id
   if (!operationId)
     return

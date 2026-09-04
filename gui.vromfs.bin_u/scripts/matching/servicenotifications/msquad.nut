@@ -1,19 +1,18 @@
-from "%scripts/dagui_library.nut" import *
+import "%sqStdLibs/helpers/u.nut" as u
 import "%scripts/squads/squadApplications.nut" as squadApplications
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { removeInviteToSquad, addInviteToSquad } = require("%scripts/invites/invites.nut")
 
 matchingRpcSubscribe("msquad.notify_invite", function(params) {
-  let replaces = getTblValue("replaces", params, "").tostring()
-  let squad = getTblValue("squad", params, null)
-  let invite = getTblValue("invite", params, null)
-  let leader = getTblValue("leader", params, null)
+  let replaces = (params?.replaces ?? "").tostring()
+  let squad = params?.squad ?? {id = ""}
+  let invite = params?.invite
+  let leader = params?.leader ?? {id = ""}
 
   if (invite == null || invite.id.tostring() == userIdStr.get()) {
     if (!u.isEmpty(replaces))
@@ -25,8 +24,8 @@ matchingRpcSubscribe("msquad.notify_invite", function(params) {
 })
 
 matchingRpcSubscribe("msquad.notify_invite_revoked", function(params) {
-  let invite = getTblValue("invite", params, null)
-  let squad = getTblValue("squad", params, null)
+  let invite = params?.invite
+  let squad = params?.squad ?? {id = ""}
   if (invite == null || invite.id.tostring() == userIdStr.get())
     removeInviteToSquad(squad.id.tostring())
   else
@@ -34,15 +33,15 @@ matchingRpcSubscribe("msquad.notify_invite_revoked", function(params) {
 })
 
 matchingRpcSubscribe("msquad.notify_invite_rejected", function(params) {
-  let invite = getTblValue("invite", params, null)
+  let invite = params?.invite ?? {id = ""}
   g_squad_manager.removeInvitedPlayers(invite.id.tostring())
   if (g_squad_manager.getSquadSize(true) == 1)
     g_squad_manager.disbandSquad()
 })
 
 matchingRpcSubscribe("msquad.notify_invite_expired", function(params) {
-  let invite = getTblValue("invite", params, null)
-  let squad = getTblValue("squad", params, null)
+  let invite = params?.invite
+  let squad = params?.squad ?? {id = ""}
   if (invite == null || invite.id.tostring() == userIdStr.get())
     removeInviteToSquad(squad.id.tostring())
   else {
@@ -53,7 +52,7 @@ matchingRpcSubscribe("msquad.notify_invite_expired", function(params) {
 })
 
 matchingRpcSubscribe("msquad.notify_member_joined", function(params) {
-  let userId = getTblValue("userId", params, "")
+  let userId = (params?.userId ?? "")
   if (userId != userIdInt64.get() && g_squad_manager.isInSquad()) {
     g_squad_manager.addMember(userId.tostring())
     g_squad_manager.joinSquadChatRoom()
@@ -61,7 +60,7 @@ matchingRpcSubscribe("msquad.notify_member_joined", function(params) {
 })
 
 matchingRpcSubscribe("msquad.notify_member_leaved", function(params) {
-  let userId = getTblValue("userId", params, "")
+  let userId = (params?.userId ?? "")
   if (userId.tostring() == userIdStr.get())
     g_squad_manager.reset()
   else {
@@ -86,7 +85,7 @@ matchingRpcSubscribe("msquad.notify_data_changed", function(_params) {
 })
 
 matchingRpcSubscribe("msquad.notify_member_data_changed", function(params) {
-  let userId = getTblValue("userId", params, "").tostring()
+  let userId = (params?.userId ?? "").tostring()
   if (userId != userIdStr.get() && g_squad_manager.isInSquad())
     g_squad_manager.requestMemberData(userId)
 })
@@ -98,13 +97,13 @@ matchingRpcSubscribe("msquad.notify_member_data_updated", function(params) {
 })
 
 matchingRpcSubscribe("msquad.notify_member_login", function(params) {
-  let userId = getTblValue("userId", params, "").tostring()
+  let userId = (params?.userId ?? "").tostring()
   if (userId != userIdStr.get() && g_squad_manager.isInSquad())
     g_squad_manager.setMemberOnlineStatus(userId, true)
 })
 
 matchingRpcSubscribe("msquad.notify_member_logout", function(params) {
-  let userId = getTblValue("userId", params, "").tostring()
+  let userId = (params?.userId ?? "").tostring()
   if (userId != userIdStr.get() && g_squad_manager.isInSquad())
     g_squad_manager.setMemberOnlineStatus(userId, false)
 })

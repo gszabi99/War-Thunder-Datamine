@@ -1,12 +1,12 @@
+from "%sqstd/platform.nut" import platformId, is_gdk
 from "dagor.fs" import read_text_from_file, read_text_from_file_on_disk, file_exists
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_unlocked
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { platformId, is_gdk }  = require("%sqstd/platform.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
@@ -72,7 +72,7 @@ let licensesCfgList = [
   }
 ]
 
-gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
+let LicenseHandler = class (BaseGuiHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/licenseFrame.blk"
 
@@ -155,7 +155,8 @@ gui_handlers.LicenseHandler <- class (BaseGuiHandler) {
     this.reqViewCreditsUnlock = false
   }
 }
+register_gui_handler("LicenseHandler", LicenseHandler)
 
 return {
-  openLicenseWindow = @() handlersManager.loadHandler(gui_handlers.LicenseHandler)
+  openLicenseWindow = @() handlersManager.loadHandler(LicenseHandler)
 }

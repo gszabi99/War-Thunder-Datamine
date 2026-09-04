@@ -1,14 +1,15 @@
+from "%rGui/airState.nut" import IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize
+from "%rGui/planeMfdCamera.nut" import planeMfdCameraSwitcher
+from "%rGui/radarState.nut" import MfdRadarColor, radarPosSize
+from "%rGui/radar.nut" import radarMfd
+from "%rGui/planeCockpit/customPageBuilder.nut" import mfdCustomPages
+from "%rGui/planeState/planeToolsState.nut" import MfdRwrColor, DigitalDevicesVisible, MfdHsdVisible, MfdHsdPosSize
+from "%rGui/planeRwr.nut" import planeRwrSwitcher
+from "%rGui/planeCockpit/instrumentsPage/digitalDevices.nut" import devices
+from "%rGui/planeCockpit/instrumentsPage/hsd.nut" import hsd
 from "%rGui/globals/ui_library.nut" import *
 
-let { IndicatorsVisible, MlwsLwsForMfd, RwrForMfd, IsMfdEnabled, RwrPosSize } = require("%rGui/airState.nut")
-let { planeMfdCameraSwitcher } = require("%rGui/planeMfdCamera.nut")
-let { MfdRadarColor, radarPosSize } = require("%rGui/radarState.nut")
-let { radarMfd } = require("%rGui/radar.nut")
-let { mfdCustomPages } = require("%rGui/planeCockpit/customPageBuilder.nut")
-let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("%rGui/planeState/planeToolsState.nut")
-let { planeRwrSwitcher } = require("%rGui/planeRwr.nut")
-let { devices } = require("%rGui/planeCockpit/digitalDevices.nut")
-let { hsd } = require("%rGui/planeCockpit/hsd.nut")
+let { DigDevicesPosSize } = require("%rGui/planeState/planeToolsState.nut")
 
 
 let twsPosComputed = Computed(@() [RwrPosSize.get()[0] + 0.17 * RwrPosSize.get()[2],
@@ -23,13 +24,13 @@ let mkTws = @() {
 
 let digitalDev = @(){
   watch = DigitalDevicesVisible
-  size = flex()
+  size = FLEX
   children = DigitalDevicesVisible.get() ? devices(DigDevicesPosSize[2], DigDevicesPosSize[3], DigDevicesPosSize[0], DigDevicesPosSize[1]) : null
 }
 
 let mfdHsd = @(){
   watch = MfdHsdVisible
-  size = flex()
+  size = FLEX
   children = MfdHsdVisible.get() ? hsd(MfdHsdPosSize) : null
 }
 

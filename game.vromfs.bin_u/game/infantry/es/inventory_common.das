@@ -367,7 +367,7 @@ def is_item_useful(to_whom : EntityId;
                              item__id : int = INVALID_ITEM_ID)
     itemId = item__id
     if item__weapTemplate != null
-      weapTemplName := *item__weapTemplate |> string()
+      weapTemplName = *item__weapTemplate |> string()
     weapSlots = item__weapSlots
     isContainer = (container_contents_chances != null || containerContentsPreset != null ||
                   containerContentsWeightedPreset != null || containerContents != null)

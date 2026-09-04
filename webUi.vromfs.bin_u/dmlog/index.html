@@ -1,107 +1,386 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  <title>Damage model log</title>
 
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     body {
       background-color: #333;
       color: #eee;
-      font-family: Tahoma, Verdana, Arial;
+      font-family: Tahoma, Verdana, Arial, sans-serif;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
     }
 
-    div.caption {
-      height:25px;
-      width:999px;
-      text-align: center;
+    #bar {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
       background-color: #555;
-      margin: 0px;
+    }
+
+    #bar > * {
+      margin-right: 10px;
+    }
+
+    #caption {
+      font-weight: bold;
+    }
+
+    #filter {
+      width: 220px;
+      background-color: #222;
+      color: #eee;
+      border: 1px solid #777;
+      padding: 2px 4px;
+    }
+
+    #status {
+      margin-left: auto;
+      margin-right: 0;
+      color: #d88;
+    }
+
+    #count {
+      color: #aaa;
     }
 
     #dm-log {
-      display: table;
+      flex: 1 1 auto;
+      overflow: auto;
       background-color: rgba(20, 30, 25, 0.5);
-      position: absolute;
-      left: 8px; top: 60px; width:999px; height: 25px
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.35;
+      padding: 4px 8px;
+    }
+
+    .rec {
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      /* hanging indent: a wrapped line resumes under the message, not under the time column */
+      padding-left: 9ch;
+      text-indent: -9ch;
+    }
+
+    .rec.sep {
+      border-top: 1px solid #4a5a50;
+      margin-top: 3px;
+      padding-top: 3px;
+    }
+
+    .t {
+      display: inline-block;
+      width: 9ch;
+      color: #8a8;
+    }
+
+    .hl {
+      background-color: #665500;
+      color: #fff;
     }
   </style>
 
   <script src="../jquery-1.10.1.min.js"></script>
-  <!--script src="../jquery-ui-1.10.3.interact.min.js"></script-->
 
-  <script language="javascript" type="text/javascript">
-    cookieLifeTime = 60*60*24*1000
+  <script type="text/javascript">
+    var POLL_MS = 500;
+    var POLL_MAX_MS = 10000;
+    var POLL_TIMEOUT_MS = 5000;
+    var MAX_ROWS = 2000;
 
-    lastDMLogRecId = -1
+    // bare %f prints six decimals; %.1f and %.2f lines must stay untouched
+    var LONG_FRACTION_RE = /\d+\.\d{6,}/g;
 
-    function update_dm_log(data) {
+    var lastDMLogRecId = -1;
+    var logGeneration = 0;
+    var lastTimeText = null;
+    var pollDelay = POLL_MS;
+    var pollTimer = null;
+    var clearInFlight = false;
+    var clearFailure = null;
+    var rows = [];
+
+    function shortenNumbers(text) {
+      return text.replace(LONG_FRACTION_RE, function (m) { return parseFloat(m).toFixed(2); });
+    }
+
+    function appendHighlighted(parent, text, needle) {
+      if (!needle) {
+        parent.appendChild(document.createTextNode(text));
+        return;
+      }
+
+      var hay = text.toLowerCase();
+      var find = needle.toLowerCase();
+      var from = 0;
+
+      for (;;) {
+        var at = hay.indexOf(find, from);
+        if (at < 0)
+          break;
+        if (at > from)
+          parent.appendChild(document.createTextNode(text.slice(from, at)));
+        var mark = document.createElement('span');
+        mark.className = 'hl';
+        mark.appendChild(document.createTextNode(text.slice(at, at + find.length)));
+        parent.appendChild(mark);
+        from = at + find.length;
+      }
+
+      parent.appendChild(document.createTextNode(text.slice(from)));
+    }
+
+    function renderRow(row, needle) {
+      var el = row.el;
+      while (el.firstChild)
+        el.removeChild(el.firstChild);
+
+      var time = document.createElement('span');
+      time.className = 't';
+      // a filter hides the row that carried the shared time, so stop suppressing repeats
+      time.appendChild(document.createTextNode(row.showTime || needle ? row.time : ''));
+      el.appendChild(time);
+
+      var msg = document.createElement('span');
+      appendHighlighted(msg, row.text, needle);
+      el.appendChild(msg);
+
+      var shown = !needle || row.text.toLowerCase().indexOf(needle.toLowerCase()) >= 0;
+      el.style.display = shown ? '' : 'none';
+    }
+
+    function addRecord(rec, needle) {
+      var timeText = Number(rec.time).toFixed(2);
+      var raw = String(rec.msg);
+      var text = shortenNumbers(raw);
+
+      var el = document.createElement('div');
+      el.className = 'rec';
+      if (lastTimeText !== null && timeText !== lastTimeText)
+        el.className = 'rec sep';
+      if (text !== raw)
+        el.title = raw;
+
+      var row = { el: el, time: timeText, showTime: timeText !== lastTimeText, text: text };
+      lastTimeText = timeText;
+
+      renderRow(row, needle);
+      rows.push(row);
+      document.getElementById('dm-log').appendChild(el);
+    }
+
+    function trimRows() {
+      if (rows.length <= MAX_ROWS)
+        return;
+
+      var log = document.getElementById('dm-log');
+      var drop = rows.length - MAX_ROWS;
+      for (var i = 0; i < drop; ++i)
+        log.removeChild(rows[i].el);
+      rows = rows.slice(drop);
+    }
+
+    function scrollToBottom() {
+      var log = document.getElementById('dm-log');
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function resetLog() {
+      var log = document.getElementById('dm-log');
+      while (log.firstChild)
+        log.removeChild(log.firstChild);
+      rows = [];
+      lastDMLogRecId = -1;
+      lastTimeText = null;
+      ++logGeneration;
+      pollDelay = POLL_MS;
+      clearFailure = null;
+      setStatus('');
+      if (pollTimer) {
+        clearTimeout(pollTimer);
+        pollTimer = null;
+      }
+      updateCount();
+    }
+
+    function updateCount() {
+      $('#count').text(rows.length + ' lines');
+    }
+
+    function setStatus(text) {
+      $('#status').text(text);
+    }
+
+    function onData(data) {
       if (!data)
-        return
-
-      var root = $('#dm-log')
+        return true;
 
       if (data.clear) {
-        lastDMLogRecId = -1
-        root.empty()
-        return
+        resetLog();
+        return true;
       }
 
-      var messages = data.messages
-      if (!messages.length)
-        return
+      var messages = data.messages;
+      if (!messages || !messages.length)
+        return true;
 
-      for (var i=0; i<messages.length; ++i) {
-        var el = $(document.createElement('div'))
-        var rec = messages[i]
-        el.text(rec.time + ' ' + rec.msg)
-        root.append(el)
-      }
-      lastDMLogRecId = messages[messages.length-1].id
+      // without a usable id the next poll would ask for lastId=undefined, which the server
+      // reads as 0 and answers with the whole buffer, for ever and without a sign
+      var last = messages[messages.length - 1];
+      var lastId = last && last.id != null ? Number(last.id) : NaN;
+      if (!isFinite(lastId))
+        return false;
+
+      var needle = $('#filter').val();
+      for (var i = 0; i < messages.length; ++i)
+        if (messages[i])
+          addRecord(messages[i], needle);
+
+      lastDMLogRecId = lastId;
+      trimRows();
+      updateCount();
+
+      if ($('#follow').is(':checked'))
+        scrollToBottom();
+
+      return true;
     }
 
-    function updateSlow() {
-      $.ajax({type:'GET', url:'/dm_log?lastId='+lastDMLogRecId, success:update_dm_log })
+    function schedulePoll(delay) {
+      if (pollTimer)
+        clearTimeout(pollTimer);
+      pollTimer = clearInFlight ? null : setTimeout(poll, delay);
     }
 
-
-    function local_debug_init() {
-      var root = $('#dm-log')
-      for (var i=0; i<500; ++i) {
-        var el = $(document.createElement('div'))
-        el.text("Jingle bells jingle bells")
-        root.append(el)
-      }
+    function onPollOk() {
+      pollDelay = POLL_MS;
+      // a clear that never reached the server leaves the old records in place, and they come back
+      // on this very poll, so the only sign that it failed has to outlive the healthy answers
+      setStatus(clearFailure || '');
+      schedulePoll(pollDelay);
     }
 
-    function init() {
-      if (document.location.protocol != 'file:') {
-        setInterval(updateSlow, 500);
-      } else {
-        local_debug_init()
-      }
+    function onPollFail(reason) {
+      pollDelay = Math.min(pollDelay * 2, POLL_MAX_MS);
+      setStatus(reason + ', retry in ' + (pollDelay / 1000).toFixed(1) + ' s');
+      console.warn('dmlog: ' + reason);
+      schedulePoll(pollDelay);
     }
 
-    function on_clear_dm_log(data) {
+    function transportFailure(jqXHR, textStatus) {
+      if (jqXHR.status)
+        return 'no answer (' + jqXHR.status + ')';
+      if (textStatus === 'timeout' || textStatus === 'abort')
+        return 'no answer (' + textStatus + ')';
+      return 'no answer (offline)';
+    }
+
+    function poll() {
+      var generation = logGeneration;
+      $.ajax({
+        type: 'GET',
+        url: '/dm_log?lastId=' + lastDMLogRecId,
+        dataType: 'json',
+        timeout: POLL_TIMEOUT_MS,
+        success: function (data) {
+          // this answer was asked for before the log was cleared, so its records and its ids
+          // belong to a session the page no longer shows
+          if (generation !== logGeneration)
+            onPollOk();
+          else if (onData(data))
+            onPollOk();
+          else
+            onPollFail('answer carries no record id');
+        },
+        error: function (jqXHR, textStatus) {
+          if (generation !== logGeneration)
+            onPollOk();
+          // a server that predates the transport fix answers "nothing new" with an empty body,
+          // which jQuery reports as a parse error on a perfectly good 200
+          else if (jqXHR.status === 200 && !jqXHR.responseText)
+            onPollOk();
+          else if (jqXHR.status === 200)
+            onPollFail('answer not readable (Clear skips it)');
+          else
+            onPollFail(transportFailure(jqXHR, textStatus));
+        }
+      });
+    }
+
+    function onClearClick() {
+      // reset before the answer, not after it: a lost answer would otherwise leave the page
+      // holding an id the cleared server will never reach again
+      resetLog();
+      // nothing may poll until the clear is answered: a server that has not cleared yet would hand
+      // the page back the ids of the session it just dropped
+      clearInFlight = true;
+      var generation = logGeneration;
       $.ajax({
         type: 'POST',
         url: '/dm_log/clear',
-        success: function(data, textStatus, jqXHR) {
+        timeout: POLL_TIMEOUT_MS,
+        error: function (jqXHR, textStatus) {
+          if (generation !== logGeneration)
+            return;
+          // the request may well have cleared the log and lost only its answer, and the page has no
+          // way to tell the two apart, so it claims no more than that nothing confirmed it
+          clearFailure = 'clear not confirmed: ' + textStatus;
+          setStatus(clearFailure);
         },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('Clear error.\n\nError:\n\n' + textStatus + '\n\n' + errorThrown)
+        // a clear this one replaced can still be in flight, and its late answer must neither report
+        // a failure the operator already retried nor open the gate under the clear that replaced it
+        complete: function () {
+          if (generation !== logGeneration)
+            return;
+          clearInFlight = false;
+          schedulePoll(POLL_MS);
         }
-      })
+      });
     }
 
-    window.onload = init;
+    function onFilterInput() {
+      var needle = $('#filter').val();
+      for (var i = 0; i < rows.length; ++i)
+        renderRow(rows[i], needle);
+      if ($('#follow').is(':checked'))
+        scrollToBottom();
+    }
 
+    function onLogScroll() {
+      var log = document.getElementById('dm-log');
+      if (log.scrollHeight - log.scrollTop - log.clientHeight > 4)
+        $('#follow').prop('checked', false);
+    }
+
+    $(function () {
+      $('#clear').click(onClearClick);
+      $('#filter').on('input', onFilterInput);
+      $('#dm-log').on('scroll', onLogScroll);
+      updateCount();
+      poll();
+    });
   </script>
 </head>
 
 <body>
-  <div class="caption">Damage model log</div>
-  <button onclick="on_clear_dm_log()">Clear log</button>
+  <div id="bar">
+    <span id="caption">Damage model log</span>
+    <input id="filter" type="text" placeholder="filter"/>
+    <label><input id="follow" type="checkbox" checked="checked"/> follow</label>
+    <button id="clear">Clear</button>
+    <span id="count"></span>
+    <span id="status"></span>
+  </div>
   <div id="dm-log"></div>
 </body>
 

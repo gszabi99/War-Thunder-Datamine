@@ -1,20 +1,22 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import shuffle
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "app" import APP_ID
+from "eventbus" import eventbus_subscribe
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout, defer
+from "dagor.http" import httpRequest, HTTP_SUCCESS
+from "json" import object_to_json_string
+from "auth_wt" import getPlayerTokenGlobal
+from "blkGetters" import get_cur_circuit_block
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-let { APP_ID } = require("app")
-let { eventbus_subscribe } = require("eventbus")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout, defer } = require("dagor.workcycle")
-let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { object_to_json_string } = require("json")
-let { getPlayerTokenGlobal } = require("auth_wt")
-let { get_cur_circuit_block } = require("blkGetters")
+from "types" import String, Table
+
 let logBQ = log_with_prefix("[BQ] ")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { shuffle } = require("%sqStdLibs/helpers/u.nut")
-let DataBlock = require("DataBlock")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_charserver_time_sec } = require("chard")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isMatchingOnline } = require("%scripts/clientState/clientStates.nut")
 
 const MAX_TIME_STAMP_VALUE_SEC = 2145916800 
@@ -62,7 +64,7 @@ function sendAll() {
   local count = 0
   foreach(msg in queue.get()) {
     let { tableId = null, data = null } = msg
-    if (type(tableId) != "string" || type(data) != "table") {
+    if (!(tableId instanceof String) || !(data instanceof Table)) {
       logerr($"[BQ] Bad type of tableId or data for event: tableId = {tableId}, type of data = {type(data)}")
       continue
     }

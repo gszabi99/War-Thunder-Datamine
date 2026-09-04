@@ -3,8 +3,6 @@ require app
 require net
 require DngHuman
 require HumanPhys
-require DagorSystem
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.inventory_common

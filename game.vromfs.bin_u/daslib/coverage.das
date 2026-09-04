@@ -30,11 +30,15 @@ require daslib/templates_boost
 
 let private builtin_files = fixed_array("fio.das", "ast.das", "builtin.das", "debugger.das", "network.das", "rtti.das")
 
+def private generated_call(var e : ExpressionPtr) : ExpressionPtr {
+    
+    e.genFlags.generated = true
+    return e
+}
+
 def private resolve_file_path(name : string) : string {
     for (bf in builtin_files) {
-        if (name == bf) {
-            return "{get_das_root()}/src/builtin/{name}"
-        }
+        if (name == bf) return "{get_das_root()}/src/builtin/{name}"
     }
     return name
 }
@@ -45,7 +49,7 @@ struct LineCov {
 
     def insert(x : uint) {
         
-        unsafe(lines[x]) += 1u
+        unsafe(lines[x])++
     }
 }
 
@@ -82,9 +86,9 @@ def private single_file_report(name : string) {
             }
             for (fname, entry in keys(funcs.func_cov), values(funcs.func_cov)) {
                 writer |> write("FNDA:{entry.hits |> int},{fname}\n")
-                fnFound += 1
+                fnFound++
                 if (entry.hits > 0u) {
-                    fnHit += 1
+                    fnHit++
                 }
             }
         }
@@ -101,9 +105,9 @@ def private single_file_report(name : string) {
                     taken = "{br.hits |> int}"
                 }
                 writer |> write("BRDA:{br.line |> int},{br.block_num |> int},{br.branch_num |> int},{taken}\n")
-                brFound += 1
+                brFound++
                 if (br.hits > 0u) {
-                    brHit += 1
+                    brHit++
                 }
             }
         }
@@ -145,26 +149,26 @@ def get_summary(cov_data) : array<FileSummary> {
     
     var res : array<FileSummary>
     for (file, data in keys(cov_data), values(cov_data)) {
-        var s = FileSummary(file = string(file))
+        var s = FileSummary(file = file)
         for (v in values(data.line_cov.lines)) {
             if (v > 0u) {
-                s.lineHits += 1u
+                s.lineHits++
             } else {
-                s.lineMissed += 1u
+                s.lineMissed++
             }
         }
         for (fc in values(data.func_cov)) {
             if (fc.hits > 0u) {
-                s.funcHits += 1u
+                s.funcHits++
             } else {
-                s.funcMissed += 1u
+                s.funcMissed++
             }
         }
         for (br in values(data.branch_cov)) {
             if (br.hits > 0u) {
-                s.branchHits += 1u
+                s.branchHits++
             } else {
-                s.branchMissed += 1u
+                s.branchMissed++
             }
         }
         res |> push(s)
@@ -173,9 +177,7 @@ def get_summary(cov_data) : array<FileSummary> {
 }
 
 def private pct_string(hits, total : uint) : string {
-    if (total == 0u) {
-        return "-"
-    }
+    if (total == 0u) return "-"
     let p = (hits * 1000u / total + 5u) / 10u
     return "{p:d}%"
 }
@@ -247,7 +249,7 @@ def public add_func_coverage(file : string; name : string) {
     
     coverageData |> get_with_default(file) $(var funcs) {
         funcs.func_cov |> get_with_default(name) $(var fc) {
-            fc.hits += 1u
+            fc.hits++
         }
     }
 }
@@ -255,9 +257,9 @@ def public add_func_coverage(file : string; name : string) {
 def public add_branch_coverage(file : string; branch_idx : uint) {
     
     coverageData |> get_with_default(file) $(var branches) {
-        branches.branch_cov |> modify(uint(branch_idx)) $(value) {
+        branches.branch_cov |> modify(branch_idx) $(value) {
             var res = value
-            res.hits += 1u
+            res.hits++
             return res
         }
     }
@@ -281,12 +283,8 @@ class CoverageMacro : AstVisitor {
     def override preVisitFunction(var fun : FunctionPtr) {
         
         func = fun
-        if (fun.flags.generated || fun.flags.init || fun.flags.builtIn) {
-            return
-        }
-        if (fun.at.fileInfo == null) {
-            return
-        }
+        if (fun.flags.generated || fun.flags.init || fun.flags.builtIn
+                || fun.at.fileInfo == null) return
         let file = resolve_file_path(string(fun.at.fileInfo.name))
         let fname = string(fun.name)
         let line = fun.at.line
@@ -298,17 +296,11 @@ class CoverageMacro : AstVisitor {
     }
 
     def override canVisitFunction(fun : Function?) : bool {
-        if (fun.flags.init || fun.flags.builtIn) {
-            return false
-        }
+        if (fun.flags.init || fun.flags.builtIn) return false
         for (ann in fun.annotations) {
-            if (ann.annotation.name != "marker") {
-                continue
-            }
+            if (ann.annotation.name != "marker") continue
             for (arg in ann.arguments) {
-                if (arg.name == "no_coverage") {
-                    return false
-                }
+                if (arg.name == "no_coverage") return false
             }
         }
         return true
@@ -316,26 +308,19 @@ class CoverageMacro : AstVisitor {
 
     def override preVisitFunctionBody(fun : FunctionPtr; expr : ExpressionPtr) {
         
-        if (fun.flags.generated || fun.flags.init || fun.flags.builtIn) {
-            return
-        }
-        if (fun.at.fileInfo == null) {
-            return
-        }
-        if (!(expr is ExprBlock)) {
-            return
-        }
+        if (fun.flags.generated || fun.flags.init || fun.flags.builtIn
+                || fun.at.fileInfo == null || !(expr is ExprBlock)) return
         let file = resolve_file_path(string(fun.at.fileInfo.name))
         let fname = string(fun.name)
-        var blk = unsafe(reinterpret<ExprBlock?> expr)
+        var blk = unsafe(reinterpret<ExprBlock?>(expr))
         var prev : array<ExpressionPtr>
         for (ex in blk.list) {
             prev.emplace(ex)
         }
         blk.list |> clear()
-        blk.list |> emplace_new <| qmacro(_::add_func_coverage($v(file), $v(fname)))
-        for (el in range(prev |> length)) {
-            blk.list |> emplace <| prev[el]
+        blk.list |> emplace_new <| generated_call(qmacro(_::add_func_coverage($v(file), $v(fname))))
+        for (el in prev) {
+            blk.list |> emplace <| el
         }
         astChanged = true
         func.not_inferred()
@@ -343,21 +328,14 @@ class CoverageMacro : AstVisitor {
 
     def override visitExprIfThenElse(var ifte : ExprIfThenElse?) : ExpressionPtr {
         
-        
-        
-        
-        if (ifte.at.fileInfo == null) {
-            return <- ifte
-        }
+        if (ifte.at.fileInfo == null) return <- ifte
         let file = resolve_file_path(string(ifte.at.fileInfo.name))
-        if (file |> ends_with("coverage.das")) {
-            return <- ifte
-        }
+        if (file |> ends_with("coverage.das")) return <- ifte
         let line = ifte.at.line
         var block_num : uint
         registration_data |> get_with_default(file) $(var file_reg) {
             block_num = file_reg.branchCounter
-            file_reg.branchCounter += 1u
+            file_reg.branchCounter++
         }
         var true_idx : uint
         var false_idx : uint
@@ -370,33 +348,33 @@ class CoverageMacro : AstVisitor {
         }
         
         if (ifte.if_true != null && ifte.if_true is ExprBlock) {
-            var true_blk = unsafe(reinterpret<ExprBlock?> ifte.if_true)
+            var true_blk = unsafe(reinterpret<ExprBlock?>(ifte.if_true))
             var prevTrue : array<ExpressionPtr>
             for (ex in true_blk.list) {
                 prevTrue.emplace(ex)
             }
             true_blk.list |> clear()
-            true_blk.list |> emplace_new <| qmacro(_::add_branch_coverage($v(file), $v(true_idx)))
-            for (el in range(prevTrue |> length)) {
-                true_blk.list |> emplace <| prevTrue[el]
+            true_blk.list |> emplace_new <| generated_call(qmacro(_::add_branch_coverage($v(file), $v(true_idx))))
+            for (el in prevTrue) {
+                true_blk.list |> emplace <| el
             }
         }
         
         if (ifte.if_false != null && ifte.if_false is ExprBlock) {
-            var false_blk = unsafe(reinterpret<ExprBlock?> ifte.if_false)
+            var false_blk = unsafe(reinterpret<ExprBlock?>(ifte.if_false))
             var prevFalse : array<ExpressionPtr>
             for (ex in false_blk.list) {
                 prevFalse.emplace(ex)
             }
             false_blk.list |> clear()
-            false_blk.list |> emplace_new <| qmacro(_::add_branch_coverage($v(file), $v(false_idx)))
-            for (el in range(prevFalse |> length)) {
-                false_blk.list |> emplace <| prevFalse[el]
+            false_blk.list |> emplace_new <| generated_call(qmacro(_::add_branch_coverage($v(file), $v(false_idx))))
+            for (el in prevFalse) {
+                false_blk.list |> emplace <| el
             }
         } elif (ifte.if_false == null) {
             
             var elseBlk = new ExprBlock(at = ifte.at)
-            elseBlk.list |> emplace_new <| qmacro(_::add_branch_coverage($v(file), $v(false_idx)))
+            elseBlk.list |> emplace_new <| generated_call(qmacro(_::add_branch_coverage($v(file), $v(false_idx))))
             ifte.if_false = elseBlk
         }
         astChanged = true
@@ -406,9 +384,7 @@ class CoverageMacro : AstVisitor {
 
     def override visitExprBlock(var blk : ExprBlock?) : ExpressionPtr {
         
-        if (blk.at.fileInfo == null) {
-            return <- blk
-        }
+        if (blk.at.fileInfo == null) return <- blk
         astChanged = true
         func.not_inferred()
         var prev : array<ExpressionPtr>
@@ -416,16 +392,16 @@ class CoverageMacro : AstVisitor {
             prev.emplace(ex)
         }
         blk.list |> clear()
-        for (el in range(prev |> length)) {
+        for (el in prev) {
             
-            if (prev[el].at.fileInfo != null) {
-                let file = resolve_file_path(string(prev[el].at.fileInfo.name))
+            if (el.at.fileInfo != null) {
+                let file = resolve_file_path(string(el.at.fileInfo.name))
                 if (file |> ends_with("coverage.das")) {
-                    blk.list |> emplace <| prev[el]
+                    blk.list |> emplace <| el
                     continue
                 }
                 let fname = string(func.name)
-                let line = prev[el].at.line
+                let line = el.at.line
                 coverageData |> get_with_default(file) $(var data) {
                     data.line_cov.insert(line)
                 }
@@ -434,8 +410,8 @@ class CoverageMacro : AstVisitor {
                         flines |> insert(line)
                     }
                 }
-                blk.list |> emplace_new <| qmacro(_::add_line_coverage($v(file), $v(fname), $v(line)))
-                blk.list |> emplace <| prev[el]
+                blk.list |> emplace_new <| generated_call(qmacro(_::add_line_coverage($v(file), $v(fname), $v(line))))
+                blk.list |> emplace <| el
             }
         }
         return <- blk
@@ -457,25 +433,19 @@ class CoveragePass : AstPassMacro {
     
     def override apply(prog : ProgramPtr; mod : Module?) : bool {
         
-        if (mod.name == "coverage" || (prog._options |> find_arg("no_coverage") ?as tBool ?? false)) {
-            return false
-        }
+        if (mod.name == "coverage" || (prog._options |> find_arg("no_coverage") ?as tBool ?? false)) return false
         var found = false
-        mod |> for_each_function("__coverage_init") $(fn) {
+        mod |> for_each_function("__coverage_init") $(_fn) {
             found = true
         }
-        if (found) {
-            return false
-        }
+        if (found) return false
         var covModule : Module?
         program_for_each_module(prog) $(m) {
             if (m.name == "coverage") {
                 covModule = m
             }
         }
-        if (covModule == null) {
-            return false
-        }
+        if (covModule == null) return false
         add_module_require(mod, covModule, false)
         var astVisitor = new CoverageMacro()
         make_visitor(*astVisitor) $(astVisitorAdapter) {
@@ -487,33 +457,27 @@ class CoveragePass : AstPassMacro {
             var initFn = qmacro_function("__coverage_init") $() {
                 pass
             }
-            var blk = unsafe(reinterpret<ExprBlock?> initFn.body)
+            var blk = unsafe(reinterpret<ExprBlock?>(initFn.body))
             blk.list |> clear()
             for (file, values in keys(coverageData), values(coverageData)) {
                 
-                var lineArr : array<uint>
-                for (line in keys(values.line_cov.lines)) {
-                    lineArr |> push(line)
-                }
-                blk.list |> emplace_new <| qmacro(_::register_coverage_lines($v(string(file)), $v(lineArr)))
+                let lineArr <- [for (line in keys(values.line_cov.lines)); line]
+                blk.list |> emplace_new <| qmacro(_::register_coverage_lines($v(file), $v(lineArr)))
             }
             for (file, reg_data in keys(registration_data), values(registration_data)) {
                 
                 var nameArr : array<string>
                 var lineArr : array<uint>
                 for (fname, fline in keys(reg_data.allFunctions), values(reg_data.allFunctions)) {
-                    nameArr |> push(string(fname))
+                    nameArr |> push(fname)
                     lineArr |> push(fline)
                 }
-                blk.list |> emplace_new <| qmacro(coverage::register_coverage_functions($v(string(file)), $v(nameArr), $v(lineArr)))
+                blk.list |> emplace_new <| qmacro(coverage::register_coverage_functions($v(file), $v(nameArr), $v(lineArr)))
 
                 
                 for (fname, flines in keys(reg_data.funcLines), values(reg_data.funcLines)) {
-                    var flineArr : array<uint>
-                    for (fl in keys(flines)) {
-                        flineArr |> push(fl)
-                    }
-                    blk.list |> emplace_new <| qmacro(coverage::register_coverage_func_lines($v(string(file)), $v(string(fname)), $v(flineArr)))
+                    let flineArr <- [for (fl in keys(flines)); fl]
+                    blk.list |> emplace_new <| qmacro(coverage::register_coverage_func_lines($v(file), $v(fname), $v(flineArr)))
                 }
 
                 
@@ -529,7 +493,7 @@ class CoveragePass : AstPassMacro {
                     block_nums |> push(reg_data.allBranches[i]._1)
                     branch_nums |> push(reg_data.allBranches[i]._2)
                 }
-                blk.list |> emplace_new <| qmacro(coverage::register_coverage_branches($v(string(file)), $v(blines), $v(block_nums), $v(branch_nums)))
+                blk.list |> emplace_new <| qmacro(coverage::register_coverage_branches($v(file), $v(blines), $v(block_nums), $v(branch_nums)))
 
             }
             initFn.flags |= FunctionFlags.generated | FunctionFlags.init | FunctionFlags.privateFunction
@@ -589,9 +553,9 @@ def get_coverage_summary(cov_data : table<string; CoverageData>;
                         var fLineMissed : uint
                         for (v in values(fc.line_cov.lines)) {
                             if (v > 0u) {
-                                fLineHits += 1u
+                                fLineHits++
                             } else {
-                                fLineMissed += 1u
+                                fLineMissed++
                             }
                         }
                         if (fLineHits + fLineMissed > 0u) {
@@ -609,9 +573,7 @@ def get_coverage_summary(cov_data : table<string; CoverageData>;
 
 def is_excluded(file : string; exclude_prefixes : array<string>) : bool {
     for (prefix in exclude_prefixes) {
-        if (file |> starts_with(prefix)) {
-            return true
-        }
+        if (file |> starts_with(prefix)) return true
     }
     return false
 }
@@ -632,17 +594,13 @@ def parse_lcov(lcov_path : string; exclude_prefixes : array<string>) : table<str
         }
         while (!feof(f)) {
             let line = fgets(f) |> strip()
-            if (line |> empty() || line == "end_of_record" || line == "TN:") {
-                continue
-            }
+            if (line |> empty() || line == "end_of_record" || line == "TN:") continue
             if (line |> starts_with("SF:")) {
                 currentFile = slice(line, 3)
                 skipFile = is_excluded(currentFile, exclude_prefixes)
                 continue
             }
-            if (skipFile) {
-                continue
-            }
+            if (skipFile) continue
             result |> get_with_default(currentFile) $(var cov) {
                 if (line |> starts_with("FN:")) {
                     
@@ -655,7 +613,7 @@ def parse_lcov(lcov_path : string; exclude_prefixes : array<string>) : table<str
                             fc.line = fline
                         }
                         funcStarts |> get_with_default(currentFile) $(var starts) {
-                            starts |> push(tuple(fline, string(fname)))
+                            starts |> push(tuple(fline, fname))
                         }
                     }
                 } elif (line |> starts_with("FNDA:")) {
@@ -763,7 +721,7 @@ def public fill_coverage_report(var dest : string?; name : string = "") {
 }
 
 
-[export]
+[export, unused_argument(cov)]
 def public get_coverage_details(var cov : table<string; CoverageData>?) {
     return <- clone(coverageData)
 }

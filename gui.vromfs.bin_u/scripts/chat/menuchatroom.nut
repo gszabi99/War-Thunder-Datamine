@@ -1,26 +1,25 @@
+from "%globalScripts/chatState.nut" import ReputationType
+from "string" import format
+from "%sqstd/string.nut" import endsWith, slice, cutPrefix
+from "chard" import get_charserver_time_sec
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 let { checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
-let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
-let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY,
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { clanUserTable, getContactByName } = require("%scripts/contacts/contactsListState.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getPlayerFullName, colorizeWhitePsnIcon } = require("%scripts/contacts/contactsInfo.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isRoomClan, isRoomSquad } = require("%scripts/chat/chatRooms.nut")
 let { filterMessageText, filterNameFromHtmlCodes } = require("%scripts/chat/chatUtils.nut")
-let { getUserReputation, hasChatReputationFilter, getReputationBlockMessage
-} = require("%scripts/user/usersReputation.nut")
-let { ReputationType } = require("%globalScripts/chatState.nut")
+let { getUserReputation, hasChatReputationFilter, getReputationBlockMessage } = require("%scripts/user/usersReputation.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 enum MESSAGE_TYPE {
@@ -35,9 +34,9 @@ let chatPersistStorage = persist("chatPersistStorage", @() { lastCreatedMessageI
 let punctuation_list = [" ", ".", ",", ":", ";", "\"", "'", "~", "!", "@", "#", "$", "%", "^", "&", "*",
                        "(", ")", "+", "|", "-", "=", "\\", "/", "<", ">", "[", "]", "{", "}", "`", "?"]
 
-let privateColor = "@chatTextPrivateColor"
-let blockedColor = "@chatTextBlockedColor"
-let systemColor = "@chatInfoColor"
+const privateColor = "@chatTextPrivateColor"
+const blockedColor = "@chatTextBlockedColor"
+const systemColor = "@chatInfoColor"
 
 function localizeSystemMsg(msg) {
   local localized = false
@@ -89,7 +88,7 @@ function colorMyNameInText(msg) {
 }
 
 function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, important, needCensore, callback) {
-  let text = ""
+  const text = ""
   local clanTag = ""
   local uid = null
   local messageType = ""
@@ -292,7 +291,7 @@ function newRoom(id, customScene = null, ownerHandler = null) {
       if (mBlock.text == "" && mBlock.from != "") {
         let pLink = g_chat.generatePlayerLink(mBlock.from, mBlock.uid)
         mBlock.text = format("<Link=%s><Color=%s>%s</Color>:</Link> ", pLink, mBlock.userColor,
-          mBlock.fullName)
+          colorizeWhitePsnIcon(mBlock.fullName))
       }
 
       let resText = mBlock.userReputation == ReputationType.REP_BAD

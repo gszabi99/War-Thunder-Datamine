@@ -1,12 +1,13 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isArray
+from "blkGetters" import get_game_settings_blk
+from "%sqstd/math.nut" import roundToDigits
+from "chard" import calcTrophiesDropChance
+from "string" import format
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { request } = require("%scripts/inventory/inventoryClient.nut")
-let { roundToDigits } = require("%sqstd/math.nut")
-let { isArray } = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
-let { calcTrophiesDropChance } = require("chard")
-let { format } = require("string")
 
 let chestPrizeChanceCache = {}
 let trophyPrizeChanceCache = {}

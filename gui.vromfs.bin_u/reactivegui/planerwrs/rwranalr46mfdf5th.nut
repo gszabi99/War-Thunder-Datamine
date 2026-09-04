@@ -1,16 +1,15 @@
+import "%rGui/planeRwrs/rwrAnAlr46Components.nut" as rwrTargetsComponent
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/planeState/planeToolsState.nut" import MfdRwrFontScale
 from "%rGui/globals/ui_library.nut" import *
 
-let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
-let rwrTargetsComponent = require("%rGui/planeRwrs/rwrAnAlr46Components.nut")
-let { MfdRwrFontScale } = require("%rGui/planeState/planeToolsState.nut")
-
-let color = Color(10, 100, 250, 255)
-let textColor = Color(10, 255, 10, 255)
-let backgroundColor = Color(0, 0, 0, 255)
+const color = Color(10, 100, 250, 255)
+const textColor = Color(10, 255, 10, 255)
+const backgroundColor = Color(0, 0, 0, 255)
 let baseLineWidth = LINE_WIDTH * 0.6
-let osbFontSizeMult = 1.0
-let cmsFontSizeMult = 1.3
-let iconRadiusBaseRel = 0.15
+const osbFontSizeMult = 1.0
+const cmsFontSizeMult = 1.3
+const iconRadiusBaseRel = 0.15
 let styleText = {
   color = textColor
   font = Fonts.hud
@@ -19,12 +18,12 @@ let styleText = {
   fontFx = FFT_GLOW
   fontSize = getFontDefHt("hud")
 }
-let gridScale = 0.6
+const gridScale = 0.6
 
 function createNumScale(ringStyle, gridStyle) {
   let numScaleStyle = {
     rendObj = ROBJ_TEXT
-    size = flex()
+    size = FLEX
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     color = color
@@ -54,7 +53,7 @@ function createGrid(gridStyle) {
     diamond      = 0.02
   }
   return {
-    pos = [pw(50), ph(50)]
+    pos = const [pw(50), ph(50)]
     size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
@@ -90,14 +89,14 @@ function scope(scale, style) {
     styleText
   }
   let fontScale = MfdRwrFontScale.get() > 0.0 ? MfdRwrFontScale.get() : 1.0
-  let gridPos = (1.0 - gridScale) * 0.5 * 100
+  const gridPos = (1.0 - gridScale) * 0.5 * 100
   return @(){
     size = [pw(scale), ph(scale)]
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
     children = [
       {
-        pos = [(pw(gridPos)), ph(gridPos)]
+        pos = const [(pw(gridPos)), ph(gridPos)]
         size = [pw(100.0 * gridScale * style.grid.scale), ph(100.0 * gridScale * style.grid.scale)]
         children = [
           rwrTargetsComponent(style.object, styleArgs),
@@ -106,8 +105,8 @@ function scope(scale, style) {
       },
       styleText.__merge({
         rendObj = ROBJ_TEXTAREA
-        pos = [pw(32), ph(-55)]
-        size = flex()
+        pos = const [pw(32), ph(-55)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         behavior = Behaviors.TextArea
@@ -116,8 +115,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXTAREA
-        pos = [pw(65), ph(-55)]
-        size = flex()
+        pos = const [pw(65), ph(-55)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_TOP
         behavior = Behaviors.TextArea
@@ -126,8 +125,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(-55), ph(-65)]
-        size = flex()
+        pos = const [pw(-55), ph(-65)]
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
@@ -135,8 +134,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXTAREA
-        pos = [pw(55), ph(-65)]
-        size = flex()
+        pos = const [pw(55), ph(-65)]
+        size = FLEX
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
@@ -145,8 +144,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXTAREA
-        pos = [pw(55), ph(32)]
-        size = flex()
+        pos = const [pw(55), ph(32)]
+        size = FLEX
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
@@ -155,8 +154,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXTAREA
-        pos = [pw(55), ph(85)]
-        size = flex()
+        pos = const [pw(55), ph(85)]
+        size = FLEX
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
@@ -165,8 +164,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXTAREA
-        pos = [pw(-55), ph(32)]
-        size = flex()
+        pos = const [pw(-55), ph(32)]
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         behavior = Behaviors.TextArea
@@ -175,8 +174,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(-55), ph(-32)]
-        size = flex()
+        pos = const [pw(-55), ph(-32)]
+        size = FLEX
         halign = ALIGN_LEFT
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * osbFontSizeMult * fontScale
@@ -184,14 +183,14 @@ function scope(scale, style) {
       }),
       @() styleText.__merge({
         rendObj = ROBJ_FRAME
-        pos = [pw(-60), ph(95)]
+        pos = const [pw(-60), ph(95)]
         size = [pw(30), style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         borderWidth = baseLineWidth * 2.0
         children = @(){
           watch = ChaffsCount
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXT
           color = Color(10, 255, 10, 255)
           fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
@@ -203,8 +202,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(-60), ph(80)]
-        size = flex()
+        pos = const [pw(-60), ph(80)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
@@ -212,14 +211,14 @@ function scope(scale, style) {
       }),
       @() styleText.__merge({
         rendObj = ROBJ_FRAME
-        pos = [pw(63), ph(95)]
+        pos = const [pw(63), ph(95)]
         size = [pw(30), style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale]
         vplace = ALIGN_CENTER
         hplace = ALIGN_CENTER
         borderWidth = baseLineWidth * 2.0
         children = @(){
           watch = FlaresCount
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXT
           color = Color(10, 255, 10, 255)
           fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
@@ -231,8 +230,8 @@ function scope(scale, style) {
       }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(60), ph(80)]
-        size = flex()
+        pos = const [pw(60), ph(80)]
+        size = FLEX
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * cmsFontSizeMult * fontScale
@@ -241,8 +240,8 @@ function scope(scale, style) {
       @() styleText.__merge({
         watch = [FlaresCount, ChaffsCount]
         rendObj = ROBJ_TEXT
-        pos = [pw(0), ph(95)]
-        size = flex()
+        pos = const [pw(0), ph(95)]
+        size = FLEX
         color = FlaresCount.get() + ChaffsCount.get() > 0 ? textColor : Color(255, 255, 10, 255)
         halign = ALIGN_CENTER
         valign = ALIGN_CENTER

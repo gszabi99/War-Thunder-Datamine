@@ -1,9 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { Hud } = require("%scripts/hud/hud.nut")
 let backToMainScene = require("%scripts/mainmenu/backToMainScene.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 local lastBaseHandlerStartData = null
 
 function updateBackSceneObj(handler) {
@@ -41,7 +42,7 @@ function setModalBreadcrumbGoBackParams(handler) {
 
 add_event_listener("SwitchedBaseHandler", function(_p) {
   let handlerClass = handlersManager.getActiveBaseHandler()?.getclass()
-  if (handlerClass == gui_handlers.MainMenu || handlerClass == gui_handlers.Hud)
+  if (handlerClass == get_gui_handler("MainMenu") || handlerClass == Hud)
     lastBaseHandlerStartData = null
 }, this)
 

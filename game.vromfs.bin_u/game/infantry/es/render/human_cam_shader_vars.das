@@ -2,7 +2,6 @@ require ecs
 require app
 require WTCamera
 require DagorShaders
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.hitpoints_common

@@ -442,27 +442,27 @@
   },
   "traceStrategy": {
     "pattern0": {
-      "caliber": 10.0,
+      "minCaliber": 10.0,
       "circleCount": 1,
       "pointCount": 3
     },
     "pattern1": {
-      "caliber": 20.0,
+      "minCaliber": 20.0,
       "circleCount": 1,
       "pointCount": 4
     },
     "pattern2": {
-      "caliber": 35.0,
+      "minCaliber": 35.0,
       "circleCount": 1,
       "pointCount": 6
     },
     "pattern3": {
-      "caliber": 85.0,
+      "minCaliber": 85.0,
       "circleCount": 2,
       "pointCount": 6
     },
     "pattern4": {
-      "caliber": 140.0,
+      "minCaliber": 140.0,
       "circleCount": 3,
       "pointCount": 5
     }
@@ -542,7 +542,8 @@
     "underwaterDamageScale": 1.0,
     "underwaterPenetrationScale": 1.0,
     "underwaterCountScale": 1.0,
-    "underwaterRadiusScale": 0.5
+    "underwaterRadiusScale": 0.5,
+    "statisticalShatterAgainstShells": true
   },
   "kineticDamage": {
     "damageType": "generic"
@@ -9954,6 +9955,8 @@
       "partClass": "autoloader"
     },
     "ammo": {
+      "isTank": true,
+      "isShip": true,
       "showDecorators": true,
       "partClass": [
         "ammo",
@@ -9962,6 +9965,8 @@
       ]
     },
     "propulsion": {
+      "isTank": true,
+      "isShip": true,
       "partClass": [
         "engine",
         "transmission",
@@ -9982,6 +9987,8 @@
       ]
     },
     "fuel": {
+      "isTank": true,
+      "isShip": true,
       "partClass": [
         "fuel",
         "coal_bunker_NN"
@@ -10082,6 +10089,96 @@
     "crew_ship": {
       "isShip": true,
       "partClass": "compartment_NN"
+    },
+    "armor_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "showViewerArmorParts": true
+    },
+    "crew_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "pilot",
+        "aircraft_gunner"
+      ]
+    },
+    "propulsion_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "aircraft_engine",
+        "aircraft_transmission",
+        "aircraft_engine_shaft",
+        "aircraft_propeller_shaft"
+      ]
+    },
+    "fuel_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "tank",
+        "oil",
+        "water"
+      ]
+    },
+    "weapon_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "aircraft_gun",
+        "gun"
+      ]
+    },
+    "sensors_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "sensor",
+        "optic_blockN"
+      ]
+    },
+    "avionics_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "cockpit_controlN",
+        "cockpit_countrolN",
+        "electronic_blockN",
+        "ircmN",
+        "apuN"
+      ]
+    },
+    "controls_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "wingcontrol",
+        "tailcontrol",
+        "sweep_wing"
+      ]
+    },
+    "structure_air": {
+      "isTank": false,
+      "isShip": false,
+      "isAir": true,
+      "partClass": [
+        "spar",
+        "spar_l",
+        "spar_r",
+        "spar1_l",
+        "spar1_r",
+        "spar2_l",
+        "spar2_r"
+      ]
     }
   }
 }

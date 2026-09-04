@@ -1,11 +1,13 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
+local PopupFilterWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
@@ -218,7 +220,7 @@ local PopupFilterWindow = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.PopupFilterWindow <- PopupFilterWindow
+register_gui_handler("PopupFilterWindow", PopupFilterWindow)
 
 return {
   PopupFilterWindow

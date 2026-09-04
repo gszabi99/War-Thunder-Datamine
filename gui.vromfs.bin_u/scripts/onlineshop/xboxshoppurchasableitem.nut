@@ -1,18 +1,18 @@
+import "statsd" as statsd
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "%sqstd/math.nut" import calcPercent
+from "%sqstd/string.nut" import cutPrefix
+from "%gdkLib/impl/store.nut" import ProductKind, show_details, get_total_quantity, retrieve_product_info
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { calcPercent } = require("%sqstd/math.nut")
-let statsd = require("statsd")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
-let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 
-let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
+const XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "
 
 function product_kind_to_media_item_type(product_kind) {
   if (product_kind == ProductKind.Consumable)

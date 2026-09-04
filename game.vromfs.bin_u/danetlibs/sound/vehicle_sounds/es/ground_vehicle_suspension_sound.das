@@ -19,6 +19,7 @@ def ground_vehicle_suspension_sound(info : ParallelUpdateFrameDelayed;
                                     var ground_vehicle_suspension_sound__hitTime : float&;
                                     var ground_vehicle_suspension_sound__hitForce : float&;
                                     vehicle_sound_phys_state__noiseReduction : float;
+                                    is_watched_sound : bool;
                                     @shared_comp ground_vehicle_suspension_sound__path : Object;
                                     sound_tags : Object;
                                     isAlive : bool;
@@ -32,6 +33,6 @@ def ground_vehicle_suspension_sound(info : ParallelUpdateFrameDelayed;
         total += cvt(abs((*wheel).velocity), ground_vehicle_suspension_sound__hitToVar.x, ground_vehicle_suspension_sound__hitToVar.y, 0., 1.)
     total *= vehicle_sound_phys_state__noiseReduction
   let isValid = is_valid_handle_value(ground_vehicle_suspension_sound__event)
-  play_parameterized(ground_vehicle_suspension_sound__event, total, ground_vehicle_suspension_sound__hitForce, "force", transform[3], ground_vehicle_suspension_sound__path, sound_tags, true, info.curTime, ground_vehicle_suspension_sound__hitTime)
+  play_parameterized(ground_vehicle_suspension_sound__event, total, ground_vehicle_suspension_sound__hitForce, "force", transform[3], ground_vehicle_suspension_sound__path, sound_tags, is_watched_sound, info.curTime, ground_vehicle_suspension_sound__hitTime)
   if !isValid && is_valid_handle_value(ground_vehicle_suspension_sound__event)
     attach_to_blob(ground_vehicle_suspension_sound__event, vehicle_sound_occlusion__blob)

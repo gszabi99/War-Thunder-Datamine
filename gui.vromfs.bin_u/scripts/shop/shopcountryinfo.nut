@@ -1,7 +1,9 @@
+from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { registerRespondent } = require("scriptRespondent")
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 

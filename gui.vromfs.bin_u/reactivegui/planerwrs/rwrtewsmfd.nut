@@ -1,21 +1,23 @@
+from "%rGui/twsState.nut" import rwrTargetsTriggers, RwrNewTargetHoldTimeInv, CurrentTime
+from "%rGui/planeState/planeFlyState.nut" import CompassValue
+from "%rGui/airState.nut" import FlaresCount, ChaffsCount
+from "%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut" import settings
+from "%rGui/planeRwrs/rwrAnAlr56Components.nut" import color, backgroundColor, baseLineWidth, calcRwrTargetRadius
+from "string" import format
+from "math" import sin, cos, PI
+from "%sqstd/math_ex.nut" import degToRad
 from "%rGui/globals/ui_library.nut" import *
 
-let { format } = require("string")
-let { sin, cos, PI } = require("math")
-let { degToRad } = require("%sqstd/math_ex.nut")
+let { rwrTargets } = require("%rGui/twsState.nut")
 
-let { rwrTargetsTriggers, rwrTargets, RwrNewTargetHoldTimeInv, CurrentTime } = require("%rGui/twsState.nut")
 
-let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
-let { FlaresCount, ChaffsCount } = require("%rGui/airState.nut")
-
-let {ThreatType, settings} = require("%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut")
-let { color, backgroundColor, baseLineWidth, styleText, calcRwrTargetRadius } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
+let { ThreatType } = require("%rGui/planeRwrs/rwrAnAlr56ThreatsLibrary.nut")
+let { styleText } = require("%rGui/planeRwrs/rwrAnAlr56Components.nut")
 
 function createOuterGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -29,15 +31,15 @@ function createOuterGrid(gridStyle) {
   }
 }
 
-let gridFontSizeMult = 0.5
+const gridFontSizeMult = 0.5
 
 function createCompass(gridStyle) {
-  let compassColor = Color(5, 100, 5, 250)
+  const compassColor = Color(5, 100, 5, 250)
 
-  let markAngleStep = 5.0
-  let markAngle = PI * markAngleStep / 180.0
+  const markAngleStep = 5.0
+  const markAngle = PI * markAngleStep / 180.0
   let markDashCount = (360.0 / markAngleStep).tointeger()
-  let azimuthMarkLength = 4
+  const azimuthMarkLength = 4
 
   let commands = array(markDashCount).map(@(_, i) [
     VECTOR_LINE,
@@ -47,15 +49,15 @@ function createCompass(gridStyle) {
     50 + sin(i * markAngle) * 100
   ])
 
-  let textAngleStep = 30.0
-  let textMarkAngle = PI * textAngleStep / 180.0
-  let textDashCount = 360.0 / textAngleStep
+  const textAngleStep = 30.0
+  const textMarkAngle = PI * textAngleStep / 180.0
+  const textDashCount = 360.0 / textAngleStep
   local azimuthMarks = []
   for (local i = 0; i < textDashCount; ++i) {
     azimuthMarks.append({
       rendObj = ROBJ_TEXT
       pos = [pw(sin(i * textMarkAngle) * 100), ph(-cos(i * textMarkAngle) * 100)],
-      size = flex(),
+      size = FLEX,
       color = compassColor,
       font = styleText.font,
       fontSize = gridStyle.fontScale * styleText.fontSize * gridFontSizeMult,
@@ -73,7 +75,7 @@ function createCompass(gridStyle) {
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex(),
+    size = FLEX,
     color = compassColor,
     lineWidth = baseLineWidth * 1 * gridStyle.lineWidthScale,
     fillColor = 0,
@@ -104,8 +106,8 @@ let innerGridCommands = makeInnerGridCommands()
 function createInnerGrid(gridStyle) {
   return {
     rendObj = ROBJ_VECTOR_CANVAS,
-    pos = [pw(50), ph(50)],
-    size = flex(),
+    pos = const [pw(50), ph(50)],
+    size = FLEX,
     color = color,
     lineWidth = baseLineWidth * gridStyle.lineWidthScale,
     fillColor = color,
@@ -113,7 +115,7 @@ function createInnerGrid(gridStyle) {
   }
 }
 
-let iconRadiusBaseRel = 0.2
+const iconRadiusBaseRel = 0.2
 
 function createRwrTarget(index, settingsIn, objectStyle) {
   let target = rwrTargets[index]
@@ -154,7 +156,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       if (!target.launch)
         background = @() {
           rendObj = ROBJ_VECTOR_CANVAS
-          size = flex()
+          size = FLEX
           lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
           color = backgroundColor
           fillColor = backgroundColor
@@ -182,7 +184,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
         }
       icon = @() {
         rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
+        size = FLEX
         lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale
         color = color
         fillColor = 0
@@ -227,7 +229,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
     background = @() {
       watch = attackOpacityRwr,
       rendObj = ROBJ_VECTOR_CANVAS,
-      size = flex(),
+      size = FLEX,
       lineWidth = baseLineWidth * (4 + 5) * objectStyle.lineWidthScale,
       color = backgroundColor,
       fillColor = backgroundColor,
@@ -237,7 +239,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
     launch = @() {
       watch = attackOpacityRwr,
       rendObj = ROBJ_VECTOR_CANVAS,
-      size = flex(),
+      size = FLEX,
       lineWidth = baseLineWidth * 4 * objectStyle.lineWidthScale,
       color = color,
       fillColor = 0,
@@ -247,8 +249,8 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   }
 
   return @() {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     children = [
       background,
       targetType,
@@ -261,7 +263,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
 let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -274,12 +276,12 @@ function scope(scale, style) {
     children = [
       createOuterGrid(style.grid),
       {
-        pos = [pw(5), ph(5)],
+        pos = const [pw(5), ph(5)],
         size = const [pw(90), ph(90)],
         children = [
           createCompass(style.grid),
           {
-            pos = [pw(5), ph(5)],
+            pos = const [pw(5), ph(5)],
             size = const [pw(90), ph(90)],
             children = [
               createInnerGrid(style.grid),
@@ -290,8 +292,8 @@ function scope(scale, style) {
       },
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(35), ph(-85)]
-        size = flex()
+        pos = const [pw(35), ph(-85)]
+        size = FLEX
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -301,8 +303,8 @@ function scope(scale, style) {
         styleText.__merge({
           watch = ChaffsCount
           rendObj = ROBJ_TEXT
-          pos = [pw(55), ph(-85)]
-          size = flex()
+          pos = const [pw(55), ph(-85)]
+          size = FLEX
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER
           fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -310,8 +312,8 @@ function scope(scale, style) {
         }),
       styleText.__merge({
         rendObj = ROBJ_TEXT
-        pos = [pw(35), ph(-75)]
-        size = flex()
+        pos = const [pw(35), ph(-75)]
+        size = FLEX
         halign = ALIGN_RIGHT
         valign = ALIGN_CENTER
         fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -321,8 +323,8 @@ function scope(scale, style) {
         styleText.__merge({
           watch = FlaresCount
           rendObj = ROBJ_TEXT
-          pos = [pw(55), ph(-75)]
-          size = flex()
+          pos = const [pw(55), ph(-75)]
+          size = FLEX
           halign = ALIGN_RIGHT
           valign = ALIGN_CENTER
           fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
@@ -332,7 +334,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

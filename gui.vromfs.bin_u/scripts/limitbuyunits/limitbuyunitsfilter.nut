@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
 from "%scripts/dagui_library.nut" import *
 
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")

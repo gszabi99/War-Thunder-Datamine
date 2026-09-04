@@ -1,27 +1,26 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "dagor.fs" as dagor_fs
+import "regexp2" as regexp2
+import "DataBlock" as DataBlock
+from "language" import getLocalLanguage
+from "string" import format, strip
+from "console" import register_command
+from "unitCustomization" import get_skins_for_unit
+from "%sqstd/string.nut" import utf8ToLower, startsWith, lastIndexOf, replace
+from "blkGetters" import get_decals_blk, get_current_mission_info_cached
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import utf8_strlen
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
-let u = require("%sqStdLibs/helpers/u.nut")
 
 
 
-
-let { getLocalLanguage } = require("language")
-let dagor_fs = require("dagor.fs")
 let stdpath = require("%sqstd/path.nut")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
 let { getUnitTooltipImage, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
-let { format, strip } = require("string")
-let regexp2 = require("regexp2")
-let { register_command } = require("console")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
-let { get_skins_for_unit } = require("unitCustomization")
 let { getBestSkinsList } = require("%scripts/customization/skins.nut")
-let { utf8ToLower, startsWith, lastIndexOf, replace } = require("%sqstd/string.nut")
-let { get_decals_blk, get_current_mission_info_cached } = require("blkGetters")
-let DataBlock = require("DataBlock")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { isInFlight } = require("gameplayBinding")
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
 

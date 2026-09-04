@@ -35,7 +35,7 @@ let styling = {
   }
 
   ContentRoot = freeze({
-    size = flex()
+    size = FLEX
     skipDirPadNav = true
   })
 }

@@ -2,6 +2,7 @@ options gen2
 options indenting = 4
 options remove_unused_symbols = false
 options no_aot = true
+options no_global_variables = false
 options strict_smart_pointers = true
 
 module debugger shared public
@@ -36,11 +37,17 @@ class DapiDebugAgent {
     @do_not_delete thisAgent : DebugAgent ?
 }
 
+
+
+
+var private @ignore_heap_usage g_installed_agents : array<DapiDebugAgent?>
+
 def install_new_debug_agent(var agentPtr; category : string) {
     static_if (typeinfo is_class(*agentPtr)) {
         let agentInfo = class_info(*agentPtr)
         var inscope agentAdapter <- make_debug_agent(agentPtr, agentInfo)
         agentPtr.thisAgent = unsafe(reinterpret<DebugAgent?>(agentAdapter))
+        g_installed_agents |> push(unsafe(reinterpret<DapiDebugAgent?>(agentPtr)))
         install_debug_agent(agentAdapter, category)
         this_context().name := "debug agent {category}"
     } else {
@@ -53,6 +60,7 @@ def install_new_thread_local_debug_agent(var agentPtr) {
         let agentInfo = class_info(*agentPtr)
         var inscope agentAdapter <- make_debug_agent(agentPtr, agentInfo)
         agentPtr.thisAgent = unsafe(reinterpret<DebugAgent?>(agentAdapter))
+        g_installed_agents |> push(unsafe(reinterpret<DapiDebugAgent?>(agentPtr)))
         install_debug_agent_thread_local(agentAdapter)
         this_context().name := "thread local debug agent"
     } else {
@@ -63,17 +71,19 @@ def install_new_thread_local_debug_agent(var agentPtr) {
 
 struct DapiArray {
     data : void?
-    size : uint
-    capacity : uint
+    size : uint64
+    capacity : uint64
     lock : uint
     magic : uint
-    flags : bitfield<_shared; _hopeless>
+    flags : bitfield<_shared; _hopeless; _forego_lock_check; _tableNoHash; _borrowed; _scratch>
+    _pad_after_flags : uint
 }
 
 
 struct DapiTable : DapiArray {
     keys : void?
     hashes : uint?
+    tombstones : uint64
 }
 
 
@@ -106,7 +116,7 @@ class DapiDataWalker {
     def abstract canVisitStructure(ps : void?; si : StructInfo) : bool
     def abstract canVisitDim(ps : void?; ti : TypeInfo) : bool
     def abstract canVisitArray(pa : void?; ti : TypeInfo) : bool
-    def abstract canVisitArrayData(ti : TypeInfo; count : uint) : bool
+    def abstract canVisitArrayData(ti : TypeInfo; count : uint64) : bool
     def abstract canVisitTuple(ps : void?; ti : TypeInfo) : bool
     def abstract canVisitVariant(ps : void?; ti : TypeInfo) : bool
     def abstract canVisitTable(ps : void?; ti : TypeInfo) : bool
@@ -125,19 +135,19 @@ class DapiDataWalker {
     def abstract afterTupleEntry(ps : void?; ti : TypeInfo; pv : void?; idx : int; last : bool) : void
     def abstract beforeVariant(ps : void?; ti : TypeInfo) : void
     def abstract afterVariant(ps : void?; ti : TypeInfo) : void
-    def abstract beforeArrayData(ps : void?; stride : uint; count : uint; ti : TypeInfo) : void
-    def abstract afterArrayData(ps : void?; stride : uint; count : uint; ti : TypeInfo) : void
-    def abstract beforeArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint; last : bool) : void
-    def abstract afterArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint; last : bool) : void
+    def abstract beforeArrayData(ps : void?; stride : uint; count : uint64; ti : TypeInfo) : void
+    def abstract afterArrayData(ps : void?; stride : uint; count : uint64; ti : TypeInfo) : void
+    def abstract beforeArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint64; last : bool) : void
+    def abstract afterArrayElement(ps : void?; ti : TypeInfo; pe : void?; index : uint64; last : bool) : void
     def abstract beforeDim(ps : void?; ti : TypeInfo) : void
     def abstract afterDim(ps : void?; ti : TypeInfo) : void
     def abstract beforeArray(pa : DapiArray; ti : TypeInfo) : void
     def abstract afterArray(pa : DapiArray; ti : TypeInfo) : void
     def abstract beforeTable(pa : DapiTable; ti : TypeInfo) : void
-    def abstract beforeTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint; last : bool) : void
-    def abstract afterTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint; last : bool) : void
-    def abstract beforeTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint; last : bool) : void
-    def abstract afterTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint; last : bool) : void
+    def abstract beforeTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint64; last : bool) : void
+    def abstract afterTableKey(pa : DapiTable; ti : TypeInfo; pk : void?; ki : TypeInfo; index : uint64; last : bool) : void
+    def abstract beforeTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint64; last : bool) : void
+    def abstract afterTableValue(pa : DapiTable; ti : TypeInfo; pv : void?; kv : TypeInfo; index : uint64; last : bool) : void
     def abstract afterTable(pa : DapiTable; ti : TypeInfo) : void
     def abstract beforeRef(ps : void?; ti : TypeInfo) : void
     def abstract afterRef(ps : void?; ti : TypeInfo) : void
@@ -181,6 +191,29 @@ class DapiDataWalker {
     def abstract URange(var value : urange&) : void
     def abstract Range64(var value : range64&) : void
     def abstract URange64(var value : urange64&) : void
+    def abstract Float16(var value : float16&) : void
+    def abstract Half2(var value : half2&) : void
+    def abstract Half3(var value : half3&) : void
+    def abstract Half4(var value : half4&) : void
+    def abstract Half8(var value : half8&) : void
+    def abstract Short2(var value : short2&) : void
+    def abstract Short3(var value : short3&) : void
+    def abstract Short4(var value : short4&) : void
+    def abstract Short8(var value : short8&) : void
+    def abstract UShort2(var value : ushort2&) : void
+    def abstract UShort3(var value : ushort3&) : void
+    def abstract UShort4(var value : ushort4&) : void
+    def abstract UShort8(var value : ushort8&) : void
+    def abstract Byte2(var value : byte2&) : void
+    def abstract Byte3(var value : byte3&) : void
+    def abstract Byte4(var value : byte4&) : void
+    def abstract Byte8(var value : byte8&) : void
+    def abstract Byte16(var value : byte16&) : void
+    def abstract UByte2(var value : ubyte2&) : void
+    def abstract UByte3(var value : ubyte3&) : void
+    def abstract UByte4(var value : ubyte4&) : void
+    def abstract UByte8(var value : ubyte8&) : void
+    def abstract UByte16(var value : ubyte16&) : void
     def abstract WalkBlock(var value : DapiBlock) : void
     def abstract WalkFunction(var value : DapiFunc) : void
     def abstract WalkEnumeration(var value : int&; ei : EnumInfo) : void

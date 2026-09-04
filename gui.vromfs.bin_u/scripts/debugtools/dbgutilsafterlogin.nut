@@ -1,34 +1,35 @@
 
+
+import "userstat" as userstat
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqStdLibs/helpers/u.nut" import isDataBlock
+from "string" import format, split_by_chars
+from "%sqstd/datablock.nut" import blkFromPath
+from "chard" import getLoginGuardState, LOGIN_STREAK_GUARD_PERIOD_DEFAULT
+from "console" import register_command
+from "guiMission" import get_meta_mission_info_by_gm_and_name
+from "blkGetters" import get_wpcost_blk
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, char_send_blk,
-  save_online_single_job, set_auto_refill, get_auto_refill
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import get_user_logs_count, get_user_log_blk_body, char_send_blk, save_online_single_job, set_auto_refill, get_auto_refill
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL, SAVE_WEAPON_JOB_DIGIT
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
-let userstat = require("userstat")
+let { LoadingBrief } = require("%scripts/loading/loadingBrief.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { format, split_by_chars } = require("string")
-let DataBlock  = require("DataBlock")
-let { blkFromPath } = require("%sqstd/datablock.nut")
 let dbgExportToFile = require("%globalScripts/debugTools/dbgExportToFile.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
-let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats
-} = require("%scripts/userstat/userstat.nut")
+let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats } = require("%scripts/userstat/userstat.nut")
 let { guiStartDebriefingFull } = require("%scripts/debriefing/debriefingModal.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { register_command } = require("console")
-let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { get_wpcost_blk } = require("blkGetters")
 require("%scripts/debugTools/dbgLongestUnitTooltip.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
@@ -38,6 +39,10 @@ let { getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { getItemsList } = require("%scripts/items/itemsManagerModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+
+let getStreakGuardPeriod = @() getUnlockById("every_day_award")?.mode.streakGuardPeriod
+  ?? LOGIN_STREAK_GUARD_PERIOD_DEFAULT
 
 function _charAddAllItemsHelper(params) {
   if (params.currentIndex >= params.items.len())
@@ -173,7 +178,7 @@ function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01
       briefingClone["part"] <- part
   }
 
-  handlersManager.loadHandler(gui_handlers.LoadingBrief, { briefing = briefingClone })
+  handlersManager.loadHandler(LoadingBrief, { briefing = briefingClone })
 }
 
 
@@ -287,5 +292,14 @@ register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDesc
 register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.get()), "debug.userstat.unlocks")
 register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.get()), "debug.userstat.stats")
 register_command(sendActionToCharAndStartLogout, "debug.send_action_to_char_and_start_logout")
+
+function debugLoginGuardState() {
+  let loginGuardState = getLoginGuardState()
+  console_print($"loginGuardState: loginStreak={loginGuardState.loginStreak} loginGuard={loginGuardState.loginGuard} period={getStreakGuardPeriod()}")
+  debugTableData(loginGuardState)
+  return loginGuardState
+}
+
+register_command(debugLoginGuardState, "debug.loginGuardState")
 
 

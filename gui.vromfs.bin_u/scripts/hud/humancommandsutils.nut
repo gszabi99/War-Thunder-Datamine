@@ -1,11 +1,9 @@
 import "%sqstd/ecs.nut" as ecs
-
-let { localPlayerSquadMembers, localPlayerHumanContext, selectedBotForOrder } = require("%appGlobals/hudSquadMembers.nut")
-let { controlledHeroEid } = require("%appGlobals/controlledHeroEid.nut")
-let { Computed } = require("frp")
-let { RqCancelContextCommand, RqCancelPersonalContextCommand, RqMenuContextCommandPointOrder } = require("dasevents")
-let { eventbus_send } = require("eventbus")
-
+from "%appGlobals/hudSquadMembers.nut" import localPlayerSquadMembers, localPlayerHumanContext, selectedBotForOrder
+from "%appGlobals/controlledHeroEid.nut" import controlledHeroEid
+from "frp" import Computed
+from "dasevents" import RqCancelContextCommand, RqCancelPersonalContextCommand, RqMenuContextCommandPointOrder
+from "eventbus" import eventbus_send
 
 let commandSmokeGrenade = @() ecs.g_entity_mgr.sendEvent(controlledHeroEid.get(), RqMenuContextCommandPointOrder({pointOrderStrID="smoke_grenade_ctx"}))
 let commandFlashGrenade = @() ecs.g_entity_mgr.sendEvent(controlledHeroEid.get(), RqMenuContextCommandPointOrder({pointOrderStrID="flash_grenade_ctx"}))

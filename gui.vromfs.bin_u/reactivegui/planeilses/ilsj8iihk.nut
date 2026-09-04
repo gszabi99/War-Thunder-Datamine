@@ -1,15 +1,15 @@
+import "string" as string
+from "%rGui/planeState/planeFlyState.nut" import Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPosValid, TargetPos, CannonMode, RadarTargetPosValid, BombCCIPMode, RocketMode, IlsLineScale
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKmh, baseLineWidth
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkJ8
+from "%rGui/rocketAamAimState.nut" import TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY
+from "%rGui/planeIlses/commonElements.nut" import flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark
+from "guidanceConstants" import GuidanceLockResult
+from "%sqstd/math.nut" import floor, abs
 from "%rGui/globals/ui_library.nut" import *
 
-let string = require("string")
-let { Speed, ClimbSpeed, Mach, Tas, Aoa, Overload, Altitude } = require("%rGui/planeState/planeFlyState.nut");
-let { IlsColor, TargetPosValid, TargetPos, CannonMode, RadarTargetPos, RadarTargetPosValid,
-        BombCCIPMode, RocketMode, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
-let { mpsToKmh, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { compassWrap, generateCompassMarkJ8 } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { TrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { flyDirection, angleTxt, shimadzuRoll, ShimadzuPitch, ShimadzuAlt, aimMark } = require("%rGui/planeIlses/commonElements.nut")
-let { floor, abs } = require("%sqstd/math.nut")
+let { RadarTargetPos } = require("%rGui/planeState/planeToolsState.nut")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let OverloadWatch = Computed(@() (floor(Overload.get() * 10)).tointeger())
@@ -17,13 +17,13 @@ let OverloadWatch = Computed(@() (floor(Overload.get() * 10)).tointeger())
 let generateSpdMarkJ8 = function(num) {
   return {
     size = const [pw(100), ph(7.5)]
-    pos = [pw(40), 0]
+    pos = const [pw(40), 0]
     children = [
       (num % 5 > 0 ? null :
         @() {
           watch = IlsColor
-          size = flex()
-          pos = [pw(-40), 0]
+          size = FLEX
+          pos = const [pw(-40), 0]
           rendObj = ROBJ_TEXT
           color = IlsColor.get()
           vplace = ALIGN_CENTER
@@ -80,7 +80,7 @@ let MachWatchJ8 = Computed(@() (floor(Mach.get() * 10)).tointeger())
 let TasWatch = Computed(@() (Tas.get() * mpsToKmh).tointeger())
 let J8FlyInfo = @() {
   size = SIZE_TO_CONTENT
-  pos = [pw(11), ph(12)]
+  pos = const [pw(11), ph(12)]
   flow = FLOW_VERTICAL
   children = [
     @() {
@@ -113,7 +113,7 @@ let J8FlyInfo = @() {
 let AoaWatch = Computed(@() Aoa.get().tointeger())
 let J8AoaInfo = @() {
   size = SIZE_TO_CONTENT
-  pos = [pw(20), ph(46)]
+  pos = const [pw(20), ph(46)]
   flow = FLOW_VERTICAL
   children = [
     @() {
@@ -145,7 +145,7 @@ let J8AoaInfo = @() {
 let ClimbJ8Watch = Computed(@() clamp(ClimbSpeed.get(), -99.0, 99.0).tointeger())
 let J8ClimbInfo = @() {
   size = SIZE_TO_CONTENT
-  pos = [pw(75), ph(46)]
+  pos = const [pw(75), ph(46)]
   flow = FLOW_VERTICAL
   children = [
     @() {
@@ -179,11 +179,11 @@ function generatePitchLineJ8(num) {
   let newNum = num >= 0 ? num : (num - 5)
   return {
     size = const [pw(60), ph(50)]
-    pos = [pw(20), 0]
+    pos = const [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -198,7 +198,7 @@ function generatePitchLineJ8(num) {
     ] :
     [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -235,7 +235,7 @@ let generateAltMarkJ8 = function(num) {
       (num % 50 > 0 ? null :
         @() {
           watch = IlsColor
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXT
           color = IlsColor.get()
           vplace = ALIGN_CENTER
@@ -262,7 +262,7 @@ function J8AltWrap(width, height, generateFunc) {
 let altValue = Computed(@() (Altitude.get()).tointeger())
 let J8AltInfo = @() {
   size = SIZE_TO_CONTENT
-  pos = [pw(81), ph(16)]
+  pos = const [pw(81), ph(16)]
   flow = FLOW_VERTICAL
   children = [
     @() {
@@ -285,7 +285,7 @@ let J8AltInfo = @() {
 }
 
 let J8AirAimMark = {
-  size = flex()
+  size = FLEX
   children =
     @() {
       watch = IlsColor
@@ -313,7 +313,7 @@ let J8AirAimMark = {
 function radarTarget(width, height) {
   return @() {
     watch = RadarTargetPosValid
-    size = flex()
+    size = FLEX
     children = RadarTargetPosValid.get() ?
       @() {
         watch = IlsColor
@@ -351,12 +351,12 @@ function radarTarget(width, height) {
 
 let J8AamMode = @() {
   watch = GuidanceLockState
-  size = flex()
+  size = FLEX
   children = [
     @() {
       watch = IlsColor
       size = const [pw(10), ph(10)]
-      pos = [pw(50), ph(50)]
+      pos = const [pw(50), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -396,7 +396,7 @@ function J8BombImpactLine(width, height) {
     watch = [TargetPosValid, BombCCIPMode, TP0, TP1, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       (TargetPosValid.get() && BombCCIPMode.get() ? [VECTOR_LINE, 50, 50, TP0.get() / width * 100, TP1.get() / height * 100] : [])
@@ -421,7 +421,7 @@ function J8IIHK(width, height) {
       radarTarget(width, height),
       @() {
         watch = IlsColor
-        pos = [pw(15), ph(75)]
+        pos = const [pw(15), ph(75)]
         rendObj = ROBJ_TEXT
         color = IlsColor.get()
         fontSize = 40
@@ -430,7 +430,7 @@ function J8IIHK(width, height) {
       },
       @() {
         watch = IlsColor
-        pos = [pw(85), ph(75)]
+        pos = const [pw(85), ph(75)]
         rendObj = ROBJ_TEXT
         color = IlsColor.get()
         fontSize = 40

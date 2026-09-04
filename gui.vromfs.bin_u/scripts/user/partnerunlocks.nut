@@ -1,14 +1,14 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isEmpty, isDataBlock, isEqual
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%sqstd/datablock.nut" import convertBlk
+from "dagor.time" import get_time_msec
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { CONFIG_VALIDATION } = require("%scripts/g_listener_priority.nut")
-let { isEmpty, isDataBlock, isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let time = require("%scripts/time.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
-let { get_time_msec } = require("dagor.time")
-let { get_charserver_time_sec } = require("chard")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 
 let partnerExectutedUnlocks = persist("partnerExectutedUnlocks", @() {})

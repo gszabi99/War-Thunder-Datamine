@@ -103,18 +103,6 @@ def tnt_exploder_ready_to_explode_on_anim_end(evt : Event;
 
   tnt_exploder__inProgress = false
 
-[es(REQUIRE=(tnt_exploder, tnt_launcher, multiple_guns_slot_gun), track=(tnt_exploder__tntBlocks, throwable_launcher__itemsCount))]
-def tnt_exploer_hide_on_zero_tnt(evt : Event;
-                                 eid : EntityId;
-                                 tnt_exploder__tntBlocks : EidList;
-                                 throwable_launcher__itemsCount : int;
-                                 multiple_guns_slot_gun_hidden : Tag const?)
-  let hideExploder = length(tnt_exploder__tntBlocks) <= 0 && throwable_launcher__itemsCount <= 0
-  if multiple_guns_slot_gun_hidden != null && !hideExploder
-    removeSubTemplate(eid, "multiple_guns_slot_gun_hidden")
-  elif multiple_guns_slot_gun_hidden == null && hideExploder
-    addSubTemplate(eid, "multiple_guns_slot_gun_hidden")
-
 [es(tag=gameClient, REQUIRE=(tnt_exploder, tnt_launcher), track=(tnt_exploder__inProgress, tnt_exploder__tntBlocks, throwable_launcher__itemsCount))]
 def tnt_exploer_switch_to_other_weapon_on_zero_tnt(evt : Event;
                                                    eid : EntityId;

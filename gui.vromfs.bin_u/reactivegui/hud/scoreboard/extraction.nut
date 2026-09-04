@@ -1,12 +1,11 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs;
-
-let { EventPickUpLoot } = require("dasevents")
-let { showMessage, toastMessagesComp } = require("%rGui/hud/toastMessages.nut")
-let { timeLeft } = require("%rGui/missionState.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let { mkBitmapPictureLazy } = require("%darg/helpers/bitmap.nut")
-let { gradTexSize, mkGradientCtorRadial } = require("%rGui/style/gradients.nut")
+from "%rGui/hud/toastMessages.nut" import showMessage, toastMessagesComp
+from "%rGui/missionState.nut" import timeLeft
+from "%rGui/style/gradients.nut" import gradTexSize, mkGradientCtorRadial
+from "dasevents" import EventPickUpLoot
+from "%sqstd/time.nut" import secondsToTimeSimpleString
+from "%darg/helpers/bitmap.nut" import mkBitmapPictureLazy
+from "%rGui/globals/ui_library.nut" import *
 
 const FONT_COLOR_ACCENT = 0xFFDBA94A
 const FONT_COLOR_NEUTRAL = 0xFFFCFBE0
@@ -17,22 +16,22 @@ const LOOT_VEHICLE_PARTS_COLOR = 0xFFFE757D
 const LOOT_ARMOR_COLOR = 0xFF74b5D5
 const LOOT_SCRAP_COLOR = 0xFFE2924B
 
-let PROGRESS_BAR_WIDTH = hdpxi(229)
-let PROGRESS_BAR_HEIGHT = hdpxi(16)
-let PROGRESS_BAR_BORDER_WIDTH = hdpx(3)
+const PROGRESS_BAR_WIDTH = hdpxi(229)
+const PROGRESS_BAR_HEIGHT = hdpxi(16)
+const PROGRESS_BAR_BORDER_WIDTH = hdpx(3)
 
-let SKULL_ICON_WIDTH = hdpxi(20)
-let SKULL_ICON_HEIGHT = hdpxi(26)
-let SKULL_CIRCLE_SIZE = hdpxi(42)
+const SKULL_ICON_WIDTH = hdpxi(20)
+const SKULL_ICON_HEIGHT = hdpxi(26)
+const SKULL_CIRCLE_SIZE = hdpxi(42)
 
 const SKULL_ICON_COLOR = 0xFFFCFBE0
 const FULL_FURY_COLOR = 0xFFE56169
 
-let HUD_MODAL_MIN_WIDTH = hdpxi(300)
-let HUD_MODAL_HEIGHT = hdpxi(60)
+const HUD_MODAL_MIN_WIDTH = hdpxi(300)
+const HUD_MODAL_HEIGHT = hdpxi(60)
 
-let FIRE_ICON_WIDTH = hdpx(26)
-let FIRE_ICON_HEIGHT = hdpx(46)
+const FIRE_ICON_WIDTH = hdpx(26)
+const FIRE_ICON_HEIGHT = hdpx(46)
 
 const FURY_PROGRESS_INACTIVE_COLOR = 0xFF474645
 const FURY_COMPLETE_ANIM_DURATION = 1.0
@@ -139,7 +138,7 @@ let mkLootItemProgressBar = @(countW, fillColor) @() {
   watch = [countW, lootState.Capacity]
   size = [
     (lootState.Capacity.get() == 0) ? 0 : pw(countW.get() * 100 / lootState.Capacity.get())
-    flex()
+    FLEX
   ]
   rendObj = ROBJ_BOX
   fillColor
@@ -154,7 +153,7 @@ let getLootScaleSize = @(capacityV) knownLootScaleSizes.contains(capacityV)
 let lootProgressBarComp = {
   children = [
     {
-      size = [PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT]
+      size = const [PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT]
       padding = PROGRESS_BAR_BORDER_WIDTH
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#StrokeFill.svg:{PROGRESS_BAR_WIDTH}:{PROGRESS_BAR_HEIGHT}:P")
@@ -163,13 +162,13 @@ let lootProgressBarComp = {
       children = lootItemProgressBars.map(@(bar) mkLootItemProgressBar(bar.countW, bar.color))
     }
     {
-      size = [PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT]
+      size = const [PROGRESS_BAR_WIDTH, PROGRESS_BAR_HEIGHT]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#texture_fill.avif:{PROGRESS_BAR_WIDTH}:{PROGRESS_BAR_HEIGHT}:P")
     }
     @() {
       watch = lootState.Capacity
-      pos = [hdpx(3), hdpx(2)]
+      pos = const [hdpx(3), hdpx(2)]
       size = const [hdpx(223), hdpx(11)]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#loot_scale_{getLootScaleSize(lootState.Capacity.get())}.svg:{hdpx(223)}:{hdpx(11)}:P")
@@ -221,22 +220,22 @@ let missionGoalHeaderComp = @() {
 
 let furyProgressBars = [
   {
-    pos = [hdpx(-24), hdpx(-3)]
+    pos = const [hdpx(-24), hdpx(-3)]
     transform = { rotate = -81 }
   }
   {
-    pos = [hdpx(-16), hdpx(-18)]
+    pos = const [hdpx(-16), hdpx(-18)]
     transform = { rotate = -41 }
   }
   {
-    pos = [hdpx(0), hdpx(-24)]
+    pos = const [hdpx(0), hdpx(-24)]
   }
   {
-    pos = [hdpx(16), hdpx(-18)]
+    pos = const [hdpx(16), hdpx(-18)]
     transform = { rotate = 41 }
   }
   {
-    pos = [hdpx(24), hdpx(-3)]
+    pos = const [hdpx(24), hdpx(-3)]
     transform = { rotate = 81 }
   }
 ]
@@ -245,7 +244,7 @@ let isFuryProgressCompleted = Computed(@() Rage.get() >= furyProgressBars.len())
 
 let mkFireIcon = @(isLeft = false) @() {
   watch = isFuryProgressCompleted
-  size = [FIRE_ICON_WIDTH, FIRE_ICON_HEIGHT]
+  size = const [FIRE_ICON_WIDTH, FIRE_ICON_HEIGHT]
   pos = [isLeft ? hdpx(-32) : hdpx(32), hdpx(-6)]
   rendObj = ROBJ_IMAGE
   color = FULL_FURY_COLOR
@@ -286,7 +285,7 @@ let furySkullGlowAnim = {
 
 let skullFuryIndicatorComp = @() {
   watch = isFuryProgressCompleted
-  size = [SKULL_CIRCLE_SIZE, SKULL_CIRCLE_SIZE]
+  size = const [SKULL_CIRCLE_SIZE, SKULL_CIRCLE_SIZE]
   valign = ALIGN_CENTER
   halign = ALIGN_CENTER
   children = [
@@ -298,7 +297,7 @@ let skullFuryIndicatorComp = @() {
     }
     @() {
       watch = isFuryProgressCompleted
-      size = [SKULL_ICON_WIDTH, SKULL_ICON_HEIGHT]
+      size = const [SKULL_ICON_WIDTH, SKULL_ICON_HEIGHT]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#norm_skull.svg:{SKULL_ICON_WIDTH}:{SKULL_ICON_HEIGHT}:P")
       keepAspect = true
@@ -366,8 +365,8 @@ let skullFuryIndicatorComp = @() {
 }
 
 let mainHudComp = {
-  pos = [0, hdpx(27)]
-  size = [SIZE_TO_CONTENT, HUD_MODAL_HEIGHT]
+  pos = const [0, hdpx(27)]
+  size = const [SIZE_TO_CONTENT, HUD_MODAL_HEIGHT]
   minWidth = HUD_MODAL_MIN_WIDTH
   padding = const [hdpx(17), hdpx(16), 0, hdpx(16)]
   rendObj = ROBJ_9RECT

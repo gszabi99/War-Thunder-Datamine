@@ -1,14 +1,13 @@
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwMapStates.nut" import sectorSprites
+from "%rGui/wwMap/wwMapZonesData.nut" import getZoneById, getZoneSize
+from "%rGui/wwMap/wwMapUtils.nut" import convertColor4
+from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds
+from "%rGui/wwMap/wwUtils.nut" import even
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import setTimeout
+from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
-
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
-let { sectorSprites } = require("%rGui/wwMap/wwMapStates.nut")
-let { getZoneById, getZoneSize } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { convertColor4 } = require("%rGui/wwMap/wwMapUtils.nut")
-let { get_time_msec } = require("dagor.time")
-let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { setTimeout } = require("dagor.workcycle")
-let { even } = require("%rGui/wwMap/wwUtils.nut")
-let { floor } = require("math")
 
 let mkSectorSprite = @(sectorSpriteData, sectorSpriteSettings, areaBounds) function() {
   let { spriteColor, blinkColor, blinkPeriod, iconName, iconRotate = 0 } = sectorSpriteSettings

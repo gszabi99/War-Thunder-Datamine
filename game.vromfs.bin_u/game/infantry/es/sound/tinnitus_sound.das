@@ -1,6 +1,5 @@
 require ecs
 require soundHash
-require %game.sound.sound_events
 require sound_utils.modules.sound_utils_events
 
 require %appGame.wt_events

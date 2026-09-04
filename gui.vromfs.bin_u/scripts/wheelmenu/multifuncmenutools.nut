@@ -1,17 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqstd/platform.nut" import isPC
+from "unit" import get_player_unit_name
+from "controls" import isXInputDevice
+from "hudState" import getHudUnitType
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
-let { isPC } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 
-let { get_player_unit_name } = require("unit")
-let { isXInputDevice } = require("controls")
-let { getHudUnitType } = require("hudState")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { unitTypeByHudUnitType } = require("%scripts/hud/hudUnitType.nut")
 let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
-let getMfmHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
+let getMfmHandler = @() handlersManager.findHandlerClassInScene(get_gui_handler("multifuncMenuHandler"))
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
-let { register_command } = require("console")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
@@ -182,7 +183,7 @@ function openMfm(cfg, curSectionId = null, isForward = true) {
   if (handler)
     handler.reinitScreen(params)
   else
-    handlersManager.loadHandler(gui_handlers.multifuncMenuHandler, params)
+    handlersManager.loadHandler(get_gui_handler("multifuncMenuHandler"), params)
 
   if (isForward)
     cfg[curSectionId]?.onEnter()

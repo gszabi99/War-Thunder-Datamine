@@ -1,48 +1,38 @@
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqstd/string.nut" import clearBorderSymbols, split
+from "%sqstd/underscore.nut" import deep_clone
+from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_library.nut" import *
 
 let { array_to_blk } = require("%scripts/utils_sa.nut")
-let { isEqual }  = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let regexp2 = require("regexp2")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
 let { selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
-let { clearBorderSymbols, split } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { deep_clone } = require("%sqstd/underscore.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { reqFirstUnitTypeChoice, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { reqFirstCountryChoice } = require("%scripts/user/newbieTutorialDisplay.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let logP = log_with_prefix("[SLOTBAR PRESETS] ")
-let { debug_dump_stack } = require("dagor.debug")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
-  getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode
-} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById, getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
-let { slotbarPresetsByCountry, slotbarPresetsSeletected, slotbarPresetsVersion, isSlotbarPresetsLoading
-} = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { createPresetTemplate, checkCanHaveEmptyPresets, reorderUnitsInPreset, updatePresetInfo,
-  updatePresetFromSlotbar, createPresetFromSlotbar, getCurrentSlotbarPreset
-} = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
+let { slotbarPresetsByCountry, slotbarPresetsSeletected, slotbarPresetsVersion, isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
+let { createPresetTemplate, checkCanHaveEmptyPresets, reorderUnitsInPreset, updatePresetInfo, updatePresetFromSlotbar, createPresetFromSlotbar, getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isCanModifyCrew } = require("%scripts/queue/queueManager.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { isEventsLoaded } = require("%scripts/events/eventsState.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 
 
@@ -53,12 +43,8 @@ local isAlreadySendMissingPresetError = false
 const PRESETS_VERSION = 1
 const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 const MIN_COUNTRY_PRESETS = 1
-const BASE_COUNTRY_PRESETS_AMOUNT = 8
-const ERA_BONUS_PRESETS_AMOUNT = 2 
-const ERA_ID_FOR_BONUS = 5
+const MAX_COUNTRY_PRESETS_AMOUNT = 25
 let validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
-
-local activeTypeBonusByCountry = null
 
 let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p2.units)
 
@@ -109,78 +95,16 @@ function canEraseSlotbarPreset() {
     && slotbarPresetsByCountry[countryId].len() > MIN_COUNTRY_PRESETS
 }
 
-function validateSlotsCountCache() {
-  if (activeTypeBonusByCountry)
-    return
-
-  activeTypeBonusByCountry = {}
-
-  foreach (unit in getAllUnits()) {
-    if (unit.rank != ERA_ID_FOR_BONUS ||
-        ! unit.unitType.isAvailable() ||
-        ! unit.isVisibleInShop())
-      continue
-
-    let countryName = getUnitCountry(unit)
-    if (! (countryName in activeTypeBonusByCountry))
-      activeTypeBonusByCountry[countryName] <- {}
-
-    if (! (unit.unitType in activeTypeBonusByCountry[countryName]))
-      activeTypeBonusByCountry[countryName][unit.unitType] <- false
-
-    if (isUnitBought(unit))
-      activeTypeBonusByCountry[countryName][unit.unitType] = true
-  }
-}
-
-function getUnitTypesWithNotActivePresetBonus(country = null) {
-  country = country ?? profileCountrySq.get()
-  validateSlotsCountCache()
-  let result = []
-  foreach (unitType, typeStatus in getTblValue(country, activeTypeBonusByCountry, {}))
-    if (! typeStatus)
-      result.append(unitType)
-  return result
-}
-
-function havePresetsReserve(country = null) {
-  country = country ?? profileCountrySq.get()
-  return getUnitTypesWithNotActivePresetBonus(country).len() > 0
-}
-
-function getPresetsReseveTypesText(country = null) {
-  country = country ?? profileCountrySq.get()
-  let types = getUnitTypesWithNotActivePresetBonus(country)
-  local typeNames = types.map(@(unit) unit.getArmyLocName())
-  return ", ".join(typeNames, true)
-}
-
-function getMaxPresetsCount(country = null) {
-  country = country ?? profileCountrySq.get()
-  validateSlotsCountCache()
-  local result = BASE_COUNTRY_PRESETS_AMOUNT
-  foreach (_unitType, typeStatus in getTblValue(country, activeTypeBonusByCountry, {}))
-    if (typeStatus)
-      result += ERA_BONUS_PRESETS_AMOUNT
-  return result
-}
-
-function getTotalPresetsCount() {
-  return BASE_COUNTRY_PRESETS_AMOUNT + unitTypes.types.len() * ERA_BONUS_PRESETS_AMOUNT
-}
-
-let clearSlotsCache = @() activeTypeBonusByCountry = null
-
 let validatePresetName = @(name) validatePresetNameRegexp.replace("", name)
 
 function canCreateSlotbarPreset() {
   local countryId = profileCountrySq.get()
   return (countryId in slotbarPresetsByCountry)
-    && slotbarPresetsByCountry[countryId].len() < getMaxPresetsCount(countryId)
+    && slotbarPresetsByCountry[countryId].len() < MAX_COUNTRY_PRESETS_AMOUNT
     && canEditCountryPreset(countryId)
 }
 
-function createEmptyPreset(countryId, presetIdx = 0) {
+function createEmptyPreset(countryId, presetIdx = 0, newPresetName = null) {
   let crews = getCrewsListByCountry(countryId)
   local unitToSet = null
   local crewToSet = null
@@ -198,7 +122,7 @@ function createEmptyPreset(countryId, presetIdx = 0) {
       break
   }
 
-  let preset = createPresetTemplate(presetIdx)
+  let preset = createPresetTemplate(presetIdx, newPresetName)
   if (unitToSet) {
     preset.units = [ unitToSet.name ]
     preset.crews = [ crewToSet.id ]
@@ -217,7 +141,7 @@ function saveCountryPreset(countryId = null, shouldSaveProfile = true) {
   let cfgBlk = loadLocalByAccount($"slotbar_presets/{countryId}")
   local blk = null
   if (slotbarPresetsByCountry[countryId].len() > 0) {
-    let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresetsByCountry[countryId])
+    let curPreset = slotbarPresetsByCountry[countryId]?[slotbarPresetsSeletected[countryId]]
     if (curPreset && countryId == profileCountrySq.get())
       updatePresetFromSlotbar(curPreset, countryId)
 
@@ -230,7 +154,7 @@ function saveCountryPreset(countryId = null, shouldSaveProfile = true) {
                                     ",".join(p.crews),
                                     ",".join(p.units),
                                     p.title,
-                                    getTblValue("gameModeId", p, ""),
+                                    (p?.gameModeId ?? ""),
                                     ",".join(p.crewInSlots)
                                   ]))
     }
@@ -254,11 +178,11 @@ function saveCountryPreset(countryId = null, shouldSaveProfile = true) {
   return true
 }
 
-function createSlotbarPreset() {
+function createSlotbarPreset(newPresetName = null) {
   if (!canCreateSlotbarPreset())
     return false
   let countryId = profileCountrySq.get()
-  slotbarPresetsByCountry[countryId].append(createEmptyPreset(countryId, slotbarPresetsByCountry[countryId].len()))
+  slotbarPresetsByCountry[countryId].append(createEmptyPreset(countryId, slotbarPresetsByCountry[countryId].len(), newPresetName))
   saveCountryPreset(countryId)
   broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresetsByCountry[countryId].len() - 1 })
   return true
@@ -311,11 +235,12 @@ function moveSlotbarPreset(idx, offset) {
 function onChangePresetName(idx, newName, countryId) {
   let oldName = slotbarPresetsByCountry[countryId][idx].title
   if (oldName == newName)
-    return
+    return false
 
   slotbarPresetsByCountry[countryId][idx].title <- newName
   saveCountryPreset(countryId)
   broadcastEvent("SlotbarPresetsChanged", { showPreset = idx })
+  return true
 }
 
 function saveAllCountries() {
@@ -334,10 +259,13 @@ function saveAllCountries() {
 }
 
 
-function renameSlotbarPreset(idx) {
+function renameSlotbarPreset(idx, newPresetName = null) {
   let countryId = profileCountrySq.get()
   if (!(countryId in slotbarPresetsByCountry) || !(idx in slotbarPresetsByCountry[countryId]))
-    return
+    return false
+
+  if (newPresetName != null)
+    return onChangePresetName(idx, clearBorderSymbols(newPresetName), countryId)
 
   let oldName = slotbarPresetsByCountry[countryId][idx].title
   openEditBoxDialog({
@@ -348,6 +276,8 @@ function renameSlotbarPreset(idx) {
     validateFunc = validatePresetName
     okFunc = @(newName) onChangePresetName(idx, clearBorderSymbols(newName), countryId)
   })
+
+  return true
 }
 
 function getPresetDataByCountryAndUnitType(presetsData, country, unitType) {
@@ -371,7 +301,7 @@ function newbieInitSlotbarPresets(newbiePresetsData) {
     
     let preset = createPresetTemplate(0)
     preset.title = $"{loc("mainmenu/preset_default")} {unitTypes.getByEsUnitType(presetDataItem.unitType).fontIcon}"
-    preset.gameModeId = getTblValue("id", gameMode, "")
+    preset.gameModeId = (gameMode?.id ?? "")
     foreach (taskData in presetDataItem.tasksData) {
       if (taskData.airName == "")
         continue
@@ -400,7 +330,7 @@ function newbieInitSlotbarPresets(newbiePresetsData) {
       continue
 
     let presetDataItem = getPresetDataByCountryAndUnitType(newbiePresetsData, country, newbiePresetsData.selectedUnitType)
-    slotbarPresetsSeletected[country] <- getTblValue("presetIndex", presetDataItem, 0)
+    slotbarPresetsSeletected[country] <- (presetDataItem?.presetIndex ?? 0)
   }
 
   saveAllCountries()
@@ -418,10 +348,10 @@ function getPresetsList(countryId) {
         continue
       let preset = createPresetTemplate(idx)
       preset.selected = to_integer_safe(data[0], -1)
-      let title = validatePresetName(getTblValue(3, data, ""))
+      let title = validatePresetName((data?[3] ?? ""))
       if (title.len())
         preset.title = title
-      preset.gameModeId = getTblValue(4, data, "")
+      preset.gameModeId = (data?[4] ?? "")
 
       if (data.len() > 5 && data[5] != "") {
         preset.crewInSlots = data[5].split(",").map(@(v) to_integer_safe(v, 0, false))
@@ -471,7 +401,7 @@ function getPresetsList(countryId) {
       updatePresetInfo(preset)
 
       res.append(preset)
-      if (res.len() == getMaxPresetsCount(countryId))
+      if (res.len() == MAX_COUNTRY_PRESETS_AMOUNT)
         break
     }
   }
@@ -563,8 +493,30 @@ function setCurrentGameModeByPreset(country, preset = null) {
     return
 
   setCurrentGameModeById(gameMode.id)
-  if (events.isEventsLoaded())
+  if (isEventsLoaded())
     savePresetGameMode(country)
+}
+
+function getGameModeIdByPreset(preset) {
+  local gameModeId = preset?.gameModeId ?? ""
+  if (gameModeId == "")
+    gameModeId = getCurrentGameModeId()
+  local gameMode = getGameModeById(gameModeId)
+  if (gameMode == null) {
+    gameModeId = findCurrentGameModeId(true)
+    gameMode = getGameModeById(gameModeId)
+  }
+
+  if (gameMode != null && !isPresetValidForGameMode(preset, gameMode)) {
+    let betterGameModeId = findCurrentGameModeId(true, gameMode.diffCode)
+    if (betterGameModeId != null)
+      gameMode = getGameModeById(betterGameModeId)
+  }
+
+  if (gameMode == null)
+    return null
+
+  return gameMode.id
 }
 
 function invalidateUnitsModificators(countryIdx) {
@@ -605,7 +557,7 @@ function loadSlotbarPreset(idx, countryId = null, skipGameModeSelect = false) {
   countryId = countryId ?? profileCountrySq.get()
   saveCountryPreset(countryId) 
 
-  let preset = getTblValue(idx, slotbarPresetsByCountry[countryId])
+  let preset = slotbarPresetsByCountry[countryId]?[idx]
   if (!canLoadPreset(preset))
     return false
 
@@ -627,7 +579,7 @@ function loadSlotbarPreset(idx, countryId = null, skipGameModeSelect = false) {
   local selUnitId = ""
   local selCrewIdx = 0
   foreach (crewIdx, crew in countryCrews) {
-    let crewTrainedUnits = getTblValue("trained", crew, [])
+    let crewTrainedUnits = (crew?.trained ?? [])
     foreach (i, unitId in preset.units) {
       let crewId = preset.crews[i]
       if (crewId == crew.id) {
@@ -658,7 +610,7 @@ function loadSlotbarPreset(idx, countryId = null, skipGameModeSelect = false) {
 
   let tasksData = []
   foreach (crew in countryCrews) {
-    let curUnitId = getTblValue("aircraft", crew, "")
+    let curUnitId = (crew?.aircraft ?? "")
     local unitId = ""
     foreach (uId, crewId in unitsList)
       if (crewId == crew.id)
@@ -711,9 +663,6 @@ function replaceCrewsInCurrentPreset(countryId, crewIds) {
 }
 
 addListenersWithoutEnv({
-  UnitBought             = @(_p) clearSlotsCache()
-  SignOut                = @(_p) clearSlotsCache()
-
   function CurrentGameModeIdChanged(params) {
     if (params.isUserSelected) {
       savePresetGameMode(profileCountrySq.get())
@@ -735,15 +684,12 @@ addListenersWithoutEnv({
 })
 
 return {
-  ERA_ID_FOR_BONUS
+  MAX_COUNTRY_PRESETS_AMOUNT
   newbieInitSlotbarPresets
   initSlotbarPresets
   canEditCountryPreset
   canLoadSlotbarPreset
   canEraseSlotbarPreset
-  havePresetsReserve
-  getPresetsReseveTypesText
-  getTotalPresetsCount
   canCreateSlotbarPreset
   createSlotbarPreset
   copySlotbarPreset
@@ -754,4 +700,5 @@ return {
   setCurrentGameModeByPreset
   swapCrewsInCurrentPreset
   replaceCrewsInCurrentPreset
+  getGameModeIdByPreset
 }

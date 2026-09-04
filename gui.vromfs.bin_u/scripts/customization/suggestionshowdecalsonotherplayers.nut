@@ -1,19 +1,18 @@
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "chard" import get_charserver_time_sec
+from "unitCustomization" import get_last_skin
 from "%scripts/dagui_library.nut" import *
 
-let { get_charserver_time_sec } = require("chard")
-let { get_last_skin } = require("unitCustomization")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getMaxUnitsRank } = require("%scripts/shop/shopCountryInfo.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_OTHERS_DECALS
-} = require("%scripts/options/optionsExtNames.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_OTHERS_DECALS } = require("%scripts/options/optionsExtNames.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCachedDataByType } = require("%scripts/customization/decoratorGetters.nut")
 let { decoratorTypes } = require("%scripts/customization/decoratorBaseType.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const SHOWED_SUGGESTED_SAVE_PATH = "seen/suggestionShowDecalsOnOtherPlayers"
@@ -27,7 +26,7 @@ let enableDecalsOnOtherPlayersOpt = @() set_gui_option_in_mode(USEROPT_SHOW_OTHE
 
 let isEnableDecalsOnOtherPlayersOpt = @() get_gui_option_in_mode(USEROPT_SHOW_OTHERS_DECALS, OPTIONS_MODE_GAMEPLAY, false)
 
-let class SuggestionShowDecalsOnOtherPlayers (gui_handlers.BaseGuiHandlerWT) {
+class SuggestionShowDecalsOnOtherPlayers (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/customization/suggestionShowDecalsOnOtherPlayers.blk"
 
@@ -49,7 +48,7 @@ let class SuggestionShowDecalsOnOtherPlayers (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.SuggestionShowDecalsOnOtherPlayers <- SuggestionShowDecalsOnOtherPlayers
+register_gui_handler("SuggestionShowDecalsOnOtherPlayers", SuggestionShowDecalsOnOtherPlayers)
 
 function showPopupAboutSwithOption() {
  loadHandler(SuggestionShowDecalsOnOtherPlayers)

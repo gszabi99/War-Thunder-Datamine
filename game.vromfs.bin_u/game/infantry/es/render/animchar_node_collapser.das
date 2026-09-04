@@ -4,7 +4,6 @@ require %appGame.infantry.es.render.node_collapser_common
 require AnimV20
 require GeomNodeTree
 require DagorSystem
-require math.base
 require ecs.soa_template
 
 [cpp_event(broadcast)]
@@ -26,6 +25,9 @@ def node_collapser_create(evt : Event;
 
   let scene = animchar_render.sceneInstance
   let geomtree = animchar.nodeTree
+  
+  
+  var bonelessNodes = 0
   if animchar_node_collapser__nodes != null
     isDisabled = *animchar_node_collapser__nodes |> empty()
     for iter in *animchar_node_collapser__nodes
@@ -50,6 +52,9 @@ def node_collapser_create(evt : Event;
         if nodeId > 0
           animchar_node_collapser__children |> push(nodeId)
           childrenCount += 1
+          let boneId = *scene |> scene_instance_getBoneForNode(nodeId)
+          if boneId < 0
+            bonelessNodes += 1
         let childCount = *geomtree |> geomtree_getChildCount(childNodes[i])
         for j in range(childCount)
           childNodes |> push(*geomtree |> geomtree_getChildNodeIdx(childNodes[i], uint(j)))
@@ -67,6 +72,8 @@ def node_collapser_create(evt : Event;
 
   if length(animchar_node_collapser) == 0 && !isDisabled
     logwarn("animchar_node_collapser: not found any nodes of entity {eid} <{getEntityTemplateName(eid)}>")
+  if bonelessNodes > 0
+    logwarn("animchar_node_collapser: {bonelessNodes} nodes of <{getEntityTemplateName(eid)}> are not bones, they will not collapse")
 
 [soa_es, es(REQUIRE=watchedPlayerItem, before=animchar_before_render_es)]
 def on_animchar_node_collapser_item(evt : HideNodesEvent;

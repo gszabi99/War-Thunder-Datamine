@@ -1,10 +1,10 @@
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_library.nut" import *
 
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
 let { getPrizesListViewData, getPrizesListMarkupByData } = require("%scripts/items/prizesView.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
 
 local CollectionsSet = class {
   id = "" 

@@ -254,10 +254,6 @@ itemDiv:pushed > pushedBorder
   display:show;
 }
 
-awardItemDiv > awardItemHeader {
-  background-color:@shadeBackgroundColor2;
-}
-
 awardItemDiv > awardItemHeader[today=yes] {
   re-type:9rect;
   background-image:#ui/gameuiskin#lr_red_marker_bg;
@@ -406,7 +402,7 @@ openAnim[animation=hide] {
   rot-time:-1;
 }
 
-roulette {
+roulette[hasBg=yes] {
   re-type:9rect;
   background-image:#ui/gameuiskin#lr_frame_bg;
   background-color:#CCCCCCCC;
@@ -435,12 +431,12 @@ rewards_fade {
   behaviour:bhvRoulette;
 }
 
-everyDayRewardProgress {
+rewardProgress {
   re-type:progress;
   behaviour:progress;
   background-position:6,6;
-  background-repeat:expand;
-  background-image:#ui/gameuiskin#selectbox_bg;
+  background-repeat:expand-svg;
+  background-image:#ui/gameuiskin#selectbox_bg.svg;
   background-color:@white;
   foreground-position:4,4;
   foreground-repeat:expand;
@@ -451,14 +447,18 @@ everyDayRewardProgress {
   padding:2@dp;
 }
 
-everyDayRewardProgress > filledRewardProgressBox {
+rewardProgress[isEveryDayReward=yes] {
+  padding:1@dp;
+}
+
+rewardProgress > filledRewardProgressBox {
   re-type:9rect;
   background-position:4,4;
   background-repeat:expand;
   background-image:#ui/gameuiskin#progress_bar;
 }
 
-everyDayRewardProgress > additionalProgress {
+rewardProgress > additionalProgress {
   re-type:progress;
   behaviour:progress;
   foreground-position:4,4;
@@ -470,7 +470,7 @@ everyDayRewardProgress > additionalProgress {
   padding:2@dp;
 }
 
-everyDayRewardProgress > progressBoxFraming {
+rewardProgress > progressBoxFraming {
   background-repeat:stretch;
   background-color:@white;
 
@@ -479,12 +479,12 @@ everyDayRewardProgress > progressBoxFraming {
   input-transparent:yes;
 }
 
-everyDayRewardProgress > progressBoxFraming[background-image=""] {
+rewardProgress > progressBoxFraming[background-image=""] {
   background-color:@transparent;
   display:hide;
 }
 
-everyDayRewardProgress > progressBoxFraming[type=right] {
+rewardProgress > progressBoxFraming[type=right] {
   background-position:w,0;
 }
 

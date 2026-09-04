@@ -324,6 +324,22 @@
                 "pos": "pw+1@blockInterval, ph-h",
                 "flow": "vertical",
                 "padding": "1@blockInterval, 1@blockInterval, 1@blockInterval, 0",
+                "Button_text": {
+                  "id": "btn_assistant_map_qr",
+                  "position": "absolute",
+                  "top": "-h-2@blockInterval",
+                  "left": "1@blockInterval",
+                  "size": "pw-2@blockInterval,pw-2@blockInterval",
+                  "class": "image",
+                  "noMargin": "yes",
+                  "visualStyle": "flatDark",
+                  "imgSize": "fit",
+                  "_on_click": "onAssistantMapQrCode",
+                  "display": "hide",
+                  "img": {
+                    "background-image": "#ui/gameuiskin#qr_icon.svg"
+                  }
+                },
                 "tdiv": [
                   {
                     "id": "aim_points_hint",
@@ -412,12 +428,13 @@
                     "position": "relative",
                     "flow": "vertical",
                     "background-color": "@editboxColor",
+                    "width": "0.1@sf",
                     "tdiv": [
                       {
                         "id": "hud_icon_preset_box",
                         "margin-bottom": "1@blockInterval",
                         "display": "hide",
-                        "width": "0.1@sf",
+                        "width": "pw",
                         "ComboBox": {
                           "id": "hud_icon_preset_select",
                           "width": "pw",
@@ -493,6 +510,42 @@
                         "margin-bottom": "1@blockInterval",
                         "display": "hide",
                         "popupFilter": {}
+                      },
+                      {
+                        "id": "tooltips_visible",
+                        "flow": "horisontal",
+                        "size": "pw, 1@buttonHeight",
+                        "margin-bottom": "@blockInterval",
+                        "img": {
+                          "position": "relative",
+                          "top": "(ph-h)/2",
+                          "margin-right": "1@blockInterval",
+                          "size": "1@buttonHeight, 1@buttonHeight",
+                          "background-image": "#ui/gameuiskin#tooltip_icon.svg",
+                          "background-svg-size": "1@buttonHeight, 1@buttonHeight",
+                          "bgcolor": "@textInWhiteBlockColor"
+                        },
+                        "tdiv": {
+                          "left": "pw-w-0.5@blockInterval",
+                          "position": "absolute",
+                          "size": "@switchBoxShortWidth + @blockInterval, @switchBoxHeight + @blockInterval",
+                          "padding-left": "0.5@blockInterval",
+                          "bgcolor": "@grayDark",
+                          "SwitchBox": {
+                            "id": "tooltips_switch_box",
+                            "position": "relative",
+                            "top": "(ph-h)/2",
+                            "value": "yes",
+                            "on_change_value": "onTooltipsVisible",
+                            "hasShortSize": "yes",
+                            "tooltip": "#tacticalMapTooltipSwitch",
+                            "SwitchSliderBg": {
+                              "hasShortSize": "yes",
+                              "SwitchSliderBgOn": {},
+                              "SwitchSlider": {}
+                            }
+                          }
+                        }
                       }
                     ],
                     "tacticalMapHint": [

@@ -1,10 +1,10 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "dynamicMission" import dynamicLoadPreview, dynamicUnloadPreview, dynamicLoadSummary
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
-let { dynamicLoadPreview, dynamicUnloadPreview, dynamicLoadSummary } = require("dynamicMission")
-let DataBlock = require("DataBlock")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isUrlMission } = require("%scripts/missions/missionsStates.nut")
 
 enum MAP_PREVIEW_TYPE {
   MISSION_MAP
@@ -81,7 +81,7 @@ function refreshCurPreview(isForced = false) {
 
 function getMissionBriefingConfig(mission) {
   let config = DataBlock()
-  let blk = g_mislist_type.isUrlMission(mission)
+  let blk = isUrlMission(mission)
     ? mission.urlMission.getMetaInfo()
     : mission?.blk
   if (!blk)

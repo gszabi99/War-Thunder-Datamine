@@ -1,6 +1,10 @@
 {
   "cannon": true,
   "weaponType": 3,
+  "maxDeltaAngle": 0.24,
+  "shotFreq": 12.5,
+  "traceFreq": 4,
+  "bullets": 200,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -10,14 +14,10 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
+  "bEnablePause": false,
+  "bulletsCluster": 1,
   "aimMinDist": 10.0,
   "aimMaxDist": 1000.0,
-  "maxDeltaAngle": 0.24,
-  "shotFreq": 12.5,
-  "traceFreq": 4,
-  "bEnablePause": false,
-  "bullets": 200,
-  "bulletsCluster": 1,
   "fxType": "muzzle_air_20mm",
   "fxMultipleSpawn": true,
   "bullet": [
@@ -2135,10 +2135,7 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i",
         "shellAnimation": "video/shells_animations/i_shell.ivf",
-        "explodeTreshold": 0.1,
-        "fuseDelayDist": 0.1,
         "recoilMultiplier": 0.4,
-        "hitPowerMult": 1.0,
         "onHitChanceMultFire": 9.0,
         "relativeVelArmorShift": [
           200.0,
@@ -2176,6 +2173,15 @@
             ]
           ]
         },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
         "hitpower": {
           "HitPower10m": [
             1.0,
@@ -2193,81 +2199,6 @@
             0.3,
             2000.0
           ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
-          ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.15,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          },
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.75,
-            "realShattersSplicing": 0.35,
-            "segment": [
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 1.1,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  40.0
-                ],
-                "countPortion": 0.05
-              },
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  40.0,
-                  140.0
-                ],
-                "countPortion": 0.9
-              },
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 0.8,
-                "damageScale": 1.0,
-                "angles": [
-                  140.0,
-                  180.0
-                ],
-                "countPortion": 0.05
-              }
-            ]
-          }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "collisions": {
           "default": {
@@ -3472,10 +3403,7 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i",
         "shellAnimation": "video/shells_animations/i_shell.ivf",
-        "explodeTreshold": 0.1,
-        "fuseDelayDist": 0.1,
         "recoilMultiplier": 0.4,
-        "hitPowerMult": 1.0,
         "onHitChanceMultFire": 9.0,
         "relativeVelArmorShift": [
           200.0,
@@ -3513,6 +3441,15 @@
             ]
           ]
         },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
         "hitpower": {
           "HitPower10m": [
             1.0,
@@ -3530,81 +3467,6 @@
             0.3,
             2000.0
           ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
-          ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.15,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          },
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.75,
-            "realShattersSplicing": 0.35,
-            "segment": [
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 1.1,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  40.0
-                ],
-                "countPortion": 0.05
-              },
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  40.0,
-                  140.0
-                ],
-                "countPortion": 0.9
-              },
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 0.8,
-                "damageScale": 1.0,
-                "angles": [
-                  140.0,
-                  180.0
-                ],
-                "countPortion": 0.05
-              }
-            ]
-          }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "collisions": {
           "default": {
@@ -7101,10 +6963,7 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "i",
         "shellAnimation": "video/shells_animations/i_shell.ivf",
-        "explodeTreshold": 0.1,
-        "fuseDelayDist": 0.1,
         "recoilMultiplier": 0.4,
-        "hitPowerMult": 1.0,
         "onHitChanceMultFire": 9.0,
         "relativeVelArmorShift": [
           200.0,
@@ -7142,6 +7001,15 @@
             ]
           ]
         },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.327,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
         "hitpower": {
           "HitPower10m": [
             1.0,
@@ -7159,81 +7027,6 @@
             0.3,
             2000.0
           ]
-        },
-        "armorpower": {
-          "ArmorPower0m": [
-            2.0,
-            10.0
-          ],
-          "ArmorPower100m": [
-            2.0,
-            100.0
-          ],
-          "ArmorPower500m": [
-            1.5,
-            500.0
-          ],
-          "ArmorPower1000m": [
-            1.0,
-            1000.0
-          ],
-          "ArmorPower1450m": [
-            0.5,
-            1450.0
-          ],
-          "ArmorPower1500m": [
-            0.0,
-            1500.0
-          ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 0.15,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          },
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.75,
-            "realShattersSplicing": 0.35,
-            "segment": [
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 1.1,
-                "damageScale": 1.0,
-                "angles": [
-                  0.0,
-                  40.0
-                ],
-                "countPortion": 0.05
-              },
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 1.0,
-                "damageScale": 1.0,
-                "angles": [
-                  40.0,
-                  140.0
-                ],
-                "countPortion": 0.9
-              },
-              {
-                "radiusScale": 1.05,
-                "penetrationScale": 0.8,
-                "damageScale": 1.0,
-                "angles": [
-                  140.0,
-                  180.0
-                ],
-                "countPortion": 0.05
-              }
-            ]
-          }
-        },
-        "shatterDamage": {
-          "breachConeAngle": 45.0
         },
         "collisions": {
           "default": {

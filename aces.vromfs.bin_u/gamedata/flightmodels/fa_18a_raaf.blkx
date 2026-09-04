@@ -1,7 +1,7 @@
 {
   "model": "fa_18a_raaf",
   "fmFile": "fm/fa_18a.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "viewDistKInSight": 6.0,
   "gearSinkRangeLR": 0.48,
   "gearSinkRangeC": 0.38,
@@ -71,26 +71,14 @@
     "armor_jet_engine": {
       "engine1_dm": {
         "genericDamageMult": 1.6,
-        "hp": 40.1
+        "hp": 46.7
       },
       "engine2_dm": {
         "genericDamageMult": 1.6,
-        "hp": 40.1
-      },
-      "apu1_dm": {
-        "genericDamageMult": 1.6,
-        "hp": 30.5
+        "hp": 46.7
       }
     },
     "c_dural3": {
-      "flaperon_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 29.0
-      },
-      "flaperon_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 29.0
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
@@ -111,6 +99,14 @@
       "flap_r_dm": {
         "hp": 30.5
       },
+      "flaperon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 29.0
+      },
+      "flaperon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 29.0
+      },
       "rudder0_dm": {
         "genericDamageMult": 0.3,
         "hp": 18.8
@@ -118,6 +114,24 @@
       "rudder1_dm": {
         "genericDamageMult": 0.3,
         "hp": 18.8
+      }
+    },
+    "c_dural5": {
+      "slat2_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 39.5
+      },
+      "slat2_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 39.5
+      },
+      "slat_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 39.5
+      },
+      "slat_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 39.5
       }
     },
     "c_dural7": {
@@ -156,17 +170,38 @@
       },
       "wing_r_dm": {
         "genericDamageMult": 0.3,
-        "hp": 68.6
+        "hp": 68.5
       }
     },
     "dural": {
       "airbrake_l_dm": {
         "hp": 19.5
       },
+      "apu1_dm": {
+        "hp": 19.5
+      },
+      "cockpit_control1_dm": {
+        "hp": 19.5
+      },
       "cover1_dm": {
         "hp": 19.5
       },
       "cover2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block1_dm": {
+        "hp": 19.5
+      },
+      "electronic_block2_dm": {
+        "hp": 19.5
+      },
+      "electronic_block3_dm": {
+        "hp": 19.5
+      },
+      "electronic_block4_dm": {
+        "hp": 19.5
+      },
+      "electronic_block5_dm": {
         "hp": 19.5
       }
     },
@@ -193,24 +228,6 @@
     "dural5": {
       "radar_dm": {
         "hp": 35.0
-      },
-      "cockpit_control1_dm": {
-        "hp": 60.0
-      },
-      "electronic_block1_dm": {
-        "hp": 60.0
-      },
-      "electronic_block2_dm": {
-        "hp": 60.0
-      },
-      "electronic_block3_dm": {
-        "hp": 60.0
-      },
-      "electronic_block4_dm": {
-        "hp": 60.0
-      },
-      "electronic_block5_dm": {
-        "hp": 60.0
       }
     },
     "protected_controls": {
@@ -264,15 +281,15 @@
       },
       "tank4_dm": {
         "hp": 120.5
+      },
+      "tank5_dm": {
+        "hp": 100.5
+      },
+      "tank6_dm": {
+        "hp": 100.5
       }
     },
     "steel_tank_m": {
-      "tank5_dm": {
-        "hp": 75.5
-      },
-      "tank6_dm": {
-        "hp": 75.5
-      },
       "tank7_dm": {
         "hp": 75.5
       },
@@ -287,98 +304,37 @@
   "DamageEffects": {
     "part": [
       {
-        "name": "aileron_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
         "name": "airbrake_l_dm"
+      },
+      {
+        "name": "apu1_dm"
       },
       {
         "name": "cannon1_dm"
       },
       {
-        "name": "cover1_dm"
+        "name": "cockpit_control1_dm"
       },
       {
         "name": "cover1_dm"
+      },
+      {
+        "name": "cover2_dm"
+      },
+      {
+        "name": "electronic_block1_dm"
+      },
+      {
+        "name": "electronic_block2_dm"
+      },
+      {
+        "name": "electronic_block3_dm"
+      },
+      {
+        "name": "electronic_block4_dm"
+      },
+      {
+        "name": "electronic_block5_dm"
       },
       {
         "name": "elevator0_dm",
@@ -765,6 +721,88 @@
         ]
       },
       {
+        "name": "flaperon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
         "name": "fuse1_dm",
         "onHit": [
           {
@@ -1114,204 +1152,7 @@
         "name": "pilot_dm"
       },
       {
-        "name": "radar_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "cockpit_control1_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "electronic_block1_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "electronic_block2_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "electronic_block3_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "electronic_block4_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "electronic_block5_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
-      },
-      {
-        "name": "apu1_dm",
-        "onHit": [
-          {
-            "damage": 200.0,
-            "damageType": "explosion",
-            "spar1_r_dm": 0.4,
-            "spar1_l_dm": 0.4,
-            "canCut": true
-          },
-          {
-            "damage": 250.0,
-            "damageType": "explosion",
-            "spar1_l_dm": 1.0,
-            "spar1_r_dm": 1.0,
-            "canCut": true
-          }
-        ],
-        "onKill": {
-          "damage": 200.0,
-          "spar1_l_dm": 1.0,
-          "spar1_r_dm": 1.0,
-          "canCut": true
-        }
+        "name": "radar_dm"
       },
       {
         "name": "rudder0_dm",
@@ -1356,6 +1197,170 @@
       },
       {
         "name": "rudder1_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "slat2_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "slat2_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "slat_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "slat_r_dm",
         "onHit": [
           {
             "damage": 10.0,
@@ -3424,6 +3429,7 @@
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "AN/APG-79",
+              "AN/APG-83",
               "Thales RDY",
               "N019",
               "N001",
@@ -3536,7 +3542,8 @@
               "AN/APG-66",
               "AN/APG-68",
               "PS-37",
-              "Type 1492"
+              "Type 1492",
+              "AN/APG-83"
             ]
           },
           {
@@ -4307,73 +4314,6 @@
       "slot": 0,
       "preset": "m61a1_common"
     }
-  },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "fa_18a_default",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_default.blk"
-      },
-      {
-        "name": "fa_18a_aim_9l",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_9l.blk"
-      },
-      {
-        "name": "fa_18a_aim_7f",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_7f.blk"
-      },
-      {
-        "name": "fa_18a_aim_7m",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_7m.blk"
-      },
-      {
-        "name": "fa_18a_mk82",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk82.blk"
-      },
-      {
-        "name": "fa_18a_mk83",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk83.blk"
-      },
-      {
-        "name": "fa_18a_mk84",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk84.blk"
-      },
-      {
-        "name": "fa_18a_mk82_snakeye",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk82_snakeye.blk"
-      },
-      {
-        "name": "fa_18a_mk83_air",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk83_air.blk"
-      },
-      {
-        "name": "fa_18a_mk77_mod4",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk77_mod4.blk"
-      },
-      {
-        "name": "fa_18a_lau_10",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk82_lau_10.blk"
-      },
-      {
-        "name": "fa_18a_lau_61",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_lau_61.blk"
-      },
-      {
-        "name": "fa_18a_walleye",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_walleye.blk"
-      },
-      {
-        "name": "fa_18a_agm_88",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_agm_88.blk",
-        "weaponConfig": {
-          "presetType": "AIR_TO_RADAR"
-        }
-      },
-      {
-        "name": "fa_18a_aim_7m_single",
-        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_7m_single.blk"
-      }
-    ]
   },
   "propellers": {
     "prop0": -1,
@@ -6545,6 +6485,80 @@
       }
     ]
   },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "fa_18a_default",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_default.blk"
+      },
+      {
+        "name": "fa_18a_aim_9l",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_9l.blk"
+      },
+      {
+        "name": "fa_18a_aim_7f",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_7f.blk"
+      },
+      {
+        "name": "fa_18a_aim_7m",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_7m.blk"
+      },
+      {
+        "name": "fa_18a_mk82",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk82.blk"
+      },
+      {
+        "name": "fa_18a_mk83",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk83.blk"
+      },
+      {
+        "name": "fa_18a_mk84",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk84.blk"
+      },
+      {
+        "name": "fa_18a_mk82_snakeye",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk82_snakeye.blk"
+      },
+      {
+        "name": "fa_18a_mk83_air",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk83_air.blk"
+      },
+      {
+        "name": "fa_18a_mk77_mod4",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk77_mod4.blk"
+      },
+      {
+        "name": "fa_18a_lau_10",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_mk82_lau_10.blk"
+      },
+      {
+        "name": "fa_18a_lau_61",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_lau_61.blk"
+      },
+      {
+        "name": "fa_18a_walleye",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_walleye.blk"
+      },
+      {
+        "name": "fa_18a_agm_88",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_agm_88.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_RADAR"
+        }
+      },
+      {
+        "name": "fa_18a_agm_84",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_agm_84.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "fa_18a_aim_7m_single",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18a_aim_7m_single.blk"
+      }
+    ]
+  },
   "WeaponSlots": {
     "maxloadMass": 7700.0,
     "maxloadMassLeftConsoles": 4000.0,
@@ -6580,7 +6594,9 @@
         "oil2_dm",
         "tank7_dm",
         "tank8_dm",
-        "tank9_dm"
+        "tank9_dm",
+        "electronic_block5_dm",
+        "cover2_dm"
       ]
     },
     "WeaponSlot": [
@@ -6763,7 +6779,8 @@
               "emitter": "bomb1_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -6793,7 +6810,8 @@
               "emitter": "bomb1_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -6839,7 +6857,8 @@
               "emitter": "bomb1_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -6869,7 +6888,8 @@
               "emitter": "bomb1_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -6950,6 +6970,22 @@
               "separate": true,
               "externalSensorIndex": 1
             }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "agm_84",
+            "reqModification": "us_agm_84d",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84d.blk",
+              "emitter": "bomb1_mk_84",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -6998,7 +7034,8 @@
               "emitter": "bomb2_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7028,7 +7065,8 @@
               "emitter": "bomb2_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7074,7 +7112,8 @@
               "emitter": "bomb2_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7104,7 +7143,8 @@
               "emitter": "bomb2_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7187,6 +7227,22 @@
               "separate": true,
               "externalSensorIndex": 1
             }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "agm_84",
+            "reqModification": "us_agm_84d",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84d.blk",
+              "emitter": "bomb2_mk_84",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -7261,7 +7317,8 @@
               "emitter": "bomb3_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7291,7 +7348,8 @@
               "emitter": "bomb3_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7306,7 +7364,8 @@
               "emitter": "bomb3_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7336,7 +7395,8 @@
               "emitter": "bomb3_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7474,7 +7534,8 @@
               "emitter": "bomb4_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7504,7 +7565,8 @@
               "emitter": "bomb4_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7550,7 +7612,8 @@
               "emitter": "bomb4_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7580,7 +7643,8 @@
               "emitter": "bomb4_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7662,6 +7726,22 @@
               "external": true,
               "separate": true,
               "externalSensorIndex": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "agm_84",
+            "reqModification": "us_agm_84d",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84d.blk",
+              "emitter": "bomb4_mk_84",
+              "bullets": 1
             }
           }
         ]
@@ -7756,7 +7836,8 @@
               "emitter": "bomb5_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7786,7 +7867,8 @@
               "emitter": "bomb5_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7832,7 +7914,8 @@
               "emitter": "bomb5_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7862,7 +7945,8 @@
               "emitter": "bomb5_mk_84",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7942,6 +8026,22 @@
               "external": true,
               "separate": true,
               "externalSensorIndex": 1
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "agm_84",
+            "reqModification": "us_agm_84d",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_agm_84d.blk",
+              "emitter": "bomb5_mk_84",
+              "bullets": 1
             }
           }
         ]
@@ -8034,7 +8134,12 @@
       "tier": 3,
       "modClass": "weapon"
     },
+    "us_agm_62_2_erdl": {
+      "tier": 2,
+      "modClass": "weapon"
+    },
     "us_aim_7f": {
+      "prevModification": "us_agm_62_2_erdl",
       "tier": 3,
       "modClass": "weapon"
     },
@@ -8043,11 +8148,12 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "us_agm_62_2_erdl": {
-      "tier": 2,
-      "modClass": "weapon"
+    "us_agm_84d": {
+      "modClass": "weapon",
+      "tier": 1
     },
     "us_arm": {
+      "prevModification": "us_agm_84d",
       "modClass": "weapon",
       "tier": 3
     }

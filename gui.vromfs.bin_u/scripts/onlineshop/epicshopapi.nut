@@ -1,16 +1,15 @@
+import "statsd" as statsd
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let statsd = require("statsd")
 
 let seenEnumId = SEEN.EXT_EPIC_SHOP
 
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
-let { catalog, canUseIngameShop, getShopItem, requestData, isLoadingInProgress
-} = require("%scripts/onlineShop/epicShopData.nut")
+let { catalog, canUseIngameShop, getShopItem, requestData, isLoadingInProgress } = require("%scripts/onlineShop/epicShopData.nut")
 
 let sheetsArray = [
   {
@@ -57,7 +56,7 @@ let openIngameStore = kwarg(
     if (canUseIngameShop()) {
       statsd.send_counter("sq.ingame_store.open", 1, { origin = statsdMetric })
       let item = getShopItem(curItemId)
-      requestData(@() handlersManager.loadHandler(gui_handlers.EpicShop, {
+      requestData(@() handlersManager.loadHandler(get_gui_handler("EpicShop"), {
         itemsCatalog = catalog.get()
         isLoadingInProgress = isLoadingInProgress.get()
         chapter = chapter

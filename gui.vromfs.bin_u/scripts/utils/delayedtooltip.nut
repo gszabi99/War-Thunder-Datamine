@@ -1,19 +1,21 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "json" import parse_json
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { show_obj, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
-let { getObjCenteringPosRC } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { getTooltipType } = require("genericTooltipTypes.nut")
-let { fillTooltip, addEventListenersTooltip } = require("genericTooltip.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let { parse_json } = require("json")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
-let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
+from "types" import Table
+
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { show_obj, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
+let { getObjCenteringPosRC } = require("%scripts/sqDagui/guiBhv/guiBhvUtils.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { fillTooltip, addEventListenersTooltip } = require("%scripts/utils/genericTooltip.nut")
+let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
+let { posNavigator } = require("%scripts/sqDagui/guiBhv/bhvPosNavigator.nut")
+let { InContainersNavigator } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
 let { canShowUnitContextMenu } = require("%scripts/unit/contextMenu.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { openModalInfo, closeModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -118,13 +120,13 @@ function showWaitIconForObj(obj) {
 function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false, isCursorInBoundsOptional = @() null) {
   let params = parse_json(tooltipId)
   params.isOpenByHoldBtn <- isOpenByHoldBtn
-  if (type(params) != "table" || !("ttype" in params) || !("id" in params))
+  if (!(params instanceof Table) || !("ttype" in params) || !("id" in params))
     return false
 
   let tooltipType = getTooltipType(params.ttype)
 
   if (tooltipType.isModalTooltip) {
-    let realObj = openModalInfo(tooltipObj, gui_handlers.BaseGuiHandlerWT, tooltipType, params.id, params, initObj, isCursorInBoundsOptional)
+    let realObj = openModalInfo(tooltipObj, BaseGuiHandlerWT, tooltipType, params.id, params, initObj, isCursorInBoundsOptional)
     if (realObj == null)
       return false
     openedTooltipObjs.append(addEventListenersTooltip(realObj, null, tooltipType, params.id, params))
@@ -288,17 +290,17 @@ globalCallbacks.addTypes(actions.map(@(a) {
 
 let paramsListSelf = {
   behavior = "button"
-  on_pushed = "::gcb.delayedTooltipPush"
-  on_hold_start = "::gcb.delayedTooltipHoldStart"
-  on_hold_stop = "::gcb.delayedTooltipHoldStop"
+  on_pushed = "gcb.delayedTooltipPush"
+  on_hold_start = "gcb.delayedTooltipHoldStart"
+  on_hold_stop = "gcb.delayedTooltipHoldStop"
 }
 
 let paramsListChild = {
   behavior = "PosNavigator"
   navigatorShortcuts = "yes"
-  on_pushed = "::gcb.delayedTooltipListPush"
-  on_hold_start = "::gcb.delayedTooltipListHoldStart"
-  on_hold_stop = "::gcb.delayedTooltipListHoldStop"
+  on_pushed = "gcb.delayedTooltipListPush"
+  on_hold_start = "gcb.delayedTooltipListHoldStart"
+  on_hold_stop = "gcb.delayedTooltipListHoldStop"
 }
 
 let mkMarkup = @(list) " ".join(list.reduce(@(res, val, id) res.append($"{id}:t='{val}';"), []))

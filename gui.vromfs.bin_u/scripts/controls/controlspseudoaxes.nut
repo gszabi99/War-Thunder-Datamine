@@ -1,8 +1,10 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqStdLibs/helpers/enums.nut" as enums
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%globalScripts/unitTypeConsts.nut" import *
+
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { isShortcutDisplayEqual } = require("%scripts/controls/shortcutsUtils.nut")

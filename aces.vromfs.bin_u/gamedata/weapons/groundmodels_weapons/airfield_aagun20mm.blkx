@@ -906,10 +906,10 @@
       }
     },
     {
-      "mass": 0.116,
+      "mass": 0.117,
       "caliber": 0.02,
       "speed": 585.0,
-      "Cx": 0.43294,
+      "Cx": 0.43339,
       "maxDistance": 2000.0,
       "selfDestructionInAir": true,
       "normalizationPreset": "default",
@@ -922,7 +922,6 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "i_t",
       "shellAnimation": "video/shells_animations/i_t_shell.ivf",
-      "hitPowerMult": 10.0,
       "onHitChanceMultFire": 10.0,
       "relativeVelArmorShift": [
         200.0,
@@ -960,27 +959,14 @@
           ]
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          10.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          10.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          5.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          2.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          1.0,
-          1500.0
-        ]
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.327,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
       },
       "hitpower": {
         "HitPower10m": [

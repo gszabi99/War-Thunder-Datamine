@@ -23,33 +23,6 @@ def remove_initial_equip_without_parent(evt : Event; eid : EntityId; human_equip
     print("{eid}: cleanup unattached equip {equipEid} {getEntityTemplateName(equipEid)}")
     destroyEntity(equipEid)
 
-def skeleton_attach_with_remap_parent_impl(eid : EntityId;
-                                           skeleton_attach__remapParentSlots : StringList;
-                                           human_equipment__slots : Object;
-                                           var animchar_attach__attachedTo : EntityId&;
-                                           invalid_parent_eid = INVALID_ENTITY_ID)
-  for slotName in skeleton_attach__remapParentSlots
-    let possibleParent = human_equipment__slots[string(slotName)] ?as Object
-    let possibleParentEid = possibleParent?.item ?? INVALID_ENTITY_ID
-    if possibleParentEid == eid
-      logerr("Entity try to attach to itself. Invalid slots in {skeleton_attach__remapParentSlots} for {eid} {getEntityTemplateName(eid)}")
-      return
-    if (!!possibleParentEid &&
-        possibleParentEid != invalid_parent_eid &&
-        has(possibleParentEid, "skeleton_attach__remapAffectSlots"))
-      if animchar_attach__attachedTo != possibleParentEid
-
-        var list = getRW_ecs_EidList(animchar_attach__attachedTo, "attaches_list")
-        if list != null 
-          let idx = find_index(*list, eid)
-          if idx >= 0
-            erase(*list, idx)
-
-        animchar_attach__attachedTo = possibleParentEid
-        sendEventImmediate(eid, CmdInitSkeletonAttach())
-      return
-
-
 def remap_parent_reinit_impl(parent_attached_to : EntityId;
                              skeleton_attach__remapAffectSlots : StringList;
                              invalid_parent_eid = INVALID_ENTITY_ID)

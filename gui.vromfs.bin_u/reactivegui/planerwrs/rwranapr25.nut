@@ -1,8 +1,8 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+from "%rGui/twsState.nut" import rwrTargetsTriggers
 from "%rGui/globals/ui_library.nut" import *
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
-
-let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
+let { rwrTargets } = require("%rGui/twsState.nut")
 
 let ThreatType = {
   BAND_E = 0,
@@ -14,7 +14,7 @@ function calcRwrTargetRadius(target) {
   return 1.0 - 0.8 * target.rangeRel
 }
 
-let color = Color(10, 202, 10, 250)
+const color = Color(10, 202, 10, 250)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
@@ -42,17 +42,17 @@ function createRwrTarget(index, settings, objectStyle) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * 20 * objectStyle.lineWidthScale
         fillColor = 0
-        size = flex()
+        size = FLEX
         commands = commands
       }
   }
 
   return @() {
-    size = flex()
+    size = FLEX
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = const [pw(50), ph(50)]
+        size = FLEX
         children = azimuth
       }
     ]
@@ -92,7 +92,7 @@ let settings = Computed(function() {
 let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -108,7 +108,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

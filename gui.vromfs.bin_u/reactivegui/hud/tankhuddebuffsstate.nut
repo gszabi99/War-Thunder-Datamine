@@ -1,8 +1,7 @@
-from "%rGui/globals/ui_library.nut" import *
-
-from "hudState" import hud_request_hud_tank_debuffs_state
 import "%sqstd/ecs.nut" as ecs
-let { eventbus_subscribe } = require("eventbus")
+from "eventbus" import eventbus_subscribe
+from "%rGui/globals/ui_library.nut" import *
+from "hudState" import hud_request_hud_tank_debuffs_state
 
 let tracksData = Watched({})
 let turretDriveData = Watched({})

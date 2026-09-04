@@ -1,33 +1,26 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import get_cyber_cafe_max_level
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "dagor.time" import get_time_msec
+from "math" import floor
+from "%sqstd/datablock.nut" import fillBlock
+from "blkGetters" import get_price_blk
 from "%scripts/dagui_natives.nut" import get_item_data_by_uid, get_items_blk, get_items_cache, get_cyber_cafe_level
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 
 let { itemType } = require("%scripts/items/itemsConsts.nut")
-let { get_cyber_cafe_max_level } = require("%appGlobals/ranks_common_shared.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { get_time_msec } = require("dagor.time")
-let { floor } = require("math")
-let DataBlock  = require("DataBlock")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { fillBlock } = require("%sqstd/datablock.nut")
+let { getMaxSquadSize } = require("%scripts/squads/squadState.nut")
 let { addItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let itemTransfer = require("%scripts/items/itemsTransfer.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
-let { get_price_blk } = require("blkGetters")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
-let { itemsListInternal,
-  itemsList, inventory, inventoryItemById, shopItemById, itemsListExternal, itemsByItemdefId,
-  rawInventoryItemAmountsByItemdefId, getInventoryItemType, setExtInventoryUpdateTime,
-  setShouldCheckAutoConsume
-} = require("%scripts/items/itemsManagerState.nut")
-let { dbgTrophiesListInternal, incDbgUpdateInternalItemsCount
-} = require("%scripts/items/itemsManagerDbgState.nut")
+let { itemsListInternal, itemsList, inventory, inventoryItemById, shopItemById, itemsListExternal, itemsByItemdefId, rawInventoryItemAmountsByItemdefId, getInventoryItemType, setExtInventoryUpdateTime, setShouldCheckAutoConsume } = require("%scripts/items/itemsManagerState.nut")
+let { dbgTrophiesListInternal, incDbgUpdateInternalItemsCount } = require("%scripts/items/itemsManagerDbgState.nut")
 let { createItem } = require("%scripts/items/itemsTypeClasses.nut")
 let { shopSmokeItems } = require("%scripts/unlocks/unlockSmoke.nut")
-let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe
-} = require("%scripts/items/bonusEffectsGetters.nut")
+let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
 
 
 const FAKE_ITEM_CYBER_CAFE_BOOSTER_UID = -1
@@ -63,7 +56,7 @@ function fillFakeItemsList() {
     fillBlock($"FakeBoosterForNetCafeLevel{i ?? ""}", fakeItemsList, table)
   }
 
-  for (local i = 2; i <= g_squad_manager.getMaxSquadSize(); ++i) {
+  for (local i = 2; i <= getMaxSquadSize(); ++i) {
     let table = {
       type = itemType.FAKE_BOOSTER
       rateBoosterParams = {
@@ -203,7 +196,6 @@ function checkInventoryUpdate() {
 
     let invItemBlk = DataBlock()
     get_item_data_by_uid(invItemBlk, slot.uids[0])
-    
     if ((invItemBlk?.expiredTime ?? 0) < 0)
       continue
 

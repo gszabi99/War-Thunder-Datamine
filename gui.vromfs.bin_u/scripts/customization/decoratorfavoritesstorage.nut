@@ -1,10 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%sqStdLibs/helpers/u.nut" import isArray
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
 
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { convertBlk } = require("%sqstd/datablock.nut")
-let { isArray } = require("%sqStdLibs/helpers/u.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 const FAVORITE_DECORATORS_SAVE_ID = "favoritesDecorators"

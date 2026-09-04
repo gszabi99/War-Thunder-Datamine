@@ -1,17 +1,18 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "debug" import getstackinfos
 from "%scripts/dagui_library.nut" import *
+
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let {getstackinfos} = require("debug")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getControlsPresetFilename } = require("%scripts/controls/controlsPresets.nut")
 let { isDeviceConnected } = require("%scripts/controls/isDeviceConnected.nut")
 let { applyJoyPresetXchange } = require("%scripts/controls/controlsTypeUtils.nut")
 
-let hotasPS4DevId = "044F:B67B"
-let hotasXONEDevId = "044F:B68C"
+const hotasPS4DevId = "044F:B67B"
+const hotasXONEDevId = "044F:B68C"
 
 function unreachable() {
   let info = getstackinfos(2) 

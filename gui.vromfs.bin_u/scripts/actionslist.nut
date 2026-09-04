@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_child, move_mouse_on_obj, getSelectedChild, setPopupMenuPosAndAlign
-} = require("%sqDagui/daguiUtil.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child, move_mouse_on_obj, getSelectedChild, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
@@ -48,7 +48,7 @@ function isActionListParamsValid(params) {
   return (params?.infoBlock != null || ((params?.actions.len() ?? 0) > 0))
 }
 
-gui_handlers.ActionsList <- class (BaseGuiHandler) {
+let ActionsList = class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
   sceneBlkTag = "popup_actions_list"
@@ -59,14 +59,15 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
   closeOnUnhover = true
 
   static function open(v_parentObj, v_params) {
+    let actionsListClass = get_gui_handler("ActionsList")
     if (!checkObj(v_parentObj)
       || v_parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
-      || gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj)
+      || actionsListClass.hasActionsListOnObject(v_parentObj)
       || !isActionListParamsValid(v_params))
       return
 
     isActionsListOpen.set(true)
-    let actionList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+    let actionList = handlersManager.findHandlerClassInScene(actionsListClass)
     if (actionList && actionList.scene.isValid()) {
       actionList.close()
       actionList.scene.getScene()?.destroyElement(actionList.scene)
@@ -76,7 +77,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
       scene = v_parentObj
       params = v_params
     }
-    handlersManager.loadHandler(gui_handlers.ActionsList, params)
+    handlersManager.loadHandler(actionsListClass, params)
   }
 
   function initCustomHandlerScene() {
@@ -207,7 +208,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
       if (func == null)
         return
 
-      if (type(func) == "string")
+      if (func instanceof String)
         this.params.handler[func].call(this.params.handler)
       else
         func.call(this.params.handler)
@@ -244,7 +245,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
   function onActionsListDeactivate(obj) {
     this.params?.onDeactivateCb()
 
-    let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+    let actionsList = handlersManager.findHandlerClassInScene(get_gui_handler("ActionsList"))
     if (actionsList == null || !actionsList.scene?.isValid()) {
       isActionsListOpen.set(false)
       return
@@ -279,3 +280,6 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     return false
   }
 }
+register_gui_handler("ActionsList", ActionsList)
+
+return { ActionsList }

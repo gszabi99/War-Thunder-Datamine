@@ -1,13 +1,12 @@
+from "mission" import get_mission_time
+from "hudActionBarConst" import EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON, EII_MISSION_SUPPORT_PLANE, EII_GRENADE
+from "guiMission" import get_mission_difficulty_int
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import utf8_strlen
 
-let { get_mission_time } = require("mission")
 let { getWeaponDescTextByTriggerGroup, getDefaultBulletName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getBulletSetNameByBulletName } = require("%scripts/weaponry/bulletsInfo.nut")
-let { EII_BULLET, EII_ROCKET, EII_SMOKE_GRENADE, EII_FORCED_GUN, EII_SELECT_SPECIAL_WEAPON,
-  EII_MISSION_SUPPORT_PLANE, EII_GRENADE
-} = require("hudActionBarConst")
-let { get_mission_difficulty_int } = require("guiMission")
 
 let curHeroTemplates = Watched({})
 

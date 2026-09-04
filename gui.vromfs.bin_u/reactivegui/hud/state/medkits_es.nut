@@ -1,9 +1,8 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/globals/ec_to_watched.nut" import mkFrameIncrementObservable
+from "%rGui/globals/ui_library.nut" import *
 
-let { mkFrameIncrementObservable } = require("%rGui/globals/ec_to_watched.nut")
-
-let selfHealMedkitsDefValue = 0
+const selfHealMedkitsDefValue = 0
 let { selfHealMedkits, selfHealMedkitsSetValue } = mkFrameIncrementObservable(selfHealMedkitsDefValue, "selfHealMedkits")
 
 ecs.register_es("total_medkits_ui",{

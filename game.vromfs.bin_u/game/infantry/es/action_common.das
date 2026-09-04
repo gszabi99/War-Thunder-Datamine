@@ -1,6 +1,5 @@
 module action_common shared
 
-require app
 require ecs
 require ecs.safe
 require net
@@ -8,7 +7,6 @@ require Action
 require DagorSystem
 
 require %appGame.wt_events
-require %appGame.infantry.es.team_common
 require PropsManager
 
 

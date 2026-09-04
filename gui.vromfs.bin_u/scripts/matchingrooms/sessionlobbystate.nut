@@ -1,9 +1,11 @@
+from "%sqStdLibs/helpers/u.nut" import isInteger
+from "matching.errors" import INVALID_ROOM_ID
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%globalScripts/playerStateConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let { INVALID_ROOM_ID } = require("matching.errors")
-let { isInteger } = require("%sqStdLibs/helpers/u.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 

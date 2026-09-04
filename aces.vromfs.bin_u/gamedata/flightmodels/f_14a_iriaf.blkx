@@ -2,7 +2,7 @@
   "model": "f_14a_iriaf",
   "fmFile": "fm/f_14a_iriaf.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.62,
   "gearSinkRangeC": 0.35,
   "jetEnginePowerFullScale": true,
@@ -17,6 +17,7 @@
   "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsF14": true,
   "rwrIndicator": "AN/ALR-45",
   "isBwOpticSight": true,
@@ -3461,10 +3462,6 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            },
-            "BannedWeaponPreset": {
-              "slot": 5,
-              "preset": "aim_54a_x2"
             }
           },
           {
@@ -3490,6 +3487,22 @@
               }
             ],
             "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "aim_54a"
+              },
+              {
+                "slot": 2,
+                "preset": "fakour_90"
+              },
+              {
+                "slot": 7,
+                "preset": "aim_54a"
+              },
+              {
+                "slot": 7,
+                "preset": "fakour_90"
+              },
               {
                 "slot": 5,
                 "preset": "aim_54a_x2"
@@ -3579,7 +3592,9 @@
             "reqModification": "ir_fakour_90",
             "ShowNodes": {
               "node": [
+                "pylon_phoenix2",
                 "pylon_phoenix3",
+                "pylon_phoenix4",
                 "pylon_phoenix5"
               ]
             },
@@ -5281,6 +5296,81 @@
         },
         "damage": {
           "dm": "electronic_block4_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "wing_control",
+        "health": {
+          "dm": "sweep_wing_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "sweep_wing_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",

@@ -255,11 +255,15 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
                                                      gun_anim_var__fpsGunOffsetOptionalAcross : float const?;
                                                      gun_anim_var__fpsGunOffsetUp : float const?;
                                                      gun_anim_var__fpsGunOffsetOptionalUp : float const?;
+                                                     gun_anim_var__fpsGunOffsetLeanLAlong : float const?;
+                                                     gun_anim_var__fpsGunOffsetLeanLAcross : float const?;
+                                                     gun_anim_var__fpsGunOffsetLeanLUp : float const?;
                                                      gunAnimOffsetAlwaysInAim : Tag const?;
                                                      gun_dynamic_position__offset : float3 = float3();
                                                      subsidiaryGunEid : EntityId const?;
                                                      gun_anim__reloadProgress : float;
-                                                     gun_tilt__reloadProgressLimit : float = 1.0f)
+                                                     gun_tilt__reloadProgressLimit : float = 1.0f;
+                                                     launcherTag : Tag const?)
     assume isAim = is_control_bit_set(human_net_phys.phys.appliedCT, HumanPhysControlType.HCT_AIM)
     assume isCrawl = human_net_phys__isCrawl
     assume isInSprint = human_net_phys__curMoveState == int(HUMoveState.EMS_SPRINT)
@@ -272,22 +276,31 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
       return
 
     if !isTpsViewOnSoldier
+      var offsetAlong = gun_anim_var__fpsGunOffsetAlong ?? gun_anim_var__defGunOffsetAlong
       var offsetUp = gun_anim_var__fpsGunOffsetUp ?? gun_anim_var__defGunOffsetUp
       var offsetAcross = gun_anim_var__fpsGunOffsetAcross ?? gun_anim_var__defGunOffsetAcross
-      let useNeoclassicalTilt = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT", false)
+
       let isReloading = gun_anim__reloadProgress > 0.
       let isEndOfReloading = gun_anim__reloadProgress > gun_tilt__reloadProgressLimit
+      let leanL = (isReloading && !isEndOfReloading) ? 0.0 : saturate(-human_net_phys.phys.appliedCT.leanPosition)
+      if leanL > 0.0
+        let leanLAcross = gun_anim_var__fpsGunOffsetLeanLAcross ?? (launcherTag != null ? 0.0 : -2.0 * offsetAcross)
+        offsetAlong += leanL * (gun_anim_var__fpsGunOffsetLeanLAlong ?? 0.0)
+        offsetAcross += leanL * leanLAcross
+        offsetUp += leanL * (gun_anim_var__fpsGunOffsetLeanLUp ?? 0.0)
+
+      let useNeoclassicalTilt = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_INFANTRY_USE_NEOCLASSICAL_TILT", false)
       let isWearingWeaponMod = subsidiaryGunEid != null
       let isWearingOffWeaponMod = isWearingWeaponMod && isReloading
 
       let applyNeoClassicTilt = ((!isReloading || isEndOfReloading) && !isAim && !isCrawl && !bipod__enabled && !isWearingWeaponMod && !isInSprint) || isWearingOffWeaponMod
-      if applyNeoClassicTilt && useNeoclassicalTilt
+      if applyNeoClassicTilt && useNeoclassicalTilt && leanL <= 0.0
         if gun_anim_var__fpsGunOffsetOptionalAcross != null
           offsetAcross += *gun_anim_var__fpsGunOffsetOptionalAcross
         if gun_anim_var__fpsGunOffsetOptionalUp != null
           offsetUp += *gun_anim_var__fpsGunOffsetOptionalUp
 
-      let offset = float3(gun_anim_var__fpsGunOffsetAlong ?? gun_anim_var__defGunOffsetAlong, offsetUp, offsetAcross) + gun_dynamic_position__offset
+      let offset = float3(offsetAlong, offsetUp, offsetAcross) + gun_dynamic_position__offset
       phys_vars |> approach_var(reye_offset__fwd0Id, gun_anim_var__fpsReyeOffsetFwd0 ?? gun_anim_var__defReyeOffsetFwd0, info.dt, gun_offset__tau)
       phys_vars |> approach_var(gun_offset__alongId, offset.x, info.dt, gun_offset__tau)
       phys_vars |> approach_var(gun_offset__acrossId, offset.z, info.dt, gun_offset__tau)

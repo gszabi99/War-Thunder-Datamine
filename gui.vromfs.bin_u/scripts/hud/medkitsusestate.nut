@@ -4,17 +4,17 @@ from "%scripts/dagui_library.nut" import *
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 
-let medkitUsageInfo = freeze({
+const medkitUsageInfo = {
   isMedkitUsing = false
   entityUseTotalTime = 0.0
-})
+}
 let medkitUsageInfoWatch = Watched(medkitUsageInfo)
 medkitUsageInfoWatch.subscribe(@(v) g_hud_event_manager.onHudEvent("selfHealingInProgress", v))
 
-let tourniquetUsageInfo = freeze({
+const tourniquetUsageInfo = {
   isTourniquetUsing = false
   entityUseTotalTime = 0.0
-})
+}
 let tourniquetUsageInfoWatch = Watched(tourniquetUsageInfo)
 tourniquetUsageInfoWatch.subscribe(@(v) g_hud_event_manager.onHudEvent("selfTourniquetInProgress", v))
 

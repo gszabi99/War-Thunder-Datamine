@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes, enumsGetCachedType
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import REWARD_PRIORITY
-
-let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
+from "%globalScripts/expEventConsts.nut" import *
 
 let g_hud_reward_message = {
   types = []

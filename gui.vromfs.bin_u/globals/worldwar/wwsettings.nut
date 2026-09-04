@@ -1,7 +1,7 @@
-let DataBlock = require("DataBlock")
-let { wwGetOperationMapName } = require("worldwar")
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetOperationMapName
 
-let WW_SETTINGS_BLK_FILENAME = "worldWar/worldwar.blk";
+const WW_SETTINGS_BLK_FILENAME = "worldWar/worldwar.blk";
 local isMapSettingsLoaded = false
 let mapSettingsBlk = DataBlock()
 let settingsCache = {}
@@ -36,9 +36,9 @@ function getSettingsArray(param) {
   return settingsCache[param]
 }
 
-return {
+return freeze({
   getSettings
   getSettingsArray
   getMapsDirName
   clearSettingsCache = @() settingsCache.clear()
-}
+})

@@ -1,7 +1,6 @@
+from "%sqstd/underscore.nut" import isDataBlock
 from "%scripts/dagui_library.nut" import *
-
-
-let { isDataBlock } = require("%sqstd/underscore.nut")
+from "types" import Table, Array
 
 
 
@@ -36,9 +35,9 @@ DataBlockAdapter = class {
   }
 
   function ___checkReturn___(val, key) {
-    if (type(val) == "table")
+    if (val instanceof Table)
       return DataBlockAdapter(val, key)
-    if (type(val) == "array")
+    if (val instanceof Array)
       return this.___checkReturn___(val[0], key)
     return val
   }
@@ -65,7 +64,7 @@ DataBlockAdapter = class {
       return res
 
     let valList = this.___originData___[key]
-    if (type(valList) != "array") {
+    if (!(valList instanceof Array)) {
       res.append(this.___checkReturn___(valList, key))
       return res
     }
@@ -105,7 +104,7 @@ DataBlockAdapter = class {
     this.___paramsList___ = []
     this.___paramsListNames___ = []
     foreach (key, val in this.___originData___) {
-      if (type(val) != "array") {
+      if (!(val instanceof Array)) {
         this.___addToParamsList___(val, key)
         continue
       }

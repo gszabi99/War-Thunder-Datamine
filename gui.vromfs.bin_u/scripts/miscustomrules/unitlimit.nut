@@ -1,7 +1,7 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { getUnitRoleIcon, getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -41,19 +41,19 @@ let UnitLimitByUnitName = class (UnitLimitBase) {
     let unitName = this.nameLocId != null ? loc(this.nameLocId) : getUnitName(this.name)
     local res = "".concat(unitName, loc("ui/colon"), colorize("activeTextColor", this.getRespawnsLeftText()))
     let weaponPresetIconsText = get_weapon_icons_text(
-      this.name, getTblValue("weaponPresetId", this.presetInfo)
+      this.name, this.presetInfo?.weaponPresetId
     )
 
     if (!u.isEmpty(weaponPresetIconsText))
       res = "".concat(res, loc("ui/parentheses/space", {
-        text = "".concat(weaponPresetIconsText, getTblValue("teamUnitPresetAmount", this.presetInfo, 0))
+        text = "".concat(weaponPresetIconsText, (this.presetInfo?.teamUnitPresetAmount ?? 0))
       }))
 
     if (this.distributed != null && this.distributed != RESPAWNS_UNLIMITED) {
       local text = this.distributed > 0 ? colorize("userlogColoredText", this.distributed) : this.distributed
       if (!u.isEmpty(weaponPresetIconsText))
         text = "".concat(text, loc("ui/parentheses/space", {
-          text ="".concat(weaponPresetIconsText, getTblValue("userUnitPresetAmount", this.presetInfo, 0))
+          text ="".concat(weaponPresetIconsText, (this.presetInfo?.userUnitPresetAmount ?? 0))
         }))
       res = "".concat(res, " + ", text)
     }

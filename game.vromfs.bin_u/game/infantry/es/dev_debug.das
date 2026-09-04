@@ -1,12 +1,7 @@
 options no_aot
 require ecs
-require DagorDebug3D
 require AnimV20
-require GeomNodeTree
 require DagorConsole
-require math.base
-require danetlibs.render_debug.render.draw_debug_common
-require %game.utils.utils_common
 
 [console_cmd(name="animchar.log_without_act_on_demand")]
 def console_log_animchars_without_act_on_demand()

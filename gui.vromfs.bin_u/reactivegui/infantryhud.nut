@@ -1,44 +1,32 @@
+import "%rGui/hud/humanSquad/hudSquadMembers.nut" as hudSquadMembers
+import "%rGui/hud/humanSquad/killMarks.nut" as killMarks
+import "%rGui/hud/humanSquad/mkHealth.nut" as mkHealth
+import "%rGui/hud/humanSquad/mkStamina.nut" as mkStamina
+import "%rGui/hud/humanSquad/sightPresets.nut" as sightPresetsPanel
+import "%rGui/chat/voiceChat.nut" as voiceChat
+import "%rGui/hudLogs.nut" as hudLogs
+from "%rGui/hudState.nut" import isSpectatorMode, unitType, tacticalMapStates
+from "%rGui/style/screenState.nut" import rw, rh
+from "%rGui/hud/hitMarks.nut" import hitMarks
+from "%rGui/hud/humanSquad/humanConst.nut" import weaponBlockGap, healthStateBlockGap
+from "%rGui/hudUnitType.nut" import isHuman
+from "%rGui/activeOrder.nut" import activeOrderComps
 from "%rGui/globals/ui_library.nut" import *
 
 require("%rGui/hud/humanPhysState.nut")
 
-let { isSpectatorMode, unitType, tacticalMapStates } = require("%rGui/hudState.nut")
-let { rw, rh } = require("%rGui/style/screenState.nut")
-let hudSquadMembers = require("%rGui/hud/humanSquad/hudSquadMembers.nut")
-let { hitMarks } = require("%rGui/hud/hitMarks.nut")
-let killMarks = require("%rGui/hud/humanSquad/killMarks.nut")
-let mkHealth = require("%rGui/hud/humanSquad/mkHealth.nut")
-let mkStamina = require("%rGui/hud/humanSquad/mkStamina.nut")
 let mkCurWeapon = require("%rGui/hud/humanSquad/mkWeapons.nut")
 let mkWeaponsList = require("%rGui/hud/humanSquad/mkWeaponsList.nut")
-let sightPresetsPanel = require("%rGui/hud/humanSquad/sightPresets.nut")
-let { weaponBlockGap, healthStateBlockGap } = require("%rGui/hud/humanSquad/humanConst.nut")
-let { isHuman } = require("%rGui/hudUnitType.nut")
-let { eventbus_subscribe } = require("eventbus")
 
 
-let { activeOrderComps }= require("%rGui/activeOrder.nut")
-let voiceChat = require("%rGui/chat/voiceChat.nut")
-let hudLogs = require("%rGui/hudLogs.nut")
 
-let leftPanelGap = hdpxi(20)
-let smallPadding = hdpxi(4)
-let bigPadding = hdpxi(12)
-
-
-let isMapSpectatorVisible = Watched(true)
-let rightPanelOffset = Computed(@()
-  !isSpectatorMode.get() || !isMapSpectatorVisible.get() ? 0
-    : (tacticalMapStates.get()?.size[0] ?? 0) + bigPadding)
-
-eventbus_subscribe("updateSpectatorMapStates",
-  @(v) isMapSpectatorVisible.set(v?.isVisible ?? false))
-
+const leftPanelGap = hdpxi(20)
+const smallPadding = hdpxi(4)
 
 let centerPanel = {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  size = flex()
+  size = FLEX
   children = hitMarks
 }
 
@@ -71,9 +59,7 @@ let leftPanel = {
   ]
 }
 
-let rightPanel = @() {
-  watch = rightPanelOffset
-  margin = [0,rightPanelOffset.get(),0,0]
+let rightPanel = {
   flow = FLOW_VERTICAL
   vplace = ALIGN_BOTTOM
   hplace = ALIGN_RIGHT

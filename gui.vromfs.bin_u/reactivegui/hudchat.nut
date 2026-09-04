@@ -1,25 +1,27 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+import "%rGui/style/teamColors.nut" as teamColors
+import "%rGui/components/hudLog.nut" as hudLog
+import "%rGui/hints/hints.nut" as hints
+import "string" as string
+from "%globalScripts/chatState.nut" import ReputationType
+from "%rGui/options/options.nut" import isChatReputationFilterEnabled
+from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "%sqstd/time.nut" import secondsToTimeSimpleString
+from "chat" import chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
 from "%rGui/globals/ui_library.nut" import *
-let cross_call = require("%rGui/globals/cross_call.nut")
-let string = require("string")
+
 let colors = require("%rGui/style/colors.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
 let textInput =  require("%rGui/components/textInput.nut")
 let penalty = require("%rGui/penitentiary/penalty.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
 let state = require("%rGui/hudChatState.nut")
 let hudState = require("%rGui/hudState.nut")
-let hudLog = require("%rGui/components/hudLog.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
-let hints = require("%rGui/hints/hints.nut")
 let JB = require("%rGui/control/gui_buttons.nut")
-let { ReputationType } = require("%globalScripts/chatState.nut")
-let { isChatReputationFilterEnabled } = require("%rGui/options/options.nut")
-let { isModeWithTeams } = require("%appGlobals/missions/missionStateShared.nut")
 
-let { chat_on_text_update, toggle_ingame_chat, chat_on_send,
-  CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE
-} = require("chat")
 let scrollableData = require("%rGui/components/scrollableData.nut")
+
+
+let mpChatHint = extWatched("mpChatHint", "")
 
 let chatModeConfig = {
   [CHAT_MODE_ALL] = {
@@ -114,7 +116,7 @@ function chatInputCtor(field, send) {
     font = fontsState.get("small")
     margin = 0
     padding = [fpx(8), fpx(8), 0, fpx(8)]
-    size = flex()
+    size = FLEX
     valign = ALIGN_BOTTOM
     borderRadius = 0
     valignText = ALIGN_CENTER
@@ -147,13 +149,13 @@ let shadow = {
   fontFxOffsY = hdpx(1)
 }
 
-function getHintText() {
-  let config = hints(
-    cross_call.mp_chat_mode.getChatHint() ?? "",
+let getHintText = @() {
+  watch = mpChatHint
+  children = hints(
+    mpChatHint.get() ?? "",
     { font = fontsState.get("small")
       place = "chatHint"
     }.__update(shadow))
-  return config
 }
 
 
@@ -163,7 +165,7 @@ let chatHint = @() {
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
   padding = const [hdpx(4), hdpx(8)]
-  gap = { size = flex() }
+  gap = { size = FLEX }
   color = colors.hud.hudLogBgColor
   children = [
     getHintText
@@ -192,7 +194,7 @@ let getMessageColor = function(message) {
   if (message.isBlocked)
     return colors.menu.chatTextBlockedColor
   if (message.isAutomatic) {
-    if (cross_call.squad_manger.isInMySquadById(message.uid))
+    if (message?.isSquadMember ?? false)
       return teamColors.get().squadColor
     else if (message.team != hudState.playerArmyForHud.get())
       return teamColors.get().teamRedColor
@@ -206,11 +208,11 @@ let getMessageColor = function(message) {
 let getSenderColor = function (message) {
   if (message.isMyself)
     return colors.hud.mainPlayerColor
-  else if (cross_call.isPlayerDedicatedSpectator(message.sender))
+  else if (message?.isSenderSpectator ?? false)
     return colors.hud.spectatorColor
   else if (message.team != hudState.playerArmyForHud.get() || !isModeWithTeams())
     return teamColors.get().teamRedColor
-  else if (cross_call.squad_manger.isInMySquadById(message.uid))
+  else if (message?.isSquadMember ?? false)
     return teamColors.get().squadColor
   return teamColors.get().teamBlueColor
 }
@@ -233,7 +235,7 @@ let messageComponent = @(message) function() {
     else if (message.userReputation == ReputationType.REP_BAD && isChatReputationFilterEnabled.get())
       resText = loc("chat/blokedByChatRules")
     else
-      resText = cross_call.filter_chat_message(message.text, message.isMyself) ?? message.text
+      resText = message?.filteredText ?? message.text
 
     text = string.format("%s <Color=%d>[%s] %s:</Color> <Color=%d>%s</Color>",
       secondsToTimeSimpleString(message.time),

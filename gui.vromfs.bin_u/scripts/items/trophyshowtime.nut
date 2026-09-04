@@ -1,12 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 from "dagor.workcycle" import setTimeout, clearTimer, deferOnce
 
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
 let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
-let { get_charserver_time_sec } = require("chard")
 let { shopVisibleSeenIds } = require("%scripts/items/itemsManagerState.nut")
 let { checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
 let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")

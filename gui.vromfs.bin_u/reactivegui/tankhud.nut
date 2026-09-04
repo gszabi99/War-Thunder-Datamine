@@ -1,40 +1,40 @@
+import "%rGui/rocketAamAim.nut" as aamAim
+import "%rGui/agmAim.nut" as agmAim
+import "%rGui/hud/tankSightIndicators.nut" as sightIndicators
+import "%rGui/hud/activeProtectionSystem.nut" as activeProtectionSystem
+import "%rGui/tankSight.nut" as mkTankSight
+import "%rGui/chat/voiceChat.nut" as voiceChat
+import "%rGui/hudLogs.nut" as hudLogs
+from "%rGui/radarComponent.nut" import mkRadar
+from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
+from "%rGui/tws.nut" import tws
+from "%rGui/twsState.nut" import IsMlwsLwsHudVisible, CollapsedIcon
+from "%rGui/hudState.nut" import needShowDmgIndicator, isPlayingReplay, isSpectatorMode, isMissionProgressVisible
+from "%rGui/hud/tankState.nut" import IndicatorsVisible
+from "%rGui/hud/targetTracker.nut" import lockSight, targetSize
+from "%rGui/style/screenState.nut" import bw, bh
+from "%rGui/radarState.nut" import AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, IsCScopeVisible, IsBScopeVisible, isCollapsedRadarInReplay
+from "%rGui/radar.nut" import radarHud, radarIndication
+from "%rGui/airHudComponents.nut" import mkCollapseButton
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "%rGui/activeOrder.nut" import activeOrderComps
+from "%rGui/hud/hitMarks.nut" import mkScreenHitMark
+from "%rGui/hud/tankHudDebuffs.nut" import tankDebuffs
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth, updateDmgIndicatorElement
+from "math" import round
+from "%sqstd/math.nut" import PI
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/gameRendObjs.nut" import *
 
-let { round } = require("math")
-let { mkRadar } = require("%rGui/radarComponent.nut")
-let aamAim = require("%rGui/rocketAamAim.nut")
-let agmAim = require("%rGui/agmAim.nut")
-let { actionBarTopPanel } = require("%rGui/hud/actionBarTopPanel.nut")
-let { tws } = require("%rGui/tws.nut")
-let { IsMlwsLwsHudVisible, CollapsedIcon } = require("%rGui/twsState.nut")
-let sightIndicators = require("%rGui/hud/tankSightIndicators.nut")
-let activeProtectionSystem = require("%rGui/hud/activeProtectionSystem.nut")
-let { needShowDmgIndicator, isPlayingReplay, isSpectatorMode,
-  isMissionProgressVisible } = require("%rGui/hudState.nut")
-let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
-let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
-let { bw, bh } = require("%rGui/style/screenState.nut")
-let { AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, IsCScopeVisible, IsBScopeVisible, isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
-let { PI } = require("%sqstd/math.nut")
-let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
-let { mkCollapseButton } = require("%rGui/airHudComponents.nut")
-let mkTankSight = require("%rGui/tankSight.nut")
 let { aaComplexMenu } = require("%rGui/antiAirComplexMenu/antiAirComplexMenu.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 
 
 
-let { activeOrderComps }= require("%rGui/activeOrder.nut")
-let voiceChat = require("%rGui/chat/voiceChat.nut")
-let hudLogs = require("%rGui/hudLogs.nut")
-let { mkScreenHitMark } = require("%rGui/hud/hitMarks.nut")
-let { tankDebuffs } = require("%rGui/hud/tankHudDebuffs.nut")
-let { dmgIndicatorWidth, updateDmgIndicatorElement } = require("%rGui/hud/dmgIndicatorState.nut")
 
-let greenColor = Color(10, 202, 10, 250)
-let redColor = Color(255, 35, 30, 255)
+const greenColor = Color(10, 202, 10, 250)
+const redColor = Color(255, 35, 30, 255)
 
 let styleAamAim = {
   color = greenColor
@@ -44,7 +44,7 @@ let styleAamAim = {
 
 let radarPosComputed = Computed(@() isPlayingReplay.get() ? [bw.get() + sw(12), bh.get() + sh(5)] : [bw.get(), bh.get()])
 
-let missionProgressHeight = round(32 * max(sh(100) / 1080, 1) + hdpx(6))
+const missionProgressHeight = round(32 * max(sh(100) / 1080, 1) + hdpx(6))
 
 let tankXrayIndicator = @() {
   rendObj = ROBJ_XRAYDOLL
@@ -101,7 +101,7 @@ function missionProgressPanel() {
     return {watch = isMissionProgressVisible}
   return {
     watch = isMissionProgressVisible
-    size = [pw(100), missionProgressHeight]
+    size = const [pw(100), missionProgressHeight]
   }
 }
 
@@ -132,7 +132,7 @@ let leftPanel = @() {
 let hitPanel = {
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
-  size = flex()
+  size = FLEX
   children = mkScreenHitMark
 }
 
@@ -162,7 +162,7 @@ function Root() {
       @(){
         watch = needRadarCollapsedIcon
         children = needRadarCollapsedIcon.get() ? @(){
-            watch = isPlayingReplay
+            watch = [isPlayingReplay, radarPosComputed]
             pos = [radarPosComputed.get()[0] + sw(10), radarPosComputed.get()[1] + (isPlayingReplay.get() ? sh(5) : 0) ]
             size = sh(5)
             rendObj = ROBJ_IMAGE
@@ -181,7 +181,7 @@ function Root() {
 
       @(){
         watch = [isCollapsedRadarInReplay, isPlayingReplay]
-        size = flex()
+        size = FLEX
         children = !isCollapsedRadarInReplay.get()
           ? [
               radarHud(isBScope.get() ? sh(40) : sh(32), isBScope.get() ? sh(40) : sh(32), radarPosComputed.get()[0], radarPosComputed.get()[1], radarColor, {

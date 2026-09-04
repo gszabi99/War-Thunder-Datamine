@@ -1,3 +1,4 @@
+from "%globalScripts/inputDeviceConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,26 +11,19 @@ let DoubleAxis = class (InputBase) {
 
   deviceId = null
 
+  text = ""
+
   function getMarkup() {
     let data = this.getMarkupData()
     return handyman.renderCached(data.template, data.view)
   }
 
   function getMarkupData() {
-    let data = {
-      template = "%gui/shortcutAxis.tpl"
-      view = {}
-    }
-
-    let image = this.getImage()
-    if (image)
-      data.view.buttonImage <- image
-
-    return data
+    return this.getAxisMarkupData(this.getImage())
   }
 
   function getText() {
-    return ""
+    return this.text
   }
 
   function getDeviceId() {
@@ -53,6 +47,7 @@ let DoubleAxis = class (InputBase) {
     return {
       inputName = "doubleAxis"
       buttonImage = this.getImage()
+      text = this.getText()
     }
   }
 }

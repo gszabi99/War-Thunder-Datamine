@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import item_get_personal_discount_for_mod, item_get_personal_discount_for_skill_points, item_get_personal_discount_for_specialization, item_get_personal_discount_for_unit, item_get_personal_discount_for_weapon, item_get_personal_discount_for_exp_convert, item_get_personal_discount_for_unlock
 from "%scripts/dagui_library.nut" import *
+from "types" import Function
 
 
 
@@ -47,7 +48,7 @@ let getDiscountByPath = function(path) {
     return 0
 
   let method = getMethodByCategory?[path[0]]
-  if (type(method) == "function")
+  if (method instanceof Function)
     return method(path)
   return 0
 }

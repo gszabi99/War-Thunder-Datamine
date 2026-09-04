@@ -1,7 +1,9 @@
+from "%rGui/components/modalWindowsMngr.nut" import addModalWindow, removeModalWindow
+from "%rGui/style/screenState.nut" import safeAreaSizeMenu
 from "%rGui/globals/ui_library.nut" import *
-let { addModalWindow, removeModalWindow } = require("%rGui/components/modalWindowsMngr.nut")
+from "types" import Array
+
 let JB = require("%rGui/control/gui_buttons.nut")
-let { safeAreaSizeMenu } = require("%rGui/style/screenState.nut")
 
 let POPUP_PARAMS = {
   uid = null 
@@ -22,7 +24,7 @@ let POPUP_PARAMS = {
 let remove = @(uid) removeModalWindow(uid)
 
 function calcOffsets(rectOrPos, popupFlow, popupOffset, popupHalign, popupValign) {
-  let isArray = type(rectOrPos) == "array"
+  let isArray = rectOrPos instanceof Array
   assert(isArray || (("l" in rectOrPos) && ("b" in rectOrPos)))
   let res = {
     pos = isArray ? rectOrPos : [rectOrPos.l, rectOrPos.t]

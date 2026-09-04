@@ -1,23 +1,21 @@
+from "%sqstd/platform.nut" import is_xbox
+from "mission" import get_game_mode
 from "%scripts/dagui_natives.nut" import ps4_headtrack_get_enable, ps4_headtrack_calibrate, ps4_headtrack_is_attached, ps4_headtrack_is_active
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
+from "%scripts/controls/controlsConsts.nut" import HELP_CONTENT_SET
 
-let { is_xbox } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_game_mode } = require("mission")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
-let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTY_HUMAN, USEROPT_INVERTCAMERAY,
-  USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY,
-  USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
-  USEROPT_HEADTRACK_SCALE_Y
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTY_HUMAN, USEROPT_INVERTCAMERAY, USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY, USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y } = require("%scripts/options/optionsExtNames.nut")
 let { switchControlsMode } = require("%scripts/controls/startControls.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 let { gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
 
-gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
+register_gui_handler("ControlsConsole", class (GenericOptionsModal) {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/controlsConsole.blk"
   sceneNavBlkName = null
@@ -119,4 +117,4 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
       [["ok", function() { ps4_headtrack_calibrate() } ]],
       "ok", { cancel_fn = function() {} })
   }
-}
+})

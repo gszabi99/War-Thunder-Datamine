@@ -1,17 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqstd/string.nut" import stripTags
 from "%scripts/dagui_natives.nut" import get_cur_circuit_name, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let DataBlock  = require("DataBlock")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let wwRewards = require("%scripts/worldWar/handler/wwRewards.nut")
-let { getSeparateLeaderboardPlatformName,
-        getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
+let { getSeparateLeaderboardPlatformName, getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
@@ -35,7 +35,7 @@ let wwLeaderboardsList = [
 ]
 
 
-gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
+let WwLeaderboard = class (LeaderboardWindow) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/leaderboard/leaderboard.blk"
 
@@ -485,7 +485,9 @@ gui_handlers.WwLeaderboard <- class (gui_handlers.LeaderboardWindow) {
     addClanTagToNameInLeaderbord(this.scene.findObject("lb_table_nest"), clansInfoList)
   }
 }
+register_gui_handler("WwLeaderboard", WwLeaderboard)
 
 return {
+  WwLeaderboard
   wwLeaderboardsList
 }

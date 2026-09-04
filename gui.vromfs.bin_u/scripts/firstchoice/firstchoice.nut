@@ -1,8 +1,12 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn, isProfileReceived
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_natives.nut" import stat_get_value_respawns, is_country_available
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { is_gdk } = require("%sqstd/platform.nut")
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
@@ -11,8 +15,6 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { isUnitDefault, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
 

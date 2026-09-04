@@ -1,17 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler, broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { isInSquad } = require("%scripts/squads/squadState.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let applicationsList = persist("applicationsList", @() {})
 let pendingUsersIds = {}
 
-let popupTextColor = "@chatTextInviteColor"
+const popupTextColor = "@chatTextInviteColor"
 
 let SquadApplicationsList = freeze({
 
@@ -66,7 +65,7 @@ let SquadApplicationsList = freeze({
     if (!(squadId in applicationsList))
       return
 
-    if (g_squad_manager.isInSquad())
+    if (isInSquad())
       return
 
     if (needPopup) {
@@ -133,7 +132,7 @@ let SquadApplicationsList = freeze({
   }
 
   function onEventSquadStatusChanged(_params) {
-    if (g_squad_manager.isInSquad())
+    if (isInSquad())
       this.onAcceptApplication()
   }
 

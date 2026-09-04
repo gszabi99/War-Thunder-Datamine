@@ -1,13 +1,13 @@
+import "string" as string
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, IlsLineScale, RocketMode, BombCCIPMode, DistToTarget, TargetPos, TargetPosValid, BombingMode
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth, metrToFeet, mpsToKnots, metrToNavMile
+from "%rGui/planeState/planeFlyState.nut" import Tangage, BarAltitude, Altitude, Speed, Roll, ClimbSpeed, Aoa, VertOverload
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap
+from "%sqstd/math.nut" import round, cos, sin, PI, floor
+from "dagor.math" import cvt
 from "%rGui/globals/ui_library.nut" import *
-let { IlsColor, IlsLineScale, TvvMark, RocketMode, BombCCIPMode,
- DistToTarget, TargetPos, TargetPosValid, BombingMode } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, metrToFeet, mpsToKnots, metrToNavMile } = require("%rGui/planeIlses/ilsConstants.nut")
-let { Tangage, BarAltitude, Altitude, Speed, Roll, ClimbSpeed,
- Aoa, VertOverload } = require("%rGui/planeState/planeFlyState.nut");
-let string = require("string")
-let { round, cos, sin, PI, floor } = require("%sqstd/math.nut")
-let { cvt } = require("dagor.math")
-let { compassWrap } = require("%rGui/planeIlses/ilsCompasses.nut")
+
+let { TvvMark } = require("%rGui/planeState/planeToolsState.nut")
 
 function angleTxt(num, isLeft, invVPlace = 1, x = 0) {
   return @() {
@@ -28,11 +28,11 @@ function generatePitchLine(num) {
   let newNum = num >= 0 ? num : (num - 5)
   return {
     size = const [pw(80), ph(50)]
-    pos = [pw(10), 0]
+    pos = const [pw(10), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -47,7 +47,7 @@ function generatePitchLine(num) {
     ] :
     [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -96,7 +96,7 @@ function pitch(width, height, generateFunc) {
 
 function KaiserTvvLinked(width, height) {
   return {
-    size = flex()
+    size = FLEX
     children = [
       @() {
         watch = IlsColor
@@ -128,7 +128,7 @@ let altValue = Computed(@() ((isRadioAlt.get() ? Altitude.get() : BarAltitude.ge
 let altitude = @() {
   watch = [altValue, IlsColor]
   rendObj = ROBJ_TEXT
-  pos = [pw(78), ph(30)]
+  pos = const [pw(78), ph(30)]
   size = SIZE_TO_CONTENT
   color = IlsColor.get()
   fontSize = 40
@@ -136,8 +136,8 @@ let altitude = @() {
   text = altValue.get().tostring()
   children = isRadioAlt.get() ? {
     rendObj = ROBJ_TEXT
-    pos = [0, ph(100)]
-    size = flex()
+    pos = const [0, ph(100)]
+    size = FLEX
     halign = ALIGN_CENTER
     color = IlsColor.get()
     fontSize = 40
@@ -150,8 +150,8 @@ let speedValue = Computed(@() round(Speed.get() * mpsToKnots).tointeger())
 let a10Speed = @() {
   watch = [speedValue, IlsColor]
   rendObj = ROBJ_TEXT
-  pos = [pw(8), ph(30)]
-  size = flex()
+  pos = const [pw(8), ph(30)]
+  size = FLEX
   color = IlsColor.get()
   fontSize = 40
   font = Fonts.hud
@@ -162,7 +162,7 @@ function climbSpeed(height){
   return @(){
     watch = IlsColor
     size = const [pw(4), ph(30)]
-    pos = [pw(85), ph(40)]
+    pos = const [pw(85), ph(40)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
@@ -179,7 +179,7 @@ function climbSpeed(height){
     children = {
       rendObj = ROBJ_VECTOR_CANVAS
       size = const [pw(50), pw(25)]
-      pos = [pw(100), 0]
+      pos = const [pw(100), 0]
       color = IlsColor.get()
       fillColor = IlsColor.get()
       lineWidth = 1
@@ -239,7 +239,7 @@ let ccipDistF = Computed(@() cvt(clamp(DistToTarget.get() * metrToFeet * 0.01, 0
 let ccipDistM = Computed(@() (DistToTarget.get() < 0 || DistToTarget.get() >= 10000 ? -1 : DistToTarget.get() * metrToNavMile * 10.0).tointeger())
 let gunAimMark = @() {
   watch = TargetPosValid
-  size = flex()
+  size = FLEX
   children = TargetPosValid.get() ?
     @() {
       watch = IlsColor
@@ -264,7 +264,7 @@ let gunAimMark = @() {
           watch = [ccipDistM, IlsColor]
           rendObj = ROBJ_TEXT
           color = IlsColor.get()
-          pos = [pw(-50), ph(120)]
+          pos = const [pw(-50), ph(120)]
           font = Fonts.hud
           fontSize = 30
           hplace = ALIGN_CENTER
@@ -272,7 +272,7 @@ let gunAimMark = @() {
         }
         @(){
           watch = [ccipDistF, IlsColor]
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_VECTOR_CANVAS
           color = IlsColor.get()
           fillColor = Color(0, 0, 0, 0)
@@ -299,7 +299,7 @@ function impactLine(_width, height) {
     watch = [TargetPosValid, BombCCIPMode, BombingMode, RocketMode, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       (TargetPosValid.get() && (BombCCIPMode.get() || BombingMode.get() || RocketMode.get()) ? [VECTOR_LINE, 0, 0, 0, -100] : [])
@@ -319,8 +319,8 @@ let aoaValue = Computed(@() (Aoa.get() * 10.0).tointeger())
 let aoa = @() {
   watch = [aoaValue, IlsColor]
   rendObj = ROBJ_TEXT
-  pos = [pw(10), ph(85)]
-  size = flex()
+  pos = const [pw(10), ph(85)]
+  size = FLEX
   color = IlsColor.get()
   fontSize = 40
   font = Fonts.hud
@@ -330,8 +330,8 @@ let aoa = @() {
 let OverloadWatch = Computed(@() (floor(VertOverload.get() * 10.0)).tointeger())
 let overload = @() {
   watch = [OverloadWatch, IlsColor]
-  size = flex()
-  pos = [pw(10), ph(81)]
+  size = FLEX
+  pos = const [pw(10), ph(81)]
   rendObj = ROBJ_TEXT
   color = IlsColor.get()
   fontSize = 40
@@ -352,7 +352,7 @@ function KaiserVDO(width, height) {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = pw(1)
-        pos = [pw(50), ph(26)]
+        pos = const [pw(50), ph(26)]
         color = IlsColor.get()
         lineWidth = 1
         fillColor = IlsColor.get()

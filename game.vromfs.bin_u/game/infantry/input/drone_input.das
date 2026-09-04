@@ -1,10 +1,6 @@
 require ecs
-require app
 require net
 require WTInput
-require DagorSystem
-require %game.events
-require %game.player_events
 require %game.input.input_events
 
 require %appGame.wt_events

@@ -93,8 +93,8 @@
   },
   "_common_ugcSkinsDecalsCDN": {
     "ugcServerUrl": [
-      "https://ugcinfo-test-lw-nl-03.gaijin.net/char",
-      "https://ugcinfo-test-lw-nl-04.gaijin.net/char"
+      "https://ugcinfo-test-01.gaijin.net/char",
+      "https://ugcinfo-test-02.gaijin.net/char"
     ],
     "enableUGC": false,
     "url": "https://wt-ugc.cdn.gaijin.net/"
@@ -306,7 +306,7 @@
   },
   "dev-stable": {
     "appPerm": 50277,
-    "matchServer": "match-dev-lw-nl-02.warthunder.com:7853",
+    "matchServer": "89.149.224.34:7853",
     "useTamVoice": true,
     "ircServer": "chat-devstable.warthunder.com:6667",
     "charServer": [
@@ -354,7 +354,7 @@
   },
   "dev": {
     "appPerm": 50277,
-    "matchServer": "match-dev-lw-nl-02.warthunder.com:7852",
+    "matchServer": "89.149.224.34:7852",
     "useTamVoice": true,
     "ircServer": "chat-dev.warthunder.com:6667",
     "charServer": [
@@ -415,7 +415,7 @@
   },
   "nightly": {
     "appPerm": 50276,
-    "matchServer": "mgate-nightly-01.warthunder.com:7853",
+    "matchServer": "89.149.224.34:7854",
     "useTamVoice": true,
     "ircServer": "chat-nightly.warthunder.com:6666",
     "charServer": [
@@ -436,7 +436,7 @@
     },
     "inventory": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:3443/char"
+        "url": "https://inventory-nightly-01.gaijin.net:3443/char"
       }
     },
     "ww_leaderboard": {
@@ -449,12 +449,61 @@
     },
     "userstat": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:5443/char"
+        "url": "https://userstat-nightly-01.gaijin.net:5443/char"
       }
     },
     "contacts": {
       "servers": {
-        "url": "https://common-char-nightly-lw-nl-01.gaijin.net:4443/json"
+        "url": "https://contact-nightly-01.gaijin.net:4443/json"
+      }
+    },
+    "ugc_settings": {
+      "ugcServerUrl": [
+        "https://inventory-dev-stable-01.gaijin.net:8443/char",
+        "https://inventory-dev-stable-01.gaijin.net:8443/char"
+      ]
+    },
+    "yuplay": {
+      "authFallbackHost": "auth-fallback.gaijinent.com"
+    }
+  },
+  "backstage": {
+    "appPerm": 50276,
+    "matchServer": "match-non-prod-lw-nl-01.warthunder.com:7857",
+    "useTamVoice": true,
+    "ircServer": "chat-backstage.warthunder.com:6665",
+    "charServer": [
+      "https://char-backstage-01.warthunder.com:9443/char",
+      "https://char-backstage-01.warthunder.com:10443/char"
+    ],
+    "circuitPostfix": "-test",
+    "queryTimeoutMs": 180000,
+    "disableScaleWPByPlayers": true,
+    "enableApex": true,
+    "marketplaceURL": "https://trade.gaijin.net/",
+    "enableUGC": true,
+    "ugcSkinsDecalsCDN_useCommon": false,
+    "ugcSkinsDecalsCDN": "https://wt-ugc.cdn.gaijin.net/",
+    "pso_cache_download_url": "https://beta.pso-cache.gaijin.net",
+    "ps4updater": {
+      "enabled": true
+    },
+    "inventory": {
+      "servers": {
+        "url": "https://inventory-backstage-01.gaijin.net:8443/char"
+      }
+    },
+    "ww_leaderboard": {
+      "servers": {
+        "url": [
+          "https://char-backstage-01.warthunder.com:9443/char",
+          "https://char-backstage-01.warthunder.com:10443/char"
+        ]
+      }
+    },
+    "contacts": {
+      "servers": {
+        "url": "https://contact-backstage-01.gaijin.net:7443/json"
       }
     },
     "ugc_settings": {
@@ -522,7 +571,7 @@
   },
   "ps4submission": {
     "appPerm": 50277,
-    "matchServer": "ps4sub-match.warthunder.com:7870",
+    "matchServer": "89.149.224.34:7855",
     "useTamVoice": true,
     "ircServer": "ps4sub-chat.warthunder.com:6668",
     "charServer": "https://ps4sub-char.warthunder.com:443/char",
@@ -544,7 +593,7 @@
   },
   "xbox-submission": {
     "appPerm": 50277,
-    "matchServer": "xbsub-match.warthunder.com:7870",
+    "matchServer": "89.149.224.34:7856",
     "useTamVoice": true,
     "ircServer": "xbsub-chat.warthunder.com:6667",
     "charServer": "https://xbsub-char.warthunder.com:443/char",
@@ -582,10 +631,7 @@
     "skinsDecalsCacheSz": 1073741824,
     "pso_cache_download_url": "https://beta.pso-cache.gaijin.net",
     "matching": {
-      "server": [
-        "mgate01gj-hu.gaijin.ops:7853",
-        "match-warthunder-gj-hu-01.gaijin.ops:7852"
-      ]
+      "server": "match-warthunder-gj-hu-02.gaijin.ops:7852"
     },
     "yuplay": {
       "authFallbackHost": "auth-fallback.gaijinent.com"
@@ -638,7 +684,6 @@
   },
   "experimental": {
     "appPerm": 50276,
-    "matchServer": "match-warthunder-gj-hu-01.gaijin.ops:7870",
     "ircServer": "chat-gj-hu-01.gaijin.ops:7001",
     "useTamVoice": true,
     "charServer": [
@@ -651,23 +696,12 @@
     "enableApex": true,
     "enableUGC": true,
     "pso_cache_download_url": "https://beta.pso-cache.gaijin.net",
+    "matching": {
+      "server": "match-warthunder-gj-hu-02.gaijin.ops:7870"
+    },
     "yuplay": {
       "authFallbackHost": "auth-fallback.gaijinent.com"
     }
-  },
-  "experimental2": {
-    "matchServer": "match-warthunder-gj-hu-01.gaijin.ops:7872",
-    "ircServer": "chat-gj-hu-01.gaijin.ops:7001",
-    "useTamVoice": true,
-    "charServer": [
-      "https://chard-experimental.warthunder.com:2443/char",
-      "https://chard-experimental.warthunder.com:12443/char"
-    ],
-    "circuitPostfix": "-test",
-    "queryTimeoutMs": 180000,
-    "disableScaleWPByPlayers": true,
-    "enableApex": true,
-    "pso_cache_download_url": "https://beta.pso-cache.gaijin.net"
   },
   "tournament": {
     "matchServer": "mgate-elb-02.warthunder.com:7853",

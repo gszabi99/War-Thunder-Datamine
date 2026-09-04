@@ -1,8 +1,11 @@
+from "%sqStdLibs/helpers/u.nut" import appendOnce
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_natives.nut" import is_default_aircraft
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/charActionConsts.nut" import *
 
 let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { isCrewLockedByPrevBattle, getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -12,7 +15,6 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let selectedCrews = persist("selectedCrews", @() {})
 

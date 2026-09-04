@@ -1,10 +1,9 @@
+from "%rGui/style/airHudStyle.nut" import hudFontHgt, fontOutlineColor, fontOutlineFxFactor
+from "%rGui/compassState.nut" import CompassValue
+from "%rGui/lwsState.nut" import LwsDirections
+from "%rGui/aircraftVoiceMessagesState.nut" import aircraftsPositionsMessage
+from "math" import fabs
 from "%rGui/globals/ui_library.nut" import *
-
-let { hudFontHgt, fontOutlineColor, fontOutlineFxFactor } = require("%rGui/style/airHudStyle.nut")
-let { fabs } = require("math")
-let { CompassValue } = require("%rGui/compassState.nut")
-let { LwsDirections } = require("%rGui/lwsState.nut")
-let { aircraftsPositionsMessage } = require("%rGui/aircraftVoiceMessagesState.nut")
 
 let styleLineForeground = {
   fillColor = Color(0, 0, 0, 0)
@@ -112,7 +111,7 @@ let mkLwsMark = @(lwsDirection, size, color) function(){
   }
 }
 
-let function mkAircraftMark(markData, size, color) {
+function mkAircraftMark(markData, size, color) {
   let { direction, iconId } = markData
   let image = Picture($"ui/gameuiskin#{iconId.split(":")[0]}:{imageSize[0]}:{imageSize[1]}:P")
   return function() {

@@ -91,7 +91,7 @@ let isFakeSceneHidden = Computed(function() {
   return true
 })
 
-let isFakeSceneLocked = Computed(function() {
+let isFakeSceneLocked = Computed(function() { 
   UNUSED(edObjectFlagsUpdateTrigger)
 
   let entities = allEntities?.get()[ecs.INVALID_SCENE_ID] ?? []
@@ -181,7 +181,7 @@ function createFakeSceneItems(order, expandedStateCb) {
   return fakeItems
 }
 
-function gatherSceneItems(scene, order, isParentExpanded, depth, items, expandedStateCb) {
+function gatherSceneItems(scene, order, isParentExpanded, depth, items: array, expandedStateCb) {
   if (scene.id != fakeScene.id) {
     if ((scene.loadType == 1 && !showCommonScenes.get()) ||
       (scene.loadType == 2 && !showClientScenes.get()) ||
@@ -248,10 +248,10 @@ function gatherSceneItems(scene, order, isParentExpanded, depth, items, expanded
 
 function getEntityCount(scene) {
   if (scene.id == fakeScene.id) {
-    return allEntities.get()?[scene.id].len()
+    return allEntities.get()?[scene.id].len() ?? 0
   }
   else {
-    return entity_editor?.get_instance().getSceneEntityCount(scene.id)
+    return entity_editor?.get_instance().getSceneEntityCount(scene.id) ?? 0
   }
 }
 
@@ -348,9 +348,9 @@ function scrollScenesBySelection() {
   }, 2, false, true)
 }
 
-function scnTxt(count) { return count==1 ? "scene" : "scenes" }
-function entTxt(count) { return count==1 ?  "entity" : "entities" }
-function statusText(count, textFunc) { return format("%d %s", count, textFunc(count)) }
+function scnTxt(count): string { return count==1 ? "scene" : "scenes" }
+function entTxt(count): string { return count==1 ?  "entity" : "entities" }
+function statusText(count, textFunc: function): string { return format("%d %s", count, textFunc(count)) }
 
 function statusLineScenes() {
   let sMrk = getNumMarkedScenes()
@@ -427,7 +427,7 @@ function mkIconButton(icon, onClick = null, visible = true, parentHovered = fals
     children = @() {
       rendObj = ROBJ_IMAGE
       image = !visible ? null : ((sf & S_HOVER) || parentHovered ? Picture(icon) : null)
-      size = [hdpx(20), hdpx(20)]
+      size = const [hdpx(20), hdpx(20)]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       color = onClick != null && (sf & S_HOVER) ? Color(66, 176, 255) : Color(255, 255, 255, 255)
@@ -493,7 +493,7 @@ function getSelectedScenesIndicies(scenes) {
   return scenes.get()?.filter(@(marked, _sceneId) marked).keys()
 }
 
-function getAllSelectedItems() {
+function getAllSelectedItems(): array {
   let selection = []
   selection.extend(markedStateScenes?.get().filter(@(marked, _sceneId) marked).keys().map(function (value) {
     let item = {}
@@ -526,10 +526,12 @@ function initScenesList() {
     expandedStateScenes.get()[scene.id] <- isExpanded
   }
 
+  local wasFakeSceneMarked = markedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
   local wasFakeSceneExpanded = expandedStateScenes.get()?[ecs.INVALID_SCENE_ID] ?? false
   markedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
   expandedStateScenes.modify(@(v) v.filter(@(_, key) key in sceneIdMap.get()))
 
+  markedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneMarked
   expandedStateScenes.get()[ecs.INVALID_SCENE_ID] <- wasFakeSceneExpanded
 
   markedStateScenes.trigger()
@@ -693,12 +695,12 @@ function getTreeControl(item, ind) {
   while (currentOffset < offset - 1) {
     objs.append(
       {
-        size = [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
+        size = const [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
         children = {
           rendObj = ROBJ_SOLID
-          size = [1, flex()]
+          size = const [1, flex()]
           color = TREE_CONNECTIONS_COLOR
         }
       }
@@ -712,31 +714,31 @@ function getTreeControl(item, ind) {
     if (ind + 1 == filteredItems.get().len() || item.depth > filteredItems.get()[ind + 1].depth) {
       objs.append(
         {
-          size = [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
+          size = const [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT
           flow = FLOW_HORIZONTAL
           children = [
             {
-              size = [1, flex()]
+              size = const [1, flex()]
               flow = FLOW_VERTICAL
               children = [
                 {
                   rendObj = ROBJ_SOLID
                   valign = ALIGN_TOP
-                  size = [1, flex()]
+                  size = const [1, flex()]
                   color = TREE_CONNECTIONS_COLOR
                 }
                 {
                   valign = ALIGN_TOP
-                  size = [1, flex()]
+                  size = const [1, flex()]
                 }
               ]
             }
             {
               halign = ALIGN_RIGHT
               rendObj = ROBJ_SOLID
-              size = [hdpx(TREE_CONTROL_CONTROL_WIDTH) / 2, 1]
+              size = const [hdpx(TREE_CONTROL_CONTROL_WIDTH) / 2, 1]
               color = TREE_CONNECTIONS_COLOR
             }
           ]
@@ -746,20 +748,20 @@ function getTreeControl(item, ind) {
     else {
       objs.append(
         {
-          size = [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
+          size = const [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT
           flow = FLOW_HORIZONTAL
           children = [
             {
               rendObj = ROBJ_SOLID
-              size = [1, flex()]
+              size = const [1, flex()]
               color = TREE_CONNECTIONS_COLOR
             }
             {
               halign = ALIGN_RIGHT
               rendObj = ROBJ_SOLID
-              size = [hdpx(TREE_CONTROL_CONTROL_WIDTH) / 2, 1]
+              size = const [hdpx(TREE_CONTROL_CONTROL_WIDTH) / 2, 1]
               color = TREE_CONNECTIONS_COLOR
             }
           ]
@@ -770,7 +772,7 @@ function getTreeControl(item, ind) {
 
   if (isScene && item.scene.hasChildren) {
     objs.append({
-      size = [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
+      size = const [hdpx(TREE_CONTROL_CONTROL_WIDTH), flex()]
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
       children = {
@@ -819,7 +821,7 @@ function mkTag(icon, bgColor, color, text, maxTextString, tooltip = null) {
     borderRadius = hdpx(45)
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
-    padding = [0, fsh(0.5), 0, fsh(0.5)]
+    padding = const [0, fsh(0.5), 0, fsh(0.5)]
     gap = fsh(0.25)
     behavior = Behaviors.TrackMouse
     onHover = @(on) setTooltip(on ? tooltip : null)
@@ -836,7 +838,7 @@ function mkTag(icon, bgColor, color, text, maxTextString, tooltip = null) {
           halign = ALIGN_RIGHT
           rendObj = ROBJ_IMAGE
           image = Picture(icon)
-          size = [hdpx(20), hdpx(20)]
+          size = const [hdpx(20), hdpx(20)]
           color = color
         }
         : null
@@ -950,7 +952,7 @@ function mkDataRow(item, textColor, hovered) {
   }
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = const [flex(), SIZE_TO_CONTENT]
     flow = FLOW_HORIZONTAL
     gap = fsh(0.5)
     children = [
@@ -1413,30 +1415,30 @@ function listSceneRow(item, idx) {
       children = [
         {
           flow = FLOW_VERTICAL
-          size = [flex(), SIZE_TO_CONTENT]
+          size = const [flex(), SIZE_TO_CONTENT]
           children = [
             @() {
               rendObj = ROBJ_SOLID
               watch = [stateWatcher]
-              size = [flex(), 1]
+              size = const [flex(), 1]
               color = getSeparatorColor(stateWatcher.get(), -1)
             }
             {
               flow = FLOW_HORIZONTAL
-              size = [ flex(), SIZE_TO_CONTENT ]
+              size = const [ flex(), SIZE_TO_CONTENT ]
               children = [
                 {
                   halign = ALIGN_CENTER
                   valign = ALIGN_CENTER
                   flow = FLOW_HORIZONTAL
-                  size = [ SIZE_TO_CONTENT, flex() ]
-                  padding = [0, fsh(0.5), 0, fsh(0.5)]
+                  size = const [ SIZE_TO_CONTENT, flex() ]
+                  padding = const [0, fsh(0.5), 0, fsh(0.5)]
                   children = getTreeControl(item, idx)
                 }
                 @() {
-                  size = [ flex(), SIZE_TO_CONTENT ]
+                  size = const [ flex(), SIZE_TO_CONTENT ]
                   watch = [stateWatcher]
-                  padding = [fsh(0.5), fsh(0.5), fsh(0.5), 0]
+                  padding = const [fsh(0.5), fsh(0.5), fsh(0.5), 0]
                   children = mkDataRow(item, (stateWatcher?.get().dropPosition == 0) || (sf & S_DRAG) ? dragColor.get() : textColor.get(),
                     sf & S_HOVER)
                 }
@@ -1445,7 +1447,7 @@ function listSceneRow(item, idx) {
             @() {
               rendObj = ROBJ_SOLID
               watch = [stateWatcher]
-              size = [flex(), 1]
+              size = const [flex(), 1]
               color = getSeparatorColor(stateWatcher.get(), 1)
             }
           ]
@@ -1457,7 +1459,7 @@ function listSceneRow(item, idx) {
 
 de4workMode.subscribe(@(_) gui_scene.resetTimeout(0.1, initLists))
 
-function isAnyEntitySelected() {
+function isAnyEntitySelected(): bool {
   return selectionStateEntities?.get().filter(@(val, _) val).len() != 0
 }
 
@@ -1686,22 +1688,30 @@ function createScenePropertiesControl() {
   let pivotY = Watched(pivot ? pivot.y : "")
   let pivotZ = Watched(pivot ? pivot.z : "")
 
+  function onSceneIndexChanged(idx) {
+    isTransformable.set(getIsTransformable())
+    let scenePivot = idx != -1 ? entity_editor?.get_instance().getScenePivot(idx) : null
+    pivotX.set(scenePivot ? scenePivot.x : "")
+    pivotY.set(scenePivot ? scenePivot.y : "")
+    pivotZ.set(scenePivot ? scenePivot.z : "")
+  }
+
   function onPivotXChanged(val) {
-    if (isStringFloat(val)) {
+    if (isStringFloat(val) && isStringFloat(pivotY.get()) && isStringFloat(pivotZ.get())) {
       entity_editor?.get_instance().setScenePivot(sceneIndex.get(),
         Point3(val.tofloat(), pivotY.get().tofloat(), pivotZ.get().tofloat()))
     }
   }
 
   function onPivotYChanged(val) {
-    if (isStringFloat(val)) {
+    if (isStringFloat(val) && isStringFloat(pivotX.get()) && isStringFloat(pivotZ.get())) {
       entity_editor?.get_instance().setScenePivot(sceneIndex.get(),
         Point3(pivotX.get().tofloat(), val.tofloat(), pivotZ.get().tofloat()))
     }
   }
 
   function onPivotZChanged(val) {
-    if (isStringFloat(val)) {
+    if (isStringFloat(val) && isStringFloat(pivotX.get()) && isStringFloat(pivotY.get())) {
       entity_editor?.get_instance().setScenePivot(sceneIndex.get(),
         Point3(pivotX.get().tofloat(), pivotY.get().tofloat(), val.tofloat()))
     }
@@ -1760,6 +1770,8 @@ function createScenePropertiesControl() {
     halign = ALIGN_LEFT
     valign = ALIGN_CENTER
     watch = [sceneIndex]
+    onAttach = @() sceneIndex.subscribe_with_nasty_disregard_of_frp_update(onSceneIndexChanged)
+    onDetach = @() sceneIndex.unsubscribe(onSceneIndexChanged)
     children = sceneIndex.get() != -1 ? getPropertiesControls() : []
   }
 }
@@ -1798,7 +1810,7 @@ function createFilterControls() {
         }
         {
           rendObj = ROBJ_SOLID
-          size = [hdpx(46), hdpx(25)]
+          size = const [hdpx(46), hdpx(25)]
           color = colors.ControlBgOpaque
           behavior = Behaviors.Button
           onClick = @() filterSelectedEntities.set(!filterSelectedEntities.get())
@@ -1840,7 +1852,7 @@ function createFilterControls() {
 
 function mkImportButton() {
   return @() {
-    size = [SIZE_TO_CONTENT, flex()]
+    size = const [SIZE_TO_CONTENT, flex()]
     watch = [canAddImport]
     children = textButton("Import", function() {
         addImportDialog(function(path) {
@@ -1872,14 +1884,14 @@ function mkImportButton() {
         },
         boxStyle = {
           normal = {
-            size = [SIZE_TO_CONTENT, flex()]
+            size = const [SIZE_TO_CONTENT, flex()]
             margin = 0
-            padding = [hdpx(1),hdpx(10)]
+            padding = const [hdpx(1),hdpx(10)]
           }
         }
         textStyle = {
           normal = {
-            size = [SIZE_TO_CONTENT, flex()]
+            size = const [SIZE_TO_CONTENT, flex()]
             valign = ALIGN_CENTER
             halign = ALIGN_CENTER
           }
@@ -1903,8 +1915,8 @@ function mkFilterOptionsButton() {
 
   function dropdownBgOverlay(onClick) {
     return {
-      pos = [-9000, -9000]
-      size = [19999, 19999]
+      pos = const [-9000, -9000]
+      size = const [19999, 19999]
       behavior = Behaviors.ComboPopup
       eventPassThrough = true
       onClick
@@ -1913,8 +1925,8 @@ function mkFilterOptionsButton() {
 
   function popupWrapper(popupContent) {
     let children = [
-      {size = [flex(), ph(100)]}
-      {size = [flex(), hdpx(2)]}
+      {size = const [flex(), ph(100)]}
+      {size = const [flex(), hdpx(2)]}
       popupContent
     ]
 
@@ -1995,7 +2007,7 @@ function mkFilterOptionsButton() {
   return watchElemState( @(sf) {
     rendObj = ROBJ_BOX
     behavior = Behaviors.Button
-    size = [SIZE_TO_CONTENT, flex()]
+    size = const [SIZE_TO_CONTENT, flex()]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     watch = [dropDownOpen]
@@ -2006,7 +2018,7 @@ function mkFilterOptionsButton() {
     children = @() {
       rendObj = ROBJ_IMAGE
       image = Picture(getIcon("filter_default"))
-      size = [hdpx(26), hdpx(26)]
+      size = const [hdpx(26), hdpx(26)]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       watch = [dropDownOpen, isAnyFilterOptionEnabled]
@@ -2058,7 +2070,7 @@ function mkScenesList() {
       }
       {
         flow = FLOW_HORIZONTAL
-        size = [flex(), SIZE_TO_CONTENT]
+        size = const [flex(), SIZE_TO_CONTENT]
         children = [
           createFilterControls()
           hflow(

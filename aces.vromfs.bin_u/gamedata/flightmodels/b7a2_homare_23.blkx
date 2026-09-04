@@ -1,7 +1,10 @@
 {
   "model": "b7a2",
   "fmFile": "fm/b7a2_homare_23.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": [
+    "gameData/FlightModels/dm/metaparts/1x_engine_piston_radial_big_bomber_metaparts.blk",
+    "gameData/FlightModels/dm/metaparts/1x_engine_piston_radial_big_bomber_metaparts.blk"
+  ],
   "harmonizationSuffix": "_tomoe",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.298,
@@ -2593,101 +2596,6 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99Mk2.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 200,
-        "spread": 2.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonType99Mk2.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "dm": "cannon2_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 200,
-        "spread": 2.0
-      },
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/gunType2_turret.blk",
-        "breechInCockpit": true,
-        "emitter": "gun1",
-        "flash": "flare1",
-        "dm": "gunner1_dm",
-        "gunnerDm": "gunner1_dm",
-        "gunDm": "gun1_dm",
-        "partsDP": "gun1_dm",
-        "bullets": 1000,
-        "turret": {
-          "head": "turret1",
-          "gun": "gun1"
-        },
-        "limits": {
-          "yaw": [
-            -45.0,
-            45.0
-          ],
-          "pitch": [
-            -5.0,
-            45.0
-          ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -1.0,
-              1.0
-            ],
-            "pitch": [
-              -5.0,
-              17.0
-            ]
-          },
-          {
-            "yaw": [
-              -27.0,
-              27.0
-            ],
-            "pitch": [
-              -5.0,
-              -3.0
-            ]
-          },
-          {
-            "yaw": [
-              -33.0,
-              -27.0
-            ],
-            "pitch": [
-              -4.0,
-              -3.0
-            ]
-          },
-          {
-            "yaw": [
-              27.0,
-              33.0
-            ],
-            "pitch": [
-              -4.0,
-              -3.0
-            ]
-          }
-        ]
-      }
-    ]
-  },
   "gunnerFps": {
     "pos": [
       -0.1,
@@ -2846,15 +2754,15 @@
         ]
       },
       {
-        "dm": "flap3_l_dm",
+        "dm": "flap2_l_dm",
         "dp": [
-          "flap2_l_dm",
+          "flap3_l_dm",
           "flap2_l",
           "flap3_l"
         ]
       },
       {
-        "dm": "flap2_l_dm",
+        "dm": "flap3_l_dm",
         "dp": "flap3_l"
       },
       {
@@ -2870,15 +2778,15 @@
         "dp": "flap1_l"
       },
       {
-        "dm": "flap3_r_dm",
+        "dm": "flap2_r_dm",
         "dp": [
-          "flap2_r_dm",
+          "flap3_r_dm",
           "flap2_r",
           "flap3_r"
         ]
       },
       {
-        "dm": "flap2_r_dm",
+        "dm": "flap3_r_dm",
         "dp": "flap3_r"
       },
       {
@@ -3035,6 +2943,101 @@
       -6.00551,
       2.02548,
       0.00011934
+    ]
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonType99Mk2_Kai.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "cannon1_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 200,
+        "spread": 2.0,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonType99Mk2_Kai.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "dm": "cannon2_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 200,
+        "spread": 2.0
+      },
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/gunType2_turret.blk",
+        "breechInCockpit": true,
+        "emitter": "gun1",
+        "flash": "flare1",
+        "dm": "gunner1_dm",
+        "gunnerDm": "gunner1_dm",
+        "gunDm": "gun1_dm",
+        "partsDP": "gun1_dm",
+        "bullets": 1000,
+        "turret": {
+          "head": "turret1",
+          "gun": "gun1"
+        },
+        "limits": {
+          "yaw": [
+            -45.0,
+            45.0
+          ],
+          "pitch": [
+            -5.0,
+            45.0
+          ]
+        },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -1.0,
+              1.0
+            ],
+            "pitch": [
+              -5.0,
+              17.0
+            ]
+          },
+          {
+            "yaw": [
+              -27.0,
+              27.0
+            ],
+            "pitch": [
+              -5.0,
+              -3.0
+            ]
+          },
+          {
+            "yaw": [
+              -33.0,
+              -27.0
+            ],
+            "pitch": [
+              -4.0,
+              -3.0
+            ]
+          },
+          {
+            "yaw": [
+              27.0,
+              33.0
+            ],
+            "pitch": [
+              -4.0,
+              -3.0
+            ]
+          }
+        ]
+      }
     ]
   },
   "default_skin": {

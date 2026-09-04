@@ -331,6 +331,10 @@
               "type": "target",
               "self": true,
               "sensorIndex": 0
+            },
+            "setDesignatedTarget": {
+              "aiOnly": true,
+              "set": true
             }
           }
         },
@@ -668,7 +672,11 @@
           "stateTo": "standby",
           "actions": {
             "resetSearchMode": {},
-            "setStandbyMode": {}
+            "setStandbyMode": {},
+            "setDesignatedTarget": {
+              "aiOnly": true,
+              "set": false
+            }
           }
         },
         "deactivateStandby": {
@@ -681,7 +689,11 @@
           "event": "fsmActivate",
           "stateTo": "search",
           "actions": {
-            "setSearchMode": {}
+            "setSearchMode": {},
+            "setDesignatedTarget": {
+              "aiOnly": true,
+              "set": false
+            }
           }
         },
         "deactivateSearch": {

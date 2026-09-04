@@ -2,10 +2,8 @@ require ecs
 
 require %appGame.wt_events
 require %appGame.infantry.es.loc_squad_common
-require %appGame.infantry.es.squad_behaviour_command_common
 require %appGame.infantry.es.squad_order_grenade_common
 require %appGame.infantry.es.squad_order_combat_common
-require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums
 
 def squad_order_response(squad_eid : EntityId; leader_eid : EntityId)

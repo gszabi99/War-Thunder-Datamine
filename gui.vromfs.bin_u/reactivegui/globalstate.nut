@@ -1,6 +1,5 @@
+import "%rGui/interopGen.nut" as interopGen
 from "%rGui/globals/ui_library.nut" import *
-
-let interopGen = require("%rGui/interopGen.nut")
 
 let isInFlight = mkWatched(persist, "isInFlight", false)
 

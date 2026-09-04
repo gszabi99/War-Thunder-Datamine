@@ -1,7 +1,10 @@
+from "%sqstd/string.nut" import capitalize, cutPrefix
 from "%scripts/dagui_library.nut" import *
-from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_DEMONSTRATED_SHELL
-  , USEROPT_SHOW_DEMONSTRATED_SHELL_TANK
-let { capitalize, cutPrefix } = require("%sqstd/string.nut")
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/hudNativeConsts.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_DEMONSTRATED_SHELL, USEROPT_SHOW_DEMONSTRATED_SHELL_TANK
 
 enum VISUAL_SORT_ORDER {
   INVALID

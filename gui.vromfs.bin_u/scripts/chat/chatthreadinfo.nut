@@ -1,13 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import split_by_chars
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { split_by_chars } = require("string")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isCrossNetworkMessageAllowed } = require("%scripts/chat/chatStates.nut")
-let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getLangInfoByChatId, getEmptyLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
@@ -18,7 +18,8 @@ let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { restoreReceivedThreadTitle, filterMessageText } = require("%scripts/chat/chatUtils.nut")
 let { getSenderColor } = require("%scripts/chat/chatColors.nut")
-let { isRoomJoined, joinThread } = require("%scripts/chat/chatRooms.nut")
+let { joinThread } = require("%scripts/chat/chatRooms.nut")
+let { isRoomJoined } = require("%scripts/chat/chatStorage.nut")
 let { getMyClanTag } = require("%scripts/user/clanName.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3

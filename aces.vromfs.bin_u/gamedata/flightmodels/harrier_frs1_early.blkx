@@ -1,7 +1,7 @@
 {
   "model": "harrier_frs1",
   "fmFile": "fm/harrier_frs1.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.17,
   "gearSinkRangeC": 0.28,
   "gearSinkRange2C": 0.142,
@@ -11,6 +11,7 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "ilsSeaHarrier": true,
   "rwrIndicator": "ARI-18228",
   "type": "typeFighter",
@@ -2430,6 +2431,7 @@
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "AN/APG-79",
+              "AN/APG-83",
               "Thales RDY",
               "N019",
               "N001",
@@ -2804,12 +2806,12 @@
           255,
           0
         ],
-        "fontSize": 120,
+        "fontSize": 110,
         "value": "mach",
         "format": "%.2f",
         "padding": [
           3.0,
-          15.0
+          3.0
         ]
       }
     },
@@ -2836,7 +2838,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/uk_ari_18228.blk"
+        "blk": "gameData/sensors/uk_ari_18228_10.blk"
       }
     ]
   },

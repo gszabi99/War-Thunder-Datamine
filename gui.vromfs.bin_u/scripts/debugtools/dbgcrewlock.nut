@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_natives.nut" import get_crew_info
 from "%scripts/dagui_library.nut" import *
-
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 function onEventProfileUpdated(_p) {
   let crewsList = get_crew_info()

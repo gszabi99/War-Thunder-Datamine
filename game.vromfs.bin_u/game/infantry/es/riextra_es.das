@@ -24,17 +24,13 @@ def riextra_next_res_create_es(evt : Event;
 
 [es(before=(rendinst_axis_state_es, rendinst_move_es, rendinst_inited), on_appear, on_event=(EventRendinstSpawned, EventRendinstsLoaded))]
 def riextra_create_es(evt : Event;
-                      eid : EntityId;
                       ri_extra : RiExtraComponent;
                       var initialTransform : float3x4;
                       var transform : float3x4)
-  if riex_isRiGenExtraValid(ri_extra.handle)
-    var m : mat44f
-    getRIGenExtra44(ri_extra.handle, m)
-    initialTransform = float3x4(m)
-    transform = initialTransform
-  elif get_DAECS_EXTENSIVE_CHECKS() != 0
-    logwarn("Rendinst entity {eid}<{getEntityTemplateName(eid)}> has not valid ri handle {ri_extra.handle} on creation. Probably already destroyed.")
+  var m : mat44f
+  getRIGenExtra44(ri_extra.handle, m)
+  initialTransform = float3x4(m)
+  transform = initialTransform
 
 
 [es(tag=dev, track=rendinst_axis_rotation__targetAngle, before=rendinst_axis_state_es)]

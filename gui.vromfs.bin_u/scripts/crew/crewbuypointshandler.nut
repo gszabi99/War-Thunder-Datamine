@@ -1,11 +1,12 @@
+from "string" import format
+from "math" import floor
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { floor } = require("math")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewCountry, getCrewButtonRow } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
@@ -13,7 +14,7 @@ let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { getSkillPointsPacks } = require("%scripts/crew/crewPoints.nut")
 let { buySkillPointsPack } = require("%scripts/crew/crewPointsBuyActions.nut")
 
-gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("CrewBuyPointsHandler", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptyFrame.blk"
   sceneTplName = "%gui/crew/crewBuyPoints.tpl"
@@ -104,4 +105,4 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isSceneActiveNoModals())
       move_mouse_on_child_by_value(this.getObj("buy_table"))
   }
-}
+})

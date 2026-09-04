@@ -1,18 +1,20 @@
+import "DataBlock" as DataBlock
+from "%sqstd/underscore.nut" import isArray
+from "%sqstd/string.nut" import utf8ToLower
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
 let { openSelectionWindow } = require("%scripts/selectionWindow.nut")
 let { getUnlocksByTypeInBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockableMedalImage, getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
-let { isArray } = require("%sqstd/underscore.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { RESET_ID, SELECT_ALL_ID } = require("%scripts/popups/popupFilterWidget.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
 
 const MEDALS_SLOTS_COUNT = 10
 const MEDALIST_EDIT_CONTAINER_ID = "medalist_container_edit"

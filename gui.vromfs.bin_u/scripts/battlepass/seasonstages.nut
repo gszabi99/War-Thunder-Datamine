@@ -8,7 +8,7 @@ let { basicUnlock, basicUnlockId, premiumUnlock, premiumUnlockId, hasBattlePass
 let { curSeasonChallengesByStage } = require("%scripts/battlePass/challenges.nut")
 let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getGcbName, getGcbParamsMarkup } = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurrentWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 
@@ -72,12 +72,11 @@ function getPreviewBtnView(item) {
   if (!item?.canPreview())
     return null
 
-  let gcb = globalCallbacks.ITEM_PREVIEW
   return {
     image = "#ui/gameuiskin#btn_preview.svg"
     tooltip = "#mainmenu/btnPreview"
-    funcName = gcb.cbName
-    actionParamsMarkup = gcb.getParamsMarkup({ itemId = item.id })
+    funcName = getGcbName("ITEM_PREVIEW")
+    actionParamsMarkup = getGcbParamsMarkup({ itemId = item.id })
   }
 }
 

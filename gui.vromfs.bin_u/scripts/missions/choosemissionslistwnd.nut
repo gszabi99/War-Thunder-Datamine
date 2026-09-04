@@ -1,11 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MissionDescription } = require("%scripts/missions/missionDescription.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 
@@ -20,7 +22,7 @@ let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 
 
 
-gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let ChooseMissionsListWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/missions/chooseMissionsListWnd.blk"
 
@@ -37,13 +39,13 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   curMission = null
 
   static function open(config) {
-    let misList = getTblValue("missionsList", config)
+    let misList = config?.missionsList
     if (!u.isArray(misList) || !misList.len()) {
       script_net_assert_once(" bad_missions_list",
         $"Bad missions list to choose: {toString(misList)}")
       return
     }
-    handlersManager.loadHandler(gui_handlers.ChooseMissionsListWnd, config)
+    handlersManager.loadHandler(get_gui_handler("ChooseMissionsListWnd"), config)
   }
 
   function initScreen() {
@@ -59,7 +61,9 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initDescHandler() {
-    let descHandler = gui_handlers.MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    let descHandler = MissionDescription.create(this.getObj("mission_desc"), this.curMission)
+    if (descHandler == null)
+      return
     this.registerSubHandler(descHandler)
     this.missionDescWeak = descHandler.weakref()
   }
@@ -76,13 +80,13 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function mapToSelectedMissions(fullList, misMap) {
     let res = []
     foreach (mission in fullList)
-      if (getTblValue(mission.id, misMap, false))
+      if ((misMap?[mission.id] ?? false))
         res.append(mission)
     return res
   }
 
   function isMissionSelected(mission) {
-    return getTblValue(mission.id, this.selMissionsMap, false)
+    return (this.selMissionsMap?[mission.id] ?? false)
   }
 
   function isAllMissionsSelected() {
@@ -127,7 +131,7 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onMissionSelect(obj) {
-    let mission = getTblValue(obj.getValue(), this.missionsList)
+    let mission = this.missionsList?[obj.getValue()]
     if (mission == this.curMission)
       return
 
@@ -177,3 +181,6 @@ gui_handlers.ChooseMissionsListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       this.onApplyListCb(this.mapToSelectedMissions(this.missionsList, this.selMissionsMap))
   }
 }
+register_gui_handler("ChooseMissionsListWnd", ChooseMissionsListWnd)
+
+return { ChooseMissionsListWnd }

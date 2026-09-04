@@ -3,9 +3,9 @@ from "%scripts/dagui_library.nut" import *
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { AXIS_MODIFIERS, GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 
-let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
-let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
-let SVG_EXT = ".svg"
+const ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
+const ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
+const SVG_EXT = ".svg"
 
 let controlsList = { 
   button_a = true
@@ -141,6 +141,14 @@ let ps4TouchpadImagesByMouseIdx = [
   "touchpad_pressed"
 ]
 
+let sonyOnlyAxesImages = {
+  [GAMEPAD_AXIS.SENSOR_Y_PS4] = "sensor_y",
+  [GAMEPAD_AXIS.SENSOR_Z_PS4] = "sensor_z",
+  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4] = "l_r_trigger",
+  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4 | AXIS_MODIFIERS.MIN] = "l_trigger",
+  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4 | AXIS_MODIFIERS.MAX] = "r_trigger",
+}
+
 let gamepadAxesImages = {
   [GAMEPAD_AXIS.NOT_AXIS] = "",
   [GAMEPAD_AXIS.LEFT_STICK_HORIZONTAL] = "l_stick_to_left_n_right",
@@ -152,9 +160,6 @@ let gamepadAxesImages = {
   [GAMEPAD_AXIS.LEFT_TRIGGER] = "l_trigger",
   [GAMEPAD_AXIS.RIGHT_TRIGGER] = "r_trigger",
   [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX] = isPlatformSony ? "sensor_x" : "l_r_trigger",
-  [GAMEPAD_AXIS.SENSOR_Y_PS4] = "sensor_y",
-  [GAMEPAD_AXIS.SENSOR_Z_PS4] = "sensor_z",
-  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4] = "l_r_trigger",
 
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL | AXIS_MODIFIERS.MIN] = "l_stick_down",
   [GAMEPAD_AXIS.LEFT_STICK_VERTICAL | AXIS_MODIFIERS.MAX] = "l_stick_up",
@@ -166,9 +171,7 @@ let gamepadAxesImages = {
   [GAMEPAD_AXIS.RIGHT_STICK_HORIZONTAL | AXIS_MODIFIERS.MAX] = "r_stick_right",
   [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX | AXIS_MODIFIERS.MIN] = "l_trigger",
   [GAMEPAD_AXIS.BOTH_TRIGGER_XBOX | AXIS_MODIFIERS.MAX] = "r_trigger",
-  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4 | AXIS_MODIFIERS.MIN] = "l_trigger",
-  [GAMEPAD_AXIS.BOTH_TRIGGER_PS4 | AXIS_MODIFIERS.MAX] = "r_trigger",
-}
+}.__update(isPlatformSony ? sonyOnlyAxesImages : {})
 
 let mouseAxesImages = {
   [MOUSE_AXIS.NOT_AXIS] = "",

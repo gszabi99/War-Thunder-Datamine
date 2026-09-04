@@ -1,22 +1,20 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener, removeEventListenersByEnv, broadcastEvent
+from "weaponSelector" import get_all_weapons, get_current_weapon_preset
+from "aimingMemPoints" import get_aim_points_linked_weapons, get_secondary_cycles, get_aim_point_relative_pos, set_aim_slot_idx_for_bullet, can_use_aiming_points
+from "unit" import is_player_unit_alive
+from "eventbus" import eventbus_subscribe
+from "%sqstd/math.nut" import roundToDigits
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import deferOnce
 
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_all_weapons, get_current_weapon_preset } = require("weaponSelector")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { updateTierStats, preparePresetData } = require("%scripts/respawn/weaponSelectorUtils.nut")
-let { get_aim_points_linked_weapons = @() null, get_secondary_cycles = @() null, get_aim_point_relative_pos = @(_aimPointIdx) null,
- set_aim_slot_idx_for_bullet = @(_bulletIdx, _cycleIdx, _aim_slot_idx) null, can_use_aiming_points = @() false } = require("aimingMemPoints")
-let { is_player_unit_alive } = require("unit")
-let { eventbus_subscribe } = require("eventbus")
-let { add_event_listener, removeEventListenersByEnv, broadcastEvent
-} = require("%sqStdLibs/helpers/subscriptions.nut")
-let { roundToDigits } = require("%sqstd/math.nut")
 
 const UPDATE_WEAPONS_DELAY = 0.5
 
-let class MapAimPointWeaponSelector {
+class MapAimPointWeaponSelector {
   nestObj = null
   guiScene = null
 

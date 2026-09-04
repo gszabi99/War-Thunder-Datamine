@@ -1,14 +1,13 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/globals/ec_to_watched.nut" import mkFrameIncrementObservable
+from "%sqstd/frp.nut" import watchedTable2TableOfWatched
+from "%rGui/globals/ui_library.nut" import *
 
-let { watchedTable2TableOfWatched } = require("%sqstd/frp.nut")
-let { mkFrameIncrementObservable } = require("%rGui/globals/ec_to_watched.nut")
-
-let defValue = freeze({
+const defValue = {
   stamina = null
   staminaCanAim = true
   breathShortnessStart = 0.0
-})
+}
 
 let { staminaState, staminaStateSetValue } = mkFrameIncrementObservable(defValue, "staminaState")
 let { stamina, staminaCanAim, breathShortnessStart

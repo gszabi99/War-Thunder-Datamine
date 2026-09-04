@@ -1,10 +1,10 @@
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "%sqstd/platform.nut" import is_gdk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/events/eventsConsts.nut" import EVENT_TYPE, GAME_EVENT_TYPE
-from "%scripts/mainConsts.nut" import global_max_players_versus
+from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
@@ -21,7 +21,7 @@ let eventIdsForMainGameModeList = [
 
 const MAX_LEAGUES_HISTORY_COUNT = 20
 
-let leaguesConfig = [
+const leaguesConfig = [
   { locId = "league/groupStage", minSize = 40, maxSize = 48, bePromoted = 24, beDemoted = 0 }
   { locId = "league/roundOf32", minSize = 30, maxSize = 32, bePromoted = 8, beDemoted = 12 }
   { locId = "league/roundOf16", minSize = 14, maxSize = 16, bePromoted = 4, beDemoted = 6 }
@@ -98,17 +98,19 @@ let isEnableFriendsJoin = @(event) event?.enableFriendsJoin ?? false
 
 let isEventWithLobby = @(event) event?.withLobby ?? false
 
-let getMaxLobbyDisbalance = @(event) event?.maxLobbyDisbalance ?? global_max_players_versus
+let getMaxLobbyDisbalance = @(event) event?.maxLobbyDisbalance ?? MAX_PLAYERS_VERSUS
 
 let getEventReqFeature = @(event) event?.reqFeature ?? ""
 
 let getEventPVETrophyName = @(event) event?.pveTrophyName ?? ""
 
+let hasEventFeature = @(event) isEmpty(getEventReqFeature(event))
+  || hasFeature(getEventReqFeature(event))
+
 function isEventVisibleByFeature(event) {
-  let feature = getEventReqFeature(event)
-  if (isEmpty(feature) || hasFeature(feature))
+  if (hasEventFeature(event))
     return true
-  return hasFeature("OnlineShopPacks") && getFeaturePurchaseData(feature).canBePurchased
+  return hasFeature("OnlineShopPacks") && getFeaturePurchaseData(getEventReqFeature(event)).canBePurchased
 }
 
 
@@ -209,6 +211,7 @@ function getEventLeaderboardModes(event) {
 }
 
 return {
+  hasEventFeature
   eventIdsForMainGameModeList
   getEventEconomicName
   needShowOverrideSlotbar

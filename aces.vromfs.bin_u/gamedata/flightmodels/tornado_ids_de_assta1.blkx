@@ -2,7 +2,7 @@
   "model": "tornado_ids_de_assta1",
   "fmFile": "/fm/tornado_ids_de_assta1.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "gearSinkRangeLR": 0.11,
   "gearSinkRangeC": 0.212,
   "jetEnginePowerFullScale": true,
@@ -3373,6 +3373,13 @@
       {
         "name": "tornado_ids_assta1_4x_1000_default",
         "blk": "gameData/FlightModels/weaponPresets/tornado_ids_assta1_4x_1000_default.blk"
+      },
+      {
+        "name": "tornado_ids_assta1_as_34",
+        "blk": "gameData/FlightModels/weaponPresets/tornado_ids_assta1_as_34.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -3658,6 +3665,25 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth",
+            "name": "as_34_slot3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "pylon_bomb2_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran_mk2.blk",
+              "emitter": "bomb1_ld",
+              "startFx": "smoke_rocket_start_air"
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_1",
             "showInWeaponMenu": true,
@@ -3778,6 +3804,44 @@
               "blk": "gameData/Weapons/containers/uk_tsc_1000_mk83_air_x2.blk",
               "emitter": "pylon_tsc_3"
             }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "as_34_slot4",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_bomb3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran_mk2.blk",
+              "emitter": "bomb5_ld",
+              "startFx": "smoke_rocket_start_air"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_default"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_air"
+              },
+              {
+                "slot": 5,
+                "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 5,
+                "preset": "500lbs_gbu_54b_slot5"
+              }
+            ]
           }
         ]
       },
@@ -3949,6 +4013,14 @@
               {
                 "slot": 8,
                 "preset": "us_2000lb_gbu_24"
+              },
+              {
+                "slot": 4,
+                "preset": "as_34_slot4"
+              },
+              {
+                "slot": 8,
+                "preset": "as_34_slot8"
               }
             ]
           },
@@ -4011,6 +4083,14 @@
               {
                 "slot": 8,
                 "preset": "us_2000lb_gbu_24"
+              },
+              {
+                "slot": 4,
+                "preset": "as_34_slot4"
+              },
+              {
+                "slot": 8,
+                "preset": "as_34_slot8"
               }
             ]
           },
@@ -4069,6 +4149,14 @@
               {
                 "slot": 8,
                 "preset": "1000lbs_mk83_air_x2"
+              },
+              {
+                "slot": 4,
+                "preset": "as_34_slot4"
+              },
+              {
+                "slot": 8,
+                "preset": "as_34_slot8"
               }
             ]
           },
@@ -4135,6 +4223,14 @@
               {
                 "slot": 8,
                 "preset": "us_2000lb_gbu_24"
+              },
+              {
+                "slot": 4,
+                "preset": "as_34_slot4"
+              },
+              {
+                "slot": 8,
+                "preset": "as_34_slot8"
               }
             ]
           }
@@ -4408,6 +4504,44 @@
             ]
           },
           {
+            "iconType": "missile_air_to_earth",
+            "name": "as_34_slot8",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_bomb5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran_mk2.blk",
+              "emitter": "bomb6_ld",
+              "startFx": "smoke_rocket_start_air"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_default_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_x2_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_air_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "1000lbs_mk83_air_x2_slot7"
+              },
+              {
+                "slot": 7,
+                "preset": "500lbs_gbu_54b_slot7"
+              }
+            ]
+          },
+          {
             "iconType": "guided_bomb_middle_jdam",
             "name": "500lbs_gbu_54b_slot8",
             "reqModification": "gr_assta_3_0_gbu54b",
@@ -4550,6 +4684,25 @@
             "DependentWeaponPreset": {
               "slot": 4,
               "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth",
+            "name": "as_34_slot9",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb6",
+                "pylon_bomb6_lap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/pylon_tornado_kormoran_mk2.blk",
+              "emitter": "bomb2_ld",
+              "startFx": "smoke_rocket_start_air"
             }
           },
           {
@@ -5045,6 +5198,10 @@
       "reqModification": "bk_27_belt_pack",
       "tier": 3
     },
+    "us_1000lb_mk83": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "gr_litening_pod": {
       "modClass": "weapon",
       "tier": 2
@@ -5059,11 +5216,12 @@
       "tier": 4,
       "modClass": "weapon"
     },
-    "us_1000lb_mk83": {
+    "asm": {
       "modClass": "weapon",
       "tier": 1
     },
     "gr_assta_3_0_gbu54b": {
+      "prevModification": "asm",
       "reqModification": "gr_litening_pod",
       "modClass": "weapon",
       "tier": 2
@@ -5276,8 +5434,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

@@ -1,12 +1,12 @@
+import "DataBlock" as DataBlock
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { get_time_msec } = require("dagor.time")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
-let DataBlock  = require("DataBlock")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { charRequestJson } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
@@ -95,7 +95,7 @@ function refreshGlobalStatusData(refreshDelay = null) {
   if (lastPlayedOperationId != null)
     requestBlk.operationId = lastPlayedOperationId
   actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk)
-  if (handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler) != null)
+  if (handlersManager.findHandlerClassInScene(get_gui_handler("WwOperationsMapsHandler")) != null)
     actionWithGlobalStatusRequest("cln_ww_queue_status")
 }
 

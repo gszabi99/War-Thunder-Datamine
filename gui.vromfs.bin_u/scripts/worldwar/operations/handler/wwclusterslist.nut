@@ -1,11 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { USEROPT_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 
@@ -21,7 +22,7 @@ let deafaulEmptyOpt = {
   name = null
 }
 
-local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
+local popupOptList = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName         = null
   needVoiceChat        = false
@@ -132,7 +133,7 @@ local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.popupOptList <- popupOptList
+register_gui_handler("popupOptList", popupOptList)
 
 return {
   addPopupOptList = @(params = {}) handlersManager.loadHandler(popupOptList, params)

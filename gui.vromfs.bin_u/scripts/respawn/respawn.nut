@@ -1,12 +1,47 @@
-from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, get_local_player_country, get_slot_delay, get_cur_warpoints, shop_get_spawn_score, get_slot_delay_by_slot, get_cur_rank_info, force_spectator_camera_rotation
-from "guiRespawn" import fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow,
-  setSelectedUnitInfo, getRespawnBaseTimeLeftById, getSquadmateRespawnBase, selectSquadmateRespawnBase, getBestSquadmateRespawnId,
-  selectRespawnBase, highlightRespawnBase, highlightSquadmateRespawnBase, getRespawnBase, doRespawnPlayer,
-  requestAircraftAndWeaponWithSpare, isRespawnScreen, getSpawnDelayTimesRecvTime, selectZoneRespawnBase, getZoneRespawnBase,
-  highlightZoneRespawnBase, getFullRespawnBasesList, is_respawnbase_selectable, getSavedRespawnBaseForSlot
+import "%sqStdLibs/helpers/u.nut" as u
+import "statsd" as statsd
+import "DataBlock" as DataBlock
+import "%sqstd/math.nut" as stdMath
+import "%sqstd/ecs.nut" as ecs
+from "%appGlobals/config/infantryCfg.nut" import speedGrades
+from "%appGlobals/missions/nuclearEscalationCfg.nut" import yieldLimitFromStage
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank, reset_cur_mission_mode
+from "eventbus" import eventbus_subscribe
+from "blkGetters" import get_game_params_blk, get_wpcost_blk
+from "dagor.time" import get_time_msec
+from "guiOptions" import get_gui_option
+from "math" import ceil
+from "string" import format
+from "multiplayer" import is_has_multiplayer
+from "mission" import get_current_mission_name, get_mission_teams_tickets, get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team, get_mplayers_list
+from "guiSpectator" import onSpectatorMode, switchSpectatorTarget, getSpectatorTargetId, getSpectatorTargetName, getSpectatorTargetTitle
+from "guiMission" import quit_to_debriefing, get_mission_difficulty_int, get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status, get_current_mission_desc, is_allow_to_choose_hud_icon_preset
+  , MISSION_STATUS_RUNNING, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
+from "console" import register_command
+from "guiTacticalMap" import setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
+  , isPointOfInterestSet, setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapIconsFilter
+from "hudActionBar" import getActionBarUnitName
+from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType, applyMapHudType
+from "aimingMemPoints" import can_use_aiming_points, is_aiming_points_enabled
+from "controls" import isXInputDevice
+from "vehicleModel" import hasSightStabilization
+from "%globalScripts/unlockConsts.nut" import *
+from "%globalScripts/gameTypeConsts.nut" import *
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, get_local_player_country, get_slot_delay, get_cur_warpoints
+  , shop_get_spawn_score, get_slot_delay_by_slot, get_cur_rank_info, force_spectator_camera_rotation
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
+from "guiRespawn" import fetchChangeAircraftOnStart, canRespawnCaNow, canRequestAircraftNow, setSelectedUnitInfo, getRespawnBaseTimeLeftById, getSquadmateRespawnBase, selectSquadmateRespawnBase
+  , getBestSquadmateRespawnId, selectRespawnBase, highlightRespawnBase, highlightSquadmateRespawnBase, getRespawnBase, doRespawnPlayer, requestAircraftAndWeaponWithSpare
+  , isRespawnScreen, getSpawnDelayTimesRecvTime, selectZoneRespawnBase, getZoneRespawnBase, highlightZoneRespawnBase, getFullRespawnBasesList, is_respawnbase_selectable
+  , getSavedRespawnBaseForSlot
 from "gameplayBinding" import closeIngameGui, disableFlightMenu
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/hudNativeConsts.nut" import *
+from "%globalScripts/changeAircraftErrConsts.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
@@ -14,43 +49,32 @@ from "radarOptions" import set_option_radar_name, set_option_radar_scan_pattern_
 from "hudState" import getHudUnitType, show_hud
 from "%scripts/utils_sa.nut" import get_mplayer_color
 from "%sqstd/platform.nut" import isPC
-import "%sqstd/ecs.nut" as ecs
-let { getGlobalModule } = require("%scripts/global_modules.nut")
+
 let RespawnBase = require("%scripts/respawn/respawnBase.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_current_base_gui_handler } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { SkipableMsgBox } = require("%scripts/wndLib/skipableMsgBox.nut")
+let { WeaponWarningHandler } = require("%scripts/weaponry/weaponWarningHandler.nut")
+let { unitWeaponsHandler } = require("%scripts/weaponry/unitWeaponsHandler.nut")
+let { teamUnitsLeftView } = require("%scripts/respawn/teamUnitsLeftView.nut")
+let { MPStatistics } = require("%scripts/statistics/mpStatistics.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { toPixels, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let { get_time_msec } = require("dagor.time")
-let { get_gui_option } = require("guiOptions")
-let { ceil } = require("math")
-let { format } = require("string")
-let { is_has_multiplayer } = require("multiplayer")
-let { get_current_mission_name, get_mission_teams_tickets,
-  get_game_type, get_mplayer_by_id, get_local_mplayer, get_mp_local_team, get_mplayers_list } = require("mission")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let statsd = require("statsd")
+let { toPixels, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let DataBlock = require("DataBlock")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
 let respawnOptions = require("%scripts/respawn/respawnOptionsType.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationName, getUnitLastBullets, getBeltlessGunsWeapNames } = require("%scripts/weaponry/bulletsInfo.nut")
-let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData
-} = require("%scripts/weaponry/ammoInfo.nut")
+let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
@@ -58,77 +82,46 @@ let { getEventSlotbarHint, getOverridedSlotbarSkins } = require("%scripts/slotba
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { guiStartMPStatScreenFromGame, getCurMpTitle
-  guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { onSpectatorMode, switchSpectatorTarget,
-  getSpectatorTargetId, getSpectatorTargetName, getSpectatorTargetTitle
-} = require("guiSpectator")
+let { guiStartMPStatScreenFromGame, getCurMpTitle, guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getMplayersList } = require("%scripts/statistics/mplayersList.nut")
-let { quit_to_debriefing, get_mission_difficulty_int,
-  get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status, get_current_mission_desc,
-  is_allow_to_choose_hud_icon_preset,
-  MISSION_STATUS_RUNNING, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
-let { setCurSkinToHangar, getRealSkin, getSkinsOption
-} = require("%scripts/customization/skins.nut")
+let { setCurSkinToHangar, getRealSkin, getSkinsOption } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP,
-  USEROPT_LOAD_FUEL_AMOUNT,  USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_IGNORE_BAD_WEATHER,
-  USEROPT_SAVE_AIRCRAFT_SPAWN } = require("%scripts/options/optionsExtNames.nut")
-let { loadLocalByScreenSize, saveLocalByScreenSize, loadLocalUnitSettings, getRandUnitOptPath
-} = require("%scripts/clientState/localProfile.nut")
+let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_IGNORE_BAD_WEATHER, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN, USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { loadLocalByScreenSize, saveLocalByScreenSize, loadLocalUnitSettings, getRandUnitOptPath } = require("%scripts/clientState/localProfile.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
-let { register_command } = require("console")
-let { calcBattleRatingFromRank, reset_cur_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot,
-  isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask,
-  needToShowBadWeatherWarning, hasAirfieldRespawn, hasDailyFreeSpares, canUseOnlyDailyFreeSpares
-} = require("%scripts/respawn/respawnState.nut")
+let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask, needToShowBadWeatherWarning, hasAirfieldRespawn, hasDailyFreeSpares, canUseOnlyDailyFreeSpares } = require("%scripts/respawn/respawnState.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { isUnitUnlockedInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { openRespawnSpareWnd } = require("%scripts/respawn/respawnSpareWnd.nut")
 let { markUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
-let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText,
-  getUnitSlotPriceText, getUnitSlotPriceHintText
-} = require("%scripts/slotbar/slotbarView.nut")
+let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getSlotUnitNameText, getUnitSlotPriceText, getUnitSlotPriceHintText } = require("%scripts/slotbar/slotbarView.nut")
 let { gui_start_flight_menu } = require("%scripts/flightMenu/flightMenu.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
-let { collectOrdersToActivate, showActivateOrderButton, enableOrders
-} = require("%scripts/items/orders.nut")
+let { collectOrdersToActivate, showActivateOrderButton, enableOrders } = require("%scripts/items/orders.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
 let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
 let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { hasAvailableSlots } = require("%scripts/slotbar/hasAvailableSlots.nut")
-let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput
-} = require("%scripts/chat/mpChat.nut")
+let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput } = require("%scripts/chat/mpChat.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, isForcedHudType,
-  setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet,
-  setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapHudType,
-  setTacticalMapIconsFilter } = require("guiTacticalMap")
-let { is_aiming_points_enabled = @() false, can_use_aiming_points = @() false } = require("aimingMemPoints")
-let { isXInputDevice } = require("controls")
-let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 let { isGroundAndAirMission, g_mission_type, isShipBattle } = require("%scripts/missions/missionType.nut")
-let { clearStreaks } =  require("%scripts/streaks.nut")
+let { clearStreaks } = require("%scripts/streaks.nut")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { guiStartAssistantMapQrWindow, isAssistantMapEnabled, isAssistantMapAvailable } = require("%scripts/assistantMapQr.nut")
 let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText, getLevelMapBackgroundColors
-} = require("%scripts/missions/missionsUtils.nut")
-let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
+let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { addTagsForMpPlayers } = require("%scripts/chat/chatUtils.nut")
 let { DAILY_FREE_SPARE_UID } = require("%scripts/respawn/respawnDailyFreeSpare.nut")
@@ -140,13 +133,10 @@ let { isUnitRandomUnit } = require("%scripts/unit/unitStatus.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
 let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
-let { speedGrades } = require("%appGlobals/config/infantryCfg.nut")
-let { yieldLimitFromStage } = require("%appGlobals/missions/nuclearEscalationCfg.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { getTacticalMapMarksFiltersView, applyTacticalMapMarksFilterChange,
-getTacticalMapMarksSelectedFilters } = require("%scripts/respawn/mapMarkersFilter.nut")
-let stdMath = require("%sqstd/math.nut")
+let { getTacticalMapMarksFiltersView, applyTacticalMapMarksFilterChange, getTacticalMapMarksSelectedFilters } = require("%scripts/respawn/mapMarkersFilter.nut")
 let { MapAimPointWeaponSelector } = require("%scripts/respawn/aimMemPointsSelector.nut")
+let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 
 let currentSquadSpawnsDataQuery = ecs.SqQuery("currentSquadSpawnsDataQuery", {
@@ -255,7 +245,7 @@ enum ESwitchSpectatorTarget {
 }
 
 function gui_start_respawn(_ = null) {
-  loadHandler(gui_handlers.RespawnHandler)
+  loadHandler(get_gui_handler("RespawnHandler"))
   handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_respawn" })
 }
 
@@ -268,7 +258,7 @@ eventbus_subscribe("gui_start_respawn", gui_start_respawn)
 
 let needSkipAvailableCrewToSelect = persist("needSkipAvailableCrewToSelect", @() {value = false})
 
-gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
+let RespawnHandler = class (MPStatistics) {
   sceneBlkName = "%gui/respawn/respawn.blk"
   widgetsList = [
     { widgetId = DargWidgets.RESPAWN }
@@ -283,6 +273,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   sessionWpBalance = 0
 
   slotDelayDataCached = {}
+  lastRespawnBaseLockState = null
 
   
   needCheckSlotReady = true 
@@ -320,8 +311,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   isNoRespawns = false
   isRespawn = false 
   needRefreshSlotbarOnReinit = false
-  lastHudUnitType = HUD_TYPE_UNKNOWN
-  lastRespawnMapHudType = null 
 
   canInitVoiceChatWithSquadWidget = true
 
@@ -588,6 +577,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       filterTypesFn = getTacticalMapMarksFiltersView
       popupAlign = "top-right"
       btnTitle = ""
+      btnName = ""
       isShowCountFilters = false
     })
   }
@@ -615,7 +605,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!this.missionRules.hasCustomUnitRespawns())
       return
 
-    let handler = loadHandler(gui_handlers.teamUnitsLeftView,
+    let handler = loadHandler(teamUnitsLeftView,
       { scene = this.scene.findObject("team_units_left_respawns"), missionRules = this.missionRules })
     this.registerSubHandler(handler)
     this.teamUnitsLeftWeak = handler?.weakref()
@@ -637,7 +627,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.setOrdersEnabled(show && this.isSpectate)
     this.updateSpectatorRotationForced(show)
     this.updateZoomMapTypes()
-    this.updateTacticalMapUnitType(show ? null : false)
+    this.updateTacticalMapUnitType(show)
     base.onSceneActivate(show)
     setAllowMoveCenter(false)
     this.resetPointOfInterestMode()
@@ -649,7 +639,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function isSpectator() {
-    return getTblValue("spectator", this.mplayerTable, false)
+    return (this.mplayerTable?.spectator ?? false)
   }
 
   function getRespawnUnitWpTotalCost(unit) {
@@ -750,7 +740,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (unitName in this.unitSpawnScoreNoWeaponsMul)
       return this.unitSpawnScoreNoWeaponsMul[unitName]
     let score = shop_get_spawn_score(unitName, getLastWeapon(unitName),
-      getUnitLastBullets(unit), false, false)
+      getUnitLastBullets(unit), { addWeaponMul = false, addBulletMul = false })
     this.unitSpawnScoreNoWeaponsMul[unitName] <- score
     return score
   }
@@ -767,7 +757,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       let unit = getCrewUnit(crew)
       if (unit) {
         let curScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name),
-          getUnitLastBullets(unit), true, true)
+          getUnitLastBullets(unit))
         if (curScore >= this.curSpawnScore && this.missionRules.canRespawnOnUnitByRageTokens(unit))
           res = res | (1 << idx)
       }
@@ -848,7 +838,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateUnitInfo(unit)
   }
 
-  function onEventSquadSpawnsChanged(_p = null) {
+  function updateRespawnWhenSquadSpawnsChanged() {
     let wasAvailable = this.curSquadRespawnBase?.isAvailable ?? true
     this.updateRespawnBases()
     if (wasAvailable && !(this.curSquadRespawnBase?.isAvailable ?? true)) {
@@ -864,6 +854,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateButtons()
     this.updateApplyText()
     this.checkReady()
+  }
+
+  function onEventSquadSpawnsChanged(_p = null) {
+    this.doWhenActiveOnce("updateRespawnWhenSquadSpawnsChanged")
   }
 
   function onEventZoneSpawnsChanged(_p = null) {
@@ -1007,7 +1001,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       this.destroySlotbar()
       local airName = lastCaAircraft
       if (this.isGTCooperative)
-        airName = getTblValue("aircraftName", this.mplayerTable, "")
+        airName = (this.mplayerTable?.aircraftName ?? "")
       let air = getAircraftByName(airName)
       if (air) {
         showedUnit.set(air)
@@ -1278,7 +1272,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
     }
 
-    let handler = loadHandler(gui_handlers.unitWeaponsHandler,
+    let handler = loadHandler(unitWeaponsHandler,
                                        { scene = weaponsSelectorObj
                                          unit = unit
                                          canShowPrice = true
@@ -1378,7 +1372,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       if (this.missionRules.isSpawnDelayEnabled)
         this.updateSlotDelays(true)
       this.updateRespawnBaseTimerText()
-      this.updateRespawnOptionsWeatherWarning()
+      this.updateRespawnOptionsTooltip()
     }
     this.checkReady()
   }
@@ -1672,23 +1666,41 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     warningObj.tooltip = getBadWeatherTooltipText(hasBadWeather, hasAirfieldRespawn.get())
   }
 
-  function updateRespawnOptionsWeatherWarning() {
-    
+  function updateRespawnOptionsTooltip() {
     let respawnOptionObj = this.scene.findObject("respawn_base")
     if (!respawnOptionObj?.isValid())
       return
-    let hasAirfield = hasAirfieldRespawn.get()
-    respawnOptionObj.tooltip = getBadWeatherTooltipText(
-      hasAirfield && needToShowBadWeatherWarning.get(),
-      hasAirfield,
-      hasAirfield && this.curRespawnBase?.isAutoSelected && !this.ignoreBadWeather
-        && !this.isAircraftInNavalBattle()
-    )
+
+    local tooltipText = ""
+    let unit = this.getCurSlotUnit()
+    if (unit) {
+      let baseDelays = respawnBases.getPerBaseRespawnDelays(this.respawnBasesList, unit.name)
+      let selectedBaseDelay = baseDelays?[this.curRespawnBase?.id ?? -1]
+      if (selectedBaseDelay != null && selectedBaseDelay > 0) {
+        local hasFreeBase = false
+        foreach (delay in baseDelays)
+          if (delay <= 0) {
+            hasFreeBase = true
+            break
+          }
+        tooltipText = loc(hasFreeBase ? "respawn_base_locked_by_timer" : "respawn_base_locked_by_timer_all")
+      }
+    }
+    if (tooltipText == "") {
+      let hasAirfield = hasAirfieldRespawn.get()
+      tooltipText = getBadWeatherTooltipText(
+        hasAirfield && needToShowBadWeatherWarning.get(),
+        hasAirfield,
+        hasAirfield && this.curRespawnBase?.isAutoSelected && !this.ignoreBadWeather
+          && !this.isAircraftInNavalBattle()
+      )
+    }
+    respawnOptionObj.tooltip = tooltipText
   }
 
   function updateWeatherWarnings() {
     this.updateTopLeftWeatherWarning()
-    this.updateRespawnOptionsWeatherWarning()
+    this.updateRespawnOptionsTooltip()
   }
 
   function updateUnitOptions() {
@@ -1765,31 +1777,54 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       }
   }
 
-  function getRespawnSelectedUnitHudType(isMapForSelectedUnit) {
-    if (isMapForSelectedUnit == null)
-      isMapForSelectedUnit = !this.isSpectate
-    let unit = isMapForSelectedUnit ? this.getCurSlotUnit() : null
-    return unit ? unit.unitType.hudTypeCode : HUD_TYPE_UNKNOWN
-  }
-
-  function getMapBrowseHudType(isMapForSelectedUnit) {
-    let curUnitHudType = unitTypeByHudUnitType?[getHudUnitType()].hudTypeCode ?? HUD_TYPE_UNKNOWN
-    if (isMapForSelectedUnit == false) 
-      return curUnitHudType
-    return this.lastRespawnMapHudType ?? (isForcedHudType() ? getCurHudType() : curUnitHudType)
-  }
-
-  function updateTacticalMapUnitType(isMapForSelectedUnit = null) {
-    let hudType = this.isRespawn ? this.getRespawnSelectedUnitHudType(isMapForSelectedUnit)
-      : this.getMapBrowseHudType(isMapForSelectedUnit)
-    if (this.lastHudUnitType == hudType)
+  function updateHudTypeButtonImg(hudType) {
+    let mapTypeBtnImg = this.scene.findObject("hud_type_img")
+    if (!mapTypeBtnImg?.isValid())
       return
-    this.lastHudUnitType = hudType
+    mapTypeBtnImg["background-image"] = getZoomIconByUnitType(this.getNextType(hudType))
+  }
 
-    setTacticalMapHudType(hudType)
-    let buttonImg = this.scene.findObject("hud_type_img");
-    if (buttonImg != null)
-      buttonImg["background-image"] = getZoomIconByUnitType(this.getNextType(hudType))
+  function getRespawnSelectedUnitMapState(isRespWndOpen) {
+    let unit = (isRespWndOpen && !this.isSpectate) ? this.getCurSlotUnit() : null
+    if (unit == null)
+      return { unitName = null, hudType = HUD_TYPE_UNKNOWN, isMapForced = false }
+
+    let cached = getCachedMapHudType(unit.name)
+    return {
+      unitName = unit.name
+      hudType = cached ?? unit.unitType.hudTypeCode
+      isMapForced = cached != null
+    }
+  }
+
+  function getMapBrowseMapState(_isRespWndOpen) {
+    let unitName = getActionBarUnitName()
+    if (unitName == "")
+      return { unitName = null, hudType = HUD_TYPE_UNKNOWN, isMapForced = false }
+
+    let defaultHudType = unitTypeByHudUnitType?[getHudUnitType()].hudTypeCode ?? HUD_TYPE_UNKNOWN
+    let cached = getCachedMapHudType(unitName)
+    return {
+      unitName
+      hudType = cached ?? defaultHudType
+      isMapForced = cached != null
+    }
+  }
+
+  function setHumanDefaultMapType(isRespWndOpen, result) {
+    if (isRespWndOpen || result.unitName == null || !getAircraftByName(result.unitName)?.isHuman())
+      return result
+    return { unitName = result.unitName, hudType = HUD_TYPE_INFANTRY, isMapForced = false }
+  }
+
+  function updateTacticalMapUnitType(isRespWndOpen = true) {
+    let result = this.isRespawn ? this.getRespawnSelectedUnitMapState(isRespWndOpen)
+      : this.getMapBrowseMapState(isRespWndOpen)
+
+    let { hudType, isMapForced } = this.setHumanDefaultMapType(isRespWndOpen, result)
+
+    applyMapHudType(hudType, isMapForced)
+    this.updateHudTypeButtonImg(hudType)
   }
 
   function onDestroy() {
@@ -2028,7 +2063,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (this.missionRules.isScoreRespawnEnabled && this.isRespawn &&
       (this.curSpawnScore < shop_get_spawn_score(unit.name, getLastWeapon(unit.name),
-          getUnitLastBullets(unit), true, true)))
+          getUnitLastBullets(unit))))
         return { text = loc("multiplayer/noSpawnScore"), id = "not_enought_score" }
 
     if (this.isRespawn && !this.missionRules.canRespawnOnUnitByRageTokens(unit))
@@ -2287,7 +2322,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
         if (this.missionRules.isScoreRespawnEnabled && unit) {
           let curScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name),
-            getUnitLastBullets(unit), true, true)
+            getUnitLastBullets(unit))
           isAvailResp = isAvailResp && (curScore <= this.curSpawnScore)
           if (curScore > 0)
             costTextArr.append(loc("shop/spawnScore", { cost = curScore }))
@@ -2448,7 +2483,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return true
 
     if (textArr.len() && (zero || !get_gui_option(USEROPT_SKIP_WEAPON_WARNING))) { 
-      loadHandler(gui_handlers.WeaponWarningHandler,
+      loadHandler(WeaponWarningHandler,
         {
           parentHandler = this
           message = loc(zero ? "msgbox/zero_ammo_warning" : "controls/no_ammo_left_warning")
@@ -2482,7 +2517,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return true
     }
 
-    loadHandler(gui_handlers.SkipableMsgBox, {
+    loadHandler(SkipableMsgBox, {
       parentHandler = this
       onStartPressed = function() {
         contentPreset.setPreset(diffCode, newPresetId, true)
@@ -2522,6 +2557,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateSwitchSpectatorTarget(dt)
     if (this.missionRules.isSpawnDelayEnabled)
       this.updateSlotDelays()
+    this.updateRespawnBasesLockState()
 
     this.updateSpawnScore(false)
     this.updateSpawnRageTokens(false)
@@ -2668,6 +2704,43 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.getSlotbar()?.updateMissionInfoVisibility()
   }
 
+  function updateRespawnBasesLockState() {
+    let crew = this.getCurCrew()
+    if (!crew)
+      return
+    let crewId = crew.idInCountry
+    let syncRecvTime = getSpawnDelayTimesRecvTime()
+    let prevState = this.lastRespawnBaseLockState
+    if (prevState != null && prevState.crewId == crewId && prevState.recvTime == syncRecvTime)
+      return
+
+    let unit = getCrewUnit(crew)
+    if (!unit)
+      return
+
+    let lockedBaseIds = {}
+    foreach (baseId, delay in respawnBases.getPerBaseRespawnDelays(this.respawnBasesList, unit.name))
+      if (delay > 0)
+        lockedBaseIds[baseId] <- true
+
+    let lockStateChanged = prevState == null || prevState.crewId != crewId
+      || !u.isEqual(prevState.lockedBaseIds, lockedBaseIds)
+    this.lastRespawnBaseLockState = {
+      crewId = crewId
+      recvTime = syncRecvTime
+      lockedBaseIds = lockedBaseIds
+    }
+    if (!lockStateChanged)
+      return
+
+    this.guiScene.performDelayed(this, function() {
+      if (this.isValid()) {
+        this.updateOptions(RespawnOptUpdBit.RESPAWN_BASES)
+        this.updateRespawnOptionsTooltip()
+      }
+    })
+  }
+
   
   function updateCrewSlot(crew) {
     let unit = getCrewUnit(crew)
@@ -2772,7 +2845,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
       btn_activateorder =   this.showButtons && this.isRespawn && showActivateOrderButton() && (!this.isSpectate || !showConsoleButtons.get())
       btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
-      btn_assistant_map_qr = this.showButtons && this.isRespawn && isAssistantMapEnabled() && isAssistantMapAvailable()
 
       
       hint_attention_to_map = !showConsoleButtons.get()
@@ -2787,6 +2859,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       showObjById("hint_btn_set_point_of_interest", !showConsoleButtons.get(), setPointOfInterestObj)
 
     showObjById("btn_set_hud_type", isGroundAndAirMission(), this.scene)
+
+    let isShowQrAssistantBtn = this.showButtons && this.isRespawn && isAssistantMapEnabled() && isAssistantMapAvailable()
+    showObjById("btn_assistant_map_qr", isShowQrAssistantBtn, this.scene)
 
     let presets = getHudIconsPresetsList()
     let isShowIconPresets = is_allow_to_choose_hud_icon_preset() && presets != null && presets.len() > 1
@@ -2808,6 +2883,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let crew = this.getCurCrew()
     let slotObj = crew && getSlotObj(this.scene, crew.idCountry, crew.idInCountry)
     showObjById("buttonsDiv", show && this.isRespawn, slotObj)
+
+    this.scene.findObject("tooltips_switch_box").setValue(
+      get_gui_option_in_mode(USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY, true)
+    )
   }
 
   function updateCountdown(countdown) {
@@ -3084,7 +3163,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (!checkObj(this.scene))
       return
-
     let obj = this.scene.findObject("respawn_screen")
     let isHidden = obj?.display == "hide" 
     if (isHidden != show)
@@ -3113,19 +3191,20 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
      tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
   }
 
-  function onForcedSetHudType(obj) {
-    local curHudType = getCurHudType()
-    if (curHudType == HUD_TYPE_UNKNOWN) {
-      let unit = this.getCurSlotUnit()
-      if (unit)
-        curHudType = unit.unitType.hudTypeCode
-    }
+  function onForcedSetHudType(_obj) {
+    let slotUnit = this.getCurSlotUnit()
+    let unitName = this.isRespawn ? (slotUnit?.name ?? getActionBarUnitName()) : getActionBarUnitName()
+    if (unitName == null || unitName == "")
+      return
+
+    local curHudType = getCachedMapHudType(unitName) ?? getCurHudType()
+    if (curHudType == HUD_TYPE_UNKNOWN && slotUnit)
+      curHudType = slotUnit.unitType.hudTypeCode
 
     let nextUnitType = this.getNextType(curHudType)
     setForcedHudType(nextUnitType)
-    this.lastRespawnMapHudType = nextUnitType
-    this.lastHudUnitType = nextUnitType
-    obj.findObject("hud_type_img")["background-image"] = getZoomIconByUnitType(this.getNextType(nextUnitType))
+    setCachedMapHudType(unitName, nextUnitType)
+    this.updateHudTypeButtonImg(nextUnitType)
   }
 
   function onSetPointOfInterest(obj) {
@@ -3144,6 +3223,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     let tacticalMapObj = this.scene.findObject("tactical-map")
     tacticalMapObj.cursor =  isPointSettingModeOn ? "pointOfInterest" : "normal"
     showObjById("POI_resetter", isPointSettingModeOn, this.scene)
+  }
+
+  function onTooltipsVisible(obj) {
+    set_gui_option_in_mode(USEROPT_SHOW_HUD_MAP_TOOLTIP, obj.getValue(), OPTIONS_MODE_GAMEPLAY)
   }
 
   function onHudIconPresetSelect(obj) {
@@ -3240,7 +3323,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.guiScene.applyPendingChanges(false)
 
     let leftPanelObj = this.scene.findObject("panel-left")
-    let minChatHeight = toPixels(this.guiScene, "1@minChatHeight")
+    let minChatHeight = toPixels(this.guiScene, "1@minChat3LinesHeight")
     let hOversize = unitOptionsObj.getSize()[1] + objectivesObj.getSize()[1] +
       minChatHeight + separateObj.getSize()[1] - leftPanelObj.getSize()[1]
 
@@ -3315,7 +3398,16 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateLeftPanelBlock()
   }
 
-  onEventHudTypeSwitched = @(_p) this.updateTacticalMapUnitType()
+  function onEventHudTypeSwitched(newHudType) {
+    let unitName = getActionBarUnitName()
+    let defaultHudType = unitName != ""
+      ? unitTypeByHudUnitType?[newHudType].hudTypeCode ?? HUD_TYPE_UNKNOWN
+      : HUD_TYPE_UNKNOWN
+    let cached = unitName != "" ? getCachedMapHudType(unitName) : null
+    let hudType = cached ?? defaultHudType
+    applyMapHudType(hudType, cached != null)
+    this.updateHudTypeButtonImg(hudType)
+  }
 
   function updateSkinOptionTooltipId() {
     let unit = this.getCurSlotUnit()
@@ -3396,7 +3488,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     return get_option(USEROPT_SAVE_AIRCRAFT_SPAWN).value
   }
 
-  function saveSpawnForMission() {
+  function saveAircraftSpawnForMission() {
     if (!this.isRespawn)
       return
     let optionObj = this.scene.findObject("respawn_base")
@@ -3409,6 +3501,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     respawnBases.saveSelectedBase(spawn, save)
   }
 }
+register_gui_handler("RespawnHandler", RespawnHandler)
 
 function cantRespawnAnymore(_) { 
   let current_base_gui_handler = get_current_base_gui_handler()
@@ -3422,7 +3515,7 @@ function respawnInfoUpdated(data) {
   let { unitName = null } = data
   if (unitName == null)
     return
-  let respawn = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
+  let respawn = handlersManager.findHandlerClassInScene(RespawnHandler)
   if (respawn == null)
     return
 
@@ -3442,7 +3535,7 @@ register_command(function() {
 }, "respawn.toggle_to_select_not_available_unit")
 
 register_command(function(universalSpareName) {
-  let respawn = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
+  let respawn = handlersManager.findHandlerClassInScene(RespawnHandler)
   if (!(respawn?.isRespawn ?? false)) {
     log("Is no in respawn window")
     return

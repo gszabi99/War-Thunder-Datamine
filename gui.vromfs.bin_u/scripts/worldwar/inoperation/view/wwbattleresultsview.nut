@@ -1,14 +1,14 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-
+from "%globalScripts/unitTypeConsts.nut" import *
 
 let time = require("%scripts/time.nut")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { wwGetOperationId } = require("worldwar")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
@@ -103,7 +103,7 @@ let WwBattleResultsView = class {
   }
 
   function getArmyStateText(wwArmy, armyState) {
-    local res = loc(getTblValue(armyState, this.armyStateTexts, ""))
+    local res = loc((this.armyStateTexts?[armyState] ?? ""))
     if (armyState == "EASAB_DEAD" && wwArmy.deathReason != "")
       res = "".concat(res,
         loc("ui/parentheses/space", { text = loc($"worldwar/log/army_died_{wwArmy.deathReason}") }))
@@ -247,7 +247,7 @@ let WwBattleResultsView = class {
       foreach (army in team.armies)
         armies.append({
           armyView = army.getView()
-          armyStateText = this.getArmyStateText(army, getTblValue(army.name, team.armyStates))
+          armyStateText = this.getArmyStateText(army, team.armyStates?[army.name])
         })
 
       teams.append({

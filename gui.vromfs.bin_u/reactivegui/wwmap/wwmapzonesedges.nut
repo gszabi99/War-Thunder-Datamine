@@ -1,10 +1,11 @@
+from "%rGui/wwMap/wwMapStates.nut" import zonesHighlightedFlag
+from "%rGui/wwMap/wwMapZonesData.nut" import hoveredZone, getZones
+from "%rGui/wwMap/wwMapUtils.nut" import getMapColor
+from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds, gridWidth
+from "%appGlobals/worldWar/wwMapFilters.nut" import isShowZonesFilter
 from "%rGui/globals/ui_library.nut" import *
+
 let { zoneStatusTypes } = require("%rGui/wwMap/wwMapTypes.nut")
-let { zonesHighlightedFlag } = require("%rGui/wwMap/wwMapStates.nut")
-let { hoveredZone, getZones } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { activeAreaBounds, gridWidth } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { isShowZonesFilter } = require("%appGlobals/worldWar/wwMapFilters.nut")
 
 function mkZonesLines(parts, lineWidth) {
   if (parts.len() == 0)
@@ -23,7 +24,7 @@ function mkZonesLines(parts, lineWidth) {
   return {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth
-    size = flex()
+    size = FLEX
     commands
   }
 }

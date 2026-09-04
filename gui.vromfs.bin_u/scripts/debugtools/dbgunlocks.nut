@@ -1,25 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "string" import format
+from "language" import getLocalLanguage
+from "console" import register_command
+from "%sqstd/json.nut" import saveJson
+from "%globalScripts/unlockConsts.nut" import *
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "dagor.fs" import mkpath
+from "%scripts/webRPC.nut" import webRpcRegister
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
+let { ShowUnlockHandler } = require("%scripts/unlocks/showUnlockHandler.nut")
+let { setGameLocalization, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
 
-let { getLocalLanguage } = require("language")
-let { getFullUnlockDesc, getUnlockNameText, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksState.nut")
+let { getFullUnlockDesc, getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockCostText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
-let { register_command } = require("console")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { multiStageLocIdConfig, hasMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
-let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { web_rpc } = require("%scripts/webRPC.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { guiStartUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
@@ -143,7 +143,7 @@ function exportUnlockInfo(params) {
   return "ok"
 }
 
-web_rpc.register_handler("exportUnlockInfo", exportUnlockInfo)
+webRpcRegister("exportUnlockInfo", exportUnlockInfo)
 
 function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, showValue = false, all_langs = true) {
   if (!all_langs)
@@ -180,7 +180,7 @@ function debug_new_unit_unlock(needTutorial = false, unitName = null) {
   if (!unit)
     unit = u.search(getAllUnits(), @(un) un.isBought())
 
-  loadHandler(gui_handlers.ShowUnlockHandler,
+  loadHandler(ShowUnlockHandler,
     {
       config = {
          type = UNLOCKABLE_AIRCRAFT

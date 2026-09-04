@@ -1,16 +1,19 @@
+from "guiOptions" import get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty
+from "guiMission" import reload_cd
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ActionsList } = require("%scripts/actionsList.nut")
+let { GenericOptionsModal } = require("%scripts/genericOptions.nut")
 let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty } = require("guiOptions")
-let { reload_cd } = require("guiMission")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 
-gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsModal) {
+let OptionsCustomDifficultyModal = class (GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
 
@@ -118,8 +121,8 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
     if (!checkObj(obj))
       return
 
-    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) {
-      gui_handlers.ActionsList.removeActionsListFromObject(obj, true)
+    if (ActionsList.hasActionsListOnObject(obj)) {
+      ActionsList.removeActionsListFromObject(obj, true)
       return
     }
 
@@ -138,7 +141,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
         action      = @() this.applyCdPreset(cdPresetValue)
       })
     }
-    gui_handlers.ActionsList.open(obj, menu)
+    ActionsList.open(obj, menu)
   }
 
   function applyCdPreset(cdValue) {
@@ -146,3 +149,6 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
     this.reinitScreen()
   }
 }
+register_gui_handler("OptionsCustomDifficultyModal", OptionsCustomDifficultyModal)
+
+return { OptionsCustomDifficultyModal }

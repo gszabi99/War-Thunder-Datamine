@@ -1,24 +1,25 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/string.nut" import startsWith
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, periodic_task_unregister, get_user_logs_count, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import deferOnce
+
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let DataBlock = require("DataBlock")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { get_charserver_time_sec } = require("chard")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findInviteClass, invitesClasses } = require("%scripts/invites/invitesClasses.nut")
 let { MAX_POPUPS_ON_SCREEN, addPopup } = require("%scripts/popups/popups.nut")
 let { updateGcInvites, doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { invitesAmount } = require("%scripts/invites/invitesState.nut")
 let { crossNetworkChatStatus } = require("%scripts/social/crossplay.nut")
 
 const INVITE_CHAT_LINK_PREFIX = "INV_"
 const POPUP_TEXT_COLOR = "@chatInfoColor"
 
-let openInviteWnd = @() loadHandler(gui_handlers.InvitesWnd)
+let openInviteWnd = @() loadHandler(get_gui_handler("InvitesWnd"))
 
 function showPopupFriendsInvites(count) {
   addPopup(null, loc("contacts/popup_has_friend_invitations", {count}),
@@ -191,13 +192,14 @@ function addChatRoomInvite(roomId, inviterName) {
   return addInvite(findInviteClass("ChatRoom"), { roomId = roomId, inviterName = inviterName })
 }
 
-function addSessionRoomInvite(roomId, inviterUid, inviterName, password = null) {
+function addSessionRoomInvite(roomId, inviterUid, inviterName, password = null, roomInfo = null) {
   return addInvite(findInviteClass("SessionRoom"),
                    {
                      roomId      = roomId
                      inviterUid  = inviterUid
                      inviterName = inviterName
                      password    = password
+                     roomInfo    = roomInfo
                    })
 }
 

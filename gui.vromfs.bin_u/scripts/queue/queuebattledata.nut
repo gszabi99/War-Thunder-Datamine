@@ -1,15 +1,15 @@
-
+import "DataBlock" as DataBlock
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, CONFIG_VALIDATION
+from "dagor.workcycle" import resetTimeout
+from "console" import register_command
+from "chardConst" import EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS
 from "%scripts/dagui_library.nut" import *
-let { resetTimeout } = require("dagor.workcycle")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+
 let { charRequestJwt } = require("%scripts/tasker.nut")
-let { register_command } = require("console")
 let { decodeJwtAndHandleErrors } = require("%scripts/profileJwt/decodeJwt.nut")
-let DataBlock = require("DataBlock")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS } = require("chardConst")
 
 const SILENT_ACTUALIZE_DELAY = 60
 

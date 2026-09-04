@@ -1,17 +1,16 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "eventbus" import eventbus_subscribe
+from "guiMission" import leave_mp_session, quit_to_debriefing, interrupt_multiplayer
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 from "app" import pauseGame
 from "gameplayBinding" import inFlightMenu
 
-let { eventbus_subscribe } = require("eventbus")
-let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer
-} = require("guiMission")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { handlersManager } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 
 function gui_start_hud(_ = null) {
-  handlersManager.loadHandler(gui_handlers.Hud)
+  handlersManager.loadHandler(get_gui_handler("Hud"))
 }
 
 function gui_start_hud_no_chat(_) {
@@ -21,7 +20,7 @@ function gui_start_hud_no_chat(_) {
 }
 
 function gui_start_spectator(_) {
-  handlersManager.loadHandler(gui_handlers.Hud, { spectatorMode = true })
+  handlersManager.loadHandler(get_gui_handler("Hud"), { spectatorMode = true })
 }
 
 function quitMission() {

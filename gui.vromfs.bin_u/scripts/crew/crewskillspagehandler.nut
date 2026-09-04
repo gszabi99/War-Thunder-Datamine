@@ -1,19 +1,17 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "%sqstd/math.nut" import round_by_value
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let { round_by_value } = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { upgradeUnitSpec } = require("%scripts/crew/crewActionsWithMsgBox.nut")
-let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep,
-  getCrewButtonRow, getCrewSkillCost, getNextCrewSkillStepValue, getMaxAvailbleCrewStepValue,
-  getSkillCrewLevel, getSkillMaxCrewLevel, createCrewBuyPointsHandler, crewSkillStepToValue,
-  getCrewLevel, getCrewTotalSteps, getCrewSkillValue
-} = require("%scripts/crew/crew.nut")
+let { getCrewMaxSkillValue, getNextCrewSkillStepCost, crewSkillValueToStep, getCrewButtonRow, getCrewSkillCost, getNextCrewSkillStepValue, getMaxAvailbleCrewStepValue, getSkillCrewLevel, getSkillMaxCrewLevel, createCrewBuyPointsHandler, crewSkillStepToValue, getCrewLevel, getCrewTotalSteps, getCrewSkillValue } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -22,7 +20,7 @@ const MIN_EXP_POINTS = 5
 const MAX_EXPERT_EXP_POINTS = 3
 const MAX_ACE_EXP_POINTS = 2
 
-local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
+local class CrewSkillsPageHandler (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/empty.blk"
   sceneTplName = "%gui/crew/crewSkillRow.tpl"
@@ -112,7 +110,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     let specType = getSpecTypeByCrewAndUnit(this.crew, this.unit)
     let curSpecMul = specType.getMulValue()
     if (page.id == "gunner") {
-      let airGunners = getTblValue("gunnersCount", this.unit, 0)
+      let airGunners = (this.unit?.gunnersCount ?? 0)
       local curGunners = getCrewSkillValue(this.crew.id, this.unit, "gunner", "members")
       foreach (item in page.items)
         if (item.name == "members" && "newValue" in item) {
@@ -432,9 +430,9 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   isRecrutedCurCrew = @() this.crew.id != -1
 }
 
-gui_handlers.CrewSkillsPageHandler <- CrewSkillsPageHandler
+register_gui_handler("CrewSkillsPageHandler", CrewSkillsPageHandler)
 
-gui_handlers.CrewSkillsWndPageHandler <- class (gui_handlers.CrewSkillsPageHandler) {
+let CrewSkillsWndPageHandler = class (CrewSkillsPageHandler) {
   sceneTplName = "%gui/crew/crewSkillElementRow.tpl"
 
   function getBarsType(isEnabled, icon, isExpertSpecType) {
@@ -450,8 +448,9 @@ gui_handlers.CrewSkillsWndPageHandler <- class (gui_handlers.CrewSkillsPageHandl
     return barsType
   }
 }
+register_gui_handler("CrewSkillsWndPageHandler", CrewSkillsWndPageHandler)
 
 return @(params) handlersManager.loadHandler(
-  gui_handlers.CrewSkillsWndPageHandler,
+  CrewSkillsWndPageHandler,
   params
 )

@@ -2,7 +2,6 @@ module human_use_object_common shared
 require ecs
 require net
 require math.base
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.squad_personal_order_common

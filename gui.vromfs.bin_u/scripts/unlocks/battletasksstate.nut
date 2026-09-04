@@ -1,8 +1,7 @@
+from "%sqStdLibs/helpers/u.nut" import isDataBlock, isTable, isString
 from "%scripts/dagui_library.nut" import *
 
-let { isDataBlock, isTable, isString } = require("%sqStdLibs/helpers/u.nut")
-let { getDifficultyTypeByName, UNKNOWN_TASK
-} = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { getDifficultyTypeByName, UNKNOWN_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 
 
 let isMediumTaskComplete = Watched(false)
@@ -17,7 +16,7 @@ let proposedTasksArray = []
 
 function getBattleTaskById(id) {
   if (isTable(id) || isDataBlock(id))
-    id = getTblValue("id", id)
+    id = id?.id
   if (!id)
     return null
 
@@ -36,7 +35,7 @@ function getBattleTaskNameById(param) {
   local id = null
   if (isDataBlock(param)) {
     task = param
-    id = getTblValue("id", param)
+    id = param?.id
   }
   else if (isString(param)) {
     task = getBattleTaskById(param)
@@ -45,12 +44,12 @@ function getBattleTaskNameById(param) {
   else
     return ""
 
-  return loc(getTblValue("locId", task, $"battletask/{id}"))
+  return loc((task?.locId ?? $"battletask/{id}"))
 }
 
 
 let getDifficultyFromTask = @(task)
-  getTblValue("_puType", task, "").toupper()
+  (task?._puType ?? "").toupper()
 
 let getDifficultyTypeByTask = @(task)
   getDifficultyTypeByName(getDifficultyFromTask(task))

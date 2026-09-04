@@ -1,7 +1,7 @@
-from "%scripts/dagui_library.nut" import *
 import "%sqStdLibs/helpers/enums.nut" as enums
+from "string" import format
+from "%scripts/dagui_library.nut" import *
 
-let { format } = require("string")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")

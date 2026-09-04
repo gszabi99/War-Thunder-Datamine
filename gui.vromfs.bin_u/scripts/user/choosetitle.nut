@@ -1,26 +1,27 @@
+import "%sqstd/math.nut" as stdMath
+from "math" import ceil
+from "%sqstd/string.nut" import utf8ToLower
 from "%scripts/dagui_natives.nut" import select_current_title
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let seenTitles = require("%scripts/seen/seenList.nut").get(SEEN.TITLES)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let stdMath = require("%sqstd/math.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getTitles, getStats, clearStats } = require("%scripts/myStats.nut")
 
-gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
+let ChooseTitle = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/profile/chooseTitle.tpl"
 
@@ -33,7 +34,7 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isInMenu.get() || !getStats())
       return
 
-    handlersManager.loadHandler(gui_handlers.ChooseTitle, params)
+    handlersManager.loadHandler(get_gui_handler("ChooseTitle"), params)
   }
 
   function getSceneTplView() {
@@ -192,3 +193,6 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
     seenTitles.markSeen()
   }
 }
+register_gui_handler("ChooseTitle", ChooseTitle)
+
+return { ChooseTitle }

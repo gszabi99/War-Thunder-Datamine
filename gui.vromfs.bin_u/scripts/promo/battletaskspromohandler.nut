@@ -1,30 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqstd/datablock.nut" import copyParamsToTable
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById,
-  togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
-} = require("%scripts/promo/promo.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById, togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey } = require("%scripts/promo/promo.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj,
-  leftSpecialTasksBoughtCountWatchObj
-} = require("%scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
+let { easyDailyTaskProgressWatchObj, mediumDailyTaskProgressWatchObj, leftSpecialTasksBoughtCountWatchObj } = require("%scripts/battlePass/watchObjInfoConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { getDefaultDifficultyGroup } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let { getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
-let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired,
-  canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward,
-  getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups,
-  requestBattleTaskReward
-} = require("%scripts/unlocks/battleTasks.nut")
-let { setBattleTasksUpdateTimer, getBattleTaskView, getBattleTaskDifficultyImage
-} = require("%scripts/unlocks/battleTasksView.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired, canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward, getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups, requestBattleTaskReward } = require("%scripts/unlocks/battleTasks.nut")
+let { setBattleTasksUpdateTimer, getBattleTaskView, getBattleTaskDifficultyImage } = require("%scripts/unlocks/battleTasksView.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -33,14 +25,14 @@ let { openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
 dagui_propid_add_name_id("task_id")
 dagui_propid_add_name_id("difficultyGroup")
 
-gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let BattleTasksPromoHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   sceneBlkName = "%gui/empty.blk"
   savePathBattleTasksDiff = "promo/battleTasksDiff"
 
   static function open(params) {
-    handlersManager.loadHandler(gui_handlers.BattleTasksPromoHandler, params)
+    handlersManager.loadHandler(get_gui_handler("BattleTasksPromoHandler"), params)
   }
 
   function initScreen() {
@@ -116,7 +108,7 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (getStringWidthPx(view.title, "fontNormal", this.guiScene) > maxTextWidth)
       view.headerWidth <- maxTextWidth
     view.performActionId <- getPromoActionParamsKey(id)
-    view.taskId <- getTblValue("id", reqTask)
+    view.taskId <- reqTask?.id
     view.action <- PERFORM_PROMO_ACTION_NAME
 
 
@@ -195,8 +187,9 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   onEventWarbondShopMarkSeenLevel             = @(_p) this.updateHandler()
   onEventXboxMultiplayerPrivilegeUpdated      = @(_p) this.updateHandler()
 }
+register_gui_handler("BattleTasksPromoHandler", BattleTasksPromoHandler)
 
-let promoButtonId = "current_battle_tasks_mainmenu_button"
+const promoButtonId = "current_battle_tasks_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId
@@ -212,6 +205,6 @@ addPromoButtonConfig({
     if (!show || !checkObj(buttonObj))
       return
 
-    gui_handlers.BattleTasksPromoHandler.open({ scene = buttonObj })
+    BattleTasksPromoHandler.open({ scene = buttonObj })
   }
 })

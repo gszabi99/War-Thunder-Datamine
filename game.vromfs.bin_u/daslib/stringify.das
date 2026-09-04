@@ -1,6 +1,4 @@
 options gen2
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options indenting = 4
 options strict_smart_pointers = true
 
@@ -17,12 +15,6 @@ require daslib/ast_boost
 
 [reader_macro(name="stringify")]
 class private LongStringReader : AstReaderMacro {
-    
-    
-    
-    
-    
-    
     
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         

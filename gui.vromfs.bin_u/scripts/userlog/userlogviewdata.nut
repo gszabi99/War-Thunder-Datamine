@@ -1,26 +1,31 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/toString.nut" import intToHexString
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%sqstd/platform.nut" import isPC
+from "math" import abs, round
+from "%sqstd/math.nut" import round_by_value
+from "string" import format
+from "%sqstd/string.nut" import stripTags, cutPrefix, split, startsWith, endsWith
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_get_role_name, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
+from "%globalScripts/hangarMiscConsts.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
+from "types" import Array, Table
 
-let { isPC } = require("%sqstd/platform.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { abs, round } = require("math")
 let { zero_money, Cost, Money, Balance, money_type } = require("%scripts/money.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
-let { round_by_value } = require("%sqstd/math.nut")
-let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
-let { isCrossPlayEnabled, getTextWithCrossplayIcon, needShowCrossPlayInfo
-} = require("%scripts/social/crossplay.nut")
+let { isCrossPlayEnabled, getTextWithCrossplayIcon, needShowCrossPlayInfo } = require("%scripts/social/crossplay.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
@@ -30,12 +35,9 @@ let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unl
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
-let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/string.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
-let { getDifficultyTypeById, EASY_TASK, HARD_TASK
-} = require("%scripts/unlocks/battleTaskDifficulty.nut")
+let { getDifficultyTypeById, EASY_TASK, HARD_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
 let getBattleRewards = require("%scripts/userLog/getUserLogBattleRewardsTable.nut")
-let { intToHexString } = require("%sqStdLibs/helpers/toString.nut")
 let { getBattleTaskById, getDifficultyTypeByTask } = require("%scripts/unlocks/battleTasksState.nut")
 let { getDifficultyByProposals } = require("%scripts/unlocks/battleTasks.nut")
 let { getBattleTaskUserLogText, getBattleTaskUpdateDesc } = require("%scripts/unlocks/battleTasksView.nut")
@@ -50,21 +52,17 @@ let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { cloneDefaultUnlockData } = require("%scripts/unlocks/unlocksModule.nut")
 let { getBonus } = require("%scripts/bonusModule.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { getSkillCrewLevel, crewSkillPages, loadCrewSkillsOnce
-} = require("%scripts/crew/crew.nut")
+let { getSkillCrewLevel, crewSkillPages, loadCrewSkillsOnce } = require("%scripts/crew/crew.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getMissionName } = require("%scripts/missions/missionsText.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
-} = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
 let { RECYCLED_ITEMS_IDS } = require("%scripts/items/itemsRecycler.nut")
 let { amendUGCText } = require("%scripts/clans/clanTextInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
-let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig,
-  getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
+let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig, getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
 let { getOperationNameTextByIdAndMapName } = require("%scripts/worldWar/operations/model/wwOperationView.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 let { buildLogUnlockData } = require("%scripts/unlocks/unlocks.nut")
@@ -75,10 +73,10 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 
-let imgFormat = @"img {size:t='%s'; background-image:t='%s';
+const imgFormat = @"img {size:t='%s'; background-image:t='%s';
  background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
-let textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
-let descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
+const textareaFormat = "textareaNoTab {id:t='description'; width:t='pw'; text:t='%s'} "
+const descriptionBlkMultipleFormat = "tdiv { flow:t='h-flow'; width:t='pw'; {0} }"
 
 let clanActionNames = {
   [ULC_CREATE]                  = "create",
@@ -296,9 +294,9 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
     local desc = ""
     local descBottom = ""
-    local wp = getTblValue("wpEarned", logObj, 0) + getTblValue("baseTournamentWp", logObj, 0)
-    local gold = getTblValue("goldEarned", logObj, 0) + getTblValue("baseTournamentGold", logObj, 0)
-    let xp = getTblValue("xpEarned", logObj, 0)
+    local wp = (logObj?.wpEarned ?? 0) + (logObj?.baseTournamentWp ?? 0)
+    local gold = (logObj?.goldEarned ?? 0) + (logObj?.baseTournamentGold ?? 0)
+    let xp = (logObj?.xpEarned ?? 0)
     local earnedText = Cost(wp, gold, xp).toStringWithParams({ isWpAlwaysShown = true })
     if (!isMissionExtrLog && earnedText != "") {
       earnedText = $"{loc("ui/colon")}<color=@activeTextColor>{earnedText}</color>"
@@ -332,7 +330,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     if ("manuallySpentRepairCost" in logObj) {
       local idx = 0
       while ($"aname{idx}" in logObj.manuallySpentRepairCost) {
-        let name = getTblValue($"aname{idx}", logObj.manuallySpentRepairCost)
+        let name = logObj.manuallySpentRepairCost?[$"aname{idx}"]
         if (name && !damagedVehicles.contains(name))
           damagedVehicles.append(name)
         idx++
@@ -361,15 +359,15 @@ function getUserlogViewData(logObj, isUgcAllowed) {
         desc = "".concat(desc, "\n", loc("userlog/used_spare"), loc("ui/colon"), ", ".join(aText))
     }
 
-    let containerLog = getTblValue("container", logObj)
+    let containerLog = logObj?.container
 
     local freeRepair = ("aircrafts" in logObj) && logObj.aircrafts.len() > 0
     let repairCost = { rCost = 0, notEnoughCost = 0 }
-    let aircraftsRepaired = getTblValue("aircraftsRepaired", containerLog)
+    let aircraftsRepaired = containerLog?.aircraftsRepaired
     if (aircraftsRepaired)
       updateRepairCost(aircraftsRepaired, repairCost);
 
-    let unitsRepairedManually = getTblValue("manuallySpentRepairCost", logObj)
+    let unitsRepairedManually = logObj?.manuallySpentRepairCost
     if (unitsRepairedManually)
       updateRepairCost(unitsRepairedManually, repairCost);
 
@@ -389,8 +387,8 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       desc = "".concat(desc, "\n", loc("shop/auto_repair_free"))
     }
 
-    let wRefillWp = getTblValue("wpCostWeaponRefill", containerLog, 0)
-    let wRefillGold = getTblValue("goldCostWeaponRefill", containerLog, 0)
+    let wRefillWp = (containerLog?.wpCostWeaponRefill ?? 0)
+    let wRefillGold = (containerLog?.goldCostWeaponRefill ?? 0)
     if (wRefillWp || wRefillGold) {
       desc = "".concat(desc, "\n", loc("shop/auto_buy_weapons_cost"), loc("ui/colon"),
         "<color=@activeTextColor>", Cost(-wRefillWp, -wRefillGold).tostring(), "</color>")
@@ -444,7 +442,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
         descBottom = "".concat(descBottom, "\n<color=@activeTextColor>", loc("debriefing/research_list"), loc("ui/colon"), "</color>", descMods)
     }
 
-    if (getTblValue("haveTeamkills", logObj, false))
+    if ((logObj?.haveTeamkills ?? false))
       descBottom = "".concat(descBottom, ((descBottom != "") ? "\n\n" : ""), "<color=@activeTextColor>", loc("debriefing/noAwardsCaption"), "</color>")
 
     if (containerLog?.noActivityPlayer)
@@ -456,11 +454,11 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       local affectedBoosters = logObj.affectedBoosters
       
       
-      if (type(affectedBoosters) == "array")
+      if (affectedBoosters instanceof Array)
         affectedBoosters = affectedBoosters.top()
 
-      local activeBoosters = getTblValue("activeBooster", affectedBoosters, [])
-      if (type(activeBoosters) == "table")
+      local activeBoosters = (affectedBoosters?.activeBooster ?? [])
+      if (activeBoosters instanceof Table)
         activeBoosters = [ activeBoosters ]
 
       if (activeBoosters.len() > 0)
@@ -483,8 +481,8 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
 
     if (("tournamentResult" in logObj) && (events.getEvent(eventId)?.leaderboardEventTable == null)) {
-      let now = getTblValue("newStat", logObj.tournamentResult)
-      let was = getTblValue("oldStat", logObj.tournamentResult)
+      let now = logObj.tournamentResult?.newStat
+      let was = logObj.tournamentResult?.oldStat
       let lbDiff = getLbDiff(now, was)
       let items = []
       foreach (lbFieldsConfig in eventsTableConfig) {
@@ -494,7 +492,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
         items.append(getLeaderboardItemView(lbFieldsConfig,
                                                  now[lbFieldsConfig.field],
-                                                 getTblValue(lbFieldsConfig.field, lbDiff, null)))
+                                                 lbDiff?[lbFieldsConfig.field]))
       }
       let lbStatsBlk = getLeaderboardItemWidgets({ items = items })
       if (!("descriptionBlk" in res))
@@ -520,7 +518,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
     if (!isMissionExtrLog &&
         (logObj.type == EULT_SESSION_RESULT || logObj.type == EULT_EARLY_SESSION_LEAVE)) {
-      let ecSpawnScore = getTblValue("ecSpawnScore", logObj, 0)
+      let ecSpawnScore = (logObj?.ecSpawnScore ?? 0)
       if (ecSpawnScore > 0)
       descBottom = "".concat(descBottom, "\n<color=@userlogColoredText>", loc("debriefing/total/ecSpawnScore"), loc("ui/colon"), "</color>",
         "<color=@activeTextColor>", ecSpawnScore, "</color>")
@@ -542,7 +540,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       res.logBonus = getBonus(expMul, wpMul, "item", "Log")
 
     if (hasFeature("ServerReplay"))
-      if (getTblValue("dedicatedReplay", logObj, false)) {
+      if ((logObj?.dedicatedReplay ?? false)) {
         if (!("descriptionBlk" in res))
           res.descriptionBlk <- ""
         res.descriptionBlk = "".concat(res.descriptionBlk, getLinkMarkup(loc("mainmenu/btnViewServerReplay"),
@@ -745,7 +743,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.logImg = "#ui/gameuiskin#log_crew"
 
     res.name = loc($"userlog/{logName}",
-                         { skillPoints = getCrewSpTextIfNotZero(getTblValue("skillPoints", logObj, 0)),
+                         { skillPoints = getCrewSpTextIfNotZero((logObj?.skillPoints ?? 0)),
                            crewName = crewName,
                            unitName = airName
                          })
@@ -845,7 +843,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
   }
   else if (logObj.type == EULT_BUYING_SPARE_AIRCRAFT) {
-    let count = getTblValue("count", logObj, 1)
+    let count = (logObj?.count ?? 1)
     if (count == 1)
       res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(logObj.aname)), priceText)
     else
@@ -864,15 +862,15 @@ function getUserlogViewData(logObj, isUgcAllowed) {
   else if (logObj.type == EULT_CLAN_ACTION) {
     res.logImg = "#ui/gameuiskin#log_clan_action"
     let info = {
-      action = getTblValue("clanActionType", logObj, -1)
+      action = (logObj?.clanActionType ?? -1)
       clan = ("clanName" in logObj) ? amendUGCText(logObj.clanName, !isUgcAllowed) : ""
-      player = getTblValue("initiatorNick", logObj, "")
+      player = (logObj?.initiatorNick ?? "")
       role = ("role" in logObj) ? loc($"clan/{clan_get_role_name(logObj.role)}") : ""
       status = ("enabled" in logObj) ? loc($"clan/{logObj.enabled ? "opened" : "closed"}") : ""
-      tag = getTblValue("clanTag", logObj, "")
-      tagOld = getTblValue("clanTagOld", logObj, "")
+      tag = (logObj?.clanTag ?? "")
+      tagOld = (logObj?.clanTagOld ?? "")
       clanOld = ("clanNameOld" in logObj) ? amendUGCText(logObj.clanNameOld, !isUgcAllowed) : ""
-      sizeIncrease = getTblValue("sizeIncrease", logObj, -1)
+      sizeIncrease = (logObj?.sizeIncrease ?? -1)
     }
     let typeTxt = getClanActionName(info.action)
     res.name = "".concat(loc($"userlog/{logName}/{typeTxt}", info), priceText)
@@ -914,13 +912,13 @@ function getUserlogViewData(logObj, isUgcAllowed) {
 
     res.logImg = config.image
 
-    if (getTblValue("descrImage", config, "") != "") {
-      let imgSize = getTblValue("descrImageSize", config, "0.05sh, 0.05sh")
+    if ((config?.descrImage ?? "") != "") {
+      let imgSize = (config?.descrImageSize ?? "0.05sh, 0.05sh")
       res.descriptionBlk <- format(imgFormat, imgSize, config.descrImage)
     }
   }
   else if (logObj.type == EULT_CHARD_AWARD) {
-    let rewardType = getTblValue("rewardType", logObj, "")
+    let rewardType = (logObj?.rewardType ?? "")
     res.name = loc($"userlog/{rewardType}")
     res.description <- loc($"userlog/{logObj?.name ?? ""}")
 
@@ -970,7 +968,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     if ("clanDuelReward" in logObj) {
       let rewardBlk = logObj.clanDuelReward
 
-      let difficultyStr = loc(getTblValue("difficulty", rewardBlk, ""))
+      let difficultyStr = loc((rewardBlk?.difficulty ?? ""))
       lineReward = "".concat(lineReward, loc("difficulty_name"), " <color=@white>", difficultyStr,
         "</color>\n")
 
@@ -980,16 +978,16 @@ function getUserlogViewData(logObj, isUgcAllowed) {
           "</color>\n")
       }
 
-      let clanPlace = getTblValue("clanPlace", rewardBlk, -1)
+      let clanPlace = (rewardBlk?.clanPlace ?? -1)
 
-      let clanRating = getTblValue("clanRating", rewardBlk, -1)
+      let clanRating = (rewardBlk?.clanRating ?? -1)
 
       
       if (clanPlace > 0)
         lineReward = "".concat(lineReward, loc("userLog/clanDuelRewardClanRating"), " <color=@white>",clanRating,
           "</color>\n")
 
-      let equalClanPlacesCount = getTblValue("equalClanPlacesCount", rewardBlk, -1)
+      let equalClanPlacesCount = (rewardBlk?.equalClanPlacesCount ?? -1)
       if (equalClanPlacesCount > 1) {
         lineReward = "".concat(lineReward, loc("userLog/clanDuelRewardEqualClanPlaces"), " <color=@white>",
           (equalClanPlacesCount - 1), "</color>\n")
@@ -1010,7 +1008,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
         res.description = loc("userlog/ClanRewardRatingReached", { rating = clanRating.tostring() })
 
 
-      let place = getTblValue("place", rewardBlk, -1)
+      let place = (rewardBlk?.place ?? -1)
       if (place > 0)
         lineReward = "".concat(lineReward, loc("userLog/clanDuelRewardPlace"), " <color=@white>", place,
           "</color>\n")
@@ -1019,7 +1017,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       lineReward = "".concat(lineReward, loc("userLog/clanDuelRewardRating"), " <color=@white>", rating,
         "</color>\n")
 
-      let equalPlacesCount = getTblValue("equalPlacesCount", rewardBlk, -1)
+      let equalPlacesCount = (rewardBlk?.equalPlacesCount ?? -1)
       if (equalPlacesCount > 1) {
         lineReward = "".concat(lineReward, loc("userLog/clanDuelRewardEqualPlaces"), " <color=@white>",
           (equalPlacesCount - 1), "</color>\n")
@@ -1050,12 +1048,12 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
 
     if (rewardType == "EveryDayLoginAward" || rewardType == "PeriodicCalendarAward") {
-      let prefix = "trophy/"
+      const prefix = "trophy/"
       let pLen = prefix.len()
       if (rewardType == "EveryDayLoginAward")
         res.name = "".concat(res.name, loc("ui/parentheses/space", {
           text = colorize("userlogColoredText", loc("enumerated_day", {
-              number = getTblValue("progress", logObj, 0) + (getTblValue("daysFor0", logObj, 0) - 1)
+              number = (logObj?.progress ?? 0) + ((logObj?.daysFor0 ?? 0) - 1)
           }))
         }))
 
@@ -1068,7 +1066,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       res.descriptionBlk <- getUserlogImageItem(item)
     }
     else if (isInArray(rewardType, ["WagerStageWin", "WagerStageFail", "WagerWin", "WagerFail"])) {
-      let itemId = getTblValue("id", logObj)
+      let itemId = logObj?.id
       let item = findItemById(itemId)
       if (item) {
         if (isInArray(rewardType, ["WagerStageWin", "WagerStageFail"]))
@@ -1077,8 +1075,8 @@ function getUserlogViewData(logObj, isUgcAllowed) {
           res.name = loc($"userlog/{rewardType}", { wagerName = colorize("userlogColoredText", item.getName()) })
 
         let desc = []
-        desc.append(loc("items/wager/numWins", { numWins = getTblValue("numWins", logObj), maxWins = item.maxWins }))
-        desc.append(loc("items/wager/numFails", { numFails = getTblValue("numFails", logObj), maxFails = item.maxFails }))
+        desc.append(loc("items/wager/numWins", { numWins = logObj?.numWins, maxWins = item.maxWins }))
+        desc.append(loc("items/wager/numFails", { numFails = logObj?.numFails, maxFails = item.maxFails }))
 
         res.logImg = "#ui/gameuiskin#unlock_achievement"
         res.description = "".concat(res.description, res.description == "" ? "" : "\n", "\n".join(desc, true))
@@ -1094,7 +1092,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       lineReward = getTotalRewardDescText(result)
       res.description = "\n".join(desc, true)
       res.name = loc($"userlog/{rewardType}", {
-                         name = colorize("userlogColoredText", events.getNameByEconomicName(getTblValue("name", logObj)))
+                         name = colorize("userlogColoredText", events.getNameByEconomicName(logObj?.name))
                        })
     }
 
@@ -1148,7 +1146,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
   }
   else if (logObj.type == EULT_BUYING_MODIFICATION_MULTI) {
     if ("maname0" in logObj)
-      res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(getTblValue("maname0", logObj, ""))), priceText)
+      res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName((logObj?.maname0 ?? ""))), priceText)
     else
       res.name = format(loc($"userlog/{logName}"), "")
     res.logImg = "#ui/gameuiskin#log_buy_mods"
@@ -1252,7 +1250,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       local rewards = {}
       if (!isAutoConsume) {
         if (logObj?.item) {
-          if (type(logObj.item) == "array") {
+          if (logObj.item instanceof Array) {
             let items = logObj.item
             while (items.len()) {
               let inst = items.pop()
@@ -1290,7 +1288,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
         reward = loc("userlog/trophy_deleted") })
   }
   else if (logObj.type == EULT_BUY_ITEM) {
-    let itemId = getTblValue("id", logObj, "")
+    let itemId = (logObj?.id ?? "")
     let item = findItemById(itemId)
     let locId = $"userlog/{logName}{(logObj.count > 1) ? "/multiple" : ""}"
     res.name = loc(locId, {
@@ -1302,7 +1300,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.logImg = item?.getSmallIconName() ?? BASE_ITEM_TYPE_ICON
   }
   else if (logObj.type == EULT_NEW_ITEM) {
-    let itemId = getTblValue("id", logObj, "")
+    let itemId = (logObj?.id ?? "")
     let item = findItemById(itemId)
     let locId = $"userlog/{logName}{(logObj.count > 1) ? "/multiple" : ""}"
     res.logImg = item?.getSmallIconName() ?? BASE_ITEM_TYPE_ICON
@@ -1313,7 +1311,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.descriptionBlk <- getUserlogImageItem(item, { count = logObj.count })
   }
   else if (logObj.type == EULT_ACTIVATE_ITEM) {
-    let itemId = getTblValue("id", logObj, "")
+    let itemId = (logObj?.id ?? "")
     let item = findItemById(itemId)
     res.logImg = item?.getSmallIconName() ?? BASE_ITEM_TYPE_ICON
     let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer/recived" : logName
@@ -1336,7 +1334,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     res.descriptionBlk <- getUserlogImageItem(item)
   }
   else if (logObj.type == EULT_REMOVE_ITEM) {
-    let itemId = getTblValue("id", logObj, "")
+    let itemId = (logObj?.id ?? "")
     let item = findItemById(itemId)
     let reason = logObj?.reason ?? "unknown"
     let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
@@ -1366,12 +1364,12 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     let itemTypeValue = logObj?.itemType ?? ""
     if (itemTypeValue == "universalSpare" && reason == "unknown") {
       locId = $"userlog/{logName}"
-      let unit =  getTblValue("unit", logObj)
+      let unit =  logObj?.unit
       if (unit != null) {
         res.logImg2 = getCountryIcon(getShopCountry(unit))
         res.logImg2Params <- "isCountryIcon:t='yes'"
       }
-      let numSpares = getTblValue("numSpares", logObj, 1)
+      let numSpares = (logObj?.numSpares ?? 1)
       res.name = loc($"{locId}_name/universalSpare", {
                      numSparesColored = colorize("userlogColoredText", numSpares)
                      numSpares = numSpares
@@ -1382,7 +1380,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       res.descriptionBlk = "".concat(res.descriptionBlk, item.getNameMarkup(numSpares, true))
     }
     else if (itemTypeValue == "wager") {
-      let earned = Cost(getTblValue("wpEarned", logObj, 0), getTblValue("goldEarned", logObj, 0))
+      let earned = Cost((logObj?.wpEarned ?? 0), (logObj?.goldEarned ?? 0))
       if (earned > zero_money)
         res.description <- " ".concat(loc($"userlog/{logName}_desc/wager"), earned.tostring())
     }
@@ -1465,8 +1463,8 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       colorize("userlogColoredText", events.getNameByEconomicName(logObj.tournamentName)))
 
     let cost = Cost()
-    cost.wp = getTblValue("costWP", logObj, 0)
-    cost.gold = getTblValue("costGold", logObj, 0)
+    cost.wp = (logObj?.costWP ?? 0)
+    cost.gold = (logObj?.costGold ?? 0)
     res.description <- loc("events/battle_cost", { cost = cost.tostring() })
   }
   else if (logObj.type == EULT_CONVERT_EXPERIENCE) {
@@ -1481,15 +1479,15 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
 
     let cost = Cost()
-    cost.wp = getTblValue("costWP", logObj, 0)
-    cost.gold = getTblValue("costGold", logObj, 0)
-    let exp = getTblValue("exp", logObj, 0)
+    cost.wp = (logObj?.costWP ?? 0)
+    cost.gold = (logObj?.costGold ?? 0)
+    let exp = (logObj?.exp ?? 0)
 
     res.description <- loc($"{logId}/desc", { cost = cost.tostring(), unitName = getUnitName(unitName),
       exp = Cost().setFrp(exp).tostring() })
   }
   else if (logObj.type == EULT_SELL_BLUEPRINT) {
-    let itemId = getTblValue("id", logObj, "")
+    let itemId = (logObj?.id ?? "")
     let item = findItemById(itemId)
     let locId = $"userlog/{logName}{(logObj.count > 1) ? "/multiple" : ""}"
     res.name = loc(locId, {
@@ -1567,7 +1565,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
   }
   else if (logObj.type == EULT_RENT_UNIT || logObj.type == EULT_RENT_UNIT_EXPIRED) {
-    let unitName = getTblValue("unit", logObj)
+    let unitName = logObj?.unit
     if (unitName) {
       res.name = loc($"userlog/{logName}", { unitName = loc($"{unitName}_0") })
       if (logObj.type == EULT_RENT_UNIT) {
@@ -1579,7 +1577,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     }
   }
   else if (logObj.type == EULT_EXCHANGE_WARBONDS) {
-    let awardData = getTblValue("award", logObj)
+    let awardData = logObj?.award
     if (awardData) {
       let wbPriceText = getWarbondPriceText(awardData?.cost ?? 0)
       let awardBlk = DataBlockAdapter(awardData)
@@ -1593,8 +1591,8 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     local operation = ""
     if (isWorldWarEnabled())
       operation = getOperationNameTextByIdAndMapName(
-        getTblValue("operationId", logObj),
-        WwMap.getNameTextByMapName(getTblValue("mapName", logObj))
+        logObj?.operationId,
+        WwMap.getNameTextByMapName(logObj?.mapName)
       )
     res.name = loc(locId, { clan = logObj?.name, operation = operation })
     let appName = getContact(logObj?.registratorId.tostring())?.getName()
@@ -1610,7 +1608,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
     local textLocId = "worldWar/userlog/endOperation/"
     textLocId = "".concat(textLocId, logObj?.winner ? "win" : "lose")
     let { mapName = "", operationId = "" } = logObj
-    let earnedText = Cost(getTblValue("wp", logObj, 0)).toStringWithParams({ isWpAlwaysShown = true })
+    let earnedText = Cost((logObj?.wp ?? 0)).toStringWithParams({ isWpAlwaysShown = true })
     res.name = loc(textLocId, {
       opId = operationId, mapName = loc($"worldWar/map/{mapName}"), reward = earnedText })
 
@@ -1804,7 +1802,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       let itemDefIdCountMap = {}
       foreach (inventoryLogObj in inventoryLogObjects)
         foreach (val in inventoryLogObj) {
-          if (type(val) != "table" || ("itemDefId" not in val))
+          if (!(val instanceof Table) || ("itemDefId" not in val))
             continue
 
           let quantity = val?.quantity ?? 1
@@ -1817,7 +1815,7 @@ function getUserlogViewData(logObj, isUgcAllowed) {
       let view = { items = [] }
       foreach (inventoryLogObj in inventoryLogObjects)
         foreach (val in inventoryLogObj) {
-          if (type(val) != "table" || ("itemDefId" not in val))
+          if (!(val instanceof Table) || ("itemDefId" not in val))
             continue
 
           let item = findItemById(val.itemDefId)

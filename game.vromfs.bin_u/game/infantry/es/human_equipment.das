@@ -74,7 +74,7 @@ def unhide_weapons_on_reanimation_es(evt : Event;
         gun__visible = gun__wasVisible
 
 
-[es(on_appear)]
+[es(tag=server, on_appear)]
 def attach_vis_entity_cb_handler(evt : Event;
                                  eid : EntityId;
                                  attach_vis_entity_cb__toEid : EntityId;
@@ -142,7 +142,7 @@ def equip_item_direct_impl(item_eid : EntityId;
                            entity_mods__bagsVolumeMult : float const?;
                            var human_equipment__slots : Object&;
                            var human_inventory__capacity : float&;
-                           var human_inventory__currentVolume : float&;
+                           human_inventory__currentVolume : float&;
                            var dm_parts__partsArmor : FloatList?;
                            var dm_parts__armorItemEids : EidList?) : void
   if item_eid != INVALID_ENTITY_ID
@@ -237,7 +237,7 @@ def equip_item_direct_impl(item_eid : EntityId;
     newSoundTag = item__soundTag
 
   
-  if dm_parts__armorItemEids != null
+  if dm_parts__armorItemEids != null && has(item_eid, "item__armoredPartsIds")
     push(*dm_parts__armorItemEids, item_eid)
   if dm_parts__parts != null
     let collNodeCount = collres_get_nodesCount(*collres)
@@ -299,7 +299,7 @@ def equip_item_direct(evt : CmdEquipItemDirect;
                       entity_mods__bagsVolumeMult : float const?;
                       var human_equipment__slots : Object&;
                       var human_inventory__capacity : float&;
-                      var human_inventory__currentVolume : float&;
+                      human_inventory__currentVolume : float&;
                       var dm_parts__partsArmor : FloatList?;
                       var dm_parts__armorItemEids : EidList?;
                       isAlive : bool = true;
@@ -319,7 +319,7 @@ def equip_item(evt : CmdEquipItem;
                entity_mods__bagsVolumeMult : float const?;
                var human_equipment__slots : Object&;
                var human_inventory__capacity : float&;
-               var human_inventory__currentVolume : float&;
+               human_inventory__currentVolume : float&;
                var dm_parts__partsArmor : FloatList?;
                var dm_parts__armorItemEids : EidList?;
                isAlive : bool = true;

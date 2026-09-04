@@ -1,15 +1,16 @@
+import "DataBlock" as DataBlock
+import "dagor.math" as dagorMath
+from "dagor.debug" import logerr
+import "%sqstd/underscore.nut" as underscore
+import "%sqstd/functools.nut" as functools
+from "types" import Class, Array, Integer, Float, Table
 
-
-
-
-
-
-let DataBlock = require("DataBlock")
-let dagorMath = require("dagor.math")
-let underscore = require("%sqstd/underscore.nut")
-let functools = require("%sqstd/functools.nut")
 let {isTable, isArray, isDataBlock } = underscore
-let { dynamic_content } = require("%sqstd/analyzer.nut")
+
+
+
+
+
 
 let rnd = require_optional("dagor.random")?.rnd
   ?? require("math")?.rand
@@ -17,6 +18,46 @@ let rnd = require_optional("dagor.random")?.rnd
        throw("no math library exist")
      }
 
+
+
+
+let isPoint2 = @(v) v instanceof dagorMath.Point2
+let isPoint3 = @(v) v instanceof dagorMath.Point3
+let isPoint4 = @(v) v instanceof dagorMath.Point4
+let isIPoint2 = @(v) v instanceof dagorMath.IPoint2
+let isIPoint3 = @(v) v instanceof dagorMath.IPoint3
+let isColor3 = @(v) v instanceof dagorMath.Color3
+let isColor4 = @(v) v instanceof dagorMath.Color4
+let isTMatrix = @(v) v instanceof dagorMath.TMatrix
+
+
+function isDaGuiObject(v) {
+  if (type(v) != "instance")
+    return false
+  foreach (p in const ["getParent", "getChild", "getScene", "getFinalProp"]) {
+    if (p not in v)
+      return false
+  }
+  return true
+}
+
+let isClass = @(v) v instanceof Class
+
+
+
+let isOfClass = function(v, nameOrClass) {
+  if (type(v) != "instance")
+    return false
+  let t = type(nameOrClass)
+  if (t == "string")
+    return typeof v == nameOrClass
+  if ( t == "class")
+    return v instanceof nameOrClass
+  if (t == "function")
+    return nameOrClass(v)
+  logerr($"isOfClass erros: {t} is not class or classname")
+  return false
+}
 
 
 
@@ -42,7 +83,7 @@ function mapAdvanced(list, iteratee) {
 
 
 function keys(data) {
-  if (type(data) == "array"){
+  if (data instanceof Array){
     let res = array(data.len())
     foreach (i, _k in res)
       res[i]=i
@@ -55,7 +96,7 @@ function keys(data) {
 
 
 function values(data) {
-  if (type(data) == "array")
+  if (data instanceof Array)
     return clone data
   return data.values()
 }
@@ -68,9 +109,6 @@ let customIsEqual = {}
 let customIsEmpty = {}
 
 
-function registerIsEqual(classRef, isEqualFunc){
-  customIsEqual[classRef] <- isEqualFunc
-}
 
 
 
@@ -78,109 +116,54 @@ function registerIsEqual(classRef, isEqualFunc){
 
 
 
+let uIsEmpty = underscore.isEmpty
 function isEmpty(val) {
-  if (!val)
-    return true
-
-  if (["string", "table", "array"].indexof(type(val)) != null)
-    return val.len() == 0
-
-  if (type(val)=="instance") {
-    foreach(classRef, func in customIsEmpty)
-      if (val instanceof classRef)
-        return func(val)
-    return false
-  }
-
-  return false
+  return uIsEmpty(val, customIsEmpty)
 }
 
-
-
-
-function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
-  let funcName = $"is{className.slice(0, 1).toupper()}{className.slice(1)}"
-  this[funcName] <- @(value) type(value) == "instance" && (value instanceof classRef)
-
-  if (isEqualFunc != null)
-    registerIsEqual(classRef, isEqualFunc)
-  if (isEmptyFunc != null)
-    customIsEmpty[classRef] <- isEmptyFunc
-}
-
-let uIsEqual = underscore.isEqual
-function isEqual(val1, val2){
-  return uIsEqual(val1, val2, customIsEqual)
-}
+let isEqual = @(val1, val2) underscore.isEqual(val1, val2, customIsEqual)
 
 
 
 
-let dagorClasses = {
-  DataBlock = {
-    classRef = DataBlock
-    isEmpty = @(val) !val.paramCount() && !val.blockCount()
-    isEqual = function(val1, val2) {
-      if (val1.paramCount() != val2.paramCount() || val1.blockCount() != val2.blockCount())
+customIsEqual.__update({
+  [DataBlock] = function(val1, val2) {
+    if (val1.paramCount() != val2.paramCount() || val1.blockCount() != val2.blockCount())
+      return false
+
+    for (local i = 0; i < val1.paramCount(); i++)
+      if (val1.getParamName(i) != val2.getParamName(i) || !isEqual(val1.getParamValue(i), val2.getParamValue(i)))
         return false
-
-      for (local i = 0; i < val1.paramCount(); i++)
-        if (val1.getParamName(i) != val2.getParamName(i) || ! isEqual(val1.getParamValue(i), val2.getParamValue(i)))
-          return false
-      for (local i = 0; i < val1.blockCount(); i++) {
-        let b1 = val1.getBlock(i)
-        let b2 = val2.getBlock(i)
-        if (b1.getBlockName() != b2.getBlockName() || !isEqual(b1, b2))
-          return false
-      }
-      return true
+    for (local i = 0; i < val1.blockCount(); i++) {
+      let b1 = val1.getBlock(i)
+      let b2 = val2.getBlock(i)
+      if (b1.getBlockName() != b2.getBlockName() || !isEqual(b1, b2))
+        return false
     }
-  }
-  Point2 = {
-    classRef = dagorMath.Point2
-    isEqual = @(val1, val2) val1.x == val2.x && val1.y == val2.y
-    isEmpty = @(val) !val.x && !val.y
-  }
-  IPoint2 = {
-    classRef = dagorMath.IPoint2
-    isEqual = @(val1, val2) val1.x == val2.x && val1.y == val2.y
-    isEmpty = @(val) !val.x && !val.y
-  }
-  Point3 = {
-    classRef = dagorMath.Point3
-    isEqual = @(val1, val2) val1.x == val2.x && val1.y == val2.y && val1.z == val2.z
-    isEmpty = @(val) !val.x && !val.y && !val.z
-  }
-  IPoint3 = {
-    classRef = dagorMath.IPoint3
-    isEqual = @(val1, val2) val1.x == val2.x && val1.y == val2.y && val1.z == val2.z
-    isEmpty = @(val) !val.x && !val.y && !val.z
-  }
-  Point4 = {
-    classRef = dagorMath.Point4
-    isEqual = @(val1, val2) val1.x == val2.x && val1.y == val2.y && val1.z == val2.z && val1.w == val2.w
-    isEmpty = @(val) !val.x && !val.y && !val.z && !val.w
-  }
-  Color4 = {
-    classRef = dagorMath.Color4
-    isEqual = @(val1, val2) val1.r == val2.r && val1.g == val2.g && val1.b == val2.b && val1.a == val2.a
-  }
-  Color3 = {
-    classRef = dagorMath.Color3
-    isEqual = @(val1, val2) val1.r == val2.r && val1.g == val2.g && val1.b == val2.b
-  }
-  TMatrix = {
-    classRef = dagorMath.TMatrix
-    isEqual = function(val1, val2) {
-      for (local i = 0; i < 4; i++)
-        if (!isEqual(val1[i], val2[i]))
-          return false
-      return true
-    }
-  }
-}
+    return true
+  },
+  [dagorMath.Point2] = @(val1, val2) val1.x == val2.x && val1.y == val2.y,
+  [dagorMath.IPoint2] = @(val1, val2) val1.x == val2.x && val1.y == val2.y,
+  [dagorMath.Point3] = @(val1, val2) val1.x == val2.x && val1.y == val2.y && val1.z == val2.z,
+  [dagorMath.IPoint3] = @(val1, val2) val1.x == val2.x && val1.y == val2.y && val1.z == val2.z,
+  [dagorMath.Point4] = @(val1, val2) val1.x == val2.x && val1.y == val2.y && val1.z == val2.z && val1.w == val2.w,
+  [dagorMath.Color4] = @(val1, val2) val1.r == val2.r && val1.g == val2.g && val1.b == val2.b && val1.a == val2.a,
+  [dagorMath.Color3] = @(val1, val2) val1.r == val2.r && val1.g == val2.g && val1.b == val2.b,
+  [dagorMath.TMatrix] = function(val1, val2) {
+    for (local i = 0; i < 4; i++)
+      if (!isEqual(val1[i], val2[i]))
+        return false
+    return true
+  },
+  [isDaGuiObject] = @(obj1, obj2) obj1.isValid() && obj2.isValid() && obj1.isEqual(obj2),
+})
 
 
+
+customIsEmpty.__update({
+  [DataBlock] = @(val) !val.paramCount() && !val.blockCount(),
+  [isDaGuiObject] = @(obj) !obj.isValid(),
+})
 
 
 
@@ -215,7 +198,7 @@ function copy(obj) {
     return extend(isArray(obj) ? [] : {}, obj)
 
   
-  if ("isDataBlock" in this && isDataBlock(obj)) {
+  if (isDataBlock(obj)) {
     let res = DataBlock()
     res.setFrom(obj)
     let name = obj.getBlockName()
@@ -283,7 +266,7 @@ function getMax(arr, iteratee = null) {
     return result
 
   if (!iteratee)
-    iteratee = @(val) (type(val) == "integer" || type(val) == "float") ? val : null
+    iteratee = @(val) (val instanceof Integer || val instanceof Float) ? val : null
 
   local lastMaxValue = null
   foreach (data in arr) {
@@ -301,7 +284,7 @@ function getMax(arr, iteratee = null) {
 function getMin(arr, iteratee = null) {
   local newIteratee = null
   if (!iteratee)
-    newIteratee = @(val) (type(val) == "integer" || type(val) == "float") ? -val : null
+    newIteratee = @(val) (val instanceof Integer || val instanceof Float) ? -val : null
   else {
     newIteratee = function(val) {
       let value = iteratee(val)
@@ -376,7 +359,7 @@ function wrapIdxInArrayLen(index, length) {
 
 
 function search(data, predicate, reverseOrder = false) {
-  if (!reverseOrder || type(data) != "array") {
+  if (!reverseOrder || !(data instanceof Array)) {
     foreach(value in data)
       if (predicate(value))
         return value
@@ -391,14 +374,14 @@ function search(data, predicate, reverseOrder = false) {
 
 
 function find_in_array(arr, val, def = -1) {
-  if (type(arr) != "array" && type(arr) != "table")
+  if (!(arr instanceof Array) && !(arr instanceof Table))
     return def
 
   return arr.findindex(@(v) v==val) ?? def
 }
 
 
-local export = underscore.__merge({
+return freeze(underscore.__merge({
   appendOnce
   chooseRandom
   chooseRandomNoRepeat
@@ -409,34 +392,26 @@ local export = underscore.__merge({
   mapAdvanced
   removeFrom
   extend
-  registerClass
-  registerIsEqual
   keysReplace
   copy
   search
   isEmpty
   isEqual
+  isPoint2
+  isPoint3
+  isPoint4
+  isIPoint2
+  isIPoint3
+  isColor3
+  isColor4
+  isTMatrix
+  isDataBlock = @(v) v instanceof DataBlock
+  isDaGuiObject
+  isClass
+  isOfClass
 
   keys
   values
   find_in_array
 
-}, functools)
-
-
-
-
-let internalTypes = ["integer", "int64", "float", "null",
-                      "bool",
-                      "class", "instance", "generator",
-                      "userdata", "thread", "weakref"]
-foreach (typeName in internalTypes) {
-  local funcName = $"is{typeName.slice(0, 1).toupper()}{typeName.slice(1)}"
-  export[funcName] <- (@(val) @(arg) type(arg) == val)(typeName)
-}
-
-foreach (className, config in dagorClasses)
-  if (type(config?.classRef) == "class")
-    export.registerClass(className, config.classRef, config?.isEqual, config?.isEmpty)
-
-return dynamic_content(export)
+}, functools))

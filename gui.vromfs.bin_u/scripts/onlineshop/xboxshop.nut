@@ -1,9 +1,9 @@
+import "statsd" as statsd
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-require("%scripts/onlineShop/ingameConsoleStore.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let statsd = require("statsd")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { IngameConsoleStore } = require("%scripts/onlineShop/ingameConsoleStore.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
 let { showPcStorePromo } = require("%scripts/user/pcStorePromo.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -12,7 +12,7 @@ let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpd
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
-gui_handlers.XboxShop <- class (gui_handlers.IngameConsoleStore) {
+register_gui_handler("XboxShop", class (IngameConsoleStore) {
   function loadCurSheetItemsList() {
     this.itemsList = this.itemsCatalog?[this.curSheet?.categoryId] ?? []
   }
@@ -70,4 +70,4 @@ gui_handlers.XboxShop <- class (gui_handlers.IngameConsoleStore) {
 
     base.goBack()
   }
-}
+})

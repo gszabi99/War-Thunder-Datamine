@@ -3,6 +3,9 @@ decorCategory {
   id:t='<<id>>'
   categoryId:t='<<categoryId>>'
   groupId:t='<<groupId>>'
+  <<#isHidden>>
+  display:t='hide'
+  <</isHidden>>
 
   <<^hasGroups>>type:t='decoratorsList'<</hasGroups>>
   <<#hasGroups>>type:t='groupsList'<</hasGroups>>

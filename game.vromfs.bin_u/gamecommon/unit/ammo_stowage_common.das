@@ -94,6 +94,33 @@ def ammo_cluster_has_weapon_trigger(stowage_id : int; cluster_id : int; trigger_
   return false
 
 [with_bundle(v)]
+def public ammo_stowage_calculate_shell_ammo_count(stowage_id : int; trigger_id : int;
+                                                   v : tuple<
+                                                     ammo_stowages__weaponTriggersRange : IPoint2List;
+                                                     ammo_stowage__weaponTriggers : IntList;
+                                                     ammo_stowages__clustersRange : IPoint2List;
+                                                     ammo_clusters__typeAndStage : UInt16List;
+                                                     ammo_clusters__slotsRange : IPoint2List;
+                                                     ammo_clusters__weaponTriggersRange : IPoint2List;
+                                                     ammo_cluster__weaponTriggers : IntList;
+                                                     ammo_slots__numAmmo : IPoint2List
+                                                     >) : int
+  var total = 0
+  let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
+  for cluster_id in clusters_range.x..clusters_range.y
+    let cluster_stage = get_ammo_cluster_stage(cluster_id, v)
+    if cluster_stage != int(AmmoClusterStage.FIRST_STAGE) && cluster_stage != int(AmmoClusterStage.SECOND_STAGE)
+      continue
+    if get_ammo_cluster_type(cluster_id, v) != int(AmmoClusterType.SHELLS)
+      continue
+    if !ammo_cluster_has_weapon_trigger(stowage_id, cluster_id, trigger_id, v)
+      continue
+    let slots_range = v.ammo_clusters__slotsRange[cluster_id]
+    for slot_id in slots_range.x..slots_range.y
+      total += v.ammo_slots__numAmmo[slot_id].x
+  return total
+
+[with_bundle(v)]
 def ammo_clusters_have_common_weapon_trigger(stowage_id : int; cluster_a_id : int; cluster_b_id : int;
                                              v : tuple<
                                                ammo_stowages__weaponTriggersRange : IPoint2List;
@@ -251,11 +278,14 @@ def ammo_cluster_balance_slots(var unit : Unit?; cluster_id : int; update_dm : b
                                  ammo_stowage__ammoTypeToMask : UInt32List;
                                  ammo_clusters__slotsRange : IPoint2List;
                                  ammo_clusters__state : UInt32List;
+                                 ammo_clusters__typeAndStage : UInt16List;
                                  ammo_slots__state : UInt32List -const;
                                  ammo_slots__numAmmo : IPoint2List -const;
                                  ammo_slots__ammoMaskAndType : UInt32List -const;
                                  ammo_slots__partId : PartIdList
                                  >) : bool
+  if get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
+    return false
   var dm_changed = false
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var to_slot_id = slots_range.x
@@ -618,7 +648,7 @@ def ammo_stowage_change_weapon_ammo_for_weapon(weap : WeaponController const?; w
   return 0
 
 [with_bundle(v)]
-def ammo_stowage_change_weapon_ammo(weap : WeaponController const?; ammo_type : int; initial_count : bool; value : int; var bullet_mod_id : int&;
+def ammo_stowage_change_weapon_ammo(weap : WeaponController const?; ammo_type : int; initial_count : bool; loaded_in_gun : bool; value : int; var bullet_mod_id : int&;
                                     v : tuple<
                                       ammo_stowage__ammoState : uint;
                                       ammo_stowage__ammoTypeRemap : IPoint4List;
@@ -652,9 +682,9 @@ def ammo_stowage_change_weapon_ammo(weap : WeaponController const?; ammo_type : 
       if value_from_this_bs == 0
         break
 
-      var weaponminmax : Weapon? = null
+      var best_weapon : Weapon? = null
       var bullet_set_idx = 0
-      var minmax_count = -1
+      var best_weight = -INT_MAX
       for weapon_i in weapon_range.x..weapon_range.y
         var weapon = weap.Weapons |> get_weapon(v.ammo_stowage__weaponsIds[weapon_i])
         var gun_b = as_base_gun(weapon)
@@ -663,30 +693,34 @@ def ammo_stowage_change_weapon_ammo(weap : WeaponController const?; ammo_type : 
           let bullet_set_range = iter_all_bullet_sets ? int2(0, length(gun_i.properties.bulletSets)) : int2(ammo_type_remap.w, ammo_type_remap.w + 1)
           for bs_i in bullet_set_range.x..bullet_set_range.y
             let cnt = gun_i.properties.bulletSets[bs_i].bulletsCount
+            var weight = 0
             if add_ammo
               if cnt == gun_i.properties.bulletSets[bs_i].initialBulletsCount
                 continue
               if bullet_mod_id >= 0 && gun_i.properties.bulletSets[bs_i].modificationId != bullet_mod_id
                 continue
-              if weaponminmax == null || cnt < minmax_count
-                bullet_set_idx = bs_i
-                weaponminmax = weapon
-                minmax_count = cnt
+              weight = -cnt
             else
               if cnt == 0
                 continue
-              if weaponminmax == null || cnt > minmax_count
-                bullet_set_idx = bs_i
-                weaponminmax = weapon
-                minmax_count = cnt
-        elif gun_b != null && (weaponminmax == null || (add_ammo ? int(weapon.bulletsLeft) < int(weaponminmax.bulletsLeft) : int(weapon.bulletsLeft) > int(weaponminmax.bulletsLeft)))
-          weaponminmax = weapon
-          minmax_count = int(weapon.bulletsLeft)
+              weight = cnt
+              if bs_i == int(gun_i.chosenBulletType)
+                
+                weight += loaded_in_gun ? 1000000 : -(abs(value) + int(gun_i.currentLoadedAmmoCount) - 1);
+            if best_weapon == null || weight > best_weight
+              bullet_set_idx = bs_i
+              best_weapon = weapon
+              best_weight = weight
+        elif gun_b != null
+          let weight = add_ammo ? -int(weapon.bulletsLeft) : int(weapon.bulletsLeft)
+          if best_weapon == null || weight > best_weight
+            best_weapon = weapon
+            best_weight = weight
 
-      var max_gun = as_gun(weaponminmax)
-      var max_base_gun = as_base_gun(weaponminmax)
-      if max_gun != null
-        assume bullet_set = max_gun.properties.bulletSets[bullet_set_idx]
+      var best_gun = as_gun(best_weapon)
+      var best_base_gun = as_base_gun(best_weapon)
+      if best_gun != null
+        assume bullet_set = best_gun.properties.bulletSets[bullet_set_idx]
         if !add_ammo
           bullet_mod_id = bullet_set.modificationId
         var cnt = bullet_set.bulletsCount
@@ -704,14 +738,14 @@ def ammo_stowage_change_weapon_ammo(weap : WeaponController const?; ammo_type : 
             cnt -= value_from_this_bs
         cnt = max(0, min(max_cnt, cnt))
         bullet_set.bulletsCount = cnt
-      elif max_base_gun != null
+      elif best_base_gun != null
         var cntnew = 0
         if add_ammo
-          cntnew = min(weaponminmax.fullBullets, int(weaponminmax.bulletsLeft) + value_from_this_bs)
+          cntnew = min(best_weapon.fullBullets, int(best_weapon.bulletsLeft) + value_from_this_bs)
         else
-          cntnew = max(0, int(weaponminmax.bulletsLeft) - value_from_this_bs)
-        value_from_this_bs = abs(cntnew - int(weaponminmax.bulletsLeft))
-        weaponminmax.bulletsLeft = int16(cntnew)
+          cntnew = max(0, int(best_weapon.bulletsLeft) - value_from_this_bs)
+        value_from_this_bs = abs(cntnew - int(best_weapon.bulletsLeft))
+        best_weapon.bulletsLeft = int16(cntnew)
       else
         remaining_value = 0
         break

@@ -1,16 +1,17 @@
-from "%scripts/dagui_natives.nut" import  get_entitlement_cost_gold, purchase_entitlement, is_online_available, set_char_cb
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "math" import floor
+from "steam" import steam_is_overlay_active
+from "%scripts/dagui_natives.nut" import get_entitlement_cost_gold, purchase_entitlement, is_online_available, set_char_cb
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
 
-let { floor } = require("math")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getEntitlementDescription, getEntitlementName, getPricePerEntitlement, getEntitlementPriceFloat,
-  getEntitlementAmount, getEntitlementFullTimeText, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementDescription, getEntitlementName, getPricePerEntitlement, getEntitlementPriceFloat, getEntitlementAmount, getEntitlementFullTimeText, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let time = require("%scripts/time.nut")
 let { Cost } = require("%scripts/money.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -20,7 +21,6 @@ let { addTask } = require("%scripts/tasker.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { onOnlinePurchase } = require("%scripts/onlineShop/onlinePurchase.nut")
-let { steam_is_overlay_active } = require("steam")
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 let { getRemainingPremiumTime } = require("%scripts/user/premium.nut")
@@ -30,7 +30,7 @@ const MIN_DISPLAYED_PERCENT_SAVING = 5
 
 let getRatioCoeff = @(num) num == "1" ? 41.0/150 : 76.0/150
 
-gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("BuyPremiumHandler", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/premium/buyPremiumWnd.blk"
   owner = null
@@ -247,4 +247,4 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateCurrentPremiumInfo()
     this.updateEntitlements()
   }
-}
+})

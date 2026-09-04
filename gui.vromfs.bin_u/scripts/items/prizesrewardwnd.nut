@@ -1,12 +1,13 @@
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { trophyRewardWnd } = require("%scripts/items/trophyRewardWnd.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
 
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let class PrizesRewardWnd (gui_handlers.trophyRewardWnd) {
+class PrizesRewardWnd (trophyRewardWnd) {
   wndType = handlerType.MODAL
 
   chestDefaultImg = "every_day_award_trophy_big"
@@ -52,6 +53,6 @@ let class PrizesRewardWnd (gui_handlers.trophyRewardWnd) {
   updateRewardPostscript = @() null
 }
 
-gui_handlers.PrizesRewardWnd <- PrizesRewardWnd
+register_gui_handler("PrizesRewardWnd", PrizesRewardWnd)
 
 return @(params) handlersManager.loadHandler(PrizesRewardWnd, params)

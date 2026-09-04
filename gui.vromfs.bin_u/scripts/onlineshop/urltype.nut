@@ -1,7 +1,7 @@
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "string" import regexp
 from "%scripts/dagui_library.nut" import *
 
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { regexp } = require("string")
 const URL_ANY_ENDING = @"(\/.*$|\/$|$)"
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 

@@ -1,10 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { IngameConsoleStore } = require("%scripts/onlineShop/ingameConsoleStore.nut")
 
-require("ingameConsoleStore.nut")
-
-gui_handlers.EpicShop <- class (gui_handlers.IngameConsoleStore) {
+register_gui_handler("EpicShop", class (IngameConsoleStore) {
   needWaitIcon = true
   isLoadingInProgress = false
 
@@ -22,4 +21,4 @@ gui_handlers.EpicShop <- class (gui_handlers.IngameConsoleStore) {
     this.fillItemsList()
     this.updateItemInfo()
   }
-}
+})

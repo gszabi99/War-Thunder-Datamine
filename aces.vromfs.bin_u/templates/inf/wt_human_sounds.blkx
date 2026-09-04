@@ -289,13 +289,13 @@
         "path": "/walker/ww2_soldier/collision/fall"
       },
       "installWeapMod:object": {
-        "hero": "ui/weapon_mods/install_common"
+        "watched": "ui/weapon_mods/install_common"
       },
       "uninstallWeapMod:object": {
-        "hero": "ui/weapon_mods/deinstall_common"
+        "watched": "ui/weapon_mods/deinstall_common"
       },
       "burningPuttingOut:object": {
-        "hero": "player/walker/ww2_soldier/items/fire_extinguish/activate"
+        "watched": "player/walker/ww2_soldier/items/fire_extinguish/activate"
       },
       "burning:object": {
         "path": "env_effects/fire/fire_character"
@@ -331,16 +331,16 @@
     "entity_intersected_with_projectile_sound__paths:shared:object": {
       "_tags": "sound",
       "bullet:object": {
-        "hero": "player/walker/ww2_soldier/hit/bullet_body",
-        "enemy": "enemy/walker/ww2_soldier/hit/bullet_body"
+        "watched": "player/walker/ww2_soldier/hit/bullet_body",
+        "other": "enemy/walker/ww2_soldier/hit/bullet_body"
       },
       "bullet_big:object": {
         "watched": "player/walker/ww2_soldier/hit/bullet_body_big",
         "other": "enemy/walker/ww2_soldier/hit/bullet_body_big"
       },
       "shell:object": {
-        "hero": "impact/shell",
-        "enemy": "impact/shell"
+        "watched": "impact/shell",
+        "other": "impact/shell"
       }
     },
     "_group": {
@@ -450,35 +450,35 @@
           {
             "femaleVoice": true,
             "voice2": true,
-            "hero": "infantry/player/walker/ww2_female_soldier/voice_fx",
-            "enemy": "infantry/enemy/walker/ww2_female_soldier02/voice_fx"
+            "watched": "infantry/player/walker/ww2_female_soldier/voice_fx",
+            "other": "infantry/enemy/walker/ww2_female_soldier02/voice_fx"
           },
           {
             "femaleVoice": true,
             "voice3": true,
-            "hero": "infantry/player/walker/ww2_female_soldier/voice_fx",
-            "enemy": "infantry/enemy/walker/ww2_female_soldier03/voice_fx"
+            "watched": "infantry/player/walker/ww2_female_soldier/voice_fx",
+            "other": "infantry/enemy/walker/ww2_female_soldier03/voice_fx"
           },
           {
             "femaleVoice": true,
-            "hero": "infantry/player/walker/ww2_female_soldier/voice_fx",
-            "enemy": "infantry/enemy/walker/ww2_female_soldier01/voice_fx"
+            "watched": "infantry/player/walker/ww2_female_soldier/voice_fx",
+            "other": "infantry/enemy/walker/ww2_female_soldier01/voice_fx"
           }
         ],
         "male:object": [
           {
             "voice2": true,
-            "hero": "infantry/player/walker/mc_soldier/voice_fx",
-            "enemy": "infantry/enemy/walker/mc_soldier02/voice_fx"
+            "watched": "infantry/player/walker/mc_soldier/voice_fx",
+            "other": "infantry/enemy/walker/mc_soldier02/voice_fx"
           },
           {
             "voice3": true,
-            "hero": "infantry/player/walker/mc_soldier/voice_fx",
-            "enemy": "infantry/enemy/walker/mc_soldier03/voice_fx"
+            "watched": "infantry/player/walker/mc_soldier/voice_fx",
+            "other": "infantry/enemy/walker/mc_soldier03/voice_fx"
           },
           {
-            "hero": "infantry/player/walker/mc_soldier/voice_fx",
-            "enemy": "infantry/enemy/walker/mc_soldier01/voice_fx"
+            "watched": "infantry/player/walker/mc_soldier/voice_fx",
+            "other": "infantry/enemy/walker/mc_soldier01/voice_fx"
           }
         ]
       }
@@ -507,18 +507,18 @@
         "name": "breath/inhale"
       },
       "holdBreath:object": {
-        "hero": "breath/aim_on"
+        "watched": "breath/aim_on"
       },
       "holdBreathEnd:object": {
-        "hero": "breath/aim_off",
+        "watched": "breath/aim_off",
         "heavyBreath:object": {},
         "holdBreath:object": {}
       },
       "underwater:object": {
-        "hero": "breath/in"
+        "watched": "breath/in"
       },
       "underwaterEnd:object": {
-        "hero": "breath/out",
+        "watched": "breath/out",
         "underwater:object": {}
       },
       "burn:object": {
@@ -641,74 +641,74 @@
     "_use": "net_sound_descs",
     "net_sound__descs:shared:object": {
       "tinnitus:object": {
-        "hero": "infantry/player/effects/tinnitus",
+        "watched": "infantry/player/effects/tinnitus",
         "var": "pow"
       },
       "pick_healing:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/healing/pick",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/healing/pick"
+        "watched": "infantry/player/walker/ww2_soldier/items/healing/pick",
+        "other": "infantry/enemy/walker/ww2_soldier/items/healing/pick"
       },
       "pick_ammo:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/ammo/pick",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/ammo/pick"
+        "watched": "infantry/player/walker/ww2_soldier/items/ammo/pick",
+        "other": "infantry/enemy/walker/ww2_soldier/items/ammo/pick"
       },
       "pick_armor:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/armor/pick",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/armor/pick"
+        "watched": "infantry/player/walker/ww2_soldier/items/armor/pick",
+        "other": "infantry/enemy/walker/ww2_soldier/items/armor/pick"
       },
       "pick_grenade:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/grenade/pick",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/grenade/pick"
+        "watched": "infantry/player/walker/ww2_soldier/items/grenade/pick",
+        "other": "infantry/enemy/walker/ww2_soldier/items/grenade/pick"
       },
       "pick_weapon:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/gun/pick",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/gun/pick"
+        "watched": "infantry/player/walker/ww2_soldier/items/gun/pick",
+        "other": "infantry/enemy/walker/ww2_soldier/items/gun/pick"
       },
       "pick_other:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/pick",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/other/pick"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/pick",
+        "other": "infantry/enemy/walker/ww2_soldier/items/other/pick"
       },
       "drop_healing:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/drop"
       },
       "drop_ammo:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/drop"
       },
       "drop_armor:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/drop"
       },
       "drop_grenade:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/grenade/drop"
+        "watched": "infantry/player/walker/ww2_soldier/items/grenade/drop"
       },
       "drop_weapon:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/drop"
       },
       "drop_other:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/drop"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/drop"
       },
       "use_healing:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/healing/use",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/healing/use"
+        "watched": "infantry/player/walker/ww2_soldier/items/healing/use",
+        "other": "infantry/enemy/walker/ww2_soldier/items/healing/use"
       },
       "use_ammo:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/ammo/use",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/ammo/use"
+        "watched": "infantry/player/walker/ww2_soldier/items/ammo/use",
+        "other": "infantry/enemy/walker/ww2_soldier/items/ammo/use"
       },
       "use_armor:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/armor/use",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/armor/use"
+        "watched": "infantry/player/walker/ww2_soldier/items/armor/use",
+        "other": "infantry/enemy/walker/ww2_soldier/items/armor/use"
       },
       "use_grenade:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/grenade/use",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/grenade/use"
+        "watched": "infantry/player/walker/ww2_soldier/items/grenade/use",
+        "other": "infantry/enemy/walker/ww2_soldier/items/grenade/use"
       },
       "use_weapon:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/gun/use",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/gun/use"
+        "watched": "infantry/player/walker/ww2_soldier/items/gun/use",
+        "other": "infantry/enemy/walker/ww2_soldier/items/gun/use"
       },
       "use_other:object": {
-        "hero": "infantry/player/walker/ww2_soldier/items/other/use",
-        "enemy": "infantry/enemy/walker/ww2_soldier/items/other/use"
+        "watched": "infantry/player/walker/ww2_soldier/items/other/use",
+        "other": "infantry/enemy/walker/ww2_soldier/items/other/use"
       }
     }
   },
@@ -722,16 +722,16 @@
       "_tags": "sound",
       "voice:object": [
         {
-          "hero": "infantry/vo/player/mc/player",
-          "enemy": "infantry/vo/enemy/mc/soldier01"
+          "watched": "infantry/vo/player/mc/player",
+          "other": "infantry/vo/enemy/mc/soldier01"
         },
         {
-          "hero": "infantry/vo/player/mc/player",
-          "enemy": "infantry/vo/enemy/mc/soldier02"
+          "watched": "infantry/vo/player/mc/player",
+          "other": "infantry/vo/enemy/mc/soldier02"
         },
         {
-          "hero": "infantry/vo/player/mc/player",
-          "enemy": "infantry/vo/enemy/mc/soldier03"
+          "watched": "infantry/vo/player/mc/player",
+          "other": "infantry/vo/enemy/mc/soldier03"
         }
       ]
     },
@@ -744,7 +744,7 @@
       "speech:object": [
         {
           "id": "wounded",
-          "hero": "hit",
+          "watched": "hit",
           "teamRange": 15.0,
           "rcptFilter": "player",
           "minMaxCooldown": [
@@ -754,7 +754,7 @@
         },
         {
           "id": "enemyHit",
-          "hero": "enemy_hit",
+          "watched": "enemy_hit",
           "rcptFilter": "player",
           "minMaxCooldown": [
             10.0,
@@ -763,7 +763,7 @@
         },
         {
           "id": "enemyKill",
-          "hero": "enemy_kill",
+          "watched": "enemy_kill",
           "chance": 50,
           "rcptFilter": "player",
           "minMaxCooldown": [
@@ -773,7 +773,7 @@
         },
         {
           "id": "enemyKillExplode",
-          "hero": "kill_grenade",
+          "watched": "kill_grenade",
           "chance": 75,
           "rcptFilter": "player",
           "minMaxCooldown": [
@@ -783,7 +783,7 @@
         },
         {
           "id": "friendlyFireHit",
-          "enemy": "friendly_fire",
+          "other": "friendly_fire",
           "chance": 100,
           "rcptFilter": "posRangeTeam",
           "minMaxCooldown": [
@@ -793,7 +793,7 @@
         },
         {
           "id": "squadMemberKilled",
-          "enemy": "squad_member_killed",
+          "other": "squad_member_killed",
           "rcptFilter": "posRangeSquad",
           "minMaxCooldown": [
             5.0,
@@ -803,7 +803,7 @@
         },
         {
           "id": "leftAloneInSquad",
-          "hero": "left_alone",
+          "watched": "left_alone",
           "rcptFilter": "player",
           "minMaxCooldown": [
             5.0,
@@ -813,7 +813,7 @@
         },
         {
           "id": "squadMemberEnemyWarningAhead",
-          "enemy": "enemy_warning_ahead",
+          "other": "enemy_warning_ahead",
           "rcptFilter": "",
           "minMaxCooldown": [
             5.0,
@@ -822,7 +822,7 @@
         },
         {
           "id": "squadMemberEnemyWarningBehind",
-          "enemy": "enemy_warning_behind",
+          "other": "enemy_warning_behind",
           "rcptFilter": "",
           "minMaxCooldown": [
             5.0,
@@ -831,7 +831,7 @@
         },
         {
           "id": "squadMemberEnemyWarningLeft",
-          "enemy": "enemy_warning_left",
+          "other": "enemy_warning_left",
           "rcptFilter": "",
           "minMaxCooldown": [
             5.0,
@@ -840,7 +840,7 @@
         },
         {
           "id": "squadMemberEnemyWarningRight",
-          "enemy": "enemy_warning_right",
+          "other": "enemy_warning_right",
           "rcptFilter": "",
           "minMaxCooldown": [
             5.0,
@@ -849,7 +849,7 @@
         },
         {
           "id": "reload",
-          "hero": "reloading",
+          "watched": "reloading",
           "teamRange": 15.0,
           "rcptFilter": "player",
           "chance": 80,
@@ -866,7 +866,7 @@
         },
         {
           "id": "oneMagazineLeft",
-          "hero": "low_ammo",
+          "watched": "low_ammo",
           "teamRange": 0.0,
           "rcptFilter": "player",
           "chance": 100,
@@ -877,7 +877,7 @@
         },
         {
           "id": "oneShellLeft",
-          "hero": "last_shot",
+          "watched": "last_shot",
           "teamRange": 0.0,
           "rcptFilter": "player",
           "chance": 100,
@@ -888,7 +888,7 @@
         },
         {
           "id": "startCapture",
-          "hero": "capturing_ally",
+          "watched": "capturing_ally",
           "teamRange": 15.0,
           "rcptFilter": "player",
           "minMaxCooldown": [
@@ -898,7 +898,7 @@
         },
         {
           "id": "enemyStartCapture",
-          "hero": "capturing_enemy",
+          "watched": "capturing_enemy",
           "teamRange": 15.0,
           "rcptFilter": "player",
           "minMaxCooldown": [
@@ -908,13 +908,13 @@
         },
         {
           "id": "artStrikeOrder",
-          "hero": "art_command",
+          "watched": "art_command",
           "replace": true,
           "rcptFilter": "player"
         },
         {
           "id": "artStrikeRespond",
-          "hero": "art_shoot",
+          "watched": "art_shoot",
           "abandon": true,
           "queueable": true,
           "rcptFilter": "player"
@@ -951,7 +951,7 @@
         },
         {
           "id": "qm_cover_me",
-          "hero": "qm_cover_me",
+          "watched": "qm_cover_me",
           "rcptFilter": "player",
           "replace": true
         },
@@ -994,7 +994,7 @@
         },
         {
           "id": "smokeGrenadeThrow",
-          "hero": "smoke_grenade_throw",
+          "watched": "smoke_grenade_throw",
           "rcptFilter": "player",
           "teamRange": 30.0,
           "minMaxCooldown": [
@@ -1006,7 +1006,7 @@
         },
         {
           "id": "flashGrenadeThrow",
-          "hero": "flash_grenade_throw",
+          "watched": "flash_grenade_throw",
           "rcptFilter": "player",
           "teamRange": 30.0,
           "minMaxCooldown": [
@@ -1042,19 +1042,19 @@
         },
         {
           "id": "confirmResponse",
-          "enemy": "order_accept",
+          "other": "order_accept",
           "rcptFilter": "squad",
           "replace": true
         },
         {
           "id": "rejectResponse",
-          "enemy": "order_reject",
+          "other": "order_reject",
           "rcptFilter": "squad",
           "replace": true
         },
         {
           "id": "grenadeAware",
-          "hero": "grenade_warning",
+          "watched": "grenade_warning",
           "teamRange": 25.0,
           "minMaxCooldown": [
             10.0,
@@ -1064,7 +1064,7 @@
         },
         {
           "id": "smokeGrenadeAware",
-          "hero": "smoke_grenade_warning",
+          "watched": "smoke_grenade_warning",
           "teamRange": 25.0,
           "minMaxCooldown": [
             40.0,
@@ -1074,7 +1074,7 @@
         },
         {
           "id": "flashGrenadeAware",
-          "hero": "flash_grenade_warning",
+          "watched": "flash_grenade_warning",
           "teamRange": 25.0,
           "minMaxCooldown": [
             10.0,
@@ -1153,6 +1153,8 @@
           0.0,
           1.0
         ],
+        "human_collision_scrape_sound__cooldown": 0.1,
+        "human_collision_scrape_sound__nextTime": 0.0,
         "human_collision_scrape_sound__descs:shared:array": {
           "bush:object": {
             "path": "/walker/ww2_soldier/collision/bush"

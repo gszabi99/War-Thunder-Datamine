@@ -1,22 +1,17 @@
-let { loc } = require("dagor.localize")
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "dagor.localize" import loc
+from "dagor.workcycle" import setInterval, clearTimer
+from "assistantMap" import isAssistantMapActive, isAssistantMapAvailable, startAssistantMapSession, getAssistantMapSessionInfo, stopAssistantMapSession
+
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openWTAssistantDeeplinkQr } = require("%scripts/user/wtAssistantDeeplink.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
-let {
-  isAssistantMapActive,
-  isAssistantMapAvailable,
-  startAssistantMapSession,
-  getAssistantMapSessionInfo,
-  stopAssistantMapSession
-} = require("assistantMap")
 
 const ASSISTANT_MAP_QR_SESSION_POLL_SEC = 1.0
 
 function closeAssistantMapQrWindowIfOpen() {
-  let h = handlersManager.findHandlerClassInScene(gui_handlers.qrWindow)
+  let h = handlersManager.findHandlerClassInScene(get_gui_handler("qrWindow"))
   if (h == null || !h.assistantMapSessionQr)
     return
   h.goBack()

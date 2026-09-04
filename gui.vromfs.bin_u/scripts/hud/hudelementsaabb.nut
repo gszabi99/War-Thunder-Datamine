@@ -1,17 +1,17 @@
+import "hudState" as hudState
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let hudState = require("hudState")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { getHitCameraAABB } = require("%scripts/hud/hudHitCamera.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { actionBarItems } = require("%scripts/hud/actionBarState.nut")
 let { getActionBarObjId } = require("%scripts/hud/hudActionBar.nut")
-let { getDaguiObjAabb } = require("%sqDagui/daguiUtil.nut")
+let { getDaguiObjAabb } = require("%scripts/sqDagui/daguiUtil.nut")
 
 function getAabbObjFromHud(hudFuncName) {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(get_gui_handler("Hud"))
   if (handler == null || !(hudFuncName in handler))
     return null
 
@@ -86,7 +86,7 @@ function getAircraftInstrumentsAabb() {
 }
 
 function getActionBarItemAabb(actionTypeName = null) {
-  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  let handler = handlersManager.findHandlerClassInScene(get_gui_handler("Hud"))
   let actionBarObj = handler?.getHudActionBarObj()
   if (!actionBarObj?.isValid())
     return null

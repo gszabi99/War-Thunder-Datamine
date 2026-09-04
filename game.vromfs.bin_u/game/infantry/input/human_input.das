@@ -8,6 +8,7 @@ require GridCollision
 require CollisionTraces
 require WTInput
 require DngHuman
+require GuiOptions
 require MPlayer
 require DagorMath
 require DagorMathUtils
@@ -22,14 +23,12 @@ require %appGame.infantry.es.human_use_object_common
 require %appGame.infantry.es.camera_common
 require %appGame.infantry.es.vehicle.vehicle_events
 require Unit
-require DagorSystem
 require DagorDataBlock
 require hud
 require HumanPhys
 require DaWeapons
 require DngWeapon
 require AnimV20
-require GeomNodeTree
 
 
 let DEFAULT_VERT_LOOK_ANGLE_LIMIT_DEG = float2(-72.0, 87.0)
@@ -545,13 +544,16 @@ def human_input_enable_assist_es(info : UpdateStageUpdateInput;
   let mouseAxis = length(get_mouse_axes_delta())
   if mouseAxis > 0.f
     let assistValBefore = aim_assist__enabled
-    if get_axis_value(Axis.AXIS_HUMAN_MOUSE_AIM_X, false) != 0.f || get_axis_value(Axis.AXIS_HUMAN_MOUSE_AIM_Y, false) != 0.f
-      aim_assist__enabled = true
+    let axisActive = get_axis_value(Axis.AXIS_HUMAN_MOUSE_AIM_X, false) != 0.f || get_axis_value(Axis.AXIS_HUMAN_MOUSE_AIM_Y, false) != 0.f
+    if axisActive
+      aim_assist__enabled = guioptions_getBool("OPTIONS_MODE_GAMEPLAY", "USEROPT_ENABLE_HUMAN_AIM_ASSIST", true)
     else
       aim_assist__enabled = false
     if aim_assist__enabled != assistValBefore
       if aim_assist__enabled
         print("Aim assist was enabled for {eid}")
+      elif axisActive
+        print("Aim assist was disabled for {eid} because USEROPT_ENABLE_HUMAN_AIM_ASSIST option is off")
       else
         print("Aim assist was disabled for {eid} because {mouseAxis} > 0 but axis value is empty")
 

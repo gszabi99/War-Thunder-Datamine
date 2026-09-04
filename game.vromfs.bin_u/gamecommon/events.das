@@ -213,7 +213,7 @@ struct EventOnUnitDead
 [cpp_event(broadcast, with_scheme)]
 struct EventRendInstDestroyed
   pos : float3
-  riType : uint
+  riexHandle : uint64
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct CmdActionInRespawn {}
@@ -269,20 +269,6 @@ struct CmdUnloadAmmo
 struct CmdLoadAmmo
   ammoNum : int
 
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct RequestMultipleGunsSlotEquipGun
-  gunEid : EntityId
-  slot : int
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct RequestMultipleGunsSlotSelectGun
-  gunEid : EntityId
-  slot : int
-
-[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
-struct RequestMultipleGunsSlotEquipNextGun
-  slot : int
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct CmdSelectWeaponSlot
@@ -415,6 +401,9 @@ struct CmdTurnOffSingleReloadInterruptByHold {}
 
 [event(unicast)]
 struct EventHumanStartedReload {}
+
+[cpp_event(unicast)]
+struct EventSegPhysLoaded {}
 
 [event(broadcast)]
 struct CmdUIShowWeaponsBlock {}

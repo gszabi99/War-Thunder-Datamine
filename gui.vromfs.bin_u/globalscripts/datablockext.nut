@@ -1,4 +1,5 @@
-let { isEqual } = require("isEqual.nut")
+from "%sqstd/underscore.nut" import isEqual
+from "types" import Table, Array
 let datablockCommon = require("%sqstd/datablock.nut")
 let { fillBlock } = datablockCommon
 
@@ -56,12 +57,12 @@ function setBlkValueByPath(blk, path, val) {
 
   if (blkTypes.contains(type(val)))
     blk[key] = val
-  else if (type(val) == "table") {
+  else if (val instanceof Table) {
     blk = blk.addBlock(key)
     foreach(k,v in val)
       setBlkValueByPath(blk, k, v)
   }
-  else if (type(val) == "array")
+  else if (val instanceof Array)
     fillBlock(key, blk, val)
   else {
     assert(false, $"Data type not suitable for writing to blk: {type(val)}")

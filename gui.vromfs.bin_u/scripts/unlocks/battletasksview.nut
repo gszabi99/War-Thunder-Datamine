@@ -1,31 +1,25 @@
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "%sqstd/math.nut" import is_bit_set
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/shopItemConsts.nut" import *
 
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
-let { isBitModeType, isNestedUnlockMode, getMainConditionListPrefix,
-  getHeaderCondition
-} = require("%scripts/unlocks/unlocksConditions.nut")
+let { isBitModeType, isNestedUnlockMode, getMainConditionListPrefix, getHeaderCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { buildConditionsConfig, getLocForBitValues, getFullUnlockDesc, getUnlockNameText,
-  getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksState.nut")
-let { buildUnlockDesc, getTooltipMarkupByModeType, getUnlockRewardsText, getUnlocksListView
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildConditionsConfig, getLocForBitValues, getFullUnlockDesc, getUnlockNameText, getUnlockMainCondDescByCfg } = require("%scripts/unlocks/unlocksState.nut")
+let { buildUnlockDesc, getTooltipMarkupByModeType, getUnlockRewardsText, getUnlocksListView } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { Cost } = require("%scripts/money.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { getDifficultyTypeByTask, getBattleTaskById, getBattleTaskNameById, isBattleTask
-} = require("%scripts/unlocks/battleTasksState.nut")
-let { getProposedTasks,
-  getGenerationIdInt, isBattleTaskDone, getShowAllTasks, canPlayerInteractWithDifficulty,
-  canGetBattleTaskReward, getTaskStatus, isBattleTaskActive, getTotalActiveTasksNum
-} = require("%scripts/unlocks/battleTasks.nut")
+let { getDifficultyTypeByTask, getBattleTaskById, getBattleTaskNameById, isBattleTask } = require("%scripts/unlocks/battleTasksState.nut")
+let { getProposedTasks, getGenerationIdInt, isBattleTaskDone, getShowAllTasks, canPlayerInteractWithDifficulty, canGetBattleTaskReward, getTaskStatus, isBattleTaskActive, getTotalActiveTasksNum } = require("%scripts/unlocks/battleTasks.nut")
 let { TIME_MINUTE_IN_SECONDS } = require("%scripts/time.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { getDifficultyTypeByName, EASY_TASK, MEDIUM_TASK } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { getUnlockReward } = require("%scripts/unlocks/userstatUnlocksView.nut")
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
@@ -106,11 +100,11 @@ function setBattleTasksUpdateTimer(task, taskBlockObj, addParams = {}) {
 
 function getRewardMarkUpConfig(task, config) {
   let rewardMarkUp = {}
-  let itemId = getTblValue("userLogId", task)
+  let itemId = task?.userLogId
   if (itemId) {
     let item = findItemById(to_integer_safe(itemId, itemId, false))
     if (item)
-      rewardMarkUp.itemMarkUp <- item.getNameMarkup(getTblValue("amount_trophies", task))
+      rewardMarkUp.itemMarkUp <- item.getNameMarkup(task?.amount_trophies)
   }
 
   local reward = getUnlockRewardsText(config)
@@ -165,7 +159,7 @@ function getBattleTaskUpdateDesc(logObj) {
 
   foreach (taskId, table in logObj) {
     local header = ""
-    let diffTypeName = getTblValue("type", table)
+    let diffTypeName = table?.type
     if (diffTypeName) {
       if (isInArray(diffTypeName, blackList))
         continue
@@ -257,7 +251,7 @@ function getBattleTaskDesc(config = null, paramsCfg = {}) {
     taskDescription.append($"*Debug info: id - {config.id}")
 
   if (isPromo) {
-    if (getTblValue("locDescId", config, "") != "")
+    if ((config?.locDescId ?? "") != "")
       taskDescription.append(loc(config.locDescId))
     taskDescription.append(getUnlockMainCondDescByCfg(config))
   }
@@ -303,13 +297,13 @@ function getBattleTaskView(config, paramsCfg = {}) {
   let isPromo = paramsCfg?.isPromo ?? false
   let isShortDescription = paramsCfg?.isShortDescription ?? false
   let isInteractive = paramsCfg?.isInteractive ?? true
-  let task = getBattleTaskById(config) || getTblValue("originTask", config)
+  let task = getBattleTaskById(config) || config?.originTask
   let isTaskBattleTask = isBattleTask(task)
   let isCanGetReward = canGetBattleTaskReward(task)
   let isUnlock = "unlockType" in config
   let title = isTaskBattleTask ? getBattleTaskNameById(task.id)
     : isUnlock ? getUnlockNameText(config.unlockType, config.id)
-    : getTblValue("text", config, "")
+    : (config?.text ?? "")
   let headerCond = isUnlock ? getHeaderCondition(config.conditions) : null
   let id = isTaskBattleTask ? task.id : config.id
   let progressData = config?.getProgressBarData ? config.getProgressBarData() : null
@@ -323,7 +317,7 @@ function getBattleTaskView(config, paramsCfg = {}) {
     title
     taskStatus
     taskImage = (paramsCfg?.showUnlockImage ?? true)
-      && (getTblValue("image", task) || getTblValue("image", config))
+      && (task?.image || config?.image)
     taskDifficultyImage = getBattleTaskDifficultyImage(task)
     taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
     description = isTaskBattleTask || isUnlock ? getBattleTaskDesc(config, paramsCfg) : null
@@ -360,8 +354,8 @@ addTooltipTypes({
         return false
 
       let warbond = findWarbond(
-        getTblValue("wbId", params),
-        getTblValue("wbListId", params)
+        params?.wbId,
+        params?.wbListId
       )
       let award = warbond ? warbond.getAwardById(id) : null
       if (!award)

@@ -1,119 +1,135 @@
+import "%rGui/planeHmds/hmdShel.nut" as hmdShel
+import "%rGui/planeHmds/hmdSura.nut" as hmdSura
+import "%rGui/planeHmds/hmdVtas.nut" as hmdVtas
+import "%rGui/planeHmds/hmdJhmcsGen1.nut" as hmdJhmcsGen1
+import "%rGui/planeHmds/hmdIhadss.nut" as hmdIhadss
+import "%rGui/planeHmds/hmdCobraHmd.nut" as hmdCobraHmd
+import "%rGui/planeHmds/hmdScorpionHmcs.nut" as hmdScorpionHmcs
+import "%rGui/planeHmds/hmdTopOwl.nut" as hmdTopOwl
+import "%rGui/planeHmds/hmdStrikerHmd.nut" as hmdStrikerHmd
+import "%rGui/planeHmds/hmdStrikerHss.nut" as hmdStrikerHss
+import "%rGui/planeHmds/hmdTargo.nut" as hmdTargo
+import "%rGui/planeHmds/hmdZ10.nut" as hmdZ10
+from "%rGui/utils/builders.nut" import createScriptComponent
+from "%rGui/rocketAamAimState.nut" import HmdVisibleAAM, HmdFovMult
+from "%rGui/radarState.nut" import HmdSensorVisible
+from "%rGui/planeState/planeToolsState.nut" import HmdVisible, HmdBlockIls, HmdBrightnessMult
+from "%rGui/globals/panelIds.nut" import PNL_ID_HMD, PNL_ID_INVALID
+from "%rGui/style/screenState.nut" import isInVr
+from "hudState" import setHeadMountedSystemPanelId
+from "dagor.math" import IPoint2, Point2, Point3
 from "%rGui/globals/ui_library.nut" import *
 
-let { setHeadMountedSystemPanelId } = require("hudState")
-let { createScriptComponent } = require("%rGui/utils/builders.nut")
-
-let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
-let { HmdSensorVisible } = require("%rGui/radarState.nut")
-let { HmdVisible, HmdBlockIls, HmdBrightnessMult } = require("%rGui/planeState/planeToolsState.nut")
-let { PNL_ID_HMD, PNL_ID_INVALID } = require("%rGui/globals/panelIds.nut")
-
-let hmdShelZoom = require("%rGui/planeHmds/hmdShelZoom.nut")
-let hmdSuraZoom = require("%rGui/planeHmds/hmdSuraZoom.nut")
-let hmdVtas = require("%rGui/planeHmds/hmdVtas.nut")
-let hmdF16c = require("%rGui/planeHmds/hmdF16c.nut")
-let hmdAH64 = require("%rGui/planeHmds/hmdAh64.nut")
-let hmdJas39 = require("%rGui/planeHmds/hmdJas39.nut")
-let hmdA10c = require("%rGui/planeHmds/hmdA10c.nut")
-let hmdTopOwl = require("%rGui/planeHmds/hmdTopOwl.nut")
-let hmdTornado = require("%rGui/planeHmds/hmdTornado.nut")
-let hmdTyphoon = require("%rGui/planeHmds/hmdTyphoon.nut")
-let { isInVr } = require("%rGui/style/screenState.nut")
-let { IPoint2, Point2, Point3 } = require("dagor.math")
-let hmdTargo = require("%rGui/planeHmds/hmdTargo.nut")
-let hmdZ10 = require("%rGui/planeHmds/hmdZ10.nut")
-let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
+let hmdDashGen3 = createScriptComponent("%rGui/planeHmds/hmdDashGen3.das", {
   fontId = Fonts.hud
 })
 let hmdF106 = createScriptComponent("%rGui/planeHmds/hmdF106.das")
 let hmdAh56 = createScriptComponent("%rGui/planeHmds/hmdAh56.das")
-let hmdAh1w = createScriptComponent("%rGui/planeHmds/hmdAh1w.das")
-let hmdRafale = createScriptComponent("%rGui/planeHmds/hmdRafale.das", { fontId = Fonts.hud })
-let hmdFA18 = createScriptComponent("%rGui/planeHmds/hmdFA18.das", {
+let hmdHssReticle = createScriptComponent("%rGui/planeHmds/hmdHssReticle.das")
+let hmdScorpionHmd = createScriptComponent("%rGui/planeHmds/hmdScorpionHmd.das", { fontId = Fonts.hud })
+let hmdJhmcsGen2 = createScriptComponent("%rGui/planeHmds/hmdJhmcsGen2.das", {
+  fontId = Fonts.hud
+})
+let hmdTkxGen1 = createScriptComponent("%rGui/planeHmds/hmdTkxGen1.das", {
+  fontId = Fonts.hud
+})
+let hmdKaiser = createScriptComponent("%rGui/planeHmds/hmdKaiser.das", {
+  fontId = Fonts.hud
+})
+let hmdMig35 = createScriptComponent("%rGui/planeHmds/hmdMig35.das", {
   fontId = Fonts.hud
 })
 
 let hmdSetting = Watched({
-  isShelZoom = false,
-  isSuraZoom = false,
+  isShel = false,
+  isSura = false,
   isVtas = false,
-  isF16c = false,
-  isF15cBaz = false
-  isAh64 = false,
-  isJas39 = false,
+  isJhmcsGen1 = false,
+  isDashGen3 = false
+  isIhadss = false,
+  isCobraHmd = false,
   isMetric = false,
-  isTornado = false,
-  isA10c = false,
+  isStrikerHmd = false,
+  isScorpionHmcs = false,
   isTopOwl = false,
-  isTyphoon = false,
-  isRafale = false,
+  isStrikerHss = false,
+  isScorpionHmd = false,
   isF106 = false,
   isAh56 = false,
-  isAh1w = false,
+  isHssReticle = false,
   isTargo = false,
-  isFA18 = false,
+  isJhmcsGen2 = false,
   isZ10 = false,
+  isTkxGen1 = false,
+  isKaiser = false,
+  isMig35 = false,
 })
 
 function hmdSettingsUpd(blk) {
   hmdSetting.set({
-    isShelZoom = blk.getBool("hmdShelZoom", false),
-    isSuraZoom = blk.getBool("hmdSuraZoom", false),
+    isShel = blk.getBool("hmdShel", false),
+    isSura = blk.getBool("hmdSura", false),
     isVtas = blk.getBool("hmdVtas", false),
-    isF16c = blk.getBool("hmdF16c", false),
-    isF15cBaz = blk.getBool("hmdF15cBaz", false),
-    isAh64 = blk.getBool("hmdAH64", false),
+    isJhmcsGen1 = blk.getBool("hmdJhmcsGen1", false),
+    isDashGen3 = blk.getBool("hmdDashGen3", false),
+    isIhadss = blk.getBool("hmdIhadss", false),
     isMetric = blk.getBool("isMetricHmd", false),
-    isJas39 = blk.getBool("hmdJas39", false),
-    isA10c = blk.getBool("hmdA10c", false),
+    isCobraHmd = blk.getBool("hmdCobraHmd", false),
+    isScorpionHmcs = blk.getBool("hmdScorpionHmcs", false),
     isTopOwl = blk.getBool("hmdTopOwl", false),
-    isTornado = blk.getBool("hmdTornado", false),
-    isTyphoon = blk.getBool("hmdTyphoon", false),
-    isRafale = blk.getBool("hmdRafale", false),
+    isStrikerHmd = blk.getBool("hmdStrikerHmd", false),
+    isStrikerHss = blk.getBool("hmdStrikerHss", false),
+    isScorpionHmd = blk.getBool("hmdScorpionHmd", false),
     isF106 = blk.getBool("hmdF106", false),
     isAh56 = blk.getBool("hmdAh56", false),
-    isAh1w = blk.getBool("hmdAh1w", false),
+    isHssReticle = blk.getBool("hmdHssReticle", false),
     isTargo = blk.getBool("hmdTargo", false),
-    isFA18 = blk.getBool("hmdFA18", false),
+    isJhmcsGen2 = blk.getBool("hmdJhmcsGen2", false),
     isZ10 = blk.getBool("hmdZ10", false),
+    isTkxGen1 = blk.getBool("hmdTkxGen1", false),
+    isKaiser = blk.getBool("hmdKaiser", false),
+    isMig35 = blk.getBool("hmdMig35", false),
   })
 }
 
 let isVisible = Computed(@() (HmdVisibleAAM.get() || HmdSensorVisible.get() || HmdVisible.get()) && !HmdBlockIls.get())
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isSuraZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon,
-    isRafale, isF106, isAh56, isAh1w, isTargo, isFA18, isZ10} = hmdSetting.get()
+  let { isShel, isSura, isVtas, isJhmcsGen1, isDashGen3, isIhadss, isMetric, isCobraHmd, isScorpionHmcs, isTopOwl, isStrikerHmd, isStrikerHss,
+    isScorpionHmd, isF106, isAh56, isHssReticle, isTargo, isJhmcsGen2, isZ10, isTkxGen1, isKaiser, isMig35} = hmdSetting.get()
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.get() ? [
-      (isShelZoom ? hmdShelZoom(width, height) : null),
-      (isSuraZoom ? hmdSuraZoom(width, height) : null),
+      (isShel ? hmdShel(width, height) : null),
+      (isSura ? hmdSura(width, height) : null),
       (isVtas ? hmdVtas(width, height) : null),
-      (isF16c ? hmdF16c(width, height, isMetric) : null),
-      (isF15cBaz ? hmdF15cBaz(width, height) : null),
-      (isAh64 ? hmdAH64(width, height) : null),
-      (isJas39 ? hmdJas39(width, height, isMetric) : null),
-      (isA10c ? hmdA10c(width, height) : null),
+      (isJhmcsGen1 ? hmdJhmcsGen1(width, height, isMetric) : null),
+      (isDashGen3 ? hmdDashGen3(width, height) : null),
+      (isIhadss ? hmdIhadss(width, height) : null),
+      (isCobraHmd ? hmdCobraHmd(width, height, isMetric) : null),
+      (isScorpionHmcs ? hmdScorpionHmcs(width, height) : null),
       (isTopOwl ? hmdTopOwl(width, height) : null),
-      (isTornado ? hmdTornado(width, height) : null),
-      (isTyphoon ? hmdTyphoon(width, height) : null),
-      (isRafale ? hmdRafale(width, height) : null),
+      (isStrikerHmd ? hmdStrikerHmd(width, height) : null),
+      (isStrikerHss ? hmdStrikerHss(width, height) : null),
+      (isScorpionHmd ? hmdScorpionHmd(width, height) : null),
       (isF106 ? hmdF106(width, height) : null),
       (isAh56 ? hmdAh56(width, height) : null),
-      (isAh1w ? hmdAh1w(width, height) : null),
+      (isHssReticle ? hmdHssReticle(width, height) : null),
       (isTargo ? hmdTargo(width, height) : null),
-      (isFA18 ? hmdFA18(width, height) : null),
+      (isJhmcsGen2 ? hmdJhmcsGen2(width, height) : null),
       (isZ10 ? hmdZ10(width, height) : null),
+      (isTkxGen1 ? hmdTkxGen1(width, height) : null),
+      (isKaiser ? hmdKaiser(width, height) : null),
+      (isMig35 ? hmdMig35(width, height) : null),
     ] : null
   }
 }
 
-let pnlDistanceMeters = 100.0
-let pnlWidthPx = hdpx(1920)
-let pnlHeightPx = hdpx(1080)
-let pnlAspectRatio = pnlWidthPx / pnlHeightPx
-let pnlHeightMeters = 80.0
-let pnlWidthMeters = pnlHeightMeters * pnlAspectRatio
+const pnlDistanceMeters = 100.0
+const pnlWidthPx = hdpx(1920)
+const pnlHeightPx = hdpx(1080)
+const pnlAspectRatio = pnlWidthPx / pnlHeightPx
+const pnlHeightMeters = 80.0
+const pnlWidthMeters = pnlHeightMeters * pnlAspectRatio
 let vrHmdLayout = @(){
   watch = HmdBrightnessMult
   worldAnchor   = PANEL_ANCHOR_HEAD
@@ -132,7 +148,7 @@ let vrHmdLayout = @(){
   children = HmdBrightnessMult.get() > 0.0 ? planeHmd(pnlWidthPx, pnlHeightPx) : null
 }
 
-let screenAspectRatio = sw(100) / sh(100)
+const screenAspectRatio = sw(100) / sh(100)
 let screenHmdLayout = @() {
   watch = [HmdFovMult, HmdBrightnessMult]
   worldAnchor   = PANEL_ANCHOR_HEAD
@@ -153,7 +169,7 @@ let screenHmdLayout = @() {
 }
 
 let planeHmdElement = {
-  size = flex()
+  size = FLEX
   onAttach = function() {
     setHeadMountedSystemPanelId(PNL_ID_HMD)
     gui_scene.addPanel(PNL_ID_HMD, isInVr ? vrHmdLayout : screenHmdLayout)

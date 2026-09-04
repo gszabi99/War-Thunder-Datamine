@@ -1,7 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_natives.nut" import get_axis_name
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
-let u = require("%sqStdLibs/helpers/u.nut")
+
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
@@ -74,7 +75,7 @@ let joystick_params_template = {
 
     let curPreset = getCurControlsPreset()
     foreach (axisName, axis in curPreset.axes)
-      if (getTblValue("mouseAxisId", axis, -1) == idx)
+      if ((axis?.mouseAxisId ?? -1) == idx)
         return axisName
 
     return ""
@@ -86,7 +87,7 @@ let joystick_params_template = {
 
     let curPreset = getCurControlsPreset()
     foreach (_axisName, axis in curPreset.axes)
-      if (getTblValue("mouseAxisId", axis, -1) == idx)
+      if ((axis?.mouseAxisId ?? -1) == idx)
         axis["mouseAxisId"] <- -1
 
     if (name == "")

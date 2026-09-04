@@ -28,11 +28,12 @@
 
 
 
-let g_string =  require("%sqstd/string.nut")
-let { loc } = require("dagor.localize")
+import "%sqstd/string.nut" as g_string
+from "dagor.localize" import loc
+from "%sqstd/functools.nut" import memoize
+from "dagor.fs" import read_text_from_file
+from "types" import Function, Array, Table, String
 local {regexp} = require("string")
-let {memoize} = require("%sqstd/functools.nut")
-let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
 
@@ -146,7 +147,7 @@ Context = class {
       this.cache[name] <- value
     }
 
-    if (type(value) == "function") {
+    if (value instanceof Function) {
       value = value.call(context.view)
     }
 
@@ -233,17 +234,17 @@ local Writer = class {
         value = context.lookup(token[1])
         if (!value)
           continue
-        if (type(value) == "array") {
+        if (value instanceof Array) {
           for (local j = 0; j < value.len(); ++j) {
             buffer.append(this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate))
           }
         }
-        else if (type(value) == "table" || type(value) == "instance" || type(value) == "string") { 
+        else if (value instanceof Table || type(value) == "instance" || value instanceof String) { 
 
           buffer.append(this.renderTokens(token[4], context.push(value), partials, originalTemplate))
         }
-        else if (type(value) == "function") {
-          if (type(originalTemplate) != "string") {
+        else if (value instanceof Function) {
+          if (!(originalTemplate instanceof String)) {
             assert(false, "Cannot use higher-order sections without the original template")
             return "".join(buffer)
           }
@@ -255,7 +256,7 @@ local Writer = class {
           
           value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRenderer)
 
-          if (type(value) == "string")
+          if (value instanceof String)
             buffer.append(value)
         }
         else {
@@ -265,7 +266,7 @@ local Writer = class {
       else if (token[0] == "^"){
         value = context.lookup(token[1])
 
-        if (!value || ((type(value) == "array") && value.len() == 0)) {
+        if (!value || ((value instanceof Array) && value.len() == 0)) {
           buffer.append(this.renderTokens(token[4], context, partials, originalTemplate))
         }
       }
@@ -273,7 +274,7 @@ local Writer = class {
         if (!partials)
           continue
 
-        if (type(partials) == "function")
+        if (partials instanceof Function)
           value = partials(token[1])
         else if (token[1] in partials)
           value = partials[token[1]]
@@ -301,7 +302,7 @@ local Writer = class {
       else if(token[0] == "name") {
         value = context.lookup(token[1])
         if (value != null)
-          if (type(value) == "string")
+          if (value instanceof String)
             buffer.append(g_string.stripTags(value))
           else
             buffer.append(value.tostring())
@@ -343,7 +344,7 @@ local Writer = class {
   }
 
   function escapeTags(tags) { 
-    if (!(type(tags) == "array") || tags.len() != 2) {
+    if (!(tags instanceof Array) || tags.len() != 2) {
       assert(false, $"Invalid tags: {tags}")
     }
 
@@ -357,7 +358,7 @@ local Writer = class {
     local tags = tags_ ?? this.tags 
     template = template ?? ""
 
-    if (type(tags) == "string")
+    if (tags instanceof String)
      tags = g_string.split(tags, this.spaceRe)
 
     local tagRes  = this.escapeTags(tags)
@@ -617,7 +618,7 @@ handyman = {
         break
 
       local fName = template.slice(fNameStart, endIdx)
-      if (fName.slice(-4) == ".blk") {
+      if (fName.len() >= 4 && fName.slice(-4) == ".blk") {
         startIdx = endIdx + 1
         continue
       }

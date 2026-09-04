@@ -1,8 +1,9 @@
+from "%sqStdLibs/helpers/u.nut" import isArray
 from "%scripts/dagui_library.nut" import *
+
 let { Cost } = require("%scripts/money.nut")
 let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 

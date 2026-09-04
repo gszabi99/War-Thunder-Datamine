@@ -189,6 +189,7 @@ root {
           width:t='pw - 4@blockInterval'
           margin:t='3@blockInterval, 4@blockInterval, 0, 0'
           smallFont:t='yes'
+          isWrapInRowAllowed:t='yes'
         }
 
         tdiv {

@@ -1,19 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import shop_get_researchable_module_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getUnitTypeTextByUnit, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { getUnitWikiUrl } = require("%scripts/unit/unitWikiInfo.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 
 function guiStartModTierResearched(config) {
@@ -22,7 +22,7 @@ function guiStartModTierResearched(config) {
       config[param] = value[0]
   }
 
-  let unit = getAircraftByName(getTblValue("unit", config))
+  let unit = getAircraftByName(config?.unit)
   if (!unit)
     return
 
@@ -32,10 +32,10 @@ function guiStartModTierResearched(config) {
     tier = config?.tier ?? []
     expReward = Cost().setRp(config?.expToInvUnit ?? 0)
   }
-  loadHandler(gui_handlers.ModificationsTierResearched, wndParams)
+  loadHandler(get_gui_handler("ModificationsTierResearched"), wndParams)
 }
 
-gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT) {
+let ModificationsTierResearched = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/showUnlock.blk"
 
@@ -130,7 +130,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
         unitName =$"{this.unit.name}_shop"
         rank = get_roman_numeral(this.unit?.rank ?? -1)
         country = getUnitCountry(this.unit)
-        link = format(getCurCircuitOverride("wikiObjectsURL", loc("url/wiki_objects")), this.unit.name)
+        link = getUnitWikiUrl(this.unit.name)
       }
     }
   }
@@ -148,6 +148,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
   function onUseDecorator() {}
   function onUnitActivate() {}
 }
+register_gui_handler("ModificationsTierResearched", ModificationsTierResearched)
 
 return {
   guiStartModTierResearched

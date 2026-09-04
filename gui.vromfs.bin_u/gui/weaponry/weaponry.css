@@ -467,6 +467,11 @@ weaponryTier {
 weaponryTier:disabled {
   background-color:#CC1B2027;
 }
+weaponryTier[broken=yes] img {
+  border:yes;
+  border-color:@red;
+  border-offset:'2@dp';
+}
 
 weaponryPreset {
   background-color:@bgrPresetColor;
@@ -583,17 +588,21 @@ weaponFrameBlock {
   input-transparent:yes;
 }
 
+RadioButtonList.graphSubPages > RadioButton {
+  padding-right:6@weaponFrameBlockInterval;
+}
+
 bulletGraphSlot > bulletDesc {
   background-color:@frameHeaderBackgroundColor;
 }
 
 [show_console_buttons=yes] bulletGraphSlot > bulletDesc {
   behavior:button;
-  on_pushed:'::gcb.delayedTooltipPush';
-  on_hold_start:'::gcb.delayedTooltipHoldStart';
-  on_hold_stop:'::gcb.delayedTooltipHoldStop';
-  on_hover:'::gcb.delayedTooltipHover';
-  on_unhover:'::gcb.delayedTooltipHover';
+  on_pushed:'gcb.delayedTooltipPush';
+  on_hold_start:'gcb.delayedTooltipHoldStart';
+  on_hold_stop:'gcb.delayedTooltipHoldStop';
+  on_hover:'gcb.delayedTooltipHover';
+  on_unhover:'gcb.delayedTooltipHover';
 }
 
 bulletGraphSlot[selected=yes] > bulletDesc {

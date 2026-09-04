@@ -1,15 +1,16 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "dagor.time" import get_time_msec
+from "hangar" import hangar_get_current_unit_name, force_retrace_decorators, hangar_force_reload_model
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_get_exp, remove_calculate_modification_effect_jobs, calculate_ship_parameters_async, calculate_tank_parameters_async, calculate_min_and_max_parameters, calculate_mod_or_weapon_effect
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { get_time_msec } = require("dagor.time")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { canResearchUnit, canBuyNotResearched, isUnitsEraUnlocked, isUnitUsable,
-  isUnitGroup } = require("%scripts/unit/unitStatus.nut")
+let { canResearchUnit, canBuyNotResearched, isUnitsEraUnlocked, isUnitUsable, isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
@@ -18,8 +19,6 @@ let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { hangar_get_current_unit_name, force_retrace_decorators,
-  hangar_force_reload_model } = require("hangar")
 
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
@@ -55,7 +54,7 @@ function checkForResearch(unit) {
         return false
       }
 
-      let button = [["#mainmenu/btnFindSquadron", @() loadHandler(gui_handlers.ClansModalHandler)]]
+      let button = [["#mainmenu/btnFindSquadron", @() loadHandler(get_gui_handler("ClansModalHandler"))]]
       local defButton = "#mainmenu/btnFindSquadron"
       let msg = [loc("mainmenu/needJoinSquadronForResearch")]
 
@@ -207,7 +206,7 @@ function checkSecondaryWeaponModsRecount(unit, callback = null) {
   }
 
   if (uType == ES_UNIT_TYPE_BOAT || uType == ES_UNIT_TYPE_SHIP) {
-    let torpedoMod = "torpedoes_movement_mode"
+    const torpedoMod = "torpedoes_movement_mode"
     let mod = getModificationByName(unit, torpedoMod)
     if (!mod || mod?.effects)
       return true

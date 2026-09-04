@@ -1,0 +1,110 @@
+{
+  "animation": "hide",
+  "height": "1@itemHeight",
+  "width": "pw",
+  "css-hier-invalidate": "yes",
+  "totalLen": "45",
+  "insertRewardFromEnd": "4",
+  "roulette": {
+    "id": "roulette",
+    "size": "pw, ph",
+    "padding": "1@framePadding, 0",
+    "overflow": "hidden",
+    "css-hier-invalidate": "yes",
+    "tdiv": {
+      "position": "relative",
+      "pos": "50%pw-50%w, 0",
+      "height": "ph",
+      "css-hier-invalidate": "yes",
+      "roulette_scroll": {
+        "id": "rewards_list",
+        "position": "absolute",
+        "height": "ph"
+      }
+    }
+  },
+  "tdiv": [
+    {
+      "id": "arrows_anim",
+      "position": "absolute",
+      "pos": "50%pw-50%w, 50%ph-50%h",
+      "height": "ph",
+      "width": "pw",
+      "behaviour": "basicSize",
+      "height-base": "100",
+      "height-end": "210",
+      "size-func": "linear",
+      "size-scale": "parent",
+      "size-cycle-delay": "99999999",
+      "size-cycled": "yes",
+      "tdiv": [
+        {
+          "position": "absolute",
+          "pos": "50%pw-50%w, 2@sf/@pf",
+          "width": "pw",
+          "tdiv": {
+            "position": "absolute",
+            "re-type": "9rect",
+            "size": "pw, 1@frameSeparatorHeight",
+            "background-image": "!ui/images/profile/separator_gradient.svg",
+            "background-repeat": "expand-svg",
+            "background-color": "#FFFFFF",
+            "background-position": "64px, 0",
+            "background-svg-size": "256, 2"
+          },
+          "received_reward_indicator": {
+            "position": "absolute",
+            "left": "50%pw-50%w",
+            "rotation": "180"
+          },
+          "img": {
+            "id": "periodic_image",
+            "position": "relative",
+            "pos": "50%pw-50%w, -h/2",
+            "width": "1@periodRewardIconWidth",
+            "height": "0.8w"
+          }
+        },
+        {
+          "position": "absolute",
+          "pos": "50%pw-50%w, ph-h",
+          "width": "pw",
+          "tdiv": {
+            "re-type": "9rect",
+            "position": "absolute",
+            "size": "pw, 1@frameSeparatorHeight",
+            "background-image": "!ui/images/profile/separator_gradient.svg",
+            "background-repeat": "expand-svg",
+            "background-color": "#FFFFFF",
+            "background-position": "64px, 0",
+            "background-svg-size": "256, 2"
+          },
+          "received_reward_indicator": {
+            "position": "absolute",
+            "pos": "50%pw-50%w, -h"
+          }
+        }
+      ]
+    },
+    {
+      "re-type": "9rect",
+      "position": "absolute",
+      "pos": "0, (ph-h)/2",
+      "size": "50%pw-0.5@itemWidth, (7@itemWidth + 2@blockInterval)*0.35",
+      "background-svg-size": "32, 4",
+      "background-repeat": "repeat-y",
+      "background-color": "@everyDayAwardWndGradientColor",
+      "background-image": "#ui/gameuiskin#horizontal_fade@@ss.svg"
+    },
+    {
+      "position": "absolute",
+      "pos": "pw-w, (ph-h)/2",
+      "size": "50%pw-0.5@itemWidth, (7@itemWidth + 2@blockInterval)*0.35",
+      "rotation": "180",
+      "background-svg-size": "32, 4",
+      "background-repeat": "repeat-y",
+      "background-color": "@everyDayAwardWndGradientColor",
+      "background-image": "#ui/gameuiskin#horizontal_fade@@ss.svg"
+    }
+  ]
+}

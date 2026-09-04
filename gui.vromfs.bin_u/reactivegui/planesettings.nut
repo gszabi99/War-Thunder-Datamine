@@ -1,20 +1,19 @@
+import "DataBlock" as DataBlock
+from "%rGui/planeState/planeToolsState.nut" import BlkFileName
+from "%rGui/planeCockpit/instrumentsPage/hsd.nut" import hsdSettingsUpd
+from "%rGui/planeCockpit/instrumentsPage/digitalDevices.nut" import devicesSettingUpd
+from "%rGui/planeRwr.nut" import rwrSettingUpd
+from "%rGui/radar.nut" import radarSettingsUpd
+from "%rGui/tws.nut" import mfdRwrSettingsUpd
+from "%rGui/planeIls.nut" import ilsSettingsUpd
+from "%rGui/planeHmd.nut" import hmdSettingsUpd
+from "%rGui/planeMfdCamera.nut" import mfdCameraSettingUpd
+from "%rGui/planeCockpit/customPageBuilder.nut" import customPageSettingsUpd
+from "%rGui/globalState.nut" import isInFlight
+from "%rGui/hudState.nut" import unitType
+from "%rGui/hudUnitType.nut" import isAirUnitType
+from "blkLoad" import tryLoadBlk
 from "%rGui/globals/ui_library.nut" import *
-
-let { BlkFileName } = require("%rGui/planeState/planeToolsState.nut")
-let DataBlock = require("DataBlock")
-let { tryLoadBlk } = require("blkLoad")
-let { hsdSettingsUpd }  = require("%rGui/planeCockpit/hsd.nut")
-let { devicesSettingUpd } = require("%rGui/planeCockpit/digitalDevices.nut")
-let { rwrSettingUpd } = require("%rGui/planeRwr.nut")
-let { radarSettingsUpd } = require("%rGui/radar.nut")
-let { mfdRwrSettingsUpd } = require("%rGui/tws.nut")
-let { ilsSettingsUpd } = require("%rGui/planeIls.nut")
-let { hmdSettingsUpd } = require("%rGui/planeHmd.nut")
-let { mfdCameraSettingUpd } = require("%rGui/planeMfdCamera.nut")
-let { customPageSettingsUpd } = require("%rGui/planeCockpit/customPageBuilder.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
-let { unitType } = require("%rGui/hudState.nut")
-let { isAirUnitType } = require("%rGui/hudUnitType.nut")
 
 
 
@@ -63,12 +62,16 @@ function updateSettings(blk_name) {
     if (typeStr == "hsd")
       hsdSettingsUpd(pageBlk)
     else if (typeStr == "radar" || typeStr == "radar_b_round")
-      radarSettingsUpd(pageBlk)
+      radarSettingsUpd(pageBlk, blk.getBool("chinaLang", false))
     else if (typeStr == "rwr")
       mfdRwrSettingsUpd(pageBlk)
   }
-  foreach(pageBlk in customPagesBlks)
+  let isChina = blk.getBool("chinaLang", false)
+  foreach(pageBlk in customPagesBlks) {
+    if (isChina && !pageBlk.paramExists("chinaLang"))
+      pageBlk.setBool("chinaLang", true)
     customPageSettingsUpd(pageBlk)
+  }
 }
 let unitBlkNameInFlight = keepref(Computed(@() isInFlight.get() && isAirUnitType(unitType.get()) ? BlkFileName.get() : ""))
 unitBlkNameInFlight.subscribe(updateSettings)

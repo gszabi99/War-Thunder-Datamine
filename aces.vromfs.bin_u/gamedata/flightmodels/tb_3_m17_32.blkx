@@ -1,7 +1,7 @@
 {
   "model": "tb_3_m17_32",
   "fmFile": "fm/tb_3_m17_32.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_piston_inline_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gyroSight": false,
   "type": [
@@ -23,7 +23,7 @@
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fightAiBehaviour": "bomber",
-  "fireParamsPreset": "200kph",
+  "fireParamsPreset": "200kph_nb",
   "hasQualityModels": true,
   "SelfSealingTanks": {
     "tank1_dm": false,
@@ -2871,15 +2871,15 @@
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
-      0.0,
+      69.0,
       92.0
     ],
     "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
+      0.02,
+      0.8
     ],
-    "fireDamagePowerRel": 0.05,
-    "nonExtinguishFireTime": 5.0
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "balanceData": {
     "accSpd": 1.5643,

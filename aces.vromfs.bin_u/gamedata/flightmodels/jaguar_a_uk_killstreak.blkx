@@ -1,7 +1,7 @@
 {
   "model": "jaguar_a",
   "fmFile": "fm/jaguar_a.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_attacker_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "gyroSight": true,
@@ -9,6 +9,7 @@
   "ilsTCSF196": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "laserDesignator": true,
   "mfdCamAtlis2": true,
   "gearSinkRangeLR": 0.204,
@@ -3351,40 +3352,10 @@
     ]
   },
   "commonWeapons": {
-    "hideNodes": {
-      "node": [
-        "fr_phimat_container",
-        "fr_phimat_container_cap",
-        "phimat_container",
-        "phimat_container_cap",
-        "alkan_ll_5020_l",
-        "alkan_ll_5020_r"
-      ]
-    },
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA553.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "dm": "cannon1_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonDEFA553.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "cannon2_dm",
-        "bullets": 150,
-        "light": false,
-        "spread": 1.2,
-        "traceOffset": 1
-      }
-    ]
+    "Weapon": {
+      "slot": 0,
+      "preset": "defa_common"
+    }
   },
   "weapon_presets": {
     "preset": [
@@ -3406,6 +3377,210 @@
         "name": "jaguar_a_1xan52_30kt_nt",
         "blk": "gameData/FlightModels/weaponPresets/jaguar_a_1xan52_30kt_nt.blk",
         "reqModification": "fr_250kg_type_25c"
+      },
+      {
+        "name": "jaguar_a_1xan52_without_countermeasures",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_1xan52_without_countermeasures.blk",
+        "reqModification": "fr_250kg_type_25c"
+      },
+      {
+        "name": "jaguar_a_1xan52_5kt_nt_without_countermeasures",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_1xan52_5kt_nt_without_countermeasures.blk",
+        "reqModification": "fr_250kg_type_25c"
+      },
+      {
+        "name": "jaguar_a_1xan52_30kt_nt_without_countermeasures",
+        "blk": "gameData/FlightModels/weaponPresets/jaguar_a_1xan52_30kt_nt_without_countermeasures.blk",
+        "reqModification": "fr_250kg_type_25c"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 4000.0,
+    "maxloadMassLeftConsoles": 2000.0,
+    "maxloadMassRightConsoles": 2000.0,
+    "maxDisbalance": 1500.0,
+    "HideNodes": {
+      "node": [
+        "jaguar_a_pylon_1_l",
+        "jaguar_a_pylon_2_l",
+        "jaguar_a_pylon_3",
+        "jaguar_a_pylon_2_r",
+        "jaguar_a_pylon_1_r",
+        "jaguar_a_pylon_4",
+        "pylon_as_30_l",
+        "pylon_as_30_r",
+        "atlis_2",
+        "pylon_marta_magic_l",
+        "pylon_aero3b_1",
+        "pylon_marta_magic_r",
+        "pylon_aero3b_2",
+        "phimat_container",
+        "phimat_container_cap",
+        "alkan_ll_5020_l",
+        "alkan_ll_5020_r"
+      ]
+    },
+    "HideDmParts": {
+      "node": [
+        "tank7_dm",
+        "tank8_dm",
+        "tank9_dm"
+      ]
+    },
+    "WeaponSlot": [
+      {
+        "index": 0,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": {
+          "name": "defa_common",
+          "ShowNodes": {
+            "node": [
+              "alkan_ll_5020_l",
+              "alkan_ll_5020_r"
+            ]
+          },
+          "Weapon": [
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 200.0,
+              "speedPitch": 200.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            },
+            {
+              "trigger": "cannon",
+              "blk": "gameData/Weapons/cannonDEFA553.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "cannon2_dm",
+              "bullets": 150,
+              "light": false,
+              "spread": 1.2,
+              "traceOffset": 1
+            }
+          ]
+        }
+      },
+      {
+        "index": 2,
+        "tier": 7,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_heavy_middle_nuke",
+            "name": "an52",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_an52.blk",
+              "emitter": "fr_nuclear_bomb_an_52",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large_nuke",
+            "name": "an52_5kt",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_an52_5kt_nt.blk",
+              "emitter": "fr_nuclear_bomb_an_52",
+              "bullets": 1,
+              "external": true
+            }
+          },
+          {
+            "iconType": "bombs_large_nuke",
+            "name": "an52_30kt",
+            "reqModification": "fr_250kg_type_25c",
+            "ShowNodes": {
+              "node": "jaguar_a_pylon_4"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/fr_an52_30kt_nt.blk",
+              "emitter": "fr_nuclear_bomb_an_52",
+              "bullets": 1,
+              "external": true
+            }
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "tier": 9,
+        "order": 6,
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "ltc",
+          "Weapon": {
+            "trigger": "countermeasures",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
+            "emitter": "emtr_flare1",
+            "bullets": 72,
+            "bulletsCartridge": 1,
+            "external": true,
+            "separate": false
+          }
+        }
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 7,
+        "WeaponPreset": {
+          "iconType": "ltc",
+          "name": "ltc",
+          "Weapon": {
+            "trigger": "countermeasures",
+            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
+            "emitter": "emtr_flare2",
+            "bullets": 72,
+            "bulletsCartridge": 1,
+            "external": true,
+            "separate": false
+          }
+        }
       }
     ]
   },

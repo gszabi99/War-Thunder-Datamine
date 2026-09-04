@@ -1,5 +1,4 @@
 require ecs
-require app
 require math
 require math.base
 require %game.events

@@ -1,6 +1,5 @@
 module vehicle_events shared
 require ecs
-require DagorMath
 
 [event(unicast)]
 struct CmdAcquireVehicleSeat

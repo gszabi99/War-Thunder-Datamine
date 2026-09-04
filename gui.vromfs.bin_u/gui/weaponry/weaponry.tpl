@@ -13,9 +13,9 @@ modificationsBlock {
   moveY:t='linear'
 
   on_activate:t='onWeaponryActivate'
-  on_pushed:t='::gcb.delayedTooltipListPush'
-  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+  on_pushed:t='gcb.delayedTooltipListPush'
+  on_hold_start:t='gcb.delayedTooltipListHoldStart'
+  on_hold_stop:t='gcb.delayedTooltipListHoldStop'
 
   <<@weaponryList>>
 }

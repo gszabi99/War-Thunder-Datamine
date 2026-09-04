@@ -289,5 +289,35 @@
         ]
       }
     }
+  },
+  "sam_site_chusam": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__target_channels_max": 6,
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "jp_type_03_chusam_launcher",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "death_substract_tickets": 30,
+            "count": 3,
+            "dontCreateChar": true,
+            "rearmTimeOnField": 30.0,
+            "bulletsCount:list<i>": {
+              "c": 6
+            }
+          },
+          {
+            "name": "jp_type_03_chusam_fcs",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "death_substract_tickets": 100,
+            "count": 1
+          }
+        ]
+      }
+    }
   }
 }

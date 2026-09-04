@@ -1,19 +1,18 @@
+import "%rGui/rwrSetting.nut" as rwrSetting
+import "math" as math
+from "%rGui/twsState.nut" import rwrTargetsTriggers
+from "%sqstd/math_ex.nut" import degToRad
 from "%rGui/globals/ui_library.nut" import *
 
-let math = require("math")
-let { degToRad } = require("%sqstd/math_ex.nut")
+let { rwrTargets } = require("%rGui/twsState.nut")
 
-let rwrSetting = require("%rGui/rwrSetting.nut")
-
-let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
-
-let color = Color(10, 202, 10, 250)
+const color = Color(10, 202, 10, 250)
 
 let baseLineWidth = LINE_WIDTH * 0.5
 
 function makeGridCommands() {
   let commands = []
-  let step = 0.15
+  const step = 0.15
   for (local r = step; r < step * 3.5; r += step)
     commands.append([ VECTOR_ELLIPSE, 0, 0, r * 100.0, r * 100.0 ])
   for (local az = 0.0; az < 360.0; az += 10)
@@ -27,8 +26,8 @@ let gridCommands = makeGridCommands()
 
 function createGrid(gridStyle) {
   return {
-    pos = [pw(50), ph(50)]
-    size = flex()
+    pos = const [pw(50), ph(50)]
+    size = FLEX
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 2 * gridStyle.lineWidthScale
@@ -71,17 +70,17 @@ function createRwrTarget(index, settings, objectStyle) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * 10 * objectStyle.lineWidthScale
         fillColor = 0
-        size = flex()
+        size = FLEX
         commands = commands
       }
   }
 
   return @() {
-    size = flex()
+    size = FLEX
     children = [
       {
-        pos = [pw(50), ph(50)]
-        size = flex()
+        pos = const [pw(50), ph(50)]
+        size = FLEX
         children = azimuth
       }
     ]
@@ -121,7 +120,7 @@ let settings = Computed(function() {
 let rwrTargetsComponent = function(objectStyle) {
   return @() {
     watch = [ rwrTargetsTriggers, settings ]
-    size = flex()
+    size = FLEX
     children = rwrTargets.map(@(_, i) createRwrTarget(i, settings.get(), objectStyle))
   }
 }
@@ -138,7 +137,7 @@ function scope(scale, style) {
   }
 }
 
-let function tws(posWatched, sizeWatched, scale, style) {
+function tws(posWatched, sizeWatched, scale, style) {
   return @() {
     watch = [posWatched, sizeWatched]
     size = sizeWatched.get()

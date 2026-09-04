@@ -1,7 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "blkGetters" import get_unittags_blk
 from "%scripts/dagui_library.nut" import *
 
-let { get_unittags_blk } = require("blkGetters")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
@@ -133,7 +134,7 @@ function clearCaches() {
 }
 
 addListenersWithoutEnv({
-  GameLocalizationChanged = @(_) clearCaches()
+  [GAME_LOCALIZATION_CHANGED] = @(_) clearCaches()
 })
 
 return {

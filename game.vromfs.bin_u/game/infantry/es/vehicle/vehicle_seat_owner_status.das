@@ -1,5 +1,4 @@
 require ecs
-require app
 require %appGame.infantry.es.vehicle.vehicle_events
 
 [es(tag=server, track=isAlive)]

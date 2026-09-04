@@ -1,15 +1,15 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 function open_browser_modal(url = "", tags = [], baseUrl = "") {
-  loadHandler(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
+  loadHandler(get_gui_handler("BrowserModalHandler"), { url, urlTags = tags, baseUrl })
 }
 
 function close_browser_modal() {
   let handler = handlersManager.findHandlerClassInScene(
-    gui_handlers.BrowserModalHandler)
+    get_gui_handler("BrowserModalHandler"))
 
   if (handler == null) {
     log("[BRWS] Couldn't find embedded browser modal handler")
@@ -21,7 +21,7 @@ function close_browser_modal() {
 
 function browser_set_external_url(url) {
   let handler = handlersManager.findHandlerClassInScene(
-    gui_handlers.BrowserModalHandler);
+    get_gui_handler("BrowserModalHandler"));
   if (handler)
     handler.externalUrl = url;
 }

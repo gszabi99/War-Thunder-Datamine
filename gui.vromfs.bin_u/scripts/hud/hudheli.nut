@@ -1,16 +1,16 @@
+from "gameplayBinding" import isShowTankMinimap
+from "replays" import is_replay_playing
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART
 
-let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isShowTankMinimap } = require("gameplayBinding")
-let { is_replay_playing } = require("replays")
+let { g_hud_vis_mode } = require("%scripts/hud/hudVisMode.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { mkActionBarAir } = require("%scripts/hud/hudActionBar.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
 let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
 
-gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
+let HudHeli = class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen() {
@@ -37,7 +37,8 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
     showObjById("hud_tactical_map_bg", isVisible, this.scene)
   }
 }
+register_gui_handler("HudHeli", HudHeli)
 
 return {
-  HudHeli = gui_handlers.HudHeli
+  HudHeli
 }

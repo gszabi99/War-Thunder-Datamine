@@ -1,35 +1,34 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "steam" import steam_is_overlay_active
+from "%sqstd/string.nut" import isStringInteger
 from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, set_char_cb, has_entitlement
 from "%scripts/dagui_library.nut" import *
 from "app" import isAppActive
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
-let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
-  isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat,
-  getEntitlementAmount, getFirstPurchaseAdditionalAmount,
-  getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText, isBoughtEntitlement, getEntitlementName, getEntitlementPriceFloat, getEntitlementAmount, getFirstPurchaseAdditionalAmount, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) 
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { steam_is_overlay_active } = require("steam")
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 let { getRemainingPremiumTime } = require("%scripts/user/premium.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { getEntitlementDiscount } = require("%scripts/discounts/discountsState.nut")
 let { onOnlinePurchase } = require("%scripts/onlineShop/onlinePurchase.nut")
-let { isStringInteger } = require("%sqstd/string.nut")
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
@@ -56,7 +55,7 @@ function buildDigitsImagesView(numStr, imgSrcTemplate) {
   return res
 }
 
-gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let OnlineShopHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/navOnlineShop.blk"
@@ -168,7 +167,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           if (this.goods[name].chapter != curChapter) {
             curChapter = this.goods[name].chapter
             let view = {
-              itemTag = "chapter_item_unlocked"
+              itemType = "chapterUnlocked"
               id = curChapter
               itemText = $"#charServer/chapter/{curChapter}"
             }
@@ -276,7 +275,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("btn_buy_online").setValue("".concat(loc("mainmenu/btnBuy"), (this.priceText == "") ? "" : format(" (%s)", this.priceText)))
 
     local discountText = ""
-    let discount = getEntitlementDiscount(product.name)
+    let discount = getEntitlementDiscount(product?.name ?? "")
     if (product != null && discount > 0)
       discountText = $"-{discount}%"
     this.scene.findObject("buy_online-discount").setValue(discountText)
@@ -446,8 +445,9 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("OnlineShopHandler", OnlineShopHandler)
 
-gui_handlers.IngameCurrencyShopHandler <- class (gui_handlers.OnlineShopHandler) {
+register_gui_handler("IngameCurrencyShopHandler", class (OnlineShopHandler) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/onlineShop/ingameCurrencyShop.blk"
   sceneNavBlkName = null
@@ -502,4 +502,4 @@ gui_handlers.IngameCurrencyShopHandler <- class (gui_handlers.OnlineShopHandler)
         break
       }
   }
-}
+})

@@ -2,6 +2,8 @@
   "model": "arado_234",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
   "harmonizationSuffix": "_tomoe",
+  "gearSinkRangeLR": 0.148,
+  "gearSinkRangeC": 0.142,
   "type": [
     "typeBomber",
     "typeTransport"
@@ -19,6 +21,7 @@
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "fireParamsPreset": "700kph_nbj",
   "fightAiBehaviour": "bomber",
   "hasQualityModels": true,
   "DamageParts": {
@@ -2046,8 +2049,8 @@
   },
   "default_skin_tomoe": {
     "replace_tex": {
-      "from": "ar_234b_2_a*",
-      "to": "ar_234b_2_a_tomoe*"
+      "from": "ar_234b_2_c*",
+      "to": "ar_234b_2_c_tomoe*"
     }
   },
   "turbulence": {
@@ -2057,6 +2060,18 @@
     "maxPower": 6.0,
     "initialRadius": 12.0,
     "radiusSpeed": 2.0
+  },
+  "fireParams": {
+    "engineExtinguishFireSpeed": [
+      167.0,
+      223.0
+    ],
+    "engineExtinguishFireSpeedChance": [
+      0.02,
+      0.8
+    ],
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "balanceData": {
     "accSpd": 4.03451,

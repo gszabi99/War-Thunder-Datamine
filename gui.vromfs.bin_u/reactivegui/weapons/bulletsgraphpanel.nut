@@ -1,9 +1,6 @@
+from "%rGui/weapons/bulletsGraphState.nut" import bulletsGraphParams
+from "%rGui/weapons/bulletsGraphComp.nut" import mkBulletsArmorPiercingGraph, mkBulletsBallisticTrajectoryGraph, mkMissileTelemetryDistanceGraph, mkMissileTelemetrySpeedGraph, mkMissileTrajectoryGraph
 from "%rGui/globals/ui_library.nut" import *
-let { bulletsGraphParams } = require("%rGui/weapons/bulletsGraphState.nut")
-let { mkBulletsArmorPiercingGraph, mkBulletsBallisticTrajectoryGraph,
-  mkMissileTelemetryDistanceGraph, mkMissileTelemetrySpeedGraph,
-  mkMissileTrajectoryGraph
-} = require("%rGui/weapons/bulletsGraphComp.nut")
 
 let mkCompByGraphId = {
   bulletPenetration            = mkBulletsArmorPiercingGraph
@@ -19,7 +16,7 @@ function graphComp() {
     : mkCompByGraphId?[graphId](graphParams, graphSize)
   return {
     watch = bulletsGraphParams
-    size = flex()
+    size = FLEX
     children = children
   }
 }

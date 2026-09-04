@@ -10,6 +10,7 @@ require DngHuman
 require %game.utils.net_utils
 require net
 require GamePhys
+require WTPhysActor
 require PhysMat
 
 require AnimV20
@@ -20,6 +21,7 @@ require Dacoll
 require DagorMath
 require math.base
 require Unit
+require gameLibs.pufd_events.pufd_events
 
 
 def private apply_human_teleport_state(var human_net_phys : HumanActor&; tm : float3x4)
@@ -44,7 +46,10 @@ def vehicle_seats_enter_exit_kick_client_es(evt : CmdKickFromVehicle;
 [es(tag=netClient)]
 def vehicle_seats_human_force_teleport_client_es(evt : CmdHumanForceTeleport;
                                                  eid : EntityId;
-                                                 var human_net_phys : HumanActor&)
+                                                 var human_net_phys : HumanActor&;
+                                                 var human_vehicle__pendingExitTm : float3x4&;
+                                                 var human_vehicle__pendingExitUntilTime : float&;
+                                                 human_vehicle__pendingExitLifetime : float)
   query(eid) <| $ [es] (var isInVehicle : bool&;
                         var isInVehicleHidden : bool&;
                         var human_anim__vehicleSelected : EntityId&;
@@ -53,7 +58,26 @@ def vehicle_seats_human_force_teleport_client_es(evt : CmdHumanForceTeleport;
     isInVehicleHidden = false
     human_anim__vehicleSelected = INVALID_ENTITY_ID
     human_vehicle__occupiedSeatEid = INVALID_ENTITY_ID
-  apply_human_teleport_state(human_net_phys, evt.tm)
+  if (uint(human_net_phys.role) & uint(NetRole.URF_LOCAL_CONTROL)) != 0u
+    apply_human_teleport_state(human_net_phys, evt.tm)
+  else
+    human_vehicle__pendingExitTm = evt.tm
+    human_vehicle__pendingExitUntilTime = get_sync_time() + human_vehicle__pendingExitLifetime
+
+[es(tag=netClient, on_appear, REQUIRE=controlledHero)]
+def vehicle_seats_human_apply_pending_teleport_es(evt : Event;
+                                                  var human_net_phys : HumanActor&;
+                                                  human_vehicle__pendingExitTm : float3x4;
+                                                  var human_vehicle__pendingExitUntilTime : float&)
+  if human_vehicle__pendingExitUntilTime < 0.
+    return
+  if get_sync_time() > human_vehicle__pendingExitUntilTime
+    human_vehicle__pendingExitUntilTime = -1.
+    return
+  if (uint(human_net_phys.role) & uint(NetRole.URF_LOCAL_CONTROL)) == 0u
+    return
+  human_vehicle__pendingExitUntilTime = -1.
+  apply_human_teleport_state(human_net_phys, human_vehicle__pendingExitTm)
 
 [es(tag=server, REQUIRE=vehicle_seats__seats)]
 def vehicle_seats_enter_exit_kick_request_es(evt : RequestKickFromVehicle;
@@ -181,7 +205,7 @@ def private vehicle_teleport_entity_by_bounding_box(eid : EntityId; collres : Co
     let relativeVehicleTm = inverse(vehicle_tm) * requesterTm
     let vehicleBackOffset = -(vehicleBox.width.x + collRad) * 0.5 * vehicleForward
     let vehicleForwardOffset = sign(relativeVehicleTm[3].x) * vehicleBackOffset
-    let vehicleSideOffset = sign(relativeVehicleTm[3].z) * 0.5 * (vehicleBox.width.z + collRad) * vehicleLeft
+    let vehicleSideOffset = sign(relativeVehicleTm[3].z) * (0.5 * vehicleBox.width.z + collRad) * vehicleLeft
 
     let existWishPos = fixed_array<float3>(
       

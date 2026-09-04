@@ -1,8 +1,8 @@
+import "DataBlock" as DataBlock
+from "controls" import getCurrentPreset
+from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock  = require("DataBlock")
-let { getCurrentPreset } = require("controls")
-let { startsWith } = require("%sqstd/string.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 
 let isPresetChanged = Watched(false)
@@ -26,7 +26,7 @@ function setPreviewControlsPreset(preset) {
 }
 
 function clearControlsPresetGuiOptions(preset) {
-  let prefix = "USEROPT_"
+  const prefix = "USEROPT_"
   let userOptTypes = []
   foreach (oType, _value in preset.params)
     if (startsWith(oType, prefix))

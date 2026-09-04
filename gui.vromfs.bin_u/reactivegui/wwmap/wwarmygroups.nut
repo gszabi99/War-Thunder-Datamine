@@ -1,7 +1,6 @@
+import "DataBlock" as DataBlock
+from "worldwar" import wwGetArmyGroupsInfo
 from "%rGui/globals/ui_library.nut" import *
-
-let DataBlock = require("DataBlock")
-let { wwGetArmyGroupsInfo } = require("worldwar")
 
 local armyGroupsInfo = null
 

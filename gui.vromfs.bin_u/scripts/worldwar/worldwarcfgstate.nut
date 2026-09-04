@@ -1,12 +1,12 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "blkGetters" import get_game_settings_blk
+from "worldwar" import wwGetConfigurableValues
+from "%sqstd/datablock.nut" import getBlkValueByPath
 from "%scripts/dagui_library.nut" import *
-let DataBlock  = require("DataBlock")
-let { get_game_settings_blk } = require("blkGetters")
-let { wwGetConfigurableValues } = require("worldwar")
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
+
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"

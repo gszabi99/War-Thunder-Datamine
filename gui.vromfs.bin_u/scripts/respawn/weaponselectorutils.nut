@@ -1,7 +1,7 @@
+from "weaponSelector" import AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER
+from "guiMission" import get_mission_difficulty_int
 from "%scripts/dagui_library.nut" import *
-
-let { AAM_TRIGGER, AGM_TRIGGER, MINES_TRIGGER, BOMBS_TRIGGER, ROCKETS_TRIGGER, TORPEDOES_TRIGGER } = require("weaponSelector")
-let { get_mission_difficulty_int } = require("guiMission")
+from "%globalScripts/difficultyConsts.nut" import *
 
 const FIND_DIRECTION_MIDDLE = 0
 const FIND_DIRECTION_LEFT = 1
@@ -45,7 +45,7 @@ function preparePresetData(chosenPreset, unit) {
 
       weaponSlotToTiersId[idx] <- {
         tierId = slotIdToTiersId[idx],
-        ammo = t.weaponry?.tiers[t.tierId].amountPerTier ?? t.weaponry?.amountPerTier ?? t.weaponry?.ammo ?? 1,
+        ammo = t.weaponry?.tiers[t.tierId].amountPerTier ?? t.weaponry?.amountPerTier ?? 1,
         countedAmmo = 0
         trigger = triggerTypeConvert?[t.weaponry?.tType] ?? -1
       }

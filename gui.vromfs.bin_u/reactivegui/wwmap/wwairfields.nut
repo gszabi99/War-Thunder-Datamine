@@ -1,13 +1,12 @@
+from "%rGui/wwMap/wwAirfieldsStates.nut" import airfieldsInfo, hoveredAirfield, selectedAirfield, hoveredAirfieldIndex
+from "%rGui/wwMap/wwOperationConfiguration.nut" import activeAreaBounds
+from "%rGui/wwMap/wwMapZonesData.nut" import getZoneSize
+from "%rGui/wwMap/wwUtils.nut" import even
+from "math" import floor
 from "%rGui/globals/ui_library.nut" import *
 
-let { floor } = require("math")
-let { airfieldsInfo, hoveredAirfield, selectedAirfield, hoveredAirfieldIndex } = require("%rGui/wwMap/wwAirfieldsStates.nut")
-let { activeAreaBounds } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { getZoneSize } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { even } = require("%rGui/wwMap/wwUtils.nut")
-
 let hoverBounds = [0.2666, 0.2941, 0.7333, 0.7059]
-let airfieldImageAspectRatio = 68.0 / 60
+const airfieldImageAspectRatio = 68.0 / 60
 
 function createHoverBounds(imageWidth, imageHeight) {
   let boundPos = [hoverBounds[0] * imageWidth, hoverBounds[1] * imageHeight]

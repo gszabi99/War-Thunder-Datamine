@@ -3,14 +3,11 @@ options no_aot
 require ecs
 require math.base
 require DagorMath
-require %game.utils.utils_common
-require %appGame.infantry.es.vehicle_turrets_common
 require %appGame.infantry.ai.walker_nodes_common
 require %appGame.infantry.ai.ai_team_danger_zones_common
 require %game.events
 require DagorConsole
 require DagorDebug3D
-require DagorSystem
 require DngWalkerai
 require pathfinder
 require Dacoll

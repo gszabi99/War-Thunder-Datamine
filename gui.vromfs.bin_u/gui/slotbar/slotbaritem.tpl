@@ -48,9 +48,9 @@ massTransp {
         _on_r_click:t='onSlotbarActivate'
         _on_dbl_click:t = 'onSlotbarDblClick'
 
-        on_pushed:t='::gcb.delayedTooltipListPush'
-        on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-        on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+        on_pushed:t='gcb.delayedTooltipListPush'
+        on_hold_start:t='gcb.delayedTooltipListHoldStart'
+        on_hold_stop:t='gcb.delayedTooltipListHoldStop'
       }
 
       tdiv {

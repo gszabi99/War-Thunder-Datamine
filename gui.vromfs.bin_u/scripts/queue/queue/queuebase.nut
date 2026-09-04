@@ -1,12 +1,11 @@
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
 from "%scripts/queue/queueType.nut" import g_queue_type
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let time = require("%scripts/time.nut")
-let { get_time_msec } = require("dagor.time")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { isQueueActive } = require("%scripts/queue/queueState.nut")
 
@@ -31,7 +30,7 @@ let BaseQueue = class {
 
     this.typeBit = this.queueType.bit
     this.queueUidsList = {}
-    this.selfActivated = getTblValue("queueSelfActivated", this.params, false)
+    this.selfActivated = (this.params?.queueSelfActivated ?? false)
 
     this.init()
     this.addQueueByParams(this.params)
@@ -68,7 +67,7 @@ let BaseQueue = class {
   }
 
   function getTeamCode() {
-    return getTblValue("team", this.params, Team.Any)
+    return (this.params?.team ?? Team.Any)
   }
 
   function getBattleName() {

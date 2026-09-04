@@ -226,15 +226,14 @@ def drone_launcher_phys_es(evt : CmdWeapPhysUpdate;
         human_weap__lockedWeaponSlot = human_weap__currentGunSlot
 
 
-[es(tag=gameClient, REQUIRE=watchedPlayerItem, track=drone_launcher_anim__launchInProgress)]
+[es(tag=gameClient, track=drone_launcher_anim__launchInProgress)]
 def drone_launcher_enable_weapon_switching_on_anim_end(evt : Event;
                                                        gun__owner : EntityId;
                                                        drone_launcher_anim__launchInProgress : bool)
   if drone_launcher_anim__launchInProgress
     return
-  query(gun__owner) <| $ [es] (human_weap__currentGunSlot : int;
-                               var human_weap__lockedWeaponSlot : int&)
-    if human_weap__lockedWeaponSlot == human_weap__currentGunSlot
+  query(gun__owner) <| $ [es] (var human_weap__lockedWeaponSlot : int&)
+    if human_weap__lockedWeaponSlot != -1
       human_weap__lockedWeaponSlot = -1
 
 
@@ -268,8 +267,7 @@ def hud_appear_toggle_view_on_drone_creation_es(evt : Event;
   let fmw = as_fmw(unit__ref.unit)
   if fmw == null
     return
-  static_if typeinfo has_field<hasFPVTargetCamera>(fmw.props)
-    if !fmw.props.hasFPVTargetCamera
-      return
+  if !fmw.props.hasFPVTargetCamera
+    return
   using() <| $(var eventData : DataBlock)
     hud_notify_script("hint:drone_switch_camera_type", eventData)

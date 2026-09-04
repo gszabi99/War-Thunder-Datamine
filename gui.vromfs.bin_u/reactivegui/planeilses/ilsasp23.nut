@@ -1,19 +1,19 @@
+from "%rGui/planeState/planeFlyState.nut" import Speed, Altitude, ClimbSpeed, Roll, Accel
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, BombingMode, TargetPosValid, TargetPos, CannonMode, DistToSafety, DistToTarget
+  , BombCCIPMode, RocketMode, RadarTargetPosValid, IlsLineScale, AimLockValid, TimeBeforeBombRelease
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKmh, baseLineWidth
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkASP
+from "%rGui/planeIlses/commonElements.nut" import ASPLaunchPermitted, targetsComponent, ASPAzimuthMark
+from "%rGui/rocketAamAimState.nut" import IlsTrackerVisible, IlsTrackerX, IlsTrackerY
+from "%rGui/radarState.nut" import DistanceMax, RadarModeNameId, IsRadarVisible, Irst, HasDistanceScale, HasAzimuthScale, IsCScopeVisible
+from "%rGui/radarComponent.nut" import mode
+from "dagor.math" import cvt
+from "math" import round
 from "%rGui/globals/ui_library.nut" import *
 
-let { Speed, Altitude, ClimbSpeed, Roll, Accel } = require("%rGui/planeState/planeFlyState.nut");
-let { IlsColor,  BombingMode, TargetPosValid, TargetPos, CannonMode,
-        DistToSafety,  DistToTarget, BombCCIPMode, RocketMode,
-        RadarTargetPosValid, RadarTargetPos, IlsLineScale,
-        AimLockPos, AimLockValid, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
-let { mpsToKmh, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { compassWrap, generateCompassMarkASP } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark } = require("%rGui/planeIlses/commonElements.nut")
-let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { DistanceMax, RadarModeNameId, IsRadarVisible, Irst, targets, HasDistanceScale,
-  HasAzimuthScale, IsCScopeVisible } = require("%rGui/radarState.nut")
-let { mode } = require("%rGui/radarComponent.nut")
-let { cvt } = require("dagor.math")
-let { round } = require("math")
+let { RadarTargetPos, AimLockPos } = require("%rGui/planeState/planeToolsState.nut")
+let { ASPAirSymbolWrap } = require("%rGui/planeIlses/commonElements.nut")
+let { targets } = require("%rGui/radarState.nut")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 let ASPSpeedValue = Computed(@() round(Speed.get() * mpsToKmh).tointeger())
@@ -21,7 +21,7 @@ let ASPSpeed = @() {
   watch = [ASPSpeedValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(21), ph(30)]
+  pos = const [pw(21), ph(30)]
   color = IlsColor.get()
   fontSize = 45
   font = Fonts.ussr_ils
@@ -33,7 +33,7 @@ let ASPAltitude = @() {
   watch = [ASPAltValue, IlsColor]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(70), ph(30)]
+  pos = const [pw(70), ph(30)]
   color = IlsColor.get()
   fontSize = 45
   font = Fonts.ussr_ils
@@ -43,7 +43,7 @@ let ASPAltitude = @() {
 let ASPRoll = @() {
   watch = IlsColor
   size = const [pw(15), ph(15)]
-  pos = [pw(50), ph(50)]
+  pos = const [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
@@ -66,7 +66,7 @@ let ASPRoll = @() {
 
 let ASPCompassMark = @() {
   watch = IlsColor
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
@@ -82,7 +82,7 @@ function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
   let watchVar = is_aam ? IlsTrackerVisible : (is_radar ? RadarTargetPosValid : TargetPosValid)
   return @() {
     watch = watchVar
-    size = flex()
+    size = FLEX
     children = watchVar.get() ?
       @() {
         watch = [IlsColor, BombingMode]
@@ -106,7 +106,7 @@ function ASPTargetMark(width, height, is_radar, isIpp, is_aam = false) {
         children = [
           isIpp && BombingMode.get() ? @() {
             watch = DistToTargetBuc
-            size = flex()
+            size = FLEX
             rendObj = ROBJ_VECTOR_CANVAS
             color = IlsColor.get()
             fillColor = Color(0, 0, 0, 0)
@@ -135,7 +135,7 @@ function basicASP23(width, height) {
 
 let ASPLRGrid = @() {
   watch = IlsColor
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
@@ -188,7 +188,7 @@ let ASPRadarMode = @() {
 
 let ASPRadarRoll = @() {
   watch = IlsColor
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   color = IlsColor.get()
@@ -218,7 +218,7 @@ function createTargetDistASP23(index) {
   return @() {
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
     color = IlsColor.get()
     commands = [
@@ -295,7 +295,7 @@ function ASPCCIPDistanceGrid() {
     watch = [IlsColor, minDist]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       [VECTOR_LINE, 27, 38, 27, 80],
@@ -310,9 +310,9 @@ function ASPCCIPDistanceGrid() {
     ]
     children =
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_TEXT
-      pos = [pw(22), ph(36)]
+      pos = const [pw(22), ph(36)]
       color = IlsColor.get()
       fontSize = 40
       font = Fonts.ussr_ils
@@ -330,7 +330,7 @@ let ASPCCIPDistanceMark = @() {
     watch = IlsColor
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       [VECTOR_LINE, 0, 0, 40, -100],
@@ -348,7 +348,7 @@ function IPPCCRPLine(_width, height) {
     watch = [TargetPosValid, BombCCIPMode, BombingMode, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       (TargetPosValid.get() && (BombCCIPMode.get() || BombingMode.get()) ? [VECTOR_LINE, 0, 0, 0, -100] : [])
@@ -382,7 +382,7 @@ let IPPAcceleration = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   size = const [pw(10), ph(5)]
-  pos = [pw(15), ph(35)]
+  pos = const [pw(15), ph(35)]
   color = IlsColor.get()
   commands = [
     [VECTOR_LINE, 0, 0, 0, 50],
@@ -395,7 +395,7 @@ let IPPAcceleration = @() {
     watch = IPPAccelWatch
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     commands = [
       [VECTOR_LINE, 100 - IPPAccelWatch.get(), 65, 100 - IPPAccelWatch.get() + 20, 100],
@@ -411,7 +411,7 @@ let IPPClimb = @() {
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
   size = const [pw(5), ph(30)]
-  pos = [pw(70), ph(40)]
+  pos = const [pw(70), ph(40)]
   color = IlsColor.get()
   commands = [
     [VECTOR_LINE, 0, 0, 50, 0],
@@ -425,27 +425,27 @@ let IPPClimb = @() {
   ]
   children = [
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_TEXT
-      pos = [pw(60), ph(-5)]
+      pos = const [pw(60), ph(-5)]
       color = IlsColor.get()
       fontSize = 40
       font = Fonts.ussr_ils
       text = "3"
     },
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_TEXT
-      pos = [pw(60), ph(95)]
+      pos = const [pw(60), ph(95)]
       color = IlsColor.get()
       fontSize = 40
       font = Fonts.ussr_ils
       text = "3"
     },
     {
-      size = flex()
+      size = FLEX
       rendObj = ROBJ_TEXT
-      pos = [pw(60), ph(45)]
+      pos = const [pw(60), ph(45)]
       color = IlsColor.get()
       fontSize = 40
       font = Fonts.ussr_ils
@@ -455,7 +455,7 @@ let IPPClimb = @() {
       watch = IPPClimbWatch
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * 0.8 * IlsLineScale.get()
-      size = flex()
+      size = FLEX
       color = IlsColor.get()
       commands = [
         [VECTOR_LINE, -50, IPPClimbWatch.get() - 5, -10, IPPClimbWatch.get()],
@@ -488,7 +488,7 @@ let IPPAimLockPosMark = @() {
 
 let IPPAimLockPos = @() {
   watch = AimLockValid
-  size = flex()
+  size = FLEX
   children = AimLockValid.get() ? [
     IPPAimLockPosMark
   ] : null
@@ -534,7 +534,7 @@ let createTargetDistJ7E = @(index) function() {
   return {
     watch = [HasAzimuthScale, HasDistanceScale, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = baseLineWidth * 0.6 * IlsLineScale.get()
     color = IlsColor.get()
     commands = !RadarTargetPosValid.get() ? [

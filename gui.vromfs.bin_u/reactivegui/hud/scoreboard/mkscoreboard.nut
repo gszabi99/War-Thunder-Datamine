@@ -1,22 +1,23 @@
+import "%rGui/hud/scoreboard/infantry.ui.nut" as mkInfantry
+import "%rGui/hud/scoreboard/deathmatch.ui.nut" as deathmatch
+import "%rGui/hud/scoreboard/convoyHunting.nut" as convoyHunting
+import "%rGui/hud/scoreboard/battleMissionHud/mkBattleMissionHud.ui.nut" as mkBattleMissionHud
+import "%rGui/hud/scoreboard/nuclearEscalation.ui.nut" as mkNuclearEscalationHud
+import "%rGui/dominationNotification.nut" as dominationNotification
+from "%rGui/missionState.nut" import gameType, timeLeft, timeLimitWarn, customHUD
+from "%rGui/compassState.nut" import HasCompass
+from "%rGui/style/screenState.nut" import safeAreaSizeHud, safeAreaSizeMenu, safeAreaHud
+from "%rGui/respawnWndState.nut" import isInSpectatorMode, isInRespawnWnd
+from "%rGui/style/fontsState.nut" import fontSizeMultiplier
+from "%rGui/hud/scoreboard/assimModes.nut" import sead, oil_refinery_strbomb, power_plant_strbomb
+from "%appGlobals/hud/hudState.nut" import isAAComplexMenuActive
+from "%sqstd/time.nut" import secondsToTimeSimpleString
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%rGui/globals/ui_library.nut" import *
 
-let { gameType, timeLeft, timeLimitWarn, customHUD } = require("%rGui/missionState.nut")
-let { HasCompass } = require("%rGui/compassState.nut")
-let { safeAreaSizeHud, safeAreaSizeMenu, safeAreaHud } = require("%rGui/style/screenState.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
-let mkInfantry = require("%rGui/hud/scoreboard/infantry.ui.nut")
 let football = require("%rGui/hud/scoreboard/football.ui.nut")
-let deathmatch = require("%rGui/hud/scoreboard/deathmatch.ui.nut")
 let po2OpMission = require("%rGui/hud/scoreboard/po2OpMission.ui.nut")
-let convoyHunting = require("%rGui/hud/scoreboard/convoyHunting.nut")
-let mkBattleMissionHud = require("%rGui/hud/scoreboard/battleMissionHud/mkBattleMissionHud.ui.nut")
-let mkNuclearEscalationHud = require("%rGui/hud/scoreboard/nuclearEscalation.ui.nut")
-let { isInSpectatorMode, isInRespawnWnd } = require("%rGui/respawnWndState.nut")
-let { fontSizeMultiplier } = require("%rGui/style/fontsState.nut")
 let extraction = require("%rGui/hud/scoreboard/extraction.nut")
-let { sead, oil_refinery_strbomb, power_plant_strbomb } = require("%rGui/hud/scoreboard/assimModes.nut")
-let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
-let dominationNotification = require("%rGui/dominationNotification.nut")
 
 let getNoRespTextSize = @() fpx(22)
 
@@ -25,7 +26,7 @@ let timerComponent = @() {
   rendObj = ROBJ_TEXT
   font = Fonts.medium_text_hud
   color = Color(255, 255, 255)
-  pos = [0, hdpx(40)]
+  pos = const [0, hdpx(40)]
   text = secondsToTimeSimpleString(timeLeft.get())
 }
 
@@ -76,7 +77,7 @@ return function mkScoreboard() {
 
   return @() {
     watch = [gameType, margin, hasTimerComponent, customHUD, HasCompass, yPos, hudScale, isInRespawnWnd]
-    size = flex()
+    size = FLEX
     pos = [0, yPos.get()]
     margin = margin.get()
     halign = ALIGN_CENTER

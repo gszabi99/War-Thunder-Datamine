@@ -6,13 +6,12 @@ require soundEvent
 require sound_utils.modules.sound_player_common
 require sound_utils.modules.sound_control_common
 require sound_utils.modules.sound_physmat_common
+require sound_utils_net.modules.sound_desc_common
 require gameLibs.pufd_events.pufd_events
 require common_sounds.modules.common_sounds_events
 require human_sounds.modules.human_steps_sound_common
 require DngHuman
-require HeroManager
 require DagorMath
-require DagorSystem
 require math.base
 require strings
 require %appGame.infantry.es.hero_common
@@ -94,7 +93,7 @@ def raise_pos_above_collision(pos, up : float3)
 
 def apply_prefix(path : string; is_watched_sound : bool; is_enemy : bool) : string
   if should_apply_watched_prefix(path)
-    return is_watched_sound ? "player{path}" : is_enemy ? "enemy{path}" : "ally{path}"
+    return is_watched_sound ? "{WATCHED_SOUND_EVENT_FOLDER}{path}" : is_enemy ? "{OTHER_SOUND_EVENT_FOLDER}{path}" : "ally{path}"
   return path
 
 
@@ -211,7 +210,6 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                                              var human_steps_sound__lastTimeOnGround : float&;
 
                                              var sound_biome_puddle_queries_vars__speedSq : float&;
-                                             var sound_biome_puddle_queries_vars__isOnGround : bool&;
 
                                              var human_steps_sound_generator__lastStepAt_cooldown : float2&;
                                              human_steps_sound_generator__walkRunSprint_stand_intervals : float3;
@@ -230,7 +228,6 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
         abandon(human_step_sound_grains__event)
         human_step_sound_grains__ttl = 0.
       sound_biome_puddle_queries_vars__speedSq = 0.
-      sound_biome_puddle_queries_vars__isOnGround = true
       human_steps_sound__physStates = human_net_phys__states
       human_steps_sound__irqObjIdx = INVALID_IRQ_OBJ_IDX
       return
@@ -278,7 +275,6 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
 
     human_steps_sound__irqObjIdx = INVALID_IRQ_OBJ_IDX
     sound_biome_puddle_queries_vars__speedSq = human_net_phys != null ? length_sq((*human_net_phys).phys.currentState.velocity.xz) : 0.
-    sound_biome_puddle_queries_vars__isOnGround = read_state(StateFlag.ST_ON_GROUND, human_net_phys__states)
 
     let descId = human_steps_sound_update_states(info.curTime,
                                                  human_net_phys__states,
@@ -372,7 +368,9 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                       human_steps_sound__smid,
                       human_steps_sound__waterDepth,
                       human_net_phys,
-                      human_steps_sound__prefix)
+                      human_steps_sound__prefix,
+                      true,
+                      standState)
 
 [es(tag=sound, REQUIRE_NOT=deadEntity)]
 def human_steps_sound_irq(evt : CmdSoundStepIrq;

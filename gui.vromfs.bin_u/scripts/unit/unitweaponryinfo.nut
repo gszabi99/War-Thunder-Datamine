@@ -1,13 +1,13 @@
+from "%sqstd/datablock.nut" import blkFromPath, blkOptFromPath
+from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
 
 let { isWeaponAux, getLastWeapon, getLastPrimaryWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
-let { blkFromPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
 
 
 const USE_DELAY_EXPLOSION_DEFAULT = true

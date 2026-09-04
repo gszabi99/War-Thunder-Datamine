@@ -1,13 +1,13 @@
+from "%rGui/planeState/planeFlyState.nut" import Speed, Altitude, ClimbSpeed, Tangage, Roll, Aoa
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMark
+from "%rGui/planeIlses/commonElements.nut" import angleTxt, yawIndicator, cancelBombing, lowerSolutionCue, bombFallingLine, aimMark
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, TargetPos, DistToSafety, IlsLineScale, BombingMode, RocketMode, CannonMode
+  , BombCCIPMode, IlsAtgmTrackerVisible, IlsAtgmLocked
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth
+from "%sqstd/math.nut" import floor
 from "%rGui/globals/ui_library.nut" import *
 
-let { Speed, Altitude, ClimbSpeed, Tangage, Roll, Aoa } = require("%rGui/planeState/planeFlyState.nut");
-let { compassWrap, generateCompassMark } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { angleTxt, yawIndicator, cancelBombing,
-      lowerSolutionCue, bombFallingLine, aimMark } = require("%rGui/planeIlses/commonElements.nut")
-let { IlsColor, TargetPos, DistToSafety, IlsLineScale, BombingMode, RocketMode, CannonMode,
-      BombCCIPMode, IlsAtgmTrackerVisible, IlsAtgmTargetPos, IlsAtgmLocked } = require("%rGui/planeState/planeToolsState.nut")
-let { mpsToKnots, metrToFeet, mpsToFpm, baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
-let { floor } = require("%sqstd/math.nut")
+let { IlsAtgmTargetPos } = require("%rGui/planeState/planeToolsState.nut")
 let { AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
 
 function flyDirectionAVQ7(width, height) {
@@ -32,7 +32,7 @@ function speedometer(width, height) {
     watch = IlsColor
     pos = [width * 0.5, height * 0.5]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = baseLineWidth * IlsLineScale.get()
     color = IlsColor.get()
     commands = [
@@ -54,7 +54,7 @@ function speedometer(width, height) {
     watch = [Speed, IlsColor]
     rendObj = ROBJ_TEXT
     pos = [width * 0.15, height * 0.72]
-    size = flex()
+    size = FLEX
     color = IlsColor.get()
     fontSize = 70
     font = Fonts.usa_ils
@@ -80,7 +80,7 @@ function speedometer(width, height) {
 let altmeterGrid = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = flex()
+  size = FLEX
   lineWidth = baseLineWidth * IlsLineScale.get()
   color = IlsColor.get()
   commands = [
@@ -143,7 +143,7 @@ function altmeter(width, height) {
     flow = FLOW_VERTICAL
     children = [
       {
-        size = flex()
+        size = FLEX
         flow = FLOW_HORIZONTAL
         children = [altColumn, altmeterGrid, climbMark]
       },
@@ -153,7 +153,7 @@ function altmeter(width, height) {
         padding = const [10, 0]
         children = [
           @() {
-            size = flex()
+            size = FLEX
             watch = IlsColor
             rendObj = ROBJ_VECTOR_CANVAS
             lineWidth = baseLineWidth * IlsLineScale.get()
@@ -178,7 +178,7 @@ function generatePitchLine(num) {
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -193,7 +193,7 @@ function generatePitchLine(num) {
     ] :
     [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -266,7 +266,7 @@ let maverickAimMark = @() {
 
 let maverickAim = @() {
   watch = IlsAtgmTrackerVisible
-  size = flex()
+  size = FLEX
   children = IlsAtgmTrackerVisible.get() ? [maverickAimMark] : []
 }
 
@@ -305,7 +305,7 @@ function basicInformation(width, height) {
       maverickAim,
       @(){
         watch = toGroundMode
-        size = flex()
+        size = FLEX
         children = !toGroundMode.get() ? compassWrap(width, height, 0.1, generateCompassMark) : null
       }
     ]
@@ -339,12 +339,12 @@ let solutionCue = @() {
 
 function rotatedBombReleaseReticle(width, height) {
   return {
-    size = flex()
+    size = FLEX
     children = [
       pullupAnticipation(height),
       lowerSolutionCue(height, 5),
       {
-        size = const [pw(20), flex()]
+        size = const [pw(20), FLEX]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [solutionCue, bombFallingLine()]

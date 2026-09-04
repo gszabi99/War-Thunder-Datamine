@@ -1,25 +1,25 @@
+from "math" import ceil
+from "%sqstd/string.nut" import cutPrefix
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
-let { format } = require("string")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { WeaponWarningHandler } = require("%scripts/weaponry/weaponWarningHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
+let { countSizeInItems } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { updateModItem, createModItemLayout, updateItemBulletsSlider
-} = require("%scripts/weaponry/weaponryVisual.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { ceil } = require("math")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible,
-  isDefaultTorpedoes, getOverrideBullets, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
+let { updateModItem, createModItemLayout, updateItemBulletsSlider } = require("%scripts/weaponry/weaponryVisual.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, isDefaultTorpedoes, getOverrideBullets, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isInFlight } = require("gameplayBinding")
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
-let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
+let { getWeaponryGroupHeader } = require("%scripts/weaponry/weaponryTypes.nut")
 let { bulletsAmountState } = require("%scripts/weaponry/ammoInfo.nut")
 
 let unitTypesWithMainWeaponsFromPresets = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER,
@@ -28,7 +28,7 @@ let unitTypesWithMainWeaponsFromPresets = [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_H
 let unitTypesWithMainWeaponsFromBulletsGroup =
   [ES_UNIT_TYPE_TANK, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT]
 
-gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let unitWeaponsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
 
   unit = null
@@ -166,7 +166,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let cellsRow = array(columns.len(), null)
       foreach (idx, column in columns) {
-        let cell = getTblValue(line, column)
+        let cell = column?[line]
         if ((!cell || !cell.header) && bgBlock.columnsList.len())
           bgBlock.columnsList[bgBlock.columnsList.len() - 1].width += itemWidth * sizeMultiplier
 
@@ -299,7 +299,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getColumnsAircraft() {
     let res = this.getEmptyColumnsConfig()
     if (this.needShowWeaponsItem())
-      res.columns.append([this.getCellConfig(this.weaponItemId, weaponryTypes.WEAPON.getHeader(this.unit), weaponsItem.weapon)])
+      res.columns.append([this.getCellConfig(this.weaponItemId, getWeaponryGroupHeader(this.unit), weaponsItem.weapon)])
 
     let groups = this.getBulletsGroups()
     local hasPairBulletsGroup = false
@@ -431,7 +431,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isUnitHaveSecondaryWeapons(this.unit))
       return colData
 
-    let weaponCell = this.getCellConfig(this.weaponItemId, weaponryTypes.WEAPON.getHeader(this.unit), weaponsItem.weapon)
+    let weaponCell = this.getCellConfig(this.weaponItemId, getWeaponryGroupHeader(this.unit), weaponsItem.weapon)
     let maxColumns = max((this.modsInRow / colData.itemWidth), 1)
     if (colData.columns.len() < maxColumns)
       colData.columns.insert(0, [weaponCell])
@@ -661,12 +661,17 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (readyCounts.status != bulletsAmountState.LOW_AMOUNT)
       return true
 
-    let msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
-    loadHandler(gui_handlers.WeaponWarningHandler,
+    let weaponsList = readyCounts.lowAmountWeapons.map(@(w) "".concat(
+      loc($"weapons/{w.weapName}"), loc("ui/colon"),
+      loc("multiplayer/notEnoughBullets/required_for_weapon", {
+        requiredColored = colorize("activeTextColor", w.missing.tostring())
+        required = w.missing
+      })))
+    loadHandler(WeaponWarningHandler,
       {
         parentHandler = this
-        message = msg
-        list = ""
+        message = loc("multiplayer/notEnoughBullets")
+        list = "\n".join(weaponsList)
         showCheckBoxBullets = false
         ableToStartAndSkip = false
         onStartPressed = applyFunc
@@ -675,3 +680,6 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return false
   }
 }
+register_gui_handler("unitWeaponsHandler", unitWeaponsHandler)
+
+return { unitWeaponsHandler }

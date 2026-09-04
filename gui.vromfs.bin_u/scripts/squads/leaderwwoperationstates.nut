@@ -1,7 +1,7 @@
+from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { wwGetOperationId } = require("worldwar")
+
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { wwGlobalStatusActions } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 

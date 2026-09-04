@@ -1,10 +1,11 @@
+from "sound_wt" import playSound
 from "%rGui/globals/ui_library.nut" import *
-let { playSound } = require("sound_wt")
+
 let fontsState = require("%rGui/style/fontsState.nut")
 
 let boxSize = [hdpx(20), hdpx(20)]
-let checkboxGap = hdpx(5)
-let checkboxPadding = hdpx(2)
+const checkboxGap = hdpx(5)
+const checkboxPadding = hdpx(2)
 
 let checkboxBoxColor = {
   active = {
@@ -42,7 +43,7 @@ function calcCheckColor(sf, isCheck) {
 
 let mkBackground = @(stateFlags) @() {
   watch = stateFlags
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_SOLID
   color = stateFlags.get() & S_HOVER ? 0xFF3A474F
    : 0

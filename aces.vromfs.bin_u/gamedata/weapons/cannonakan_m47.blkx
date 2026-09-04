@@ -1,6 +1,11 @@
 {
   "cannon": true,
   "weaponType": -1,
+  "maxDeltaAngle": 0.1,
+  "shotFreq": 3.0,
+  "shotFreqRndK": 0.1,
+  "traceFreq": 2,
+  "bullets": 41,
   "bUseHookAsRel": true,
   "emitColor": [
     1.0,
@@ -10,15 +15,10 @@
   "emitI": 10.0,
   "emitR": 3.0,
   "emitTime": 0.03,
-  "aimMinDist": 10.0,
-  "aimMaxDist": 10000.0,
-  "maxDeltaAngle": 0.1,
-  "shotFreq": 3.0,
-  "shotFreqRndK": 0.1,
-  "traceFreq": 4,
   "bEnablePause": false,
-  "bullets": 41,
   "bulletsCluster": 1,
+  "aimMinDist": 10.0,
+  "aimMaxDist": 3000.0,
   "fxType": "muzzle_air_50mm",
   "fxMultipleSpawn": true,
   "bullet": [
@@ -51,26 +51,6 @@
       "ricochetTimeToLive": 0.085,
       "fuseDelayDist": 0.7,
       "explodeTreshold": 0.1,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        300.0
-      ],
-      "farHitPower": [
-        0.1,
-        700.0
-      ],
-      "endHitPower": [
-        0.008,
-        1500.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
       "recoilMultiplier": 0.3,
       "onHitChanceMultFire": 4.0,
       "relativeVelArmorShift": [
@@ -110,38 +90,18 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          5.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          5.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          5.0,
+      "hitpower": {
+        "HitPower0m": [
+          1.0,
           500.0
         ],
-        "ArmorPower1000m": [
-          4.0,
-          1000.0
+        "HitPower5000m": [
+          0.5,
+          5000.0
         ],
-        "ArmorPower1500m": [
-          4.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          4.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          1.0,
-          3000.0
-        ],
-        "ArmorPower4500m": [
-          0.0,
-          4500.0
+        "HitPower7000m": [
+          0.1,
+          7000.0
         ]
       },
       "damage": {
@@ -646,26 +606,6 @@
       "ricochetTimeToLive": 0.085,
       "fuseDelayDist": 0.7,
       "explodeTreshold": 0.1,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        300.0
-      ],
-      "farHitPower": [
-        0.1,
-        700.0
-      ],
-      "endHitPower": [
-        0.008,
-        1500.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
       "recoilMultiplier": 0.3,
       "onHitChanceMultFire": 4.0,
       "relativeVelArmorShift": [
@@ -705,38 +645,18 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          5.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          5.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          5.0,
+      "hitpower": {
+        "HitPower0m": [
+          1.0,
           500.0
         ],
-        "ArmorPower1000m": [
-          4.0,
-          1000.0
+        "HitPower5000m": [
+          0.5,
+          5000.0
         ],
-        "ArmorPower1500m": [
-          4.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          4.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          1.0,
-          3000.0
-        ],
-        "ArmorPower4500m": [
-          0.0,
-          4500.0
+        "HitPower7000m": [
+          0.1,
+          7000.0
         ]
       },
       "damage": {
@@ -1629,26 +1549,6 @@
       "ricochetTimeToLive": 0.085,
       "fuseDelayDist": 0.7,
       "explodeTreshold": 0.1,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        300.0
-      ],
-      "farHitPower": [
-        0.1,
-        700.0
-      ],
-      "endHitPower": [
-        0.008,
-        1500.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
       "recoilMultiplier": 0.3,
       "onHitChanceMultFire": 4.0,
       "relativeVelArmorShift": [
@@ -1688,38 +1588,18 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          5.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          5.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          5.0,
+      "hitpower": {
+        "HitPower0m": [
+          1.0,
           500.0
         ],
-        "ArmorPower1000m": [
-          4.0,
-          1000.0
+        "HitPower5000m": [
+          0.5,
+          5000.0
         ],
-        "ArmorPower1500m": [
-          4.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          4.0,
-          2000.0
-        ],
-        "ArmorPower3000m": [
-          1.0,
-          3000.0
-        ],
-        "ArmorPower4500m": [
-          0.0,
-          4500.0
+        "HitPower7000m": [
+          0.1,
+          7000.0
         ]
       },
       "damage": {

@@ -1,20 +1,16 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt, mgSetBool, mgGetEnemySide
+  , mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt
+  , getDistancePerMinute, getAircraftCost, getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgSetDistToAction, getAircraftDescription
+  , gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName, mgSetMinMaxAircrafts
+from "blkGetters" import get_warpoints_blk
 from "math" import max, min, sqrt, clamp
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt, mgSetBool,
-  mgGetEnemySide, mgCreateStartLookAt, mgCreateGroundUnits, mgGetUnitsCount, mgSetupArmada,
-  mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute, getAircraftCost,
-  getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgSetDistToAction, getAircraftDescription,
-  gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector, mgGetLevelName,
-  mgSetMinMaxAircrafts
-} = require("dynamicMission")
-let { get_warpoints_blk } = require("blkGetters")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
-  let mission_preset_name = "cover_bombers_preset01"
+  const mission_preset_name = "cover_bombers_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
@@ -172,7 +168,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
 
 
   let rndHeight = rndRange(2000, 4000)
-  let playerSpeed = 300 * 1000 / 60
+  const playerSpeed = 300 * 1000 / 60
   let enemy1Speed = getDistancePerMinute(enemyFighterPlane)
   let enemy2Speed = getDistancePerMinute(enemyFighterPlane)
   let enemy3Speed = getDistancePerMinute(enemyFighterPlane)

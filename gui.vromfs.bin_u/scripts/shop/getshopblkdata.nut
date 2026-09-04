@@ -1,7 +1,7 @@
+from "dagor.math" import Point2
+from "blkGetters" import get_shop_blk
 from "%scripts/dagui_library.nut" import *
 
-let { Point2 } = require("dagor.math")
-let { get_shop_blk } = require("blkGetters")
 const COUNT_REQ_FOR_FAKE_UNIT = 2
 
 let fakeUnitConfig = {

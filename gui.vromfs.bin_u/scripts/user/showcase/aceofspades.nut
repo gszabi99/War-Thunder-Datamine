@@ -1,9 +1,9 @@
+import "DataBlock" as DataBlock
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let DataBlock = require("DataBlock")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")

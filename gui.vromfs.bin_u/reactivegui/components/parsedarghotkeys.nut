@@ -1,6 +1,5 @@
+from "string" import strip, startswith
 from "%rGui/globals/ui_library.nut" import *
-
-let { strip, startswith } = require("string")
 
 function parse(hotkey) {
   local hotkeys_list = hotkey.replace("^", "").split("|")

@@ -1,24 +1,33 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "dagor.workcycle" import defer, setTimeout, clearTimer
+from "string" import format
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "auth_wt" import getPlayerSsoShortTokenAsync
+from "blkGetters" import get_gui_regional_blk
+from "steam" import steam_is_running, steam_is_overlay_active
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type, select_current_title, get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "app" import APP_ID, isAppActive
 from "%sqstd/platform.nut" import is_gdk
 
 let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ChooseTitle } = require("%scripts/user/chooseTitle.nut")
+let { LeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
+let { UserCardHandler } = require("%scripts/user/userCard/userCard.nut")
 let { saveLocalSharedSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { defer, setTimeout, clearTimer } = require("dagor.workcycle")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder, getUnlockById
-} = require("%scripts/unlocks/unlocksCache.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let time = require("%scripts/time.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
 let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony } = require("%scripts/clientState/platform.nut")
@@ -29,26 +38,17 @@ let { getViralAcquisitionDesc, showViralAcquisitionWnd } = require("%scripts/use
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { fillProfileSummary, getProfileInfo, getPlayerSummary } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
-  needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
+let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { getUnlockCost, isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
-let { getPlayerSsoShortTokenAsync } = require("auth_wt")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
-let { get_gui_regional_blk } = require("blkGetters")
 let { userIdStr, userIdInt64, havePlayerTag, isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { getStats, clearStats } = require("%scripts/myStats.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo,
-  getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode,
-  writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex, defaultTitleIcon
-} = require("%scripts/user/profileShowcase.nut")
+let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo, getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode, writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex, defaultTitleIcon } = require("%scripts/user/profileShowcase.nut")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { generateShowcaseInfo } = require("%scripts/user/profileShowcasesData.nut")
@@ -65,7 +65,6 @@ let { hasAvailableCollections } = require("%scripts/collections/collections.nut"
 let { openSkinsPage } = require("%scripts/user/skins/skinsHandler.nut")
 let { openDecalsPage } = require("%scripts/user/decals/decalsHandler.nut")
 let { openAchievementsPage } = require("%scripts/user/achievements/achievementsHandler.nut")
-require("%scripts/user/userCard/userCard.nut") 
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 let { checkUGCAllowed } = require("%scripts/clans/clanTextInfo.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -95,13 +94,13 @@ function getUnlockFiltersList(uType, getCategoryFunc) {
 function guiStartProfile(params = {}) {
   let guiScene = get_gui_scene()
   if (guiScene?.isInAct()) {
-    defer(@() loadHandler(gui_handlers.Profile, params))
+    defer(@() loadHandler(get_gui_handler("Profile"), params))
     return
   }
-  loadHandler(gui_handlers.Profile, params)
+  loadHandler(get_gui_handler("Profile"), params)
 }
 
-gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
+let Profile = class (UserCardHandler) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/profile/profile.tpl"
   initialSheet = ""
@@ -232,7 +231,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     local hasAnyUnlocks = false
     local hasAnyMedals = false 
 
-    let customCategoryConfig = getTblValue("customProfileMenuTab", get_gui_regional_blk(), null)
+    let customCategoryConfig = get_gui_regional_blk()?.customProfileMenuTab
     local tabImage = null
     local tabText = null
 
@@ -715,7 +714,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onEventBeforeStartShowroom(_p) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+    handlersManager.requestHandlerRestore(this, get_gui_handler("MainMenu"))
   }
 
   function getListIndexBySheet(sheet) {
@@ -805,7 +804,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function openChooseTitleWnd(_obj) {
     let cachedHandler = this
     let curTitle = this.editModeTempData?.title ?? ""
-    gui_handlers.ChooseTitle.open({
+    ChooseTitle.open({
       onCompleteFunc = @(titleName) cachedHandler.onProfileTitleSelect(titleName, cachedHandler)
       curTitle
     })
@@ -1033,7 +1032,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     base.goBack()
   }
 
-  onLeaderboard = @() loadHandler(gui_handlers.LeaderboardWindow, { userId = userIdInt64.get() })
+  onLeaderboard = @() loadHandler(LeaderboardWindow, { userId = userIdInt64.get() })
 
   function onShowcaseSelect(obj) {
     if (!this.isEditModeEnabled)
@@ -1542,6 +1541,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.applyFilterTimer = setTimeout(0.5, @() applyCallback())
   }
 }
+register_gui_handler("Profile", Profile)
 
 let openProfileSheetParamsFromPromo = {
   UnlockAchievement = @(p1, p2, ...) {
@@ -1567,5 +1567,6 @@ function openProfileFromPromo(params, sheet = null) {
 addPromoAction("profile", @(_handler, params, _obj) openProfileFromPromo(params))
 
 return {
+  Profile
   guiStartProfile
 }

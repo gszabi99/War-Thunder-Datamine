@@ -1,10 +1,11 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { getAllCountriesSets } = require("%scripts/matching/matchingGameModes.nut")
+let { isCountryAvailable } = require("%scripts/events/eventTeamsInfo.nut")
+let { needRankInfoInQueue } = require("%scripts/events/eventsState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
@@ -27,7 +28,7 @@ function getQueueInfo(queue, txt = null) {
 }
 
 function createQueueViewByCountries(nestObj, queue, event) {
-  let needRankInfo = events.needRankInfoInQueue(event)
+  let needRankInfo = needRankInfoInQueue(event)
   let headerColumns = []
   let view = {
     rows = [
@@ -49,13 +50,13 @@ function createQueueViewByCountries(nestObj, queue, event) {
   foreach (_i, countryName in shopCountriesList)
     headerColumns.append({
       image = getCountryIcon(countryName)
-      needShowLocked = !events.isCountryAvailable(event, countryName)
+      needShowLocked = !isCountryAvailable(event, countryName)
     })
 
   
   let myCountry = getQueueCountry(queue)
   let myRank = getMyRankInQueue(queue)
-  let countriesSets = events.getAllCountriesSets(event)
+  let countriesSets = getAllCountriesSets(event)
   local canMeetCountries = {}
   foreach (cSet in countriesSets)
     if (myCountry in cSet.allCountries)
@@ -74,7 +75,7 @@ function createQueueViewByCountries(nestObj, queue, event) {
       foreach (_i, country in shopCountriesList)
         row.columns.append({
           id = $"{country}_{rank}"
-          text = events.isCountryAvailable(event, country) ? "0" : "-"
+          text = isCountryAvailable(event, country) ? "0" : "-"
           overlayTextColor = (country == myCountry && rank == myRank) ? "mainPlayer"
                            : country in canMeetCountries ? null
                            : "minor"
@@ -94,11 +95,11 @@ function updateQueueViewByCountries(nestObj, queue, curCluster) {
     return
 
   let event = getQueueEvent(queue)
-  if (events.needRankInfoInQueue(event)) {
+  if (needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
     let countryOption = get_option(USEROPT_COUNTRY)
     foreach (countryName in countryOption.values) {
-      if (!events.isCountryAvailable(event, countryName))
+      if (!isCountryAvailable(event, countryName))
         continue
 
       let ranksQueueTable = countriesQueueTable?[countryName]

@@ -7,4 +7,15 @@ enum RespawnOptUpdBit {
   SQUAD_RESPAWN = 0x10
 }
 
-return { RespawnOptUpdBit }
+enum RespawnBaseType {
+  AUTO = "auto"
+  AIRFIELD = "airfield"
+  AIR = "air"
+  CARRIER_CATAPULT = "carrier_catapult"
+  CARRIER_TRAMPOLINE = "carrier_trampline"
+}
+
+const CATAPULT_CARRIER_SPAWN_NAME = "missions/catapult_carriers_spawn"
+const TRAMPOLINE_CARRIER_SPAWN_NAME = "missions/trampline_carriers_spawn"
+
+return { RespawnOptUpdBit, RespawnBaseType, CATAPULT_CARRIER_SPAWN_NAME, TRAMPOLINE_CARRIER_SPAWN_NAME }

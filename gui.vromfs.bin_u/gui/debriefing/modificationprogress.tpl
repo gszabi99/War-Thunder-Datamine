@@ -6,9 +6,9 @@ tdiv {
   behavior:t='posNavigator'
   navigatorShortcuts:t='yes'
   <<#isTooltipByHold>>
-  on_pushed:t='::gcb.delayedTooltipListPush'
-  on_hold_start:t='::gcb.delayedTooltipListHoldStart'
-  on_hold_stop:t='::gcb.delayedTooltipListHoldStop'
+  on_pushed:t='gcb.delayedTooltipListPush'
+  on_hold_start:t='gcb.delayedTooltipListHoldStart'
+  on_hold_stop:t='gcb.delayedTooltipListHoldStop'
   <</isTooltipByHold>>
 
   tdiv {
@@ -17,8 +17,8 @@ tdiv {
     total-input-transparent:t='yes'
     <<#isTooltipByHold>>
     tooltipId:t='<<unitTooltipId>>'
-    on_hover:t='::gcb.delayedTooltipHover'
-    on_unhover:t='::gcb.delayedTooltipHover'
+    on_hover:t='gcb.delayedTooltipHover'
+    on_unhover:t='gcb.delayedTooltipHover'
     <</isTooltipByHold>>
 
     img {
@@ -55,8 +55,8 @@ tdiv {
     size:t='fw, 1@modItemHeight'
     <<#isTooltipByHold>>
     tooltipId:t='<<modTooltipId>>'
-    on_hover:t='::gcb.delayedTooltipHover'
-    on_unhover:t='::gcb.delayedTooltipHover'
+    on_hover:t='gcb.delayedTooltipHover'
+    on_unhover:t='gcb.delayedTooltipHover'
     <</isTooltipByHold>>
 
 

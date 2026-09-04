@@ -1,13 +1,15 @@
+from "string" import format
+from "dagor.time" import get_time_msec
+from "%sqstd/math.nut" import ceil
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_time_msec } = require("dagor.time")
 let { RESET_ID, SELECT_ALL_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { findChildIndex, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { findChildIndex, getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { ceil } = require("%sqstd/math.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isUnitGroup, isClanUnitResearched } = require("%scripts/unit/unitStatus.nut")
@@ -22,7 +24,7 @@ const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500
 
 let vehicleStatuses = ["researched", "not_researched", "purchased"]
 
-local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
+local handlerClass = class (BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   unitsFilter          = null
   units                = null
@@ -393,7 +395,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.vehiclesModal <- handlerClass
+register_gui_handler("vehiclesModal", handlerClass)
 
 return {
   handlerClass = handlerClass

@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MRoomPlayersListWidget } = require("%scripts/matchingRooms/mRoomPlayersListWidget.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -18,7 +19,7 @@ let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
-gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let MRoomMembersWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = null
   sceneTplName = "%gui/mpLobby/mRoomMembersWnd.tpl"
@@ -30,7 +31,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   static function open(room) {
     if (room)
-      handlersManager.loadHandler(gui_handlers.MRoomMembersWnd, { room = room })
+      handlersManager.loadHandler(get_gui_handler("MRoomMembersWnd"), { room = room })
   }
 
   function getSceneTplView() {
@@ -65,7 +66,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setFullRoomInfo()
     this.teams = g_team.getTeams()
 
-    this.playersListWidgetWeak = gui_handlers.MRoomPlayersListWidget.create({
+    this.playersListWidgetWeak = MRoomPlayersListWidget.create({
       scene = this.scene.findObject("players_list")
       room = this.room
       teams = this.teams
@@ -166,3 +167,6 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     getMroomInfo(this.room.roomId).checkRefresh()
   }
 }
+register_gui_handler("MRoomMembersWnd", MRoomMembersWnd)
+
+return { MRoomMembersWnd }

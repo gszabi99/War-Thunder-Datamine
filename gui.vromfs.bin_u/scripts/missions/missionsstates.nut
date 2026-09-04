@@ -73,4 +73,5 @@ return {
   get_mutable_mission_settings = @() persist_state.mission_settings
   is_user_mission
   isCustomMissionFlight
+  isUrlMission = @(mission) "urlMission" in mission
 }

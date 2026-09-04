@@ -1,23 +1,23 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { setObjPosition } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { setObjPosition } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let wwBattleView = require("%scripts/worldWar/inOperation/view/wwBattleView.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { getBattleStatusWithCanJoinText
-} = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
+let { getBattleStatusWithCanJoinText } = require("%scripts/worldWar/inOperation/model/wwBattlesState.nut")
 
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
-gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
+let wwMapTooltip = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   controllerScene = null
 
@@ -65,7 +65,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
       currentId = ""
     }
     for (local i = 0; i < WW_MAP_TOOLTIP_TYPE.TOTAL; i++) {
-      let key = getTblValue("paramsKey", this.specifyTypeOrder[i])
+      let key = this.specifyTypeOrder[i]?.paramsKey
       if (key in p) {
         res.currentType = i
         res.currentId = p[key]
@@ -266,3 +266,6 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
       this.hideTooltip()
   }
 }
+register_gui_handler("wwMapTooltip", wwMapTooltip)
+
+return { wwMapTooltip }

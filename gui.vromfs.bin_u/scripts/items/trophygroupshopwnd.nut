@@ -1,18 +1,19 @@
+import "%sqstd/math.nut" as stdMath
+from "math" import ceil, floor, sqrt
 from "%scripts/dagui_natives.nut" import get_trophy_info
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
-let stdMath = require("%sqstd/math.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { ceil, floor, sqrt } = require("math")
+let { move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
-gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let TrophyGroupShopWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/items/trophyGroupShop.tpl"
@@ -56,7 +57,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function loadBitMask() {
-    this.bitMask = getTblValue("openMask", this.trophyInfo)
+    this.bitMask = this.trophyInfo?.openMask
     if (this.bitMask)
       return
 
@@ -68,7 +69,7 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(headerObj))
       return
 
-    let restText = "".concat(getTblValue("openCount", this.trophyInfo, 0), loc("ui/slash"), this.trophy.numTotal)
+    let restText = "".concat((this.trophyInfo?.openCount ?? 0), loc("ui/slash"), this.trophy.numTotal)
     headerObj.setValue("".concat(loc("mainmenu/itemReceived"), loc("ui/parentheses/space", { text = restText })))
   }
 
@@ -196,3 +197,6 @@ gui_handlers.TrophyGroupShopWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("warning_text", isPurchased, this.scene)
   }
 }
+register_gui_handler("TrophyGroupShopWnd", TrophyGroupShopWnd)
+
+return { TrophyGroupShopWnd }

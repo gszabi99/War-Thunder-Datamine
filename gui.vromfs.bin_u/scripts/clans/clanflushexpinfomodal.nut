@@ -1,18 +1,19 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { clanVehiclesModal } = require("%scripts/clans/clanVehiclesModal.nut")
 let { Cost } = require("%scripts/money.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { saveLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
-let { format } = require("string")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 
 const SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID = "skipped_msg/clanFlushExpInfo"
 
-let handlerClass = class (gui_handlers.clanVehiclesModal) {
+let handlerClass = class (clanVehiclesModal) {
   sceneTplName  = "%gui/clans/clanFlushExpInfoModal.tpl"
   maxSlotCountY = 2
   userlog = null
@@ -89,7 +90,7 @@ let handlerClass = class (gui_handlers.clanVehiclesModal) {
   }
 }
 
-gui_handlers.clanFlushExpInfoModal <- handlerClass
+register_gui_handler("clanFlushExpInfoModal", handlerClass)
 
 return {
   SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID

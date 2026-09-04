@@ -1,20 +1,16 @@
+from "dagor.math" import Point3
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt, mgGetEnemySide, mgCreateStartPoint
+  , mgCreateStartLookAt, mgSetupArmada, mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute, getAircraftCost
+  , getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgRemoveStrParam, gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector
+  , mgGetLevelName, mgEnsurePointsInMap, mgSetMinMaxAircrafts
+from "blkGetters" import get_warpoints_blk
 from "math" import sqrt, max, clamp
 
-let { Point3 } = require("dagor.math")
-let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace
-} = require("%scripts/dynamic/misGenFuncTools.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
-  mgGetEnemySide, mgCreateStartPoint, mgCreateStartLookAt, mgSetupArmada,
-  mgSetupArea, rndRange, rndRangeInt, getDistancePerMinute, getAircraftCost,
-  getAnyPlayerFighter, mgReplace, mgSetupAirfield, mgRemoveStrParam,
-  gmMarkCutsceneArmadaLooksLike, mgSetEffShootingRate, mgGetMissionSector,
-  mgGetLevelName, mgEnsurePointsInMap, mgSetMinMaxAircrafts
-} = require("dynamicMission")
-let { get_warpoints_blk } = require("blkGetters")
+let { getEnemyPlaneByWpCost, planeCostCalculate, warpointCalculate, slidesReplace } = require("%scripts/dynamic/misGenFuncTools.nut")
 
 function genCombatPatrolMission(_isFreeFlight) {
-  let mission_preset_name = "dogfight_preset01"
+  const mission_preset_name = "dogfight_preset01"
   mgBeginMission($"gameData/missions/dynamic_campaign/objectives/{mission_preset_name}.blk")
   let startPos = mgCreateStartPoint(0)
   let playerSide = mgGetPlayerSide()
@@ -42,9 +38,9 @@ function genCombatPatrolMission(_isFreeFlight) {
   let enemy1FighterPlane = enemyFighterPlane
   let enemy1FighterSpeed = getDistancePerMinute(enemy1FighterPlane)
   let enemy2FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide)
-  let enemy2FighterSpeed = getDistancePerMinute(enemy1FighterPlane)
+  let enemy2FighterSpeed = getDistancePerMinute(enemy2FighterPlane)
   let enemy3FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, enemySide)
-  let enemy3FighterSpeed = getDistancePerMinute(enemy1FighterPlane)
+  let enemy3FighterSpeed = getDistancePerMinute(enemy3FighterPlane)
 
   let ally1FighterPlane = getEnemyPlaneByWpCost(playerPlaneCost, playerSide)
   let ally1FighterSpeed = getDistancePerMinute(ally1FighterPlane)

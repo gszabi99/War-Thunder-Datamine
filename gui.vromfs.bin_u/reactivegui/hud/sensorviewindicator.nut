@@ -1,8 +1,9 @@
+from "%rGui/utils/cacheDasScriptForView.nut" import getDasScriptByPath
 from "%rGui/globals/ui_library.nut" import *
-let { getDasScriptByPath } = require("%rGui/utils/cacheDasScriptForView.nut")
+from "%globalScripts/gameRendObjs.nut" import *
 
 let sensorViewIndicatorsDas = {
-  size = flex()
+  size = FLEX
   rendObj = ROBJ_DAS_CANVAS
   script = getDasScriptByPath("%rGui/hud/sensorViewIndicator.das")
   drawFunc = "draw"

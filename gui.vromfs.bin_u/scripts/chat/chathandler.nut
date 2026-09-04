@@ -1,5 +1,5 @@
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
 
 let menuChatHandler = Watched(null)
 

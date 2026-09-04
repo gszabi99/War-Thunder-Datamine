@@ -9,7 +9,23 @@
     "antiShipBomb": true
   },
   "torpedo": {
-    "armDistance": 50.0,
+    "bulletType": "torpedo",
+    "caliber": 0.45,
+    "mass": 702.0,
+    "mass_lbs": 1548.0,
+    "explosiveMass": 176.0,
+    "explosiveType": "tnt",
+    "dragCx": 0.24,
+    "distToLive": 3200.0,
+    "maxSpeedInWater": 13.89,
+    "diveDepth": 1.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "startPropulsionDelay": 0.1,
+    "armDistance": [
+      50.0,
+      50.0
+    ],
     "dropSpeedRange": [
       0.0,
       78.0
@@ -22,33 +38,10 @@
       -20.0,
       20.0
     ],
-    "bulletType": "torpedo",
-    "distToLive": 3200.0,
-    "maxSpeedInWater": 13.89,
-    "diveDepth": 1.0,
     "detonationRadius": 0.1,
     "detonationDepth": 1.0,
-    "caliber": 0.45,
-    "mass": 702.0,
-    "mass_lbs": 1548.0,
-    "explosiveType": "tnt",
-    "explosiveMass": 176.0,
-    "splashFallBySquare": true,
-    "dragCx": 0.24,
-    "startPropulsionDelay": 0.1,
     "autoaimEnabled": false,
-    "aaMaxAimAngle": 0.0,
-    "aaSpeedPrediction": 0.0,
-    "aaAccelPrediction": 0.0,
-    "aaAngleCorrection": 0.0,
-    "relativeVelArmorShift": [
-      200.0,
-      1000.0
-    ],
-    "relativeVelHitShift": [
-      300.0,
-      1000.0
-    ],
+    "splashFallBySquare": true,
     "fxGroundDust": "dust_ground_explosions_wave_dirt_med",
     "fxGrassDust": "dust_ground_explosions_wave_dirt_med",
     "fxSandDust": "dust_ground_explosions_wave_sand_med",
@@ -89,6 +82,13 @@
         40.0
       ]
     },
+    "DamageParts": {
+      "body": {
+        "hp": 100.0,
+        "armorClass": "ship_structural_steel",
+        "armorThickness": 1.0
+      }
+    },
     "pressureDamage": {
       "damageType": "hydroShock"
     },
@@ -118,13 +118,6 @@
             "countPortion": 0.5
           }
         ]
-      }
-    },
-    "DamageParts": {
-      "body": {
-        "hp": 100.0,
-        "armorClass": "ship_structural_steel",
-        "armorThickness": 1.0
       }
     },
     "collisions": {

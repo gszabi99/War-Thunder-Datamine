@@ -1,37 +1,43 @@
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import get_mission_mode
+from "unit" import get_player_unit_name, get_cur_unit_weapon_preset
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "aimingMemPoints" import is_aiming_points_enabled, can_use_aiming_points
+from "controls" import isXInputDevice
+from "string" import format
+from "mission" import get_game_type, get_cur_game_mode_name, get_game_mode
+from "guiMission" import get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active, is_aircraft_player, set_tactical_screen_player, get_player_group
+  , get_current_mission_desc, is_allow_to_choose_hud_icon_preset, ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
+from "scriptRespondent" import registerRespondent
+from "guiTacticalMap" import setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
+  , isPointOfInterestSet, setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset
+from "hudActionBar" import getActionBarUnitName
+from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType, applyMapHudType
+from "vehicleModel" import hasSightStabilization
+from "%globalScripts/gameTypeConsts.nut" import *
 from "gameplayBinding" import isInFlight, closeIngameGui
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "guiRespawn" import isRespawnScreen
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/hudNativeConsts.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/options/optionsExtNames.nut" import USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY
 
-let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
-let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { is_aiming_points_enabled = @() false, can_use_aiming_points = @() false } = require("aimingMemPoints")
-let { isXInputDevice } = require("controls")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { register_gui_handler, get_gui_handler, has_gui_handler, is_gui_handler_instance } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ArtilleryMap } = require("%scripts/artilleryMap.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getWeaponShortTypeFromWpName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { get_game_type, get_cur_game_mode_name, get_game_mode } = require("mission")
-let { get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active,
-  is_aircraft_player, set_tactical_screen_player, get_player_group, get_current_mission_desc,
-  is_allow_to_choose_hud_icon_preset,
-  ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { setMissionEnviroment, getLevelMapBackgroundColors } = require("%scripts/missions/missionsUtils.nut")
 let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
-let { registerRespondent } = require("scriptRespondent")
-let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
-  setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet,
-  setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset } = require("guiTacticalMap")
-let { hasSightStabilization } = require("vehicleModel")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { hudHintsManagerInit, hudHintsManagerReinit } = require("%scripts/hud/hudHintsManager.nut")
-let DataBlock = require("DataBlock")
 let { fillSwitchMapTypeBtn } = require("%scripts/tacticalMapUtils.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { MapAimPointWeaponSelector } = require("%scripts/respawn/aimMemPointsSelector.nut")
@@ -40,7 +46,7 @@ dagui_propid_add_name_id("permanentMapTool")
 
 function gui_start_tactical_map(params = {}) {
   let { forceTacticalControl = false } = params
-  handlersManager.loadHandler(gui_handlers.TacticalMap, { forceTacticalControl })
+  handlersManager.loadHandler(get_gui_handler("TacticalMap"), { forceTacticalControl })
 }
 
 function gui_start_tactical_map_tc(_) {
@@ -50,7 +56,7 @@ function gui_start_tactical_map_tc(_) {
 eventbus_subscribe("gui_start_tactical_map", gui_start_tactical_map)
 eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
-gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
+let TacticalMap = class (BaseGuiHandlerWT) {
     sceneBlkName = "%gui/tacticalMap.blk"
     shouldBlurSceneBg = true
     shouldOpenCenteredToCameraInVr = true
@@ -177,6 +183,10 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
         let markup = create_option_combobox("hud_icon_preset_select", locPresets, curPresetIdx, null, false)
         this.guiScene.replaceContentFromText(comboBox, markup, markup.len(), this)
       }
+
+      this.scene.findObject("tooltips_switch_box").setValue(
+        get_gui_option_in_mode(USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY, true)
+      )
 
       setAllowMoveCenter(false)
       this.resetPointOfInterestMode()
@@ -519,14 +529,24 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
    }
 
    function onForcedSetHudType(obj) {
-    local curHudType = getCurHudType()
+    let unitName = getActionBarUnitName()
+    if (unitName == "")
+      return
+
+    local curHudType = getCachedMapHudType(unitName) ?? getCurHudType()
     if (curHudType == HUD_TYPE_UNKNOWN) {
       curHudType = this.isCurUnitAircraft() ? HUD_TYPE_AIRPLANE : HUD_TYPE_TANK
     }
 
     let isSwitchToTankHud = curHudType == HUD_TYPE_AIRPLANE
-    setForcedHudType(isSwitchToTankHud ? HUD_TYPE_TANK : HUD_TYPE_AIRPLANE)
+    let nextHudType = isSwitchToTankHud ? HUD_TYPE_TANK : HUD_TYPE_AIRPLANE
+    setForcedHudType(nextHudType)
+    setCachedMapHudType(unitName, nextHudType)
     obj.findObject("hud_type_img")["background-image"] = isSwitchToTankHud  ? "#ui/gameuiskin#objective_fighter.svg" : "#ui/gameuiskin#objective_tank.svg"
+  }
+
+  function onTooltipsVisible(obj) {
+    set_gui_option_in_mode(USEROPT_SHOW_HUD_MAP_TOOLTIP, obj.getValue(), OPTIONS_MODE_GAMEPLAY)
   }
 
   function onHudIconPresetSelect(obj) {
@@ -561,19 +581,26 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
+    let unitName = getActionBarUnitName()
+    if (unitName != "" && getAircraftByName(unitName)?.isHuman())
+      applyMapHudType(HUD_TYPE_INFANTRY, false)
     if (this.aimMemPointsSelector) {
       this.aimMemPointsSelector.destroy()
       this.aimMemPointsSelector = null
     }
   }
+
+  onAssistantMapQrCode = @() null
 }
+register_gui_handler("TacticalMap", TacticalMap)
 
 registerRespondent("is_tactical_map_active", function is_tactical_map_active() {
-  if (!("TacticalMap" in gui_handlers))
+  if (!(has_gui_handler("TacticalMap")))
     return false
   let curHandler = handlersManager.getActiveBaseHandler()
-  return curHandler != null &&  (curHandler instanceof gui_handlers.TacticalMap ||
-    curHandler instanceof gui_handlers.ArtilleryMap || curHandler instanceof gui_handlers.RespawnHandler)
+  return curHandler != null && (curHandler instanceof TacticalMap
+    || curHandler instanceof ArtilleryMap
+    || is_gui_handler_instance(curHandler, "RespawnHandler"))
 })
 
 return {

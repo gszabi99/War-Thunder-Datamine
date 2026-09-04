@@ -82,11 +82,11 @@ decorCategory[selected=yes] > header > fullSizeCollapseBtn[selected=yes] > text 
 }
 
 decorPanels[currentPanel = categories] > categoriesPanel,
-decorPanels[currentPanel = decorators] > decoratorsPanel {
+decorPanels[currentPanel = search_result] > searchResultPanel {
   display:show;
 }
 
-decorPanels[currentPanel = categories] > decoratorsPanel,
-decorPanels[currentPanel = decorators] > categoriesPanel {
+decorPanels[currentPanel = categories] > searchResultPanel,
+decorPanels[currentPanel = search_result] > categoriesPanel {
   display:hide;
 }

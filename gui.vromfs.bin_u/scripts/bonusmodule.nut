@@ -1,8 +1,8 @@
+import "%sqstd/math.nut" as stdMath
+from "string" import format
 from "%scripts/dagui_natives.nut" import wp_shop_get_aircraft_wp_rate, wp_shop_get_aircraft_xp_rate
 from "%scripts/dagui_library.nut" import *
-
-let { format } = require("string")
-let stdMath = require("%sqstd/math.nut")
+from "types" import String
 
 let allowingMultCountry = [1.5, 2, 2.5, 3, 4, 5]
 let allowingMultAircraft = [1.3, 1.5, 2, 2.5, 3, 4, 5, 10]
@@ -90,7 +90,7 @@ function getBonus(exp, wp, imgType, placeType = "", airName = "") {
   let image = getBonusImage(imgType, multiplier, airName == "" ? "country" : "air")
 
   local tooltipText = ""
-  let locEnd = (type(airName) == "string") ? "/tooltip" : "/group/tooltip"
+  let locEnd = (airName instanceof String) ? "/tooltip" : "/group/tooltip"
   if (imgColor != "") {
     tooltipText = exp <= 1.0
       ? tooltipText
@@ -124,7 +124,7 @@ function showAirExpWpBonus(obj, airName, showExp = true, showWp = true) {
     return
 
   local exp, wp = 1.0
-  if (type(airName) == "string") {
+  if (airName instanceof String) {
     exp = showExp ? wp_shop_get_aircraft_xp_rate(airName) : 1.0
     wp = showWp ? wp_shop_get_aircraft_wp_rate(airName) : 1.0
   }

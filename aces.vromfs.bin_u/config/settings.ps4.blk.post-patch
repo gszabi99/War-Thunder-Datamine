@@ -35,8 +35,12 @@
   "@override:voxelShadows" {
     cascadeCount:i = 0
   }
-  "@override:dynamicLightsShadows" {
-    "@override:dynamicShadowsMaxUpdatePerFrame":i = 1
+  "@override:ps4shadows" {
+    "@override:dynamicLightsShadows" {
+      "@override:infantry" {
+        "@override:shadowQuality":i = 0
+      }
+    }
   }
 }
 

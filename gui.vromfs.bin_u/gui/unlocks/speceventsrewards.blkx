@@ -53,7 +53,7 @@
                 "id": "achivment_ico",
                 "position": "relative",
                 "pos": "(pw-w)/2, (ph-h)/2",
-                "size": "@rewardImgSize, @rewardImgSize"
+                "size": "0.75*pw, 0.75*pw"
               }
             },
             {
@@ -84,18 +84,30 @@
                   "background-svg-size": "@mIco, @mIco"
                 }
               },
-              "hoverButton": {
-                "id": "preview_prize_btn",
-                "position": "relative",
-                "pos": "pw-w-2@blockInterval, (ph-h)/2",
-                "unlockId": "",
-                "on_click": "onPrizePreview",
-                "tooltip": "#mainmenu/btnPreview",
-                "hasTransparentBG": "yes",
-                "icon": {
-                  "background-image": "#ui/gameuiskin#btn_preview.svg"
+              "hoverButton": [
+                {
+                  "id": "preview_prize_btn",
+                  "position": "relative",
+                  "pos": "pw-w-2@blockInterval, (ph-h)/2",
+                  "unlockId": "",
+                  "on_click": "onPrizePreview",
+                  "tooltip": "#mainmenu/btnPreview",
+                  "icon": {
+                    "background-image": "#ui/gameuiskin#btn_preview.svg"
+                  }
+                },
+                {
+                  "id": "show_prizes_btn",
+                  "position": "relative",
+                  "pos": "pw-w-2@blockInterval, (ph-h)/2",
+                  "trophyId": "",
+                  "on_click": "showUnlockPrizes",
+                  "tooltip": "#mainmenu/btnPreview",
+                  "icon": {
+                    "background-image": "#ui/gameuiskin#btn_dice.svg"
+                  }
                 }
-              }
+              ]
             }
           ],
           "challengeDescriptionProgress": {

@@ -1,8 +1,8 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "blkGetters" import get_shop_blk
 from "%scripts/dagui_library.nut" import *
 
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_shop_blk } = require("blkGetters")
 
 let shopCountriesList = persist("shopCountriesList", @() [])
 

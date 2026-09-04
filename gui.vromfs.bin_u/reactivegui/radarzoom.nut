@@ -1,9 +1,9 @@
+from "%rGui/radarState.nut" import RadarModeNameId, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax
+from "radarGuiControls" import resetRadarZoom
+from "math" import abs
 from "%rGui/globals/ui_library.nut" import *
-let { RadarModeNameId, ScanAzimuthMin, ScanAzimuthMax, ScanElevationMin, ScanElevationMax } = require("%rGui/radarState.nut")
-let { resetRadarZoom } = require("radarGuiControls")
-let { abs } = require("math")
 
-let triggerDelta = 0.05
+const triggerDelta = 0.05
 
 local scanAzimuthRangeCached = 0.0
 let scanAzimuthRange = keepref(Computed(@() ScanAzimuthMax.get() - ScanAzimuthMin.get()))

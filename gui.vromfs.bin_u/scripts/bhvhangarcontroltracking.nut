@@ -1,13 +1,13 @@
+from "hangar" import hangar_enable_controls
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { hangar_enable_controls } = require("hangar")
 
 
 
 
 
-
-let class HangarControlTracking {
+class HangarControlTracking {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_NOT_ON_OBJ | EV_MOUSE_HOVER_CHANGE
   isActivatePushedPID     = dagui_propid_add_name_id("_isActivatePushed")
 

@@ -1,8 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "blkGetters" import get_skins_blk
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
-let { get_skins_blk } = require("blkGetters")
-let { eventbus_subscribe } = require("eventbus")
+
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 
 let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")

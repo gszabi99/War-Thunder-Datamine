@@ -14,7 +14,11 @@
     }
   },
   "attachable_chest_armor": {
-    "_use": "attachable_wear",
+    "_use": [
+      "attachable_wear",
+      "node_collapser"
+    ],
+    "animchar_node_collapser__camThreshold": 0.35,
     "item__equipToSlots:array": {
       "slot": "chest_armor"
     },
@@ -22,7 +26,19 @@
       "hideFlag": "chest_armor"
     },
     "bipodDontHideAttach:tag": {},
-    "vehicleDontHideAttachButChildren:tag": {}
+    "vehicleDontHideAttachButChildren:tag": {},
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine": "Bip01 Pelvis",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
+      }
+    }
   },
   "attachable_chest_vest": {
     "_use": "attachable_wear",
@@ -59,6 +75,7 @@
     "animchar__res": "lbx_armatus2_char",
     "collres__res": "lbx_armatus2_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
@@ -203,6 +220,7 @@
     "collres__res": "lbx_armatus2_w_pouches_collision",
     "animchar_fast_phys__res": "lbx_armatus2_w_pouches_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "animchar_fast_phys": {
       "_tags": "gameClient"
@@ -415,6 +433,7 @@
     "animchar__res": "m69_frag_jacket_char",
     "collres__res": "m69_frag_jacket_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -498,6 +517,7 @@
     "animchar__res": "kora_vo_armor_w_pouches_char",
     "collres__res": "kora_vo_armor_w_pouches_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_attaches__disableAnimDistance": 30.0,
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
@@ -593,6 +613,7 @@
     "animchar__res": "asdag_vest_char",
     "collres__res": "asdag_vest_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -917,6 +938,7 @@
     "animchar__res": "sns_plate_frame_char",
     "collres__res": "sns_plate_frame_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_attaches__disableAnimDistance": 30.0,
     "animchar_node_collapser__camThreshold": 0.15,
     "attaches_list:list<eid>": {},
@@ -1056,6 +1078,7 @@
     "collres__res": "6B2_armor_collision",
     "animchar_fast_phys__res": "6B2_armor_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_fast_phys": {
       "_tags": "gameClient"
     },
@@ -1212,6 +1235,7 @@
     "collres__res": "iotv_gen3_base_w_pouches_collision",
     "animchar_fast_phys__res": "iotv_gen3_base_w_pouches_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "animchar_fast_phys": {
       "_tags": "gameClient"
@@ -1396,6 +1420,7 @@
     "collres__res": "iotv_gen3_full_w_pouches_collision",
     "animchar_fast_phys__res": "iotv_gen3_full_w_pouches_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "animchar_fast_phys": {
       "_tags": "gameClient"
@@ -1666,6 +1691,7 @@
     "animchar__res": "pasgt_body_armor_char",
     "collres__res": "pasgt_body_armor_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -1683,6 +1709,7 @@
     "animchar__res": "pasgt_armor_w_webbing_char",
     "collres__res": "pasgt_armor_w_webbing_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
       "slot": [
@@ -2521,6 +2548,7 @@
     "animchar__res": "mnla_vest_tier2_char",
     "collres__res": "mnla_vest_tier2_collision",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "attaches_list:list<eid>": {},
     "skeleton_attach__remapAffectSlots:list<t>": {
@@ -2543,6 +2571,7 @@
     "collres__res": "mnla_vest_tier2_heavy_collision",
     "animchar_fast_phys__res": "mnla_vest_tier2_heavy_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "animchar_fast_phys": {
       "_tags": "gameClient"
@@ -2568,6 +2597,7 @@
     "collres__res": "fama_vest_collision",
     "animchar_fast_phys__res": "fama_vest_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "animchar_fast_phys": {
       "_tags": "gameClient"
@@ -2593,6 +2623,7 @@
     "collres__res": "fama_vest_heavy_collision",
     "animchar_fast_phys__res": "fama_vest_heavy_fastphys",
     "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_node_collapser__camThreshold": 0.15,
     "animchar_fast_phys": {
       "_tags": "gameClient"
@@ -2607,5 +2638,11 @@
         "Bip01 Spine1": ""
       }
     }
+  },
+  "attachable_wear_6b515_armor_item": {
+    "_use": "attachable_chest_armor",
+    "item__uniqueName": "attachable_wear_6b515_armor_item",
+    "animchar__res": "6b515_armor_char",
+    "collres__res": "6b515_armor_collision"
   }
 }

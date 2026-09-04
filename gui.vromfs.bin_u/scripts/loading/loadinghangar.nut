@@ -1,12 +1,12 @@
+from "loading" import loading_is_finished, loading_press_apply
 from "%scripts/dagui_library.nut" import *
 
-
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { loading_is_finished, loading_press_apply } = require("loading")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 
-gui_handlers.LoadingHangarHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let LoadingHangarHandler = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/loading/loadingHangar.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
@@ -27,3 +27,6 @@ gui_handlers.LoadingHangarHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       loading_press_apply()
   }
 }
+register_gui_handler("LoadingHangarHandler", LoadingHangarHandler)
+
+return { LoadingHangarHandler }

@@ -1,22 +1,20 @@
+from "math" import floor
+from "string" import format
+from "replays" import restartReplay, getReplayTotalTime, getCameraFov, setCameraFov, getFreeCameraInertia, setFreeCameraInertia, getFreeCameraZoomSpeed
+  , setFreeCameraZoomSpeed, getFreeCameraMaxSpeed, setFreeCameraMaxSpeed, getFreeCameraMaxOrientSpeed, setFreeCameraMaxOrientSpeed, resetCameraRoll, turnOnFreeCamera
+  , getEnabledDepthofField, setEnabledDepthofField, getNearDistance, getNearFadeDistance, getNearBlur, setNearDistances, setLinearBlend
+  , getFarDistance, getFarFadeDistance, getFarBlur, setFarDistances, trackEditorLoadKeyTrack, trackEditorAddKey, trackEditorRemoveLastKey
+  , trackEditorClearAllKeys, trackEditorJumpPrevKey, trackEditorJumpNextKey, trackEditorGetCurEditTime, trackEditorGetKeyNumber, trackEditorGetCurKeyTime, trackEditorGetCurKeyFov
+  , trackEditorGetCurKeyRoll, getPlayKeysPosition, setPlayKeysPosition, getPlayKeysRotation, setPlayKeysRotation, getPlayKeysRoll, setPlayKeysRoll
+  , getPlayKeysFov, setPlayKeysFov
 from "%scripts/dagui_library.nut" import *
 from "app" import pauseGame
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { floor } = require("math")
-let { format } = require("string")
 
-let { restartReplay, getReplayTotalTime, getCameraFov, setCameraFov,
-  getFreeCameraInertia, setFreeCameraInertia, getFreeCameraZoomSpeed, setFreeCameraZoomSpeed,
-  getFreeCameraMaxSpeed, setFreeCameraMaxSpeed, getFreeCameraMaxOrientSpeed, setFreeCameraMaxOrientSpeed,
-  resetCameraRoll, turnOnFreeCamera, getEnabledDepthofField, setEnabledDepthofField,
-  getNearDistance, getNearFadeDistance, getNearBlur, setNearDistances, setLinearBlend,
-  getFarDistance, getFarFadeDistance, getFarBlur, setFarDistances,
-  trackEditorLoadKeyTrack, trackEditorAddKey, trackEditorRemoveLastKey, trackEditorClearAllKeys,
-  trackEditorJumpPrevKey, trackEditorJumpNextKey, trackEditorGetCurEditTime, trackEditorGetKeyNumber,
-  trackEditorGetCurKeyTime, trackEditorGetCurKeyFov, trackEditorGetCurKeyRoll, getPlayKeysPosition,
-  setPlayKeysPosition, getPlayKeysRotation, setPlayKeysRotation, getPlayKeysRoll, setPlayKeysRoll,
-  getPlayKeysFov, setPlayKeysFov } = require("replays")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 
 
 let near_dof_ids = ["neardof_distance_slider", "neardof_fade_distance_slider", "neardof_blur_slider", "soft_render_checkbox"]
@@ -275,10 +273,10 @@ function changeFarDistances() {
   setFarDistances(fardof_distance_slider.value, fardof_fade_distance_slider.value, fardof_blur_slider.value)
 }
 
-let class ReplaySystem (gui_handlers.BaseGuiHandlerWT) {
+class ReplaySystem (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/replays/replaySystemWindow.blk"
-  wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU
+  wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FLIGHT_MENU | CtrlsInGui.CTRL_ALLOW_MP_CHAT
 
   function initScreen() {
     turnOnFreeCamera()
@@ -365,12 +363,12 @@ let class ReplaySystem (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.ReplaySystem <- ReplaySystem
+register_gui_handler("ReplaySystem", ReplaySystem)
 
 return {
   replaySystemWindowOpen = @() handlersManager.loadHandler(ReplaySystem, {})
   replaySystemWindowClose = function() {
-    local handler = handlersManager.findHandlerClassInScene(gui_handlers.ReplaySystem)
+    local handler = handlersManager.findHandlerClassInScene(ReplaySystem)
     if (handler) {
       pauseGame(false)
       handler.switchControlsAllowMask(CtrlsInGui.CTRL_ALLOW_FULL)

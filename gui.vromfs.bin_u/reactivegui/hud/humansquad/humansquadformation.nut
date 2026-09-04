@@ -1,12 +1,12 @@
-from "%rGui/globals/ui_library.nut" import *
 import "%sqstd/ecs.nut" as ecs
+from "%rGui/hud/state/controlledHeroEid.nut" import controlledHeroEid
+from "%rGui/common_queries.nut" import find_local_player
+from "%rGui/hud/humanSquad/humanEnums.nut" import SquadFormationSpreadEnum
+from "%rGui/globals/ui_library.nut" import *
 
 
-let { controlledHeroEid } = require("%rGui/hud/state/controlledHeroEid.nut")
-let { find_local_player } = require("%rGui/common_queries.nut")
-let { SquadFormationSpreadEnum } = require("%rGui/hud/humanSquad/humanEnums.nut")
 
-let SQUAD_FORMATION_ORDER_ID = "ai/squadFormationOrder"
+const SQUAD_FORMATION_ORDER_ID = "ai/squadFormationOrder"
 
 let savedSquadFormationOrders = mkWatched(persist, SQUAD_FORMATION_ORDER_ID, {})
 let DEFAULT_FORMATION = SquadFormationSpreadEnum.ESFN_STANDARD
@@ -33,7 +33,7 @@ let squadProfileIdQuery = ecs.SqQuery("squadProfileIdQuery", {
 })
 
 function setSquadFormation(formation) {
-  heroSquadEidQuery(controlledHeroEid.value, function(_, comp) {
+  heroSquadEidQuery(controlledHeroEid.get(), function(_, comp) {
     let squadEid = comp.squad_member__squad
     applyNewFormation(squadEid, formation)
     squadProfileIdQuery(squadEid, @(_, compPrfl) saveSquadFormation(compPrfl.squad__squadProfileId, formation))
@@ -46,8 +46,8 @@ function applyFormationOrderOnSpawnSquad(_evt, eid, comp) {
     return
   let squadProfileId = comp.squad__squadProfileId
 
-  if (squadProfileId in savedSquadFormationOrders)
-    applyNewFormation(eid, savedSquadFormationOrders[squadProfileId])
+  if (squadProfileId in savedSquadFormationOrders.get())
+    applyNewFormation(eid, savedSquadFormationOrders.get()[squadProfileId])
   else
     squadFormation.set(DEFAULT_FORMATION)
 }

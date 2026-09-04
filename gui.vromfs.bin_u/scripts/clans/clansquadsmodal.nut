@@ -1,16 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%scripts/squads/squadApplications.nut" as squadApplications
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-import "%scripts/squads/squadApplications.nut" as squadApplications
 
-let { getRoomById } = require("%scripts/chat/chatRooms.nut")
+let { getRoomById } = require("%scripts/chat/chatStorage.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { posNavigator } = require("%sqDagui/guiBhv/bhvPosNavigator.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { posNavigator } = require("%scripts/sqDagui/guiBhv/bhvPosNavigator.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { clanSquadInfoWnd } = require("%scripts/clans/clanSquadInfoWnd.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let squadsListData = require("%scripts/squads/clanSquadsList.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
@@ -27,7 +28,7 @@ const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
 dagui_propid_add_name_id("leaderUid")
 
-gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let MyClanSquadsListModal = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSquadsModal.blk"
   squadsListObj = null
@@ -83,7 +84,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   selectedIndex = 0
 
   static function open() {
-    loadHandler(gui_handlers.MyClanSquadsListModal)
+    loadHandler(get_gui_handler("MyClanSquadsListModal"))
   }
 
   function initScreen() {
@@ -367,7 +368,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     obj = this.getSquadObj(this.curList.indexof(actionSquad)).findObject("btn_squad_info")
-    gui_handlers.clanSquadInfoWnd.open(obj, actionSquad)
+    clanSquadInfoWnd.open(obj, actionSquad)
   }
 
   function onEventPlayerApplicationsChanged(params) {
@@ -472,3 +473,6 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("MyClanSquadsListModal", MyClanSquadsListModal)
+
+return { MyClanSquadsListModal }

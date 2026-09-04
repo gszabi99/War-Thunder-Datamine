@@ -1,9 +1,9 @@
+import "%rGui/killLogState.nut" as killLogState
+import "%rGui/components/hudLog.nut" as hudLog
+import "%rGui/style/teamColors.nut" as teamColors
 from "%rGui/globals/ui_library.nut" import *
 
-let killLogState = require("%rGui/killLogState.nut")
 let scrollableData = require("%rGui/components/scrollableData.nut")
-let hudLog = require("%rGui/components/hudLog.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
 let fontsState = require("%rGui/style/fontsState.nut")
 
 let logEntryComponent = function (log_entry) {

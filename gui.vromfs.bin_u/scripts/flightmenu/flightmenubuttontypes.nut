@@ -1,14 +1,14 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "replays" import is_replay_playing
+from "mission" import is_benchmark_game_mode, get_game_mode
+from "guiMission" import ERT_ATTEMPTS, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL, get_mission_restore_type, get_num_attempts_left, get_mission_status
 from "%scripts/dagui_natives.nut" import toggle_freecam
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let { canRestart, canBailout } = require("%scripts/flightMenu/flightMenuState.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { is_replay_playing } = require("replays")
-let { is_benchmark_game_mode, get_game_mode } = require("mission")
-let { ERT_ATTEMPTS, MISSION_STATUS_SUCCESS, MISSION_STATUS_FAIL,
-  get_mission_restore_type, get_num_attempts_left, get_mission_status } = require("guiMission")
 
 let buttons = {
   types = []

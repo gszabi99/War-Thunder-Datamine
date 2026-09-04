@@ -13,7 +13,6 @@ def human_anim_aim_es(info : ParallelUpdateFrameDelayed;
                       human_anim__isFpv : bool;
                       transform : float3x4;
                       human_anim__rootRotateVarId : int;
-                      human_anim__fullBodyRootRotateVarId : int;
                       motion_matching__controller : MotionMatchingController;
                       human_net_phys : HumanActor;
                       var phys_vars : PhysVars)
@@ -28,4 +27,3 @@ def human_anim_aim_es(info : ParallelUpdateFrameDelayed;
   let mmRootAngles = basis_aware_dir_to_angles(mmRootDir, up, dir)
   let mmRootTargetDegrees = clamp(rad_to_deg(-mmRootAngles.x), -60.0, 60.0)
   phys_vars |> setVar(human_anim__rootRotateVarId, mmRootTargetDegrees)
-  phys_vars |> setVar(human_anim__fullBodyRootRotateVarId, mmRootTargetDegrees)

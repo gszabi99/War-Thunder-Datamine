@@ -1,14 +1,15 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "unit" import get_player_unit_name
+from "hangar" import hangar_get_current_unit_name, hangar_move_cam_to_unit_place
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 
-let { get_player_unit_name } = require("unit")
-let { hangar_get_current_unit_name, hangar_move_cam_to_unit_place } = require("hangar")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { profileCountrySq, switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
-let { isInFlight } = require("gameplayBinding")
 
 local isFallbackUnitInHangar = null
 let hangarDefaultUnits = {}
@@ -90,5 +91,3 @@ return {
   setShowUnit
   getPlayerCurUnit
 }
-
-

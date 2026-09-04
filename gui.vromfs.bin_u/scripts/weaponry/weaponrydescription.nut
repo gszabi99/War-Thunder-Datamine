@@ -1,24 +1,24 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
+from "%sqstd/math.nut" import round_by_value
+from "%sqstd/string.nut" import utf8Capitalize
+from "chardResearch" import shopIsModificationPurchased
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import shop_is_weapon_purchased
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
+from "types" import String
 
 let { g_difficulty, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { round_by_value } = require("%sqstd/math.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon,
-  getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon,
-  getWeaponExtendedInfo } = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getLastWeapon, getUnitWeaponry, isCaliberCannon, addWeaponsFromBlk, getCommonWeapons, getLastPrimaryWeapon, getWeaponExtendedInfo } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getBulletsSetData, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
 let { reloadCooldownTimeByCaliber } = require("%scripts/weaponry/weaponsParams.nut")
 let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { utf8Capitalize } = require("%sqstd/string.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
 let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
@@ -132,7 +132,7 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   let res = {
     p = updatedParams
   }
-  unit = type(unit) == "string" ? getAircraftByName(unit) : unit
+  unit = unit instanceof String ? getAircraftByName(unit) : unit
   if (!unit)
     return res
 
@@ -192,7 +192,7 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
 
 function getWeaponInfoText(unit, weaponInfoData) {
   local text = ""
-  unit = type(unit) == "string" ? getAircraftByName(unit) : unit
+  unit = unit instanceof String ? getAircraftByName(unit) : unit
   if (!unit)
     return text
 
@@ -377,10 +377,10 @@ function getWeaponShortType(_unit, weapon) {
 }
 
 function getWeaponShortTypeFromWpName(wpName, unit = null) {
-  if (!wpName || type(wpName) != "string")
+  if (!wpName || !(wpName instanceof String))
     return ""
 
-  if (type(unit) == "string")
+  if (unit instanceof String)
     unit = getAircraftByName(unit)
 
   if (!unit)

@@ -1,7 +1,9 @@
+from "%rGui/style/screenState.nut" import bw, bh
+from "dagor.debug" import logerr
 from "%rGui/globals/ui_library.nut" import *
-let { logerr } = require("dagor.debug")
+from "types" import Array, String
+
 let fontsState = require("%rGui/style/fontsState.nut")
-let { bw, bh } = require("%rGui/style/screenState.nut")
 
 let state = Watched(null)
 local curContent = null
@@ -34,7 +36,7 @@ let mkTooltipText = @(text, ovr = {}) {
 }.__update(ovr)
 
 function calcPosition(rectOrPos, flow, flowOffset, halign, valign) {
-  let isArray = type(rectOrPos) == "array"
+  let isArray = rectOrPos instanceof Array
   assert(isArray || (("l" in rectOrPos) && ("b" in rectOrPos)))
   let res = {
     pos = isArray ? rectOrPos : [rectOrPos.l, rectOrPos.t]
@@ -82,15 +84,15 @@ function showTooltip(rectOrPos, params) {
     hideTooltip()
     return
   }
-  let content = type(params) == "string" ? params : params?.content
+  let content = params instanceof String ? params : params?.content
   if (content == null || content == "") {
     logerr("try to show tooltip with empty content")
     hideTooltip()
     return
   }
 
-  let newState = TOOLTIP_PARAMS.__merge(type(params) == "string" ? { content } : params)
-  if (type(content) != "string") {
+  let newState = TOOLTIP_PARAMS.__merge(params instanceof String ? { content } : params)
+  if (!(content instanceof String)) {
     curContent = content
     newState.content = null
   }

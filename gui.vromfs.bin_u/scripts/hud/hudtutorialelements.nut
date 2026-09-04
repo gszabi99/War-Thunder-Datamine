@@ -1,17 +1,17 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "eventbus" import eventbus_subscribe
+from "%sqstd/datablock.nut" import getBlkValueByPath, blkOptFromPath
+from "guiMission" import get_current_mission_desc
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_natives.nut" import get_file_modify_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe } = require("eventbus")
-let DataBlock = require("DataBlock")
-let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
-let { get_current_mission_desc } = require("guiMission")
-let { isInFlight } = require("gameplayBinding")
 let HudTutorialObject = require("%scripts/hud/hudTutorialObject.nut")
 
 let visibleHTObjects = persist("visibleHTObjects", @() {})
@@ -101,7 +101,7 @@ g_hud_tutorial_elements.reinit <- function reinit() {
 }
 
 g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, show, timeSec = -1) {
-  local htObj = getTblValue(id, this.visibleHTObjects)
+  local htObj = this.visibleHTObjects?[id]
   if (!show) {
     if (htObj) {
       htObj.show(false)
@@ -124,7 +124,7 @@ g_hud_tutorial_elements.updateVisibleObject <- function updateVisibleObject(id, 
 }
 
 g_hud_tutorial_elements.updateObjTimer <- function updateObjTimer(objId, htObj) {
-  let curTimer = getTblValue(objId, this.timers)
+  let curTimer = this.timers?[objId]
   if (!htObj || !htObj.hasTimer() || !htObj.isVisibleByTime()) {
     if (curTimer) {
       curTimer.destroy()
@@ -152,9 +152,9 @@ g_hud_tutorial_elements.onElementToggle <- function onElementToggle(data) {
   if (!this.active || !checkObj(this.scene))
     return
 
-  let objId   = getTblValue("element", data, null)
-  let show  = getTblValue("show", data, false)
-  let timeSec = getTblValue("time", data, 0)
+  let objId   = data?.element
+  let show  = (data?.show ?? false)
+  let timeSec = (data?.time ?? 0)
 
   let htObj = this.updateVisibleObject(objId, show, timeSec)
   this.updateObjTimer(objId, htObj)

@@ -1,7 +1,9 @@
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/contacts/contactsConsts.nut" import EPLX_PS4_FRIENDS, getMaxContactsByGroup
+
 let { contactsByGroups } = require("%scripts/contacts/contactsListState.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 
 function isPlayerInContacts(uid, groupName) {
   if (!(groupName in contactsByGroups) || isEmpty(uid))

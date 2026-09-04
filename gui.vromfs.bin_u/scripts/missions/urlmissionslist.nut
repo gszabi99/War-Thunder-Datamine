@@ -1,13 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
 let { UrlMission } = require("%scripts/missions/urlMission.nut")
 
 const MAX_URL_MISSIONS = 100
@@ -21,7 +20,7 @@ let g_url_missions = {
 }
 
 g_url_missions.loadBlk <- function loadBlk(curMission, callback = null) {
-  loadHandler(gui_handlers.LoadingUrlMissionModal, { curMission = curMission, callback = callback })
+  loadHandler(get_gui_handler("LoadingUrlMissionModal"), { curMission = curMission, callback = callback })
 }
 
 g_url_missions.loadOnce <- function loadOnce() {
@@ -82,11 +81,11 @@ g_url_missions.getList <- function getList() {
 
 g_url_missions.openCreateUrlMissionWnd <- function openCreateUrlMissionWnd() {
   if (this.checkCanCreateMission())
-    loadHandler(gui_handlers.modifyUrlMissionWnd)
+    loadHandler(get_gui_handler("modifyUrlMissionWnd"))
 }
 
 g_url_missions.openModifyUrlMissionWnd <- function openModifyUrlMissionWnd(urlMission) {
-  loadHandler(gui_handlers.modifyUrlMissionWnd, { urlMission = urlMission })
+  loadHandler(get_gui_handler("modifyUrlMissionWnd"), { urlMission = urlMission })
 }
 
 g_url_missions.openDeleteUrlMissionConfirmationWnd <- function openDeleteUrlMissionConfirmationWnd(urlMission) {

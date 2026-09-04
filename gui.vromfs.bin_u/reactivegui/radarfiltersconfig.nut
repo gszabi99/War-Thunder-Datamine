@@ -1,10 +1,7 @@
+from "radarGuiControls" import getRadarTargetsIffFilterMask, setRadarTargetsIffFilterMask, getRadarCompositeFilterMask, setRadarCompositeFilterMask, getRadarTargetsGenericSourceTypeMask, setRadarTargetsGenericSourceTypeMask, getAllowOutOfRangeTargets, setAllowOutOfRangeTargets
+from "guiRadar" import RadarCompositeSubfilter
 from "%rGui/globals/ui_library.nut" import *
-let { getRadarTargetsIffFilterMask, setRadarTargetsIffFilterMask,
-  getRadarCompositeFilterMask, setRadarCompositeFilterMask,
-  getRadarTargetsGenericSourceTypeMask, setRadarTargetsGenericSourceTypeMask,
-  getAllowOutOfRangeTargets, setAllowOutOfRangeTargets,
-} = require("radarGuiControls")
-let { RadarCompositeSubfilter } = require("guiRadar")
+from "types" import Table
 
 let IFFFilter = {
   filterId = "IFF"
@@ -39,7 +36,7 @@ function mkCompositeFilter(filterId, bits) {
         res[b.name] <- (mask & (1 << b.bit)) != 0
       return res
     }
-    deserialize = @(saved) (type(saved) != "table")
+    deserialize = @(saved) (!(saved instanceof Table))
       ? 0
       : bits.reduce(@(mask, b) (saved?[b.name] ?? false) ? (mask | (1 << b.bit)) : mask, 0)
   }

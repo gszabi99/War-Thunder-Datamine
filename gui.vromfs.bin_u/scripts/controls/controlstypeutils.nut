@@ -1,17 +1,13 @@
+from "chard" import save_profile
+from "%sqstd/platform.nut" import is_android, is_xbox, isPC, isPS4, isSony, isXbox
+from "globalEnv" import ControlHelpersMode, setControlHelpersMode
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
 from "%scripts/dagui_library.nut" import *
 
-let { save_profile } = require("chard")
-let { is_android, is_xbox, isPC, isPS4, isSony, isXbox } = require("%sqstd/platform.nut")
-let { ControlHelpersMode, setControlHelpersMode } = require("globalEnv")
-let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv
-} = require("%scripts/clientState/platform.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
+let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { set_option, get_option, registerOption } = require("%scripts/options/optionsExt.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
-} = require("%scripts/options/optionsExtNames.nut")
-let { parseControlsPresetName, getHighestVersionControlsPreset,
-  getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename
-} = require("%scripts/controls/controlsPresets.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
+let { parseControlsPresetName, getHighestVersionControlsPreset, getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename } = require("%scripts/controls/controlsPresets.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { restoreShortcuts } = require("%scripts/controls/shortcutsUtils.nut")
@@ -127,6 +123,7 @@ function fillUseroptControlsPresetDescr(_optionId, descr, _context) {
   descr.items = []
   descr.values = getControlsPresetsList()
   descr.trParams <- "optionWidthInc:t='double';"
+  descr.controlMarkupParams <- { controlStyle = "btnName:t='Y';" }
 
   if (!isSony && !isXbox)
     descr.values.insert(0, "") 

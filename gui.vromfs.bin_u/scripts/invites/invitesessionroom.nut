@@ -1,28 +1,24 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "string" import format
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { EventRoomsHandler } = require("%scripts/events/eventRoomsHandler.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInSessionRoom, getSessionLobbyRoomId, getSessionLobbyGameMode, isUrlMissionByRoom
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyRoomId, getSessionLobbyGameMode, isUrlMissionByRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { broadcastInviteUpdated, showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
+let { showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
 let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
@@ -30,16 +26,18 @@ let SessionRoom = class (BaseInvite) {
   
   roomId = ""
   password = ""
+  roomInfo = null 
   isAccepted = false
   needCheckSystemRestriction = true
 
   static function getUidByParams(params) {
-    return "".concat("SR_", getTblValue("inviterName", params, ""), "/", getTblValue("roomId", params, ""))
+    return "".concat("SR_", (params?.inviterName ?? ""), "/", (params?.roomId ?? ""))
   }
 
   function updateCustomParams(params, initial = false) {
-    this.roomId = getTblValue("roomId", params, this.roomId)
-    this.password = getTblValue("password", params, this.password)
+    this.roomId = (params?.roomId ?? this.roomId)
+    this.password = (params?.password ?? this.password)
+    this.roomInfo = params?.roomInfo ?? this.roomInfo
 
     if (g_squad_manager.isMySquadLeader(this.inviterUid)) {
       this.implAccept(true) 
@@ -56,25 +54,15 @@ let SessionRoom = class (BaseInvite) {
           }
         },
         this)
-      add_event_listener("MRoomInfoUpdated",
-        function (p) {
-          if (p.roomId != this.roomId)
-            return
-          this.setDelayed(false)
-          if (!this.isValid())
-            this.remove()
-          else
-            broadcastInviteUpdated(this)
-        },
-        this)
     }
+  }
 
-    this.setDelayed(!getMroomInfo(this.roomId).getFullRoomData())
+  function getFullRoomData() {
+    return this.roomInfo
   }
 
   function isValid() {
     return !this.isAccepted
-        && !getMroomInfo(this.roomId).isRoomDestroyed
   }
 
   function remove() {
@@ -86,7 +74,7 @@ let SessionRoom = class (BaseInvite) {
     if (!activeColor)
       activeColor = this.inviteActiveColor
 
-    let room = getMroomInfo(this.roomId).getFullRoomData()
+    let room = this.getFullRoomData()
     let event = room ? getRoomEvent(room) : null
     local modeId = "skirmish"
     let params = { player = colorize(activeColor, this.getInviterName()) }
@@ -120,7 +108,7 @@ let SessionRoom = class (BaseInvite) {
   }
 
   function isMissionAvailable() {
-    let room = getMroomInfo(this.roomId).getFullRoomData()
+    let room = this.getFullRoomData()
     return !isUrlMissionByRoom(room) || ps4_is_ugc_enabled()
   }
 
@@ -157,7 +145,7 @@ let SessionRoom = class (BaseInvite) {
     if (isShowGoldBalanceWarning())
       return
 
-    let room = getMroomInfo(this.roomId).getFullRoomData()
+    let room = this.getFullRoomData()
     let cb = Callback(@() this.implAccept(), this)
     checkGamemodePkg(getSessionLobbyGameMode(room), cb)
   }
@@ -169,7 +157,7 @@ let SessionRoom = class (BaseInvite) {
       if (canJoin)
         this._implAccept()
     }, this)
-    let room = getMroomInfo(this.roomId).getFullRoomData()
+    let room = this.getFullRoomData()
     let event = room ? getRoomEvent(room) : null
     if (event != null) {
       if (!antiCheat.showMsgboxIfEacInactive(event) || !showMsgboxIfSoundModsNotAllowed(event))
@@ -186,10 +174,10 @@ let SessionRoom = class (BaseInvite) {
     if (this.isOutdated())
       return showExpiredInvitePopup()
 
-    let room = getMroomInfo(this.roomId).getFullRoomData()
+    let room = this.getFullRoomData()
     let event = room ? getRoomEvent(room) : null
     if (event)
-      gui_handlers.EventRoomsHandler.open(event, false, this.roomId)
+      EventRoomsHandler.open(event, false, this.roomId)
     else
       joinSessionRoom(this.roomId, this.inviterUid, this.password)
   }

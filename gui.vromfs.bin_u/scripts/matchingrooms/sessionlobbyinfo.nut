@@ -1,39 +1,35 @@
+import "regexp2" as regexp2
+from "guiMission" import get_meta_mission_info_by_name
+from "string" import format
+from "matching.errors" import INVALID_SQUAD_ID
+from "math" import floor
+from "dagor.random" import frnd
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-from "%scripts/mainConsts.nut" import global_max_players_versus
+from "%scripts/gameModes/gameModeConsts.nut" import MAX_PLAYERS_VERSUS
 
-let regexp2 = require("regexp2")
-let { get_meta_mission_info_by_name } = require("guiMission")
-let { format } = require("string")
-let { INVALID_SQUAD_ID } = require("matching.errors")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { getEvent, isCustomGameMode } = require("%scripts/events/eventsState.nut")
+let { getCountries, getCountriesByTeams, getEventRequiredUnitTypesMask, getEventUnitTypesMask, getRequiredCrafts, getSidesList, getTeamData, getTeamName, hasUnitRequirements, isUnitAllowedByTeamData, isUnitMatchesRule, isUnitTypeRequired } = require("%scripts/events/eventTeamsInfo.nut")
+let { getEventNameText } = require("%scripts/events/eventTexts.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { getSessionLobbyPublicData, getSessionLobbyMissionData, getSessionLobbyGameMode, isInSessionRoom,
-  isPlayerInMyRoom, isMeSessionLobbyRoomOwner, SessionLobbyState, getSessionLobbyCurRoomEdiff,
-  getSessionLobbyMGameModeId, isInSessionLobbyEventRoom, getSessionLobbyPlayerInfoByUid, getRoomSize,
-  getSessionLobbyPlayerInfoByName, getSessionLobbyMaxRespawns, getSessionInfo, getSessionLobbyPublicParam,
-  getRoomMembers, isMemberHost, hasSessionInLobby, isMemberSpectator, getRoomMembersCnt, isUrlMissionByRoom,
-  getMissionUrl, isUserMission
-} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getSessionLobbyPublicData, getSessionLobbyMissionData, getSessionLobbyGameMode, isInSessionRoom, isPlayerInMyRoom, isMeSessionLobbyRoomOwner, SessionLobbyState, getSessionLobbyCurRoomEdiff, getSessionLobbyMGameModeId, isInSessionLobbyEventRoom, getSessionLobbyPlayerInfoByUid, getRoomSize, getSessionLobbyPlayerInfoByName, getSessionLobbyMaxRespawns, getSessionInfo, getSessionLobbyPublicParam, getRoomMembers, isMemberHost, hasSessionInLobby, isMemberSpectator, getRoomMembersCnt, isUrlMissionByRoom, getMissionUrl, isUserMission } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdInt64, isMyUserId } = require("%scripts/user/profileStates.nut")
 let { getRealName } = require("%scripts/user/nameMapping.nut")
 let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
 let { getEventRankCalcMode, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
-let { getMissionLocIdsArray, getUrlOrFileMissionMetaInfo, getSessionLobbyMissionName
-} = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionLocIdsArray, getUrlOrFileMissionMetaInfo, getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { secondsToString } = require("%scripts/time.nut")
-let { floor } = require("math")
-let { frnd } = require("dagor.random")
 let { isRoomMemberInSession, isRoomMemberReady } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
+let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
@@ -62,7 +58,7 @@ let roomTimers = [
 ]
 
 function getRoomEvent(room = null) {
-  return events.getEvent(getSessionLobbyPublicData(room)?.game_mode_name)
+  return getEvent(getSessionLobbyPublicData(room)?.game_mode_name)
 }
 
 function getSessionLobbyMissionNameLoc(room = null) {
@@ -111,7 +107,7 @@ function getRoomSpecialRules(_room = null) {
 }
 
 function getRoomTeamData(teamCode, room = null) {
-  return events.getTeamData(getSessionLobbyPublicData(room), teamCode)
+  return getTeamData(getSessionLobbyPublicData(room), teamCode)
 }
 
 function getTeamToCheckUnits() {
@@ -128,15 +124,15 @@ function getTeamDataToCheckUnits() {
 
 function isUnitAllowedForRoom(unit) {
   let roomSpecialRules = getRoomSpecialRules()
-  if (roomSpecialRules && !events.isUnitMatchesRule(unit, roomSpecialRules, true, getSessionLobbyCurRoomEdiff()))
+  if (roomSpecialRules && !isUnitMatchesRule(unit, roomSpecialRules, true, getSessionLobbyCurRoomEdiff()))
     return false
 
   let teamData = getTeamDataToCheckUnits()
-  return !teamData || events.isUnitAllowedByTeamData(teamData, unit.name, getSessionLobbyCurRoomEdiff())
+  return !teamData || isUnitAllowedByTeamData(teamData, unit.name, getSessionLobbyCurRoomEdiff())
 }
 
 function hasUnitRequirementsInRoom() {
-  return events.hasUnitRequirements(getTeamDataToCheckUnits())
+  return hasUnitRequirements(getTeamDataToCheckUnits())
 }
 
 function isUnitRequiredForRoom(unit) {
@@ -144,13 +140,13 @@ function isUnitRequiredForRoom(unit) {
   if (!teamData)
     return false
 
-  return events.isUnitMatchesRule(unit.name,
-    events.getRequiredCrafts(teamData), true, getSessionLobbyCurRoomEdiff())
+  return isUnitMatchesRule(unit.name,
+    getRequiredCrafts(teamData), true, getSessionLobbyCurRoomEdiff())
 }
 
 function getRoomRequiredCrafts(teamCode = Team.A, room = null) {
   let teamData = getRoomTeamData(teamCode, room)
-  return events.getRequiredCrafts(teamData)
+  return getRequiredCrafts(teamData)
 }
 
 function getRoomMGameMode(room = null, isCustomGameModeAllowed = true) {
@@ -162,7 +158,7 @@ function getRoomMGameMode(room = null, isCustomGameModeAllowed = true) {
     return room._customGameMode
 
   let mGameMode = getModeById(mGameModeId)
-  if (isCustomGameModeAllowed && room && mGameMode && events.isCustomGameMode(mGameMode)) {
+  if (isCustomGameModeAllowed && room && mGameMode && isCustomGameMode(mGameMode)) {
     let customGameMode = clone mGameMode
     foreach (team in g_team.getTeams())
       customGameMode[team.name] <- getRoomTeamData(team.code, room)
@@ -179,15 +175,15 @@ function getRoomRankCalcMode() {
 }
 
 function getRoomMaxDisbalance() {
-  return getRoomMGameMode()?.maxLobbyDisbalance ?? global_max_players_versus
+  return getRoomMGameMode()?.maxLobbyDisbalance ?? MAX_PLAYERS_VERSUS
 }
 
 function getRoomUnitTypesMask(room = null) {
-  return events.getEventUnitTypesMask(getRoomMGameMode(room) || getSessionLobbyPublicData(room))
+  return getEventUnitTypesMask(getRoomMGameMode(room) || getSessionLobbyPublicData(room))
 }
 
 function getRoomRequiredUnitTypesMask(room = null) {
-  return events.getEventRequiredUnitTypesMask(getRoomMGameMode(room) || getSessionLobbyPublicData(room))
+  return getEventRequiredUnitTypesMask(getRoomMGameMode(room) || getSessionLobbyPublicData(room))
 }
 
 function getSessionLobbyLockedCountryData() {
@@ -219,7 +215,7 @@ function getRoomTeamsCountries(room = null) {
   local hasCountries = false
   foreach (t in [Team.A, Team.B]) {
     let teamData = getRoomTeamData(t, room)
-    let countries = events.getCountries(teamData)
+    let countries = getCountries(teamData)
     res.append(countries)
     hasCountries = hasCountries || countries.len()
   }
@@ -229,7 +225,7 @@ function getRoomTeamsCountries(room = null) {
   
   let mGameMode = getRoomMGameMode(room)
   if (mGameMode)
-    return events.getCountriesByTeams(mGameMode)
+    return getCountriesByTeams(mGameMode)
 
   let pData = getSessionLobbyPublicData(room)
   foreach (idx, name in ["country_allies", "country_axis"])
@@ -249,7 +245,7 @@ function getAvailableTeamOfRoom() {
 
   let teamsCountries = getRoomTeamsCountries()
   foreach (idx, _value in aTeams)
-    if (!isInArray(myCountry, getTblValue(idx, teamsCountries, teamsCountries[0])))
+    if (!isInArray(myCountry, (teamsCountries?[idx] ?? teamsCountries[0])))
       aTeams[idx] = false
 
   local canPlayTeam = 0
@@ -300,11 +296,11 @@ function getNotAvailableUnitByBRText(unit, ediff, room = null) {
   let curBR = unit.getBattleRating(ediff)
   let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.get()), ediff,
     ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS
-  return (events.isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
+  return (isUnitTypeRequired(mGameMode, ES_UNIT_TYPE_SHIP)
     && unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT
     && ((curBR - maxBR) * 10).tointeger() >= 0)
       ? loc("not_available_aircraft/byBR", {
-          gameModeName = events.getEventNameText(mGameMode),
+          gameModeName = getEventNameText(mGameMode),
           lockedUnitType = colorize("userlogColoredText",
             loc($"mainmenu/type_{unit.unitType.lowerName}")),
           battleRatingDiff = colorize("userlogColoredText", format("%.1f", MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS)),
@@ -385,7 +381,7 @@ function checkUnitsInSlotbar(countryName, teamToCheck = null) {
   let crews = getCrewsListByCountry(countryName)
 
   foreach (team in teamsToCheck) {
-    let teamName = events.getTeamName(team)
+    let teamName = getTeamName(team)
     let teamData = getSessionInfo()?[teamName]
     if (teamData == null)
       continue
@@ -394,7 +390,7 @@ function checkUnitsInSlotbar(countryName, teamToCheck = null) {
     foreach (crew in crews) {
       let unit = getCrewUnit(crew)
       hasUnitsInSlotbar = hasUnitsInSlotbar || unit != null
-      if (!unit || !events.isUnitAllowedByTeamData(teamData, unit.name, ediff))
+      if (!unit || !isUnitAllowedByTeamData(teamData, unit.name, ediff))
         continue
 
       hasAnyAvailable = true
@@ -422,7 +418,7 @@ function checkUnitsInSlotbar(countryName, teamToCheck = null) {
 function getLobbyRandomTeam() {
   let curCountry = SessionLobbyState.countryData?.country
   let teams = []
-  let allTeams = events.getSidesList()
+  let allTeams = getSidesList()
   foreach (team in allTeams) {
     let checkTeamResult = checkUnitsInSlotbar(curCountry, team)
     if (checkTeamResult.isAvailable)

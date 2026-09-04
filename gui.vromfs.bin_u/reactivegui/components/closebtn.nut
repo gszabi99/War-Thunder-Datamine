@@ -20,7 +20,7 @@ function closeBtn(override) {
     hotkeys = [["Esc | {0}".subst(JB.B)]]
     children = {
       rendObj = ROBJ_IMAGE
-      size = flex()
+      size = FLEX
       image = Picture($"!ui/gameuiskin#btn_close.svg:{closeButtonHeight}:{closeButtonHeight}:K")
       color = colors.white
     }

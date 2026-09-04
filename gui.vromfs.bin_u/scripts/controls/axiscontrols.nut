@@ -1,16 +1,19 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "math" import abs, fabs, pow
+from "%sqstd/string.nut" import stripTags
 from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+from "types" import Array
 
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { abs, fabs, pow } = require("math")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { Hotkeys } = require("%scripts/controls/controls.nut")
+
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { MAX_DEADZONE, MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getShortcutData, refillControlsDupes, buildHotkeyItem } = require("%scripts/controls/shortcutsUtils.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
@@ -18,7 +21,7 @@ let { commitControls } = require("%scripts/controls/controlsManager.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
-gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
+register_gui_handler("AxisControls", class (Hotkeys) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/joystickAxisInput.blk"
   sceneNavBlkName = null
@@ -315,7 +318,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   }
 
   function updateAxisItemsPos(valsArray) {
-    if (type(valsArray) != "array")
+    if (!(valsArray instanceof Array))
       return
 
     let objectsArray = ["test-game-box", "test-real-box"]
@@ -333,7 +336,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (this.bindAxisNum < 0 || !this.axisItem || this.axisItem.id != "zoom")
       return false
 
-    let mWheelId = "mouse_z"
+    const mWheelId = "mouse_z"
     let wheelObj = this.scene.findObject(mWheelId)
     if (!wheelObj)
       return false
@@ -590,4 +593,4 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     this.axisItem = shortcutsList.findvalue(@(s) s.id == axisId) ?? this.axisItem
     this.reinitScreen()
   }
-}
+})

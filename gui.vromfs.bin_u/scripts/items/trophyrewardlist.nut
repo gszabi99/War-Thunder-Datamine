@@ -1,17 +1,19 @@
+from "%sqStdLibs/helpers/u.nut" import isDataBlock
+from "console" import register_command
+from "%sqstd/datablock.nut" import convertBlk
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
-let { convertBlk } = require("%sqstd/datablock.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getPrizeFullDescriptonView, getPrizesStacksView, prizesStackLevel } = require("%scripts/items/prizesView.nut")
-let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 
-gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
+let trophyRewardsList = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/trophyRewardsList.tpl"
   sceneBlkName = null
@@ -152,13 +154,14 @@ gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.trophy?.openProbabilityInfo()
   }
 }
+register_gui_handler("trophyRewardsList", trophyRewardsList)
 
 function openTrophyRewardsList(params = {}) {
   let rewardsArray = params?.rewardsArray
   if (!params?.trophy && (!rewardsArray || !rewardsArray.len()))
     return
 
-  handlersManager.loadHandler(gui_handlers.trophyRewardsList, params)
+  handlersManager.loadHandler(trophyRewardsList, params)
 }
 
 function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {

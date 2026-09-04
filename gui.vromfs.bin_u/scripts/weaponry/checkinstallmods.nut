@@ -1,8 +1,9 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
+
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
 let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { updateUnitAfterSwitchMod } = require("%scripts/unit/unitChecks.nut")
 

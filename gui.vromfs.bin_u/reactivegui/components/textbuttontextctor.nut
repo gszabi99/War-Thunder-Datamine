@@ -1,9 +1,8 @@
+import "%rGui/components/getGamepadHotkeys.nut" as getGamepadHotkeys
+import "%rGui/components/focusBorder.nut" as focusBorder
+from "%rGui/components/gamepadImgByKey.nut" import mkImageCompByDargKey
+from "%rGui/ctrlsState.nut" import showConsoleButtons
 from "%rGui/globals/ui_library.nut" import *
-
-let getGamepadHotkeys = require("%rGui/components/getGamepadHotkeys.nut")
-let { mkImageCompByDargKey } = require("%rGui/components/gamepadImgByKey.nut")
-let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
-let focusBorder = require("%rGui/components/focusBorder.nut")
 
 let gap = scrn_tgt(0.005)
 return function(textComp, params, _handler, _group, sf) {

@@ -1,13 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "string" import format
+from "math" import round
+from "worldwar" import wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { round } = require("math")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { wwGetPlayerSide } = require("worldwar")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArmyView } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
@@ -31,10 +31,10 @@ let WwArmyGroup = class {
   isArmyManagersUpdated = false
 
   constructor(blk) {
-    this.clanId               = getTblValue("clanId", blk, "").tostring()
-    this.name                 = getTblValue("name", blk, "")
-    this.supremeCommanderUid   = getTblValue("supremeCommanderUid", blk, "")
-    this.supremeCommanderNick = getTblValue("supremeCommanderNick", blk, "")
+    this.clanId               = (blk?.clanId ?? "").tostring()
+    this.name                 = (blk?.name ?? "")
+    this.supremeCommanderUid   = (blk?.supremeCommanderUid ?? "")
+    this.supremeCommanderNick = (blk?.supremeCommanderNick ?? "")
     this.owner                = WwArmyOwner(blk.getBlockByName("owner"))
     this.managerUids          = blk.getBlockByName("managerUids") % "item"
     this.observerUids         = blk.getBlockByName("observerUids") % "item"

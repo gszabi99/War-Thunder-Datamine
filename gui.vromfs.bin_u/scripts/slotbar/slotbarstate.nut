@@ -1,8 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "mission" import get_game_mode
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
 
-let { get_game_mode } = require("mission")
-let { isInFlight } = require("gameplayBinding")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
@@ -10,12 +12,9 @@ let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { canChangeCrewUnits, getSessionLobbyMaxRespawns } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { getAvailableCrewId, saveSelectedCrews, selectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits
- } = require("%scripts/slotbar/slotbarStateData.nut")
+let { getAvailableCrewId, saveSelectedCrews, selectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewsList, invalidateCrewsList, isCrewListOverrided } = require("%scripts/slotbar/crewsList.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 

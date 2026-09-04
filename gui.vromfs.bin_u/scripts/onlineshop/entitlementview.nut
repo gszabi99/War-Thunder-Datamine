@@ -1,12 +1,15 @@
+from "%sqStdLibs/helpers/u.nut" import isArray
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_name_by_unlock_type
 from "%scripts/dagui_library.nut" import *
+from "types" import String
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isArray } = require("%sqStdLibs/helpers/u.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
+let { getGcbName, getGcbParamsMarkup } = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksState.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
@@ -18,9 +21,9 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getWPIcon } = require("%scripts/items/prizeUtils.nut")
 
-let template = "%gui/items/trophyDesc.tpl"
-let singleItemIconLayer = "item_place_single"
-let itemContainerLayer = "trophy_reward_place"
+const template = "%gui/items/trophyDesc.tpl"
+const singleItemIconLayer = "item_place_single"
+const itemContainerLayer = "trophy_reward_place"
 
 const MIN_ITEMS_OFFSET = 0.5
 const MAX_ITEMS_OFFSET = 1
@@ -78,12 +81,11 @@ function getDecoratorActionButtonsView(decorator, decoratorType) {
   if (!(decorator?.canPreview() ?? false))
     return []
 
-  let gcb = globalCallbacks.DECORATOR_PREVIEW
   return [{
     image = "#ui/gameuiskin#btn_preview.svg"
     tooltip = "#mainmenu/btnPreview"
-    funcName = gcb.cbName
-    actionParamsMarkup = gcb.getParamsMarkup({
+    funcName = getGcbName("DECORATOR_PREVIEW")
+    actionParamsMarkup = getGcbParamsMarkup({
       resource = decorator.id,
       resourceType = decoratorType.resourceType
     })
@@ -112,12 +114,11 @@ function getUnitActionButtonsView(unit) {
   if ((unit.isInShop ?? false) == false)
     return []
 
-  let gcb = globalCallbacks.UNIT_PREVIEW
   return [{
     image = "#ui/gameuiskin#btn_preview.svg"
     tooltip = "#mainmenu/btnPreview"
-    funcName = gcb.cbName
-    actionParamsMarkup = gcb.getParamsMarkup({ unitId = unit.name })
+    funcName = getGcbName("UNIT_PREVIEW")
+    actionParamsMarkup = getGcbParamsMarkup({ unitId = unit.name })
   }]
 }
 
@@ -131,7 +132,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
   let classIco = getUnitClassIco(unit)
   let shopItemType = getUnitRole(unit)
   let buttons = getUnitActionButtonsView(unit)
-  let receiveOnce = "mainmenu/receiveOnlyOnce"
+  const receiveOnce = "mainmenu/receiveOnlyOnce"
 
   let unitPlate = buildUnitSlot(unitName, unit, {
     status = ignoreAvailability ? "owned" : isBought ? "locked" : "canBuy"
@@ -152,7 +153,7 @@ let getUnitsGiftView = @(entitlement, params) (entitlement?.aircraftGift ?? []).
 })
 
 function getEntitlementView(entitlement, params = {}) {
-  if (type(entitlement) == "string")
+  if (entitlement instanceof String)
     entitlement = getEntitlementConfig(entitlement)
 
   if (!entitlement)
@@ -261,7 +262,7 @@ function getSortedLayersIcons(entitlement) {
 }
 
 function getEntitlementLayerIconsConfig(entitlement, params = null) {
-  if (type(entitlement) == "string")
+  if (entitlement instanceof String)
     entitlement = getEntitlementConfig(entitlement)
 
   if (!entitlement)

@@ -1,17 +1,16 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "math" import sqrt
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
-let { sqrt } = require("math")
-let { format } = require("string")
 let skinLocations = require("%scripts/customization/skinLocations.nut")
-let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg,
-  getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
+let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksState.nut")
 let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
 let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/decoratorBaseType.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDecorator } = require("%scripts/customization/decoratorGetters.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { getInventoryItemById } = require("%scripts/items/itemsManagerGetters.nut")
 let { getViewTypeByUnlockedItemType } = require("%scripts/customization/decoratorViewType.nut")
@@ -95,9 +94,9 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
     desc.append(loc("customization/skin/excluded_from_autoselect"))
 
   local descText = "\n".join(desc, true)
-  let warbondId = getTblValue("wbId", params)
+  let warbondId = params?.wbId
   if (warbondId) {
-    let warbond = findWarbond(warbondId, getTblValue("wbListId", params))
+    let warbond = findWarbond(warbondId, params?.wbListId)
     let award = warbond ? warbond.getAwardById(searchId) : null
     if (award)
       descText = award.addAmountTextToDesc(descText)
@@ -144,7 +143,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
     return
 
   
-  let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes
+  let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes && config != null
   let mainCond = canShowUnlockDesc ? getUnlockMainCondDescByCfg(config) : ""
   let multDesc = canShowUnlockDesc ? getUnlockMultDescByCfg(config) : ""
   let conds = canShowUnlockDesc ? getUnlockCondsDescByCfg(config) : ""
@@ -212,7 +211,7 @@ addTooltipTypes({
 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, id, params) {
-      let unlockType = getTblValue("decorType", params, -1)
+      let unlockType = (params?.decorType ?? -1)
       let decoratorType = getTypeByUnlockedItemType(unlockType)
       if (decoratorType == decoratorTypes.UNKNOWN)
         return false

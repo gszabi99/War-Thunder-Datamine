@@ -1,11 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
+from "types" import String
 
-let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber,
-  set_available_ship_hit_notifications } = require("%scripts/options/optionsStorage.nut")
+let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber, set_available_ship_hit_notifications } = require("%scripts/options/optionsStorage.nut")
 let { init_postfx } = require("%scripts/postFxSettings.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock = require("DataBlock")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let { initBulletIcons } = require("%scripts/weaponry/bulletsVisual.nut")
 let { initWeaponParams } = require("%scripts/weaponry/weaponsParams.nut")
@@ -43,7 +43,7 @@ let initOptionsSteps = [
     set_bullets_locId_by_caliber(blk?["bullets_locId_by_caliber"] ? (blk["bullets_locId_by_caliber"] % "ending") : [])
     set_modifications_locId_by_caliber(blk?["modifications_locId_by_caliber"] ? (blk["modifications_locId_by_caliber"] % "ending") : [])
 
-    if (type(blk?.unlocks_punctuation_without_space) == "string")
+    if (blk?.unlocks_punctuation_without_space instanceof String)
       setUnlocksPunctuationWithoutSpace(blk.unlocks_punctuation_without_space)
 
     LayersIcon.initConfigOnce(blk)

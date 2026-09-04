@@ -10,6 +10,7 @@ require DagorSystem
 require %appGame.infantry.es.human_weapon_utils_common
 require WeapHelpers
 require %appGame.wt_events
+require daslib/enum_trait
 
 
 enum ReloadAmmoMode
@@ -27,6 +28,7 @@ enum GunReloadStyle
   RELOAD_STYLE_QUICK
   RELOAD_STYLE_INSPECT 
 
+let GUN_RELOAD_STYLE_NAMES = typeinfo enum_names(type<GunReloadStyle>)
 
 struct AmmoItemForGunResult
   ammoCount : int = 0

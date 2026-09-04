@@ -1,17 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "gameOptions" import get_option_bool
+from "%sqstd/datablock.nut" import blkFromPath
+from "guiOptions" import get_gui_option
+from "mission" import get_game_mode
+from "%sqstd/string.nut" import startsWith
 from "%scripts/dagui_natives.nut" import get_thermovision_index, set_thermovision_index
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import findNearest
 
 let { get_thermovision_colors } = require("%scripts/options/optionsStorage.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { get_option_bool } = require("gameOptions")
-let { blkFromPath } = require("%sqstd/datablock.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { get_gui_option } = require("guiOptions")
-let { get_game_mode } = require("mission")
-let { startsWith } = require("%sqstd/string.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 
@@ -54,8 +55,8 @@ let createDefaultOption = function() {
       }
 
       else if ( ctype == optionControlType.LIST) {
-        let result = getTblValue(this.values.indexof(val), this.items)
-        local locKey = (u.isString(result)) ? result : getTblValue("text", result, "")
+        let result = this.items?[this.values.indexof(val)]
+        local locKey = (u.isString(result)) ? result : (result?.text ?? "")
         if (startsWith(locKey, "#"))
           locKey = locKey.slice(1)
         return loc(locKey)
@@ -195,7 +196,7 @@ function fillMultipleHueOption(descr, id, currentHueIndex) {
 }
 
 let fillDynMapOption = function(descr) {
-  let curMap = getTblValue("layout", get_mission_settings())
+  let curMap = get_mission_settings()?.layout
   let dynLayouts = getDynamicLayouts()
   foreach (layout in dynLayouts) {
     if (get_game_mode() == GM_BUILDER) {

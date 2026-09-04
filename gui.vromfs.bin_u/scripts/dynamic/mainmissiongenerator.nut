@@ -1,17 +1,15 @@
+from "scriptRespondent" import registerRespondent
 
-let { registerRespondent } = require("scriptRespondent")
 let { genHeadToHeadMission } = require("%scripts/dynamic/headtohead.nut")
 let { genCombatPatrolMission } = require("%scripts/dynamic/combat_patrol.nut")
-let { genBombingVehiclesMission, genBombingAntiTankMission, genBombingBuildingsMission,
-  genBombingShipsMission, genBombingCarrierMission } = require("%scripts/dynamic/bombing.nut")
+let { genBombingVehiclesMission, genBombingAntiTankMission, genBombingBuildingsMission, genBombingShipsMission, genBombingCarrierMission } = require("%scripts/dynamic/bombing.nut")
 let { genFreeFlightMission } = require("%scripts/dynamic/freeflight.nut")
 let { genWayPointFlightMission } = require("%scripts/dynamic/waypointflight.nut")
 let { genInterceptBombingMission } = require("%scripts/dynamic/bombing_intercept.nut")
 let { genCoverMission } = require("%scripts/dynamic/cover_bombers.nut")
 let { genBombingDefenseMission } = require("%scripts/dynamic/bombing_defense.nut")
 let { genAssaultDefenseMission } = require("%scripts/dynamic/assault_defense.nut")
-let { genAssaultFirstMission, genAssaultSecondMission, genAssaultThirdMission
-} = require("%scripts/dynamic/assault.nut")
+let { genAssaultFirstMission, genAssaultSecondMission, genAssaultThirdMission } = require("%scripts/dynamic/assault.nut")
 let { genCoverGattackMission } = require("%scripts/dynamic/cover_assault.nut")
 
 let missionGenFunctions = [

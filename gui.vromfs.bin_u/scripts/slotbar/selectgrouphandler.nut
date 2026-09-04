@@ -1,18 +1,17 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/slotbar/slotbarConsts.nut" import SEL_UNIT_BUTTON
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getGroupUnitMarkUp } = require("%scripts/unit/groupUnit.nut")
-let { getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
-let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE
-} = require("%scripts/options/optionsExtNames.nut")
+let { SelectUnitHandler, getParamsFromSlotbarConfig } = require("%scripts/slotbar/selectUnitHandler.nut")
+let { USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isUnitEnabledForSlotbar } = require("%scripts/slotbar/slotbarView.nut")
 
-let class SelectGroupHandler (gui_handlers.SelectUnitHandler) {
+class SelectGroupHandler (SelectUnitHandler) {
   function getSortedGroupsArray() {
     let selectedGroup = this.getSelectedGroup()
     local groupsArray = this.config.unitsGroupsByCountry?[this.country].groups.values() ?? []
@@ -77,7 +76,7 @@ let class SelectGroupHandler (gui_handlers.SelectUnitHandler) {
   hasGroupText = @() false
 }
 
-gui_handlers.SelectGroupHandler <- SelectGroupHandler
+register_gui_handler("SelectGroupHandler", SelectGroupHandler)
 
 return {
   open = function(crew, slotbar) {

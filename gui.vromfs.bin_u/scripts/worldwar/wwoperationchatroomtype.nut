@@ -1,9 +1,10 @@
+from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
+
 let { wwRoomsTypeData, addChatRoomType } = require("%scripts/chat/chatRoomType.nut")
 let { hasMenuWWOperationChats } = require("%scripts/user/matchingFeature.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { wwGetOperationId } = require("worldwar")
 let { roomPrefix, getOperationId, getOperationSide checkRoomId } = wwRoomsTypeData
 
 let getRoomName = function(roomId, _isColored = false) {
@@ -39,4 +40,3 @@ addChatRoomType({
     checkRoomId
   }
 })
-

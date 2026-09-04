@@ -1,13 +1,13 @@
+import "%rGui/globals/extWatched.nut" as extWatched
+import "DataBlock" as DataBlock
+from "%rGui/wwMap/wwMapZonesData.nut" import parseZones, getZoneSize
+from "%appGlobals/worldWar/wwSettings.nut" import getMapsDirName
+from "%rGui/wwMap/wwArmyGroups.nut" import clearArmyGroupsInfo
+from "blkLoad" import tryLoadBlk
+from "math" import floor
+from "worldwar" import wwGetOperationMapName
 from "%rGui/globals/ui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { tryLoadBlk } = require("blkLoad")
-let { floor } = require("math")
-let extWatched = require("%rGui/globals/extWatched.nut")
-let { parseZones, getZoneSize } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { getMapsDirName } = require("%appGlobals/worldWar/wwSettings.nut")
-let { clearArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
-let { wwGetOperationMapName } = require("worldwar")
 let operationBlk = DataBlock()
 
 let isOperationDataLoaded = Watched(false)

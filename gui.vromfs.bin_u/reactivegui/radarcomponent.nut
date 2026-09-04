@@ -1,12 +1,13 @@
+import "%rGui/compass.nut" as compass
+from "%rGui/compassState.nut" import HasCompass, CompassValue
+from "%rGui/style/airHudStyle.nut" import hudFontHgt, fontOutlineFxFactor, greenColor, fontOutlineColor, fadeColor
+from "%rGui/radarState.nut" import SelectedTargetBlinking, IsRadarHudVisible, IsRadarEmitting, Irst, IsForestallVisible, ScanZoneWatched, LockZoneWatched
+  , IsScanZoneAzimuthVisible, IsScanZoneElevationVisible, IsLockZoneVisible, AzimuthMarkersTrigger
+from "%sqstd/math.nut" import fabs, sqrt
+from "radarGuiControls" import getRadarTargetsIffFilterMask, RadarTargetsIffFilterMask
 from "%rGui/globals/ui_library.nut" import *
-let { fabs, sqrt } = require("%sqstd/math.nut")
-let compass = require("%rGui/compass.nut")
-let { HasCompass, CompassValue } = require("%rGui/compassState.nut")
-let { hudFontHgt, fontOutlineFxFactor, greenColor, fontOutlineColor, fadeColor } = require("%rGui/style/airHudStyle.nut")
-let { SelectedTargetBlinking, modeNames, azimuthMarkers, forestall, selectedTarget, IsRadarHudVisible,
-  IsRadarEmitting, Irst, IsForestallVisible, ScanZoneWatched, LockZoneWatched, IsScanZoneAzimuthVisible,
-  IsScanZoneElevationVisible, IsLockZoneVisible, AzimuthMarkersTrigger } = require("%rGui/radarState.nut")
-let { getRadarTargetsIffFilterMask, RadarTargetsIffFilterMask } = require("radarGuiControls")
+
+let { modeNames, azimuthMarkers, forestall, selectedTarget } = require("%rGui/radarState.nut")
 
 let deg = loc("measureUnits/deg")
 
@@ -40,7 +41,7 @@ let styleLineForeground = {
 }
 
 let compassSize = [hdpx(500), hdpx(32)]
-let compassStep = 5.0
+const compassStep = 5.0
 let compassOneElementWidth = compassSize[1]
 
 let getCompassStrikeWidth = @(oneElementWidth, step) 360.0 * oneElementWidth / step
@@ -58,13 +59,13 @@ function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
   return "".join(texts)
 }
 
-let forestallRadius = hdpx(15)
+const forestallRadius = hdpx(15)
 
 let forestallVisible = @(color) function() {
   return styleLineForeground.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
     color
-    size = [2 * forestallRadius, 2 * forestallRadius]
+    size = const [2 * forestallRadius, 2 * forestallRadius]
     lineWidth = hdpx(2 * LINE_WIDTH)
     animations = [{ prop = AnimProp.opacity, from = 0.2, to = 1, duration = 0.5, play = SelectedTargetBlinking.get(), loop = true, easing = InOutSine, trigger = frameTrigger }]
     fillColor = 0
@@ -268,13 +269,13 @@ function getForestallTargetLineCoords() {
 
 
 function forestallTgtLine(color) {
-  let w = sw(100)
-  let h = sh(100)
+  const w = sw(100)
+  const h = sh(100)
 
   return styleLineForeground.__merge({
     color
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [w, h]
+    size = const [w, h]
     lineWidth = hdpx(LINE_WIDTH)
     opacity = 0.8
     behavior = Behaviors.RtPropUpdate

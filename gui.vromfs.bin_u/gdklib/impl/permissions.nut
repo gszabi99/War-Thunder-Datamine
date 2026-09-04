@@ -1,8 +1,14 @@
 import "gdk.permissions" as perm
 from "eventbus" import eventbus_subscribe_onehit
 
+local nextEventId = 0
+function mkEventName(baseName): string {
+  nextEventId++
+  return $"{baseName}_{nextEventId}"
+}
+
 function check_for_user(permission, xuid, callback) {
-  let eventName = $"xbox_permissions_check_for_user_{permission}"
+  let eventName = mkEventName($"xbox_permissions_check_for_user_{permission}")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let res_xuid = result?.xuid
@@ -15,7 +21,7 @@ function check_for_user(permission, xuid, callback) {
 
 
 function check_for_users(permission, xuids, callback) {
-  let eventName = $"xbox_permissions_check_for_users_{permission}"
+  let eventName = mkEventName($"xbox_permissions_check_for_users_{permission}")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let results = result?.results
@@ -26,7 +32,7 @@ function check_for_users(permission, xuids, callback) {
 
 
 function check_anonymous(permission, anon_user_type, callback) {
-  let eventName = $"xbox_permissions_check_anonymous_{permission}"
+  let eventName = mkEventName($"xbox_permissions_check_anonymous_{permission}")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     let allowed = result?.allowed

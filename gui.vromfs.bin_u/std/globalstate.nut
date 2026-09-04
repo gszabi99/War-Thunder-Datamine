@@ -7,6 +7,7 @@ from "dagor.memtrace" import is_quirrel_object_larger_than, set_huge_alloc_thres
 from "dagor.time" import get_time_msec
 from "frp" import this_subscriber_call_may_take_up_to_usec, get_slow_subscriber_threshold_usec
 from "iostream" import blob
+from "types" import String
 
 
 
@@ -35,7 +36,7 @@ function readNewData(name){
 
 }
 
-function globalWatched(name, ctor=null) {
+function globalWatched(name, ctor=null): table {
   assert(name not in registered, $"Global persistent state duplicate registration: {name}")
   let key = ["GLOBAL_PERSIST_STATE", name]
   local val
@@ -67,7 +68,7 @@ eventbus_subscribe(EVT_NEW_DATA, readNewData)
 local uniqueKey = null
 function setUniqueNestKey(key) {
   assert(!ndbExists(key), $"key {key} is not unique")
-  assert(type(key)=="string", $"setUniqueNestKey failed: {key} is not string")
+  assert(key instanceof String, $"setUniqueNestKey failed: {key} is not string")
   uniqueKey = key
   ndbWrite(key, true)
 }
@@ -83,7 +84,7 @@ let persistOnHardReloadData = persist("PERSIST_ON_RELOAD_DATA", @() {})
 let usedKeysForPersist = {}
 let _big_datas = persist("_big_datas", @() {})
 
-let size_threshold_to_store_as_big_data = 100 << 10
+const size_threshold_to_store_as_big_data = 100 << 10
 on_module_unload(function(is_closing) {
   if (isExiting) {
     print("App exiting, not writing PersistentOnReload data")

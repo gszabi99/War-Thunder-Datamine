@@ -1,20 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 const SEPARATOR_POSTFIX = "_separator"
 
-gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let TopMenuButtonsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/mainmenu/topmenu_menuPanel.tpl"
@@ -37,7 +39,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nestObj))
       return null
 
-    let handler = handlersManager.loadHandler(gui_handlers.TopMenuButtonsHandler, {
+    let handler = handlersManager.loadHandler(get_gui_handler("TopMenuButtonsHandler"), {
                                            scene = nestObj
                                            parentHandlerWeak = parentHandler,
                                            sectionsStructure = sectionsStructure,
@@ -238,7 +240,24 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     btn.onChangeValueFunc(obj.getValue())
   }
 
+  function getOpenHoverSection(excludeSectionName) {
+    foreach (section in this.sectionsOrder) {
+      if (section.name == excludeSectionName)
+        continue
+      let tmId = section.getTopMenuButtonDivId()
+      let hoverObj = this.scene.findObject($"{tmId}_list_hover")
+      let valid = hoverObj?.isValid() ?? false
+      let sizeTimer = valid ? hoverObj.getFloatProp(dagui_propid_add_name_id("_size-timer"), 0.0) : 0.0
+      if (valid && sizeTimer > 0)
+        return section
+    }
+    return null
+  }
+
   function switchMenuFocus() {
+    if (this.getOpenHoverSection(this.ON_ESC_SECTION_OPEN) != null)
+      return
+
     let section = this.sectionsStructure.getSectionByName(this.ON_ESC_SECTION_OPEN)
     if (u.isEmpty(section))
       return
@@ -343,8 +362,15 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("updateButtonsStatus")
   }
 
+  function onEventDevFeatureChanged(_p) {
+    this.doWhenActiveOnce("updateButtonsStatus")
+  }
+
   function onEventActiveHandlersChanged(_p) {
     if (!this.isSceneActiveNoModals())
       this.unstickLastDropDown()
   }
 }
+register_gui_handler("TopMenuButtonsHandler", TopMenuButtonsHandler)
+
+return { TopMenuButtonsHandler }

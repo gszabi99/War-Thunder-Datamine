@@ -1,18 +1,20 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "worldwar" import wwUpdateHoverArmyName
 from "%scripts/dagui_natives.nut" import ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
-let { wwUpdateHoverArmyName } = require("worldwar")
 let { hoverArmyByName } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_map_armies_status_tab_type } = require("%scripts/worldWar/inOperation/model/wwArmiesStatusTabType.nut")
 
-gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwArmiesList = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarMapArmiesList.tpl"
   sceneBlkName = null
@@ -252,7 +254,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActiveNoModals())
       return this.doWhenActiveOnce("fullViewUpdate")
 
-    let armies = getTblValue("armies", params)
+    let armies = params?.armies ?? []
     if (u.isEmpty(armies))
       return
 
@@ -283,3 +285,6 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setArmyViewSelection(this.selectedArmyName, false)
   }
 }
+register_gui_handler("WwArmiesList", WwArmiesList)
+
+return { WwArmiesList }

@@ -2,9 +2,10 @@ from "%scripts/dagui_library.nut" import *
 import "%sqstd/math.nut" as stdMath
 
 let { get_array_by_bit_value } = require("%scripts/utils_sa.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { move_mouse_on_child, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_child, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 
 
@@ -28,7 +29,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 
 
 
-gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
+let MultiSelectMenu = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"
   needVoiceChat = false
@@ -74,7 +75,7 @@ gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
     local mask = 0
     foreach (idx, option in this.list) {
       option.enable <- option?.enable ?? true
-      mask = stdMath.change_bit(mask, idx, getTblValue("selected", option))
+      mask = stdMath.change_bit(mask, idx, option?.selected)
     }
 
     this.initialBitMask = mask
@@ -83,7 +84,7 @@ gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getCurValuesArray() {
     let selOptions = get_array_by_bit_value(this.currentBitMask, this.list)
-    return selOptions.map(@(o) getTblValue("value", o))
+    return selOptions.map(@(o) o?.value)
   }
 
   function onChangeValue(obj) {
@@ -106,3 +107,6 @@ gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
       this.onFinalApplyCb(this.getCurValuesArray())
   }
 }
+register_gui_handler("MultiSelectMenu", MultiSelectMenu)
+
+return { MultiSelectMenu }

@@ -1,63 +1,64 @@
+import "%rGui/opticAtgmSight.nut" as opticAtgmSight
+import "%rGui/planeCockpit/targetingPage/mfdHeliCamera.nut" as heliStockCamera
+import "%rGui/planeCockpit/targetingPage/mfdShkval.nut" as shkval
+import "%rGui/planeCockpit/targetingPage/mfdPlatan.nut" as platan
+import "%rGui/planeCockpit/targetingPage/mfdMig35Ols.nut" as mig35Ols
+from "%rGui/airState.nut" import IsMfdSightHudVisible, MfdSightPosSize
+from "%rGui/utils/builders.nut" import createScriptComponent
+from "%rGui/planeCockpit/targetingPage/mfdLitening2.nut" import litening2, mfdCamLitening2SettingsUpd
 from "%rGui/globals/ui_library.nut" import *
 
-let opticAtgmSight = require("%rGui/opticAtgmSight.nut")
-let heliStockCamera = require("%rGui/planeCockpit/mfdHeliCamera.nut")
-let shkval = require("%rGui/planeCockpit/mfdShkval.nut")
-let shkvalKa52 = require("%rGui/planeCockpit/mfdShkvalKa52.nut")
-let tads = require("%rGui/planeCockpit/mfdTads.nut")
-let platan = require("%rGui/planeCockpit/mfdPlatan.nut")
-let { IsMfdSightHudVisible, MfdSightPosSize } = require("%rGui/airState.nut")
+let shkvalKa52 = require("%rGui/planeCockpit/targetingPage/mfdShkvalKa52.nut")
+let tads = require("%rGui/planeCockpit/targetingPage/mfdTads.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
-let { createScriptComponent } = require("%rGui/utils/builders.nut")
-let { litening2, mfdCamLitening2SettingsUpd } = require("%rGui/planeCockpit/mfdLitening2.nut")
 
-let eurocopter = createScriptComponent("%rGui/planeCockpit/mfdCamEurocopter.das", {
+let eurocopter = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdCamEurocopter.das", {
   fontId = Fonts.hud
   fontScale = 1.0
   lineWidthScale = 1.0
 })
 
-let damocles = createScriptComponent("%rGui/planeCockpit/mfdDamocles.das", {
+let damocles = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdDamocles.das", {
   fontId = Fonts.hud
   isMetricUnits = true
 })
 
-let mi35ACC = createScriptComponent("%rGui/planeCockpit/mfdMi35ACC.das", {
+let mi35ACC = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdMi35ACC.das", {
   fontId = Fonts.hud
   english = false
 })
-let mi35ACCEn = createScriptComponent("%rGui/planeCockpit/mfdMi35ACC.das", {
+let mi35ACCEn = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdMi35ACC.das", {
   fontId = Fonts.hud
   english = true
 })
 
-let atlis2 = createScriptComponent("%rGui/planeCockpit/mfdAtlis2.das", {
+let atlis2 = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdAtlis2.das", {
   fontId = Fonts.hud
   isMetricUnits = true
 })
 
-let atflir = createScriptComponent("%rGui/planeCockpit/mfdCamAtflir.das", {
+let atflir = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdCamAtflir.das", {
   fontId = Fonts.hud
 })
 
-let lantirn = createScriptComponent("%rGui/planeCockpit/mfdCamLantirn.das", {
+let lantirn = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdCamLantirn.das", {
   fontId = Fonts.hud
 })
 
-let f4Agm65 = createScriptComponent("%rGui/planeCockpit/mfdF4Agm65Cam.das", {
+let f4Agm65 = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdF4Agm65Cam.das", {
   fontId = Fonts.hud
   vignette = Picture("!ui/gameuiskin#mfd_f4_agm65_vignetting_high.avif")
 })
 
-let oraoCam = createScriptComponent("%rGui/planeCockpit/mfdOraoTvCam.das", {
+let oraoCam = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdOraoTvCam.das", {
   fontId = Fonts.hud
 })
 
-let yak130Kab = createScriptComponent("%rGui/planeCockpit/mfdYak130Kab.das", {
+let yak130Kab = createScriptComponent("%rGui/planeCockpit/weaponPage/mfdYak130Kab.das", {
   fontId = Fonts.ils31
 })
 
-let b52hEvs = createScriptComponent("%rGui/planeCockpit/mfdCamB52hEvs.das", {
+let b52hEvs = createScriptComponent("%rGui/planeCockpit/targetingPage/mfdCamB52hEvs.das", {
   fontId = Fonts.hud
   fontScale = 1.0
   lineWidthScale = 1.0
@@ -69,6 +70,7 @@ let mfdCameraSetting = Watched({
   isTads = false
   isTadsApache = false
   isPlatan = false
+  isMig35Ols = false
   isDamocles = false
   isLitening2 = false
   isMi35 = false
@@ -92,6 +94,7 @@ function mfdCameraSettingUpd(blk) {
     isTads = blk.getBool("mfdCamTads", false)
     isTadsApache = blk.getBool("mfdCamTadsApache", false)
     isPlatan = blk.getBool("mfdCamPlatan", false)
+    isMig35Ols = blk.getBool("mfdCamMig35Ols", false)
     isDamocles = blk.getBool("mfdCamDamocles", false)
     isLitening2 = blk.getBool("mfdCamLitening2", false)
     isMi35 = blk.getBool("mfdMi35", false)
@@ -114,7 +117,7 @@ function mfdCameraSettingUpd(blk) {
 }
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles, isLitening2,
+  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isMig35Ols, isDamocles, isLitening2,
     isMi35, isMi35en, isAtlis2, isAtflir, isEurocopter, isLantirn, isF4Agm65, isOraoCam, isB52hEvs, isYak130Kab} = mfdCameraSetting.get()
   return {
     watch = mfdCameraSetting
@@ -124,6 +127,7 @@ let planeMfdCamera = @(width, height) function() {
       isTads ? tads.root(width, height, false) :
       isTadsApache ? tads.root(width, height, true) :
       isPlatan ? platan(width, height) :
+      isMig35Ols ? mig35Ols(width, height) :
       isDamocles ? damocles(width, height) :
       isLitening2 ? litening2(width, height, fontScale, lineWidthScale) :
       isMi35 ? mi35ACC(width, height) :

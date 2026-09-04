@@ -1,9 +1,11 @@
+import "statsd" as statsd
+from "auth_wt" import checkLoginPass, setLoginPass
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { checkLoginPass, setLoginPass } = require("auth_wt")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let statsd = require("statsd")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LoginWndHandler } = require("%scripts/login/loginWnd.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
@@ -11,7 +13,7 @@ let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
-gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
+register_gui_handler("LoginWndHandlerSamsung", class (LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -48,4 +50,4 @@ gui_handlers.LoginWndHandlerSamsung <- class (gui_handlers.LoginWndHandler) {
   }
 
   function goBack(_obj) {}
-}
+})

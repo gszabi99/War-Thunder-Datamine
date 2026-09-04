@@ -1,13 +1,13 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/ranks_common_shared.nut" import get_team_name_by_mp_team
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.workcycle" import deferOnce
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/mpTeamConsts.nut" import *
 
-let { get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { deferOnce } = require("dagor.workcycle")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { isMultiCluster } = require("%scripts/events/eventsState.nut")
 let { getQueueEvent, isClanQueue, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
 const MULTICLUSTER_NAME = "multi"
@@ -66,7 +66,7 @@ class QueueStats {
   constructor(queue) {
     local queueEvent = getQueueEvent(queue)
     this.isClanStats = isClanQueue(queue)
-    this.isMultiCluster = this.isClanStats || events.isMultiCluster(queueEvent)
+    this.isMultiCluster = this.isClanStats || isMultiCluster(queueEvent)
     this.isSymmetric = this.isClanStats
     this.myRankInQueue = getMyRankInQueue(queue)
 
@@ -155,11 +155,11 @@ class QueueStats {
     this.recountQueueOnce()
     let rankStr = this.myRankInQueue.tostring()
     if (this.isSymmetric)
-      return getTblValue(rankStr, this.getQueueTableByTeam("teamA", cluster), 0)
+      return (this.getQueueTableByTeam("teamA", cluster)?[rankStr] ?? 0)
 
     local res = 0
     foreach (teamName in teamNamesList)
-      res += getTblValue(rankStr, this.getQueueTableByTeam(teamName, cluster), 0)
+      res += (this.getQueueTableByTeam(teamName, cluster)?[rankStr] ?? 0)
     return res
   }
 
@@ -173,7 +173,7 @@ class QueueStats {
 
   
   function getClansCount() {
-    return getTblValue("clansCount", this.getClansQueueTable(), 0)
+    return (this.getClansQueueTable()?.clansCount ?? 0)
   }
 
   function getMyClanQueueTable() {
@@ -221,7 +221,7 @@ class QueueStats {
     let dataByCountries = {}
 
     foreach (fullStats in statsByQueueId) {
-      let stats = getTblValue("byTeams", fullStats)
+      let stats = fullStats?.byTeams
       if (!stats)
         continue
 
@@ -247,8 +247,8 @@ class QueueStats {
       return
     }
 
-    let teamAStats = getTblValue("teamA", stats)
-    let teamBStats = getTblValue("teamB", stats)
+    let teamAStats = stats?.teamA
+    let teamBStats = stats?.teamB
     let playersTableTeamA = this.gatherCountsTblByRanks(teamAStats)
     let playersTableTeamB = this.gatherCountsTblByRanks(teamBStats)
     let totalPlayersCount = playersTableTeamA.playersCount + playersTableTeamB.playersCount
@@ -269,12 +269,12 @@ class QueueStats {
 
     let key = rank.tostring()
     foreach (countryTbl in statsByCountries)
-      res += this.getCountFromStatTbl(getTblValue(key, countryTbl))
+      res += this.getCountFromStatTbl(countryTbl?[key])
     return res
   }
 
   function getCountFromStatTbl(statTbl) {
-    return getTblValue("cnt", statTbl, 0)
+    return (statTbl?.cnt ?? 0)
   }
 
   function gatherCountsTblByRanks(statsByCountries) {
@@ -327,11 +327,11 @@ class QueueStats {
   }
 
   function gatherClansData(stats) {
-    let statsByClans = getTblValue("byClans", stats)
+    let statsByClans = stats?.byClans ?? {}
     if (u.isEmpty(statsByClans))
       return false
 
-    let myClanInfo = getTblValue(clan_get_my_clan_tag(), statsByClans)
+    let myClanInfo = statsByClans?[clan_get_my_clan_tag()]
     if (myClanInfo)
       this.myClanQueueTable = clone myClanInfo
 

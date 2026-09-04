@@ -2,7 +2,6 @@ require ecs
 require app
 require %appGame.infantry.es.ai_dangers_attack_debug_common
 require DagorMath
-require DagorMathUtils
 require strings
 
 

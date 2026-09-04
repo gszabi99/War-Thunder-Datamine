@@ -1,6 +1,6 @@
-let { min, max } = require("math")
-let { Point2 } = require("dagor.math")
-let { format } = require("string")
+from "math" import min, max
+from "dagor.math" import Point2
+from "string" import format
 
 
 
@@ -46,8 +46,9 @@ let GuiBox = class {
     if (!this.isIntersect(box))
       return null
 
-    return Point2((box.c2[0] > this.c1[0]) ? this.c1[0] : this.c2[0],
-                    (box.c2[1] > this.c1[1]) ? this.c1[1] : this.c2[1])
+    
+    return Point2((box.c1[0] < this.c1[0]) ? this.c1[0] : this.c2[0],
+                    (box.c1[1] < this.c1[1]) ? this.c1[1] : this.c2[1])
   }
 
   function addBox(box) {
@@ -104,7 +105,8 @@ let GuiBox = class {
   function cloneBox(incSzX = 0, incSzY = null) {
     incSzY = incSzY ?? incSzX
     let cls = this.getclass()
-    return cls(this.c1[0] - incSzX, this.c1[1] - incSzY, this.c2[0] + incSzX, this.c2[1] + incSzY)
+    return cls(this.c1[0] - incSzX, this.c1[1] - incSzY, this.c2[0] + incSzX, this.c2[1] + incSzY,
+      this.priority)
   }
 }
 

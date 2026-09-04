@@ -1,9 +1,10 @@
 from "dagor.system" import exit, get_arg_value_by_name
 from "%sqstd/string.nut" import tostring_r
+from "types" import Function
 
 let knownProps = ["size","rendObj","watch","behavior","halign","valign","flow","pos","hplace","vplace","padding", "margin", "eventHandlers", "hotkeys"].totable()
 
-function checkIsUiComponent(table) {
+function checkIsUiComponent(table): bool {
   if (table.len()==0)
     return true
   foreach(k in knownProps)
@@ -14,10 +15,10 @@ function checkIsUiComponent(table) {
   return false
 }
 
-function testUi(entry){
+function testUi(entry): bool {
   if (entry==null)
     return true
-  if (type(entry)=="function")
+  if (entry instanceof Function)
     entry=entry()
   let t = type(entry)
   if (t=="table" || t=="class") {
@@ -35,7 +36,7 @@ function testUi(entry){
   return false
 }
 
-function test(entryPoint = null){
+function test(entryPoint = null): int {
   entryPoint = entryPoint ?? get_arg_value_by_name("ui")
   if (entryPoint==null) {
     println($"Usage: csq {__FILE__} -ui:<path_to_darg_ui.nut>")

@@ -72,7 +72,7 @@ def create_equipment(spawner_eid : EntityId; equipment : Object; equipment_compo
   var equipmentToCreateCount = 0
   for kv in equipment
     let gametempate = kv.key
-    let slot := get_string(kv.value, "")
+    let slot = get_string(kv.value, "")
 
     let itemTemplate = get_item_template_for_equipment(gametempate, use_vehicle)
     if empty(itemTemplate)

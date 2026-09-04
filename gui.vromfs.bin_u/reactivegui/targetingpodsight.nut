@@ -1,28 +1,27 @@
+import "%rGui/missileSalvoTimer.nut" as missileSalvoTimer
+import "%rGui/agmAim.nut" as agmAim
+from "%rGui/style/screenState.nut" import bw, bh, rw, rh
+from "%rGui/airHudElems.nut" import turretAngles, sight, paramsTable, targetSize, launchDistanceMax, lockSight, rangeFinder
+  , airHorizon, agmLaunchZone, detectAlly, compassElem
+from "%rGui/airState.nut" import TargetPodMask, EmptyMask, IsRangefinderEnabled, SightMask, AlertColorHigh, IsMfdEnabled
+from "%rGui/hudState.nut" import isThermalSightActive
+from "%rGui/airSight.nut" import laserDesignatorStatusComponent, laserDesignatorComponent, gunDirection, agmTrackerStatusComponent, agmTrackZoneComponent
+from "%rGui/options/options.nut" import crosshairColorOpt
+from "%rGui/planeMfdCamera.nut" import mfdCameraSetting
+from "%rGui/radarState.nut" import isCollapsedRadarInReplay
+from "%rGui/radar.nut" import radarHud, radarIndication
+from "%rGui/twsState.nut" import IsTwsDamaged
+from "%rGui/airHudComponents.nut" import twsElement
 from "%rGui/globals/ui_library.nut" import *
-let { bw, bh, rw, rh } = require("%rGui/style/screenState.nut")
-let { turretAngles, sight, paramsTable, targetSize, launchDistanceMax, lockSight, rangeFinder, airHorizon,
-  agmLaunchZone, detectAlly, compassElem } = require("%rGui/airHudElems.nut")
-let { TargetPodMask, EmptyMask, IsRangefinderEnabled, SightMask, AlertColorHigh,
-  IsMfdEnabled } = require("%rGui/airState.nut")
-let { isThermalSightActive } = require("%rGui/hudState.nut")
-let missileSalvoTimer = require("%rGui/missileSalvoTimer.nut")
-let { laserDesignatorStatusComponent, laserDesignatorComponent, gunDirection,
-  agmTrackerStatusComponent, agmTrackZoneComponent } = require("%rGui/airSight.nut")
-let { crosshairColorOpt } = require("%rGui/options/options.nut")
+
 let HudStyle = require("%rGui/style/airHudStyle.nut")
-let { mfdCameraSetting } = require("%rGui/planeMfdCamera.nut")
-let tads = require("%rGui/planeCockpit/mfdTads.nut")
-let litening2 = require("%rGui/planeCockpit/mfdLitening2.nut")
-let shkvalKa52 = require("%rGui/planeCockpit/mfdShkvalKa52.nut")
+let tads = require("%rGui/planeCockpit/targetingPage/mfdTads.nut")
+let litening2 = require("%rGui/planeCockpit/targetingPage/mfdLitening2.nut")
+let shkvalKa52 = require("%rGui/planeCockpit/targetingPage/mfdShkvalKa52.nut")
 let hudUnitType = require("%rGui/hudUnitType.nut")
-let agmAim = require("%rGui/agmAim.nut")
-let { isCollapsedRadarInReplay } = require("%rGui/radarState.nut")
-let { radarHud, radarIndication } = require("%rGui/radar.nut")
-let { IsTwsDamaged } = require("%rGui/twsState.nut")
-let { twsElement } = require("%rGui/airHudComponents.nut")
 let legacySight = require("%rGui/targetingPodSightLegacy.nut")
 
-let useLegacyLayout = true
+const useLegacyLayout = true
 
 let baseColor = Watched(Color(255, 255, 255, 255))
 
@@ -31,7 +30,7 @@ let reticle = @(pos_x, pos_y) function() {
 
   return {
     watch = [mfdCameraSetting, baseColor]
-    size = flex()
+    size = FLEX
     children = [
       isTadsApache ? tads.losReticle([sh(100), sh(100)], baseColor.get(), 5) :
       isLitening2 ? litening2.reticle(sh(100), sh(100), lineWidthScale, baseColor.get()):
@@ -46,7 +45,7 @@ let lockSightIndicator = function() {
 
   return {
     watch = mfdCameraSetting
-    size = flex()
+    size = FLEX
     children = [
       isTadsApache ? null :
       lockSight(crosshairColorOpt, hdpx(150), hdpx(100), sw(50), sh(50))
@@ -59,7 +58,7 @@ let targetSizeIndicator = @(color, width, height) function(){
 
   return {
     watch = mfdCameraSetting
-    size = flex()
+    size = FLEX
     children = [
       isShkvalKa52 ? shkvalKa52.targetSize(true) :
       targetSize(color, width, height)
@@ -73,7 +72,7 @@ let planeAttitude = @(color_watched) function() {
 
   return {
     watch = [mfdCameraSetting, color_watched]
-    pos = [sw(5), sh(80)]
+    pos = const [sw(5), sh(80)]
     children = isVisible ? airHorizon(HudStyle.styleLineForeground, hdpx(40), color_watched.get()) : null
   }
 }
@@ -84,12 +83,12 @@ let flirIndicator = @(color_watched) function() {
 
   return {
     watch = [mfdCameraSetting, isThermalSightActive]
-    size = flex()
+    size = FLEX
     children = isVisible ? @() {
       watch = color_watched
       size = SIZE_TO_CONTENT
       rendObj = ROBJ_TEXT
-      pos = [sw(20), sh(20)]
+      pos = const [sw(20), sh(20)]
       color = color_watched.get()
       font = Fonts.hud
       fontSize = HudStyle.hudFontHgt
@@ -157,8 +156,8 @@ function commonSight(width, height) {
   }
 }
 
-let sightTableWidthHeli = hdpx(270)
-let sightTableHeightHeli = hdpx(28)
+const sightTableWidthHeli = hdpx(270)
+const sightTableHeightHeli = hdpx(28)
 let positionParamsSightTable = Watched([hdpx(20), hdpx(20)])
 
 let helicopterSightParamsTable = paramsTable(SightMask, EmptyMask, EmptyMask,
@@ -179,8 +178,8 @@ let helicopterTargetingPodSight = {
   ]
 }
 
-let paramsTableWidthAircraft = hdpx(330)
-let paramsTableHeightAircraft = hdpx(22)
+const paramsTableWidthAircraft = hdpx(330)
+const paramsTableHeightAircraft = hdpx(22)
 let aircraftParamsTablePos = Computed(@() [max(bw.get(), sw(20) - hdpx(660)), max(bh.get(), sh(10) - hdpx(100))])
 
 let aircraftParamsTable = paramsTable(TargetPodMask, EmptyMask, EmptyMask,

@@ -1,5 +1,4 @@
 require ecs
-require app
 require math.base
 require DagorRandom
 require %game.events

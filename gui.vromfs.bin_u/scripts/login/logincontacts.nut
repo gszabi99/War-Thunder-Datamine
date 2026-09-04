@@ -1,16 +1,16 @@
+import "contacts" as contacts
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "auth_wt" import getPlayerTokenGlobal
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import resetTimeout
+from "app" import APP_ID
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
 
-let { getPlayerTokenGlobal } = require("auth_wt")
-let contacts = require("contacts")
-let { get_time_msec } = require("dagor.time")
-let { resetTimeout } = require("dagor.workcycle")
 let logC = log_with_prefix("[CONTACTS] ")
-let { APP_ID } = require("app")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let charClientEvent = require("%scripts/charClientEvent.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const CONTACTS_GAME_ID = "wt"
 

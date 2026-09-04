@@ -1,8 +1,8 @@
+import "penalty" as penalty
+import "string" as stdStr
+import "%sqstd/time.nut" as time
 from "%rGui/globals/ui_library.nut" import *
 
-let penalty = require("penalty")
-let stdStr = require("string")
-let time = require("%sqstd/time.nut")
 let timeLocTable = require("%rGui/timeLocTable.nut")
 
 let currentPenaltyDesc = Watched({})

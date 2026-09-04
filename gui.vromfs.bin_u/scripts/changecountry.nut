@@ -1,15 +1,16 @@
+from "%sqStdLibs/helpers/u.nut" import find_in_array
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { GameModeSelect } = require("%scripts/gameModes/gameModeSelect.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isCountryUnlocked } = require("%scripts/firstChoice/firstChoice.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 
 
 
@@ -20,7 +21,7 @@ enum ChangeCountryAction {
   CHANGE_GAME_MODE
 }
 
-gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
+let ChangeCountry = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   currentCountry = null
   chosenCountry = null
@@ -68,7 +69,7 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
         this.onCountryChooseCb?(this.chosenCountry)
     }
     else if (pAct == ChangeCountryAction.CHANGE_GAME_MODE )
-        gui_handlers.GameModeSelect.open()
+        GameModeSelect.open()
   }
 
   function onCountrySelect(obj) {
@@ -126,7 +127,7 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
   function getAvailableCountries() {
     let res = []
     let currentMode = getCurrentGameMode()
-    let source = getTblValue("source", currentMode, {})
+    let source = (currentMode?.source ?? {})
     foreach (country in shopCountriesList) {
       if (events.isCountryAvailable(source, country))
         res.append(country)
@@ -142,3 +143,6 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
     return false
   }
 }
+register_gui_handler("ChangeCountry", ChangeCountry)
+
+return { ChangeCountry }

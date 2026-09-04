@@ -1,10 +1,8 @@
 import "%sqstd/ecs.nut" as ecs
-from "%rGui/globals/ui_library.nut" import *
 import "console" as console
-
-let { EventPlayerOwnedUnitChanged, EventPlayerControlledUnitChanged, EventArmorInfoChanged
-} = require("dasevents")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "dasevents" import EventPlayerOwnedUnitChanged, EventPlayerControlledUnitChanged, EventArmorInfoChanged
+from "%rGui/globals/ui_library.nut" import *
 
 let armorState = Watched({})
 

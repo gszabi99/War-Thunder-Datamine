@@ -1,26 +1,27 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "%appGlobals/login/loginState.nut" import isProfileReceived
+from "app" import get_base_game_version
+from "%sqstd/version.nut" import mkVersionFromString, versionToInt
+from "eventbus" import eventbus_send, eventbus_subscribe
+from "dagor.http" import httpRequest, HTTP_SUCCESS
+from "statsd" import send_counter
+from "dagor.time" import get_time_msec
+from "dagor.workcycle" import deferOnce
+from "json" import parse_json
 from "%scripts/dagui_library.nut" import *
 from "frp" import this_subscriber_call_may_take_up_to_usec
+from "types" import String
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { get_base_game_version } = require("app")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let emptySceneWithDarg = require("%scripts/wndLib/emptySceneWithDarg.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { mkVersionFromString, versionToInt } = require("%sqstd/version.nut")
 let { isInBattleState, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { httpRequest, HTTP_SUCCESS } = require("dagor.http")
-let { send_counter } = require("statsd")
-let { get_time_msec } = require("dagor.time")
-let { deferOnce } = require("dagor.workcycle")
-let { parse_json } = require("json")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { isNewbieInited, isMeNewbie } = require("%scripts/myStats.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5
@@ -63,7 +64,7 @@ let platformMap = {
 function logError(event, params = {}) {
   local txt = $"{event}: "
   foreach (idx, p in params)
-    if (type(p) == "string")
+    if (p instanceof String)
       txt = $"{txt} {idx} = {p}"
   log(txt)
   send_counter(event, 1, {
@@ -296,7 +297,7 @@ function openUnitEventNews(value) {
 }
 
 let canShowChangelog = @() handlersManager.findHandlerClassInScene(
-  gui_handlers.MainMenu)?.isSceneActiveNoModals() ?? false
+  get_gui_handler("MainMenu"))?.isSceneActiveNoModals() ?? false
 
 function openChangelogInActiveMainMenuImpl() {
   if (!canShowChangelog())
@@ -332,8 +333,8 @@ patchnotesReceived.subscribe(function(value) {
 })
 
 addListenersWithoutEnv({
-  ProfileReceived = @(_p) loadSavedVersionInfoNum()
-  GameLocalizationChanged = function (_p) {
+  ProfileReceived = @(_p) loadSavedVersionInfoNum(),
+  [GAME_LOCALIZATION_CHANGED] = function (_p) {
     clearCache()
     requestAllPatchnotes()
   }

@@ -1,13 +1,13 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "steam" import get_friends_ids, get_friend_info, steam_is_running, steam_get_app_id
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { get_friends_ids, get_friend_info, steam_is_running, steam_get_app_id } = require("steam")
-let { eventbus_subscribe } = require("eventbus")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { requestUnknownSteamIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findContactBySteamId, steamContactsGroup } = require("%scripts/contacts/contactsListState.nut")
 let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
 let Contact = require("%scripts/contacts/contact.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
 enum STEAM_FRIEND_STATE { 

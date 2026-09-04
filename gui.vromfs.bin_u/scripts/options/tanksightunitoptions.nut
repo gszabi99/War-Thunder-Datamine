@@ -1,8 +1,9 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "string" import format
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { format } = require("string")
 let { hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -156,4 +157,3 @@ sightUnitOptions.init <- function(handler, scene) {
 }
 
 return sightUnitOptions
-

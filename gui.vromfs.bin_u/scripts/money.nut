@@ -1,7 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
 
@@ -255,7 +254,16 @@ let Money = class {
       text = ((text == "") ? "" : ", ").concat(text, " ".concat(this.sap, loc("money/sapText")))
     return text
   }
+
+  isEmpty = @() this.isZero()
+  _typeof = @() "Money"
 }
+
+
+Money.isEqual <- function(other) {
+  return other instanceof Money && this <= other && this >= other
+}
+
 
 let Balance = class (Money) {
   mType = money_type.balance
@@ -292,8 +300,6 @@ let Cost = class (Money) {
 }
 
 let zero_money = Money(money_type.none)
-
-u.registerClass("Money", Money, @(m1, m2) m1 <= m2 && m1 >= m2, @(m) m.isZero())
 
 return {
   money_type

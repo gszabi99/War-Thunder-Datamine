@@ -1,7 +1,6 @@
+from "eventbus" import eventbus_subscribe
+from "%sqstd/path.nut" import normalize
 from "%scripts/dagui_library.nut" import *
-
-let { eventbus_subscribe } = require("eventbus")
-let { normalize } = require("%sqstd/path.nut")
 
 let hasMigratedUserSights = mkWatched(persist, "hasMigratedUserSights", false)
 let userSightMigrationParam = mkWatched(persist, "userSightMigrationParam", {})

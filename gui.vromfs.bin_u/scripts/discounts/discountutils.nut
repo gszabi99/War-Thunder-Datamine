@@ -1,10 +1,12 @@
+from "%sqstd/datablock.nut" import getBlkByPathArray, eachBlock
+from "chardResearch" import shopIsModificationPurchased
+from "blkGetters" import get_price_blk
+from "string" import format
 from "%scripts/dagui_natives.nut" import item_get_personal_discount_for_mod, shop_is_weapon_purchased, item_get_personal_discount_for_weapon
 from "%scripts/dagui_library.nut" import *
-let { getBlkByPathArray, eachBlock } = require("%sqstd/datablock.nut")
+from "types" import Array
+
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
-let { get_price_blk } = require("blkGetters")
-let { format } = require("string")
 let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
@@ -14,7 +16,7 @@ function invokeMultiArray(multiArray, currentArray, currentIndex, invokeCallback
     invokeCallback(currentArray)
     return
   }
-  if (type(multiArray[currentIndex]) == "array") {
+  if (multiArray[currentIndex] instanceof Array) {
     foreach (name in multiArray[currentIndex]) {
       currentArray.append(name)
       invokeMultiArray(multiArray, currentArray, currentIndex + 1, invokeCallback)
@@ -37,7 +39,7 @@ function getDiscountByPath(path, blk = null, _idx = 0) {
   }
   invokeMultiArray(path, [], 0, function (arr) {
     let block = getBlkByPathArray(arr, blk)
-    let discountValue = getTblValue("discount", block, 0)
+    let discountValue = (block?.discount ?? 0)
     result.maxDiscount = max(result.maxDiscount, discountValue)
     local personalDiscountValue = personalDiscount.getDiscountByPath(arr)
     result.maxDiscount = max(result.maxDiscount, personalDiscountValue)
@@ -56,7 +58,7 @@ function getMaxWeaponryDiscountByUnitName(unitName, discountTypes = null) {
     eachBlock(unitTable?.weapons, function(table, name) {
       if (!shop_is_weapon_purchased(unitName, name))
         discount = max(discount,
-          getTblValue("discount", table, 0),
+          (table?.discount ?? 0),
           item_get_personal_discount_for_weapon(unitName, name))
     })
 
@@ -64,12 +66,12 @@ function getMaxWeaponryDiscountByUnitName(unitName, discountTypes = null) {
     eachBlock(unitTable?.mods, function(table, name) {
       if (!shopIsModificationPurchased(unitName, name))
         discount = max(discount,
-          getTblValue("discount", table, 0),
+          (table?.discount ?? 0),
           item_get_personal_discount_for_mod(unitName, name))
     })
 
   if (discountTypes.contains("spare") && unitTable?.spare)
-    discount = max(discount, getTblValue("discount", unitTable.spare, 0))
+    discount = max(discount, (unitTable.spare?.discount ?? 0))
 
   return discount
 }

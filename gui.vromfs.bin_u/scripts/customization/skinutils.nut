@@ -1,6 +1,7 @@
+from "string" import split_by_chars
 from "%scripts/dagui_natives.nut" import get_skin_cost_wp, get_skin_cost_gold
 from "%scripts/dagui_library.nut" import *
-let { split_by_chars } = require("string")
+
 let { Cost } = require("%scripts/money.nut")
 
 const DEFAULT_SKIN_NAME = "default"

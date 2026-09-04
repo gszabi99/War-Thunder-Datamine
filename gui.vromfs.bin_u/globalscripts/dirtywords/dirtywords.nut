@@ -46,7 +46,7 @@ let similarCharsMapsByAlphabet = []
 
 let toRegexpFunc = {
   default = @(str) regexp2(str)
-  badcombination = @(str) regexp2("".concat("(", "\\s".join(str.split(" ").filter(@(w) w != "")), ")"))
+  badcombination = @(str) regexp2("".concat("(", "\\s+".join(str.split(" ").filter(@(w) w != "")), ")"))
 }
 
 function updateAsianDict(lookupTbl, upd) {
@@ -169,7 +169,8 @@ let preparereplace = [
 ];
 
 
-let prepareex = regexp2("(а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за)")
+
+let prepareex = regexp2(@"^((а[х]?)|(в)|([вмт]ы)|(д[ао])|(же)|(за))$")
 
 
 let prepareword = [
@@ -225,7 +226,7 @@ let prepareword = [
 
 
 let preparewordwhile = {
-  pattern = regexp2(@"(.)\\1\\1")
+  pattern = regexp2(@"(.)\1\1")
   replace = "\\1\\1"
 }
 
@@ -241,7 +242,7 @@ function preparePhrase(text) {
   let out = []
 
   foreach (w in words) {
-    if (w.len() < 3 && ! prepareex.match(w)) {
+    if (utf8(w).charCount() < 3 && ! prepareex.match(w)) {
       buffer.append(w)
     }
     else {
@@ -301,7 +302,7 @@ function checkWordInternal(word, isName, isSimilarChars) {
 
   if (status)
     foreach (section in dict.fouldata)
-      if (section.key == fl)
+      if (status && section.key == fl)
         status = checkRegexps(word, section.arr, true)
 
   if (status)
@@ -315,7 +316,7 @@ function checkWordInternal(word, isName, isSimilarChars) {
 
   if (!status)
     foreach (section in dict.excludesdata)
-      if (section.key == fl)
+      if (!status && section.key == fl)
         status = checkRegexps(word, section.arr, false)
 
   if (!status && isName)
@@ -352,8 +353,15 @@ function getMaskedWord(w, maskChar = "*") {
   return "".join(array(utf8(w).charCount(), maskChar))
 }
 
+let regexpMetaRe = regexp2(@"([\\\.\^\$\|\(\)\[\]\{\}\*\+\?])")
+let escapeRegexpLiteral = @(s) regexpMetaRe.replace(@"\\\1", s)
+
+
+
+
 function checkPhraseInternal(text, isName) {
   local phrase = text
+  local isDirty = false
 
   
   
@@ -386,8 +394,10 @@ function checkPhraseInternal(text, isName) {
       }
     }
   }
-  if (maskChars != null)
+  if (maskChars != null) {
     phrase = "".join(charsArray.map(@(c, i) maskChars[i] ? "**" : c))
+    isDirty = true
+  }
 
   local lowerPhrase = utf8ToLower(phrase)
   
@@ -399,22 +409,25 @@ function checkPhraseInternal(text, isName) {
       let word = pattern.multiExtract("\\1", lowerPhrase)?[0] ?? ""
       phrase = pattern.replace(getMaskedWord(word), lowerPhrase)
       lowerPhrase = utf8ToLower(phrase)
+      isDirty = true
     }
 
   let words = preparePhrase(phrase)
 
   foreach (w in words)
-    if (!checkWord(w, isName))
-      phrase = regexp2(w).replace(getMaskedWord(w), phrase)
+    if (!checkWord(w, isName)) {
+      phrase = regexp2(escapeRegexpLiteral(w)).replace(getMaskedWord(w), phrase)
+      isDirty = true
+    }
 
-  return phrase
+  return { phrase, isDirty }
 }
 
 
-let checkPhrase = @(text) checkPhraseInternal(text, false)
+let checkPhrase = @(text) checkPhraseInternal(text, false).phrase
 
 
-let isPhrasePassing = @(text) checkPhrase(text) == text
+let isPhrasePassing = @(text) !checkPhraseInternal(text, false).isDirty
 
 
 let checkName = function(name) {
@@ -428,7 +441,7 @@ let checkName = function(name) {
   if (name != noWhitespaceName)
     stringsToCheck.append(name)
   foreach (str in stringsToCheck)
-    if (checkPhraseInternal(str, true) != str)
+    if (checkPhraseInternal(str, true).isDirty)
       return getMaskedWord(name)
   return name
 }

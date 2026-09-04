@@ -1,12 +1,13 @@
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { register_command } = require("console")
 
 const ITEM_IMAGE_SIZE = "150@sf/@pf"
 const ITEM_IMAGE_MARGIN = "20@sf/@pf"
@@ -26,16 +27,16 @@ function openOrUpdateRecycleCompleteWnd(params) {
   }
   if (recycledItems.len() == 0)
     return
-  let recycledWnd = handlersManager.findHandlerClassInScene(gui_handlers.recycleCompleteWnd)
+  let recycledWnd = handlersManager.findHandlerClassInScene(get_gui_handler("recycleCompleteWnd"))
   if (recycledWnd) {
     recycledWnd.addItems(recycledItems)
     return
   }
-  loadHandler(gui_handlers.recycleCompleteWnd, {recycledItems})
+  loadHandler(get_gui_handler("recycleCompleteWnd"), {recycledItems})
 }
 
 
-gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let recycleCompleteWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/recycleCompleteWnd.blk"
   recycledItems = null
@@ -84,6 +85,7 @@ gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.drawItems(this.recycledItems)
   }
 }
+register_gui_handler("recycleCompleteWnd", recycleCompleteWnd)
 
 function showDebugItems(count) {
   let recycledItems = {}
@@ -94,16 +96,17 @@ function showDebugItems(count) {
     recycledItems[debugItemIndex.tostring()] <- {item,  count = i}
     debugItemIndex++
   }
-  let recycledWnd = handlersManager.findHandlerClassInScene(gui_handlers.recycleCompleteWnd)
+  let recycledWnd = handlersManager.findHandlerClassInScene(recycleCompleteWnd)
   if (recycledWnd) {
     recycledWnd.addItems(recycledItems)
     return
   }
-  loadHandler(gui_handlers.recycleCompleteWnd, {recycledItems})
+  loadHandler(recycleCompleteWnd, {recycledItems})
 }
 
 register_command(showDebugItems, "debug.recycledWindow")
 
 return {
+  recycleCompleteWnd
   openOrUpdateRecycleCompleteWnd
 }

@@ -1,12 +1,12 @@
+from "hangar" import hangar_enable_controls
 from "%scripts/dagui_library.nut" import *
 
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { hangar_enable_controls } = require("hangar")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-let class emptySceneWithDarg (BaseGuiHandler) {
+class emptySceneWithDarg (BaseGuiHandler) {
   sceneBlkName = "%gui/wndLib/emptySceneWithDarg.blk"
   shouldBlurSceneBgFn = needUseHangarDof
   wndControlsAllowMask = null
@@ -21,7 +21,6 @@ let class emptySceneWithDarg (BaseGuiHandler) {
   getControlsAllowMask = @() this.wndControlsAllowMask
 }
 
-gui_handlers.emptySceneWithDarg <- emptySceneWithDarg
+register_gui_handler("emptySceneWithDarg", emptySceneWithDarg)
 
 return @(params) handlersManager.loadHandler(emptySceneWithDarg, params)
-

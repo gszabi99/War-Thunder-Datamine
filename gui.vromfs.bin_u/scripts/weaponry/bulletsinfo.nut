@@ -1,44 +1,39 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv
+from "%globalScripts/modeXrayLib.nut" import getNVDSightGen, getNVDSightSystemText
+from "string" import format
+from "eventbus" import eventbus_subscribe
+from "%sqstd/datablock.nut" import blkFromPath, eachParam, copyParamsToTable, blkOptFromPath
+from "%sqstd/math.nut" import ceil, change_bit, interpolateArray
+from "guiOptions" import getGuiOptionsMode, set_unit_option, get_gui_option
+from "%sqstd/underscore.nut" import unique
+from "unitCustomization" import set_last_bullets
+from "%sqstd/string.nut" import startsWith, slice
+from "chardResearch" import shopIsModificationPurchased
+from "blkGetters" import get_ranks_blk, get_modifications_blk
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_natives.nut" import is_tier_available, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, fakeBullets_prefix, infantryDefaultBeltName
+from "types" import String, Array
 
 let { get_bullets_locId_by_caliber, get_modifications_locId_by_caliber } = require("%scripts/options/optionsStorage.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { format } = require("string")
-let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { blkFromPath, eachParam, copyParamsToTable, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { blkFromPathCachedByUnit } = require("%scripts/unit/unitBlkCache.nut")
-let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
-  getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath,
-  getBulletBeltShortLocId
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath, getBulletBeltShortLocId } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
-let { isModResearched, isModAvailableOrFree, getModificationByName, isReqModificationsUnlocked,
-  updateRelationModificationList, getModificationBulletsGroup
-} = require("%scripts/weaponry/modificationInfo.nut")
+let { isModResearched, isModAvailableOrFree, getModificationByName, isReqModificationsUnlocked, updateRelationModificationList, getModificationBulletsGroup } = require("%scripts/weaponry/modificationInfo.nut")
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
-let { getGuiOptionsMode, set_unit_option, get_gui_option } = require("guiOptions")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { unique } = require("%sqstd/underscore.nut")
 let { getPresetWeapons, getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { appendOnce } = u
-let DataBlock = require("DataBlock")
-let { set_last_bullets } = require("unitCustomization")
-let { startsWith, slice } = require("%sqstd/string.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_MODIFICATIONS
-} = require("%scripts/options/optionsExtNames.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
-let { get_ranks_blk, get_modifications_blk } = require("blkGetters")
+let { OPTIONS_MODE_TRAINING, USEROPT_BULLETS0, USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { doesLocTextExist } = require("dagor.localize")
 let { getSupportUnits } = require("%scripts/unit/supportUnits.nut")
 let { floatToText } = require("%scripts/langUtils/textFormat.nut")
-let { getRandUnitOptPath, loadLocalUnitSettings, saveLocalUnitSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { getRandUnitOptPath, loadLocalUnitSettings, saveLocalUnitSettings } = require("%scripts/clientState/localProfile.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -245,6 +240,8 @@ function getBulletSetIconParam(unit, bulletSet, mod = null) {
     : null
 }
 
+let hasNestedRocket = @(blk) u.isDataBlock(blk?.rocket)
+
 function getBulletsSetData(air, modifName, noModList = null) {
     
     
@@ -349,7 +346,8 @@ function getBulletsSetData(air, modifName, noModList = null) {
       && ((wBlk?.isBulletBelt != false || (wBlk?.bulletsCartridge ?? 0) > 1) && !wBlk?.useSingleIconForBullet)
 
     foreach (b in bulletsList) {
-      let paramsBlk = u.isDataBlock(b?.rocket) ? b.rocket : b
+      let hasNestedRocketBlk = hasNestedRocket(b)
+      let paramsBlk = hasNestedRocketBlk ? b.rocket : b
       let bulletAnimations = paramsBlk % "shellAnimation"
       if (!res)
         if (paramsBlk?.caliber) {
@@ -360,6 +358,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
                   cartridge = wBlk?.bulletsCartridge ?? 0
                   weaponType = weaponType
                   weaponTrigger = weaponTrigger
+                  hasNestedRocketBlk
                   useDefaultBullet = !wBlk?.notUseDefaultBulletInGui,
                   weaponBlkName = wBlkName
                   maxToRespawn = mod?.maxToRespawn ?? 0
@@ -385,6 +384,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
       res.bullets.append(bulletType)
       res.bulletDataByType[_bulletType] <- {
         bulletAnimations
+        bulletName = b?.bulletName
       }
 
       if (paramsBlk?.guiCustomIcon != null) {
@@ -723,7 +723,7 @@ function getBulletsGroupCount(air, full = false) {
 
 function getBulletsInfoForGun(unit, gunIdx) {
   let bulletsInfo = getBulletsInfoForPrimaryGuns(unit)
-  return getTblValue(gunIdx, bulletsInfo)
+  return bulletsInfo?[gunIdx]
 }
 
 function canBulletsBeDuplicate(unit) {
@@ -809,20 +809,12 @@ function getUniqModificationText(modifName, isShortDesc) {
 }
 
 function getNVDSightCrewText(sight) {
-  if (sight.contains("commander"))
+  if (sight.name.contains("commander"))
     return loc("crew/commander")
-  if (sight.contains("gunner"))
+  if (sight.name.contains("gunner"))
     return loc("crew/tank_gunner")
-  if (sight.contains("driver"))
+  if (sight.name.contains("driver"))
     return loc("crew/driver")
-  return ""
-}
-
-function getNVDSightSystemText(sight) {
-  if (sight.contains("Thermal"))
-    return loc("modification/thermal_vision_system")
-  if (sight.contains("Ir"))
-    return loc("modification/night_vision_system")
   return ""
 }
 
@@ -830,10 +822,12 @@ function getNVDSightText(sight) {
   let crew = getNVDSightCrewText(sight)
   if (crew == "")
     return ""
-  let system = getNVDSightSystemText(sight)
+  let system = getNVDSightSystemText(sight.name)
   if (system == "")
     return ""
-  return colorize("goodTextColor", $"{crew}{loc("ui/colon")} {system}")
+  return colorize("goodTextColor", loc("ui/comma").concat(
+    $"{crew}{loc("ui/colon")} {system}",
+    $" {loc("modifications/generation")} {getNVDSightGen(sight.resolution)}"))
 }
 
 function getBulletsNamesBySet(set) {
@@ -906,7 +900,7 @@ function getLocalizedModWeapons(unit, modifName) {
 function getModificationInfo(air, modifName, p = {}) {
   let { isShortDesc = false, isLimitedName = false, obj = null, itemDescrRewriteFunc = null, needAddName = true } = p
   let res = { desc = "", delayed = false }
-  if (type(air) == "string")
+  if (air instanceof String)
     air = getAircraftByName(air)
   if (!air)
     return res
@@ -1023,7 +1017,7 @@ function getModificationInfo(air, modifName, p = {}) {
   }
 
   if (ammo_pack_len) {
-    if ("bulletNames" in set && type(set.bulletNames) == "array"
+    if ("bulletNames" in set && set.bulletNames instanceof Array
       && set.bulletNames.len()) {
         shortDescr = format(loc(set.isBulletBelt
           ? "modification/ammo_pack_belt/desc" : "modification/ammo_pack/desc"), shortDescr)
@@ -1182,7 +1176,7 @@ function getActiveBulletsGroupIntForDuplicates(unit, params) {
     }
     else {
       let bInfo = getBulletsInfoForGun(unit, linkedIdx)
-      if (getTblValue("isBulletBelt", bInfo, true))
+      if ((bInfo?.isBulletBelt ?? true))
         lastIdxTotal = 1
       else {
         let checkPurchased = params?.checkPurchased ?? true
@@ -1195,7 +1189,7 @@ function getActiveBulletsGroupIntForDuplicates(unit, params) {
       }
       lastLinkedIdx = linkedIdx
       duplicates = 0
-      maxCatridges = getTblValue("total", bInfo, 0)
+      maxCatridges = (bInfo?.total ?? 0)
     }
     if (lastIdxTotal > duplicates && duplicates < maxCatridges)
       res = res | (1 << i)
@@ -1310,7 +1304,7 @@ function isBulletGroupActive(air, group) {
 }
 
 function isBulletsGroupActiveByMod(air, mod) {
-  local groupIdx = getTblValue("isDefaultForGroup", mod, -1)
+  local groupIdx = (mod?.isDefaultForGroup ?? -1)
   if (groupIdx < 0)
     groupIdx = getBulletGroupIndex(air.name, mod)
   return isBulletGroupActive(air, groupIdx)
@@ -1520,7 +1514,7 @@ function getProjectileNameLoc(projectileName, needToUseBulletTypeName = false, u
     if (doesLocTextExist($"{projectileName}/name"))
       return loc($"{projectileName}/name")
     if (unit) {
-      let caliber = (unit?.getModifications().findvalue(@(m) m.name == projectileName).caliber ?? 0) * 1000
+      let caliber = (unit?.getModifications().findvalue(@(m) m.name == projectileName)?.caliber ?? 0) * 1000
       let bulletLocId = getBulletBeltShortLocId(projectileName)
       if (caliber && doesLocTextExist(bulletLocId)) {
         let caliberString = caliber % 1 != 0
@@ -1592,6 +1586,7 @@ return {
   getBulletsSearchName
   getModificationBulletsEffect
   getBulletsSetData
+  hasNestedRocket
   getBulletsGroupCount
   getBulletsInfoForPrimaryGuns
   getBeltlessGunsWeapNames

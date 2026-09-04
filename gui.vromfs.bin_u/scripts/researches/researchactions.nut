@@ -1,14 +1,15 @@
+from "eventbus" import eventbus_subscribe
+from "console" import register_command
 from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, shop_get_units_list_with_autoset_modules, get_auto_buy_modifications, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isHandlerInScene } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { researchUnitNotification } = require("%scripts/researches/finishedResearches.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { register_command } = require("console")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
@@ -27,8 +28,8 @@ let getUnitNameFromResearchItem = @(research)
 
 function guiStartChooseNextResearch(researchBlock = null) {
   if (!isResearchForModification(researchBlock)) {
-    loadHandler(gui_handlers.ShopCheckResearch, { researchBlock = researchBlock })
-    loadHandler(gui_handlers.researchUnitNotification, { researchBlock = researchBlock })
+    loadHandler(get_gui_handler("ShopCheckResearch"), { researchBlock = researchBlock })
+    loadHandler(researchUnitNotification, { researchBlock = researchBlock })
   }
   else {
     let unit = getAircraftByName(getUnitNameFromResearchItem(researchBlock))
@@ -56,9 +57,9 @@ function isResearchAbandoned(research) {
 
 function isResearchLast(research, checkUnit = false) {
   if (isResearchForModification(research))
-    return getTblValue("mod", research, "") == ""
+    return (research?.mod ?? "") == ""
   else if (checkUnit)
-    return getTblValue("unit", research, "") == ""
+    return (research?.unit ?? "") == ""
   return false
 }
 
@@ -125,10 +126,10 @@ function checkNonApprovedResearches(needUpdateResearchTable = false, needResearc
   if (needResearchAction) {
     let resBlock = researched_items_table[0]
     if (isResearchForModification(resBlock)
-      && isHandlerInScene(gui_handlers.WeaponsModalHandler))
+      && isHandlerInScene(get_gui_handler("WeaponsModalHandler")))
       return true
 
-    if (isHandlerInScene(gui_handlers.ShopCheckResearch))
+    if (isHandlerInScene(get_gui_handler("ShopCheckResearch")))
       return true
 
     guiStartChooseNextResearch(resBlock)

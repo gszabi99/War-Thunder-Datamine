@@ -2,7 +2,7 @@
   "model": "mig_29smt_9_19",
   "fmFile": "fm/mig_29smt_9_19.blk",
   "viewDistKInSight": 6.0,
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.245,
   "gearSinkRangeC": 0.466,
   "haveCCIPForRocket": true,
@@ -15,9 +15,9 @@
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "hasAimingPointsMemory": true,
-  "rwrIndicator": "L-150",
+  "rwrIndicator": "L-150 MIG",
   "ils31": true,
-  "hmdSuraZoom": true,
+  "hmdSura": true,
   "hasHelmetDesignator": true,
   "helmetDesignatorZone0": [
     -70.0,
@@ -2996,6 +2996,7 @@
               "AN/APG-67",
               "AN/APG-76 / AN/ASX-1",
               "AN/APG-79",
+              "AN/APG-83",
               "Thales RDY",
               "N019",
               "N001",
@@ -3268,84 +3269,8 @@
               "pageName": "mfdMig29Horizont"
             },
             {
-              "type": "hsd",
-              "scale": 1.0,
-              "color": [
-                124,
-                191,
-                186,
-                225
-              ],
-              "font": "hud",
-              "fontSize": 18,
-              "lineWidth": 3.0,
-              "lineColor": [
-                1,
-                1,
-                1,
-                120
-              ],
-              "orient": "hdgUp",
-              "centerMarkType": "plane",
-              "centerMarkFillColor": [
-                1,
-                1,
-                1,
-                255
-              ],
-              "centerMarkLineColor": [
-                1,
-                1,
-                1,
-                255
-              ],
-              "centerMarkScale": 0.1,
-              "centerMarkSpeed": false,
-              "spi": true,
-              "spiColor": [
-                1,
-                1,
-                1,
-                255
-              ],
-              "spiInfo": true,
-              "distScale": true,
-              "distScaleBeyondAzScale": true,
-              "distScaleStepSize": 5000.0,
-              "distScaleColor": [
-                1,
-                1,
-                1,
-                120
-              ],
-              "distScaleNumbers": false,
-              "distScaleNumbersAngle": 45.0,
-              "distScaleNumbersFillColor": [
-                124,
-                191,
-                186,
-                225
-              ],
-              "azScaleType": "lines",
-              "azScaleSize": 10000.0,
-              "azScaleColor": [
-                0,
-                15,
-                0,
-                255
-              ],
-              "headingIndFillColor": [
-                124,
-                191,
-                186,
-                225
-              ],
-              "centerCross": true,
-              "time": false,
-              "mapBackground": true,
-              "extent": 45000.0,
-              "markers": true,
-              "metricUnits": false
+              "type": "custom",
+              "pageName": "mfdMigCompass"
             },
             {
               "type": "ils_duplicate",
@@ -3353,7 +3278,8 @@
             },
             {
               "type": "rwr",
-              "scale": 0.8
+              "scale": 0.8,
+              "migStyle": true
             },
             {
               "type": "target_tracking_bw",
@@ -3381,11 +3307,16 @@
             },
             {
               "type": "rwr",
-              "scale": 0.8
+              "scale": 0.8,
+              "migStyle": true
             },
             {
               "type": "custom",
               "pageName": "mfdMig29Horizont"
+            },
+            {
+              "type": "custom",
+              "pageName": "mfdMigCompass"
             }
           ]
         },

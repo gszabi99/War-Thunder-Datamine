@@ -1,9 +1,10 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dynamicMission" import dynamicInit
+from "eventbus" import eventbus_subscribe
+from "%sqstd/globalState.nut" import hardPersistWatched
 from "%scripts/dagui_library.nut" import *
-let { dynamicInit } = require("dynamicMission")
-let { eventbus_subscribe } = require("eventbus")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let progressMsg = require("%sqDagui/framework/progressMsg.nut")
+
+let progressMsg = require("%scripts/sqDagui/framework/progressMsg.nut")
 
 const DYN_CAMPAIGN_PROGRESS_MSG_ID = "dynamic_init_msg"
 

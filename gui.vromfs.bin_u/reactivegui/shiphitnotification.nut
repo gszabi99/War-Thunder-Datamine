@@ -1,15 +1,15 @@
+import "DataBlock" as DataBlock
+from "%rGui/ctrlsState.nut" import cursorVisible
+from "%rGui/options/options.nut" import shipHitIconsVisibilityStateFlags
+from "%globalScripts/shipHitIconsConsts.nut" import ShipHitIconId, IS_SHIP_HIT_NOTIFICATIONS_VISIBLE
+from "dagor.workcycle" import setTimeout
+from "eventbus" import eventbus_subscribe
+from "blkLoad" import tryLoadBlk
+from "string" import format
 from "%rGui/globals/ui_library.nut" import *
 
 let { shellHitDamageEvents } = require("%rGui/shipState.nut")
-let { setTimeout } = require("dagor.workcycle")
-let { eventbus_subscribe } = require("eventbus")
-let { cursorVisible } = require("%rGui/ctrlsState.nut")
-let DataBlock = require("DataBlock")
-let { tryLoadBlk } = require("blkLoad")
-let { shipHitIconsVisibilityStateFlags } = require("%rGui/options/options.nut")
-let { ShipHitIconId, ShipHitIconVisibilityMask,
-  IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
-let { format } = require("string")
+let { ShipHitIconVisibilityMask } = require("%globalScripts/shipHitIconsConsts.nut")
 
 
 const SHOW_RESET_DEFAULT_DURATION = 10
@@ -34,7 +34,7 @@ function mkAppearAnim(trigger) {
 
 function mkIconHint(hintText) {
   return {
-    pos = [0, ph(150)]
+    pos = const [0, ph(150)]
     margin = const [0, hdpx(12), 0, 0]
     padding = const [hdpx(5), hdpx(10)]
     minWidth = hdpx(50)
@@ -88,11 +88,11 @@ function mkIcon(baseCfg, iconCfg, watched) {
         }
         iconCfg.text.enabled ? @() {
           rendObj = ROBJ_TEXT
-          pos = [0, ph(48)]
+          pos = const [0, ph(48)]
           watch = text
           padding = const [0, 0, hdpx(10), 0]
           text = text.get()
-          size = flex()
+          size = FLEX
           font = baseCfg.iconFont
           color = iconCfg.text.color
           halign = ALIGN_RIGHT
@@ -286,7 +286,7 @@ let hitboxX = Computed(@() isHitcamSet.get()
   : 0)
 
 let citadelHitNotification = {
-  pos = [0, ph(12)]
+  pos = const [0, ph(12)]
   hplace = ALIGN_CENTER
   opacity = 0
   animations = [
@@ -350,7 +350,7 @@ let torpedoHintImage = {
 }
 
 let torpedoHitNotification = {
-  pos = [0, ph(15)]
+  pos = const [0, ph(15)]
   hplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
   opacity = 0
@@ -463,7 +463,7 @@ let simpleHitNotifications = function() {
 }
 
 let hitNotifications = {
-  size = flex()
+  size = FLEX
   children = [
     citadelHitNotification
     simpleHitNotifications

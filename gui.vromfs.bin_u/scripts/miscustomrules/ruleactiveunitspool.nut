@@ -1,16 +1,15 @@
+from "%appGlobals/ranks_common_shared.nut" import get_ds_ut_name_unit_type, get_team_name_by_mp_team
+from "mission" import get_mp_local_team
 from "%scripts/dagui_library.nut" import *
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
 
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { get_ds_ut_name_unit_type, get_team_name_by_mp_team } = require("%appGlobals/ranks_common_shared.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
-let { UnitLimitByUnitName, UnitLimitByUnitExpClass,
-  UnitLimitByUnitType } = require("%scripts/misCustomRules/unitLimit.nut")
-let { get_mp_local_team } = require("mission")
+let { UnitLimitByUnitName, UnitLimitByUnitExpClass, UnitLimitByUnitType } = require("%scripts/misCustomRules/unitLimit.nut")
 
 let ActiveUnitsPool = class (RuleBase) {
   needLeftRespawnOnSlots = true

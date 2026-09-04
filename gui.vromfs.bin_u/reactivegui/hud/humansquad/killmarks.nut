@@ -1,12 +1,11 @@
+import "dagor.math" as dagorMath
+import "wt.behaviors" as WTBhv
+from "%rGui/hud/state/hit_marks_es.nut" import killMarks
 from "%rGui/globals/ui_library.nut" import *
 
-let dagorMath = require("dagor.math")
-let { killMarks } = require("%rGui/hud/state/hit_marks_es.nut")
-let WTBhv = require("wt.behaviors")
-
 let worldKillMarkSize = Watched([fsh(2.5),fsh(2.5)])
-let worldKillMarkColor = 0xAAB41414
-let worldDownedMarkColor = 0xAAE6781E
+const worldKillMarkColor = 0xAAB41414
+const worldDownedMarkColor = 0xAAE6781E
 
 let mkAnimations = @() [
   { prop=AnimProp.opacity, from=0.2, to=1, duration=0.3, play=true, easing=InCubic }

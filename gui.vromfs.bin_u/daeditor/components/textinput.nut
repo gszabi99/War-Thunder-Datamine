@@ -1,5 +1,6 @@
 from "%darg/ui_imports.nut" import *
 from "string" import regexp, split_by_chars
+from "types" import String
 let { colors } = require("style.nut")
 
 
@@ -10,25 +11,25 @@ let { colors } = require("style.nut")
 
 
 let rexInt = regexp(@"[\+\-]?[0-9]+")
-function isStringInt(str){
+function isStringInt(str): bool {
   return rexInt.match(str) 
 }
 
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
-function isStringFloat(str){
+function isStringFloat(str): bool {
   return rexFloat.match(str) 
 }
 
 let rexEng = regexp(@"[a-z,A-Z]*")
-function isStringEng(str){
+function isStringEng(str): bool {
   return rexEng.match(str)
 }
-function isStringLikelyEmail(str, _verbose=true) {
+function isStringLikelyEmail(str, _verbose=true): bool {
 
 
 
 
-  if (type(str)!="string")
+  if (!(str instanceof String))
     return false
   let splitted = split_by_chars(str,"@")
   if (splitted.len()<2)
@@ -61,7 +62,7 @@ function defaultFrame(inputObj, group, sf) {
   }
 }
 
-function isValidStrByType(str, inputType) {
+function isValidStrByType(str, inputType): bool {
   if (str=="")
     return true
   if (inputType=="mail")

@@ -1,7 +1,7 @@
 {
   "model": "nc_223_3",
   "fmFile": "fm/nc_223_3.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/4x_engine_piston_inline_bomber_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.15,
   "gearSinkRangeC": 0.25,
@@ -24,7 +24,7 @@
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fightAiBehaviour": "bomber",
-  "fireParamsPreset": "400kph",
+  "fireParamsPreset": "400kph_nb",
   "hasQualityModels": true,
   "SelfSealingTanks": {
     "tank1_dm": false,
@@ -3592,15 +3592,15 @@
   },
   "fireParams": {
     "engineExtinguishFireSpeed": [
-      55.0,
+      104.0,
       138.0
     ],
     "engineExtinguishFireSpeedChance": [
-      0.01,
-      0.1
+      0.02,
+      0.8
     ],
-    "fireDamagePowerRel": 0.05,
-    "nonExtinguishFireTime": 5.0
+    "fireDamagePowerRel": 0.1,
+    "nonExtinguishFireTime": 25.0
   },
   "balanceData": {
     "accSpd": 1.5643,

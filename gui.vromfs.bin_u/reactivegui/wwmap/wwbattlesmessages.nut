@@ -1,14 +1,14 @@
+from "%rGui/wwMap/wwOperationStates.nut" import getPlayerSideStr, isPlayerSideStr
+from "%rGui/wwMap/wwMapUtils.nut" import getMapColor
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings
+from "%rGui/wwMap/wwBattlesStates.nut" import battlesInfo, getBattleState
+from "%rGui/wwMap/wwOperationConfiguration.nut" import convertToRelativeMapCoords, activeAreaBounds, mapZoom
+from "%rGui/wwMap/wwArmyStates.nut" import getArmyIcon
+from "%rGui/wwMap/wwArmyGroups.nut" import getArmyGroupsInfo
+from "math" import floor
+from "worldwar" import wwGetOperationTimeMillisec
 from "%rGui/globals/ui_library.nut" import *
 
-let { floor } = require("math")
-let { getPlayerSideStr, isPlayerSideStr } = require("%rGui/wwMap/wwOperationStates.nut")
-let { getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
-let { battlesInfo, getBattleState } = require("%rGui/wwMap/wwBattlesStates.nut")
-let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { getArmyIcon } = require("%rGui/wwMap/wwArmyStates.nut")
-let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
-let { wwGetOperationTimeMillisec } = require("worldwar")
 let fontsState = require("%rGui/style/fontsState.nut")
 
 let battleResults = {}

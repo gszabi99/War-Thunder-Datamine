@@ -1,6 +1,5 @@
+from "math" import atan, PI
 from "%rGui/globals/ui_library.nut" import *
-
-let { atan, PI } = require("math")
 
 function calcAngleBetweenVectors(point1, point2 = {}) {
   let { x = 0, y = 0 } = point2

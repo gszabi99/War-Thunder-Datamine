@@ -1,14 +1,11 @@
 require darg
 require math
 require strings
-require app
 require hud
-require DagorSystem
 require DagorMath
 require DagorStdGuiRender
 require Plane
 require FlightModelWrap
-require HeroManager
 require Unit
 require Sensors
 require RadarHud

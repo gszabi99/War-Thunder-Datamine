@@ -1,19 +1,21 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+import "regexp2" as regexp2
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "string" import format
+from "%sqstd/math.nut" import number_of_set_bits
+from "%sqstd/datablock.nut" import copyParamsToTable
+from "dagor.math" import Point2
+from "blkGetters" import get_game_settings_blk
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
+from "types" import Table, Integer, Array
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
-let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
-let { number_of_set_bits } = require("%sqstd/math.nut")
-let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { isIPoint3 } = u
-let { Point2 } = require("dagor.math")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { get_game_settings_blk } = require("blkGetters")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 
 let missionModesList = [
@@ -183,7 +185,7 @@ function getRankMultipliersTable(blk) {
 }
 
 function getRangeTextByPoint2(val, formatParams = {}, romanNumerals = false) {
-  if (!(type(val) == "instance" && (val instanceof Point2)) && !(type(val) == "table"))
+  if (!(type(val) == "instance" && (val instanceof Point2)) && !(val instanceof Table))
     return ""
 
   formatParams = formatParamsDefault.__merge(formatParams)
@@ -260,7 +262,7 @@ function getMultipliersTable(blk) {
 
   let mulTable = {}
   if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
-    let NUM_MISSION_TYPES = 9
+    const NUM_MISSION_TYPES = 9
     let forceShowMulModes = blk % "forceShowMulMode"
     for (local i = 0; i < NUM_MISSION_TYPES; i++) {
       let mulMode = blk?[$"mulMode{i}"] ?? 1.0
@@ -350,7 +352,7 @@ function loadParamsConditions(blk) {
   if (blk?.hidden)
     return res
 
-  if (blk?.elite != null && (type(blk?.elite) != "integer" || blk.elite > 1))
+  if (blk?.elite != null && (!(blk?.elite instanceof Integer) || blk.elite > 1))
     res.append(createCondition("eliteUnitsOnly"))
 
   if (blk?.premium == false)
@@ -395,7 +397,7 @@ function loadParamsConditions(blk) {
 function findCondition(list, cType, locGroup) {
   local cLocGroup = null
   foreach (cond in list) {
-    cLocGroup = getTblValue("locGroup", cond, null)
+    cLocGroup = cond?.locGroup
     if (cond.type == cType && locGroup == cLocGroup)
       return cond
   }
@@ -404,7 +406,7 @@ function findCondition(list, cType, locGroup) {
 
 function mergeConditionToList(newCond, list) {
   let cType = newCond.type
-  let cond = findCondition(list, cType, getTblValue("locGroup", newCond, null))
+  let cond = findCondition(list, cType, newCond?.locGroup)
   if (!cond)
     return list.append(newCond) 
 
@@ -414,9 +416,9 @@ function mergeConditionToList(newCond, list) {
   if (!cond.values)
     cond.values = newCond.values
   else {
-    if (type(cond.values) != "array")
+    if (!(cond.values instanceof Array))
       cond.values = [cond.values]
-    cond.values.extend((type(newCond.values) == "array") ? newCond.values : [newCond.values])
+    cond.values.extend((newCond.values instanceof Array) ? newCond.values : [newCond.values])
   }
 
   
@@ -454,7 +456,7 @@ function getDiffTextArrayByPoint3(val, formatStr = "%s", lessIsBetter = false) {
       let value = val[key]
       let valueStr = getDiffValueText(value, formatStr, lessIsBetter)
       res.append("".concat(valueStr, loc("ui/parentheses/space", {
-        text = loc(getTblValue("abbreviation", g_difficulty.getDifficultyByDiffCode(idx), ""))
+        text = loc((g_difficulty.getDifficultyByDiffCode(idx)?.abbreviation ?? ""))
       })))
     }
 
@@ -594,7 +596,7 @@ function loadCondition(blk, unlockBlk) {
     let values = blk % "postfix"
     foreach (val in values)
       u.appendOnce(regExpNumericEnding.replace("", val), res.values)
-    res.locGroup <- getTblValue("allowed", blk, true) ? "missionPostfixAllowed" : "missionPostfixProhibited"
+    res.locGroup <- (blk?.allowed ?? true) ? "missionPostfixAllowed" : "missionPostfixProhibited"
     if (blk?.locValuePrefix)
       res.locValuePrefix <- blk.locValuePrefix
   }
@@ -736,7 +738,7 @@ function getHeaderCondition(conditions) {
 
 function getMainProgressCondition(conditions) {
   foreach (c in conditions)
-    if (getTblValue("modeType", c))
+    if (c?.modeType)
       return c
   return null
 }

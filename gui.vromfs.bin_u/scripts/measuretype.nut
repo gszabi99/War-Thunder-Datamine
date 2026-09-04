@@ -1,17 +1,13 @@
+import "%sqstd/math.nut" as stdMath
+from "%sqStdLibs/helpers/enums.nut" import addTypes, enumsGetCachedType
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "math" import ceil
+from "guiOptions" import getMeasureUnitOptionType
 from "%scripts/dagui_library.nut" import *
 
-let { ceil } = require("math")
-let { addTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let stdMath = require("%sqstd/math.nut")
-let { getMeasureUnitOptionType } = require("guiOptions")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
-let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
-  USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE,
-  USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO,
-  USEROPT_MEASUREUNITS_RADIAL_SPEED, USEROPT_MEASUREUNITS_DIST_SHORT
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST, USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE, USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, USEROPT_MEASUREUNITS_RADIAL_SPEED, USEROPT_MEASUREUNITS_DIST_SHORT } = require("%scripts/options/optionsExtNames.nut")
 let time = require("%scripts/time.nut")
 
 let measureType = {
@@ -213,8 +209,6 @@ addListenersWithoutEnv({
   MeasureUnitsInited = @(_) pushMeasureUnits()
   MeasureUnitsChanged = @(_) pushMeasureUnits()
 })
-
-::cross_call_api.measureTypes <- measureType
 
 return {
   measureType

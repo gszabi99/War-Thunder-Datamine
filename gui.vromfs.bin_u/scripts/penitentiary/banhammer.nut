@@ -1,25 +1,27 @@
-from "%scripts/dagui_natives.nut" import send_complaint_by_uid, myself_can_devoice, gchat_raw_command, gchat_escape_target, myself_can_ban, set_char_cb, send_complaint, get_game_mode_name, send_complaint_by_nick, char_ban_user
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "%sqstd/string.nut" import clearBorderSymbolsMultiline
+from "guiOptions" import get_gui_option
+from "mission" import get_game_mode, get_local_mplayer
+from "multiplayer" import get_mp_session_id_str
+from "%scripts/dagui_natives.nut" import send_complaint_by_uid, myself_can_devoice, gchat_raw_command, gchat_escape_target, myself_can_ban, set_char_cb, send_complaint
+  , get_game_mode_name, send_complaint_by_nick, char_ban_user
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import save_to_json
 from "%scripts/options/optionsCtors.nut" import create_option_list
+from "types" import Table
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { format } = require("string")
-let { clearBorderSymbolsMultiline } = require("%sqstd/string.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_gui_option } = require("guiOptions")
-let { get_game_mode, get_local_mplayer } = require("mission")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let time = require("%scripts/time.nut")
-let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { cacheComplaintOnUser } = require("%scripts/user/complaints.nut")
-let { get_mp_session_id_str } = require("multiplayer")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { getChatThreadsList } = require("%scripts/chat/chatLatestThreads.nut")
@@ -27,14 +29,14 @@ let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
 let { getPlayerTag } = require("%scripts/chat/chatUtils.nut")
 
 function gui_modal_ban(playerInfo, cLog = null) {
-  handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
+  handlersManager.loadHandler(get_gui_handler("BanHandler"), { player = playerInfo, chatLog = cLog })
 }
 
 function gui_modal_complain(playerInfo, cLog = null) {
   if (!tribunal.canComplaint())
     return
 
-  handlersManager.loadHandler(gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })
+  handlersManager.loadHandler(get_gui_handler("ComplainHandler"), { pInfo = playerInfo, chatLog = cLog })
 }
 
 let chatLogToString = function(chatLog) {
@@ -55,7 +57,7 @@ let chatLogToString = function(chatLog) {
   return res
 }
 
-gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let BanHandler = class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/complain.blk"
   wndType = handlerType.MODAL
 
@@ -68,8 +70,8 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.scene || !this.player || !this.canBan())
       return this.goBack()
 
-    this.playerName = getTblValue("name", this.player, "")
-    if (!getTblValue("uid", this.player)) {
+    this.playerName = (this.player?.name ?? "")
+    if (!this.player?.uid) {
       this.taskId = find_contact_by_name_and_do(this.playerName, Callback(this.onPlayerFound, this))
       if (this.taskId != null && this.taskId < 0) {
         this.notFoundPlayerMsg()
@@ -85,7 +87,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(nameObj))
       nameObj.setValue($"{loc("clan/nick")}{loc("ui/colon")}")
 
-    let clanTag = getTblValue("clanTag", this.player, "")
+    let clanTag = (this.player?.clanTag ?? "")
     let targetObj = this.scene.findObject("complain_target")
     if (checkObj(targetObj))
       targetObj.setValue("".concat((clanTag.len() > 0 ? ($"{clanTag} ") : ""), getPlayerName(this.playerName)))
@@ -133,7 +135,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateButtons() {
-    let haveUid = getTblValue("uid", this.player) != null
+    let haveUid = this.player?.uid != null
     showObjById("info_loading", !haveUid, this.scene)
     showObjById("btn_send", haveUid, this.scene)
   }
@@ -160,7 +162,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let uid = getTblValue("uid", this.player)
+    let uid = this.player?.uid
     if (!uid)
       return
 
@@ -188,8 +190,9 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("BanHandler", BanHandler)
 
-gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let ComplainHandler = class (BaseGuiHandlerWT) {
   optionsList = null
   location = ""
   clanInfo = ""
@@ -202,7 +205,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   compliantCategory = ""
 
   function initScreen() {
-    if (!this.scene || !this.pInfo || type(this.pInfo) != "table")
+    if (!this.scene || !this.pInfo || !(this.pInfo instanceof Table))
       return this.goBack()
 
     let gameMode = "".concat("GameMode = ", loc(format("multiplayer/%sMode", get_game_mode_name(get_game_mode()))))
@@ -351,6 +354,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 }
+register_gui_handler("ComplainHandler", ComplainHandler)
 
 return {
   gui_modal_ban

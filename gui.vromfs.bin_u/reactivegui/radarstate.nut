@@ -1,9 +1,8 @@
+import "%rGui/interopGen.nut" as interopGen
+from "%sqstd/underscore.nut" import isEqual
 from "%rGui/globals/ui_library.nut" import *
 
-let interopGen = require("%rGui/interopGen.nut")
-
 let { interop } = require("%rGui/globals/interop.nut")
-let { isEqual } = require("%sqstd/underscore.nut")
 
 let modeNames = [
   "hud/standby",
@@ -166,6 +165,7 @@ let MfdRadarColor = Watched(Color(10, 202, 10, 250))
 let MfdRadarHideBkg = Watched(false)
 let MfdRadarFontScale = Watched(-1)
 let TimeToMissileHitRel = Watched(-1.0)
+let TimeToMissileHit = Watched(-1.0)
 let MfdRadarOffsetX = Watched(0)
 let MfdRadarOffsetY = Watched(0)
 
@@ -232,7 +232,7 @@ let DistanceScalesMax = Watched(0)
 let VelocitySearch = Watched(false)
 let AzimuthMarkersTrigger = Watched(0)
 let Irst = Watched(false)
-let HasIrst = Watched(true)
+let HasIrst = Watched(false)
 let RadarScale = Watched(1.0)
 let RadarParkingState = Watched(0)
 
@@ -304,7 +304,7 @@ radarState.__update({
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
 
-    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel, HasHelmetTarget, HasMultipleSensorModes,
+    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel, TimeToMissileHit, HasHelmetTarget, HasMultipleSensorModes,
   }
 )
 

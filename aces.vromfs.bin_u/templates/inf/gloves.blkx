@@ -9,8 +9,33 @@
     },
     "bipodDontHideAttach:tag": {}
   },
+  "hands_collapser_in_gloves": {
+    "equipment__scaleAttaches:object": {
+      "hands:object": {
+        "Bip01 R Hand:object": {
+          "scale": [
+            0.1,
+            0.1,
+            0.1
+          ],
+          "recalc": true
+        },
+        "Bip01 L Hand:object": {
+          "scale": [
+            0.1,
+            0.1,
+            0.1
+          ],
+          "recalc": true
+        }
+      }
+    }
+  },
   "attachable_wear_tactical_gloves_item": {
-    "_use": "attachable_gloves",
+    "_use": [
+      "attachable_gloves",
+      "hands_collapser_in_gloves"
+    ],
     "item__uniqueName": "attachable_wear_tactical_gloves_item",
     "animchar__res": "tactical_gloves_char",
     "collres__res": "tactical_gloves_collision"

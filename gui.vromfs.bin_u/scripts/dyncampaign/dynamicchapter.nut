@@ -1,33 +1,33 @@
+import "DataBlock" as DataBlock
+from "string" import format
+from "guiOptions" import get_gui_option
+from "dynamicMission" import dynamicGetList
+from "mission" import get_cur_game_mode_name
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_mission_progress
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { CampaignChapter } = require("%scripts/missions/campaignChapter.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let DataBlock = require("DataBlock")
-let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksState.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
-let { get_gui_option } = require("guiOptions")
-let { dynamicGetList } = require("dynamicMission")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { dynamicInitAsync, isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
-let { get_cur_game_mode_name } = require("mission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
-  USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY, USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getDynamicLayouts, addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
-let { DYNAMIC_REQ_COUNTRY_RANK, guiStartDynamicSummary, guiStartCdOptions
-} = require("%scripts/missions/startMissionsList.nut")
+let { DYNAMIC_REQ_COUNTRY_RANK, guiStartDynamicSummary, guiStartCdOptions } = require("%scripts/missions/startMissionsList.nut")
 let { set_current_campaign, get_mission_settings, set_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 let { isDynamicCountryAllowed } = require("%scripts/dynCampaign/campaignHelpers.nut")
 
-gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
+register_gui_handler("DynamicLayouts", class (CampaignChapter) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/chapterModal.blk"
   sceneNavBlkName = "%gui/backSelectNavChapter.blk"
@@ -55,7 +55,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     move_mouse_on_child_by_value(this.scene.findObject("items_list"))
   }
 
-  function initMissionsList(...) {
+  function initMissionsList() {
     this.missions = []
     this.add_missions()
     let listObj = this.scene.findObject("items_list")
@@ -141,29 +141,29 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   function generateMissionsList() {
     let view = { items = [] }
     foreach (idx, mission in this.missions) {
-      local elemCssId = "mission_item_locked"
+      local itemType = "locked"
       local medalIcon = "#ui/gameuiskin#locked.svg"
       let nameId = $"dynamic/{mission.id}"
       let progress = mission.progress
       if (0 == progress) {
-        elemCssId = "mission_item_completed"
+        itemType = "completed"
         medalIcon = "#ui/gameuiskin#mission_complete_arcade"
       }
       else if (1 == progress) {
-        elemCssId = "mission_item_completed"
+        itemType = "completed"
         medalIcon = "#ui/gameuiskin#mission_complete_realistic"
       }
       else if (2 == progress) {
-        elemCssId = "mission_item_completed"
+        itemType = "completed"
         medalIcon = "#ui/gameuiskin#mission_complete_simulator"
       }
       else if (3 == progress) {
-        elemCssId = "mission_item_unlocked"
+        itemType = ""
         medalIcon = ""
       }
 
       view.items.append({
-        itemTag = elemCssId
+        itemType
         itemIcon = medalIcon
         id = mission.id
         isSelected = idx == 0
@@ -366,4 +366,4 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   }
 
   function onFav() {}
-}
+})

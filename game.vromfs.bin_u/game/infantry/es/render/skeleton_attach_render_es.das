@@ -6,7 +6,6 @@ require DagorMath
 require GeomNodeTree
 require %game.events
 require %appGame.infantry.es.animchar.attach_common
-require %appGame.infantry.es.vehicle.vehicle_events
 
 
 def copy_nodes_with_remap(var node_tree : GeomNodeTree&; att_node_tree : GeomNodeTree; skeleton_remap : UInt16List; base_eid, att_eid : EntityId)
@@ -194,21 +193,20 @@ def init_skeleton_attachment_wtm_ofs(evt : Event;
     attachment_animchar |> animchar_updateFastPhys(fastPhysSimTimeOnReset)
 
 def save_cur_geom_node_tree(animchar : AnimcharBaseComponent&;
-                            var saved_animchar : AnimcharBaseComponent?)
-  if saved_animchar != null
-    assume nodeTree = *(animchar.nodeTree)
-    assume savedNodeTree = *((*saved_animchar).nodeTree)
-    let nodeCount = nodeTree.nodeCount
-    if savedNodeTree.nodeCount != nodeCount
-      logerr("Incorrect animchar res inited for saved animchar")
-      return
+                            var saved_animchar : AnimcharBaseComponent&)
+  assume nodeTree = *(animchar.nodeTree)
+  assume savedNodeTree = *(saved_animchar.nodeTree)
+  let nodeCount = nodeTree.nodeCount
+  if savedNodeTree.nodeCount != nodeCount
+    logerr("Incorrect animchar res inited for saved animchar")
+    return
 
-    let wtmOfs = geomtree_getWtmOfs(nodeTree)
-    geomtree_setWtmOfs(savedNodeTree, wtmOfs)
+  let wtmOfs = geomtree_getWtmOfs(nodeTree)
+  geomtree_setWtmOfs(savedNodeTree, wtmOfs)
 
-    for i in range(0, int(nodeCount))
-      geomtree_getNodeTm(savedNodeTree, i) = geomtree_getNodeTm(nodeTree, i)
-      geomtree_getNodeWtmRel(savedNodeTree, i) = geomtree_getNodeWtmRel(nodeTree, i)
+  for i in range(0, int(nodeCount))
+    geomtree_getNodeTm(savedNodeTree, i) = geomtree_getNodeTm(nodeTree, i)
+    geomtree_getNodeWtmRel(savedNodeTree, i) = geomtree_getNodeWtmRel(nodeTree, i)
 
 def save_attaches_animchar_tree(attaches_list : EidList const?)
   if attaches_list == null
@@ -216,7 +214,7 @@ def save_attaches_animchar_tree(attaches_list : EidList const?)
   for attach in *attaches_list
     query(attach) <| $ [es] (animchar : AnimcharBaseComponent&;
                              attaches_list : EidList const?;
-                             var saved_animchar : AnimcharBaseComponent?)
+                             var saved_animchar : AnimcharBaseComponent&)
       save_cur_geom_node_tree(animchar, saved_animchar)
       save_attaches_animchar_tree(attaches_list)
 
@@ -225,7 +223,7 @@ def save_attaches_animchar_tree(attaches_list : EidList const?)
 def skeleton_attach_save_on_dead_es(evt : Event;
                                     animchar : AnimcharBaseComponent&;
                                     attaches_list : EidList const?;
-                                    var saved_animchar : AnimcharBaseComponent?)
+                                    var saved_animchar : AnimcharBaseComponent&)
   save_cur_geom_node_tree(animchar, saved_animchar)
   save_attaches_animchar_tree(attaches_list)
   
@@ -233,7 +231,7 @@ def skeleton_attach_save_on_dead_es(evt : Event;
 [es(tag=render, parallel_for=4, REQUIRE_NOT=deadEntity, no_order)] 
 def skeleton_attach_save_for_grid_es(evt : UpdateStageInfoAct;
                                      animchar : AnimcharBaseComponent&;
-                                     var saved_animchar : AnimcharBaseComponent?)
+                                     var saved_animchar : AnimcharBaseComponent&)
   save_cur_geom_node_tree(animchar, saved_animchar)
 
 
@@ -241,7 +239,7 @@ def skeleton_attach_save_for_grid_es(evt : UpdateStageInfoAct;
 def skeleton_attach_save_for_knocked_down_es(evt : UpdateStageInfoAct;
                                              animchar : AnimcharBaseComponent&;
                                              reanimation__knockedDown : bool;
-                                             var saved_animchar : AnimcharBaseComponent?)
+                                             var saved_animchar : AnimcharBaseComponent&)
   if reanimation__knockedDown
     save_cur_geom_node_tree(animchar, saved_animchar)
 

@@ -1,23 +1,21 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getChatLatestThreadsUpdateState, getChatLatestThreadsCurListUid, getSearchLangsList,
-  getChatThreadsTimeToRefresh, canRefreshChatThreads, refreshChatThreads, isChatThreadsListNewest,
-  getChatThreadsList, openChatThreadsChooseLangsMenu, canChooseThreadsLang
-} = require("%scripts/chat/chatLatestThreads.nut")
+let { getChatLatestThreadsUpdateState, getChatLatestThreadsCurListUid, getSearchLangsList, getChatThreadsTimeToRefresh, canRefreshChatThreads, refreshChatThreads, isChatThreadsListNewest, getChatThreadsList, openChatThreadsChooseLangsMenu, canChooseThreadsLang } = require("%scripts/chat/chatLatestThreads.nut")
 let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 
-gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("ChatThreadsListView", class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/chat/chatThreadsList.blk"
   backFunc = null
@@ -256,11 +254,11 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventChatRoomJoin(p) {
-    this.updateRoomInList(getTblValue("room", p))
+    this.updateRoomInList(p?.room)
   }
 
   function onEventChatRoomLeave(p) {
-    this.updateRoomInList(getTblValue("room", p))
+    this.updateRoomInList(p?.room)
   }
 
   function onEventChatFilterChanged(_p) {
@@ -279,4 +277,4 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventChatSearchCategoriesChanged(_p) {
     this.updateCategoriesButton()
   }
-}
+})

@@ -1804,6 +1804,32 @@
         "bullets": 400,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
+        "allowableDelta": 1.0,
+        "ChainfireTime": 1.5,
+        "DelayAfterShoot": 0.75,
+        "AttackMaxRadius": 10000.0,
+        "randomAngle": 0.0,
+        "accuracyAir": 0.9,
+        "accuracyGnd": 0.65,
+        "errMeasureVel": 8.0,
+        "errTargettingOn100kmph": 0.08,
+        "errMeasureVelFast": 2.0,
+        "errMeasureVelFwdShift": 0.5,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.75,
+        "targetMsl": true,
+        "shellGroundRangeMax": 7000.0,
+        "shellMassRange": [
+          30.0,
+          3500.0
+        ],
+        "shellSpeedRange": [
+          120.0,
+          700.0
+        ],
+        "AttackShellMaxRadius": 7000.0,
+        "targetPriorityDefault": 0,
+        "targetPriorityMin": 1,
         "turret": {
           "head": "main_caliber_turret_01",
           "gun": "main_caliber_gun_01",
@@ -1895,7 +1921,173 @@
           "hasVertical": true,
           "verticalOmegaMult": 1.0,
           "verticalSpeedLimitKPH": 80.0
-        }
+        },
+        "targetPriority": [
+          {
+            "isUnit": true,
+            "velRange": [
+              200.0,
+              2000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              3000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "priority": 50
+          },
+          {
+            "isUnit": true,
+            "velRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              10000.0
+            ],
+            "distRange": [
+              0.0,
+              15000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              7000.0
+            ],
+            "priority": 10
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              100.0,
+              7000.0
+            ],
+            "priority": 300
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              1150.0
+            ],
+            "massRange": [
+              80.0,
+              7000.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              150.0
+            ],
+            "altRange": [
+              -50.0,
+              350.0
+            ],
+            "distRange": [
+              10.0,
+              2000.0
+            ],
+            "priority": 500
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              270.0,
+              1100.0
+            ],
+            "massRange": [
+              1500.0,
+              2100.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              1000.0
+            ],
+            "altRange": [
+              2000.0,
+              15000.0
+            ],
+            "distRange": [
+              0.0,
+              25000.0
+            ],
+            "timeToHitRange": [
+              5.0,
+              30.0
+            ],
+            "priority": 25
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              180.0,
+              500.0
+            ],
+            "massRange": [
+              80.0,
+              1500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              2000.0
+            ],
+            "altRange": [
+              5.0,
+              5000.0
+            ],
+            "distRange": [
+              0.0,
+              10000.0
+            ],
+            "priority": 5
+          },
+          {
+            "isUnit": false,
+            "velRange": [
+              120.0,
+              700.0
+            ],
+            "massRange": [
+              1000.0,
+              3500.0
+            ],
+            "groundRangeRange": [
+              0.0,
+              500.0
+            ],
+            "altRange": [
+              -50.0,
+              10000.0
+            ],
+            "distRange": [
+              10.0,
+              7000.0
+            ],
+            "priority": 400
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -2317,9 +2509,7 @@
           "fireEvent": "ammo_fire_1",
           "elevator": "elevator_01_dm",
           "dstrElevatorDisablesShooting": false,
-          "ammunition_storage_01_dm": {
-            "count": 320
-          }
+          "ammunition_storage_01_dm": {}
         }
       ]
     },
@@ -2356,9 +2546,7 @@
           "fireEvent": "ammo_fire_2",
           "elevator": "elevator_02_dm",
           "dstrElevatorDisablesShooting": false,
-          "ammunition_storage_02_dm": {
-            "count": 320
-          }
+          "ammunition_storage_02_dm": {}
         }
       ]
     }
@@ -5166,6 +5354,18 @@
       "unlockId": "ship_flag_ussr_04",
       "nameLocId": "ship_flag_ussr_04/name",
       "texture": "ship_flag_ussr_04_c*"
+    },
+    "flag_york_city": {
+      "category": "other",
+      "unlockId": "flag_york_city",
+      "nameLocId": "flag_york_city/name",
+      "texture": "flag_york_city_c*"
+    },
+    "ship_flag_genoa_city_01": {
+      "category": "other",
+      "unlockId": "ship_flag_genoa_city_01",
+      "nameLocId": "ship_flag_genoa_city_01/name",
+      "texture": "ship_flag_genoa_city_01_c*"
     }
   }
 }

@@ -155,6 +155,21 @@ def private gun_schedule_next_shot(var gun : Gun&; at_time : float; var rand_see
   state.lastShotAtTime = at_time
   state.timeBetweenShots = timeBetweenShots
 
+def private gun_is_held_burst(firingMode : FiringMode) : bool
+  return firingMode.burstCounterMode != uint8(EBurstCounterMode.BCM_AUTO_BURST)
+
+def private gun_burst_should_reset(firingMode : FiringMode; burst_counter : int; num_shells : int; shoot : bool) : bool
+  if firingMode.modeType == EFiringModeType.EFM_AUTOMATIC
+    return true
+  if firingMode.modeType != EFiringModeType.EFM_BURST
+    return false
+  let burstDone = burst_counter >= firingMode.burstSize
+  let outOfAmmo = num_shells == 0
+  if !gun_is_held_burst(firingMode)
+    return burst_counter == 0 || burstDone || outOfAmmo
+  return !shoot && (burstDone || outOfAmmo ||
+                    firingMode.burstCounterMode == uint8(EBurstCounterMode.BCM_HELD))
+
 def private gun_update_shot_dry(var gun : Gun&; num_shells : int; gun_eid : EntityId)
   assume state = gun.curState
   if gun.appliedControls.shoot && num_shells == 0
@@ -164,6 +179,7 @@ def private gun_update_shot_dry(var gun : Gun&; num_shells : int; gun_eid : Enti
       state.shotDryNextTime = state.atTime + gun.appliedControls.timeStep * 2.
   else
     state.shotDryNextTime = 0.
+
 
 def private gun_update(var gun : Gun&;
                        var input : GunUpdateInput&;
@@ -182,7 +198,8 @@ def private gun_update(var gun : Gun&;
   let shootNextBurst = (firingMode.modeType == EFiringModeType.EFM_BURST &&
                         int(state.burstCounter) > 0 &&
                         int(state.burstCounter) < firingMode.burstSize &&
-                        num_shells > 0)
+                        num_shells > 0 &&
+                        (!gun_is_held_burst(firingMode) || gun.appliedControls.shoot))
   if shootNextBurst || (shootOnRelease ? state.isPrevAppliedControlShoot && !gun.appliedControls.shoot : gun.appliedControls.shoot)
     var fixedDt = gun.appliedControls.timeStep
     if fixedDt <= 0.f
@@ -226,10 +243,17 @@ def private gun_update(var gun : Gun&;
       var seed = num_shells
       gun_schedule_next_shot(gun, input.atTime, seed)
       state.loaded = true
-  elif ((firingMode.modeType == EFiringModeType.EFM_BURST &&
-        (int(state.burstCounter) == 0 || int(state.burstCounter) >= firingMode.burstSize || num_shells == 0)) ||
-        firingMode.modeType == EFiringModeType.EFM_AUTOMATIC)
-    state.burstCounter = uint16(0)
+  elif gun_burst_should_reset(firingMode, int(state.burstCounter), num_shells, gun.appliedControls.shoot)
+    let semiModeIdx = gun.gunProps.burstCounterSemiModeIdx
+    var semiModeBurstSize = 0
+    if semiModeIdx >= 0
+      semiModeBurstSize = gun_getFiringMode(gun, semiModeIdx).burstSize
+    let keepCounterForSemi = (semiModeIdx >= 0 &&
+                               int(state.burstCounter) > 0 &&
+                               int(state.burstCounter) < semiModeBurstSize &&
+                               num_shells > 0)
+    if !keepCounterForSemi
+      state.burstCounter = uint16(0)
     state.loaded = true
 
   if state.isPrevAppliedControlShoot && !gun.appliedControls.shoot

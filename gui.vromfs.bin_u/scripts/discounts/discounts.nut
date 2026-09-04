@@ -1,34 +1,32 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv, broadcastEvent
+from "dagor.workcycle" import deferOnce, setTimeout, clearTimer
+from "%sqstd/datablock.nut" import eachBlock
+from "chard" import get_charserver_time_sec
+from "blkGetters" import get_price_blk
 from "%scripts/dagui_natives.nut" import ps4_get_region, has_entitlement, get_entitlements_price_blk, get_entitlement_gold_discount, save_online_single_job
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/sceRegionConsts.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { deferOnce, setTimeout, clearTimer } = require("dagor.workcycle")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let { targetPlatform, isPlatformPC, isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 
-let { canUseIngameShop, haveDiscount, getShopItemsTable, needEntStoreDiscountIcon
-} = require("%scripts/onlineShop/entitlementsShopData.nut")
+let { canUseIngameShop, haveDiscount, getShopItemsTable, needEntStoreDiscountIcon } = require("%scripts/onlineShop/entitlementsShopData.nut")
 
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { discountUnitsBundles } = require("%scripts/onlineShop/discountBundles.nut")
 
-let { eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_charserver_time_sec } = require("chard")
-let { get_price_blk } = require("blkGetters")
 let { isUnitGift, canBuyUnitEvenNotInShop } = require("%scripts/unit/unitShopInfo.nut")
 let { canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
-let { discountsList, consoleEntitlementUnits, getEntitlementUnitDiscount,
-  getUnitDiscountByName, canBeVisibleDiscountOnUnit
-} = require("%scripts/discounts/discountsState.nut")
+let { discountsList, consoleEntitlementUnits, getEntitlementUnitDiscount, getUnitDiscountByName, canBeVisibleDiscountOnUnit } = require("%scripts/discounts/discountsState.nut")
 let { getInventoryList } = require("%scripts/items/itemsManagerModule.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
@@ -297,7 +295,7 @@ addListenersWithoutEnv({
   }
 
   function UnitBought(p) {
-    let unitName = getTblValue("unitName", p)
+    let unitName = p?.unitName
     if (!unitName)
       return
 

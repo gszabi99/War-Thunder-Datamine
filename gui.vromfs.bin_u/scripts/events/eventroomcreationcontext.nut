@@ -1,25 +1,21 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "guiOptions" import get_gui_option
 from "%scripts/dagui_library.nut" import *
 
 let { array_to_blk, get_array_by_bit_value } = require("%scripts/utils_sa.nut")
 let { g_team } = require("%scripts/teams.nut")
-let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { getSortedMissionsListByNames } = require("%scripts/missions/misListType.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { get_gui_option } = require("guiOptions")
-let { USEROPT_CLUSTERS, USEROPT_RANK, USEROPT_COUNTRIES_SET,
-  USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B
-} = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { USEROPT_CLUSTERS, USEROPT_RANK, USEROPT_COUNTRIES_SET, USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B } = require("%scripts/options/optionsExtNames.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
+let { events } = require("%scripts/events/eventsManager.nut")
 let { createSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 
@@ -38,7 +34,6 @@ let EventRoomCreationContext = class {
   mGameMode = null
   onUnitAvailabilityChanged = null
 
-  misListType = g_mislist_type.BASE
   fullMissionsList = null
   chosenMissionsList = null
 
@@ -204,8 +199,7 @@ let EventRoomCreationContext = class {
       return
 
     let missionsNames = u.keys(missionsTbl)
-    this.fullMissionsList = this.misListType.getMissionsListByNames(missionsNames)
-    this.fullMissionsList = this.misListType.sortMissionsByName(this.fullMissionsList)
+    this.fullMissionsList = getSortedMissionsListByNames(missionsNames)
     this.loadChosenMissions()
   }
 
@@ -302,7 +296,7 @@ let EventRoomCreationContext = class {
       res.mranks <- this.getCurBrRange()
 
     let clusterOpt = get_option(USEROPT_CLUSTERS)
-    res.cluster <- getTblValue(clusterOpt.value, clusterOpt.values, "")
+    res.cluster <- (clusterOpt.values?[clusterOpt.value] ?? "")
     if (res.cluster == "auto")
       res.cluster = getClustersList().filter(@(info) info.isDefault)[0].name
 

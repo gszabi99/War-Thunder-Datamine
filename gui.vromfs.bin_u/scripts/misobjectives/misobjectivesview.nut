@@ -1,22 +1,23 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "guiMission" import get_objectives_list, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
-let { get_objectives_list, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 
 function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
-  return handlersManager.loadHandler(gui_handlers.misObjectivesView,
+  return handlersManager.loadHandler(get_gui_handler("misObjectivesView"),
                                        { scene = nestObj,
                                          sceneBlkName = leftAligned ? "%gui/missions/misObjective.blk" : "%gui/missions/misObjectiveRight.blk"
-                                         objTypeMask = typesMask || gui_handlers.misObjectivesView.objTypeMask
+                                         objTypeMask = typesMask || get_gui_handler("misObjectivesView").objTypeMask
                                        })
 }
 
-gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
+let misObjectivesView = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missions/misObjective.blk"
 
@@ -61,8 +62,8 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
     let total = max(newList.len(), this.curList.len())
     local lastObj = null
     for (local i = 0; i < total; i++) {
-      let newObjective = getTblValue(i, newList)
-      if (u.isEqual(getTblValue(i, this.curList), newObjective))
+      let newObjective = newList?[i]
+      if (u.isEqual(this.curList?[i], newObjective))
         continue
 
       let obj = this.updateObjective(i, newObjective)
@@ -107,6 +108,7 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
     return obj
   }
 }
+register_gui_handler("misObjectivesView", misObjectivesView)
 
 return {
   gui_load_mission_objectives

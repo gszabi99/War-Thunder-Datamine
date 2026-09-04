@@ -1,32 +1,32 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+import "%sqstd/math.nut" as stdMath
+from "dagor.time" import get_time_msec
+from "string" import format
+from "%sqstd/string.nut" import cutPrefix
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
 let { g_team } = require("%scripts/teams.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { EventsHandler } = require("%scripts/events/eventsHandler.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_time_msec } = require("dagor.time")
-let { format } = require("string")
-let regexp2 = require("regexp2")
-let stdMath = require("%sqstd/math.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkDiffTutorial } = require("%scripts/tutorials/tutorialsData.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMods.nut")
-let { checkAndShowMultiplayerPrivilegeWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let openClustersMenuWnd = require("%scripts/onlineInfo/clustersMenuWnd.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -45,8 +45,7 @@ let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.
 
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 
-let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 enum eRoomFlags { 
   CAN_JOIN              = 0x8000 
@@ -72,7 +71,7 @@ enum eRoomFlags {
 const EROOM_FLAGS_KEY_NAME = "_flags" 
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
-gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
+let EventRoomsHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName   = "%gui/events/eventsModal.blk"
   wndOptionsMode = OPTIONS_MODE_MP_DOMINATION
@@ -119,7 +118,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         !checkPackageAndAskDownload(["pkg_main"]))
       return
 
-    handlersManager.loadHandler(gui_handlers.EventRoomsHandler,
+    handlersManager.loadHandler(get_gui_handler("EventRoomsHandler"),
     {
       event = event
       hasBackToEventsButton = hasBackToEventsButton
@@ -418,7 +417,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let needCheckAvailable = events.checkPlayersCrafts(this.event)
     let teamSize = events.getMaxTeamSize(this.event)
     foreach (room in roomsList) {
-      let wasFlags = getTblValue(EROOM_FLAGS_KEY_NAME, room, eRoomFlags.NONE)
+      let wasFlags = (room?[EROOM_FLAGS_KEY_NAME] ?? eRoomFlags.NONE)
       local flags = eRoomFlags.NONE
       let mGameMode = events.getMGameMode(this.event, room)
 
@@ -453,7 +452,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isLockedByMask(flags) {
-    let mustHaveMask = eRoomFlags.HAS_COUNTRY
+    const mustHaveMask = eRoomFlags.HAS_COUNTRY
                        | eRoomFlags.HAS_AVAILABLE_UNITS | eRoomFlags.HAS_REQUIRED_UNIT
                        | eRoomFlags.HAS_PLACES | eRoomFlags.HAS_PLACES_IN_MY_TEAM
                        | eRoomFlags.IS_ALLOWED_BY_BALANCE | eRoomFlags.AVAILABLE_FOR_SQUAD
@@ -747,7 +746,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventAfterJoinEventRoom(_ev) {
-    handlersManager.requestHandlerRestore(this, gui_handlers.EventsHandler)
+    handlersManager.requestHandlerRestore(this, EventsHandler)
   }
 
   function onEventEventsDataUpdated(_p) {
@@ -834,3 +833,6 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillRoomsList()
   }
 }
+register_gui_handler("EventRoomsHandler", EventRoomsHandler)
+
+return { EventRoomsHandler }

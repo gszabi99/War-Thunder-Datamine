@@ -15,6 +15,7 @@
     "%wtlibs/templates/microdetail.blk",
     "%wtlibs/templates/bloom.blk",
     "%wtlibs/templates/postfx.blk",
+    "%wtlibs/templates/render_override_volume.blk",
     "%wtlibs/templates/scene.blk",
     "%wtlibs/templates/skies.blk",
     "%gameLibs/render/lensFlare/templates/lens_flare.template.blk",
@@ -28,14 +29,16 @@
     "%wtlibs/templates/lightning.blk",
     "%wtlibs/templates/replay.blk",
     "%wtlibs/templates/envi_cover.blk",
+    "%wtlibs/templates/sound.blk",
     "rendinsts_hangars.blk",
+    "hangar_weather.blk",
     "explosion_fx.blk",
-    "sound.blk",
     "location_fx.blk",
     "contact_fx.blk",
     "inf/*.blk",
     "inf/render/*.blk",
     "infantry_skins/*.blk",
+    "hit_fx.blk",
     "%wtlibs/templates/net.blk",
     "%danetlibs/sound/door_sounds/templates/door_sounds.template.blk",
     "%danetlibs/sound/sound_utils/templates/sound_utils.template.blk",
@@ -45,7 +48,6 @@
     "%danetlibs/sound/human_net_speech/templates/human_net_speech.template.blk",
     "render/ssss.blk",
     "render/adaptation.blk",
-    "render/local_tone_mapping.blk",
     "render/tonemap_exposure_correction.blk",
     "render/character_rim_highlight.blk",
     "render/vhs_camera.blk",
@@ -1333,7 +1335,8 @@
     "destroyable_with_rendinst:tag": {}
   },
   "sparks_short_circuit": {
-    "_use": "ecs_fx",
+    "_use": "ecs_looped_fx",
+    "ecs_looped_fx_spawnStep": 10.0,
     "ecs_fx__res": "sparks_short_circuit_burst_small_cmps_fx",
     "destroyable_with_rendinst:tag": {}
   },
@@ -1899,6 +1902,9 @@
   "barrage_ballon_ext": {},
   "ground_unit_ext": {},
   "ship_ext": {
+    "unit_dm_part_fx": {
+      "_tags": "gameClient"
+    },
     "fuel_leak_fx": {
       "_tags": "gameClient"
     },
@@ -2108,34 +2114,9 @@
     "simpleObject__visible": true,
     "simpleObject__model_res": {}
   },
-  "demonstrated_shell": {
-    "transform": [
-      [
-        1.0,
-        0.0,
-        0.0
-      ],
-      [
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        0.0,
-        0.0,
-        1.0
-      ],
-      [
-        0.0,
-        0.0,
-        0.0
-      ]
-    ],
-    "simpleObject__resName": "",
-    "simpleObject__charName": "",
-    "simpleObject__visible": true,
-    "demonstrated_shell__caliber": 0.0,
-    "demonstrated_shell__length": 0.0,
+  "simple_dynmodel_with_box_collision": {
+    "_use": "simple_dynmodel",
+    "simpleObject__need_box_collision": true,
     "simpleObject__bboxMax": [
       0.0,
       0.0,
@@ -2146,31 +2127,10 @@
       0.0,
       0.0
     ],
-    "simpleObject__scale": 1.0,
-    "demonstrated_shell__blk": "",
-    "demonstrated_shell__presetName": "",
-    "demonstrated_shell__cart": "",
-    "demonstrated_shell__bulletType": "",
-    "demonstrated_shell__offset": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "demonstrated_shell__roll": 0.0,
-    "demonstrated_shell__forTank": false,
-    "demonstrated_shell__isVertical": false,
-    "_tracked": "transform",
-    "simpleObject__model_res": {},
-    "demonstrated_shell:tag": {},
-    "simpleObject__hideNodes:list<t>": {}
+    "simpleObject__scale": 1.0
   },
-  "rendinst_for_prem_vehicle": {
-    "rendinst_for_prem_vehicle__forTank": false,
-    "rendinst_for_prem_vehicle__forPlane": false,
-    "rendinst_for_prem_vehicle__forShip": false,
-    "background_model__eid:eid": {}
-  },
-  "bomb_cart": {
+  "demonstrated_shell": {
+    "_use": "simple_dynmodel_with_box_collision",
     "transform": [
       [
         1.0,
@@ -2193,9 +2153,56 @@
         0.0
       ]
     ],
-    "simpleObject__resName": "",
-    "simpleObject__visible": true,
-    "simpleObject__model_res": {},
+    "simpleObject__charName": "",
+    "demonstrated_shell__caliber": 0.0,
+    "demonstrated_shell__length": 0.0,
+    "demonstrated_shell__blk": "",
+    "demonstrated_shell__presetName": "",
+    "demonstrated_shell__cart": "",
+    "demonstrated_shell__bulletType": "",
+    "demonstrated_shell__unitName": "",
+    "demonstrated_shell__offset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "demonstrated_shell__roll": 0.0,
+    "demonstrated_shell__forTank": false,
+    "demonstrated_shell__isVertical": false,
+    "_tracked": "transform",
+    "demonstrated_shell:tag": {},
+    "simpleObject__hideNodes:list<t>": {}
+  },
+  "rendinst_for_prem_vehicle": {
+    "rendinst_for_prem_vehicle__forTank": false,
+    "rendinst_for_prem_vehicle__forPlane": false,
+    "rendinst_for_prem_vehicle__forShip": false,
+    "background_model__eid:eid": {}
+  },
+  "bomb_cart": {
+    "_use": "simple_dynmodel_with_box_collision",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
     "bomb_cart__shellEid:eid": {},
     "demonstrated_shell:tag": {}
   },
@@ -2898,6 +2905,7 @@
     }
   },
   "bullet_target": {
+    "_use": "simple_dynmodel_with_box_collision",
     "transform": [
       [
         1.0,
@@ -2920,14 +2928,11 @@
         0.0
       ]
     ],
-    "simpleObject__resName": "",
-    "simpleObject__visible": true,
     "bullet_target__offset": [
       0.0,
       0.0,
       0.0
     ],
-    "simpleObject__model_res": {},
     "demonstrated_shell:tag": {}
   },
   "bullet_target_hefrag_200mm_hole": {
@@ -4871,5 +4876,12 @@
       300.0,
       130.0
     ]
+  },
+  "cloth_wind_ship": {
+    "_use": "cloth_wind"
+  },
+  "hangar_weaponry_menu": {
+    "_singleton": true,
+    "hangar__isInWeaponryMenu": false
   }
 }

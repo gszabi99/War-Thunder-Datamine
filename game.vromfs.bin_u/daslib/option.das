@@ -1,7 +1,5 @@
 options gen2
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module option shared public
@@ -26,18 +24,20 @@ require daslib/typemacro_boost
 
 
 
-[template_structure(T), safe_when_uninitialized]
+
+
+
+[template_tuple(T)]
 struct template Option {
     _has_value : bool = false
-    @safe_when_uninitialized
-    _value : T
+    @safe_when_uninitialized _value : T
 }
 
 
 
 
 def some(v : auto(TT)) {
-    typedef OT = $Option < TT - const >
+    typedef OT = $Option<TT -const>
     var o = default<OT>
     o._has_value = true
     static_if (typeinfo can_copy(o._value)) {
@@ -55,8 +55,7 @@ def some(v : auto(TT)) {
 
 
 def move_some(var v : auto(TT)) {
-    typedef OT = $Option < TT - const >
-    return <- OT(_has_value = true, _value <- v)
+    return <- (_has_value = true, _value <- v)
 }
 
 
@@ -68,17 +67,17 @@ def none(t : auto(TT)) {
 }
 
 
-def is_some(o : $Option < auto(TT) >) : bool {
+def is_some(o : $Option<auto(TT)>) : bool {
     return o._has_value
 }
 
 
-def is_none(o : $Option < auto(TT) >) : bool {
+def is_none(o : $Option<auto(TT)>) : bool {
     return !o._has_value
 }
 
 
-def map(o : $Option < auto(TT) >; f : block<(v : TT) : auto(UU)>) {
+def map(o : $Option<auto(TT)>; f : block<(v : TT) : auto(UU)>) {
     var r = default<$Option<UU -const> >
     if (o._has_value) {
         r._has_value = true
@@ -92,15 +91,13 @@ def map(o : $Option < auto(TT) >; f : block<(v : TT) : auto(UU)>) {
 }
 
 
-def and_then(o : $Option < auto(TT) >; f : block<(v : TT) : $Option<auto(UU)> >) {
-    if (o._has_value) {
-        return invoke(f, o._value)
-    }
+def and_then(o : $Option<auto(TT)>; f : block<(v : TT) : $Option<auto(UU)> >) {
+    if (o._has_value) return invoke(f, o._value)
     return default<$Option<UU -const> >
 }
 
 
-def filter(o : $Option < auto(TT) >; p : block<(v : TT) : bool>) {
+def filter(o : $Option<auto(TT)>; p : block<(v : TT) : bool>) {
     if (o._has_value && invoke(p, o._value)) {
         static_if (typeinfo can_copy(o._value)) {
             return o
@@ -112,7 +109,7 @@ def filter(o : $Option < auto(TT) >; p : block<(v : TT) : bool>) {
 }
 
 
-def or_else(o : $Option < auto(TT) >; f : block<() : $Option<TT> >) {
+def or_else(o : $Option<auto(TT)>; f : block<() : $Option<TT> >) {
     if (o._has_value) {
         static_if (typeinfo can_copy(o._value)) {
             return o
@@ -124,7 +121,7 @@ def or_else(o : $Option < auto(TT) >; f : block<() : $Option<TT> >) {
 }
 
 
-def or_value(o : $Option < auto(TT) >; v : TT) {
+def or_value(o : $Option<auto(TT)>; v : TT) {
     if (o._has_value) {
         static_if (typeinfo can_copy(o._value)) {
             return o
@@ -136,7 +133,7 @@ def or_value(o : $Option < auto(TT) >; v : TT) {
 }
 
 
-def unwrap(o : $Option < auto(TT) >) : TT {
+def unwrap(o : $Option<auto(TT)>) : TT {
     if (!o._has_value) {
         panic("unwrap called on none")
     }
@@ -152,7 +149,7 @@ def unwrap(o : $Option < auto(TT) >) : TT {
 
 
 
-def move_unwrap(var o : $Option < auto(TT) >) : TT {
+def move_unwrap(var o : $Option<auto(TT)>) : TT {
     if (!o._has_value) {
         panic("move_unwrap called on none")
     }
@@ -161,7 +158,7 @@ def move_unwrap(var o : $Option < auto(TT) >) : TT {
 }
 
 
-def unwrap_or(o : $Option < auto(TT) >; d : TT) : TT {
+def unwrap_or(o : $Option<auto(TT)>; d : TT) : TT {
     static_if (typeinfo can_copy(o._value)) {
         return o._has_value ? o._value : d
     } else {
@@ -170,7 +167,7 @@ def unwrap_or(o : $Option < auto(TT) >; d : TT) : TT {
 }
 
 
-def unwrap_or_else(o : $Option < auto(TT) >; f : block<() : TT>) : TT {
+def unwrap_or_else(o : $Option<auto(TT)>; f : block<() : TT>) : TT {
     static_if (typeinfo can_copy(o._value)) {
         return o._has_value ? o._value : invoke(f)
     } else {
@@ -179,7 +176,7 @@ def unwrap_or_else(o : $Option < auto(TT) >; f : block<() : TT>) : TT {
 }
 
 
-def unwrap_or_default(o : $Option < auto(TT) >) : TT {
+def unwrap_or_default(o : $Option<auto(TT)>) : TT {
     static_if (typeinfo can_copy(o._value)) {
         return o._has_value ? o._value : default<TT>
     } else {
@@ -189,7 +186,7 @@ def unwrap_or_default(o : $Option < auto(TT) >) : TT {
 
 
 
-def expect_value(o : $Option < auto(TT) >; msg : string) : TT {
+def expect_value(o : $Option<auto(TT)>; msg : string) : TT {
     if (!o._has_value) {
         panic(msg)
     }
@@ -201,21 +198,21 @@ def expect_value(o : $Option < auto(TT) >; msg : string) : TT {
 }
 
 
-def if_some(o : $Option < auto(TT) >; f : block<(v : TT) : void>) : void {
+def if_some(o : $Option<auto(TT)>; f : block<(v : TT) : void>) : void {
     if (o._has_value) {
         invoke(f, o._value)
     }
 }
 
 
-def if_none(o : $Option < auto(TT) >; f : block<() : void>) : void {
+def if_none(o : $Option<auto(TT)>; f : block<() : void>) : void {
     if (!o._has_value) {
         invoke(f)
     }
 }
 
 
-def zip(a : $Option < auto(TT) >; b : $Option < auto(UU) >) {
+def zip(a : $Option<auto(TT)>; b : $Option<auto(UU)>) {
     var r = default<$Option<tuple<TT -const; UU -const> > >
     if (a._has_value && b._has_value) {
         r._has_value = true
@@ -234,7 +231,7 @@ def zip(a : $Option < auto(TT) >; b : $Option < auto(UU) >) {
 }
 
 
-def operator ??(o : $Option < auto(TT) >; d : TT) : TT {
+def operator ??(o : $Option<auto(TT)>; d : TT) : TT {
     static_if (typeinfo can_copy(o._value)) {
         return o._has_value ? o._value : d
     } else {
@@ -243,26 +240,24 @@ def operator ??(o : $Option < auto(TT) >; d : TT) : TT {
 }
 
 
-def operator ==(a, b : $Option < auto(TT) > implicit) : bool {
-    if (a._has_value != b._has_value) {
-        return false
-    }
+def operator ==(a, b : $Option<auto(TT)> implicit) : bool {
+    if (a._has_value != b._has_value) return false
     return !a._has_value || a._value == b._value
 }
 
 
-def operator ==(o : $Option < auto(TT) >; v : TT) : bool {
+def operator ==(o : $Option<auto(TT)>; v : TT) : bool {
     return o._has_value && o._value == v
 }
 
-def operator ==(v : auto(TT); o : $Option < TT >) : bool {
+def operator ==(v : auto(TT); o : $Option<TT>) : bool {
     return o._has_value && o._value == v
 }
 
-def operator !=(o : $Option < auto(TT) >; v : TT) : bool {
+def operator !=(o : $Option<auto(TT)>; v : TT) : bool {
     return !(o == v)
 }
 
-def operator !=(v : auto(TT); o : $Option < TT >) : bool {
+def operator !=(v : auto(TT); o : $Option<TT>) : bool {
     return !(o == v)
 }

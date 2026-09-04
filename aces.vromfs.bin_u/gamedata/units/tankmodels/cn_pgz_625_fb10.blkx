@@ -2233,13 +2233,31 @@
     ]
   },
   "MetaParts": {
-    "closed_fightning_compartment": {
+    "crew_fighting_compartment": {
+      "part": [
+        "commander_dm",
+        "gunner_dm",
+        "radio_station_dm",
+        "fire_control_system_dm"
+      ],
+      "effect": [
+        {
+          "conditionDamageType": "explosion",
+          "conditionDamage": 1.0,
+          "pressure": true
+        },
+        {
+          "conditionDamageType": "shatter",
+          "conditionDamage": 1.0,
+          "pressure": true
+        }
+      ]
+    },
+    "closed_driver_compartment": {
       "part": [
         "driver_dm",
         "loader_dm",
-        "gunner_dm",
-        "commander_dm",
-        "radio_station_dm"
+        "driver_controls_dm"
       ],
       "effect": [
         {
@@ -2466,7 +2484,8 @@
               0.0,
               3000.0
             ],
-            "priority": 500
+            "priority": 500,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2490,7 +2509,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2514,7 +2534,8 @@
               0.0,
               3000.0
             ],
-            "priority": 300
+            "priority": 300,
+            "reactionTime": 1.0
           },
           {
             "isUnit": false,
@@ -2538,7 +2559,8 @@
               0.0,
               3000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.0
           }
         ]
       },
@@ -2682,7 +2704,8 @@
               0.0,
               25000.0
             ],
-            "priority": 400
+            "priority": 400,
+            "reactionTime": 1.5
           }
         ]
       }
@@ -4443,7 +4466,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 500
+                  "priority": 500,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -4467,7 +4491,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -4491,7 +4516,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 300
+                  "priority": 300,
+                  "reactionTime": 1.0
                 },
                 {
                   "isUnit": false,
@@ -4515,7 +4541,8 @@
                     0.0,
                     3000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.0
                 }
               ]
             },
@@ -4659,7 +4686,8 @@
                     0.0,
                     25000.0
                   ],
-                  "priority": 400
+                  "priority": 400,
+                  "reactionTime": 1.5
                 }
               ]
             },

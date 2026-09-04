@@ -2,7 +2,6 @@ module ai_squad_tactical_common shared
 
 require ecs
 require app
-require math.base
 
 let
   AI_SQUAD_TACTICAL_REPLACE_TARGET_TIMEOUT = 10.0

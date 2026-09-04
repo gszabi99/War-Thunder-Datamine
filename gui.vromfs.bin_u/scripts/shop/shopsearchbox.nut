@@ -1,19 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqstd/string.nut" import trim
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+from "%globalScripts/unitTypeConsts.nut" import *
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 
-gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
+let ShopSearchBox = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/shop/shopSearchBox.blk"
 
@@ -185,7 +188,8 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
       this.doFastSearch(this.searchString)
   }
 }
+register_gui_handler("ShopSearchBox", ShopSearchBox)
 
 return {
-  init = @(params) handlersManager.loadHandler(gui_handlers.ShopSearchBox, params)
+  init = @(params) handlersManager.loadHandler(ShopSearchBox, params)
 }

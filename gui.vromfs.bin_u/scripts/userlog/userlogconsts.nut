@@ -1,3 +1,4 @@
+from "%globalScripts/unlockConsts.nut" import *
 enum USERLOG_POPUP {
   UNLOCK                = 0x0001
   FINISHED_RESEARCHES   = 0x0002

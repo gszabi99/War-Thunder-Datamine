@@ -2,7 +2,7 @@
   "model": "f_4ej",
   "fmFile": "fm/f-4ej.blk",
   "harmonizationSuffix": "_tomoe",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "gyroSight": true,
@@ -11,6 +11,7 @@
   "haveCCRPForBombs": true,
   "ilsLCOSS": true,
   "havePointOfInterestDesignator": true,
+  "hasAimingPointsMemory": true,
   "gearSinkRangeLR": 0.42,
   "gearSinkRangeC": 0.57,
   "jetEnginePowerFullScale": true,
@@ -5233,8 +5234,14 @@
     ],
     "emitters": {
       "emitter": [
-        "emtr_fuel_dump1",
-        "emtr_fuel_dump2"
+        {
+          "node": "emtr_fuel_dump1",
+          "fmPart": "wing_end_l"
+        },
+        {
+          "node": "emtr_fuel_dump2",
+          "fmPart": "wing_end_r"
+        }
       ]
     }
   },

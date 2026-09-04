@@ -1,8 +1,8 @@
+from "%rGui/wwMap/wwMapUtils.nut" import sendToDagui
+from "worldwar" import wwGetCurrActionType
 from "%rGui/globals/ui_library.nut" import *
 
-let { wwGetCurrActionType } = require("worldwar")
 let { actionType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
 
 let haveActiveAction = @() wwGetCurrActionType() != actionType.AUT_None
 

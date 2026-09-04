@@ -10,6 +10,11 @@
   "shellAnimChar": "su_kh_31pd_missile_char",
   "bombCart": "missile_cart_mid",
   "tags": {},
+  "GameModeRestrictions": {
+    "nuclear_escalation": {
+      "minRank": 31
+    }
+  },
   "rocket": {
     "dragCx": 0.025,
     "bulletName": "su_kh_31pd",
@@ -19,6 +24,7 @@
     "price": 3000.0,
     "statType": "hydra",
     "maxDeltaAngle": 0.02,
+    "thrustDeviation": 0.01,
     "caliber": 0.36,
     "length": 5.34,
     "WdK": [
@@ -379,7 +385,7 @@
     },
     "damage": {
       "explosive": {
-        "offset": 0.3
+        "offset": 0.75
       }
     },
     "DamageParts": {

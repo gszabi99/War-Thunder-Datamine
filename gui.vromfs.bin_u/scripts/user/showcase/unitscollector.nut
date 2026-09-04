@@ -1,11 +1,11 @@
+import "DataBlock" as DataBlock
+from "%sqstd/underscore.nut" import isArray
 from "%scripts/dagui_library.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let DataBlock = require("DataBlock")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getConditionsToUnlockShowcaseById } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { showcaseValues, getUnitFromTerseInfo } = require("%scripts/user/showcase/showcaseValues.nut")
-let { isArray } = require("%sqstd/underscore.nut")
 
 const COLLECTOR_UNITS_COUNT = 3
 

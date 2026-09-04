@@ -8,7 +8,6 @@ require vehicle
 require %appGame.infantry.es.hero_common
 require app
 require net
-require math.base
 require Grid
 require GridCollision
 require AnimV20

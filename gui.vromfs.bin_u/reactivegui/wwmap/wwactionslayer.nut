@@ -1,25 +1,24 @@
+from "%rGui/wwMap/wwArtilleryStrikeStates.nut" import artilleryReadyToStrike, artilleryAttackRaduis
+from "%appGlobals/worldWar/wwSettings.nut" import getSettings, getSettingsArray
+from "%rGui/wwMap/wwMapUtils.nut" import getMapColor, convertColor4
+from "%rGui/wwMap/wwArtilleryUtils.nut" import getArtilleryParams
+from "%rGui/wwMap/wwOperationConfiguration.nut" import convertAbsoluteToMapCoords, convertToRelativeMapCoords, getMapCellByCoords, activeAreaBounds, mapZoom
+from "%rGui/wwMap/wwArmyStates.nut" import hoveredArmy, getArmyIcon, getArmyByName
+from "%rGui/wwMap/wwOperationStates.nut" import isPlayerSide, isOperationPausedWatch
+from "%rGui/wwMap/wwTransportUtils.nut" import transportReadyToUnload, transportReadyToLoad, getLoadedArmyName, getLoadedArmy
+from "%rGui/wwMap/wwMapStates.nut" import loadedTransport, cursorPosition
+from "%rGui/wwMap/wwArmyGroups.nut" import getArmyGroupsInfo
+from "%rGui/wwMap/wwAirfieldsStates.nut" import selectedAirfield
+from "%rGui/wwMap/wwMapZonesData.nut" import getZoneById
+from "%rGui/wwMap/wwUtils.nut" import calcAngleBetweenVectors, even
+from "%appGlobals/worldWar/wwArtilleryStatus.nut" import artilleryReadyState
+from "math" import floor, pow
+from "worldwar" import wwArtilleryGetAttackRadius, wwArtillerySetAttackRadius, wwCanUnloadArmyFromTransport
 from "%rGui/globals/ui_library.nut" import *
 
-let { floor, pow } = require("math")
-let { wwArtilleryGetAttackRadius, wwArtillerySetAttackRadius, wwCanUnloadArmyFromTransport } = require("worldwar")
-let { artilleryReadyToStrike, artilleryAttackRaduis } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
-let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
-let { getMapColor, convertColor4 } = require("%rGui/wwMap/wwMapUtils.nut")
-let { getArtilleryParams } = require("%rGui/wwMap/wwArtilleryUtils.nut")
-let { convertAbsoluteToMapCoords, convertToRelativeMapCoords
-  getMapCellByCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { hoveredArmy, getArmyIcon, getArmyByName } = require("%rGui/wwMap/wwArmyStates.nut")
-let { isPlayerSide, isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
-let { transportReadyToUnload, transportReadyToLoad, getLoadedArmyName, getLoadedArmy } = require("%rGui/wwMap/wwTransportUtils.nut")
-let { loadedTransport, cursorPosition } = require("%rGui/wwMap/wwMapStates.nut")
-let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
-let { selectedAirfield } = require("%rGui/wwMap/wwAirfieldsStates.nut")
-let { getZoneById } = require("%rGui/wwMap/wwMapZonesData.nut")
-let { calcAngleBetweenVectors, even } = require("%rGui/wwMap/wwUtils.nut")
-let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 
-let partSize = hdpx(20)
+const partSize = hdpx(20)
 
 let distSq = @(p1, p2) (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y)
 
@@ -39,7 +38,7 @@ function mkArtilleryCursorPart(data, cursorTexture) {
 
   return {
     rendObj = ROBJ_IMAGE
-    size = [partSize, partSize]
+    size = const [partSize, partSize]
     pos
     color
     image = Picture($"{cursorTexture}:{partSize}:{partSize}")
@@ -176,7 +175,7 @@ let mkArtilleryStrikeCircles = @(areaBounds) function() {
   let pos = [areaWidth * armyPos.x, areaHeight * armyPos.y]
   return {
     watch = [artilleryReadyToStrike, mapZoom]
-    size = flex()
+    size = FLEX
     children = [
       mkActionCircle(pos, armySize, radiusMin),
       mkActionCircle(pos, radiusMax, 2 * areaHeight)
@@ -200,7 +199,7 @@ let mkTransportCircles = @(areaBounds) function() {
   let pos = [areaWidth * armyPos.x, areaHeight * armyPos.y]
   return {
     watch = [transportReadyToUnload, transportReadyToLoad, mapZoom]
-    size = flex()
+    size = FLEX
     children = [
       mkActionCircle(pos, armySize, armySize),
       mkActionCircle(pos, radiusMax, 2 * areaHeight)
@@ -260,7 +259,7 @@ function mkArmyArrow(arrowPos, radius, arrowAngle, color, fillColor) {
     children = [
       {
         rendObj = ROBJ_VECTOR_CANVAS
-        size = flex()
+        size = FLEX
         color
         fillColor = color
         commands = [
@@ -301,7 +300,7 @@ let mkFlyOutArrow = @(areaBounds) function() {
   return {
     watch = [cursorPosition, selectedAirfield, isOperationPausedWatch, mapZoom]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = radius * 2
     color
     commands = [

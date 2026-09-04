@@ -94,6 +94,7 @@
     ],
     "ammo_stowage__fxEvAmmoFireId": -1,
     "ammo_stowage__ammoLostSync": 0,
+    "ammo_stowage__timeMovingAmmoSync": -1.0,
     "ammo_stowage__ammoState:u32": {},
     "ammo_stowage__explosiveProperties": {},
     "ammo_stowage__splashProperties": {},
@@ -148,6 +149,17 @@
     "ammo_slots__partId": {},
     "ammo_slots__numAmmo:list<ip2>": {},
     "ammo_slots__node": {}
+  },
+  "unit_aps": {
+    "_use": "replicating",
+    "_group": {
+      "_replicate": true,
+      "_track": true,
+      "aps__rearmState": 3,
+      "aps__timeToRearm": -1.0,
+      "aps__shotCountRemain:list<i>": {},
+      "aps__timeToReady:list<r>": {}
+    }
   },
   "tank_engine": {
     "_use": "replicating",
@@ -346,6 +358,13 @@
     "gm_sub_vechicle_track_sound__event:SoundEvent": {},
     "gm_sub_vechicle_track_sound__cached_params:list<r>": {}
   },
+  "gm_suspension_sound": {
+    "_tags": "sound",
+    "suspension_sound__event_name": "",
+    "suspension_sound__prev_shock": 0.0,
+    "suspension_sound__event:SoundEvent": {},
+    "suspension_sound__last_sinking:list<r>": {}
+  },
   "unit_unlock_data": {
     "inflict_specified_damage__awardedOffenders:object": {}
   },
@@ -426,6 +445,12 @@
     "setting__loadSound": true,
     "setting__canControlInHangar": false,
     "setting__dontCreateChar": false,
+    "setting__enviCover": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
     "unit_init_params:tag": {},
     "unit_params__modList:list<t>": {},
     "setting__bullets:list<t>": {},
@@ -506,6 +531,8 @@
     "unit__canChangeUnitInHangar": false,
     "unit__missionName": "",
     "team": -1,
+    "curUnitTickDt": 0.0,
+    "curFrameDt": 0.0,
     "_replicated": [
       "uid",
       "unitVersion",
@@ -705,6 +732,12 @@
   },
   "disable_radar_on_start": {
     "disable_radar_on_start:tag": {}
+  },
+  "search_radar_duty": {
+    "search_radar_duty__emissionTime": 20.0,
+    "search_radar_duty__emissionTimeVar": 0.0,
+    "search_radar_duty__silenceTime": 10.0,
+    "search_radar_duty__silenceTimeVar": 0.0
   },
   "ground_unit": {
     "_use": [
@@ -962,6 +995,7 @@
     "background_model__unitName": "",
     "background_model__weapon": "",
     "background_model__isPlane": false,
+    "background_model__isShip": false,
     "background_model__tm": [
       [
         1.0,
@@ -993,15 +1027,47 @@
       0.0,
       0.0
     ],
-    "background_model__bboxWidth": [
+    "background_model__bboxMax": [
       0.0,
       0.0,
       0.0
     ],
-    "background_model__need_box_collision": false,
+    "background_model__bboxMin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "background_model__canChange": true,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
     "background_model_res": {
       "_tags": "gameClient"
     },
     "background_model__spawnEid:eid": {}
+  },
+  "background_model_collidable": {
+    "_use": "background_model",
+    "background_model__need_box_collision": false,
+    "background_model__need_hull_collision": false
   }
 }

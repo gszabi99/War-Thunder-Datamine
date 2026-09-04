@@ -13,7 +13,7 @@ require DaWeapons
 require HumanPhys
 require app
 require net
-require wt_events
+require %appGame.wt_events
 
 def interrupt_reload_immediately_impl(human_weap__reloadStartTime : float;
                                       var human_weap__reloadFinishTime : float&;

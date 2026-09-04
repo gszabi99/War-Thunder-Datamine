@@ -1,25 +1,23 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "string" import format
+from "unitCalculcation" import calculate_tank_bullet_parameters
+from "%sqstd/string.nut" import utf8Capitalize
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_empty_combobox
 
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
-let { format } = require("string")
-let { calculate_tank_bullet_parameters } = require("unitCalculcation")
-let enums = require("%sqStdLibs/helpers/enums.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, getWeaponNameByBlkPath
-} = require("%scripts/weaponry/weaponryInfo.nut")
-let { getBulletsList, getLinkedGunIdx, getBulletsSetData, getBulletsSearchName,
-  getBulletsGroupCount, getLastFakeBulletsIndex, getModificationBulletsEffect
-} = require("%scripts/weaponry/bulletsInfo.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getBulletsList, getLinkedGunIdx, getBulletsSetData, getBulletsSearchName, getBulletsGroupCount, getLastFakeBulletsIndex, getModificationBulletsEffect, hasNestedRocket } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType, hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
-let { utf8Capitalize } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -309,7 +307,11 @@ options.addTypes({
     sortId = sortIdCount++
     labelLocId = "mainmenu/shell"
     visibleTypes = [ WEAPON_TYPE.GUNS, WEAPON_TYPE.ROCKETS, WEAPON_TYPE.AGM ]
-    controlMarkupParams = { beforeSelectCb = "onBeforeSelectComboboxValue", tooltipOnHold = @() showConsoleButtons.get() }
+    controlMarkupParams = {
+      beforeSelectCb = "onBeforeSelectComboboxValue"
+      tooltipOnHold = @() showConsoleButtons.get()
+      hasInteractiveTooltip = true
+    }
 
     function updateView(handler, scene) {
       let obj = scene.findObject(this.id)
@@ -368,7 +370,8 @@ options.addTypes({
 
         foreach (i, value in bulletsList.values) {
           let bulletsSet = getBulletsSetData(unit, value)
-          let { weaponType = null, weaponBlkName = null, isBulletBelt = true } = bulletsSet
+          let { weaponType = null, weaponBlkName = null, isBulletBelt = true,
+            hasNestedRocketBlk = false } = bulletsSet
 
           if (weaponType == null
               || weaponBlkName == null
@@ -390,7 +393,7 @@ options.addTypes({
             local locName = bulletsList.items[i].text
             local bulletParams = bulletParameters?[idx]
 
-            if (bulletsFilter != null && !bulletsFilter(weaponType, bulletParams?.bulletType))
+            if (bulletsFilter != null && !bulletsFilter(weaponType, bulletParams?.bulletType, hasNestedRocketBlk))
               continue
 
             local isDub = false
@@ -416,8 +419,10 @@ options.addTypes({
               continue
 
             local bSet
+            local ammoName = bulletName
             if (isBulletBelt) {
               let bData = bulletsSet.bulletDataByType[bulletName]
+              ammoName = bData.bulletName ?? ammoName
               bSet = bulletsSet.__merge({
                 bullets = [bulletName]
                 bulletAnimations = bData.bulletAnimations
@@ -432,20 +437,20 @@ options.addTypes({
                 { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
-            let btName = bulletName ?? ""
             this.values.append({
               unitName
               esUnitType = unit.esUnitType
-              bulletName = btName
+              bulletName = ammoName
               weaponBlkName = weaponBlkName
               weaponType = bulletsSet?.weaponType ?? WEAPON_TYPE.GUNS
               bulletParams = bulletParams
+              hasNestedRocketBlk
               locName
               tooltipId
               layeredIconData = getBulletsIconView(bulletsSet)
             })
 
-            if (btName == options.targetAmmo)
+            if (ammoName == options.targetAmmo || bulletName == options.targetAmmo)
               selectedIndex = this.values.len() - 1
 
             this.items.append({
@@ -536,7 +541,8 @@ options.addTypes({
         else if (curType == "bomb")
           weapType = WEAPON_TYPE.GUIDED_BOMBS
 
-        if (bulletsFilter != null && !bulletsFilter(weapType, bulletParams?.bulletType))
+        let hasNestedRocketBlk = hasNestedRocket(curBlk)
+        if (bulletsFilter != null && !bulletsFilter(weapType, bulletParams?.bulletType, hasNestedRocketBlk))
           continue
 
         this.items.append({
@@ -566,6 +572,7 @@ options.addTypes({
           weaponBlkName = weaponBlkPath
           weaponType = weapType
           bulletParams
+          hasNestedRocketBlk
           sortVal = curBlk?.caliber ?? 0
           locName
           tooltipId
@@ -598,7 +605,8 @@ options.init <- function(handler, scene, structure = null, bulletsFilter = null)
 
   let needReinit = this.UNIT.value == null
     || this.UNIT.value != this.targetUnit
-    || this.BULLET.value?.bulletName != this.targetAmmo
+    || (this.BULLET.value?.bulletName != this.targetAmmo
+      && this.BULLET.value?.bulletParams.bulletType != this.targetAmmo)
 
   if (needReinit)
     this.types.each(@(o) o.value = o.defValue)

@@ -2,7 +2,6 @@ require ecs
 require Unit
 require MPlayer
 require DagorMath
-require %game.utils.utils_common
 
 def is_point_in_box_zone(pos : float3; transform : float3x4)
   var zonePos : float3 = inverse(transform) * float3(pos.x, 0.0, pos.z)

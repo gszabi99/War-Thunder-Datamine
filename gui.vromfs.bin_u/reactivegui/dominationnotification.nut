@@ -1,8 +1,7 @@
+import "%rGui/style/teamColors.nut" as teamColors
+from "%rGui/missionState.nut" import totalDomTeam, localTeam, totalDomEnabled
+from "%rGui/hud/scoreboard/missionModeState.nut" import TOTAL_DOMINATION_START_ANIM_ID
 from "%rGui/globals/ui_library.nut" import *
-
-let { totalDomTeam, localTeam, totalDomEnabled } = require("%rGui/missionState.nut")
-let {TOTAL_DOMINATION_START_ANIM_ID} = require("%rGui/hud/scoreboard/missionModeState.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
 
 let animations = [
   { prop = AnimProp.opacity, from = 0, to = 1, play = false, duration = 0.25,

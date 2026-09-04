@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
+from "gameplayBinding" import isInFlight
 from "%scripts/dagui_library.nut" import *
-
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInFlight } = require("gameplayBinding")
 
 let devoiceList = {}
 

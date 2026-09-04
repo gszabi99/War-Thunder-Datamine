@@ -1,4 +1,5 @@
 options persistent_heap
+options no_global_variables = false
 require ecs
 require ecs.common
 require DagorImgui
@@ -7,7 +8,6 @@ require AnimV20
 require imgui
 
 require imgui/imgui_node_editor_boost
-require daslib/static_let
 require daslib/safe_addr
 
 
@@ -20,35 +20,86 @@ def copy_button(text : string)
   imgui::Text(text)
 
 
+
+var private animgraphSelectedCharEid = INVALID_ENTITY_ID
+var private animgraphUseDaeditorSelected = true
+
+def private resolve_daeditor_selected_char(var selected_char_eid : EntityId&)
+  query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
+    selected_char_eid = eid
+
+
+def private publish_animgraph_prop_panel_focus(selected_char_eid : EntityId)
+  query() <| $ [es] (var animgraph_prop_panel__focus_eid : EntityId&)
+    if animgraph_prop_panel__focus_eid != selected_char_eid
+      animgraph_prop_panel__focus_eid = selected_char_eid
+
+
+
+def private char_has_anim_graph(animchar : AnimcharBaseComponent&)
+  return animchar.animGraph != null && animchar.animState != null
+
+
+
+def private reject_pending_select_without_graph(selected_char_eid : EntityId)
+  var requested = ""
+  query() <| $ [es] (animgraph_prop_panel__select_request : das_string)
+    requested = "{animgraph_prop_panel__select_request}"
+  if requested == ""
+    return
+  var hasGraph = false
+  query(selected_char_eid) <| $ [es] (animchar : AnimcharBaseComponent&)
+    hasGraph = char_has_anim_graph(animchar)
+  if hasGraph
+    return
+  query() <| $ [es] (var animgraph_prop_panel__select_request : das_string&; var animgraph_prop_panel__select_status : das_string&)
+    animgraph_prop_panel__select_status := "Select failed: no anim graph is drawn in the viewer"
+    animgraph_prop_panel__select_request := ""
+
+
+
+[es(tag=render, no_order)]
+def animgraph_prop_panel_publish_focus(info : UpdateStageInfoAct)
+  if imgui_get_state() == ImGuiState.OFF
+    return
+  if !imgui_window_is_visible("Anim", "Anim graph")
+    return
+  if animgraphSelectedCharEid == INVALID_ENTITY_ID || animgraphUseDaeditorSelected
+    resolve_daeditor_selected_char(animgraphSelectedCharEid)
+  publish_animgraph_prop_panel_focus(animgraphSelectedCharEid)
+  reject_pending_select_without_graph(animgraphSelectedCharEid)
+
 [imgui_window(name="Anim graph", group="Anim")]
 def ecs_anim_graph2()
-  if IsWindowCollapsed()
-    return
-
-  static_let <|
-    var selectedCharEid = INVALID_ENTITY_ID
-    var useDaeditorSelected = true
-
   let size = imgui::GetWindowSize()
   if size.x <= 500f || size.y <= 500f
     imgui::SetWindowSize(float2(500))
 
-  if imgui::Button("Daeditor selected{useDaeditorSelected ? "(on)" : "(off)"}")
-    useDaeditorSelected = true
+  if imgui::Button("Daeditor selected {animgraphUseDaeditorSelected ? "(on)" : "(off)"}")
+    animgraphUseDaeditorSelected = true
 
-  if selectedCharEid == INVALID_ENTITY_ID || useDaeditorSelected
-    query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
-      selectedCharEid = eid
+  if !doesEntityExist(animgraphSelectedCharEid)
+    animgraphSelectedCharEid = INVALID_ENTITY_ID
 
-  query(selectedCharEid) <| $ [es] (animchar_attach__attachedTo : EntityId)
+  if animgraphSelectedCharEid == INVALID_ENTITY_ID || animgraphUseDaeditorSelected
+    resolve_daeditor_selected_char(animgraphSelectedCharEid)
+
+  if animgraphSelectedCharEid == INVALID_ENTITY_ID
+    query() <| $ [es(REQUIRE=hero)] (eid : EntityId)
+      imgui::SameLine()
+      if imgui::Button("Hero ({split_template(getEntityTemplateName(eid))[0]})")
+        animgraphSelectedCharEid = eid
+        animgraphUseDaeditorSelected = false
+
+  query(animgraphSelectedCharEid) <| $ [es] (animchar_attach__attachedTo : EntityId)
     if animchar_attach__attachedTo != INVALID_ENTITY_ID
       imgui::SameLine()
       imgui::Text("Attached to:")
       imgui::SameLine()
 
       if imgui::Button("{split_template(getEntityTemplateName(animchar_attach__attachedTo))[0]} ({animchar_attach__attachedTo})")
-        selectedCharEid = animchar_attach__attachedTo
-        useDaeditorSelected = false
+        animgraphSelectedCharEid = animchar_attach__attachedTo
+        animgraphUseDaeditorSelected = false
 
   imgui::SameLine()
   imgui::Text("Attachments: ")
@@ -56,15 +107,18 @@ def ecs_anim_graph2()
     if attach_animchar.animGraph == null || attach_animchar.animState == null
       return
 
-    if animchar_attach__attachedTo != selectedCharEid || selectedCharEid == INVALID_ENTITY_ID
+    if animchar_attach__attachedTo != animgraphSelectedCharEid || animgraphSelectedCharEid == INVALID_ENTITY_ID
       return
 
     imgui::SameLine()
     if imgui::Button("{split_template(getEntityTemplateName(eid))[0]} ({eid})")
-      selectedCharEid = eid
-      useDaeditorSelected = false
+      animgraphSelectedCharEid = eid
+      animgraphUseDaeditorSelected = false
 
-  query(selectedCharEid) <| $ [es] (eid : EntityId; var animchar__animState : Object?; var animchar : AnimcharBaseComponent)
+  
+  publish_animgraph_prop_panel_focus(animgraphSelectedCharEid)
+
+  query(animgraphSelectedCharEid) <| $ [es] (eid : EntityId; var animchar__animState : Object?; var animchar : AnimcharBaseComponent)
     if imgui::Button("*")
       imgui::OpenPopup("anim_graph_popup_{eid}")
 
@@ -77,7 +131,7 @@ def ecs_anim_graph2()
       imgui::EndPopup()
     imgui::SameLine()
     imgui::Text("Selected Currently: {animchar |> animchar_getResName()}  |  ({eid})<{getEntityTemplateName(eid)}>")
-    if animchar.animGraph == null || animchar.animState == null
+    if !char_has_anim_graph(animchar)
       return
 
     var resetState = false
@@ -89,8 +143,8 @@ def ecs_anim_graph2()
     else
       eid |> removeSubTemplate("animchar_lock_anim_state_change")
 
-  if selectedCharEid == INVALID_ENTITY_ID
-    imgui::Text("Select any entity")
+  if animgraphSelectedCharEid == INVALID_ENTITY_ID
+    imgui::Text("Select any entity in editor or click hero button above.")
 
 [es(tag=render, on_event=EventComponentsDisappear, REQUIRE=daeditor__selected)]
 def animgraph_restore_animations(evt : Event; eid : EntityId)

@@ -1,26 +1,41 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
-let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
-let { getTotalPresetsCount, canLoadSlotbarPreset, loadSlotbarPreset
-} = require("%scripts/slotbar/slotbarPresets.nut")
+let { openSlotbarPresetSettings } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsSettingsWnd.nut")
+let { MAX_COUNTRY_PRESETS_AMOUNT, canLoadSlotbarPreset, loadSlotbarPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
+let { getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isShowModes, isShowTitles, isShowRatings, isAbbreviateModes, isAutoAbbreviation, getPresetsDataByCountry } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
+let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { openSlotbarPresetsListEditWnd } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsEdit.nut")
+let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+
+const MAX_AUTO_TABS_WIDTH_K = 3
+
+let autoAbbrTypes = {
+  max = { gmShowType = "full", name = true }
+  mid = { gmShowType = "abbr", name = true }
+  min = { gmShowType = "abbr", name = false }
+  none = {}
+}
 
 let SlotbarPresetsList = class {
   scene = null
   ownerWeak = null
   maxPresets = 0
   curPresetsData = null 
-
   NULL_PRESET_DATA = { isEnabled = false, title = "" } 
+  slotbarWidgetHandler = null
+  hoveredPresetIdx = null
+  isSlotbarPresetsEditWndOpened = false
 
   constructor(handler) {
     this.ownerWeak = handler.weakref()
@@ -31,11 +46,12 @@ let SlotbarPresetsList = class {
       return
 
     this.scene.show(true)
-    this.maxPresets = getTotalPresetsCount()
+    this.maxPresets = MAX_COUNTRY_PRESETS_AMOUNT
     this.curPresetsData = array(this.maxPresets, this.NULL_PRESET_DATA)
     let view = {
       presets = array(this.maxPresets, null)
       isSmallFont = is_low_width_screen()
+      isGamepad = showConsoleButtons.get()
     }
     let blk = handyman.renderCached(("%gui/slotbar/slotbarPresets.tpl"), view)
     this.scene.getScene().replaceContentFromText(this.scene, blk, blk.len(), this)
@@ -55,23 +71,43 @@ let SlotbarPresetsList = class {
     return checkObj(this.scene)
   }
 
-  function getCurCountry() {
-    return this.ownerWeak ? this.ownerWeak.getCurSlotbarCountry() : ""
-  }
-
   function getPresetsData() {
-    let curPresetIdx = this.getCurPresetIdx()
-    let res = u.mapAdvanced(getPresetsListFromSlotbar(this.getCurCountry()),
-      @(l, idx, ...) {
-        title = l.title
-        isEnabled = l.enabled || idx == curPresetIdx 
-      })
-
+    let res = getPresetsDataByCountry(profileCountrySq.get())
     res.resize(this.maxPresets, this.NULL_PRESET_DATA)
     return res
   }
 
-  function update() {
+  function getPresetsTabsWidth(listObj) {
+    local res = 0
+    for (local i = 0; i < listObj.childrenCount(); i++) {
+      let tab = listObj.getChild(i)
+      if (!tab.isVisible())
+        continue
+      res += tab.getSize()[0]
+    }
+    return res
+  }
+
+  function selectAbbreviationMode(listObj, curPresetsData, newPresetsData) {
+    let maxAutoTabsWidth = MAX_AUTO_TABS_WIDTH_K * listObj.getSize()[0]
+
+    for (local i = 0; i < this.maxPresets; i++)
+      this.updatePresetObj(listObj.getChild(i), curPresetsData[i], newPresetsData[i], true, i, autoAbbrTypes.max)
+
+    this.scene.getScene().applyPendingChanges(false)
+
+    if (this.getPresetsTabsWidth(listObj) > maxAutoTabsWidth) {
+      for (local i = 0; i < this.maxPresets; i++)
+        this.updatePresetObj(listObj.getChild(i), curPresetsData[i], newPresetsData[i], true, i, autoAbbrTypes.mid)
+      this.scene.getScene().applyPendingChanges(false)
+    }
+
+    if (this.getPresetsTabsWidth(listObj) > maxAutoTabsWidth)
+      for (local i = 0; i < this.maxPresets; i++)
+        this.updatePresetObj(listObj.getChild(i), curPresetsData[i], newPresetsData[i], true, i, autoAbbrTypes.min)
+  }
+
+  function update(forceUpdate = false) {
     if (isSmallScreen)
       return
 
@@ -82,21 +118,62 @@ let SlotbarPresetsList = class {
     let newPresetsData = this.getPresetsData()
     let curPresetIdx = this.getCurPresetIdx()
     local hasVisibleChanges = curPresetIdx != listObj.getValue()
-    for (local i = 0; i < this.maxPresets; i++)
-      if (this.updatePresetObj(listObj.getChild(i), this.curPresetsData[i], newPresetsData[i]))
-        hasVisibleChanges = true
+
+    if (!isAutoAbbreviation()) {
+      for (local i = 0; i < this.maxPresets; i++)
+        if (this.updatePresetObj(listObj.getChild(i), this.curPresetsData[i], newPresetsData[i], forceUpdate, i))
+          hasVisibleChanges = true
+    }
+    else {
+      this.selectAbbreviationMode(listObj, this.curPresetsData, newPresetsData)
+      hasVisibleChanges = true
+    }
 
     this.curPresetsData = newPresetsData
     if (!hasVisibleChanges)
       return
 
-    if (curPresetIdx >= 0)
+    this.scene.getScene().applyPendingChanges(false)
+    if (curPresetIdx >= 0) {
       listObj.setValue(curPresetIdx)
-    this.updateSizes(true)
+      listObj.getChild(curPresetIdx).scrollToView()
+    }
   }
 
-  function updatePresetObj(obj, wasData, newData) {
-    if (u.isEqual(wasData, newData))
+  function getAbbreviationModeName(gm) {
+    let { id = null, defAbbreviateLocId = null } = gm
+    if (id == null)
+      return ""
+
+    let abbrLocId = $"slotbarPresetsAbreviaton/{id}"
+    if (doesLocTextExist(abbrLocId))
+      return loc(abbrLocId)
+
+    return doesLocTextExist(defAbbreviateLocId) ? loc(defAbbreviateLocId) : ""
+  }
+
+  function createPresetTitleData(presetData, autoAbbrData = autoAbbrTypes.none) {
+    let autoAbbr = autoAbbrData != autoAbbrTypes.none
+
+    let isShowBRInTab = autoAbbr || isShowRatings()
+    let isShowNameInTab = autoAbbr || isShowTitles()
+    let isShowGMInTab = autoAbbr || isShowModes()
+    let isAbbreviateGMInTab = !autoAbbr ? isAbbreviateModes() : autoAbbrData.gmShowType == "abbr"
+    let gm = getGameModeById(presetData.gameModeId)
+
+    let modeName = !isShowGMInTab ? ""
+      : isAbbreviateGMInTab ? this.getAbbreviationModeName(gm)
+      : (gm?.getText() ?? "")
+
+    return {
+      presetName = isShowNameInTab ? presetData.title : ""
+      presetGameMode = modeName
+      presetBR = isShowBRInTab ? presetData.br : ""
+    }
+  }
+
+  function updatePresetObj(obj, wasData, newData, forceUpdate, presetIdx, autoAbbrType = autoAbbrTypes.none) {
+    if (!forceUpdate && u.isEqual(wasData, newData))
       return false
 
     let isEnabled = newData.isEnabled
@@ -104,7 +181,9 @@ let SlotbarPresetsList = class {
     if (!isEnabled)
       return wasData.isEnabled
 
-    obj.findObject("tab_text").setValue(newData.title)
+    let presetTitleData = this.createPresetTitleData(newData, autoAbbrType)
+    presetTitleData.each(@(value, key) obj.findObject(key).setValue(value))
+    obj["presetIdx"] = presetIdx
     return true
   }
 
@@ -113,41 +192,8 @@ let SlotbarPresetsList = class {
     obj.enable(needShow)
   }
 
-  _lastListWidth = 0
-  function updateSizes(needFullRecount = false) {
-    this.scene.getScene().applyPendingChanges(false)
-    let listObj = this.getListObj()
-    local availWidth = listObj.getSize()[0]
-    if (!needFullRecount && this._lastListWidth == availWidth)
-      return
-
-    this._lastListWidth = availWidth
-    availWidth -= listObj.findObject("btn_slotbar_presets").getSize()[0]
-
-    
-    let widthList = []
-    local totalWidth = 0
-    for (local i = 0; i < this.maxPresets; i++) {
-      local width = 0
-      if (this.curPresetsData[i].isEnabled)
-        width = listObj.getChild(i).getSize()[0]
-      totalWidth += width
-      widthList.append(width)
-    }
-
-    
-    let curPresetIdx = this.getCurPresetIdx()
-    for (local i = this.maxPresets - 1; i >= 0; i--)
-      if (this.curPresetsData[i].isEnabled) {
-        let isVisible = totalWidth <= availWidth || i == curPresetIdx
-        this.showObj(listObj.getChild(i), isVisible)
-        if (!isVisible)
-          totalWidth -= widthList[i]
-      }
-  }
-
   function getCurPresetIdx() { 
-    return getCurrentPresetIdx(this.getCurCountry(), 0)
+    return getCurrentPresetIdx(profileCountrySq.get(), 0)
   }
 
   function getSelPresetIdx() { 
@@ -156,25 +202,23 @@ let SlotbarPresetsList = class {
       return this.getCurPresetIdx()
 
     let value = listObj.getValue()
-    if (value < 0 || value >= (listObj.childrenCount() - 1)) 
+    if (value < 0 || value >= listObj.childrenCount())
       return -1
     return value
   }
 
-  function isPresetChanged() {
-    let idx = this.getSelPresetIdx()
+  function isPresetChanged(presetIdx = null) {
+    let idx = presetIdx ?? this.getSelPresetIdx()
     return idx != this.getCurPresetIdx()
   }
 
-  function applySelect() {
-    if (!canLoadSlotbarPreset(true, this.getCurCountry()))
+  function applySelect(newIdx = null) {
+    if (!canLoadSlotbarPreset(true, profileCountrySq.get()))
       return this.update()
 
-    let idx = this.getSelPresetIdx()
-    if (idx < 0) {
-      this.update()
-      return gui_choose_slotbar_preset(this.ownerWeak)
-    }
+    let idx = newIdx ?? this.getSelPresetIdx()
+    if (idx < 0)
+      return this.update()
 
     if (("canPresetChange" in this.ownerWeak) && !this.ownerWeak.canPresetChange())
       return
@@ -184,10 +228,38 @@ let SlotbarPresetsList = class {
   }
 
   function onPresetChange() {
-    if ((this.ownerWeak?.getSlotbar().slotbarOninit ?? false) || !this.isPresetChanged())
+    this.tryChangePreset()
+  }
+
+  function isTabChosen(obj) {
+    let isSelected = obj?["chosen"] ?? "no"
+    return isSelected == "yes" ? true : false
+  }
+
+  function onPresetHover(obj) {
+    let presetIdx = obj.presetIdx.tointeger()
+    if (this.hoveredPresetIdx == presetIdx)
+      return
+    let isCurrentPreset = this.isTabChosen(obj)
+    if (isCurrentPreset)
+      return
+    this.hoveredPresetIdx = presetIdx
+    this.slotbarWidgetHandler?.previewPreset(this.hoveredPresetIdx)
+  }
+
+  function onPresetUnHover(obj) {
+    let presetIdx = obj.presetIdx.tointeger()
+    if (this.hoveredPresetIdx != presetIdx)
+      return
+    this.hoveredPresetIdx = -1
+    this.slotbarWidgetHandler?.previewPreset(null)
+  }
+
+  function tryChangePreset(presetIdx = null) {
+    if ((this.ownerWeak?.getSlotbar().slotbarOninit ?? false) || !this.isPresetChanged(presetIdx))
       return
 
-    this.checkChangePresetAndDo(this.applySelect)
+    this.checkChangePresetAndDo(@() this.applySelect(presetIdx))
   }
 
   function checkChangePresetAndDo(action) {
@@ -211,10 +283,20 @@ let SlotbarPresetsList = class {
     )
   }
 
-  function onSlotsChoosePreset(_obj) {
-    this.checkChangePresetAndDo(function () {
-      gui_choose_slotbar_preset(this.ownerWeak)
-    })
+  function setSlotbarPresetsEditWndOpened(value) {
+    this.isSlotbarPresetsEditWndOpened = value
+  }
+
+  function getSlotbarPresetsEditWndOpened() {
+    return this.isSlotbarPresetsEditWndOpened
+  }
+
+  function onSlotsChoosePreset(obj) {
+    this.checkChangePresetAndDo(@() openSlotbarPresetsListEditWnd(obj, this))
+  }
+
+  function onPresetsShowSettings(obj) {
+    openSlotbarPresetSettings(obj, this.ownerWeak)
   }
 
   function onEventSlotbarPresetLoaded(_p) {
@@ -225,25 +307,22 @@ let SlotbarPresetsList = class {
     this.update()
   }
 
-  function onEventVoiceChatOptionUpdated(_p) {
-    this.updateSizes(true)
+  function onEventGameModesUpdated(_p) {
+    this.update(true)
   }
 
-  function onEventClanChanged(_p) {
-    this.updateSizes(true)
+  function onEventSlotbarPresetSettingsChanged(_p) {
+    this.update(true)
   }
 
-  function onEventSquadStatusChanged(_p) {
-    this.scene.getScene().performDelayed(this, function() {
-      if (this.isValid())
-        this.updateSizes()
-    })
+  function onEventCurrentGameModeIdChanged(_p) {
+    this.update(true)
   }
 
   function getListObj() {
     if (!checkObj(this.scene))
       return null
-    let obj = this.scene.findObject("slotbar-presetsList")
+    let obj = this.scene.findObject("slotbarPresetsList")
     if (checkObj(obj))
       return obj
     return null
@@ -252,7 +331,7 @@ let SlotbarPresetsList = class {
   function getPresetsButtonObj() {
     if (this.scene == null)
       return null
-    let obj = this.scene.findObject("btn_slotbar_presets")
+    let obj = this.scene.findObject("btnPresets")
     if (checkObj(obj))
       return obj
     return null
@@ -273,6 +352,10 @@ let SlotbarPresetsList = class {
       return childObj
     return null
   }
+
+  function setSlotbarWidgetHandler(handler) {
+    this.slotbarWidgetHandler = handler.weakref()
+  }
 }
 
 function getSlotbarPresetsList(handler) {
@@ -289,6 +372,7 @@ function setSlotbarPresetsListAvailable(handler, isAvailable) {
   else if (handler.presetsListWeak)
     handler.presetsListWeak.destroy()
 }
+
 
 return {
   SlotbarPresetsList

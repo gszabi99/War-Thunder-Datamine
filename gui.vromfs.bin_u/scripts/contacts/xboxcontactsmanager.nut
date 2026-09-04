@@ -1,17 +1,18 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/platform.nut" import is_gdk
+from "%gdkLib/impl/presence.nut" import subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType
+from "%gdkLib/impl/app.nut" import get_title_id
+from "%gdkLib/impl/relationships.nut" import update_friends_list, update_avoid_list, retrieve_related_people_list, retrieve_avoid_people_list
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let { is_gdk } = require("%sqstd/platform.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsListState.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
-let { subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType } = require("%gdkLib/impl/presence.nut")
-let { get_title_id } = require("%gdkLib/impl/app.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
-let { update_friends_list, update_avoid_list, retrieve_related_people_list, retrieve_avoid_people_list } = require("%gdkLib/impl/relationships.nut")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
 let XboxContactsManagerGlobals = persist("XboxContactsManagerGlobals", @() { isInitedXboxContacts = false })

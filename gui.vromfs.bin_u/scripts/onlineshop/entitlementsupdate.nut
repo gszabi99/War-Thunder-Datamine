@@ -1,5 +1,5 @@
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_natives.nut" import is_online_available, update_entitlements
-let { get_time_msec } = require("dagor.time")
 
 local lastUpdateTime = get_time_msec()
 

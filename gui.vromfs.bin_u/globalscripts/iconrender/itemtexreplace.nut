@@ -1,13 +1,23 @@
+from "types" import Array, Table
 function getTexReplaceString(item) {
   let { objTexReplace = null } = item
-  if (typeof(objTexReplace) != "table" || objTexReplace.len() == 0)
+  if (objTexReplace == null)
     return ""
 
-  local list = ""
-  foreach (from, to in objTexReplace)
-    list = "".concat(list, $"objTexReplace:t={from};objTexReplace:t={to};")
-
-  return $"r0{list}"
+  let ruleSets = objTexReplace instanceof Array ? objTexReplace : [objTexReplace]
+  let list = []
+  local idx = 0
+  foreach (set in ruleSets) {
+    if (!(set instanceof Table) || set.len() == 0)
+      continue
+    list.append($"r{idx}")
+    idx++
+    list.append("{")
+    foreach (from, to in set)
+      list.append($"objTexReplace:t={from};objTexReplace:t={to};")
+    list.append("}")
+  }
+  return "".join(list)
 }
 
 function getTexSetString(item) {
@@ -15,7 +25,7 @@ function getTexSetString(item) {
   if (objTexSet == null)
     return ""
 
-  let ruleSets = type(objTexSet) == "array" ? objTexSet : [objTexSet]
+  let ruleSets = objTexSet instanceof Array ? objTexSet : [objTexSet]
   let list = []
   foreach (idx, set in ruleSets) {
     list.append($"r{idx}")

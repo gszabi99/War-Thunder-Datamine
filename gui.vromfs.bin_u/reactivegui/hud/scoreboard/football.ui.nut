@@ -1,20 +1,19 @@
+import "%rGui/style/teamColors.nut" as teamColors
+from "%rGui/missionState.nut" import localTeam, scoreTeamA, scoreTeamB, roundTimeLeft
+from "%sqstd/time.nut" import secondsToTimeSimpleString
 from "%rGui/globals/ui_library.nut" import *
 
-let { localTeam, scoreTeamA, scoreTeamB, roundTimeLeft } = require("%rGui/missionState.nut")
-let teamColors = require("%rGui/style/teamColors.nut")
-let { secondsToTimeSimpleString } = require("%sqstd/time.nut")
+const teamHeight  = hdpx(36)
+const stripWidth  = hdpx(6)
+const teamWidth   = hdpx(64)
+const scoreBlockW = hdpx(100)
+const timeHeight  = hdpx(20)
+const blockW      = stripWidth + teamWidth
 
-let teamHeight  = hdpx(36)
-let stripWidth  = hdpx(6)
-let teamWidth   = hdpx(64)
-let scoreBlockW = hdpx(100)
-let timeHeight  = hdpx(20)
-let blockW      = stripWidth + teamWidth
-
-let bgPanelColor  = 0x99242428
-let bgScoreColor  = 0x992E2E32
-let bgTimeColor   = 0x77242428
-let timeTextColor = 0xDCD7B441
+const bgPanelColor  = 0x99242428
+const bgScoreColor  = 0x992E2E32
+const bgTimeColor   = 0x77242428
+const timeTextColor = 0xDCD7B441
 
 
 let localTeamLabel = Computed(@() localTeam.get() == 1 ? "TIG" : "DRA")
@@ -25,7 +24,7 @@ let enemyTeamScore = Computed(@() localTeam.get() == 2 ? scoreTeamA.get() : scor
 
 let mkStrip = @(colorKey) @() {
   watch = teamColors
-  size = [stripWidth, FLEX]
+  size = const [stripWidth, FLEX]
   rendObj = ROBJ_SOLID
   color = teamColors.get()[colorKey]
 }
@@ -33,7 +32,7 @@ let mkStrip = @(colorKey) @() {
 function mkTeamBlock(labelWatch, colorKey, isLocal) {
   let strip = mkStrip(colorKey)
   let labelArea = {
-    size = [teamWidth, FLEX]
+    size = const [teamWidth, FLEX]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     children = [
@@ -54,7 +53,7 @@ function mkTeamBlock(labelWatch, colorKey, isLocal) {
     ]
   }
   return {
-    size = [blockW, FLEX]
+    size = const [blockW, FLEX]
     rendObj = ROBJ_SOLID
     color = bgPanelColor
     clipChildren = true
@@ -68,7 +67,7 @@ function mkTeamBlock(labelWatch, colorKey, isLocal) {
 }
 
 let scoreDisplay = {
-  size = [scoreBlockW, FLEX]
+  size = const [scoreBlockW, FLEX]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_SOLID
@@ -83,7 +82,7 @@ let scoreDisplay = {
 }
 
 let timeBadge = {
-  size = [FLEX, timeHeight]
+  size = const [FLEX, timeHeight]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
   rendObj = ROBJ_SOLID
@@ -99,7 +98,7 @@ let timeBadge = {
 
 let mainBar = {
   flow = FLOW_HORIZONTAL
-  size = [SIZE_TO_CONTENT, teamHeight]
+  size = const [SIZE_TO_CONTENT, teamHeight]
   children = [
     mkTeamBlock(localTeamLabel, "teamBlueColor", true)
     scoreDisplay

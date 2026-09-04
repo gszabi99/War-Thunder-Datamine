@@ -1,44 +1,42 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "math" import abs, floor
+from "dagor.math" import Point2
+from "%sqstd/string.nut" import cutPrefix
+from "guiMission" import get_meta_mission_info_by_name
+from "chard" import get_charserver_time_sec
+from "worldwar" import wwGetOperationId, wwGetPlayerSide, wwGetZoneName, wwGetSpeedupFactor
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world, ww_side_name_to_val, ww_battle_status_name_to_val
+from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 from "%scripts/squads/squadsConsts.nut" import *
-from "%scripts/mainConsts.nut" import COLOR_TAG
+from "%scripts/utils/systemMsg.nut" import COLOR_TAG
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { abs, floor } = require("math")
-let { Point2 } = require("dagor.math")
+let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let time = require("%scripts/time.nut")
 let systemMsg = require("%scripts/utils/systemMsg.nut")
 let wwQueuesData = require("%scripts/worldWar/operations/model/wwQueuesData.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationUnitsGroups.nut")
-let { getCurPreset, getBestAvailableUnitByGroup,
-  getWarningTextTbl } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
+let { getCurPreset, getBestAvailableUnitByGroup, getWarningTextTbl } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let DataBlock  = require("DataBlock")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { get_meta_mission_info_by_name } = require("guiMission")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { get_charserver_time_sec } = require("chard")
-let { wwGetOperationId, wwGetPlayerSide, wwGetZoneName, wwGetSpeedupFactor } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwBattleJoinProcess } = require("%scripts/worldWar/worldWarBattleJoinProcess.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
-let { canJoinByMySquad, getMemberStatusLocId, getSquadMembersAvailableUnitsCheckingData
-} = require("%scripts/squads/squadUtils.nut")
+let { canJoinByMySquad, getMemberStatusLocId, getSquadMembersAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
 let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { getAllOperationUnitsBySide } = require("%scripts/worldWar/inOperation/wwOperations.nut")
-let { getOppositeSide, getOperationTimeSec
-} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { getOppositeSide, getOperationTimeSec } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { registerWwBattleClass } = require("%scripts/worldWar/worldWarState.nut")
 
 
@@ -59,7 +57,7 @@ const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
 
 function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex = 0) {
-  if (availableUnitsArrays.len() >= availableUnitsArrayIndex)
+  if (availableUnitsArrayIndex >= availableUnitsArrays.len())
     return true
 
   let units = availableUnitsArrays[availableUnitsArrayIndex]
@@ -68,7 +66,7 @@ function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsA
       continue
 
     controlUnits[name]--
-    if (checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex++))
+    if (checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex + 1))
       return true
 
     controlUnits[name]++

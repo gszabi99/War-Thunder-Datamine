@@ -19,7 +19,7 @@ require soundEvent
 require soundSystem
 require sound_utils.modules.sound_player_common
 require sound_utils.modules.sound_physmat_common
-
+require sound_utils.modules.sound_trace_common
 
 
 let INVALID_IRQ_OBJ_IDX = -1
@@ -33,8 +33,9 @@ def read_state(state_flag : StateFlag; states : int) : bool
   return (states & int(state_flag)) != 0
 
 
+
 def trace_footstep(human_eid : EntityId;
-                   pos, up : float3;
+                   pos, human_up : float3;
                    trace_offset_len : float2;
                    cur_biome_id : int;
                    puddle_depth : float;
@@ -42,57 +43,33 @@ def trace_footstep(human_eid : EntityId;
                    var step_water_depth : float&;
                    var human_net_phys : HumanActor? = null)
 
-  let mayTraceDown = up.y > 0.9
-  let traceDir = mayTraceDown ? float3(0., -1., 0.) : -normalize(up)
-  let flags = ETF_LMESH | ETF_HEIGHTMAP | ETF_FRT | ETF_RI | ETF_STRUCTURES
-  let from = pos - traceDir * trace_offset_len.x
+  var traceLen = trace_offset_len.y
+  var floorIsDown = false
+  var pmid = PHYSMAT_INVALID;
+  var dirToFloor : float3
+  var traceHandle = human_net_phys != null ? ((*human_net_phys).phys |> human_phys_getTraceHandle()) : null
 
-  var len = trace_offset_len.y
-  var pmid = PHYSMAT_INVALID
-  var norm : float3
+  trace_floor(pos, human_up, trace_offset_len.x, traceLen, pmid, dirToFloor, floorIsDown, traceHandle)
 
-  if mayTraceDown
-    if !tracedown_normalized(from, len, pmid, flags, human_net_phys != null ? ((*human_net_phys).phys |> human_phys_getTraceHandle()) : null)
-      len = trace_offset_len.y
-      pmid = PHYSMAT_INVALID
-  else
-    var riDesc = RendInstDesc()
-    if !traceray_normalized(from, traceDir, len, pmid, norm, flags, riDesc, -1)
-      len = trace_offset_len.y
-      pmid = PHYSMAT_INVALID
+  trace_vehicles(human_eid, pos, dirToFloor, trace_offset_len.x, traceLen, pmid)
 
-  trace_entities_in_grid(ecs_hash("vehicles"), from, traceDir, len, human_eid, SortIntersections.NO) <| $(intersections : array<IntersectedEntity>#)
-    for it in intersections
-      if it.t < len + FLT_EPSILON
-        len = it.t
-        pmid = PHYSMAT_INVALID
-        query(it.eid) <| $ [es] (material : string)
-          pmid = get_material_id(material)
-        if pmid == PHYSMAT_INVALID
-          pmid = get_material_id("steel")
-
-  var onLandMesh = false
   var curBiomeSoundId = -1
   var curBiomeOverridesWater = false
 
   step_water_depth = 0.
 
-  if mayTraceDown
-    let pos2d = pos.xz
-    let intersection = from + traceDir * len
-    let landMesh2dLevel = traceht_lmesh(pos2d)
-
+  if floorIsDown
     var waterLevel = 0.
     if traceht_water(pos, waterLevel)
       step_water_depth = max(0., waterLevel - pos.y)
 
-    onLandMesh = landMesh2dLevel + 0.01 > intersection.y
-    if onLandMesh
-      step_water_depth = max(step_water_depth, puddle_depth)
-
-    if onLandMesh && cur_biome_id >= 0
-      query() <| $ [es(REQUIRE=soundStepSettings)] (landmesh_biomes_to_sound_material__biomeIdToSound : IPoint2List)
-        if cur_biome_id < length(landmesh_biomes_to_sound_material__biomeIdToSound)
+    query() <| $ [es(REQUIRE=soundStepSettings)] (sound_step_settings__maxDistToFloor : float; landmesh_biomes_to_sound_material__biomeIdToSound : IPoint2List)
+      var inOnFloorTraceLen = sound_step_settings__maxDistToFloor
+      var inOnFloorPMID = PHYSMAT_INVALID
+      
+      if trace_floor(pos, 0.3, inOnFloorTraceLen, inOnFloorPMID, dirToFloor, floorIsDown, traceHandle, get_trace_flags_for_biome_and_puddle_queries())
+        step_water_depth = max(step_water_depth, puddle_depth)
+        if cur_biome_id >= 0 && cur_biome_id < length(landmesh_biomes_to_sound_material__biomeIdToSound)
           curBiomeSoundId = landmesh_biomes_to_sound_material__biomeIdToSound[cur_biome_id].x
           curBiomeOverridesWater = landmesh_biomes_to_sound_material__biomeIdToSound[cur_biome_id].y != 0
 
@@ -112,8 +89,9 @@ def trace_footstep(human_eid : EntityId;
 
 
 
-def private raise_pos_above_collision(pos, up : float3) 
-  return pos + up * 0.5
+def private raise_pos_above_collision(stand_state : HUStandState; pos, up : float3) 
+  let offset = (stand_state == HUStandState.ESS_STAND) ? 1. : 0.5
+  return pos + up * offset
 
 
 def play_footstep(desc : Object;
@@ -122,7 +100,7 @@ def play_footstep(desc : Object;
                   volume : float;
 
                   human_eid : EntityId;
-                  pos, up : float3;
+                  pos, human_up : float3;
                   should_trace_enemy : bool;
                   is_watched_sound : bool;
                   trace_offset_len : float2;
@@ -132,9 +110,10 @@ def play_footstep(desc : Object;
                   var step_water_depth : float&;
                   var human_net_phys : HumanActor?;
                   prefix : string = "";
-                  abandon_handle = true)
+                  abandon_handle = true;
+                  stand_state = HUStandState.ESS_STAND)
 
-  let normalizedUp = normalize(up)
+  let normalizedUp = normalize(human_up)
 
   if human_net_phys == null 
     step_material_id = get_sound_step_material_id(get_material_id("default"))
@@ -153,10 +132,10 @@ def play_footstep(desc : Object;
 
   if step_material_id >= 0
     var pathStr : string
-    if sound_player_common::get_option_path(path, sound_tags, is_watched_sound, pathStr)
-      let offsetedPos = raise_pos_above_collision(pos, normalizedUp)
+    if get_option_path(path, sound_tags, is_watched_sound, pathStr)
+      let raisedPos = raise_pos_above_collision(stand_state, pos, normalizedUp)
       let soundPath = apply_watched_prefix(pathStr, is_watched_sound)
-      var handle = sound_player_common::play_desc_path(desc, "{prefix}{soundPath}", is_watched_sound, offsetedPos, false)
+      var handle = play_desc_path(desc, "{prefix}{soundPath}", is_watched_sound, raisedPos, false)
       if step_water_depth > 0.
         set_var(handle, "depth", step_water_depth)
       if read_sound_tag("armored", sound_tags)

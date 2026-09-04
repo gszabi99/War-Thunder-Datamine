@@ -4,7 +4,6 @@ require AnimV20
 require PhysMat
 require Unit
 require app
-require DngHuman
 require DagorSystem
 require %appGame.wt_events
 require %appGame.infantry.es.team_common

@@ -1,3 +1,5 @@
+module helpers_common shared
+
 require DagorMath
 require math
 

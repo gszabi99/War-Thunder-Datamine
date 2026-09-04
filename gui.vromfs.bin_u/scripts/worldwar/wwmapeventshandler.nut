@@ -1,12 +1,14 @@
+from "%appGlobals/wwObjectsUnderCursor.nut" import mapCellUnderCursor
+from "worldwar" import wwFindLastFlewOutArmyNameByAirfield, wwIsCellGenerallyPassable
+from "eventbus" import eventbus_send
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { WwBattleDescription } = require("%scripts/worldWar/handler/wwBattleDescription.nut")
+let { WwAirfieldFlyOut } = require("%scripts/worldWar/handler/wwAirfieldFlyOut.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { mapObjectSelect } = require("%scripts/worldWar/worldWarConst.nut")
-let { wwFindLastFlewOutArmyNameByAirfield, wwIsCellGenerallyPassable } = require("worldwar")
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { eventbus_send } = require("eventbus")
-let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { getBattleById } = require("%scripts/worldWar/worldWarState.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -37,7 +39,7 @@ function selectRearZone(params) {
 function selectBattle(params) {
   let battle = getBattleById(params?.battleName)
   if(battle.isValid())
-    gui_handlers.WwBattleDescription.open(battle)
+    WwBattleDescription.open(battle)
 }
 
 function hoverArmy(params) {
@@ -77,7 +79,7 @@ function sendAircraft(params) {
   }
 
   if (wwIsCellGenerallyPassable(cellIdx))
-    gui_handlers.WwAirfieldFlyOut.open(
+    WwAirfieldFlyOut.open(
       airfieldIdx, pos, armyTargetName, cellIdx, Callback(checkFlewOutArmy, this))
   else
     addPopup("", loc("worldwar/charError/MOVE_REJECTED"),

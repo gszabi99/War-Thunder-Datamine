@@ -1,10 +1,12 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
+from "%sqstd/string.nut" import utf8ToLower
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let DataBlock = require("DataBlock")
-let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { utf8ToLower} = require("%sqstd/string.nut")
+let { GAME_LOCALIZATION_CHANGED } = require("%scripts/crossModuleEvents.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
@@ -126,7 +128,7 @@ function invalidateCache(_) {
 
 addListenersWithoutEnv({
   ProfileUpdated = invalidateCache,
-  GameLocalizationChanged = @(_) profileHeaderBackgrounds = null
+  [GAME_LOCALIZATION_CHANGED] = @(_) profileHeaderBackgrounds = null
 }, CONFIG_VALIDATION)
 
 return {

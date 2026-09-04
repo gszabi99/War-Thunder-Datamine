@@ -1,14 +1,16 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "string" import format
+from "steam" import steam_is_running
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import yuplay2_get_payment_methods, yuplay2_buy_entitlement, update_entitlements
 from "%scripts/dagui_library.nut" import *
+
 let { showGuestEmailRegistration, needShowGuestEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
-let { format } = require("string")
-let { steam_is_running } = require("steam")
 let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
 let { getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
 let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 let payMethodsCfg = [
   

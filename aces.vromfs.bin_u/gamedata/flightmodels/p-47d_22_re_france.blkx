@@ -1,7 +1,7 @@
 {
   "model": "p_47d_22_re",
   "fmFile": "fm/p-47d_22_re.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_radial_big_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.139,
   "gearSinkRangeC": 0.076,
@@ -2296,6 +2296,9 @@
     ]
   },
   "commonWeapons": {
+    "hideDmParts": {
+      "node": "armor1_dm"
+    },
     "Weapon": [
       {
         "trigger": "machine gun",
@@ -2389,10 +2392,7 @@
         "spread": 1.2,
         "traceOffset": 3
       }
-    ],
-    "hideDmParts": {
-      "node": "armor4_dm"
-    }
+    ]
   },
   "weapon_presets": {
     "preset": [

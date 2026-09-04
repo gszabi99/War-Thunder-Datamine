@@ -1,15 +1,16 @@
-from "%scripts/dagui_natives.nut" import wp_get_cost_gold2, wp_get_cost2, get_spare_aircrafts_count, wp_get_modification_cost, wp_get_weapon_max_count, wp_get_modification_open_cost_gold, shop_is_weapon_purchased, shop_get_spawn_score, wp_get_spare_cost_gold, wp_get_spare_cost, wp_get_modification_max_count, wp_get_modification_cost_gold
+from "%sqStdLibs/helpers/u.nut" import isEmpty
+from "chardResearch" import shopIsModificationPurchased
+from "%scripts/dagui_natives.nut" import wp_get_cost_gold2, wp_get_cost2, get_spare_aircrafts_count, wp_get_modification_cost, wp_get_weapon_max_count, wp_get_modification_open_cost_gold, shop_is_weapon_purchased
+  , shop_get_spawn_score, wp_get_spare_cost_gold, wp_get_spare_cost, wp_get_modification_max_count, wp_get_modification_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, MAX_SPARE_AMOUNT
 
 let { Cost } = require("%scripts/money.nut")
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationName, getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getByCurBundle } = require("%scripts/weaponry/itemInfo.nut")
 let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { addEnumWeaponryTypes, getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
@@ -36,15 +37,10 @@ function getAmountImpl(unit, item) {
 }
 
 addEnumWeaponryTypes({
-  UNKNOWN = {}
-
 
   WEAPON = {
     type = weaponsItem.weapon
     getLocName = @ (unit, item, _limitedName = false) getWeaponNameText(unit, false, item.name, ",  ")
-    getHeader = @(unit) (unit.isAir() || unit.isHelicopter()) ? loc("options/secondary_weapons")
-      : unit.isHuman() ? loc("options/infantry_presets")
-      : loc("options/additional_weapons")
     getCost = function(unit, item) {
       return Cost(
         wp_get_cost2(unit.name, item.name),
@@ -57,13 +53,13 @@ addEnumWeaponryTypes({
 
     getScoreCostText = function(unit, item, needToShowFullCost) {
       let lastBullets = getUnitLastBullets(unit)
-      let fullCost = shop_get_spawn_score(unit.name, item.name, lastBullets, true, true)
+      let fullCost = shop_get_spawn_score(unit.name, item.name, lastBullets)
       if (!fullCost)
         return ""
 
       local cost = fullCost
       if (!needToShowFullCost) {
-        let emptyCost = shop_get_spawn_score(unit.name, item.name, lastBullets, false, true)
+        let emptyCost = shop_get_spawn_score(unit.name, item.name, lastBullets, { addWeaponMul = false, addBulletMul = true })
         cost = fullCost - emptyCost
         if (!cost)
           return ""
@@ -112,7 +108,7 @@ addEnumWeaponryTypes({
         bulletsForCalculation.remove(weaponInSetIndex)
       bulletsForCalculation.append({name = item.name, weapon = weaponName})
 
-      let fullCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), bulletsForCalculation, true, true)
+      let fullCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), bulletsForCalculation)
       if (!fullCost)
         return ""
 
@@ -121,7 +117,7 @@ addEnumWeaponryTypes({
         let curIndex = bulletsForCalculation.map(@(v) v.weapon).indexof(weaponName)
         if (curIndex != null)
           bulletsForCalculation.remove(curIndex)
-        let withoutCurrentCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), bulletsForCalculation, true, true)
+        let withoutCurrentCost = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), bulletsForCalculation)
         cost = fullCost - withoutCurrentCost
         if (cost <= 0)
           return ""

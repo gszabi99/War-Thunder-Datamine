@@ -1,28 +1,30 @@
+from "scriptRespondent" import registerRespondent
 from "%scripts/dagui_library.nut" import *
+from "types" import Table
+
 let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
-let { registerRespondent } = require("scriptRespondent")
 
-let web_rpc = {
-  handlers = {}
+let handlers = {}
 
-  function register_handler(func_name, handler) {
-    this.handlers[func_name] <- handler
-  }
+function webRpcRegister(name, handler) {
+  if (name in handlers)
+    logerr($"Duplicate webRpc action {name}")
+  handlers[name] <- handler
+}
 
-  function handle_web_rpc_unsafe(call) {
-    let func = call["func"]
-    if (!(func in this.handlers))
-      return "RPC method not found"
+function handleUnsafe(call) {
+  let func = call["func"]
+  if (func not in handlers)
+    return "RPC method not found"
 
-    log($"called RPC function {func}")
-    debugTableData(call)
-    return this.handlers[func](call["params"])
-  }
+  log($"called RPC function {func}")
+  debugTableData(call)
+  return handlers[func](call["params"])
 }
 
 function handleWebRpc(call) {
   try {
-    return web_rpc.handle_web_rpc_unsafe(call)
+    return handleUnsafe(call)
   }
   catch (e) {
     log($"web rpc failed: {e}")
@@ -35,17 +37,12 @@ registerRespondent("handle_web_rpc", handleWebRpc)
 mnSubscribe("web-service", handleWebRpc)
 mrSubscribe("web-service", function(params, cb) {
   let res = handleWebRpc(params)
-  if (type(res) == "table")
+  if (res instanceof Table)
     cb(res)
   else
     cb({ result = res })
 })
 
-
-
-
-
-
-
-
-return {web_rpc}
+return {
+  webRpcRegister
+}

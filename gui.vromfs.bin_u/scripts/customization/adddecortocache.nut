@@ -1,11 +1,10 @@
+from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "%scripts/dagui_library.nut" import *
 
 let { waitingItemdefs } = require("%scripts/customization/decoratorCache.nut")
 
-let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
-let { getDecorTypeBlk, needCacheDecorTypeByCategories
-} = require("%scripts/customization/decoratorTypeUtils.nut")
+let { getDecorTypeBlk, needCacheDecorTypeByCategories } = require("%scripts/customization/decoratorTypeUtils.nut")
 let { Decorator } = require("%scripts/customization/decorator.nut")
 
 function getSingleDecor(decorId, decType) {
@@ -35,7 +34,7 @@ function cacheDecor(decType, unitTypeTag) {
   if (isEmpty(blk))
     return curCache
 
-  let prevCategory = ""
+  const prevCategory = ""
   let numDecors = blk.blockCount()
   for (local i = 0; i < numDecors; ++i) {
     let dblk = blk.getBlock(i)

@@ -1,36 +1,42 @@
+import "regexp2" as regexp2
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "%sqstd/string.nut" import clearBorderSymbols
+from "%sqstd/math.nut" import round_by_value
+from "unitCustomization" import set_weapon_visual_custom_blk
+from "%sqstd/datablock.nut" import eachParam
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let regexp2 = require("regexp2")
-let DataBlock = require("DataBlock")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
-} = require("%scripts/weaponry/weaponryPresetsParams.nut")
+let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk, getWeaponLocByTrigger, convertTriggerToTriggerForLoc } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { openPopupTreeList } = require("%scripts/popups/popupTreeList.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { addCustomPreset, isPresetChanged, convertPresetToBlk
-} = require("%scripts/unit/unitWeaponryCustomPresets.nut")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { round_by_value } = require("%sqstd/math.nut")
+let { addCustomPreset, isPresetChanged, convertPresetToBlk } = require("%scripts/unit/unitWeaponryCustomPresets.nut")
 let validatePresetNameRegexp = regexp2(@"^|[;|\\<>]")
 let validatePresetName = @(v) validatePresetNameRegexp.replace("", v)
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
-let { set_weapon_visual_custom_blk } = require("unitCustomization")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { eachParam } = require("%sqstd/datablock.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getChildInContainers } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 
 const MASS_KG_PRESIZE = 0.1
+
+const WEAPON_CHAPTERS_ORDER = [
+  "bombs", "guided_bombs", "torpedoes",
+  "rockets", "atgm", "aam",
+  "countermeasures",
+  "additional_guns",
+  "targetingPod", "fuel_tanks"
+]
 
 local closedBranchesCache = {}
 const EDIT_PRESET_CLOSED_BRANCHES_SAVE_ID = "editPresetsClosedBranches"
@@ -85,7 +91,7 @@ function calcWeaponWeight(weapon, tierId) {
   return additionalMassKg + (amountPerTier * massKg) + (addWeaponryAmountPerTier * addWeaponryMassKg)
 }
 
-let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
+class EditWeaponryPresetsModal (BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL
   sceneTplName         = "%gui/weaponry/editWeaponryPresetModal.tpl"
   unit                 = null
@@ -142,6 +148,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
       foreach (weapon in triggers)
         foreach (id, inst in weapon.weaponBlocks)
           res.append(inst.__merge({ id = id, tType = inst?.editPresetChapter ?? weapon.trigger }))
+    res.sort(@(a, b) a.id <=> b.id)
     return res
   }
 
@@ -226,6 +233,10 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
         branch.branches.append(button)
       }
     }
+
+    let chapterIdx = @(branch) WEAPON_CHAPTERS_ORDER.indexof(branch.branchName)
+      ?? WEAPON_CHAPTERS_ORDER.len()  
+    branchesList.sort(@(a, b) chapterIdx(a) <=> chapterIdx(b) || a.branchLocName <=> b.branchLocName)
 
     if (curTier != null)
       branchesList.append({
@@ -404,7 +415,7 @@ addListenersWithoutEnv({
   SignOut = @(_p) clearCache()
 })
 
-gui_handlers.EditWeaponryPresetsModal <- EditWeaponryPresetsModal
+register_gui_handler("EditWeaponryPresetsModal", EditWeaponryPresetsModal)
 
 let openEditWeaponryPreset = @(params) handlersManager.loadHandler(EditWeaponryPresetsModal, params)
 

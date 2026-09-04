@@ -1,8 +1,14 @@
 import "gdk.presence" as pres
 from "eventbus" import eventbus_subscribe, eventbus_subscribe_onehit
 
+local nextEventId = 0
+function mkEventName(baseName): string {
+  nextEventId++
+  return $"{baseName}_{nextEventId}"
+}
+
 function set_presence(presence, callback) {
-  let eventName = "xbox_set_presence"
+  let eventName = mkEventName("xbox_set_presence")
   eventbus_subscribe_onehit(eventName, function(result) {
     let success = result?.success
     callback?(success)

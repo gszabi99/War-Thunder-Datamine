@@ -2,7 +2,6 @@ require darg
 require DagorStdGuiRender
 require math
 require DagorMath
-require DagorSystem
 require RadarHud
 require %rGui.utils.radar_common
 require strings

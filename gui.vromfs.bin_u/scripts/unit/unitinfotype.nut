@@ -1,32 +1,31 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial, EDIFF_SHIFT
+from "%sqStdLibs/helpers/enums.nut" import enumsAddTypes
+from "string" import format
+from "%sqstd/datablock.nut" import eachBlock, blkOptFromPath
+from "%sqstd/math.nut" import PI, round, roundToDigits
+from "blkGetters" import get_wpcost_blk, get_warpoints_blk, get_ranks_blk, get_unittags_blk
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
-from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT
+from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT, getWeaponBlkParams
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
-let { format } = require("string")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
-let { PI, round, roundToDigits } = require("%sqstd/math.nut")
-let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco, getCharacteristicActualValue
-} = require("%scripts/unit/unitInfoTexts.nut")
-let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor
-} = require("%scripts/unit/unitInfoRoles.nut")
+let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco, getCharacteristicActualValue } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { isBullets, getModificationInfo, getModificationName, BULLET_TYPE,
-  isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
+let { isBullets, getModificationInfo, getModificationName, BULLET_TYPE, isAntiRadarGuidance } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { image_for_air, getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
-let { get_wpcost_blk, get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { measureType } = require("%scripts/measureType.nut")
 let { dataToBlk } = require("%scripts/utils/datablockConverter.nut")
 
@@ -198,6 +197,23 @@ function createWeaponData (weaponDataBlk, debugLog = null) {
     return null
   }
   return paramsTable.__update({ type = weaponType })
+}
+
+function getWeaponIdByBlkPath(unitName, blkPath) {
+  return getWeaponNameByBlkPath(getWeaponBlkParams(unitName, blkPath).weaponBlkPath)
+}
+
+function getPresetPrimaryWeaponId(unitName, preset) {
+  foreach (weapon in (preset % TAG_WEAPON)) {
+    let weaponBlk = weapon?.blk
+    if (weaponBlk == null)
+      continue
+    let weaponDataBlk = blkOptFromPath(weaponBlk)
+    if (!createWeaponData(weaponDataBlk))
+      continue
+    return getWeaponIdByBlkPath(unitName, weaponBlk)
+  }
+  return ""
 }
 
 function aggregatePurposeType(typesSet) {
@@ -382,14 +398,28 @@ function processWeaponPresets(unitName, debugLog = null) {
     local purposeType = "AIR_TO_GROUND"
 
     if (hasSlotBasedWeapons) {
+      let wsSlots = unitBlk?.WeaponSlots ? (unitBlk.WeaponSlots % TAG_WEAPON_SLOT) : []
       slots = array(slotsCount + 1, null)
       foreach (weapon in weapons) {
         let weaponSlot = weapon?.slot
         if (weaponSlot == null)
           continue
 
-        debugLog?($" {weaponSlot} - {weapon.preset}")
-        slots[weaponSlot] = {presetName = weapon?.preset ?? "", amountPerTier = 1}
+        let presetName = weapon?.preset ?? ""
+        let slotBlk = wsSlots.findvalue(@(s) s?.index == weaponSlot)
+        if (slotBlk == null) {
+          logerr($"[WeaponSlots] Unit {unitName}: WeaponSlot index {weaponSlot} does not exist")
+          continue
+        }
+        let curPreset = (slotBlk % TAG_WEAPON_PRESET).findvalue(@(p) p?.name == presetName)
+        if (curPreset == null) {
+          logerr($"[WeaponSlots] Unit {unitName}, preset {presetName}: WeaponPreset does not exist")
+          continue
+        }
+        let weaponId = getPresetPrimaryWeaponId(unitName, curPreset)
+
+        debugLog?($" {weaponSlot} - {weapon.preset}  weaponId: {weaponId}")
+        slots[weaponSlot] = {presetName = presetName, amountPerTier = 1, weaponId = weaponId}
       }
     } else {
       isOld = true
@@ -410,7 +440,7 @@ function processWeaponPresets(unitName, debugLog = null) {
         if (!weaponData)
           continue
 
-        airWeapons.append(weaponData.__update({ blk = weaponBlk }))
+        airWeapons.append(weaponData.__update({ blk = weaponBlk, weaponId = getWeaponIdByBlkPath(unitName, weaponBlk) }))
       }
 
       purposeType = getWeaponPurposeType(airWeapons)
@@ -500,7 +530,7 @@ function processWeaponPresets(unitName, debugLog = null) {
         symmetricWeaponArrange(slots)
 
         foreach (slotIndex, slot in slots) {
-          let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}" : "Empty"
+          let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}, weaponId: {slot.weapon?.weaponId ?? ""}" : "Empty"
           debugLog?($"  Slot {slotIndex}: {weaponInfo}")
         }
       } else {
@@ -587,7 +617,7 @@ function processWeaponPresets(unitName, debugLog = null) {
         symmetricWeaponArrange(slots)
 
         foreach (slotIndex, slot in slots) {
-          let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}" : "Empty"
+          let weaponInfo = slot ? $"Type: {slot.weapon.type}, Mass: {slot.weapon.mass}kg, AmountPerTier: {slot.amountPerTier}, weaponId: {slot.weapon?.weaponId ?? ""}" : "Empty"
           debugLog?($"  Slot {slotIndex}: {weaponInfo}")
         }
       }
@@ -649,6 +679,7 @@ function processWeaponPilons(unitName, debugLog = null) {
       if (!(preset.name in presetTypes))
         presetTypes[preset.name] <- []
 
+      let primaryWeaponId = getPresetPrimaryWeaponId(unitName, preset)
       foreach (weapon in weapons) {
         let weaponBlk = weapon?.blk
         if (weaponBlk == null)
@@ -676,11 +707,13 @@ function processWeaponPilons(unitName, debugLog = null) {
       }
 
       debugLog?($"    Total weapons: {presetWeapons.len()}")
+      debugLog?($"    iconType: {preset?.iconType ?? ""}  weaponId: {primaryWeaponId}")
       slotPresets.append({
         name = preset.name
         reqModification = preset?.reqModification ?? ""
         weapons = presetWeapons
         iconType = preset?.iconType ?? ""
+        weaponId = primaryWeaponId
       })
     }
 
@@ -1004,7 +1037,7 @@ enumsAddTypes(g_unit_info_type, [
         blk.hide = true
         return
       }
-      let value = getTblValue("freeRepairs", unit)
+      let value = unit?.freeRepairs
       let valueText = toString(value)
       blk.value = DataBlock()
       blk.valueText = DataBlock()

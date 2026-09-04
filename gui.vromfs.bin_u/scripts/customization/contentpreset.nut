@@ -1,18 +1,16 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/login/loginState.nut" import isLoggedIn
+from "%sqstd/datablock.nut" import eachBlock
+from "guiOptions" import set_gui_option
 from "%scripts/dagui_natives.nut" import get_ugc_blk, get_preset_by_skin_tags
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
-from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY,
-  USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC,
-  USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, USEROPT_CONTENT_ALLOWED_PRESET
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CONTENT_ALLOWED_PRESET_ARCADE, USEROPT_CONTENT_ALLOWED_PRESET_REALISTIC, USEROPT_CONTENT_ALLOWED_PRESET_SIMULATOR, USEROPT_CONTENT_ALLOWED_PRESET
+from "types" import Array
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { set_gui_option } = require("guiOptions")
 let { get_option, registerOption } = require("%scripts/options/optionsExt.nut")
 
 let contentPresets = []
@@ -96,7 +94,7 @@ function fillContentAllowedPreset(optionId, descr, _context) {
 
 function setContentAllowedPreset(value, descr, optionId) {
   if (descr.controlType == optionControlType.LIST) {
-    if (type(descr.values) != "array")
+    if (!(descr.values instanceof Array))
       return
     if (value < 0 || value >= descr.values.len())
       return

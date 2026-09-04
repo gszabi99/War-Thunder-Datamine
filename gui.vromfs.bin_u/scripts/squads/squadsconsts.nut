@@ -27,12 +27,21 @@ enum squadState {
   LEAVING
 }
 
+enum squadStatusUpdateState {
+  NONE
+  MENU
+  BATTLE
+}
+
 
 const SQUADS_VERSION = 2
+const SQUAD_REQEST_TIMEOUT = 45000
 
 return {
   squadMemberState
   memberStatus
   squadState
+  squadStatusUpdateState
   SQUADS_VERSION
+  SQUAD_REQEST_TIMEOUT
 }

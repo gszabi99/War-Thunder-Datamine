@@ -1,7 +1,7 @@
+from "%sqstd/platform.nut" import isPC
 from "%scripts/dagui_natives.nut" import gchat_is_voice_enabled
 from "%scripts/dagui_library.nut" import *
 
-let { isPC } = require("%sqstd/platform.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")

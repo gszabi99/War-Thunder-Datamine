@@ -1,6 +1,6 @@
+import "inventory" as inventory
+from "%sqstd/platform.nut" import is_xbox
 from "%scripts/dagui_library.nut" import *
-let inventory = require("inventory")
-let { is_xbox } = require("%sqstd/platform.nut")
 
 let keys = [
 @"

@@ -1,7 +1,7 @@
 {
   "model": "mig_23m",
   "fmFile": "fm/mig_23m.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/2x_engine_bomber_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "gearSinkRangeLR": 0.274,
   "gearSinkRangeC": 0.333,
   "jetEnginePowerFullScale": true,
@@ -2780,6 +2780,7 @@
             "AN/APG-67",
             "AN/APG-76 / AN/ASX-1",
             "AN/APG-79",
+            "AN/APG-83",
             "Thales RDY",
             "N019",
             "N001",
@@ -2957,16 +2958,24 @@
         "blk": "gameData/FlightModels/weaponPresets/mig_23m_bomb_fab500m_62.blk"
       },
       {
+        "name": "mig_23m_bomb_ofab250sh",
+        "blk": "gameData/FlightModels/weaponPresets/mig_23m_bomb_ofab250sh.blk"
+      },
+      {
+        "name": "mig_23m_bomb_fab500sh",
+        "blk": "gameData/FlightModels/weaponPresets/mig_23m_bomb_fab500sh.blk"
+      },
+      {
         "name": "mig_23m_fire_bomb_zb_500",
         "blk": "gameData/FlightModels/weaponPresets/mig_23m_fire_bomb_zb_500.blk"
       }
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 2000.0,
-    "maxloadMassLeftConsoles": 510.0,
-    "maxloadMassRightConsoles": 510.0,
-    "maxDisbalance": 510.0,
+    "maxloadMass": 2100.0,
+    "maxloadMassLeftConsoles": 525.0,
+    "maxloadMassRightConsoles": 525.0,
+    "maxDisbalance": 250.0,
     "HideNodes": {
       "node": [
         "pylon_1",
@@ -3090,6 +3099,25 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_group",
+            "name": "r_60m_x2_l",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": "pylon_3"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/p_62_2_l_r_60m_x2.blk",
+              "emitter": "apu_60m_2_l1",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 2,
+              "preset": "r_60m_x2_l"
             }
           },
           {
@@ -3281,6 +3309,25 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab250_003",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "fab_500m_62t",
             "reqModification": "mi_24_fab_500",
@@ -3297,6 +3344,48 @@
               "bullets": 1,
               "external": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
+              "emitter": "fab_500m_62_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "zb_500",
+            "reqModification": "zb_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab_500m_62_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb"
             }
           }
         ]
@@ -3328,6 +3417,25 @@
             }
           },
           {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r_60m",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "apu_60m_001"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "emitter": "apu_60m_r_60_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_group",
             "name": "r_60m_x2_l",
             "reqModification": "mi_24_r_60m",
@@ -3340,6 +3448,10 @@
               "emitter": "apu_60m_2_l2",
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 1,
+              "preset": "r_60m_x2_l"
             }
           },
           {
@@ -3437,6 +3549,63 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab250_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "fab_500m_62t",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk",
+              "emitter": "fab250_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
+              "emitter": "fab250_001",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "napalm_large",
             "name": "zb_500",
             "reqModification": "zb_500",
@@ -3487,11 +3656,67 @@
             "BannedWeaponPreset": [
               {
                 "slot": 2,
+                "preset": "r_60m_x2_l"
+              },
+              {
+                "slot": 2,
                 "preset": "ofab100_120_slot2"
+              },
+              {
+                "slot": 2,
+                "preset": "fab_250m_62"
+              },
+              {
+                "slot": 2,
+                "preset": "ofab_250sh"
+              },
+              {
+                "slot": 2,
+                "preset": "fab_500m_62t"
+              },
+              {
+                "slot": 2,
+                "preset": "fab_500sh"
+              },
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 2,
+                "preset": "zb_500"
+              },
+              {
+                "slot": 4,
+                "preset": "r_60m_x2_r"
               },
               {
                 "slot": 4,
                 "preset": "ofab100_120_slot4"
+              },
+              {
+                "slot": 4,
+                "preset": "fab_250m_62"
+              },
+              {
+                "slot": 4,
+                "preset": "ofab_250sh"
+              },
+              {
+                "slot": 4,
+                "preset": "fab_500m_62t"
+              },
+              {
+                "slot": 4,
+                "preset": "fab_500sh"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "zb_500"
               }
             ]
           },
@@ -3540,6 +3765,25 @@
             }
           },
           {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "r_60m",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "apu_60m_002"
+              ]
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/su_r_60m.blk",
+              "emitter": "apu_60m_r_60_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_type_b_air_to_air_group",
             "name": "r_60m_x2_r",
             "reqModification": "mi_24_r_60m",
@@ -3552,6 +3796,10 @@
               "emitter": "apu_60m_2_r2",
               "external": true,
               "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 5,
+              "preset": "r_60m_x2_r"
             }
           },
           {
@@ -3649,6 +3897,63 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab250_002",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "fab_500m_62t",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_500m_62t.blk",
+              "emitter": "fab250_002",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_2",
+                "pylon_2_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
+              "emitter": "fab250_002",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "rls",
             "name": "delta_ng",
             "reqModification": "yak_38_x23m",
@@ -3732,6 +4037,25 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_group",
+            "name": "r_60m_x2_r",
+            "reqModification": "mi_24_r_60m",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/p_62_2_r_r_60m_x2.blk",
+              "emitter": "apu_60m_2_r1",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 4,
+              "preset": "r_60m_x2_r"
             }
           },
           {
@@ -3923,6 +4247,25 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "ofab_250sh",
+            "reqModification": "mi_24_fab_250",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_ofab250sh.blk",
+              "emitter": "fab250_004",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "bombs_large",
             "name": "fab_500m_62t",
             "reqModification": "mi_24_fab_500",
@@ -3939,6 +4282,48 @@
               "bullets": 1,
               "external": true,
               "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "bombs_large_high_drag",
+            "name": "fab_500sh",
+            "reqModification": "mi_24_fab_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab500sh.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_large",
+            "name": "zb_500",
+            "reqModification": "zb_500",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_bomb_ub32"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_zb_500.blk",
+              "emitter": "fab_500m_62_002",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb"
             }
           }
         ]

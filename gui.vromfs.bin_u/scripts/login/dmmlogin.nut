@@ -1,13 +1,14 @@
+import "statsd" as statsd
+from "auth_wt" import checkLoginPass, setLoginPass
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import dgs_get_argv
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let { checkLoginPass, setLoginPass } = require("auth_wt")
-let { get_disable_autorelogin_once } = require("loginState.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let statsd = require("statsd")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
@@ -15,7 +16,7 @@ let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
-gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
+register_gui_handler("LoginWndHandlerDMM", class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -88,4 +89,4 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
         ["no", @() null]
       ], "no", { cancel_fn = @() null })
   }
-}
+})

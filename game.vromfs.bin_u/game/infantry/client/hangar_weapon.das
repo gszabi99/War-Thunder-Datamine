@@ -115,7 +115,7 @@ def hangar_weapon_update_es(act : UpdateStageInfoAct;
 
   let bboxCenterLocal = get_bbox_center(collres.boundingBox)
   let raiseOffset = float3(0., hangar_weapon__raiseHeight * hangar_weapon__raiseProgress, 0.)
-  var pivotOffset = float3(hangar_weapon__pivotOffset.x, hangar_weapon__pivotOffset.z, 0.0)
+  let pivotOffset = float3(hangar_weapon__pivotOffset.x, hangar_weapon__pivotOffset.z, 0.0)
   var basePosition = original_transform[3] + raiseOffset
   basePosition.y += hangar_weapon__pivotOffset.y
 
@@ -162,7 +162,7 @@ def hangar_camera_weapon_update_es(act : UpdateStageInfoAct;
     let fovRad = deg_to_rad(hangar_cam_weapon__fov)
     let fitDist = safediv(radius, tan(0.5f * fovRad))
     let zoom = clamp(hangar_cam_weapon__zoom, 0.25f, 4.0f)
-    var distance = fitDist / zoom
+    let distance = fitDist / zoom
 
     let cameraOriginPos = original_transform[3] + hangar_cam_weapon__weapon_offset
     var camDirection = normalize(hangar_weapon__focusPos - cameraOriginPos)

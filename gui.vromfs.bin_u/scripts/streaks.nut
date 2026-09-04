@@ -1,18 +1,18 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format
+from "loading" import loading_play_voice
+from "replays" import is_replay_playing
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { loading_play_voice } = require("loading")
-let { is_replay_playing } = require("replays")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getMultiStageLocId } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockIconConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const STREAK_LIFE_TIME = 5.0

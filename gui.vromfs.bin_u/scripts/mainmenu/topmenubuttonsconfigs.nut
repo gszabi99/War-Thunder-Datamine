@@ -1,28 +1,26 @@
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "app" import get_game_version_str, is_dev_version
+from "eventbus" import eventbus_send
 from "%scripts/dagui_natives.nut" import script_net_assert
-from "app" import is_dev_version
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 from "%sqstd/platform.nut" import is_gdk
+from "%scripts/debugTools/dbgXrayMode.nut" import setDebugXrayMode, isDebugXrayModeActive
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { get_game_version_str } = require("app")
-let { canUseIngameShop, getShopItemsTable, needEntStoreDiscountIcon
-} = require("%scripts/onlineShop/entitlementsShopData.nut")
-let { getEntStoreLocId, getEntStoreIcon, isEntStoreTopMenuItemHidden,
-  getEntStoreUnseenIcon, openEntStoreTopMenuFunc
-} = require("%scripts/onlineShop/entitlementsShop.nut")
+let { HelpInfoHandlerModal } = require("%scripts/help/helpInfoHandlerModal.nut")
+let { ClansModalHandler } = require("%scripts/clans/clansModalHandler.nut")
+let { canUseIngameShop, getShopItemsTable, needEntStoreDiscountIcon } = require("%scripts/onlineShop/entitlementsShopData.nut")
+let { getEntStoreLocId, getEntStoreIcon, isEntStoreTopMenuItemHidden, getEntStoreUnseenIcon, openEntStoreTopMenuFunc } = require("%scripts/onlineShop/entitlementsShop.nut")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
-let { isPlatformSony, isPlatformPC, consoleRevision, targetPlatform
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformPC, consoleRevision, targetPlatform } = require("%scripts/clientState/platform.nut")
 let encyclopedia = require("%scripts/encyclopedia.nut")
 let { openChangelog } = require("%scripts/changelog/changeLogState.nut")
 let { openUrlByObj } = require("%scripts/onlineShop/url.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
-let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
-} = require("%scripts/social/crossplay.nut")
+let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
@@ -30,8 +28,7 @@ let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nu
 let { goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
 let { openESportListWnd } = require("%scripts/events/eSportModal.nut")
 let { openSpecEventsWnd } = require("%scripts/unlocks/specEventsHandler.nut")
-let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
-  isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
+let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { debug_open_url } = require("%scripts/debugTools/dbgUtils.nut")
 let { gui_do_debug_unlock } = require("%scripts/unit/initUnits.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
@@ -39,21 +36,17 @@ let { hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { isBattleTasksAvailable } = require("%scripts/unlocks/battleTasks.nut")
 let { setShopDevMode, getShopDevMode, ShopDevModeOption } = require("%scripts/debugTools/dbgShop.nut")
-let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
+let { add_msg_box } = require("%scripts/sqDagui/framework/msgBox.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
-let { gui_start_itemsShop, gui_start_inventory, gui_start_items_list
-} = require("%scripts/items/startItemsShop.nut")
-let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBenchmark,
-  guiStartTutorial
-} = require("%scripts/missions/startMissionsList.nut")
+let { gui_start_itemsShop, gui_start_inventory, gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
+let { guiStartSkirmish, checkAndCreateGamemodeWnd, guiStartCampaign, guiStartBenchmark, guiStartTutorial } = require("%scripts/missions/startMissionsList.nut")
 let { guiStartReplays } = require("%scripts/replays/replayScreen.nut")
 let { openWishlist } = require("%scripts/wishlist/wishlistHandler.nut")
 let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDeepLink } = require("%scripts/user/wtAssistantDeeplink.nut")
-let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText
-} = require("%scripts/globalWorldWarScripts.nut")
+let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText } = require("%scripts/globalWorldWarScripts.nut")
 let { openLeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
 let { checkPlayWorldwarAccess, openOperationsOrQueues } = require("%scripts/globalWorldwarUtils.nut")
 let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
@@ -63,7 +56,6 @@ let { isAnyCampaignAvailable } = require("%scripts/missions/missionsUtils.nut")
 let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
 let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
 let { openLicenseWindow } = require("%scripts/licenseHandler.nut")
-let { eventbus_send } = require("eventbus")
 
 
 let list = {
@@ -159,14 +151,6 @@ let list = {
       || hasMultiplayerRestritionByBalance()
     isInactiveInQueue = true
   }
-  SPEC_EVENTS = {
-    text = @() "#mainmenu/btnSpecEvents"
-    onClickFunc = function(...) {
-      openSpecEventsWnd()
-    }
-    isHidden = @(...) !hasFeature("HasSpecialEventWindow")
-    isVisualDisabled = @() false
-  }
   BENCHMARK = {
     text = @() "#mainmenu/btnBenchmark"
     onClickFunc = @(_obj, handler) handler.checkedNewFlight(guiStartBenchmark)
@@ -186,7 +170,7 @@ let list = {
   }
   CLANS = {
     text = @() "#mainmenu/btnClans"
-    onClickFunc = @(...) hasFeature("Clans") ? loadHandler(gui_handlers.ClansModalHandler)
+    onClickFunc = @(...) hasFeature("Clans") ? loadHandler(ClansModalHandler)
       : showNotAvailableMsgBox()
     isHidden = @(...) !hasFeature("Clans")
   }
@@ -230,6 +214,14 @@ let list = {
       add_msg_box("Shop Debug", $"Shop Developer Mode: {stateText}", [["ok", @() setShopDevMode(devMode)]], "ok")
     }
     isHidden = @(...) !hasFeature("DevShopMode")
+  }
+  DEBUG_XRAY_MODE = {
+    text = @() $"[DEV] Debug X-ray"
+    onClickFunc = function(_obj, _handler) {
+      let isDbgXrayActive = isDebugXrayModeActive()
+      add_msg_box("debug xray unlock", $"Debug X-ray mode {!isDbgXrayActive ? "enabled" : "disabled"}", [["ok", @() setDebugXrayMode(!isDbgXrayActive) ]], "ok")
+    }
+    isHidden = @(...) !hasFeature("DebugXrayMode")
   }
   DEBUG_URL = {
     text = @() "Debug: Enter Url"
@@ -387,6 +379,12 @@ let list = {
     image = @() "#ui/gameuiskin#gc.svg"
     isHidden = @(...) !isMarketplaceEnabled() || !isInMenu.get()
   }
+  SPEC_EVENTS = {
+    text = @() "#mainmenu/btnSpecEvents"
+    onClickFunc = @(_obj, _handler) openSpecEventsWnd()
+    isHidden = @(...) !hasFeature("HasSpecialEventWindow") || !isInMenu.get()
+    image = @() "#ui/gameuiskin#event_hub_icon.svg"
+  }
 
 
 
@@ -401,7 +399,7 @@ let list = {
       if (!("getWndHelpConfig" in handler))
         return
 
-      gui_handlers.HelpInfoHandlerModal.openHelp(handler)
+      HelpInfoHandlerModal.openHelp(handler)
     }
     isHidden = @(handler = null) !("getWndHelpConfig" in handler) || !hasFeature("HangarWndHelp")
   }

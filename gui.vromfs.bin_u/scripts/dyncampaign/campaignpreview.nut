@@ -1,15 +1,18 @@
+import "DataBlock" as DataBlock
+from "string" import format
+from "dynamicMission" import isDynamicWonByPlayer
+from "mission" import get_game_mode, get_game_type
+from "guiMission" import MISSION_STATUS_SUCCESS, add_won_mission
+from "%globalScripts/gameTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/gameModeNativeConsts.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let DataBlock = require("DataBlock")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
-let { isDynamicWonByPlayer } = require("dynamicMission")
-let { get_game_mode, get_game_type } = require("mission")
-let { MISSION_STATUS_SUCCESS, add_won_mission } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInSessionRoom, isMeSessionLobbyRoomOwner } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -20,7 +23,7 @@ let { guiStartDynamicResults } = require("%scripts/dynCampaign/campaignResults.n
 let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 let { isFirstGeneration } = require("%scripts/missions/dynCampaingState.nut")
 
-gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("CampaignPreview", class (BaseGuiHandlerWT) {
   sceneBlkName = "%gui/dynamicSummary.blk"
   sceneNavBlkName = "%gui/dynamicSummaryNav.blk"
   shouldBlurSceneBgFn = needUseHangarDof
@@ -279,7 +282,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function infoBox(data, title = "") {
-    let rootNode = ""
+    const rootNode = ""
 
     let handlerClass = class {
       function goBack(_obj) {
@@ -346,4 +349,4 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
   }
-}
+})

@@ -1,8 +1,7 @@
+from "guiOptions" import get_gui_option
 from "%scripts/dagui_library.nut" import *
 
-let { get_gui_option } = require("guiOptions")
-let { saveLocalSharedSettings, loadLocalSharedSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_AUTOLOGIN } = require("%scripts/options/optionsExtNames.nut")
 
 const AUTOLOGIN_SAVE_ID = "autologin"

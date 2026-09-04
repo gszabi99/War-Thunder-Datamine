@@ -1,8 +1,8 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "%sqstd/string.nut" import stripTags
 from "%scripts/dagui_natives.nut" import wp_get_cost_gold, wp_get_cost
 from "%scripts/dagui_library.nut" import *
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitUsable, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")

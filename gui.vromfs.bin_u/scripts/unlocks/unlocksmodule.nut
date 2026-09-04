@@ -1,27 +1,24 @@
+import "sony.user" as psnUser
+from "%sqStdLibs/helpers/u.nut" import isInstance, isEmpty
+from "%sqstd/platform.nut" import platformId, is_gdk
+from "%sqstd/math.nut" import number_of_set_bits
+from "string" import strip, split_by_chars, format
+from "chard" import isUnlockReadyToOpen, get_charserver_time_sec
+from "unlocks" import getUnlockTypeById
+from "%gdkLib/impl/achievements.nut" import is_achievement_unlocked
+from "sony.trophies" import isPsnTrophyUnlocked, getPsnTrophyIdByName
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import wp_get_unlock_cost, has_entitlement, req_unlock, get_unlock_type, is_unlocked, wp_get_unlock_cost_gold
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
-let { platformId, is_gdk } = require("%sqstd/platform.nut")
+
 let { Cost } = require("%scripts/money.nut")
-let { isPlatformSony
-} = require("%scripts/clientState/platform.nut")
-let { number_of_set_bits } = require("%sqstd/math.nut")
-let psnUser = require("sony.user")
-let { getUnlockConditions, getTimeRangeCondition, isBitModeType
-} = require("%scripts/unlocks/unlocksConditions.nut")
-let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings
-} = require("%scripts/time.nut")
-let { strip, split_by_chars, format } = require("string")
-let { isUnlockReadyToOpen, get_charserver_time_sec } = require("chard")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { getUnlockConditions, getTimeRangeCondition, isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
+let { getTimestampFromStringUtc, daysToSeconds, isInTimerangeByUtcStrings } = require("%scripts/time.nut")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
-let { isInstance, isEmpty } = require("%sqStdLibs/helpers/u.nut")
-let { getUnlockTypeById } = require("unlocks")
-let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById,
-  regionalUnlocks, isRegionalUnlockCompleted
-} = require("%scripts/unlocks/regionalUnlocks.nut")
-let { is_achievement_unlocked } = require("%gdkLib/impl/achievements.nut")
+let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById, regionalUnlocks, isRegionalUnlockCompleted } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { isPsnTrophyUnlocked, getPsnTrophyIdByName } = require("sony.trophies")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
@@ -48,7 +45,7 @@ function getMultiStageLocId(unlockId, repeatInARow) {
     return unlockId
 
   let config = multiStageLocIdConfig[unlockId]
-  return getTblValue(repeatInARow, config) || getTblValue("def", config, unlockId)
+  return config?[repeatInARow] || (config?.def ?? unlockId)
 }
 
 let getUnlockType = @(unlockId) isRegionalUnlock(unlockId)
@@ -80,6 +77,12 @@ function isUnlockComplete(cfg) {
   return isBitModeType(cfg.type)
     ? number_of_set_bits(cfg.curVal) >= number_of_set_bits(cfg.maxVal)
     : cfg.curVal >= cfg.maxVal
+}
+
+function getUnlockCompletedVal(cfg) {
+  return isBitModeType(cfg.type)
+    ? min(number_of_set_bits(cfg.curVal), number_of_set_bits(cfg.maxVal))
+    : cfg.curVal
 }
 
 function isUnlockExpired(unlockBlk) {
@@ -326,7 +329,7 @@ function checkUnlockString(string) {
 
 function reqUnlockByClient(id, disableLog = false) {
   let unlock = getUnlockById(id)
-  let featureName = getTblValue("check_client_feature", unlock, null)
+  let featureName = unlock?.check_client_feature
   if (featureName == null || hasFeature(featureName))
     req_unlock(id, disableLog)
 }
@@ -395,13 +398,13 @@ function combineSimilarAwards(awardsList) {
     if ("unlockType" in award && award.unlockType == UNLOCKABLE_STREAK) {
       let unlockId = award.unlockId
       let isMultiStageLoc = hasMultiStageLocId(unlockId)
-      let stage = getTblValue("stage", award, 0)
+      let stage = (award?.stage ?? 0)
       let hasSpecialMultiStageLoc = hasSpecialMultiStageLocIdByStage(unlockId, stage)
       foreach (approvedAward in res) {
         if (unlockId != approvedAward.unlockId)
           continue
         if (isMultiStageLoc) {
-          let approvedStage = getTblValue("stage", approvedAward, 0)
+          let approvedStage = (approvedAward?.stage ?? 0)
           if (stage != approvedStage
               && (hasSpecialMultiStageLoc || hasSpecialMultiStageLocIdByStage(unlockId, approvedStage)))
             continue
@@ -445,6 +448,7 @@ return {
   canOpenUnlockManually
   isUnlockOpened
   isUnlockComplete
+  getUnlockCompletedVal
   isUnlockExpired
   isUnlockVisibleOnCurPlatform
   isUnlockVisible

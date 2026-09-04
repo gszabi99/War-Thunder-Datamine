@@ -1,4 +1,7 @@
-let { loc } = require("dagor.localize")
+import "%sqstd/time.nut" as timeBase
+from "dagor.localize" import loc
+from "string" import format
+from "math" import fabs, floor
 
 
 
@@ -12,9 +15,6 @@ let { loc } = require("dagor.localize")
 
 
 
-let timeBase = require("%sqstd/time.nut")
-let { format } = require("string")
-let { fabs, floor } = require("math")
 
 let { TIME_MINUTE_IN_SECONDS, TIME_HOUR_IN_SECONDS } = timeBase
 
@@ -147,11 +147,11 @@ function buidPartialTimeStr(timeSec) {
     return format("%02d%s %02d%s", mins, loc("measureUnits/minutes"), secs, loc("measureUnits/seconds"))
 }
 
-return timeBase.__merge({
+return freeze(timeBase.__merge({
   secondsToString
   hoursToString
   buildDateStr
   buildTimeStr
   buildDateTimeStr
   buidPartialTimeStr
-})
+}))

@@ -1,15 +1,17 @@
+from "%globalScripts/shipHitIconsConsts.nut" import ShipHitIconId, SHIP_HIT_ICONS_VIS_ALL_FLAGS
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "guiOptions" import get_gui_option
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { MultiSelectMenu } = require("%scripts/wndLib/multiSelectMenu.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option, get_option, registerOption, def_set_gui_option, mkUseroptHardWatched } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_SHOW_HIT_ICONS_SHIP } = require("%scripts/options/optionsExtNames.nut")
-let { ShipHitIconId, ShipHitIconVisibilityMask,
-  ShipHitIconCfgId, SHIP_HIT_ICONS_VIS_ALL_FLAGS } = require("%globalScripts/shipHitIconsConsts.nut")
+let { ShipHitIconVisibilityMask, ShipHitIconCfgId } = require("%globalScripts/shipHitIconsConsts.nut")
 let { get_available_ship_hit_notifications } = require("%scripts/options/optionsStorage.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { doesLocTextExist } = require("dagor.localize")
 
 let ShipHitIcons = {
   [ShipHitIconId.HIT]                = "ui/gameuiskin#dm_ship_armor_hit.svg",
@@ -45,7 +47,7 @@ function initOptionsList() {
   optionsList.replace(opts)
 }
 
-let class ShipHitIconsMenu (gui_handlers.MultiSelectMenu) {
+class ShipHitIconsMenu (MultiSelectMenu) {
   align = ALIGN.TOP
 
   getSceneTplView = @() {
@@ -64,7 +66,7 @@ let class ShipHitIconsMenu (gui_handlers.MultiSelectMenu) {
   }
 }
 
-gui_handlers.ShipHitIconsMenu <- ShipHitIconsMenu
+register_gui_handler("ShipHitIconsMenu", ShipHitIconsMenu)
 
 function openShipHitIconsMenu(alignObj) {
   handlersManager.loadHandler(ShipHitIconsMenu, { alignObj, list = optionsList })

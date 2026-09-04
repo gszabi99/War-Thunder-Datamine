@@ -1,29 +1,31 @@
-from "%scripts/dagui_natives.nut" import epic_is_running, ps4_is_chat_enabled, ps4_is_ugc_enabled,
-  get_localization_blk_copy, dgs_get_argv, is_eac_inited
+import "samsung" as samsung
+import "statsd" as statsd
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/login/loginState.nut" import loginState, isLoggedIn, isAuthorized
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption
+from "%globalScripts/clientState/initialState.nut" import disableNetwork
+from "%sqstd/platform.nut" import is_windows, platformId, is_gdk
+from "steam" import steam_is_running
+from "guiMission" import get_meta_missions_info
+from "blkGetters" import get_user_skins_blk, get_user_skins_profile_blk
+from "scriptRespondent" import registerRespondent
+from "contentpacks" import getContentPackStatus, ContentPackStatus
+from "%scripts/dagui_natives.nut" import epic_is_running, ps4_is_chat_enabled, ps4_is_ugc_enabled, get_localization_blk_copy, dgs_get_argv, is_eac_inited
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
+from "types" import String
 
-let { is_windows, platformId, is_gdk } = require("%sqstd/platform.nut")
-let { steam_is_running } = require("steam")
-let samsung = require("samsung")
 let gfn = require_optional("gfn")
-let statsd = require("statsd")
-let { get_meta_missions_info } = require("guiMission")
-let { get_user_skins_blk, get_user_skins_profile_blk } = require("blkGetters")
-let DataBlock = require("DataBlock")
-let { registerRespondent } = require("scriptRespondent")
-let { getContentPackStatus, ContentPackStatus } = require("contentpacks")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { WaitForLoginWnd } = require("%scripts/login/waitForLoginWnd.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { loginState, isLoggedIn, isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { destroyLoginProgress } = require("%scripts/login/loginStates.nut")
-let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let cachedLoginData = persist("cachedLoginData", @() { use_dmm_login = null })
 
@@ -35,21 +37,21 @@ function useDmmLogin() {
 }
 
 function loadLoginHandler() {
-  local hClass = gui_handlers.LoginWndHandler
+  local hClass = get_gui_handler("LoginWndHandler")
   if (isPlatformSony)
-    hClass = gui_handlers.LoginWndHandlerPs4
+    hClass = get_gui_handler("LoginWndHandlerPs4")
   else if (is_gdk)
-    hClass = gui_handlers.LoginWndHandlerXboxOne
+    hClass = get_gui_handler("LoginWndHandlerXboxOne")
   else if (useDmmLogin())
-    hClass = gui_handlers.LoginWndHandlerDMM
+    hClass = get_gui_handler("LoginWndHandlerDMM")
   else if (steam_is_running())
-    hClass = gui_handlers.LoginWndHandlerSteam
+    hClass = get_gui_handler("LoginWndHandlerSteam")
   else if (epic_is_running())
-    hClass = gui_handlers.LoginWndHandlerEpic
+    hClass = get_gui_handler("LoginWndHandlerEpic")
   else if (samsung.is_running())
-    hClass = gui_handlers.LoginWndHandlerSamsung
+    hClass = get_gui_handler("LoginWndHandlerSamsung")
   else if (gfn?.is_running())
-    hClass = gui_handlers.LoginWndHandlerGfn
+    hClass = get_gui_handler("LoginWndHandlerGfn")
 
   loadHandler(hClass)
 }
@@ -62,7 +64,7 @@ function onAuthorizeChanged() {
 
   if (!disableNetwork)
     handlersManager.animatedSwitchScene(function() {
-      loadHandler(gui_handlers.WaitForLoginWnd)
+      loadHandler(WaitForLoginWnd)
     })
 }
 
@@ -138,7 +140,7 @@ function statsdOnLogin() {
     let cdb = get_user_skins_profile_blk()
     for (local i = 0; i < cdb.paramCount(); i++) {
       let skin = cdb.getParamValue(i)
-      if ((type(skin) == "string") && (skin != "") && (skin.indexof("template") == null)) {
+      if ((skin instanceof String) && (skin != "") && (skin.indexof("template") == null)) {
         anyUG = true
         statsd.send_counter("sq.ug.useus", 1)
         log($"statsd_on_login ug.useus {skin}")

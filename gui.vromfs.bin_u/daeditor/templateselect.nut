@@ -83,17 +83,18 @@ let templPostfix = nameFilter(templatePostfixText, {
 
 let templateTooltip = Watched(null)
 
-function listRow(tpl_name, idx) {
-  let stateFlags = Watched(0)
+
+let TemplateRow = StatefulComp(function(scope, tplName, idx) {
+  let tpl_name = tplName.get()
+  let stateFlags = scope.Watched(0)
+  let isSelected = scope.Computed(@() selectedItem.get() == tpl_name)
 
   return function() {
-    let isSelected = selectedItem.get() == tpl_name
-
     local color
-    if (isSelected) {
+    if (isSelected.get()) {
       color = colors.Active
     } else {
-      color = (stateFlags.get() & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
+      color = (stateFlags.get() & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx.get() % colors.GridBg.len()]
     }
 
     return {
@@ -103,7 +104,7 @@ function listRow(tpl_name, idx) {
       behavior = Behaviors.Button
       tpl_name = tpl_name
 
-      watch = stateFlags
+      watch = [isSelected, stateFlags, idx]
       onHover = @(on) templateTooltip.set(on ? mkTemplateTooltip(tpl_name) : null)
       onClick = @() doSelectTemplate(tpl_name)
       onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
@@ -116,7 +117,7 @@ function listRow(tpl_name, idx) {
       }
     }
   }
-}
+}, @(tplName) tplName)
 
 let selectedGroupTemplates = Computed(@() editorIsActive.get()
   ? entity_editor?.get_instance().getEcsTemplates(selectedTemplatesGroup.get()) ?? [] : [])
@@ -204,7 +205,7 @@ allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
 
 function dialogRoot() {
   let templatesGroups = entity_editor?.get_instance().getEcsTemplatesGroups()
-  let maxTemplatesInList = 1000
+  const maxTemplatesInList = 1000
 
   local scenes = getAllScenes().map(function (item, ind) {
       item.index <- ind
@@ -213,7 +214,7 @@ function dialogRoot() {
   scenes.sort(sortScenesByLoadType)
   allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
-  let sceneInfo = selectedSceneIndex != null ? scenes[selectedSceneIndex] : null
+  let sceneInfo = selectedSceneIndex != null ? allModifiableScenes.get()[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
   let sceneInfoStyle = { fontSize = hdpx(17), color=Color(180,180,180,120) }
   let sceneTooltip = @() {
@@ -238,11 +239,8 @@ function dialogRoot() {
     }
 
     let rows = []
-    let idx = 0
-    foreach (tplName in filteredTemplates.get()) {
-      if (filterText.get().len()==0 || tplName.tolower().contains(filterText.get().tolower())) {
-        rows.append(listRow(tplName, idx))
-      }
+    foreach (idx, tplName in filteredTemplates.get()) {
+      rows.append(TemplateRow(tplName, idx))
       if (!showWholeList && rows.len() >= maxTemplatesInList) {
         rows.append(listMore())
         break
@@ -250,7 +248,7 @@ function dialogRoot() {
     }
 
     return {
-      watch = [filteredTemplates, selectedItem, filterText]
+      watch = filteredTemplates
       size = FLEX_H
       flow = FLOW_VERTICAL
       children = rows
@@ -283,14 +281,14 @@ function dialogRoot() {
   }
 
   return {
-    size = [flex(), flex()]
+    size = const [flex(), flex()]
     flow = FLOW_HORIZONTAL
 
     watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene, allScenesWatcher]
 
     children = [
       {
-        size = [sw(17), sh(75)]
+        size = const [sw(17), sh(75)]
         hplace = ALIGN_LEFT
         vplace = ALIGN_CENTER
         rendObj = ROBJ_SOLID
@@ -317,7 +315,7 @@ function dialogRoot() {
             ]
           }
           {
-            size = [flex(),fontH(100)]
+            size = const [flex(),fontH(100)]
             children = combobox({
               value = selectedScene
               update = function(v) {
@@ -336,7 +334,7 @@ function dialogRoot() {
           }
 
           {
-            size = [flex(),fontH(100)]
+            size = const [flex(),fontH(100)]
             children = combobox(selectedTemplatesGroup, templatesGroups)
           }
           filter
@@ -359,7 +357,7 @@ function dialogRoot() {
         ]
       }
       {
-        size = [sw(17), sh(60)]
+        size = const [sw(17), sh(60)]
         hplace = ALIGN_LEFT
         vplace = ALIGN_CENTER
         children = templateTooltip.get()

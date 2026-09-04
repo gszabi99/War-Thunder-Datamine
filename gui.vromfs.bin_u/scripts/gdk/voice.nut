@@ -1,5 +1,6 @@
-let voice = require("gdk.voice")
-let {subscribe} = require("eventbus")
+import "gdk.voice" as voice
+from "eventbus" import subscribe
+
 let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_VOICE] ")
 
 let voiceChatMembers = persist("voiceChatMembers", @() {})

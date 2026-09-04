@@ -1,22 +1,22 @@
+import "%rGui/hints/hints.nut" as hints
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut, setShortcutOn, setShortcutOff
+from "%rGui/hints/shortcuts.nut" import antiAirMenuShortcutHeight
+from "%sqStdLibs/helpers/u.nut" import isFunction
 from "%rGui/globals/ui_library.nut" import *
-let hints = require("%rGui/hints/hints.nut")
-let { toggleShortcut, setShortcutOn, setShortcutOff
-} = require("%globalScripts/controls/shortcutActions.nut")
-let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
-let { MOUSE, JOYSTICK } = require("controls").DeviceType
-let { isFunction } = require("%sqStdLibs/helpers/u.nut")
 
-let frameHeaderPadding = hdpx(8)
+let { MOUSE, JOYSTICK } = require("controls").DeviceType
+
+const frameHeaderPadding = hdpx(8)
 let frameHeaderHeight = evenPx(32)
 let borderWidth = dp(1)
-let shortcutButtonPadding = hdpx(2)
-let shortcutButtonGap = hdpx(8)
+const shortcutButtonPadding = hdpx(2)
+const shortcutButtonGap = hdpx(8)
 let shortcutButtonHeight = antiAirMenuShortcutHeight + 2*shortcutButtonPadding
 
-let frameBorderColor = 0xFF37454D
-let frameBackgroundColor = 0xFF182029
-let buttonBorderColor = 0xFF2A373B
-let hoverFillColor = 0xFF3A474F
+const frameBorderColor = 0xFF37454D
+const frameBackgroundColor = 0xFF182029
+const buttonBorderColor = 0xFF2A373B
+const hoverFillColor = 0xFF3A474F
 
 let mkText = @(ovr) {
   rendObj = ROBJ_TEXT
@@ -26,7 +26,7 @@ let mkText = @(ovr) {
 }.__update(ovr)
 
 let mkFrameHeader = @(headerParams) {
-  size = [flex(), frameHeaderHeight * (headerParams?.scale ?? 1)]
+  size = [FLEX, frameHeaderHeight * (headerParams?.scale ?? 1)]
   rendObj = ROBJ_SOLID
   color = 0xFF2D343C
   padding = frameHeaderPadding
@@ -34,7 +34,7 @@ let mkFrameHeader = @(headerParams) {
   flow = FLOW_HORIZONTAL
   children = [
     mkText({ text = headerParams.text, scale = headerParams?.scale })
-    { size = flex() }
+    { size = FLEX }
     headerParams?.rightBlock
   ]
 }
@@ -172,7 +172,7 @@ function makeTargetStatusEllementFactory(size, header_name, status_getter_compai
             stateFlags.set(sf)
           }
 
-          children = mkTargetCell(flex(), font_size, text)
+          children = mkTargetCell(FLEX, font_size, text)
         }
       }
     }

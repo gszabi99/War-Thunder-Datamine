@@ -39,6 +39,149 @@
   "sfxReloadBullet": "grd_cannon_burning_reload",
   "fxMultipleSpawn": true,
   "isBulletBelt": false,
+  "105mm_us_M416_Smoke": {
+    "bullet": {
+      "bulletCount": 40,
+      "mass": 11.6,
+      "damageMass": 0.57,
+      "explosiveType": "smoke_composition",
+      "explosiveMass": 0.05,
+      "caliber": 0.105,
+      "speed": 731.5,
+      "Cx": 0.68423,
+      "maxDistance": 10000.0,
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
+      "secondaryShattersPreset": "ap",
+      "stabilityThreshold": 0.5,
+      "stabilityCaliberToArmorThreshold": 5.0,
+      "stabilityReductionAfterRicochet": 0.3,
+      "stabilityReductionAfterPenetration": 0.15,
+      "bulletType": "smoke_tank",
+      "slopeEffectPreset": "ap",
+      "modelName": "tank_bullet_he",
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
+      "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/smoke.ivf",
+      "bulletName": "105mm_m416",
+      "hitPowerMult": 2.0,
+      "nearHitPower": [
+        1.0,
+        50.0
+      ],
+      "midHitPower": [
+        0.9,
+        300.0
+      ],
+      "farHitPower": [
+        0.1,
+        700.0
+      ],
+      "endHitPower": [
+        0.008,
+        1500.0
+      ],
+      "relativeVelHitShift": [
+        300.0,
+        1000.0
+      ],
+      "nearArmorPower": [
+        3.0,
+        150.0
+      ],
+      "midArmorPower": [
+        3.0,
+        600.0
+      ],
+      "farArmorPower": [
+        3.0,
+        1000.0
+      ],
+      "relativeVelArmorShift": [
+        200.0,
+        1000.0
+      ],
+      "explodeTreshold": 0.5,
+      "explodeHitPower": 90.0,
+      "explodeArmorPower": 8.0,
+      "explodeRadius": [
+        0.4,
+        0.8
+      ],
+      "fuseOnWater": true,
+      "fuseOnWaterProbability": 1.0,
+      "ricochetTimeToLive": 0.085,
+      "fuseDelayDist": 0.4,
+      "shutterDamage": true,
+      "shutterDamageRadius": 18.5,
+      "shutterAmount": 130,
+      "shutterArmorPower": 7.5,
+      "shutterHit": 11.0,
+      "smokeShell": true,
+      "smokeFx": "smokescreen_big",
+      "smokeExplosionFx": "explosion_smoke_bullet_big",
+      "smokeExplosionFxVolsmoke": "smoke_shell_explosion_old",
+      "smokeShellRad": 16.0,
+      "smokeActivateTime": 5.0,
+      "smokeTime": 25.0,
+      "groundCollisionEffect": "smoke_shell_explosion",
+      "groundFxScale": [
+        1.2,
+        1.4
+      ],
+      "ricochetEffect": "hit_39_58mm_metal_ap",
+      "waterCollisionEffect": "hit_59_80mm_water",
+      "waterFxScale": [
+        0.7,
+        0.8
+      ],
+      "explosionPatchRadius": 1.5,
+      "waterRicochetEffect": "hit_39_58mm_water",
+      "groundRicochetEffect": "hit_39_58mm_dirt_ap",
+      "destructionBreakFx": "smoke_shell_explosion",
+      "destructionFireFx": "fire_thermite",
+      "destructionExplosionFx": "explosion_tank_ammunition_smoke",
+      "stabilityRicochetModifier": {
+        "mod1": [
+          0.0,
+          0.5
+        ],
+        "mod2": [
+          15.0,
+          0.7
+        ],
+        "mod3": [
+          30.0,
+          0.99
+        ]
+      },
+      "collisions": {
+        "steel": {
+          "fx": "smoke_shell_explosion",
+          "ricochetFx": "hit_59_80mm_stone_ap",
+          "pierceFx": "hit_59_80mm_stone_ap"
+        },
+        "transparentMetal": {
+          "fx": "smoke_shell_explosion",
+          "ricochetFx": "hit_59_80mm_stone_ap",
+          "pierceFx": "hit_59_80mm_stone_ap"
+        }
+      },
+      "visual": {
+        "range_percent_of_ammo": [
+          100.0,
+          0.0
+        ],
+        "traceFreq": 1,
+        "tracer": "noColor"
+      }
+    }
+  },
   "bullet": {
     "bulletCount": 25,
     "mass": 10.5,
@@ -1194,149 +1337,6 @@
         "stone_snow": {
           "fx": "hit_8_11mm_snow_ap"
         }
-      }
-    }
-  },
-  "105mm_us_M416_Smoke": {
-    "bullet": {
-      "bulletCount": 40,
-      "mass": 11.6,
-      "damageMass": 0.57,
-      "explosiveType": "smoke_composition",
-      "explosiveMass": 0.05,
-      "caliber": 0.105,
-      "speed": 731.5,
-      "Cx": 0.68423,
-      "maxDistance": 10000.0,
-      "normalizationPreset": "heat",
-      "ricochetPreset": "he",
-      "groundRicochetPreset": "he_small_caliber_ground",
-      "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.5,
-      "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.3,
-      "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "smoke_tank",
-      "slopeEffectPreset": "ap",
-      "modelName": "tank_bullet_he",
-      "fresnel": [
-        0.23,
-        0.1,
-        2.0
-      ],
-      "explodeOnRendinst": true,
-      "shellAnimation": "video/shells_animations/smoke.ivf",
-      "bulletName": "105mm_m416",
-      "hitPowerMult": 2.0,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        300.0
-      ],
-      "farHitPower": [
-        0.1,
-        700.0
-      ],
-      "endHitPower": [
-        0.008,
-        1500.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "nearArmorPower": [
-        3.0,
-        150.0
-      ],
-      "midArmorPower": [
-        3.0,
-        600.0
-      ],
-      "farArmorPower": [
-        3.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
-      "explodeTreshold": 0.5,
-      "explodeHitPower": 90.0,
-      "explodeArmorPower": 8.0,
-      "explodeRadius": [
-        0.4,
-        0.8
-      ],
-      "fuseOnWater": true,
-      "fuseOnWaterProbability": 1.0,
-      "ricochetTimeToLive": 0.085,
-      "fuseDelayDist": 0.4,
-      "shutterDamage": true,
-      "shutterDamageRadius": 18.5,
-      "shutterAmount": 130,
-      "shutterArmorPower": 7.5,
-      "shutterHit": 11.0,
-      "smokeShell": true,
-      "smokeFx": "smokescreen_big",
-      "smokeExplosionFx": "explosion_smoke_bullet_big",
-      "smokeExplosionFxVolsmoke": "smoke_shell_explosion_old",
-      "smokeShellRad": 16.0,
-      "smokeActivateTime": 5.0,
-      "smokeTime": 25.0,
-      "groundCollisionEffect": "smoke_shell_explosion",
-      "groundFxScale": [
-        1.2,
-        1.4
-      ],
-      "ricochetEffect": "hit_39_58mm_metal_ap",
-      "waterCollisionEffect": "hit_59_80mm_water",
-      "waterFxScale": [
-        0.7,
-        0.8
-      ],
-      "explosionPatchRadius": 1.5,
-      "waterRicochetEffect": "hit_39_58mm_water",
-      "groundRicochetEffect": "hit_39_58mm_dirt_ap",
-      "destructionBreakFx": "smoke_shell_explosion",
-      "destructionFireFx": "fire_thermite",
-      "destructionExplosionFx": "explosion_tank_ammunition_smoke",
-      "stabilityRicochetModifier": {
-        "mod1": [
-          0.0,
-          0.5
-        ],
-        "mod2": [
-          15.0,
-          0.7
-        ],
-        "mod3": [
-          30.0,
-          0.99
-        ]
-      },
-      "collisions": {
-        "steel": {
-          "fx": "smoke_shell_explosion",
-          "ricochetFx": "hit_59_80mm_stone_ap",
-          "pierceFx": "hit_59_80mm_stone_ap"
-        },
-        "transparentMetal": {
-          "fx": "smoke_shell_explosion",
-          "ricochetFx": "hit_59_80mm_stone_ap",
-          "pierceFx": "hit_59_80mm_stone_ap"
-        }
-      },
-      "visual": {
-        "range_percent_of_ammo": [
-          100.0,
-          0.0
-        ],
-        "traceFreq": 1,
-        "tracer": "noColor"
       }
     }
   },

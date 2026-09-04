@@ -9,11 +9,9 @@ require net
 
 require %appGame.wt_events
 
-require DngWeapon
 require PropsManager
 require DaWeaponProps
 require Ballistics
-require BallisticsProps
 require %appGame.infantry.es.inventory_common
 require %appGame.infantry.es.squad_order_common
 require %appGame.squad_order_enums

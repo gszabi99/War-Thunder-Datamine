@@ -157,17 +157,17 @@ class PrintVisitor : AstVisitor {
         
         
         
-        if (fun.annotations |> length != 0) {
+        if (!empty(fun.annotations)) {
             write(*writer, "[{describe(fun.annotations)}]\n");
         }
         write(*writer, "def {fun.name}");
-        if (fun.arguments |> length != 0) {
+        if (!empty(fun.arguments)) {
             write(*writer, " ( ");
         }
     }
     def override preVisitFunctionBody(fun : FunctionPtr; expr : ExpressionPtr) {
         
-        if (fun.arguments |> length != 0) {
+        if (!empty(fun.arguments)) {
             write(*writer, " ) ");
         }
         if (fun.result != null && !fun.result.isVoid) {
@@ -208,7 +208,7 @@ class PrintVisitor : AstVisitor {
     def override preVisitExprBlock(blk : ExprBlock?) {
         
         if (blk.blockFlags.isClosure) {
-            if (blk.returnType != null || blk.arguments |> length != 0) {
+            if (blk.returnType != null || !empty(blk.arguments)) {
                 write(*writer, "$(");
                 for (arg, argIndex in blk.arguments, range(blk.arguments |> length)) {
                     if (arg.annotation |> length != 0) {
@@ -248,7 +248,7 @@ class PrintVisitor : AstVisitor {
     }
     def override visitExprBlockExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
-        self->newLine();
+        self.newLine();
         return expr;
     }
     def override preVisitExprBlockFinal(blk : ExprBlock?) {
@@ -265,7 +265,7 @@ class PrintVisitor : AstVisitor {
     }
     def override visitExprBlockFinalExpression(blk : ExprBlock?; expr : ExpressionPtr) {
         
-        self->newLine();
+        self.newLine();
         return expr;
     }
 
@@ -511,6 +511,9 @@ class PrintVisitor : AstVisitor {
     def override preVisitExprWith(expr : ExprWith?) {
         
         write(*writer, "with ");
+        if (!empty(expr.moduleName)) {
+            write(*writer, "(module {expr.moduleName})");
+        }
     }
     def override preVisitExprWithBody(expr : ExprWith?; right : ExpressionPtr) {
         
@@ -916,6 +919,11 @@ class PrintVisitor : AstVisitor {
         write(*writer, "{expr.value}");
     }
 
+    def override preVisitExprConstFloat16(expr : ExprConstFloat16?) : void {
+        
+        write(*writer, "{expr.value}h");
+    }
+
     def override preVisitExprConstInt64(expr : ExprConstInt64?) : void {
         
         write(*writer, "{expr.value}");
@@ -1106,7 +1114,7 @@ def add(a, b : int) {
     return a + b + add_extra;
 }
 
-[sideeffects, export]
+[sideeffects, export, no_lint]
 def allExpr(arg : int) {
     
     
@@ -1230,7 +1238,7 @@ def allExpr(arg : int) {
     print("{easc}");
     
     unsafe {
-        let aaf = reinterpret<float> aa;
+        let aaf = reinterpret<float>(aa);
         print("{aaf}");
     }
     

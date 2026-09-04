@@ -1,7 +1,8 @@
+import "platform" as platform
+from "string" import split_by_chars
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
-import "platform" as platform
-let { split_by_chars } = require("string")
+
 let { get_console_model } = platform
 
 let visibleConditionsList = {

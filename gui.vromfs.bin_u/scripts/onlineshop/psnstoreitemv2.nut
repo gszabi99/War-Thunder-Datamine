@@ -1,25 +1,26 @@
+import "DataBlock" as DataBlock
+import "sony.store" as psnStore
+import "sony.user" as psnUser
+import "statsd" as statsd
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%sqstd/math.nut" import calcPercent
+from "%sonyLib/webApi.nut" import serviceLabel
+from "eventbus" import eventbus_subscribe
+from "dagor.workcycle" import defer
 from "%scripts/dagui_natives.nut" import ps4_update_purchases_on_auth
 from "%scripts/dagui_library.nut" import *
+
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 
-let DataBlock = require("DataBlock")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { calcPercent } = require("%sqstd/math.nut")
-let psnStore = require("sony.store")
-let psnUser = require("sony.user")
-let statsd = require("statsd")
-let { serviceLabel } = require("%sonyLib/webApi.nut")
-let { eventbus_subscribe } = require("eventbus")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { defer } = require("dagor.workcycle")
 let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
-let IMAGE_TYPE = "TAM_JACKET"
-let BQ_DEFAULT_ACTION_ERROR = -1
+const IMAGE_TYPE = "TAM_JACKET"
+const BQ_DEFAULT_ACTION_ERROR = -1
 
 enum PURCHASE_STATUS {
   PURCHASED = "RED_BAG" 
@@ -155,7 +156,7 @@ local psnV2ShopPurchasableItem = class {
 
   haveDiscount = @() !this.isBought && this.price != null && this.listPrice != null && this.price != this.listPrice
   havePsPlusDiscount = @() psnUser.hasPremium() && ("displayPlusUpsellPrice" in this.skuInfo || this.skuInfo?.isPlusPrice) 
-  getDiscountPercent = @() (this.price == null && this.listPrice == null) ? 0 : calcPercent(1 - (this.price.tofloat() / this.listPrice))
+  getDiscountPercent = @() (this.price == null || this.listPrice == null || this.listPrice == 0) ? 0 : calcPercent(1 - (this.price.tofloat() / this.listPrice))
 
   getPriceText = function() {
     if (this.priceText == "")
@@ -170,7 +171,7 @@ local psnV2ShopPurchasableItem = class {
 
   getDescription = function() {
     
-    let maxSymbolsInLine = 50 
+    const maxSymbolsInLine = 50 
     if (this.description.len() > maxSymbolsInLine && this.description.indexof(" ") == null) {
       let splitDesc = [this.description.slice(0, maxSymbolsInLine)]
       let len = this.description.len()

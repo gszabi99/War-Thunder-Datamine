@@ -1,24 +1,24 @@
+from "%sqstd/string.nut" import cutPrefix
+from "worldwar" import wwGetAirfieldsCount, wwGetSelectedAirfield
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { Timer } = require("%scripts/sqDagui/timer/timer.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { wwGetAirfieldsCount, wwGetSelectedAirfield } = require("worldwar")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
-let { getCurrentOperation, getAirArmiesNumberByGroupIdx
-} = require("%scripts/worldWar/inOperation/wwOperations.nut")
+let { getCurrentOperation, getAirArmiesNumberByGroupIdx } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 
 
-gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
+let WwAirfieldsList = class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/airfieldObject.tpl"
   sceneBlkName = null
@@ -100,7 +100,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   }
 
   function onUpdateTimer(placeObj, airfieldIdx, cooldownView) {
-    if (!getTblValue("army", cooldownView))
+    if (!cooldownView?.army)
       return
 
     let airfield = WwAirfield(airfieldIdx)
@@ -410,3 +410,6 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
       this.updateSelectedAirfield()
   }
 }
+register_gui_handler("WwAirfieldsList", WwAirfieldsList)
+
+return { WwAirfieldsList }

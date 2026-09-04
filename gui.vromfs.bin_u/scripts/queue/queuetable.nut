@@ -1,39 +1,37 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import buildTableRow
 
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { events } = require("%scripts/events/eventsManager.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/sqDagui/daguiUtil.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getClusterShortName, isClusterUnstable
-} = require("%scripts/onlineInfo/clustersManagement.nut")
+let { getClusterShortName, isClusterUnstable } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isEventForClan, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { maxCountryRank } = require("%scripts/ranks.nut")
 let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
-let { getQueueEvent, isClanQueue, getQueueCountry, getQueueClusters, getMyRankInQueue
-} = require("%scripts/queue/queueInfo.nut")
+let { getQueueEvent, isClanQueue, getQueueCountry, getQueueClusters, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
 local WAIT_TO_SHOW_CROSSPLAY_TIP_SEC_F = 120.0
 
-gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
+let QueueTable = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/queue/queueTable.blk"
 
@@ -357,7 +355,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       return ""
 
     local res = this.buildQueueStatsHeader()
-    let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
+    const rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     let myClanQueueTable = queueStats.getMyClanQueueTable()
     if (myClanQueueTable) {
@@ -395,7 +393,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let maxRank = maxCountryRank.get()
     for (local i = 1; i <= maxRank; i++) {
       params.append({
-        text = getTblValue(i.tostring(), queueStatData, 0).tostring()
+        text = (queueStatData?[i.tostring()] ?? 0).tostring()
         tdalign = "center"
       })
     }
@@ -479,3 +477,6 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
 
   onEventQueueStatsClusterAdded = @(_) this.fullUpdate()
 }
+register_gui_handler("QueueTable", QueueTable)
+
+return { QueueTable }

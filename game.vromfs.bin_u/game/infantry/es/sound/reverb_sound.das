@@ -2,7 +2,6 @@ require ecs
 require ecs.safe
 require soundEvent
 require soundSystem
-require math.random
 require math.base
 require math
 require DagorMath
@@ -75,7 +74,7 @@ def reverb_sound_appear(evt : Event;
                         var reverb_sound__intensity_roomSize_absorption_blend : float4&;
                         var reverb_sound__event : SoundEvent&)
   reverb_sound__event |> release_immediate()
-  if sound_banks_is_master_preset_loaded() && sound_banks_is_preset_loaded("infantry")
+  if sound_banks_is_valid_event(reverb_sound__path)
     reverb_sound__event |> play(reverb_sound__path, get_reverb_3d_pos())
     set_var_global(reverb_sound__intensityVar, 0.)
   reverb_sound__intensity_roomSize_absorption_blend = float4(0., 0., 0., 0.)

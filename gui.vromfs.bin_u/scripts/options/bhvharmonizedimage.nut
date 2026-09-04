@@ -1,6 +1,7 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 
 dagui_propid_add_name_id("harmonizedImageId")

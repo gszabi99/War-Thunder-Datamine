@@ -414,34 +414,6 @@
             }
           },
           {
-            "loc_name": "missions/airfield_spawn",
-            "spawnEffect": false,
-            "radius": -1.0,
-            "target": "t2_airfield",
-            "team": "B",
-            "isStrictSpawn": false,
-            "resetStrictSpawnIndex": false,
-            "isAirfield": true,
-            "isUnit": false,
-            "forceCreate": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "removeAreas": false,
-            "replaceAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "tags": {
-              "type_bomber": false,
-              "type_assault": false,
-              "type_interceptor": false,
-              "type_aa_fighter": false,
-              "tank": false
-            }
-          }
-        ],
-        "missionMarkAsRespawnPoint": [
-          {
             "loc_name": "missions/carriers_spawn",
             "spawnEffect": false,
             "radius": -1.0,
@@ -494,6 +466,32 @@
               "type_frontline_bomber": false,
               "type_longrange_bomber": false,
               "carrier_take_off": true,
+              "tank": false
+            }
+          },
+          {
+            "loc_name": "missions/airfield_spawn",
+            "spawnEffect": false,
+            "radius": -1.0,
+            "target": "t2_airfield",
+            "team": "B",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "tags": {
+              "type_bomber": false,
+              "type_assault": false,
+              "type_interceptor": false,
+              "type_aa_fighter": false,
               "tank": false
             }
           }
@@ -6635,6 +6633,62 @@
             "t2_subquest_units_03"
           ],
           "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -11316.4,
+            -12.7422,
+            -6029.87
+          ]
+        ],
+        "props": {
+          "squad_members": "t1_aaa_squad"
+        }
+      },
+      {
+        "name": "t2_all_aaa_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            3975.92,
+            -12.7922,
+            -14981.8
+          ]
+        ],
+        "props": {
+          "squad_members": "t2_aaa_squad"
         }
       }
     ],

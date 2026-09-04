@@ -1,7 +1,8 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitClassConsts.nut" import *
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
 let { getSkillCategoryByName } = require("%scripts/crew/crewSkills.nut")
 let { getSkillListParameterRowsView, getSkillDescriptionView } = require("%scripts/crew/crewSkillParameters.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -11,11 +12,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getCrewSkillPoints, getMaxAvailbleCrewStepValue, crewSkillValueToStep, getSkillMaxCrewLevel,
-  getCrewTotalSteps, getSkillCrewLevel, getCrewMaxSkillValue, getCrew, getCrewSkillValue
-} = require("%scripts/crew/crew.nut")
-let { crewSpecTypes, getCrewSpecTypeByCode, getSpecTypeByCrewAndUnit
-} = require("%scripts/crew/crewSpecType.nut")
+let { getCrewSkillPoints, getMaxAvailbleCrewStepValue, crewSkillValueToStep, getSkillMaxCrewLevel, getCrewTotalSteps, getSkillCrewLevel, getCrewMaxSkillValue, getCrew, getCrewSkillValue } = require("%scripts/crew/crew.nut")
+let { crewSpecTypes, getCrewSpecTypeByCode, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 
 function getSkillCategoryName(skillCategory) {
   return loc($"crewSkillCategory/{skillCategory.categoryName}", skillCategory.categoryName)
@@ -117,11 +115,11 @@ addTooltipTypes({
     }
     getTooltipContent = function(crewIdStr, params) {
       let crew = getCrewById(to_integer_safe(crewIdStr, -1))
-      let unit = getAircraftByName(getTblValue("unitName", params, ""))
+      let unit = getAircraftByName((params?.unitName ?? ""))
       if (!unit)
         return ""
 
-      local specType = getCrewSpecTypeByCode(getTblValue("specTypeCode", params, -1))
+      local specType = getCrewSpecTypeByCode((params?.specTypeCode ?? -1))
       if (specType == crewSpecTypes.UNKNOWN)
         specType = getSpecTypeByCrewAndUnit(crew, unit)
       if (specType == crewSpecTypes.UNKNOWN)
@@ -137,11 +135,11 @@ addTooltipTypes({
     }
     getTooltipContent = function(crewIdStr, params) {
       let crew = getCrewById(to_integer_safe(crewIdStr, -1))
-      let unit = getAircraftByName(getTblValue("unitName", params, ""))
+      let unit = getAircraftByName((params?.unitName ?? ""))
       if (!unit)
         return ""
 
-      local specType = getCrewSpecTypeByCode(getTblValue("specTypeCode", params, -1))
+      local specType = getCrewSpecTypeByCode((params?.specTypeCode ?? -1))
       if (specType == crewSpecTypes.UNKNOWN)
         specType = getSpecTypeByCrewAndUnit(crew, unit).getNextType()
       if (specType == crewSpecTypes.UNKNOWN)

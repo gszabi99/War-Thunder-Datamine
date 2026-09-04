@@ -1,6 +1,6 @@
 {
   "model": "spitfire_mk5b_float",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_piston_inline_big_fighter_metaparts.blk",
   "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
   "gearSinkRangeLR": 0.145,
   "gearSinkRangeC": 0.085,
@@ -283,84 +283,6 @@
       ]
     }
   },
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
-        "emitter": "flare3",
-        "flash": "flare3",
-        "shell": "emtr_shellrejection2",
-        "dm": "cannon1_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 60,
-        "spread": 2.0
-      },
-      {
-        "trigger": "cannon",
-        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
-        "emitter": "flare4",
-        "flash": "flare4",
-        "shell": "emtr_shellrejection3",
-        "dm": "cannon2_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 60,
-        "spread": 2.0,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
-        "emitter": "flare1",
-        "flash": "flare1",
-        "shell": "emtr_shellrejection1",
-        "dm": "mgun1_dm",
-        "bullets": 350,
-        "spread": 1.35,
-        "traceOffset": 1
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
-        "emitter": "flare2",
-        "flash": "flare2",
-        "dm": "mgun2_dm",
-        "bullets": 350,
-        "spread": 1.35,
-        "traceOffset": 2
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
-        "emitter": "flare5",
-        "flash": "flare5",
-        "shell": "emtr_shellrejection4",
-        "dm": "mgun3_dm",
-        "isWingLPositioned": false,
-        "isWingRPositioned": false,
-        "bullets": 350,
-        "spread": 1.35
-      },
-      {
-        "trigger": "machine gun",
-        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
-        "emitter": "flare6",
-        "flash": "flare6",
-        "dm": "mgun4_dm",
-        "bullets": 350,
-        "spread": 1.35,
-        "traceOffset": 3
-      }
-    ]
-  },
-  "weapon_presets": {
-    "preset": {
-      "name": "Spitfire_mk5b_default",
-      "blk": "gameData/FlightModels/weaponPresets/Spitfire_mk5b_default.blk"
-    }
-  },
   "turbulence": {
     "segmentlength": 100.0,
     "startSpeed": 28.0,
@@ -391,43 +313,6 @@
     "wingStrainCoeff": 0.38,
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
-  },
-  "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
-    "hp_105": {},
-    "new_radiator": {},
-    "new_compressor": {},
-    "new_engine_injection": {},
-    "303_universal": {},
-    "303_all_tracers": {},
-    "303_stealth": {},
-    "hispano_universal": {},
-    "hispano_ground_targets": {},
-    "hispano_air_targets": {},
-    "hispano_tracers": {},
-    "hispano_stealth": {},
-    "bmg303_belt_pack": {},
-    "bmg303_new_gun": {
-      "reqModification": "bmg303_belt_pack"
-    },
-    "hispano_belt_pack": {
-      "tier": 1
-    },
-    "hispano_mk2_new_gun": {
-      "reqModification": "hispano_belt_pack",
-      "tier": 2
-    },
-    "hispano_mk_2_narrow_chamber_new_gun": {
-      "reqModification": "hispano_mk2_new_gun",
-      "tier": 3
-    },
-    "hispano_mk_2_1943_new_gun": {
-      "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
-      "tier": 4
-    }
   },
   "DamageParts": {
     "armor10": {
@@ -2441,6 +2326,121 @@
         ]
       }
     ]
+  },
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
+        "emitter": "flare3",
+        "flash": "flare3",
+        "shell": "emtr_shellrejection2",
+        "dm": "cannon1_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 60,
+        "spread": 2.0
+      },
+      {
+        "trigger": "cannon",
+        "blk": "gameData/Weapons/cannonHispanoMkII.blk",
+        "emitter": "flare4",
+        "flash": "flare4",
+        "shell": "emtr_shellrejection3",
+        "dm": "cannon2_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 60,
+        "spread": 2.0,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "emitter": "flare1",
+        "flash": "flare1",
+        "shell": "emtr_shellrejection1",
+        "dm": "mgun1_dm",
+        "bullets": 350,
+        "spread": 1.35,
+        "traceOffset": 1
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "emitter": "flare2",
+        "flash": "flare2",
+        "dm": "mgun2_dm",
+        "bullets": 350,
+        "spread": 1.35,
+        "traceOffset": 2
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "emitter": "flare5",
+        "flash": "flare5",
+        "shell": "emtr_shellrejection4",
+        "dm": "mgun3_dm",
+        "isWingLPositioned": false,
+        "isWingRPositioned": false,
+        "bullets": 350,
+        "spread": 1.35
+      },
+      {
+        "trigger": "machine gun",
+        "blk": "gameData/Weapons/gunBrowning303_raf.blk",
+        "emitter": "flare6",
+        "flash": "flare6",
+        "dm": "mgun4_dm",
+        "bullets": 350,
+        "spread": 1.35,
+        "traceOffset": 3
+      }
+    ]
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "spitfire_v_default",
+      "blk": "gameData/FlightModels/weaponPresets/spitfire_v_default.blk"
+    }
+  },
+  "modifications": {
+    "cd_98": {},
+    "CdMin_Fuse": {},
+    "new_cover": {},
+    "structure_str": {},
+    "hp_105": {},
+    "new_radiator": {},
+    "new_compressor": {},
+    "new_engine_injection": {},
+    "303_universal": {},
+    "303_all_tracers": {},
+    "303_stealth": {},
+    "hispano_universal": {},
+    "hispano_ground_targets": {},
+    "hispano_air_targets": {},
+    "hispano_tracers": {},
+    "hispano_stealth": {},
+    "bmg303_belt_pack": {},
+    "bmg303_new_gun": {
+      "reqModification": "bmg303_belt_pack"
+    },
+    "hispano_belt_pack": {
+      "tier": 1
+    },
+    "hispano_mk2_new_gun": {
+      "reqModification": "hispano_belt_pack",
+      "tier": 2
+    },
+    "hispano_mk_2_narrow_chamber_new_gun": {
+      "reqModification": "hispano_mk2_new_gun",
+      "tier": 3
+    },
+    "hispano_mk_2_1943_new_gun": {
+      "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
+      "tier": 4
+    }
   },
   "user_skin": {
     "name": "spitfire_mk5b_float",

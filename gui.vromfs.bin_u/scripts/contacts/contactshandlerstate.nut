@@ -17,7 +17,7 @@ function loadContactsToObj(obj, owner) {
 }
 
 function switchContactsObj(scene, owner) {
-  let objName = "contacts_scene"
+  const objName = "contacts_scene"
   local obj = null
   if (checkObj(scene)) {
     obj = scene.findObject(objName)

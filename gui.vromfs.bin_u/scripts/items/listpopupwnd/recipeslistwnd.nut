@@ -1,21 +1,22 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqstd/math.nut" as stdMath
+from "math" import ceil
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import MARK_RECIPE
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { hasFakeRecipesInList } = require("%scripts/items/exchangeRecipes.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { hasFakeRecipesInList, ExchangeRecipes } = require("%scripts/items/exchangeRecipes.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { ceil } = require("math")
-let u = require("%sqStdLibs/helpers/u.nut")
-let stdMath = require("%sqstd/math.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { move_mouse_on_child_by_value, findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, findChildIndex, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
-gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+let RecipesListWnd = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneTplName = "%gui/items/recipesListWnd.tpl"
 
@@ -175,7 +176,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onRecipeSelect(obj) {
     let newRecipe = this.recipesList?[obj.getValue()]
-    if (!u.isRecipe(newRecipe) || newRecipe == this.curRecipe)
+    if (!u.isOfClass(newRecipe, ExchangeRecipes) || newRecipe == this.curRecipe)
       return
     this.curRecipe = newRecipe
     this.updateCurRecipeInfo()
@@ -215,12 +216,13 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateCurRecipeInfo()
   }
 }
+register_gui_handler("RecipesListWnd", RecipesListWnd)
 
 return {
   open = function(params) {
     let recipesList = params?.recipesList
     if (!recipesList || !recipesList.len())
       return
-    handlersManager.loadHandler(gui_handlers.RecipesListWnd, params)
+    handlersManager.loadHandler(RecipesListWnd, params)
   }
 }

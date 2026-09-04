@@ -1,11 +1,12 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%appGlobals/timeLoc.nut" import hoursToString
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 from "dagor.workcycle" import clearTimer, setTimeout, deferOnce
-let u = require("%sqStdLibs/helpers/u.nut")
+
 let { TIME_DAY_IN_SECONDS, buildDateStr } = require("%scripts/time.nut")
-let { hoursToString } = require("%appGlobals/timeLoc.nut")
-let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopPromoteUnits } = require("%scripts/shop/shopUnitsInfo.nut")
-let { get_charserver_time_sec } = require("chard")
 let { isUnitBought, canBuyUnitEvenNotInShop } = require("%scripts/unit/unitShopInfo.nut")
 
 let promoteUnits = mkWatched(persist, "promoteUnits", {})

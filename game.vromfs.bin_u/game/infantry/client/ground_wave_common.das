@@ -3,14 +3,9 @@ require ecs.safe
 require ecs.extra_set
 require ecs.common
 require ecs.soa_template
-require math.base
 require strings
 require AnimV20
-require GeomNodeTree
 require DaWeapons
-require DagorSystem
-require %appGame.infantry.client.physmat_fx_common
-require PhysMat
 require Dacoll
 require RendInst
 require DagorMath

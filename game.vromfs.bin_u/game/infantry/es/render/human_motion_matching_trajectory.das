@@ -1,5 +1,4 @@
 require ecs
-require app
 require math.base
 require AnimV20
 require DngHuman
@@ -45,7 +44,7 @@ def motion_matching_set_wish_speed(act : ParallelUpdateFrameDelayed;
     mm_trajectory__wishLinearVelocity = float3(0f)
 
 [es(tag=gameClient, REQUIRE=mm_trajectory__customUpdate, after=mm_update_root_orientation_es,
-    before=(mm_calculate_root_offset_es, mm_trajectory_track_history))]
+    before=(before_animchar_update_sync, mm_trajectory_track_history))]
 def motion_matching_update_trajectory(act : ParallelUpdateFrameDelayed;
                                       human_net_phys : HumanActor;
                                       animchar : AnimcharBaseComponent;

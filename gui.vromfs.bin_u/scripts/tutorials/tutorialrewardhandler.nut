@@ -1,22 +1,25 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "console" import register_command
+from "mission" import set_game_mode, get_game_mode
+from "blkGetters" import get_pve_awards_blk
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_natives.nut" import get_game_mode_name, get_mission_progress
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock = require("DataBlock")
-let { checkTutorialsList, tutorialRewardData, clearTutorialRewardData
-} = require("%scripts/tutorials/tutorialsData.nut")
+
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { checkTutorialsList, tutorialRewardData, clearTutorialRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { reqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decoratorGetters.nut")
 let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { getMoneyFromDebriefingResult, setDebriefingResult } = require("%scripts/debriefing/debriefingFull.nut")
 let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
-let { register_command } = require("console")
-let { set_game_mode, get_game_mode } = require("mission")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
-let { get_pve_awards_blk } = require("blkGetters")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 let { isAnyAwardReceivedByModeType } = require("%scripts/unlocks/unlocksModule.nut")
@@ -40,7 +43,7 @@ register_command(
       needVerticalAlign = true
     }]
     setDebriefingResult(null)
-    return loadHandler(gui_handlers.TutorialRewardHandler,
+    return loadHandler(get_gui_handler("TutorialRewardHandler"),
       {
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)
         misName
@@ -51,7 +54,7 @@ register_command(
   "ui.debug_tutorial_reward"
 )
 
-local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
+local TutorialRewardHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
 
   sceneBlkName = "%gui/tutorials/tutorialReward.blk"
@@ -153,7 +156,7 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.TutorialRewardHandler <- TutorialRewardHandler
+register_gui_handler("TutorialRewardHandler", TutorialRewardHandler)
 
 function tryOpenTutorialRewardHandler() {
   if (tutorialRewardData.get() == null)
@@ -195,7 +198,7 @@ function tryOpenTutorialRewardHandler() {
       if (firstCompletRewardData.hasReward && !firstCompletRewardData.isComplete)
         rewardsConfig.append(firstCompletRewardData)
 
-      loadHandler(gui_handlers.TutorialRewardHandler, {
+      loadHandler(TutorialRewardHandler, {
         misName = misName
         decorator = decorator
         rewardMarkup = getMissionRewardsMarkup(dataBlk ?? DataBlock(), misName, rewardsConfig)

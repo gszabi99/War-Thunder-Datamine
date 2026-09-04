@@ -1,16 +1,14 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "dagor.math" import Point2
+from "math" import pow
+from "string" import format
+from "%sqstd/string.nut" import floatToStringRounded
+from "guiOptions" import getMeasureUnitOptionType
 from "%scripts/dagui_library.nut" import *
-let DataBlock = require("DataBlock")
-let { Point2 } = require("dagor.math")
-let { pow } = require("math")
-let { format } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { floatToStringRounded } = require("%sqstd/string.nut")
-let { getMeasureUnitOptionType } = require("guiOptions")
-let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
-  USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE,
-  USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO,
-  USEROPT_MEASUREUNITS_RADIAL_SPEED, USEROPT_MEASUREUNITS_DIST_SHORT
-} = require("%scripts/options/optionsExtNames.nut")
+from "types" import Array
+
+let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST, USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE, USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO, USEROPT_MEASUREUNITS_RADIAL_SPEED, USEROPT_MEASUREUNITS_DIST_SHORT } = require("%scripts/options/optionsExtNames.nut")
 
 let OptionsMeasureUnits = persist("OptionsMeasureUnits", @() {unitsCfg = []})
 
@@ -87,7 +85,7 @@ function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, 
   if (!unit)
     return ""
 
-  if (type(value) != "array")
+  if (!(value instanceof Array))
     value = [ value ]
   local maxValue = null
   foreach (val in value)

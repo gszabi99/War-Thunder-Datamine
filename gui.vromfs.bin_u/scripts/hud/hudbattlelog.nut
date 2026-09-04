@@ -1,25 +1,25 @@
+import "regexp2" as regexp2
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "string" import format, split_by_chars
+from "replays" import is_replay_playing
+from "eventbus" import eventbus_send
+from "mission" import get_mission_time, get_mplayer_by_id, get_local_mplayer
+from "guiMission" import get_player_army_for_hud
+from "hudActionBar" import getOwnerUnitName
+from "%globalScripts/deathReasonConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/unitTypeConsts.nut" import *
+from "%globalScripts/battleMetaConsts.nut" import *
 from "hudMessages" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color, is_team_friendly
+
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { format, split_by_chars } = require("string")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
-let { is_replay_playing } = require("replays")
-let { eventbus_send } = require("eventbus")
-let { get_mission_time, get_mplayer_by_id, get_local_mplayer } = require("mission")
-let { get_player_army_for_hud } = require("guiMission")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
-  USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG,
-  USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, USEROPT_HUD_VISIBLE_KILLLOG
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, USEROPT_HUD_VISIBLE_KILLLOG } = require("%scripts/options/optionsExtNames.nut")
 let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isShipBattle, isHumanMission
-} = require("%scripts/missions/missionType.nut")
-let { getOwnerUnitName } = require("hudActionBar")
+let { isShipBattle, isHumanMission } = require("%scripts/missions/missionType.nut")
 let { getLocForStreak } = require("%scripts/streaks.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
@@ -133,8 +133,8 @@ function reset(safe = false) {
   eventbus_send("clearBattleLog", {})
 }
 
-let skipDuplicatesSec = 10
-let logMaxLen = 2000
+const skipDuplicatesSec = 10
+const logMaxLen = 2000
 let actionVerbs = {
   kill = {
     [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -340,7 +340,7 @@ function msgEscapeCodesToCssColors(sequence) {
   local ret = ""
   foreach (w in split_by_chars(sequence, "\x1B")) {
     if (w.len() >= 3 && rePatternNumeric.match(w.slice(0, 3))) {
-      let color = getTblValue(w.slice(0, 3).tointeger(), escapeCodeToCssColor)
+      let color = escapeCodeToCssColor?[w.slice(0, 3).tointeger()]
       let value = w.slice(3)
       ret = "".concat(ret, color ? colorize(color, value) : value)
     }
@@ -363,9 +363,9 @@ function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0) {
 }
 
 function getUnitTypeEx(msg, isVictim = false) {
-  let uType = getTblValue(isVictim ? "victimUnitType" : "unitType", msg)
+  let uType = msg?[isVictim ? "victimUnitType" : "unitType"]
 
-  local res = getTblValue(uType, utToEsUnitType, ES_UNIT_TYPE_INVALID)
+  local res = (utToEsUnitType?[uType] ?? ES_UNIT_TYPE_INVALID)
   if (res == ES_UNIT_TYPE_INVALID) { 
     let unit = getAircraftByName(msg[isVictim ? "victimUnitName" : "unitName"])
     if (unit)
@@ -376,7 +376,7 @@ function getUnitTypeEx(msg, isVictim = false) {
 }
 
 function getUnitTypeSuffix(unitType) {
-  return getTblValue(unitType, unitTypeSuffix, unitTypeSuffix[ES_UNIT_TYPE_TANK])
+  return (unitTypeSuffix?[unitType] ?? unitTypeSuffix[ES_UNIT_TYPE_TANK])
 }
 
 function getActionTextIconic(msg) {
@@ -417,7 +417,7 @@ function getActionTextIconic(msg) {
 function getActionTextVerbal(msg) {
   let victimUnitType = getUnitTypeEx(msg, true)
   let msgAction = msg?.action ?? "kill"
-  let verb = getTblValue(victimUnitType, getTblValue(msgAction, actionVerbs, {}), msgAction)
+  let verb = ((actionVerbs?[msgAction] ?? {})?[victimUnitType] ?? msgAction)
   let isLoss = (msg?.victimTeam ?? get_player_army_for_hud()) == get_player_army_for_hud()
   return colorize(getActionColor(msg?.isKill ?? true, isLoss), loc(verb))
 }

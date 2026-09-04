@@ -1,20 +1,19 @@
+from "dagor.workcycle" import defer
+from "%gdkLib/impl/store.nut" import show_marketplace, ProductKind
 from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { defer } = require("dagor.workcycle")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
-let { xboxProceedItems, canUseIngameShop, requestData, getShopItem
-} = require("%scripts/onlineShop/xboxShopData.nut")
+let { xboxProceedItems, canUseIngameShop, requestData, getShopItem } = require("%scripts/onlineShop/xboxShopData.nut")
 let { set_xbox_on_purchase_cb } = require("%scripts/gdk/purch.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { isPlayerRecommendedEmailRegistration } = require("%scripts/user/countryUtils.nut")
 let { targetPlatform } = require("%scripts/clientState/platform.nut")
-let { show_marketplace, ProductKind } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
@@ -110,7 +109,7 @@ let openIngameStoreImpl = kwarg(
             log($"XBOX SHOP: Found sheet {curSheetId} for unit {unitName}. Item {curItem?.id}, {curItem?.entitlementId}")
           }
 
-          handlersManager.loadHandler(gui_handlers.XboxShop, {
+          handlersManager.loadHandler(get_gui_handler("XboxShop"), {
             itemsCatalog = xboxProceedItems.get()
             chapter = chapter
             curItem

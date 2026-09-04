@@ -1,20 +1,18 @@
+from "%appGlobals/timeLoc.nut" import hoursToString
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { seasonEndsTime } = require("%scripts/battlePass/seasonState.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj, seasonEndsTimeWatchObj
-} = require("%scripts/battlePass/watchObjInfoConfig.nut")
-let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
+let { seasonLvlWatchObj, hasBattlePassRewardWatchObj, hasChallengesRewardWatchObj, seasonEndsTimeWatchObj } = require("%scripts/battlePass/watchObjInfoConfig.nut")
+let { stashBhvValueConfig } = require("%scripts/sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { get_charserver_time_sec } = require("chard")
-let { PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey,
-  getPromoVisibilityById
-} = require("%scripts/promo/promo.nut")
-let { hoursToString } = require("%appGlobals/timeLoc.nut")
+let { PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey, getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 
-let BattlePassPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
+let BattlePassPromoHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
   sceneTplName = "%gui/promo/promoBattlePass.tpl"
@@ -67,13 +65,13 @@ let BattlePassPromoHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function performAction(obj) { performPromoAction(this, obj) }
 }
 
-gui_handlers.BattlePassPromoHandler <- BattlePassPromoHandler
+register_gui_handler("BattlePassPromoHandler", BattlePassPromoHandler)
 
 function openBattlePassPromoHandler(params) {
   handlersManager.loadHandler(BattlePassPromoHandler, params)
 }
 
-let promoButtonId = "battle_pass_mainmenu_button"
+const promoButtonId = "battle_pass_mainmenu_button"
 
 addPromoButtonConfig({
   promoButtonId = promoButtonId

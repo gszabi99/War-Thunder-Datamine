@@ -1,15 +1,16 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "userstat" as userstat
+from "chard" import get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
-let userstat = require("userstat")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_charserver_time_sec } = require("chard")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { findItemById } = require("%scripts/items/itemsManagerModule.nut")
 
@@ -39,7 +40,7 @@ let fetchRewardsTimeData = function(cb) {
     })
 }
 
-gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwRewards = class (BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneBlkName = "%gui/clans/clanSeasonInfoModal.blk"
 
@@ -219,12 +220,13 @@ gui_handlers.WwRewards <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function showBonusesByActivateItem(_obj) {}
 }
+register_gui_handler("WwRewards", WwRewards)
 
 return {
   open = function(params) {
     if (!params?.rewardsBlk)
       return
 
-    handlersManager.loadHandler(gui_handlers.WwRewards, params)
+    handlersManager.loadHandler(WwRewards, params)
   }
 }

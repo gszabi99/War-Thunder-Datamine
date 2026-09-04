@@ -1,22 +1,19 @@
+from "gpuBenchmark" import initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark, closeGraphicsAutodetect, getPresetFor60Fps, isGpuBenchmarkRunning, getGpuName
+from "chard" import get_charserver_time_sec
+from "console" import register_command
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { saveLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { initGraphicsAutodetect, getGpuBenchmarkDuration, startGpuBenchmark,
-  closeGraphicsAutodetect, getPresetFor60Fps, isGpuBenchmarkRunning, getGpuName
-} = require("gpuBenchmark")
-let { setQualityPreset, onConfigApplyWithoutUiUpdate
-} = require("%scripts/options/systemOptions.nut")
+let { setQualityPreset, onConfigApplyWithoutUiUpdate } = require("%scripts/options/systemOptions.nut")
 let { secondsToString } = require("%scripts/time.nut")
-let { get_charserver_time_sec } = require("chard")
-let { register_command } = require("console")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
-let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID
-} = require("%scripts/options/gpuBenchmarkUtils.nut")
+let { GPU_BENCHMARK_SEEN_SAVE_ID, GPU_BENCHMARK_GPU_SAVE_ID } = require("%scripts/options/gpuBenchmarkUtils.nut")
 
-local class FirstGpuBenchmarkWnd(gui_handlers.BaseGuiHandlerWT) {
+local class FirstGpuBenchmarkWnd(BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/firstGpuBenchmark.blk"
   timeEndBenchmark = -1
@@ -25,7 +22,7 @@ local class FirstGpuBenchmarkWnd(gui_handlers.BaseGuiHandlerWT) {
     saveLocalSharedSettings(GPU_BENCHMARK_SEEN_SAVE_ID, true)
     saveLocalSharedSettings(GPU_BENCHMARK_GPU_SAVE_ID, getGpuName())
 
-    initGraphicsAutodetect()
+    initGraphicsAutodetect("graphicsAutodetect")
     this.timeEndBenchmark = get_charserver_time_sec()
      + getGpuBenchmarkDuration().tointeger()
     this.updateProgressText()
@@ -67,10 +64,12 @@ local class FirstGpuBenchmarkWnd(gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.FirstGpuBenchmarkWnd <- FirstGpuBenchmarkWnd
+register_gui_handler("FirstGpuBenchmarkWnd", FirstGpuBenchmarkWnd)
 
 function showFirstGpuBenchmarkWnd() {
   handlersManager.loadHandler(FirstGpuBenchmarkWnd)
 }
 
 register_command(showFirstGpuBenchmarkWnd, "debug.loadFirstBenchmarkWnd")
+
+return { FirstGpuBenchmarkWnd }

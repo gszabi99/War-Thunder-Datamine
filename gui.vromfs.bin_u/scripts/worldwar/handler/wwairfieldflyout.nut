@@ -1,16 +1,18 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "%sqstd/math.nut" as stdMath
+from "string" import format
+from "worldwarConst" import RenderCategory
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { getObjValidIndex } = require("%scripts/sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
-let stdMath = require("%sqstd/math.nut")
 let { updateModItem, createModItem } = require("%scripts/weaponry/weaponryVisual.nut")
 let wwUnitClassParams = require("%scripts/worldWar/inOperation/wwUnitClassParams.nut")
 let { getMaxFlyTime } = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
@@ -20,12 +22,10 @@ let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.n
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarCfgState.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getCurrentOperation, getAirArmiesNumberByGroupIdx
-} = require("%scripts/worldWar/inOperation/wwOperations.nut")
+let { getCurrentOperation, getAirArmiesNumberByGroupIdx } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
 
 
@@ -57,7 +57,7 @@ local armyIdByMask = {
   [WW_UNIT_CLASS.COMBINED]   = "combined"
 }
 
-gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwAirfieldFlyOut = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/emptySceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/airfieldFlyOut.tpl"
@@ -94,7 +94,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!availableArmiesArray.len())
       return
 
-    handlersManager.loadHandler(gui_handlers.WwAirfieldFlyOut,
+    handlersManager.loadHandler(get_gui_handler("WwAirfieldFlyOut"),
       {
         airfield = airfield,
         availableArmiesArray = availableArmiesArray
@@ -196,7 +196,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getHeaderTabs() {
     let view = { tabs = [] }
-    let selectedId = 0
+    const selectedId = 0
     foreach (idx, airfieldFormation in this.availableArmiesArray) {
       view.tabs.append({
         tabName = airfieldFormation.getClanTag()
@@ -260,7 +260,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     if (tabVal < 0)
       tabVal = 0
 
-    this.selectedGroupIdx = getTblValue(tabVal, this.availableArmiesArray, this.availableArmiesArray[0]).getArmyGroupIdx()
+    this.selectedGroupIdx = (this.availableArmiesArray?[tabVal] ?? this.availableArmiesArray[0]).getArmyGroupIdx()
     this.selectedGroupFlyArmies = this.calcSelectedGroupAirArmiesNumber()
 
     let formation = this.airfield.getFormationByGroupIdx(this.selectedGroupIdx)
@@ -771,7 +771,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local isAircraftsChoosen = false
-    let armyGroupIdx = getTblValue(listObj.getValue(), this.availableArmiesArray, -1).getArmyGroupIdx()
+    let armyGroupIdx = (this.availableArmiesArray?[listObj.getValue()] ?? -1).getArmyGroupIdx()
     let units = {}
     foreach (unitTable in this.unitsList)
       if (unitTable.armyGroupIdx == armyGroupIdx) {
@@ -831,3 +831,6 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     this.changeUnitWeapon(unit.name, weaponName)
   }
 }
+register_gui_handler("WwAirfieldFlyOut", WwAirfieldFlyOut)
+
+return { WwAirfieldFlyOut }

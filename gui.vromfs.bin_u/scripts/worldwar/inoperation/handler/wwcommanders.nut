@@ -1,14 +1,15 @@
+from "worldwar" import wwGetOperationId, wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_update_popuped_armies_name, ww_get_armies_names_of_armygroup, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { showArmiesIndex } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let WwArmyGroupHandler = require("%scripts/worldWar/inOperation/handler/wwArmyGroupHandler.nut")
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
@@ -16,7 +17,7 @@ let { getArmyGroups, getArmyGroupsBySide } = require("%scripts/worldWar/worldWar
 let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
-gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwCommanders = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneTplName = "%gui/worldWar/worldWarCommandersInfo.tpl"
   sceneBlkName = null
@@ -160,3 +161,6 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
   }
 }
+register_gui_handler("WwCommanders", WwCommanders)
+
+return { WwCommanders }

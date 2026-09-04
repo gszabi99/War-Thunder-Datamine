@@ -1,7 +1,6 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_natives.nut" import sync_handler_simulate_signal, clan_get_my_role, clan_get_role_rights, clan_request_close_for_new_members, set_char_cb, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
-
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 function canChange(clanData) {
   if (!clanData)

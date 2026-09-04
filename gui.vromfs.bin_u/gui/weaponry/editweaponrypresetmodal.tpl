@@ -25,6 +25,31 @@ tdiv {
       }
       Button_close { id:t = 'btn_back' }
     }
+    <<#showOldPreset>>
+    textareaNoTab {
+      width:t='pw'
+      text:t='#edit/secondary_weapons/old_preset_invalid_desc'
+      padding:t='1@blockInterval, 0'
+      margin-bottom:t='2@blockInterval'
+    }
+    <<#oldPreset>>
+    tdiv {
+      padding-left:t='<<oldPresetLeftMargin>>'
+      width:t='pw'
+      flow:t='vertical'
+
+      include "%gui/weaponry/simplyWeaponryPreset.tpl"
+      img {
+        background-color:t="@white";
+        background-image:t="#ui/gameuiskin#item_upgrade"
+        pos:t='0.5pw-0.5w, 0'
+        position:t='relative'
+        rotation:t='180'
+        size:t='@tierIconSize, @tierIconSize'
+      }
+    }
+    <</oldPreset>>
+    <</showOldPreset>>
     textareaNoTab {
       id:t='weightCapacity'
       width:t='pw'

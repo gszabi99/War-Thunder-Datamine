@@ -177,7 +177,7 @@ def human_weap_anim_es(info : ParallelUpdateFrameDelayed;
   var weaponModEid = INVALID_ENTITY_ID
 
   for gunModEid in *gunMods
-    query(gunModEid) <| $ [es] (weapon_mod__active : bool)
+    query(gunModEid) <| $ [es(REQUIRE=weapon_mod__wantActiveState)] (weapon_mod__active : bool)
       weaponModEid = gunModEid
       weaponModIsActive = weapon_mod__active
 

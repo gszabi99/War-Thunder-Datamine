@@ -2,12 +2,13 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "gameplayBinding" import inFlightMenu, getIsInFlightMenu
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ItemsList } = require("%scripts/items/itemsShop.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getWarningText, checkCurrentMission } = require("%scripts/items/orders.nut")
 
-gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
+register_gui_handler("OrderActivationWindow", class (ItemsList) {
   displayItemTypes = [sheets.ORDERS.id, sheets.DEV_ITEMS.id]
 
   function initScreen() {
@@ -63,4 +64,4 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
    function isItemLocked(item) {
     return !checkCurrentMission(item)
   }
-}
+})

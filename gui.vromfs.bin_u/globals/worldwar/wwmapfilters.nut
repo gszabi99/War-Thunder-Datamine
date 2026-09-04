@@ -1,9 +1,9 @@
-let sharedWatched = require("%globalScripts/sharedWatched.nut")
+import "%globalScripts/sharedWatched.nut" as sharedWatched
+from "worldwarConst" import RenderCategory
 
 let isShowZonesFilter = sharedWatched("isShowZonesFilter", @() true)
 let isShowPathForSelectedArmyFilter = sharedWatched("isShowPathForSelectedArmyFilter", @() true)
 let isShowBattlesFilter = sharedWatched("isShowBattlesFilter", @() true)
-let { RenderCategory } = require("worldwarConst")
 
 let categoryFilter = {
   [RenderCategory.ERC_ZONES] = isShowZonesFilter,
@@ -11,9 +11,9 @@ let categoryFilter = {
   [RenderCategory.ERC_BATTLES] = isShowBattlesFilter
 }
 
-return {
+return freeze({
   setWWMapFilter = @(category, enabled) categoryFilter?[category].set(enabled)
   isShowZonesFilter
   isShowPathForSelectedArmyFilter
   isShowBattlesFilter
-}
+})

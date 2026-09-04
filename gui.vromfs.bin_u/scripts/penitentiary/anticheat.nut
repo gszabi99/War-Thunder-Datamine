@@ -1,16 +1,16 @@
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
+from "%sqstd/platform.nut" import is_windows
 from "%scripts/dagui_natives.nut" import restart_game, is_eac_inited
 from "%scripts/dagui_library.nut" import *
-let { is_windows } = require("%sqstd/platform.nut")
+
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
-let { recentBR } = require("%scripts/battleRating.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
+let { recentBR } = require("%scripts/battleRatingState.nut")
+let { getLeaderBattleRating, isSquadMember } = require("%scripts/squads/squadState.nut")
 
 function isEventMrankConditionComplete(event) {
   if ((event?.antiCheatEnableMrank ?? -1) >= 0) {
-    let br = g_squad_manager.isSquadMember()
-      ? g_squad_manager.getLeaderBattleRating()
+    let br = isSquadMember()
+      ? getLeaderBattleRating()
       : recentBR.get()
     return br < calcBattleRatingFromRank(event.antiCheatEnableMrank)
   }

@@ -33,7 +33,47 @@
   "imports": {},
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "carriers_init_low": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/carriers_spawn",
+            "radius": -1.0,
+            "target": "t1_carriers_squad",
+            "team": "A",
+            "isAirfield": true,
+            "showOnMap": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          },
+          {
+            "loc_name": "missions/carriers_spawn",
+            "radius": -1.0,
+            "target": "t2_carriers_squad",
+            "team": "B",
+            "isAirfield": true,
+            "showOnMap": true,
+            "tags": {
+              "carrier_take_off": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -200,7 +240,7 @@
             10076.4
           ]
         ],
-        "unit_class": "us_aircraftcarrier_lexington",
+        "unit_class": "us_aircraftcarrier_lexington_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,
@@ -345,7 +385,7 @@
             12452.1
           ]
         ],
-        "unit_class": "jp_aircraftcarrier_shokaku",
+        "unit_class": "jp_aircraftcarrier_shokaku_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,
@@ -490,7 +530,7 @@
             -9449.45
           ]
         ],
-        "unit_class": "us_aircraftcarrier_lexington",
+        "unit_class": "us_aircraftcarrier_lexington_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,
@@ -635,7 +675,7 @@
             -14647.1
           ]
         ],
-        "unit_class": "jp_aircraftcarrier_shokaku",
+        "unit_class": "jp_aircraftcarrier_shokaku_ai",
         "closed_waypoints": true,
         "isShipSpline": true,
         "shipTurnRadius": 100.0,

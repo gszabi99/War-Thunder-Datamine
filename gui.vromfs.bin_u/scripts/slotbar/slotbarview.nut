@@ -1,4 +1,15 @@
+from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
+from "unit" import get_player_unit_name, is_player_unit_alive
+from "string" import format, split_by_chars
+from "math" import round
+from "gameplayBinding" import isInFlight
+from "chardResearch" import shopIsModificationEnabled
+from "guiMission" import get_max_spawns_unit_count, get_unit_wp_to_respawn
+from "%sqstd/string.nut" import stripTags
+from "mission" import get_game_mode
+from "dagor.debug" import debug_dump_stack
 from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, get_slot_delay, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen
+from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
@@ -6,56 +17,36 @@ from "%scripts/utils_sa.nut" import colorTextByValues, get_tomoe_unit_icon
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "guiRespawn" import getNumUsedUnitSpawns, isRespawnScreen
 
-let { get_player_unit_name, is_player_unit_alive } = require("unit")
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
-let { format, split_by_chars } = require("string")
-let { round } = require("math")
-let { isInFlight } = require("gameplayBinding")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { get_max_spawns_unit_count, get_unit_wp_to_respawn } = require("guiMission")
+let { events } = require("%scripts/events/eventsManager.nut")
 let time = require("%scripts/time.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { removeTextareaTags, toPixels } = require("%sqDagui/daguiUtil.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
+let { removeTextareaTags, toPixels } = require("%scripts/sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getUnitName,
-  bit_unit_status, getUnitReqExp,
-  getUnitExp, image_for_air
-} = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, bit_unit_status, getUnitReqExp, getUnitExp, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnitItemStatusText, getUnitRarity, getUnitClassIco
-} = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitItemStatusText, getUnitRarity, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
-let { isUnitElite, isUnitDefault, canResearchUnit, isUnitUsable,
-  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken,
-} = require("%scripts/unit/unitStatus.nut")
+let { isUnitElite, isUnitDefault, canResearchUnit, isUnitUsable, isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
-} = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitLastBullets } = require("%scripts/weaponry/bulletsInfo.nut")
-let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, isUnitDisabledByMatching
-} = require("%scripts/respawn/respawnState.nut")
+let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpare, isUnitDisabledByMatching } = require("%scripts/respawn/respawnState.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
-let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
-} = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameModeEdiff, isUnitAllowedForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCrewLevel, getCrewStatus, isCrewMaxLevel, isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
-let { get_game_mode } = require("mission")
-let { debug_dump_stack } = require("dagor.debug")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { getRoomEvent, isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
@@ -146,7 +137,7 @@ function getUnitSlotPriceText(unit, params) {
           sessionWpBalance, wpToRespawn, true, false))
       }
 
-      let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit), true, true)
+      let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
       if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
         local spawnScoreText = loc("shop/spawnScore", { cost = reqUnitSpawnScore })
         if (reqUnitSpawnScore > totalSpawnScore)
@@ -371,7 +362,7 @@ function getUnitSlotPriceHintText(unit, params) {
     hintTexts.append($"{wpToRespawnText} {loc("ui/minus")} {loc("mission_hint/cost_sl")}")
   }
 
-  let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit), true, true)
+  let reqUnitSpawnScore = shop_get_spawn_score(unit.name, getLastWeapon(unit.name), getUnitLastBullets(unit))
   if (reqUnitSpawnScore > 0 && totalSpawnScore > -1) {
     local reqSpawnScoreText = loc("shop/spawnScore", { cost = reqUnitSpawnScore })
     let totalSpawnScoreText = loc("shop/spawnScore", { cost = totalSpawnScore })
@@ -748,6 +739,7 @@ function buildCommonUnitSlot(id, unit, params) {
   }
 
   let hasCrewInfo = crewId >= 0
+  
   let crew = hasCrewInfo ? getCrewById(crewId) : null
   let unitForCrewInfo = forceCrewInfoUnit || unit
 
@@ -783,8 +775,8 @@ function buildCommonUnitSlot(id, unit, params) {
       crewSpecIcon = crewSpec.trainedIcon
       crewStatus = getCrewStatus(crew, unitForCrewInfo)
       hasCrewUnseenIcon = showCrewUnseenIcon && isCrewNeedUnseenIcon(crew, unitForCrewInfo) ? "yes" : "no"
-      crewNum = $"{crew.idInCountry + 1}"
-      crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
+      crewNum = $"{(crew?.idInCountry ?? 0) + 1}"
+      crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{(crew?.idInCountry ?? 0) + 1}"
       crewPoints = (hasUnit && needCurPoints) ? getCrewSpText(crew?.skillPoints ?? 0) : ""
       crewId
       crewIdInCountry = crew?.idInCountry
@@ -992,7 +984,7 @@ function buildCommonUnitSlot(id, unit, params) {
     extraInfoBlock      = handyman.renderCached("%gui/slotbar/slotExtraInfoBlock.tpl", extraInfoViewBottom)
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
     refuseOpenHoverMenu = !hasActions ? "yes" : "no"
-    crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : ""
+    crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{(crew?.idInCountry ?? 0) + 1}" : ""
     crewInfoTranslucent = showCrewInfoTranslucent ? "yes" : "no"
     hasContextCursor    = hasActions
     translucentText

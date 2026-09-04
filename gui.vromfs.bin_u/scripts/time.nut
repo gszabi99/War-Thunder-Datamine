@@ -1,15 +1,13 @@
+import "%appGlobals/timeLoc.nut" as timeBase
+import "%sqStdLibs/helpers/u.nut" as u
+import "regexp2" as regexp2
+import "math" as math
+import "dagor.iso8601" as dagor_iso8601
+from "string" import format, split_by_chars
+from "dagor.time" import get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime, unixtime_to_utc_timetbl, utc_timetbl_to_unixtime
+from "chard" import get_charserver_time_millisec, get_charserver_time_sec
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
-
-let { format, split_by_chars } = require("string")
-let regexp2 = require("regexp2")
-let math = require("math")
-let timeBase = require("%appGlobals/timeLoc.nut")
-let dagor_iso8601 = require("dagor.iso8601")
-let { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime,
-  unixtime_to_utc_timetbl, utc_timetbl_to_unixtime
-} = require("dagor.time")
-let { get_charserver_time_millisec, get_charserver_time_sec } = require("chard")
+from "types" import Float, Integer
 
 
 
@@ -36,7 +34,7 @@ let charToLocalUtcDiff = function() {
 local getFullTimeTable = function(time, fillMissedByTimeTable = null) {
   foreach (p in timeOrder) {
     if (!(p in time)) {
-      time[p] <- getTblValue(p, fillMissedByTimeTable)
+      time[p] <- fillMissedByTimeTable?[p]
     }
     else {
       fillMissedByTimeTable = null  
@@ -260,7 +258,7 @@ function preciseSecondsToString(value, canShowZeroMinutes = true) {
 
 
 function getRaceTimeFromSeconds(value, zeroIsValid = false) {
-  if (type(value) != "float" && type(value) != "integer")
+  if (!(value instanceof Float) && !(value instanceof Integer))
     return ""
   if (value < 0 || (!zeroIsValid && value == 0))
     return loc("leaderboards/notAvailable")

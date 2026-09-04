@@ -1,14 +1,14 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import isEqual
+from "%rGui/wwMap/wwBattlesStates.nut" import updateBattlesStates
+from "%rGui/wwMap/wwArmyStates.nut" import updateArmiesState
+from "%rGui/wwMap/wwArtilleryStrikeStates.nut" import updateArtilleryStrikeStates, updateArtilleryAction
+from "%rGui/wwMap/wwTransportUtils.nut" import updateTransportAction
+from "%rGui/wwMap/wwAirfieldsStates.nut" import updateAirfieldsStates
+from "%rGui/wwMap/wwOperationStates.nut" import updateOperationState
+from "worldwar" import wwGetZonesState, wwGetSectorSprites, wwGetLoadedTransport
+from "dagor.workcycle" import setInterval, clearTimer
 from "%rGui/globals/ui_library.nut" import *
-let DataBlock = require("DataBlock")
-let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { wwGetZonesState, wwGetSectorSprites, wwGetLoadedTransport } = require("worldwar")
-let { updateBattlesStates } = require("%rGui/wwMap/wwBattlesStates.nut")
-let { updateArmiesState } = require("%rGui/wwMap/wwArmyStates.nut")
-let { updateArtilleryStrikeStates, updateArtilleryAction } = require("%rGui/wwMap/wwArtilleryStrikeStates.nut")
-let { updateTransportAction } = require("%rGui/wwMap/wwTransportUtils.nut")
-let { updateAirfieldsStates } = require("%rGui/wwMap/wwAirfieldsStates.nut")
-let { updateOperationState } = require("%rGui/wwMap/wwOperationStates.nut")
-let { setInterval, clearTimer } = require("dagor.workcycle")
 
 
 let zonesSides = Watched([])

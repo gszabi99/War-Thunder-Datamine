@@ -1,15 +1,15 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "eventbus" import eventbus_subscribe
+from "dagor.debug" import debug_dump_stack
+from "dynamicMission" import dynamicClear
+from "guiMission" import mission_desc_clear
 from "%scripts/dagui_natives.nut" import switch_gui_scene
 from "%scripts/dagui_library.nut" import *
 
-let { eventbus_subscribe } = require("eventbus")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
-let { debug_dump_stack } = require("dagor.debug")
-let { dynamicClear } = require("dynamicMission")
-let { mission_desc_clear } = require("guiMission")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
 let { set_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { setBackFromReplaysFn } = require("%scripts/replays/backFromReplaysFn.nut")
@@ -31,7 +31,7 @@ function gui_start_mainmenu(params = {}) {
   mission_desc_clear()
   set_mission_settings("dynlist", [])
 
-  let handler = handlersManager.loadHandler(gui_handlers.MainMenu)
+  let handler = handlersManager.loadHandler(get_gui_handler("MainMenu"))
   handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" })
   showObjById("gamercard_center", !topMenuShopActive.get())
 

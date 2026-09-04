@@ -1,41 +1,39 @@
 
+
+import "DataBlock" as DataBlock
+import "regexp2" as regexp2
+from "%globalScripts/dataBlockExt.nut" import setBlkValueByPath, getBlkValueByPath, blkOptFromPath
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%globalScripts/systemConfig.nut" import getSystemConfigOption, setSystemConfigOption
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "math" import round
+from "string" import format, strip
+from "graphicsOptions" import get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, get_supported_generated_frames, is_dynamic_mfg_supported, is_dx11_supported
+  , is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api, is_intel_gpu, getVideoModes, getDgsTexQuality
+  , get_available_vsync_frequencies, get_video_memory_gb
+from "dagor.system" import get_primary_screen_info
+from "debug.config" import was_screenshot_applied_to_config
+from "%sqstd/datablock.nut" import eachBlock
+from "%sqstd/string.nut" import stripTags
+from "eventbus" import eventbus_subscribe
+from "dagor.localize" import doesLocTextExist
+from "%sqstd/platform.nut" import is_win64, is_windows, is_linux, isPC, platformId, is_gdk
+from "%sqstd/globalState.nut" import hardPersistWatched
+from "gameplayBinding" import isInFlight, isInHangar
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import is_hdr_available, is_perf_metrics_available,
-  is_low_latency_available, has_ray_query
+from "%scripts/dagui_natives.nut" import is_hdr_available, is_perf_metrics_available, is_low_latency_available, has_ray_query
 from "app" import is_dev_version, get_config_name
 from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_slider, create_option_switchbox, create_options_bar
-
+from "%globalScripts/unitTypeConsts.nut" import *
+from "types" import String, Function
 let { has_enough_vram_for_rt = @() true } = require_optional("bvhSettings")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock = require("DataBlock")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { round } = require("math")
-let { format, strip } = require("string")
-let regexp2 = require("regexp2")
-let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
-  get_supported_generated_frames, is_dx11_supported, is_dx12_supported, is_nvidia_gpu, is_amd_gpu, get_active_gfx_api,
-  is_intel_gpu, getVideoModes, getDgsTexQuality, get_available_vsync_frequencies, get_video_memory_gb } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
-let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
-let { get_primary_screen_info } = require("dagor.system")
-let { was_screenshot_applied_to_config } = require("debug.config")
-let { eachBlock } = require("%sqstd/datablock.nut")
-let { applyRestartClient, canRestartClient
-} = require("%scripts/utils/restartClient.nut")
-let { stripTags } = require("%sqstd/string.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { eventbus_subscribe } = require("eventbus")
-let { doesLocTextExist } = require("dagor.localize")
-let { is_win64, is_windows, isPC, platformId, is_gdk } = require("%sqstd/platform.nut")
-let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { applyRestartClient, canRestartClient } = require("%scripts/utils/restartClient.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings,
-NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { saveLocalAccountSettings, loadLocalAccountSettings, NEED_SHOW_GRAPHICS_AA_SETTINGS_MODIFIED } = require("%scripts/clientState/localProfile.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { isInFlight, isInHangar } = require("gameplayBinding")
 let { isVrModeAllowedInEvent } = require("%scripts/events/eventInfo.nut")
 let { isHumanMission } = require("%scripts/missions/missionType.nut")
 
@@ -65,7 +63,7 @@ const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
 local prevRtMode = null
 
-let CONFIG_DIFF_PATH_PREFIX = "config_diff_"
+const CONFIG_DIFF_PATH_PREFIX = "config_diff_"
 
 let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
@@ -116,6 +114,17 @@ const MIN_VMEM_FOR_MAX_AND_MOVIE_QUALITY = 4
 
 let initialGfxApi = get_active_gfx_api()
 let fpsLimits = [30, 50, 60, 85, 100, 120, 144, 165, 180, 240, fpsUnlimitedVal]
+let FALLBACK_RESOLUTIONS = [
+  [ 1024, 768 ],
+  [ 1280, 720 ],
+  [ 1280, 1024 ],
+  [ 1920, 1080 ],
+  [ 2520, 1080 ],
+  [ 2560, 1440 ],
+  [ 3840, 1080 ],
+  [ 3840, 2160 ],
+].map(@(v) { resolution = $"{v[0]} x {v[1]}", w = v[0], h = v[1] })
+
 
 
 let reloadSceneOptionIds = ["mode", "resolution", "enableVr"]
@@ -183,6 +192,7 @@ local mUiStruct = [
       "lastClipSize"
       "lenseFlares"
       "lensDistortions"
+      "crashDeformEnabled"
     ]
   }
   {
@@ -237,6 +247,15 @@ let perfValues = [
   
 ]
 
+let generatedFramesNumByName = {
+  dynamic = -1,
+  one = 1, two = 2, three = 3, four = 4, five = 5
+}
+let generatedFramesNameByNum = {
+  [-1] = "dynamic",
+  [1] = "one", [2] = "two", [3] = "three", [4] = "four", [5] = "five"
+}
+
 let getGuiValue = @(id, defVal = null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
 let getOptionIdByObjId = @(objId) objId.slice(("sysopt_").len())
 
@@ -271,7 +290,7 @@ function tryGetOptionImageSrc(id, value = null) {
     : availableInfoImgVals ? availableInfoImgVals[findNearest(value, availableInfoImgVals)]
     : value
 
-  return format(imgPattern, imgVal.tostring().replace(" ",  ""))
+  return format(imgPattern, (imgVal?.tostring() ?? "").replace(" ",  ""))
 
 }
 
@@ -652,7 +671,7 @@ let canShowGpuBenchmark = @() canUseGraphicsOptions()
 local aaUseGui = false;
 
 function updateGuiNavbar(show = true) {
-  let scene = mHandler?.scene
+  let { scene = null, curTabUnitType = "" } = mHandler
   if (!scene?.isValid())
     return
 
@@ -664,7 +683,15 @@ function updateGuiNavbar(show = true) {
   showObjById("btn_reset_tab", show && hasActiveTabDiffs(), scene)
   showObjById("restart_suggestion", showText, scene)
   showObjById("btn_restart", showRestartButton, scene)
-  showObjById("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
+
+  let hasBenchmark = show && canShowGpuBenchmark()
+  let objBenchmarkButton = showObjById("btn_gpu_benchmark", hasBenchmark, scene)
+  if (hasBenchmark && objBenchmarkButton != null) {
+    let modeText = curTabUnitType == ""
+      ? loc("unlocks/group/common")
+      : loc($"unit_type/{curTabUnitType}")
+    objBenchmarkButton.text = loc("gpuBenchmark/title", { modeText })
+  }
 
   let objNavbarApplyButton = scene.findObject("btn_apply")
   if (objNavbarApplyButton?.isValid())
@@ -791,18 +818,25 @@ function supportedGeneratedFrames(blk) {
   let aa = aaUseGui ? getGuiValue("antialiasingMode", "off") : getBlkValueByPath(blk, "video/antialiasing_mode", "off")
   let mode = aaUseGui ? getGuiValue("mode", "fullscreen") : getBlkValueByPath(blk, "video/mode", "fullscreenwindowed")
   let frames = get_supported_generated_frames(aa, mode == "fullscreen")
-  return frames
+  let dynamicSupported = is_dynamic_mfg_supported(aa, mode == "fullscreen")
+  return { frames, dynamicSupported }
 }
 
 function supportedGeneratedFramesValues(blk) {
-  let frames = supportedGeneratedFrames(blk)
+  let { frames, dynamicSupported } = supportedGeneratedFrames(blk)
   let modes = ["zero"]
+  if (dynamicSupported)
+    modes.append("dynamic")
   if (frames > 0)
     modes.append("one")
   if (frames > 1)
     modes.append("two")
   if (frames > 2)
     modes.append("three")
+  if (frames > 3)
+    modes.append("four")
+  if (frames > 4)
+    modes.append("five")
   return modes;
 }
 
@@ -812,9 +846,15 @@ function hasAntialiasingUpscaling() {
   return modesString.split(";").len() > 1
 }
 
+let getGuiOrConfigValue = @(id, defVal) getGuiValue(id) ?? readGuiValueFromBlk(id, mBlk) ?? defVal
+
 function getAvailableLatencyModes() {
-  let values = ["off"]
-  if (is_low_latency_available(1))
+  let hasOn = is_low_latency_available(1)
+  let forcedOn = hasOn && is_nvidia_gpu()
+    && getGuiOrConfigValue("antialiasingMode", "off") == "dlss"
+    && getGuiOrConfigValue("frameGeneration", "zero") != "zero"
+  let values = forcedOn ? [] : ["off"]
+  if (hasOn)
     values.append("on")
   if (is_low_latency_available(2))
     values.append("boost")
@@ -875,7 +915,7 @@ if (!hasRT()) {
   log($"optionRT is {hasFeature("optionRT")}")
   log($"macosx is {is_platform_macosx}")
   log($"has_ray_query is {has_ray_query()}")
-  log($"ultalow is {getGuiValue("graphicsQuality", "high") == "ultralow"}")
+  log($"ultralow is {getGuiValue("graphicsQuality", "high") == "ultralow"}")
 }
 
 function canDoBackgroundScale() {
@@ -905,8 +945,10 @@ function updateOption(id) {
 
   desc.init(null, desc)
 
-  if (desc.widgetType == "list")
-    setGuiValue(id, desc.values.indexof(getGuiValue(id)) ?? desc.def, true)
+  if (desc.widgetType == "list") {
+    let guiVal = getGuiValue(id)
+    setGuiValue(id, desc.values.contains(guiVal) ? guiVal : desc.def, true)
+  }
   else if (desc.widgetType == "options_bar") {
     let guiVal = getGuiValue(id)
     let val = desc.values.contains(guiVal) ? guiVal : desc.def
@@ -918,7 +960,7 @@ function updateOption(id) {
     return
 
   local markup = ""
-  let onChangeFnName = "onSystemOptionChanged"
+  const onChangeFnName = "onSystemOptionChanged"
   let onOptHoverFnName = "onSystemOptionControlHover"
   let isEnabled = desc?.enabled() ?? true
 
@@ -1034,7 +1076,7 @@ mShared = {
         locMsg = loc("msgbox/ultra_low_quality_preset")
       }
       else if (isPC && (quality == "movie" || quality == "max") && get_video_memory_gb() < MIN_VMEM_FOR_MAX_AND_MOVIE_QUALITY) {
-        let highQualityId = "high"
+        const highQualityId = "high"
         ok_func = @() graphicsQualityClickImpl(true)
         cancel_func= @() graphicsQualityClickImpl(false, @() setGuiValue("graphicsQuality", highQualityId))
         locMsg = loc("msgbox/movie_and_max_quality_preset_for_less_4gb_video", { selQualityMode = loc($"options/quality_{quality}") })
@@ -1130,6 +1172,9 @@ mShared = {
     }
 
     aaUseGui = false
+
+    if (is_nvidia_gpu())
+      updateOption("latency_nvidia")
   }
 
   latencyClick = function() {
@@ -1141,23 +1186,6 @@ mShared = {
   cloudsQualityClick = function() {
     let cloudsQualityVal = getGuiValue("cloudsQuality", 1)
     setGuiValue("skyQuality", cloudsQualityVal == 0 ? 0 : 1)
-  }
-
-  ssaoQualityClick = function() {
-    if (getGuiValue("ssaoQuality") == 0) {
-      setGuiValue("ssrQuality", 0)
-      setGuiValue("contactShadowsQuality", 0)
-    }
-  }
-
-  ssrQualityClick = function() {
-    if ((getGuiValue("ssrQuality") > 0) && (getGuiValue("ssaoQuality") == 0))
-      setGuiValue("ssaoQuality", 1)
-  }
-
-  contactShadowsQualityClick = function() {
-    if (getGuiValue("contactShadowsQuality") > 0 && getGuiValue("ssaoQuality") == 0)
-      setGuiValue("ssaoQuality", 1)
   }
 
   ssaaClick = function() {
@@ -1216,6 +1244,9 @@ mShared = {
   frameGenerationClick = function() {
     mShared.manageDynamicResolutionEnabled();
     mShared.manageDynamicResolutionTarget();
+
+    if (is_nvidia_gpu())
+      updateOption("latency_nvidia")
   }
 
   compatibilityModeClick = function() {
@@ -1430,41 +1461,55 @@ mShared = {
   }
 
   getVideoResolution = function(curResolution = null, isNeedAuto = true) {
-    let minW = 1024
-    let minH = 720
+    const minW = 1024
+    const minH = 720
 
     let list = getVideoModes()
     let isListTruncated = list.len() <= 1
-    if (isNeedAuto)
-      list.append("auto")
-    if (curResolution != null && list.indexof(curResolution) == null)
-      list.append(curResolution)
-
-    let data = list.map(parseResolution).filter(@(r)
-      (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
-
     let sortFunc = @(a, b) a.w <=> b.w  || a.h <=> b.h
+
+    let parsedList = list.map(parseResolution)
+
+    
+    
+    let enumerated = parsedList.filter(@(r) r.w >= minW && r.h >= minH)
+    enumerated.sort(sortFunc)
+    let listMaxW = enumerated?[enumerated.len() - 1].w ?? minW
+    let listMaxH = enumerated?[enumerated.len() - 1].h ?? minH
+
+    if (isNeedAuto)
+      parsedList.append(parseResolution("auto"))
+    if (curResolution != null && parsedList.findvalue(@(r) r.resolution == curResolution) == null)
+      parsedList.append(parseResolution(curResolution))
+
+    let data = parsedList.filter(@(r)
+      (r.w >= minW && r.h >= minH) || r.resolution == curResolution || r.resolution == "auto")
     data.sort(sortFunc)
 
     
     
-    if (isListTruncated && (is_windows || platformId == "macosx")) {
-      let resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
-        "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
+    
+    if (is_windows || is_platform_macosx || is_linux) {
       local psi = {}
       try{
         psi = get_primary_screen_info()
       }
       catch(e) {
-        log("get_primary_screen_info is not implemented?", e)
+        log("get_primary_screen_info failed", e)
       }
-      let maxW = psi?.pixelsWidth  ?? data?[data.len() - 1].w ?? 1024
-      let maxH = psi?.pixelsHeight ?? data?[data.len() - 1].h ?? 768
-      u.appendOnce($"{maxW} x {maxH}", resolutions)
-      let bonus = resolutions.map(parseResolution).filter(@(r)
-        (r.w <= maxW && r.h <= maxH) && !list.contains(r.resolution))
-      data.extend(bonus)
-      data.sort(sortFunc)
+      let screenW = psi?.pixelsWidth  ?? listMaxW
+      let screenH = psi?.pixelsHeight ?? listMaxH
+
+      if (isListTruncated || listMaxW < screenW || listMaxH < screenH) {
+        let screenResolution = $"{screenW} x {screenH}"
+        let candidatesRes = clone FALLBACK_RESOLUTIONS
+        if (candidatesRes.findvalue(@(r) r.resolution == screenResolution) == null)
+          candidatesRes.append({ resolution = screenResolution, w = screenW, h = screenH })
+        let bonusRes = candidatesRes.filter(@(r)
+          (r.w <= screenW && r.h <= screenH) && parsedList.findvalue(@(p) p.resolution == r.resolution) == null)
+        data.extend(bonusRes)
+        data.sort(sortFunc)
+      }
     }
 
     return data.map(@(r) r.resolution)
@@ -1505,6 +1550,10 @@ mShared = {
 
 
 
+  }
+
+  perfMetricsChanged = function() {
+    broadcastEvent("PerfMetricsOptionChanged", { idx = perfValues.indexof(getGuiValue("perfMetrics")) ?? 1 })
   }
 }
 
@@ -1810,6 +1859,7 @@ mSettings = {
   latency_nvidia = { widgetType = "list" def = "off" blk = "video/latency" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableLatencyModes()
+      desc.def = desc.values[0]
       desc.items <- desc.values.map(@(value) { text = localize("latency", value), tooltip = loc($"guiHints/latency_{value}") })
     }
     getValueFromConfig = function(blk, desc) {
@@ -1820,10 +1870,10 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, quality)
     }
     configValueToGuiValue = function(val) {
-      return (val == 1) ? "on" : (val == 2) ? "boost" : (val == 4) ? "experimental" : "off"
+      let value = (val == 1) ? "on" : (val == 2) ? "boost" : (val == 4) ? "experimental" : "off"
+      return getAvailableLatencyModes().contains(value) ? value : "on"
     }
     onChanged = "latencyClick"
-    enabled = @() getGuiValue("frameGeneration", "zero") == "zero"
     isVisible = @() is_nvidia_gpu()
   }
   latency_amd = { widgetType = "list" def = "off" blk = "video/latency" restart = false
@@ -1874,14 +1924,15 @@ mSettings = {
       return getBlkValueByPath(blk, desc.blk, 0)
     }
     setGuiValueToConfig = function(blk, desc, val) {
-      let num = (val == "one") ? 1 : (val == "two") ? 2 : (val == "three") ? 3 : (val == "four") ? 4 : 0
+      let num = generatedFramesNumByName?[val] ?? 0
       setBlkValueByPath(blk, desc.blk, num)
     }
     configValueToGuiValue = function(val) {
-      return (val == 1) ? "one" : (val == 2) ? "two" : (val == 3) ? "three" : (val == 4) ? "four" : "zero"
+      return generatedFramesNameByNum?[val] ?? "zero"
     }
   }
   perfMetrics = { widgetType = "list" def = "fps" blk = "video/perfMetrics" restart = false
+    onChanged = "perfMetricsChanged"
     init = function(_blk, desc) {
       desc.values <- getAvailablePerfMetricsModes()
     }
@@ -2045,13 +2096,11 @@ mSettings = {
     values = [ "low", "medium", "high" ], isVisible = @() true
     infoImgPattern = "#ui/images/settings/GI/%s"
   }
-  ssaoQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssaoQuality" restart = false
-    onChanged = "ssaoQualityClick"
+  ssaoQuality = { widgetType = "slider" def = 1 min = 1 max = 2 blk = "render/ssaoQuality" restart = false
     infoImgPattern = "#ui/images/settings/ssao/%s"
-    availableInfoImgVals = [0, 1, 2]
+    availableInfoImgVals = [1, 2]
   }
   ssrQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssrQuality" restart = false
-    onChanged = "ssrQualityClick"
     infoImgPattern = "#ui/images/settings/ssr/%s"
     availableInfoImgVals = [0, 1, 2]
   }
@@ -2091,13 +2140,17 @@ mSettings = {
     enabled = @() is_dev_version()
     isVisible = @() is_dev_version()
   }
+  crashDeformEnabled = { widgetType = "checkbox" def = false blk = "graphics/crashDeformEnabled" restart = false
+    enabled = @() is_dev_version() || hasFeature("crashDeformation")
+    isVisible = @() is_dev_version() || hasFeature("crashDeformation")
+  }
 
   jpegShots = { widgetType = "checkbox" def = true blk = "debug/screenshotAsJpeg" restart = false }
   hiResShots = { widgetType = "checkbox" def = false blk = "debug/screenshotHiRes" restart = false enabled = @() getGuiValue("ssaa") == "4X" }
   compatibilityMode = { widgetType = "checkbox" def = false blk = "video/compatibilityMode" restart = true
     onChanged = "compatibilityModeClick"
   }
-  enableHdr = { widgetType = "checkbox" def = false blk = "video/enableHdr" restart = true enabled = @() is_hdr_available() }
+  enableHdr = { widgetType = "checkbox" def = false blk = "video/enableHdr" enabled = @() is_hdr_available() }
   enableVr = {
     widgetType = "checkbox"
     blk = "gameplay/enableVR"
@@ -2115,7 +2168,6 @@ mSettings = {
     availableInfoImgVals = [0, 1, 2, 3, 4]
   }
   contactShadowsQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "graphics/contactShadowsQuality" restart = false
-    onChanged = "contactShadowsQualityClick"
     infoImgPattern = "#ui/images/settings/contactShadows/%s"
     availableInfoImgVals = [0, 1, 2]
   }
@@ -2212,10 +2264,10 @@ function validateInternalConfigs() {
     if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "options_bar", "button"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'widgetType' invalid or undefined."))
-    if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
+    if ((!("blk" in desc) || !(desc.blk instanceof String) || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'blk' invalid or undefined. It can be undefined only when both getValueFromConfig & setGuiValueToConfig are defined."))
-    if (("onChanged" in desc) && type(desc.onChanged) != "function")
+    if (("onChanged" in desc) && !(desc.onChanged instanceof Function))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'onChanged' function not found in sysopt.shared."))
 
@@ -2234,7 +2286,7 @@ function validateInternalConfigs() {
       if (def != null && uiType != "integer")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'widgetType'/'def' conflict."))
-      let invalidVal = -1
+      const invalidVal = -1
       let vMin = desc?.min ?? invalidVal
       let vMax = desc?.max ?? invalidVal
       let safeDef = (def != null) ? def : invalidVal
@@ -2476,7 +2528,7 @@ function init() {
   foreach (_id, desc in mSettings) {
     if ("init" in desc)
       desc.init(blk, desc)
-    if (("onChanged" in desc) && type(desc.onChanged) == "string")
+    if (("onChanged" in desc) && desc.onChanged instanceof String)
       desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
     if ("infoImgPattern" in desc)
       desc.allInfoImgs <- getAllOptionInfoImages(desc)
@@ -2758,7 +2810,7 @@ function mkOptionHeaderRow(sectionIdx, title, addInfo, tabs) {
       tabId = (tab?.unitTypeTag ?? "") == "" ? null : $"{title}_{tab.unitTypeTag}"
       tabName = tab?.locId ? loc(tab.locId) : null
       tabImage = tab?.image
-      selected = tabIdx == 0
+      selected = tabIdx == (mHandler?.curTabIdx ?? 0)
       unitTypeTag = tab?.unitTypeTag ?? ""
       disabled = !isUnitTypeTabEnabled(tab?.esUnitType ?? ES_UNIT_TYPE_INVALID)
     })
@@ -2770,7 +2822,7 @@ function setCurTabIdx(guiScene, unitTypesTabs) {
   if (!hasFeature("HasTabsInGraphicsOption"))
     return
 
-  let curUnitType = isHumanMission() ? ES_UNIT_TYPE_HUMAN : ES_UNIT_TYPE_INVALID
+  let curUnitType = isInFlight() && isHumanMission() ? ES_UNIT_TYPE_HUMAN : ES_UNIT_TYPE_INVALID
   let suitableTabIdx = unitTypesTabs.findindex(@(tab) tab?.esUnitType == curUnitType) ?? 0
   if (suitableTabIdx <= 0) 
     return

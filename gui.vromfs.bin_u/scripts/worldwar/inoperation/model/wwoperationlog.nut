@@ -1,19 +1,17 @@
-from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log,
-  ww_operation_request_log
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/u.nut" import copy, search
+from "worldwar" import wwGetPlayerSide
+from "%scripts/dagui_natives.nut" import ww_side_val_to_name, ww_operation_get_log, ww_operation_request_log
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-let DataBlock = require("DataBlock")
-let { wwGetPlayerSide } = require("worldwar")
-let { copy, search } = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let WwBattle = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_log_type } = require("%scripts/worldWar/inOperation/model/wwOperationLogTypes.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getSaveOperationLogId, getOperationObjectives
-} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { getSaveOperationLogId, getOperationObjectives } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
 let logsData = {
@@ -143,7 +141,7 @@ function changeLogsLoadStatus(isLogsLoading = false) {
 function saveLogBattle(blk) {
   if (!blk?.battle)
     return
-  let savedData = getTblValue(blk.battle?.id, logsData.logsBattles)
+  let savedData = logsData.logsBattles?[blk.battle?.id]
   let savedDataTime = savedData?.time ?? -1
   let logTime = blk?.time ?? -1
   if (savedDataTime > -1 && savedDataTime >= logTime)

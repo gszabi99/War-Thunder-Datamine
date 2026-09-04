@@ -1,18 +1,17 @@
+import "sony" as sony
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "%sqstd/platform.nut" import is_xbox
+from "vr" import is_stereo_mode
 from "%scripts/dagui_natives.nut" import set_option_hud_screen_safe_area, get_option_hud_screen_safe_area
 from "%scripts/dagui_library.nut" import *
 
-let { is_xbox } = require("%sqstd/platform.nut")
 let screenInfo = require("%scripts/options/screenInfo.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let sony = require("sony")
-let { is_stereo_mode } = require("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SCREEN_SAFE_AREA
-} = require("%scripts/options/optionsExtNames.nut")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SCREEN_SAFE_AREA } = require("%scripts/options/optionsExtNames.nut")
 let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
-let defValue  = 1.0
+const defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
 let items     = ["100%", "95%", "90%", "85%"]
 if (is_xbox) {

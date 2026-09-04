@@ -1,16 +1,15 @@
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "math" import round
+from "%sqstd/datablock.nut" import convertBlk, copyParamsToTable, eachBlock
+from "chard" import get_charserver_time_sec
+from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_get_clan_info, clan_get_membership_requirements, clan_get_my_clan_name
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
-let DataBlock  = require("DataBlock")
-let { round } = require("math")
-let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
-let { get_charserver_time_sec } = require("chard")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { getClanCreationDateText, getClanInfoChangeDateText, amendUGCText,
-  getClanMembersCountText, getRegionUpdateCooldownTime, checkClanTagForDirtyWords
-} = require("%scripts/clans/clanTextInfo.nut")
+let { getClanCreationDateText, getClanInfoChangeDateText, amendUGCText, getClanMembersCountText, getRegionUpdateCooldownTime, checkClanTagForDirtyWords } = require("%scripts/clans/clanTextInfo.nut")
 let { createSeasonRewardFromClanReward } = require("%scripts/clans/clanSeasonPlaceTitle.nut")
 let { getMyClanTag, getMyClanName } = require("%scripts/user/clanName.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
@@ -54,7 +53,7 @@ let clanInfoTemplate = {
   function getAllRegaliaTags() {
     let result = []
     foreach (rewards in ["seasonRewards", "seasonRatingRewards"]) {
-      local regalias = getTblValue("regaliaTags", this[rewards], [])
+      local regalias = (this[rewards]?.regaliaTags ?? [])
       if (!u.isArray(regalias))
         regalias = [regalias]
 
@@ -199,7 +198,7 @@ function get_clan_info_table(isUgcAllowed, clanInfo = null) {
     
     let ratingTable = member_ratings?[memberItem.uid] ?? {}
     foreach (key, value in emptyRating)
-      memberItem[key] <- round(getTblValue(key, ratingTable, value))
+      memberItem[key] <- round((ratingTable?[key] ?? value))
     memberItem.onlineStatus <- contactPresence.UNKNOWN
 
     

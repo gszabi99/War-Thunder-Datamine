@@ -1,18 +1,16 @@
+from "%appGlobals/ranks_common_shared.nut" import calc_personal_boost, calc_public_boost
+from "blkGetters" import get_warpoints_blk, get_ranks_blk
+from "string" import format
 from "%scripts/dagui_natives.nut" import get_current_booster_uid, get_current_booster_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
-let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
 let { registerBoosterUpdateTimer } = require("%scripts/items/boosterActions.nut")
-let { getGlobalModule } = require("%scripts/global_modules.nut")
-let g_squad_manager = getGlobalModule("g_squad_manager")
+let { getSameCyberCafeMembersNum } = require("%scripts/squads/squadState.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { measureType } = require("%scripts/measureType.nut")
-let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe
-} = require("%scripts/items/bonusEffectsGetters.nut")
-let { format } = require("string")
+let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
 let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { getInventoryList, findItemByUid } = require("%scripts/items/itemsManagerModule.nut")
@@ -64,8 +62,8 @@ function sortBoosters(boosters, effectType) {
     maxSortOrder = 0
   }
   foreach (booster in boosters) {
-    res.maxSortOrder = max(getTblValue("maxSortOrder", res, 0), booster.sortOrder)
-    if (!getTblValue(booster.sortOrder, res))
+    res.maxSortOrder = max((res?.maxSortOrder ?? 0), booster.sortOrder)
+    if (!res?[booster.sortOrder])
       res[booster.sortOrder] <- {
         personal = [],
         public = [],
@@ -152,7 +150,7 @@ function getActiveBoostersDescription(boostersArray, effectType, selectedItem = 
   let sortedItemsTable = sortBoosters(itemsArray, effectType)
   let detailedDescription = []
   for (local i = 0; i <= sortedItemsTable.maxSortOrder; i++) {
-    let arraysList = getTblValue(i, sortedItemsTable)
+    let arraysList = sortedItemsTable?[i]
     if (!arraysList || arraysList.len() == 0)
       continue
 
@@ -249,7 +247,7 @@ function getCurrentBonusesText(effectType) {
   if (value > 0.0) {
     value = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
     value = effectType.getText(colorize("activeTextColor", value), true)
-    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", { num = loc("ui/colon").concat(g_squad_manager.getSameCyberCafeMembersNum(), value) }))
+    tooltipText.append(loc("item/FakeBoosterForNetCafeLevel/squad", { num = loc("ui/colon").concat(getSameCyberCafeMembersNum(), value) }))
   }
 
   let boostersArray = getActiveBoostersArray(effectType)

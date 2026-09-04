@@ -1,9 +1,9 @@
+from "worldwar" import wwGetOperationId
 from "%scripts/dagui_library.nut" import *
 
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { wwGetOperationId } = require("worldwar")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 
 function getUnitsGroups() {

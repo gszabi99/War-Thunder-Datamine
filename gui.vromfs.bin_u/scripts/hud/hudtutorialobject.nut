@@ -1,6 +1,6 @@
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
 
-let { get_time_msec } = require("dagor.time")
 let { getHudElementAabb } = require("%scripts/hud/hudElementsAabb.nut")
 
 dagui_propid_add_name_id("_set_aabb_by_object")

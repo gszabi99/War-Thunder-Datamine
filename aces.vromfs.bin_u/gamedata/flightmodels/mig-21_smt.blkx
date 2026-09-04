@@ -1,7 +1,7 @@
 {
   "model": "mig_21_smt",
   "fmFile": "fm/mig-21_smt.blk",
-  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/jet_fighter_metaparts.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/1x_engine_jet_fighter_metaparts.blk",
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
@@ -2598,6 +2598,7 @@
             "AN/APG-67",
             "AN/APG-76 / AN/ASX-1",
             "AN/APG-79",
+            "AN/APG-83",
             "Thales RDY",
             "N019",
             "N001",
@@ -2656,14 +2657,8 @@
           1.0
         ],
         "page": {
-          "type": "radar",
-          "scale": 1.1,
-          "color": [
-            27,
-            115,
-            255,
-            255
-          ]
+          "type": "custom",
+          "pageName": "mfdMig21Radar"
         }
       }
     },
@@ -2892,7 +2887,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot1",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_l1"
@@ -2902,7 +2897,45 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b003",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 5,
+                "preset": "s24"
+              },
+              {
+                "slot": 2,
+                "preset": "r3s_default"
+              },
+              {
+                "slot": 2,
+                "preset": "r3r_default"
+              },
+              {
+                "slot": 2,
+                "preset": "r60"
+              },
+              {
+                "slot": 2,
+                "preset": "fab250"
+              },
+              {
+                "slot": 2,
+                "preset": "fab500"
+              },
+              {
+                "slot": 2,
+                "preset": "zb500"
+              }
+            ]
           },
           {
             "iconType": "bombs_middle",
@@ -2982,7 +3015,17 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "r3s"
+              },
+              {
+                "slot": 1,
+                "preset": "r60"
+              }
+            ]
           },
           {
             "iconType": "missile_type_b_air_to_air",
@@ -3023,7 +3066,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot2",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_l"
@@ -3033,7 +3076,21 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b001",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 5,
+                "preset": "s24"
+              }
+            ]
           },
           {
             "iconType": "nar_ap_large",
@@ -3047,7 +3104,21 @@
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "su_ub_32a_24_b001",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 5,
+                "preset": "s24"
+              }
+            ]
           },
           {
             "iconType": "bombs_middle",
@@ -3211,7 +3282,17 @@
               "bullets": 1,
               "external": true,
               "separate": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 5,
+                "preset": "r3s"
+              },
+              {
+                "slot": 5,
+                "preset": "r60"
+              }
+            ]
           },
           {
             "iconType": "missile_type_b_air_to_air",
@@ -3252,7 +3333,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot4",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_r"
@@ -3262,7 +3343,21 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b002",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "s24"
+              },
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 5,
+                "preset": "s24"
+              }
+            ]
           },
           {
             "iconType": "nar_ap_large",
@@ -3276,7 +3371,21 @@
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "su_ub_32a_24_b002",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "s24"
+              },
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 5,
+                "preset": "s24"
+              }
+            ]
           },
           {
             "iconType": "bombs_middle",
@@ -3408,7 +3517,7 @@
           },
           {
             "iconType": "nar_ap_middle",
-            "name": "ub16",
+            "name": "ub16_slot5",
             "reqModification": "mig_21_ub16",
             "ShowNodes": {
               "node": "pylon_r1"
@@ -3418,7 +3527,45 @@
               "blk": "gameData/Weapons/containers/ub_16_57_su_s5k.blk",
               "emitter": "ub_57_16_b004",
               "external": true
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "s24"
+              },
+              {
+                "slot": 2,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "s24"
+              },
+              {
+                "slot": 4,
+                "preset": "r3s_default"
+              },
+              {
+                "slot": 4,
+                "preset": "r3r_default"
+              },
+              {
+                "slot": 4,
+                "preset": "r60"
+              },
+              {
+                "slot": 4,
+                "preset": "fab250"
+              },
+              {
+                "slot": 4,
+                "preset": "fab500"
+              },
+              {
+                "slot": 4,
+                "preset": "zb500"
+              }
+            ]
           },
           {
             "iconType": "bombs_middle",

@@ -1,4 +1,4 @@
-let speedGrades = [
+const speedGrades = [
   { weight = 15, speed = "very_fast" }
   { weight = 23, speed = "fast" }
   { weight = 30, speed = "normal" }
@@ -6,6 +6,6 @@ let speedGrades = [
   { weight = 50, speed = "very_slow" }
 ]
 
-return {
+return const {
   speedGrades
 }

@@ -1,10 +1,11 @@
+import "%globalScripts/wordHyphenation.nut" as wordHyphenation
+from "eventbus" import eventbus_send
+from "%sqstd/string.nut" import toIntegerSafe
 from "%rGui/globals/ui_library.nut" import *
+from "types" import Array
 
-let { eventbus_send } = require("eventbus")
 let fontsState = require("%rGui/style/fontsState.nut")
 let colors = require("%rGui/style/colors.nut")
-let { toIntegerSafe } = require("%sqstd/string.nut")
-let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 
 let blockInterval = fpx(6)
 let headerMargin = 2 * blockInterval
@@ -62,7 +63,7 @@ function url(data, fmtFunc = noTextFormatFunc, style = defStyle) {
       watch = stateFlags
       onElemState = @(sf) stateFlags.set(sf)
       children = [
-        { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] color = color, size = flex() },
+        { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] color = color, size = FLEX },
       ]
       onClick = onClick
     }.__update(data)
@@ -74,7 +75,7 @@ function mkUlElement(bullet) {
     local res = formatTextFunc(elem)
     if (res == null)
       return null
-    if (type(res) != "array")
+    if (!(res instanceof Array))
       res = [res]
     return {
       size = FLEX_H
@@ -122,7 +123,7 @@ let hangingIndent = calc_comp_size(defStyle.ulNoBullet)[0]
 
 let bullets = mkList(mkUlElement(defStyle.ulBullet))
 let indent = mkList(mkUlElement(defStyle.ulNoBullet))
-let separatorCmp = { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] size = [flex(), blockInterval], opacity = 0.2, margin = [blockInterval, blockInterval, fpx(20), 0] }
+let separatorCmp = { rendObj = ROBJ_FRAME borderWidth = [0, 0, borderWidth, 0] size = [FLEX, blockInterval], opacity = 0.2, margin = [blockInterval, blockInterval, fpx(20), 0] }
 
 function textParsed(params, formatTextFunc = noTextFormatFunc, style = defStyle) {
   if (params?.v == "----")
@@ -198,7 +199,7 @@ function image(obj, _formatTextFunc = noTextFormatFunc, style = defStyle) {
     image = Picture(obj.v)
     maxWidth = pw(100)
     size = [obj?.width != null
-      ? fpx(obj.width) : flex(), obj?.height != null
+      ? fpx(obj.width) : FLEX, obj?.height != null
         ? fpx(obj.height) : fpx(200)]
     keepAspect = true padding = style.padding
     children = {

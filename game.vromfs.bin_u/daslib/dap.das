@@ -2,8 +2,6 @@ options gen2
 options rtti
 options no_aot
 options indenting = 4
-options no_unused_block_arguments = false
-options no_unused_function_arguments = false
 options strict_smart_pointers = true
 
 module dap shared
@@ -24,6 +22,7 @@ struct InitializeRequestArguments {
     
 }
 
+[unused_argument(data)]
 def InitializeRequestArguments(data : JsonValue?) {
     
     return InitializeRequestArguments()
@@ -395,11 +394,9 @@ struct ThreadEvent {
 def joj(val : JsonValue?; id : string) : JsonValue? {
     
     var res : JsonValue? = null
-    if (val == null || !(val is _object)) {
-        return res
-    }
+    if (val == null || !(val is _object)) return res
     get(val as _object, id) $(v) {
-        res = unsafe(reinterpret<JsonValue?> v)
+        res = unsafe(reinterpret<JsonValue?>(v))
     }
     return res
 }
@@ -407,9 +404,7 @@ def joj(val : JsonValue?; id : string) : JsonValue? {
 def jon(val : JsonValue?; id : string; defVal = 0lf) : double {
     
     var res = defVal
-    if (val == null || !(val is _object)) {
-        return res
-    }
+    if (val == null || !(val is _object)) return res
     get(val.value as _object, id) $(v) {
         if (v.value is _number) {
             res = v.value as _number
@@ -428,9 +423,7 @@ def j_s(val : JsonValue?; defVal = "") : string {
 def jos(val : JsonValue?; id : string; defVal = "") : string {
     
     var res = defVal
-    if (val == null || !(val is _object)) {
-        return res
-    }
+    if (val == null || !(val is _object)) return res
     get(val.value as _object, id) $(v) {
         if (v.value is _string) {
             res = v.value as _string
@@ -442,9 +435,7 @@ def jos(val : JsonValue?; id : string; defVal = "") : string {
 def job(val : JsonValue?; id : string; defVal = false) : bool {
     
     var res = defVal
-    if (val == null || !(val is _object)) {
-        return res
-    }
+    if (val == null || !(val is _object)) return res
     get(val.value as _object, id) $(v) {
         if (v.value is _bool) {
             res = v.value as _bool

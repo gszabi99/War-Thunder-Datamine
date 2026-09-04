@@ -1,3 +1,4 @@
+from "%globalScripts/wwNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ww_side_name_to_val
 from "%scripts/dagui_library.nut" import *
 
@@ -15,9 +16,9 @@ let WwArmyOwner = class {
     if (!blk)
       return
 
-    this.side         = ww_side_name_to_val(getTblValue("side", blk, ""))
-    this.country      = getTblValue("country",      blk, "")
-    this.armyGroupIdx = getTblValue("armyGroupIdx", blk, -1)
+    this.side         = ww_side_name_to_val((blk?.side ?? ""))
+    this.country      = (blk?.country ?? "")
+    this.armyGroupIdx = (blk?.armyGroupIdx ?? -1)
   }
 
   function clear() {

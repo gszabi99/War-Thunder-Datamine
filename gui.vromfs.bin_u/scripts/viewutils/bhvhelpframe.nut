@@ -1,8 +1,8 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "math" import ceil
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/viewUtils/hints.nut" import g_hints
-
-let u = require("%sqStdLibs/helpers/u.nut")
-let { ceil } = require("math")
 
 let BhvHelpFrame = class {
   isUpdateInProgressPID  = dagui_propid_add_name_id("_isUpdateInProgress")

@@ -1,19 +1,19 @@
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { addPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { acceptRegionalUnlock, regionalPromos
-} = require("%scripts/unlocks/regionalUnlocks.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { acceptRegionalUnlock, regionalPromos } = require("%scripts/unlocks/regionalUnlocks.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPromoVisibilityById } = require("%scripts/promo/promo.nut")
 let promoSeenList = require("%scripts/seen/seenList.nut").get(SEEN.REGIONAL_PROMO)
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 
-let class RegionalUnlocksPromoWnd (gui_handlers.BaseGuiHandlerWT) {
+class RegionalUnlocksPromoWnd (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/unlocks/regionalUnlocksPromoWnd.blk"
 
@@ -67,7 +67,7 @@ let class RegionalUnlocksPromoWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-gui_handlers.RegionalUnlocksPromoWnd <- RegionalUnlocksPromoWnd
+register_gui_handler("RegionalUnlocksPromoWnd", RegionalUnlocksPromoWnd)
 
 addPromoAction("regional_unlocks", @(_handler, _params, _obj)
   handlersManager.loadHandler(RegionalUnlocksPromoWnd))

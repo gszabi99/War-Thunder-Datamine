@@ -1,9 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
+from "dagor.time" import get_time_msec
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC
+from "%scripts/utils/delayedActions.nut" import LOST_DELAYED_ACTION_MSEC
 
-let u = require("%sqStdLibs/helpers/u.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_time_msec } = require("dagor.time")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 let { getActiveGamercardPopupNestObj } = require("%scripts/gamercard/gamercardHelpers.nut")
 
@@ -122,7 +122,7 @@ function performDelayedFlushPopupsIfCan() {
   )
 }
 
-let class Popup {
+class Popup {
   static POPUP_BLK = "%gui/popup/popup.blk"
   static POPUP_BUTTON_BLK = "%gui/popup/popupButton.blk"
 

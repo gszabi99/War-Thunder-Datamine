@@ -1,24 +1,24 @@
+import "string" as string
+from "%rGui/planeState/planeFlyState.nut" import Speed, BarAltitude, Overload, Mach, Aoa, CompassValue, Tas
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, metrToFeet, metrToNavMile
+from "%rGui/style/airHudStyle.nut" import hudFontHgt
+from "%rGui/planeState/planeToolsState.nut" import HmdYaw, RadarTargetDist, CannonMode, RocketMode, BombingMode, BombCCIPMode
+from "%rGui/rocketAamAimState.nut" import TrackerVisible, TrackerX, TrackerY, GuidanceLockState
+from "%rGui/airState.nut" import TATargetVisible, AamTimeToHit
+from "%rGui/hud/targetTrackerState.nut" import TargetX, TargetY
+from "%rGui/style/screenState.nut" import isInVr
+from "%rGui/planeState/planeWeaponState.nut" import CurWeaponName, ShellCnt
+from "%rGui/radarState.nut" import AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax, AamLaunchZoneDist
+from "%sqstd/math.nut" import floor, round, atan2, PI
+from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
-let { floor, round, atan2, PI } = require("%sqstd/math.nut")
-let { Speed, BarAltitude, Overload, Mach, Aoa, CompassValue, Tas } = require("%rGui/planeState/planeFlyState.nut")
-let { mpsToKnots, metrToFeet, metrToNavMile } = require("%rGui/planeIlses/ilsConstants.nut")
-let { hudFontHgt } = require("%rGui/style/airHudStyle.nut")
-let string = require("string")
-let { HmdYaw, RadarTargetDist, CannonMode, RocketMode, BombingMode, BombCCIPMode } = require("%rGui/planeState/planeToolsState.nut")
-let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
-let { GuidanceLockResult } = require("guidanceConstants")
-let { TATargetVisible, AamTimeToHit, } = require("%rGui/airState.nut")
-let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
-let { isInVr } = require("%rGui/style/screenState.nut")
-let { CurWeaponName, ShellCnt } = require("%rGui/planeState/planeWeaponState.nut")
-let { AamLaunchZoneDistMax, AamLaunchZoneDistMin, AamLaunchZoneDistDgftMin, AamLaunchZoneDistDgftMax, AamLaunchZoneDist } = require("%rGui/radarState.nut")
 
 let baseLineWidth    = floor(LINE_WIDTH + 0.5)
 let baseColor        = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
-let lockColor        = Color(255, 0, 0, 100)
-let lightBlueColor   = Color(60, 200, 255, 15)                                   
-let blueColor        = Color(10, 10, 255, 50)                                    
+const lockColor        = Color(255, 0, 0, 100)
+const lightBlueColor   = Color(60, 200, 255, 15)                                   
+const blueColor        = Color(10, 10, 255, 50)                                    
 
 let textTemplate = {
   rendObj = ROBJ_TEXT
@@ -42,7 +42,7 @@ let loc_wpn = function(key) {
 }
 
 let crosshair = {
-  pos = [pw(49), ph(49)]
+  pos = const [pw(49), ph(49)]
   size = ph(3)
   rendObj = ROBJ_VECTOR_CANVAS
   color = lockColor
@@ -59,8 +59,8 @@ let IasValue = Computed(@() round(Speed.get() * mpsToKnots).tointeger())
 let TasValue = Computed(@() round(Tas.get() * mpsToKnots).tointeger())
 
 let speedData = @() {
-  pos = [pw(38), ph(45)]
-  size = [pw(5), SIZE_TO_CONTENT]
+  pos = const [pw(38), ph(45)]
+  size = const [pw(5), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   halign = ALIGN_LEFT
   children = [
@@ -83,7 +83,7 @@ let speedData = @() {
 
 let BaroAltValue = Computed(@() (BarAltitude.get() * metrToFeet).tointeger())
 let baroAlt = @() boxedTemplate.__merge({
-  pos = [pw(58), ph(45)]
+  pos = const [pw(58), ph(45)]
   halign = ALIGN_RIGHT
   children = [
   @() textTemplateLarge.__merge({
@@ -94,8 +94,8 @@ let baroAlt = @() boxedTemplate.__merge({
 
 let AGMasterMode =  Computed(@() CannonMode.get() || BombingMode.get() || BombCCIPMode.get() || RocketMode.get())
 let weaponData = @() {
-  pos = [pw(33), ph(68)]
-  size = [pw(20), SIZE_TO_CONTENT]
+  pos = const [pw(33), ph(68)]
+  size = const [pw(20), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
@@ -120,8 +120,8 @@ let AoaValue = Computed(@() (floor(Aoa.get() * 10.0)).tointeger())
 let MachValue = Computed(@() (floor(Mach.get() * 100.0)).tointeger())
 let OverloadValue = Computed(@() (floor(Overload.get() * 10.0)).tointeger())
 let airData = @() {
-  pos = [pw(37), ph(60)]
-  size = [pw(5), SIZE_TO_CONTENT]
+  pos = const [pw(37), ph(60)]
+  size = const [pw(5), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   children = [
     @() textTemplate.__merge({
@@ -164,7 +164,7 @@ let generateCompassMark = @(num, width) {
 
 function compass(width, generateFunc) {
   let children = []
-  let step = 5.0
+  const step = 5.0
 
   for (local i = 0; i <= 2.0 * 360.0 / step; ++i) {
 
@@ -174,7 +174,7 @@ function compass(width, generateFunc) {
   }
   let getOffset = @() (360.0 + CompassValue.get() + HmdYaw.get()) * 0.03 * width
   return {
-    size = flex()
+    size = FLEX
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -203,7 +203,7 @@ function compassWrap(width, height, generateFunc) {
 
 let CompassIntValue = Computed(@() ((360.0 + CompassValue.get()) % 360.0).tointeger())
 let compassValue = boxedTemplate.__merge({
-  pos = [pw(0), ph(31)]
+  pos = const [pw(0), ph(31)]
   halign = ALIGN_CENTER
   hplace = ALIGN_CENTER
   children = [
@@ -216,7 +216,7 @@ let compassValue = boxedTemplate.__merge({
 
 let HmdCompassIntValue = Computed(@() ((360.0 + CompassValue.get() + HmdYaw.get()) % 360.0).tointeger())
 let hmdCompassValue = {
-  pos = [pw(0), ph(39.5)]
+  pos = const [pw(0), ph(39.5)]
   padding = const [hdpx(2), hdpx(20)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -245,7 +245,7 @@ function aamReticle(width, height) {
     size = ph(1.2)
     children = isAAMMode.get() ? [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = lockColor
         fillColor = Color(0, 0, 0, 0)
@@ -256,7 +256,7 @@ function aamReticle(width, height) {
       }
       @(){
         watch = AamCancel
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = lockColor
         lineWidth = baseLineWidth
@@ -282,7 +282,7 @@ function ccrpReticle(width, height) {
     size = ph(2)
     children = TATargetVisible.get() ? [
       {
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         fillColor = Color(0, 0, 0, 0)
@@ -294,7 +294,7 @@ function ccrpReticle(width, height) {
       }
       @(){
         watch = AimLockLimited
-        size = flex()
+        size = FLEX
         rendObj = ROBJ_VECTOR_CANVAS
         color = baseColor
         lineWidth = baseLineWidth
@@ -325,11 +325,11 @@ let MinLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMin.get()) * 10
 let launchZone = @() {
   watch = IsLaunchZoneVisible
   size = const [pw(2), ph(15)]
-  pos = [pw(57), ph(52)]
+  pos = const [pw(57), ph(52)]
   children = IsLaunchZoneVisible.get() ? [
     @() {
       watch = AamLaunchZoneDist
-      size = flex()
+      size = FLEX
       pos = [pw(-100), ph((1.0 - AamLaunchZoneDist.get()) * 100.0)]
       flow = FLOW_HORIZONTAL
       halign = ALIGN_RIGHT
@@ -347,15 +347,15 @@ let launchZone = @() {
       ]
     },
     {
-      size = const [pw(25), flex()]
+      size = const [pw(25), FLEX]
       flow = FLOW_VERTICAL
       children = [
         {
-          size = flex()
+          size = FLEX
           children = [
             {
               rendObj = ROBJ_VECTOR_CANVAS
-              size = flex()
+              size = FLEX
               color = blueColor
               lineWidth = baseLineWidth
               commands = [
@@ -366,7 +366,7 @@ let launchZone = @() {
             @() {
               watch = [MaxLaunchPos, MinLaunchPos]
               rendObj = ROBJ_VECTOR_CANVAS
-              size = flex()
+              size = FLEX
               color = blueColor
               lineWidth = baseLineWidth
               commands = [
@@ -377,12 +377,12 @@ let launchZone = @() {
             },
             @(){
               watch = IsDgftLaunchZoneVisible
-              size = flex()
+              size = FLEX
               children = IsDgftLaunchZoneVisible.get() ? [
                 @(){
                   watch = [MaxLaunchDgftPos, MinLaunchDgftPos]
                   rendObj = ROBJ_VECTOR_CANVAS
-                  size = flex()
+                  size = FLEX
                   color = baseColor
                   lineWidth = baseLineWidth
                   commands = [
@@ -406,10 +406,10 @@ let IsTargetDirVisible = Computed(@() TrackerVisible.get() ? AamCancel.get() :
 function targetDir(width, height) {
   return @() {
     watch = IsTargetDirVisible
-    size = flex()
+    size = FLEX
     children = IsTargetDirVisible.get() ? {
       size = const [pw(4), ph(4)]
-      pos = [pw(50), ph(50)]
+      pos = const [pw(50), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = lockColor
       lineWidth = baseLineWidth
@@ -434,7 +434,7 @@ let HaveRadarTarget = Computed(@() RadarTargetDist.get() > 0)
 let RadarTargetDistValue = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).tointeger())
 let radarTargetData = @(){
   pos = const [pw(54), ph(68)]
-  size = [pw(5), SIZE_TO_CONTENT]
+  size = const [pw(5), SIZE_TO_CONTENT]
   watch = HaveRadarTarget
   flow = FLOW_VERTICAL
   children = HaveRadarTarget.get() ? [

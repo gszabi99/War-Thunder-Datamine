@@ -1,14 +1,15 @@
+import "regexp2" as regexp2
+from "chat" import is_chat_message_empty
+from "%sqstd/string.nut" import clearBorderSymbols
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let regexp2 = require("regexp2")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { is_chat_message_empty } = require("chat")
-let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { select_editbox, setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
+let { select_editbox, setFocusToNextObj } = require("%scripts/sqDagui/daguiUtil.nut")
 
-gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
+register_gui_handler("modifyUrlMissionWnd", class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/missions/modifyUrlMission.blk"
 
@@ -90,4 +91,4 @@ gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   onKbdWrapDown = @() setFocusToNextObj(this.scene, this.tabFocusArray, 1)
-}
+})

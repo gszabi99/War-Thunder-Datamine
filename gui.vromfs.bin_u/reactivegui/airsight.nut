@@ -1,33 +1,30 @@
+from "%rGui/airState.nut" import isAllMachineGunsEmpty, GunOverheatState, GunDirectionX, isAllCannonsEmpty, GunDirectionY, GunDirectionVisible, GunInDeadZone
+  , GunSightMode, FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat, IsAgmEmpty
+  , IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning, GuidedBombsTimeToHit, GuidedBombsTimeToWarning
+  , RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor, NoLosToATGM, AlertColorHigh
+  , HudColor, CurrentTime, BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseMachLimit, BombReleaseDirY
+  , BombReleaseOpacity, BombReleasePoints, BombReleaseRelativToTarget, BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY, RocketSightOpacity, RocketSightShadowOpacity
+  , CanonSightLineWidthFactor, RocketSightLineWidthFactor, BombSightLineWidthFactor, CanonSightShadowLineWidthFactor, RocketSightShadowLineWidthFactor, BombSightShadowLineWidthFactor, BombSightShadowOpacity
+  , TurretSightOpacity, TurretSightLineWidthFactor
+from "%rGui/hud/targetTrackerState.nut" import TargetX, TargetY
+from "%rGui/style/airHudStyle.nut" import mixColor, relativCircle, isDarkColor, fadeColor
+from "%rGui/planeState/planeWeaponState.nut" import HaveLaserPoint
+from "%rGui/options/options.nut" import crosshairColorOpt
+from "%sqstd/math.nut" import PI, cos, sin
 from "%rGui/globals/ui_library.nut" import *
+from "string" import format
 
-let { PI, cos, sin } = require("%sqstd/math.nut")
-let {
-  isAllMachineGunsEmpty, GunOverheatState, GunDirectionX, isAllCannonsEmpty,
-  GunDirectionY, GunDirectionVisible, GunInDeadZone, GunSightMode,
-  TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible,
-  FixedGunDirectionVisible, FixedGunDirectionX, FixedGunDirectionY, FixedGunSightMode, FixedGunOverheat,
-  IsAgmEmpty, IsATGMOutOfTrackerSector, AtgmTrackerRadius, IsLaserDesignatorEnabled, AgmTimeToHit, AgmTimeToWarning,
-  GuidedBombsTimeToHit, GuidedBombsTimeToWarning,
-  RocketAimX, RocketAimY, RocketAimVisible, RocketSightMode, RocketSightSizeFactor,
-  NoLosToATGM, AlertColorHigh, HudColor, CurrentTime,
-  BombReleaseVisible, BombReleaseDirX, BombReleaseBlockedState, BombReleaseBlockedStates, BombReleaseDirY, BombReleaseOpacity,
-  BombReleasePoints, BombReleaseRelativToTarget, BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY
-  RocketSightOpacity, RocketSightShadowOpacity,
-  CanonSightLineWidthFactor, RocketSightLineWidthFactor, BombSightLineWidthFactor,
-  CanonSightShadowLineWidthFactor, RocketSightShadowLineWidthFactor, BombSightShadowLineWidthFactor,
-  BombSightShadowOpacity, TurretSightOpacity, TurretSightLineWidthFactor } = require("%rGui/airState.nut")
-let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
-let { mixColor, styleText, styleLineForeground, relativCircle, isDarkColor, fadeColor } = require("%rGui/style/airHudStyle.nut")
-let { LaserPoint, HaveLaserPoint } = require("%rGui/planeState/planeWeaponState.nut")
-let { crosshairColorOpt } = require("%rGui/options/options.nut")
+let { TurretsDirectionX, TurretsDirectionY, TurretsOverheat, TurretsReloading, TurretsVisible, BombReleaseBlockedStates } = require("%rGui/airState.nut")
+let { styleText, styleLineForeground } = require("%rGui/style/airHudStyle.nut")
+let { LaserPoint } = require("%rGui/planeState/planeWeaponState.nut")
 
 const NUM_TURRETS_MAX = 10
 
 const NUM_BOMB_RELEASE_POINT = 80
 
-let sqL = 80
-let l = 20
-let offset = (100 - sqL) * 0.5
+const sqL = 80
+const l = 20
+const offset = (100 - sqL) * 0.5
 
 let normalTurretSight = freeze([
   [VECTOR_LINE, -50 + offset, -50 + offset, 50 - offset, -50 + offset],
@@ -90,7 +87,7 @@ function gunDirection(colorWatch, isSightHud) {
       }
     }
 
-    let size = sh(2)
+    const size = sh(2)
     return {
       watch = sightWatchList
       size
@@ -139,15 +136,15 @@ function gunDirection(colorWatch, isSightHud) {
   }
 }
 
-let dashCount = 36
+const dashCount = 36
 const circleSize = 2.5
-let angleReloadArrow = 90.0
+const angleReloadArrow = 90.0
 
 function reloadTurret(currentTime) {
   let angleAnim = ((currentTime * 180) % 360) * (PI / 180)  
   let commands = []
-  let angleDegree = angleReloadArrow / dashCount
-  let angle = angleDegree * (PI / 180)
+  const angleDegree = angleReloadArrow / dashCount
+  const angle = angleDegree * (PI / 180)
   for (local i = 0; i < dashCount; ++i) {
       commands.append([
         VECTOR_LINE,
@@ -176,7 +173,7 @@ let createTurretSights = @(turretIndex, colorWatch) @() styleLineForeground.__me
   children = @() styleLineForeground.__merge({
     watch = [AlertColorHigh, TurretsVisible[turretIndex], TurretsReloading[turretIndex], TurretsOverheat[turretIndex]]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
+    size = FLEX
     lineWidth = hdpx(LINE_WIDTH * TurretSightLineWidthFactor.get())
     fillColor = Color(0, 0, 0, 0)
     color = AlertColorHigh.get()
@@ -189,7 +186,7 @@ let createTurretSights = @(turretIndex, colorWatch) @() styleLineForeground.__me
 
 function aircraftTurretsComponent(colorWatch) {
   return {
-    size = flex()
+    size = FLEX
     children = array(NUM_TURRETS_MAX).map(@(_, i) createTurretSights(i, colorWatch))
   }
 }
@@ -518,16 +515,25 @@ function laserPoint(colorWatch) {
 function laserPointComponent(colorWatch) {
   return @() {
     watch = HaveLaserPoint
-    size = flex()
+    size = FLEX
     children = HaveLaserPoint.get() ? laserPoint(colorWatch) : null
   }
 }
 
-function getBombBlockedStateText(state) {
+function getTooFastText(machLimit, locId) {
+  if (machLimit <= 0)
+    return loc(locId)
+  let limit = "".concat(format("%.2f", machLimit), loc("measureUnits/machNumber"))
+  return $"{loc(locId)} > {limit}"
+}
+
+function getBombBlockedStateText(state, machLimit) {
   if (state == BombReleaseBlockedStates.notBlocked)
     return ""
 
-  return state == BombReleaseBlockedStates.highSpeed ? loc("HUD/BOMB_SIGHT_HIGH_SPEED") : loc("HUD/BOMB_SIGHT_BOMB_BAY")
+  return state == BombReleaseBlockedStates.highSpeed
+    ? getTooFastText(machLimit, "HUD/BOMB_SIGHT_HIGH_SPEED")
+    : loc("HUD/BOMB_SIGHT_BOMB_BAY")
 }
 
 let bombSightComponent = @(width, height, crosshairColorWatch) function() {
@@ -573,13 +579,13 @@ let bombSightComponent = @(width, height, crosshairColorWatch) function() {
 
   let sightWarningText = @() styleText.__merge({
     rendObj = ROBJ_TEXT
-    watch = [BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY, BombReleaseBlockedState]
+    watch = [BombReleaseBlockedTextPosX, BombReleaseBlockedTextPosY, BombReleaseBlockedState, BombReleaseMachLimit]
     pos = [BombReleaseBlockedTextPosX.get(), BombReleaseBlockedTextPosY.get()]
-    text = getBombBlockedStateText(BombReleaseBlockedState.get())
+    text = getBombBlockedStateText(BombReleaseBlockedState.get(), BombReleaseMachLimit.get())
   })
 
   return res.__update({
-    pos = [0, 0]
+    pos = const [0, 0]
     children = [shadowLines, lines, sightWarningText]
   })
 }
@@ -596,4 +602,5 @@ return {
   laserPointComponent
   aircraftRocketSight
   bombSightComponent
+  getTooFastText
 }

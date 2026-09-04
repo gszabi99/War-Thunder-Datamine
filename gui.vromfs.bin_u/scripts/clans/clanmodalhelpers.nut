@@ -1,7 +1,9 @@
+import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_library.nut" import *
+from "%globalScripts/clanNativeConsts.nut" import *
 from "%scripts/dagui_natives.nut" import clan_request_info
+
 let { addTask } = require("%scripts/tasker.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")

@@ -1,13 +1,14 @@
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
 
-gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
+let TicketBuyWindow = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   event = null
   tickets = null
@@ -102,7 +103,7 @@ gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getCurItem() {
     local value = this.getItemsListObj().getValue()
-    return getTblValue(value, this.tickets)
+    return this.tickets?[value]
   }
 
   function getItemsListObj() {
@@ -168,3 +169,6 @@ gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     return text
   }
 }
+register_gui_handler("TicketBuyWindow", TicketBuyWindow)
+
+return { TicketBuyWindow }

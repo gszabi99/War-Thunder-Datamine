@@ -1,7 +1,7 @@
+from "dagor.workcycle" import setInterval, clearTimer
+from "%sqstd/underscore.nut" import isEqual
+from "guiMission" import getCaptureZones, CZ_IS_HIDDEN
 from "%rGui/globals/darg_library.nut" import *
-let { setInterval, clearTimer } = require("dagor.workcycle")
-let { isEqual } = require("%sqstd/underscore.nut")
-let { getCaptureZones, CZ_IS_HIDDEN } = require("guiMission")
 
 const CAP_ZONES_STATE_POLLING_INTERVAL = 1
 

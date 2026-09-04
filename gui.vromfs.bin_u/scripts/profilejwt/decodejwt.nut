@@ -1,5 +1,5 @@
+from "jwt" import decode
 
-let { decode } = require("jwt")
 let profilePublicKey = require("%scripts/profileJwt/profilePublicKey.nut")
 
 function decodeJwtAndHandleErrors(jwt) {

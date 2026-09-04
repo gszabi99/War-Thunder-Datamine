@@ -1,6 +1,7 @@
+from "eventbus" import eventbus_send_foreign, eventbus_subscribe
+from "nestdb" import ndbWrite, ndbRead, ndbExists
 from "frp" import this_subscriber_call_may_take_up_to_usec, get_slow_subscriber_threshold_usec
-let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
-let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
+
 let { WatchedImmediate } = require("%sqstd/frp.nut")
 let { log } = require("%sqstd/log.nut")()
 

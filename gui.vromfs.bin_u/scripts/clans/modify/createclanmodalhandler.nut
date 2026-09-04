@@ -1,11 +1,12 @@
+from "string" import format
 from "%scripts/dagui_library.nut" import *
 
 let { zero_money } = require("%scripts/money.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { ModifyClanModalHandler } = require("%scripts/clans/modify/modifyClanModalHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { move_mouse_on_child_by_value, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { createClan } = require("%scripts/clans/clanActions.nut")
@@ -18,7 +19,7 @@ function clanTypesEnabled() {
   return hasFeature("Battalions")
 }
 
-gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
+let CreateClanModalHandler = class (ModifyClanModalHandler) {
   function createView() {
     let clanTypeItems = []
     foreach (clanType in g_clan_type.types) {
@@ -133,8 +134,9 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     return clanTagDecoratorFuncs.getDecoratorsForClanType(this.newClanType)
   }
 }
+register_gui_handler("CreateClanModalHandler", CreateClanModalHandler)
 
-let openCreateClanWnd = @() loadHandler(gui_handlers.CreateClanModalHandler)
+let openCreateClanWnd = @() loadHandler(CreateClanModalHandler)
 
 return {
   openCreateClanWnd

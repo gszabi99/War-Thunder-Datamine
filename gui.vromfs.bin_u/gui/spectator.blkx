@@ -2,7 +2,7 @@
   "tdiv": [
     {
       "id": "spectator_root",
-      "size": "sw - 2@bw, sh - 2@bh",
+      "size": "sw - 2@bwHud, sh - 2@bhHud",
       "pos": "pw/2-w/2, ph/2-h/2",
       "position": "absolute",
       "tdiv": [
@@ -347,11 +347,10 @@
           "id": "map_div",
           "css-hier-invalidate": "yes",
           "position": "absolute",
-          "pos": "pw - w + 4@dp + 1@spectatorBw, ph-h",
+          "top": "ph-h",
+          "stickTo": "right",
           "min-height": "2@sIco",
           "padding": "1@framePadding",
-          "padding-right": "1@spectatorBw+4@dp",
-          "flow": "vertical",
           "tdiv": {
             "id": "content",
             "size": "1@spectatorTableWidth, 1@spectatorTableWidth",
@@ -700,9 +699,10 @@
           "id": "btnToggleMap",
           "on_click": "onToggleButtonClick",
           "attachSide": "right",
+          "stickTo": "right",
           "toggled": "yes",
           "toggleObj": "map_div",
-          "pos": "pw-w +4@dp, ph-h - 1@spectatorTableWidth -16@sf/@pf",
+          "top": "ph-h - 1@spectatorTableWidth -16@sf/@pf",
           "position": "absolute",
           "icon": {}
         }

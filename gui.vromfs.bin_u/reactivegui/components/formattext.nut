@@ -1,5 +1,5 @@
+from "%sqstd/platform.nut" import is_pc, platformId
 from "%rGui/globals/ui_library.nut" import *
-let { is_pc, platformId } = require("%sqstd/platform.nut")
 
 let formatters = require("%rGui/components/textFormatters.nut")
 let { defStyle } = formatters

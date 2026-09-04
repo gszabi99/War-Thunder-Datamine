@@ -1,7 +1,6 @@
+from "eventbus" import eventbus_subscribe
 from "%rGui/globals/ui_library.nut" import *
 from "hudState" import hud_request_hud_crew_state
-
-let { eventbus_subscribe } = require("eventbus")
 
 let crewState = Watched({ current = 0, total = 0, regenerating = false})
 let crewGunnerState = Watched({ state = "ok" })

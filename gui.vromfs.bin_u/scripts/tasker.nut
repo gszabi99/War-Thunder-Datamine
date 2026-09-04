@@ -1,11 +1,12 @@
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER
+from "chard" import charRequestJwtFromServer
+from "eventbus" import eventbus_subscribe
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_natives.nut" import char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
-let { broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { charRequestJwtFromServer } = require("chard")
-let { eventbus_subscribe } = require("eventbus")
-let DataBlock = require("DataBlock")
 let { getErrorText } = require("%scripts/hud/serverMessages.nut")
 
 enum TASK_CB_TYPE {
@@ -13,7 +14,7 @@ enum TASK_CB_TYPE {
   REQUEST_DATA
 }
 
-let PROGRESS_BOX_BUTTONS_DELAY = 30
+const PROGRESS_BOX_BUTTONS_DELAY = 30
 let taskDataByTaskId = {}
 local currentProgressBox = null
 
@@ -73,18 +74,18 @@ function addTask(taskId, taskOptions = null, onSuccess = null, onError = null, t
     return false
   }
 
-  let showProgressBox = getTblValue("showProgressBox", taskOptions, false)
+  let showProgressBox = (taskOptions?.showProgressBox ?? false)
 
   
-  let showErrorMessageBox = getTblValue("showErrorMessageBox", taskOptions, showProgressBox)
+  let showErrorMessageBox = (taskOptions?.showErrorMessageBox ?? showProgressBox)
 
   addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox)
 
   if (showProgressBox) {
     showTaskProgressBox(
-      getTblValue("progressBoxText", taskOptions, null),
-      getTblValue("progressBoxCancelFunc", taskOptions, null),
-      getTblValue("progressBoxDelayedButtons", taskOptions, -1))
+      taskOptions?.progressBoxText,
+      taskOptions?.progressBoxCancelFunc,
+      (taskOptions?.progressBoxDelayedButtons ?? -1))
   }
 
   return true
@@ -131,7 +132,7 @@ function getNumBlockingTasks() {
 }
 
 function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, data = null) {
-  let taskData = getTblValue(taskId, taskDataByTaskId, null)
+  let taskData = taskDataByTaskId?[taskId]
   if (taskData == null)
     return
 
@@ -189,8 +190,7 @@ function restoreCharCallback() {
 
 eventbus_subscribe("onCharRequestJsonFromServerComplete", onCharRequestJsonFromServerComplete)
 
-
-::onCharRequestBlkFromServerComplete <- onCharRequestBlkFromServerComplete 
+registerForNativeCall("onCharRequestBlkFromServerComplete", onCharRequestBlkFromServerComplete)
 
 eventbus_subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComplete)
 

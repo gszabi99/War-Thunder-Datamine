@@ -1,9 +1,9 @@
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%globalScripts/guiBehaviourConsts.nut" import *
 from "%scripts/dagui_natives.nut" import stop_gui_sound, start_gui_sound
 from "%scripts/dagui_library.nut" import *
 
-
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let rouletteAnim = require("rouletteAnim.nut")
+let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
 
 let BhvRoulette = class {
   eventMask    = EV_ON_CMD | EV_TIMER

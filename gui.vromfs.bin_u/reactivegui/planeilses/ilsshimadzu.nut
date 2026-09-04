@@ -1,14 +1,11 @@
+import "string" as string
+from "%rGui/planeState/planeFlyState.nut" import Speed, Roll, Mach, Overload, Aos
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, BombingMode, TargetPosValid, TargetPos, BombCCIPMode, IlsLineScale, RocketMode, CannonMode
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth, mpsToKnots
+from "%rGui/planeIlses/ilsCompasses.nut" import compassWrap, generateCompassMarkShim
+from "%rGui/planeIlses/commonElements.nut" import flyDirection, angleTxt, cancelBombing, lowerSolutionCue, bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt
+from "%sqstd/math.nut" import floor
 from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
-let { Speed, Roll, Mach, Overload, Aos } = require("%rGui/planeState/planeFlyState.nut");
-let { IlsColor,  BombingMode, TargetPosValid, TargetPos, BombCCIPMode,
-        IlsLineScale, RocketMode, CannonMode } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, mpsToKnots } = require("%rGui/planeIlses/ilsConstants.nut")
-let { compassWrap, generateCompassMarkShim } = require("%rGui/planeIlses/ilsCompasses.nut")
-let { flyDirection, angleTxt, cancelBombing, lowerSolutionCue,
-      bombFallingLine, shimadzuRoll, ShimadzuPitch, ShimadzuAlt } = require("%rGui/planeIlses/commonElements.nut")
-let { floor } = require("%sqstd/math.nut")
 
 let CCIPMode = Computed(@() RocketMode.get() || CannonMode.get() || BombCCIPMode.get())
 
@@ -16,12 +13,12 @@ let generateSpdMarkShimadzu = function(num) {
   let ofs = num == 0 ? pw(-20) : (num < 100 ? pw(-30) : pw(-40))
   return {
     size = const [pw(100), ph(7.5)]
-    pos = [pw(40), 0]
+    pos = const [pw(40), 0]
     children = [
       (num % 50 > 0 ? null :
         @() {
           watch = IlsColor
-          size = flex()
+          size = FLEX
           pos = [ofs, 0]
           rendObj = ROBJ_TEXT
           color = IlsColor.get()
@@ -33,7 +30,7 @@ let generateSpdMarkShimadzu = function(num) {
       ),
       @() {
         watch = IlsColor
-        pos = [0, ph(25)]
+        pos = const [0, ph(25)]
         size = [baseLineWidth * 5, baseLineWidth * IlsLineScale.get()]
         rendObj = ROBJ_SOLID
         color = IlsColor.get()
@@ -72,7 +69,7 @@ function ShimadzuSpeedWrap(width, height, generateFunc) {
     children = [
       ShimadzuSpeed(height * 0.5, generateFunc),
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -89,7 +86,7 @@ function ShimadzuSpeedWrap(width, height, generateFunc) {
 let generateAltMarkShimadzu = function(num) {
   return {
     size = const [pw(100), ph(7.5)]
-    pos = [pw(15), 0]
+    pos = const [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
       @() {
@@ -103,7 +100,7 @@ let generateAltMarkShimadzu = function(num) {
       (num % 50 > 0 ? null :
         @() {
           watch = IlsColor
-          size = flex()
+          size = FLEX
           rendObj = ROBJ_TEXT
           color = IlsColor.get()
           vplace = ALIGN_CENTER
@@ -124,7 +121,7 @@ function ShimadzuAltWrap(width, height, generateFunc) {
     children = [
       ShimadzuAlt(height * 0.5, generateFunc),
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -141,8 +138,8 @@ function ShimadzuAltWrap(width, height, generateFunc) {
 let MachWatch = Computed(@() (floor(Mach.get() * 100)).tointeger())
 let ShimadzuMach = @() {
   watch = [MachWatch, IlsColor]
-  size = flex()
-  pos = [pw(12), ph(72)]
+  size = FLEX
+  pos = const [pw(12), ph(72)]
   rendObj = ROBJ_TEXT
   color = IlsColor.get()
   fontSize = 50
@@ -152,8 +149,8 @@ let ShimadzuMach = @() {
 let OverloadWatch = Computed(@() (floor(Overload.get() * 10)).tointeger())
 let ShimadzuOverload = @() {
   watch = [OverloadWatch, IlsColor]
-  size = flex()
-  pos = [pw(12), ph(77)]
+  size = FLEX
+  pos = const [pw(12), ph(77)]
   rendObj = ROBJ_TEXT
   color = IlsColor.get()
   fontSize = 50
@@ -168,7 +165,7 @@ function generatePitchLineShim(num) {
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -183,7 +180,7 @@ function generatePitchLineShim(num) {
     ] :
     [
       @() {
-        size = flex()
+        size = FLEX
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -230,10 +227,10 @@ function f16CcipMark(width, height) {
 
 function f16CcrpMark(_width, height) {
   return {
-    size = flex()
+    size = FLEX
     children = [
       {
-        size = flex()
+        size = FLEX
         children = [
           lowerSolutionCue(height, -5),
           bombFallingLine()
@@ -275,8 +272,8 @@ function f16CcrpMark(_width, height) {
 
 let ShimadzuMode = @() {
   watch = [CCIPMode, BombingMode, IlsColor]
-  size = flex()
-  pos = [pw(78), ph(77)]
+  size = FLEX
+  pos = const [pw(78), ph(77)]
   rendObj = ROBJ_TEXT
   color = IlsColor.get()
   fontSize = 50
@@ -300,7 +297,7 @@ function ShimadzuIls(width, height) {
       @() {
         watch = IlsColor
         size = const [pw(2), ph(3)]
-        pos = [pw(50), ph(92)]
+        pos = const [pw(50), ph(92)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         lineWidth = baseLineWidth * IlsLineScale.get()
@@ -325,7 +322,7 @@ function ShimadzuIls(width, height) {
       },
       @() {
         watch = CCIPMode
-        size = flex()
+        size = FLEX
         children = [
           (CCIPMode.get() ? f16CcipMark(width, height) : null),
           (CCIPMode.get() ? cancelBombing(50, 40) : null)
@@ -333,7 +330,7 @@ function ShimadzuIls(width, height) {
       },
       @() {
         watch = BombingMode
-        size = flex()
+        size = FLEX
         children = [BombingMode.get() ? f16CcrpMark(width, height) : null]
       }
     ]

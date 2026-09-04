@@ -1,6 +1,5 @@
 require ecs
 require ecs.common
-require strings
 
 [es(tag=gameClient, track=human_inventory__entityToUse)]
 def human_inventory_use_vis_entity(evt : Event;

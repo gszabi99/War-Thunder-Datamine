@@ -2,12 +2,12 @@ require ecs
 require app
 require soundHash
 require soundEvent
-require %game.events
 
 require %appGame.wt_events
 require %appGame.infantry.es.inventory_common
 require human_sounds.modules.human_sounds_events
 require sound_utils.modules.sound_utils_events
+require sound_utils_net.modules.sound_desc_common
 
 
 def play_sound(human_eid : EntityId; hash : uint; transform : float3x4; var loot_sound__time : float&)
@@ -48,5 +48,4 @@ def ammo_box_resupply_play_sound(evt : CmdPlayItemUseSound;
                                  item__pickupSoundName : string;
                                  transform : float3x4)
   query(evt.requesterEid) <| $ [es] (is_watched_sound : bool; human_sound__prefix : string = "")
-    let playerStr = is_watched_sound ? "player" : "enemy"
-    oneshot("{human_sound__prefix}{playerStr}/{item__pickupSoundName}", transform[3])
+    oneshot("{human_sound__prefix}{get_watched_sound_event_folder(is_watched_sound)}/{item__pickupSoundName}", transform[3])

@@ -1,3 +1,5 @@
+import "%sqStdLibs/helpers/enums.nut" as enums
+from "%globalScripts/unlockConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed
 from "weaponryOptions" import get_option_torpedo_dive_depth_auto
@@ -5,31 +7,19 @@ from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 from "radarOptions" import get_radar_mode_names, get_radar_scan_pattern_names, get_radar_range_values
 from "%scripts/options/optionsCtors.nut" import create_option_list
-let enums = require("%sqStdLibs/helpers/enums.nut")
+
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let { getSkinsOption } = require("%scripts/customization/skins.nut")
-let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR,
-  USEROPT_GUN_VERTICAL_TARGETING, USEROPT_BOMB_ACTIVATION_TIME, USEROPT_BOMB_SERIES,
-  USEROPT_DEPTHCHARGE_ACTIVATION_TIME, USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH,
-  USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES,
-  USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN,
-  USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM,
-  USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT,
-  USEROPT_INFANTRY_SKIN,
-  USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_USER_SKIN, USEROPT_GUN_TARGET_DISTANCE, USEROPT_AEROBATICS_SMOKE_TAIL_COLOR, USEROPT_GUN_VERTICAL_TARGETING, USEROPT_BOMB_ACTIVATION_TIME, USEROPT_BOMB_SERIES, USEROPT_DEPTHCHARGE_ACTIVATION_TIME, USEROPT_ROCKET_FUSE_DIST, USEROPT_TORPEDO_DIVE_DEPTH, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_COUNTERMEASURES_PERIODS, USEROPT_COUNTERMEASURES_SERIES, USEROPT_COUNTERMEASURES_SERIES_PERIODS, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_SKIN, USEROPT_AEROBATICS_SMOKE_LEFT_COLOR, USEROPT_AEROBATICS_SMOKE_RIGHT_COLOR, USEROPT_FUEL_AMOUNT_CUSTOM, USEROPT_RADAR_MODE_SELECTED_UNIT_SELECT, USEROPT_RADAR_SCAN_PATTERN_SELECTED_UNIT_SELECT, USEROPT_INFANTRY_SKIN, USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT, USEROPT_SAVE_AIRCRAFT_SPAWN } = require("%scripts/options/optionsExtNames.nut")
 let { isSkinBanned } = require("%scripts/customization/bannedSkins.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let respawnBases = require("%scripts/respawn/respawnBases.nut")
-let { getInfantrySkinOnLocation, getLocationInfantrySkins, getTierByMrank,
-  hasSkinsForLocation
-} = require("%scripts/customization/infantryCamouflageStorage.nut")
-let { convertLevelNameToLocation, getInfantrySkinTooltip, getCamoNameById
-} = require("%scripts/customization/infantryCamouflageUtils.nut")
+let { getInfantrySkinOnLocation, getLocationInfantrySkins, getTierByMrank, hasSkinsForLocation } = require("%scripts/customization/infantryCamouflageStorage.nut")
+let { convertLevelNameToLocation, getInfantrySkinTooltip, getCamoNameById } = require("%scripts/customization/infantryCamouflageUtils.nut")
 
 
 let options = {
@@ -123,11 +113,7 @@ function _update(p, trigger, isAlreadyFilled) {
 }
 
 function getRespawnBasesIndexBySpawnType(list, spawntype) {
-  if (spawntype == "auto")
-    return list.findindex(@(v) v.isAutoSelected)
-  else if (spawntype == "airfield")
-    return list.findindex(@(v) v.isGround && !v.isAutoSelected)
-  return list.findindex(@(v) !v.isGround && !v.isAutoSelected)
+  return list.findindex(@(v) respawnBases.getAircraftRespawnBaseType(v) == spawntype)
 }
 
 options.template <- {
@@ -365,13 +351,21 @@ options.addTypes({
         if (savedSpawnType != null)
           value = getRespawnBasesIndexBySpawnType(p.respawnBasesList, savedSpawnType) ?? value
       }
+      let baseDelays = respawnBases.getPerBaseRespawnDelays(p.respawnBasesList, p.unit.name)
       return {
         items = p.respawnBasesList.map(function(spawn) {
           let res = { text = spawn.getTitle() }
-          if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled())
-            res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
           if (!spawn.isAvailable || !spawn.canSelect)
             res.inactive <- "yes"
+          let delay = respawnBases.isPerBaseDelayRow(spawn) ? baseDelays?[spawn.id] : null
+          if (delay != null && delay > 0) {
+            res.image <- "#ui/gameuiskin#respawnbase_timer_ui.svg"
+            res.iconType <- "respawnTimer"
+          }
+          else if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled()) {
+            res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
+            res.iconType <- "respawnCloud"
+          }
           return res
         })
         value
@@ -386,7 +380,7 @@ options.addTypes({
     cType = optionControlType.CHECKBOX
     needSetToReqData = true
     isShowForUnit = @(p) p.unit.isAir() && p.haveRespawnBases
-    cb = "saveSpawnForMission"
+    cb = "saveAircraftSpawnForMission"
   }
   aerobatics_smoke_type = {
     sortIdx = idx++

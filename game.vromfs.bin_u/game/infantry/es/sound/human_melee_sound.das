@@ -6,8 +6,6 @@ require soundEvent
 require soundHash
 require sound_utils.modules.sound_player_common
 require human_sounds.modules.human_sounds_events
-require %game.sound.sound_events
-require %game.events
 require DagorRandom
 require strings
 require soundSystem

@@ -1,36 +1,40 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, is_online_available, periodic_task_register, get_auto_refill, update_entitlements, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
+import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
+from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
+from "eventbus" import eventbus_send
+from "string" import format
+from "chard" import get_char_extended_error, save_profile
+from "chardConst" import EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS
+from "dagor.time" import get_time_msec
+from "guiOptions" import setGuiOptionsMode, getGuiOptionsMode
+from "mission" import set_game_mode, get_game_mode
+from "dagor.workcycle" import defer
+from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, is_online_available, periodic_task_register, get_auto_refill, update_entitlements, is_mouse_last_time_used
+  , gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 from "app" import is_dev_version
 from "hudState" import is_hud_visible
+from "types" import Table
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { eventbus_send } = require("eventbus")
 let { isRanksAllowed } = require("%scripts/ranksAllowed.nut")
-let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
-let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
-let { format } = require("string")
-let { get_char_extended_error, save_profile } = require("chard")
-let { EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS } = require("chardConst")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
+let { is_in_loading_screen } = require("%scripts/sqDagui/framework/baseGuiHandlerManager.nut")
+let SecondsUpdater = require("%scripts/sqDagui/timer/secondsUpdater.nut")
+let globalCallbacks = require("%scripts/sqDagui/globalCallbacks/globalCallbacks.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { get_time_msec } = require("dagor.time")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { set_game_mode, get_game_mode } = require("mission")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -40,7 +44,6 @@ let { checkSquadUnreadyAndDo, initSquadWidgetHandler } = require("%scripts/squad
 let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { steamContactsGroup } = require("%scripts/contacts/contactsListState.nut")
-let { defer } = require("dagor.workcycle")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { getQueuesInfoText } = require("%scripts/queue/queueState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
@@ -165,7 +168,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     if (this.rightSectionHandlerWeak)
       return
 
-    this.rightSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
+    this.rightSectionHandlerWeak = get_gui_handler("TopMenuButtonsHandler")?.create(
       this.scene.findObject("topmenu_menu_panel_right"), this, topMenuRightSideSections,
       this.scene.findObject("right_gc_panel_free_width"))
     this.registerSubHandler(this.rightSectionHandlerWeak)
@@ -239,7 +242,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
     this.startFunc = start_func
 
-    if (type(entitlement) == "table")
+    if (entitlement instanceof Table)
       this.task = entitlement
     else
       this.task = { loc = entitlement, entitlement = entitlement }
@@ -343,7 +346,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onUserLog(_obj) {
     if (hasFeature("UserLog"))
-      loadHandler(gui_handlers.UserLogHandler)
+      loadHandler(get_gui_handler("UserLogHandler"))
     else
       this.notAvailableYetMsgBox()
   }
@@ -356,14 +359,14 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     } : {}
 
     if (this.guiScene?.isInAct()) {
-      defer(@() loadHandler(gui_handlers.Profile, params))
+      defer(@() loadHandler(get_gui_handler("Profile"), params))
       return
     }
-    loadHandler(gui_handlers.Profile, params)
+    loadHandler(get_gui_handler("Profile"), params)
   }
 
   function onMyClanOpen() {
-    loadHandler(gui_handlers.ClansModalHandler, { startPage = "my_clan" })
+    loadHandler(get_gui_handler("ClansModalHandler"), { startPage = "my_clan" })
   }
 
   function onGC_chat(_obj) {
@@ -389,7 +392,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     this.onSwitchContacts()
   }
   function onGC_invites(_obj) {
-    loadHandler(gui_handlers.InvitesWnd)
+    loadHandler(get_gui_handler("InvitesWnd"))
   }
   function onInviteSquad(_obj) {
     eventbus_send("guiStartSearchSquadPlayer")
@@ -413,11 +416,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     return slotbar && slotbar.getCurCrew()
   }
 
-  function getCurSlotbarCountry() {
-    local slotbar = this.getSlotbar()
-    return slotbar && slotbar.getCurCountry()
-  }
-
   function onSlotsChangeAutoRefill(obj) {
     if (this.slotbarWeak?.slotbarOninit ?? false)
       return
@@ -437,7 +435,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onShowCountriesCustomizationWnd(_obj) {
-    loadHandler(gui_handlers.ChooseCountryView)
+    loadHandler(get_gui_handler("ChooseCountryView"))
   }
 
   
@@ -460,7 +458,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function createSlotbarHandler(params) {
-    return gui_handlers.SlotbarWidget.create(params)
+    return get_gui_handler("SlotbarWidget")?.create(params)
   }
 
   function reinitSlotbar() { 
@@ -659,7 +657,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onGCDropdown(obj) {
     local id = obj?.id
-    let ending = "_panel"
+    const ending = "_panel"
     if (id && id.len() > ending.len() && id.slice(id.len() - ending.len()) == ending)
       id = id.slice(0, id.len() - ending.len())
     if (!isInArray(id, this.GCDropdownsList))
@@ -864,7 +862,6 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function onModCheckboxClick() {}
   function onAltModAction() {}
   function onModChangeBulletsSlider() {}
-  onAltModActionCommon = @() null
   onModUnhover = @() null
   onModButtonNestUnhover = @() null
   onGoToModTutorial = @() null
@@ -879,7 +876,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     @() broadcastEvent("showOptionsWnd", { group = "sound" }))
 
   function onUnitHover(obj) {
-    ::gcb.delayedTooltipHover(obj)
+    globalCallbacks.getCbFunc("delayedTooltipHover")(obj)
   }
 
   function onModalInfoButtonClick(obj) {
@@ -890,11 +887,13 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     let params = { startPage = obj.type }
 
     if (this.guiScene?.isInAct()) {
-      defer(@() loadHandler(gui_handlers.LimitBuyUnitsHandler, params))
+      defer(@() loadHandler(get_gui_handler("LimitBuyUnitsHandler"), params))
       return
     }
-    loadHandler(gui_handlers.LimitBuyUnitsHandler, params)
+    loadHandler(get_gui_handler("LimitBuyUnitsHandler"), params)
   }
 }
 
-gui_handlers.BaseGuiHandlerWT <- BaseGuiHandlerWT
+register_gui_handler("BaseGuiHandlerWT", BaseGuiHandlerWT)
+
+return { BaseGuiHandlerWT }

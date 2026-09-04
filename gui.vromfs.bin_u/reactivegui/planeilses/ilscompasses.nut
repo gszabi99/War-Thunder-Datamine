@@ -1,9 +1,8 @@
+import "string" as string
+from "%rGui/planeState/planeToolsState.nut" import IlsColor, IlsLineScale
+from "%rGui/planeState/planeFlyState.nut" import CompassValue
+from "%rGui/planeIlses/ilsConstants.nut" import baseLineWidth
 from "%rGui/globals/ui_library.nut" import *
-
-let string = require("string")
-let { IlsColor, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
-let { CompassValue } = require("%rGui/planeState/planeFlyState.nut")
-let { baseLineWidth } = require("%rGui/planeIlses/ilsConstants.nut")
 
 let generateCompassMark = function(num, _elemWidth, _font) {
   return {
@@ -165,7 +164,7 @@ let generateCompassTCSFMark = function(num, _elemWidth, _font) {
     size = const [pw(8), ph(280)]
     children = [
       {
-        pos = [pw(-50), ph(80)]
+        pos = const [pw(-50), ph(80)]
         rendObj = ROBJ_TEXT
         color = Color(255, 70, 10)
         hplace = ALIGN_CENTER
@@ -230,7 +229,7 @@ function compass(width, generateFunc, step, is_circle = false, elemWidth = -1, f
   return is_circle ?
   {
     size = const [pw(100), ph(100)]
-    pos = [pw(50), ph(-170)]
+    pos = const [pw(50), ph(-170)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {

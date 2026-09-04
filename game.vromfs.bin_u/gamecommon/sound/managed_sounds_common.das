@@ -1,9 +1,12 @@
+module managed_sounds_common shared
+
 require ecs
 require ecs.safe
 require DagorMath
 require math.base
 require strings
 require Sound
+require WTCamera
 require ECSGlobalTags
 
 let FAR_LOD_IDX = 1
@@ -117,6 +120,11 @@ def filter_human_gun(gun_eid : EntityId;
   return isChosen
 
 
+def private is_killer_camera() : bool
+  let fcm = get_flight_control_mode()
+  return fcm != null && fcm.cameraControl.isKillerCamera
+
+
 def get_watched_hero_info(var hero_pos : float3&; var hero_fwd_xz : float2&; var hero_team : int&)
   hero_pos = get_cached_listener_pos()
   hero_fwd_xz = float2(0.0, 1.0)
@@ -132,7 +140,7 @@ def get_watched_hero_info(var hero_pos : float3&; var hero_fwd_xz : float2&; var
         hero_fwd_xz = float2(human_net_phys__aimDir.x, human_net_phys__aimDir.z)
         if length_sq(hero_fwd_xz) < 1e-6
           hero_fwd_xz = float2(0.0, 1.0)
-    else
+    elif !is_killer_camera()
       hero_pos = transform[3]
       hero_fwd_xz = float2(human_net_phys__aimDir.x, human_net_phys__aimDir.z)
       if length_sq(hero_fwd_xz) < 1e-6

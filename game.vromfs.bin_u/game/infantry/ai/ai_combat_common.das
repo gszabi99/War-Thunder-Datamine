@@ -6,11 +6,9 @@ require Unit
 require WTDamageModel
 require Weapon
 require PropsManager
-require BallisticsProps
 require Ballistics
 require math.random
 require DagorMath
-require DngWeapon
 require AnimV20
 require CollRes
 require Dacoll

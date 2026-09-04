@@ -29,7 +29,8 @@ def reset_hero_cockpit_params(event : ParallelUpdateFrameDelayed;
 def update_and_provide_human_cockpit(event : ParallelUpdateFrameDelayed;
                                      human_cockpit__gunMaxLength, human_cockpit__traceMaxBias,
                                      human_cockpit__startFadeBeforeIntersection, human_cockpit__fadeInterval,
-                                     human_cockpit__sampleOffsetAboveCamera, human_cockpit__sampleBias : float)
+                                     human_cockpit__sampleOffsetAboveCamera, human_cockpit__sampleBias,
+                                     human_cockpit__bboxScale : float)
   let heroEid = get_Eid(get_local_player_eid(), "possessed") ?? INVALID_ENTITY_ID
   if !heroEid || getEntityTemplateId(heroEid) == INVALID_TEMPLATE_INDEX
     return
@@ -119,8 +120,11 @@ def update_and_provide_human_cockpit(event : ParallelUpdateFrameDelayed;
                      var hero_cockpit_bbox_min_value : float4&;
                      var hero_cockpit_bbox_max_value : float4&)
     hero_cockpit_camera_enabled_value = 1
-    hero_cockpit_bbox_min_value = float4(heroBbox.boxMin, 0.0)
-    hero_cockpit_bbox_max_value = float4(heroBbox.boxMax, 0.0)
+    
+    let bboxCenter = (heroBbox.boxMin + heroBbox.boxMax) * 0.5
+    let bboxHalf = (heroBbox.boxMax - heroBbox.boxMin) * (0.5 * human_cockpit__bboxScale)
+    hero_cockpit_bbox_min_value = float4(bboxCenter - bboxHalf, 0.0)
+    hero_cockpit_bbox_max_value = float4(bboxCenter + bboxHalf, 0.0)
 
     if applyFade
       hero_cockpit_camera_fade_value = 1

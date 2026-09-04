@@ -1,25 +1,26 @@
+from "%appGlobals/login/loginState.nut" import isAuthorized
+from "auth_wt" import getLoginPass
+from "guiOptions" import setGuiOptionsMode
+from "steam" import steam_is_running
+from "%globalScripts/yuplay2Consts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
-let { getLoginPass } = require("auth_wt")
-let { set_disable_autorelogin_once } = require("loginState.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { set_disable_autorelogin_once } = require("%scripts/login/loginState.nut")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { LoginWndHandler } = require("%scripts/login/loginWnd.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
-let { setGuiOptionsMode } = require("guiOptions")
-let { steam_is_running } = require("steam")
-let { saveLocalSharedSettings, loadLocalSharedSettings
-} = require("%scripts/clientState/localProfile.nut")
+let { saveLocalSharedSettings, loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
-gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
+register_gui_handler("LoginWndHandlerSteam", class (LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
 
   function initScreen() {
@@ -75,7 +76,7 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   function goToLoginWnd(disableAutologin = true) {
     if (disableAutologin)
       set_disable_autorelogin_once(true)
-    handlersManager.loadHandler(gui_handlers.LoginWndHandler)
+    handlersManager.loadHandler(LoginWndHandler)
   }
 
   function goBack(_obj) {
@@ -90,4 +91,4 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
       { cancel_fn = @() null }
     )
   }
-}
+})

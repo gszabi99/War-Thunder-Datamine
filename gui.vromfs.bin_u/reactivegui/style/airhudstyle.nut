@@ -1,5 +1,5 @@
+from "math" import round
 from "%rGui/globals/ui_library.nut" import *
-let { round } =  require("math")
 
 local greenColor = Color(10, 202, 10, 250)
 local fontOutlineColor = Color(0, 0, 0, 255)

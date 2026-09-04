@@ -1,17 +1,15 @@
+import "%rGui/hud/humanSquad/killMarks.nut" as killMarks
+from "%rGui/hudState.nut" import isPlayingReplay, isSpectatorMode, unitType, isUnitAlive
+from "%rGui/style/screenState.nut" import rw, rh
+from "%rGui/airState.nut" import IsMainHudVisible, isParamTableActivated, HudParamColor, HasFPVCamera, IsSightHudVisible, IsPilotHudVisible
+from "%rGui/airHudLeftPanel.nut" import xrayIndicator
+from "%rGui/aircraftHud.nut" import aircraftParamsTableView
+from "%rGui/helicopterHud.nut" import helicopterParamsTableView
+from "%rGui/hudUnitType.nut" import isHumanAirDrone
+from "%rGui/utils/builders.nut" import createScriptComponent
 from "%rGui/globals/ui_library.nut" import *
 
-let { isPlayingReplay, isSpectatorMode, unitType, isUnitAlive } = require("%rGui/hudState.nut")
-let { rw, rh } = require("%rGui/style/screenState.nut")
-let killMarks = require("%rGui/hud/humanSquad/killMarks.nut")
-let { IsMainHudVisible, isParamTableActivated, HudParamColor, HasFPVCamera, IsSightHudVisible,
-  IsPilotHudVisible
-} = require("%rGui/airState.nut")
-let { xrayIndicator } = require("%rGui/airHudLeftPanel.nut")
 let { infantryHudLeftPanel } = require("%rGui/infantryHud.nut")
-let { aircraftParamsTableView } = require("%rGui/aircraftHud.nut")
-let { helicopterParamsTableView } = require("%rGui/helicopterHud.nut")
-let { isHumanAirDrone } = require("%rGui/hudUnitType.nut")
-let { createScriptComponent } = require("%rGui/utils/builders.nut")
 
 function mkInfantryDroneMainHud() {
   let watch = [IsMainHudVisible, isParamTableActivated, unitType]

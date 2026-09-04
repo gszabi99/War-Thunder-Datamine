@@ -1,4 +1,4 @@
-let { round } = require("math")
+from "math" import round
 
 local scrnTgt = 0
 let sfpf = @(value) round(1.0 * scrnTgt * value / 1080)

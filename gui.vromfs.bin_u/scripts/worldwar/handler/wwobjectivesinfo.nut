@@ -1,17 +1,19 @@
+from "worldwar" import wwGetOperationId, wwGetPlayerSide
 from "%scripts/dagui_natives.nut" import ww_side_val_to_name
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
+from "%scripts/seen/seenIds.nut" import SEEN
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { wwObjective } = require("%scripts/worldWar/inOperation/handler/wwObjective.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { getSidesOrder } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 
-gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
+let WwObjectivesInfo = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/objectivesInfoWindow.tpl"
@@ -22,7 +24,7 @@ gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   teamObjectiveHandlersArray = null
 
   static function open() {
-    handlersManager.loadHandler(gui_handlers.WwObjectivesInfo)
+    handlersManager.loadHandler(get_gui_handler("WwObjectivesInfo"))
   }
 
   function getSceneTplView() {
@@ -54,7 +56,7 @@ gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(operationBlockObj))
       return
 
-    let objectiveHandler = handlersManager.loadHandler(gui_handlers.wwObjective, {
+    let objectiveHandler = handlersManager.loadHandler(wwObjective, {
       scene = operationBlockObj,
       side = side,
       needShowOperationDesc = false,
@@ -82,3 +84,4 @@ gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
     return teams
   }
 }
+register_gui_handler("WwObjectivesInfo", WwObjectivesInfo)

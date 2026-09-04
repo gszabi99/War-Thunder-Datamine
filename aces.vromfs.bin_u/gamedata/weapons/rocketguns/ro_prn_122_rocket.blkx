@@ -1,13 +1,25 @@
 {
   "rocketGun": true,
-  "preset_cost": 25,
-  "mesh": "ro_prn_122_rocket",
-  "helicopterGroup": 2,
-  "shotFreq": 20.0,
+  "preset_cost": 20,
+  "bullets": 1,
+  "shotFreq": 1000.25,
   "sound": "weapon.rocketgun_132",
+  "helicopterGroup": 2,
+  "mesh": "ro_prn_122_rocket",
+  "tags": {
+    "antiTankRocket": true,
+    "antiShipRocket": true
+  },
   "rocket": {
+    "dragCx": 0.011,
     "bulletName": "ro_prn_122_rocket",
+    "iconType": "rockets_he_large",
+    "useStartSpeed": true,
+    "endSpeed": 2000.0,
     "statType": "hydra",
+    "aiGroundOnly": false,
+    "aiAirOnly": false,
+    "maxDeltaAngle": 1.0,
     "caliber": 0.122,
     "length": 2.02,
     "WdK": [
@@ -21,21 +33,29 @@
     "massEnd": 34.0,
     "timeFire": 1.25,
     "force": 12800.0,
-    "useStartSpeed": true,
     "startSpeed": 0.0,
     "maxSpeed": 410.0,
-    "endSpeed": 0.0,
     "maxDistance": 18250.0,
     "minDistance": 30.0,
     "explosiveType": "a_ix_2",
     "explosiveMass": 6.35,
-    "explodeTreshold": 0.00001,
-    "dragCx": 0.011,
-    "amountPerTier": 1.0,
-    "iconType": "rockets_he_large",
-    "aiGroundOnly": false,
-    "aiAirOnly": false,
-    "maxDeltaAngle": 1.0,
+    "normalizationPreset": "heat",
+    "ricochetPreset": "he",
+    "groundRicochetPreset": "he_ground",
+    "secondaryShattersPreset": "ap_rocket",
+    "stabilityThreshold": 0.05,
+    "stabilityCaliberToArmorThreshold": 5.0,
+    "stabilityReductionAfterRicochet": 0.5,
+    "stabilityReductionAfterPenetration": 0.15,
+    "bulletType": "rocket_tank",
+    "slopeEffectPreset": "ap",
+    "fresnel": [
+      0.23,
+      0.1,
+      2.0
+    ],
+    "explodeOnRendinst": true,
+    "useEffectiveArmorThicknessForShatter": true,
     "hitPowerMult": 1.0,
     "nearHitPower": [
       1.0,
@@ -73,23 +93,9 @@
       200.0,
       1000.0
     ],
-    "normalizationPreset": "heat",
-    "ricochetPreset": "he",
-    "groundRicochetPreset": "he_ground",
-    "secondaryShattersPreset": "ap_rocket",
-    "stabilityThreshold": 0.05,
-    "stabilityCaliberToArmorThreshold": 5.0,
-    "stabilityReductionAfterRicochet": 0.5,
-    "stabilityReductionAfterPenetration": 0.15,
-    "bulletType": "rocket_tank",
-    "slopeEffectPreset": "ap",
-    "fresnel": [
-      0.23,
-      0.1,
-      2.0
-    ],
-    "explodeOnRendinst": true,
-    "useEffectiveArmorThicknessForShatter": true,
+    "fuseDelayDist": 0.1,
+    "explodeTreshold": 0.1,
+    "distanceFuse": false,
     "explosionEffect": "explosion_midair_rocket_small",
     "groundCollisionEffect": "hit_133_160mm_dirt_ap",
     "ricochetEffect": "hit_106_132mm_metal_ap",
@@ -110,11 +116,6 @@
       0.0,
       0.0
     ],
-    "damage": {
-      "explosive": {
-        "offset": 0.3
-      }
-    },
     "DamageParts": {
       "body": {
         "hp": 50.0,

@@ -1,10 +1,11 @@
+from "string" import format
+from "blkGetters" import get_shop_blk
 from "%scripts/dagui_library.nut" import *
 
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { format } = require("string")
-let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { register_gui_handler, get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
+let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { get_shop_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
@@ -13,7 +14,7 @@ let { isUnitLocked, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { delayedRankUpWnd } = require("%scripts/debriefing/checkRankUpWindow.nut")
 
-gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
+let RankUpModal = class (BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/rankUpWindow.blk"
 
@@ -109,7 +110,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateNextAwardInfo() {
-    let checkUnlockId = getTblValue("miscParam", this.unlockData)
+    let checkUnlockId = this.unlockData?.miscParam
     if (!checkUnlockId)
       return
 
@@ -127,10 +128,11 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function afterModalDestroy() {
     if (delayedRankUpWnd.len() > 0) {
-      loadHandler(gui_handlers.RankUpModal, delayedRankUpWnd[0])
+      loadHandler(get_gui_handler("RankUpModal"), delayedRankUpWnd[0])
       delayedRankUpWnd.remove(0)
     }
     else
       checkDelayedUnlockWnd(this.unlockData)
   }
 }
+register_gui_handler("RankUpModal", RankUpModal)

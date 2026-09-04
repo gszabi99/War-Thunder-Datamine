@@ -2,7 +2,7 @@ tdiv {
   width:t='pw'
   flow:t='vertical'
 
-  everyDayRewardProgress
+  rewardProgress
   {
     id:t='new_progress_box'
     foreground-color:t='@red'

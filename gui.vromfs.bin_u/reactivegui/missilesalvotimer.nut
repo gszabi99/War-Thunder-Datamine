@@ -1,8 +1,9 @@
+from "%globalScripts/timers.nut" import mkCountdownTimerSec
+from "eventbus" import eventbus_subscribe
+from "dagor.time" import get_time_msec
 from "%rGui/globals/ui_library.nut" import *
-let { eventbus_subscribe } = require("eventbus")
+
 let { styleText } = require("%rGui/style/airHudStyle.nut")
-let { get_time_msec } = require("dagor.time")
-let { mkCountdownTimerSec } = require("%globalScripts/timers.nut")
 
 let salvoTimerSec = mkWatched(persist, "salvoTimerSec", -1)
 let finishTimeMsec = Computed(@() get_time_msec() + (salvoTimerSec.get() * 1000).tointeger())

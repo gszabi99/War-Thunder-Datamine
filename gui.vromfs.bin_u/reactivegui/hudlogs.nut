@@ -1,18 +1,18 @@
+import "%rGui/hudChat.nut" as chat
+import "%rGui/components/tabs.nut" as tabs
+from "%rGui/ctrlsState.nut" import cursorVisible
+from "%rGui/hudChatState.nut" import canWriteToChat, hudLog, lastInputTime
+from "%rGui/networkState.nut" import isMultiplayer
+from "%rGui/hud/hudPartVisibleState.nut" import isChatPlaceVisible, isVisualWeaponSelectorVisible
+from "%rGui/hud/actionBarState.nut" import isActionBarVisible, actionBarPos
+from "%rGui/hud/dmgIndicatorState.nut" import dmgIndicatorWidth
+from "%rGui/hudState.nut" import isSpectatorMode
+from "%rGui/style/screenState.nut" import bw
+from "chat" import get_option_auto_show_chat
 from "%rGui/globals/ui_library.nut" import *
 
-let chat = require("%rGui/hudChat.nut")
 let battleLog = require("%rGui/hudBattleLog.nut")
 let killLog = require("%rGui/hudKillLog.nut")
-let tabs = require("%rGui/components/tabs.nut")
-let { get_option_auto_show_chat } = require("chat")
-let { cursorVisible } = require("%rGui/ctrlsState.nut")
-let { canWriteToChat, hudLog, lastInputTime } = require("%rGui/hudChatState.nut")
-let { isMultiplayer } = require("%rGui/networkState.nut")
-let { isChatPlaceVisible, isVisualWeaponSelectorVisible } = require("%rGui/hud/hudPartVisibleState.nut")
-let { isActionBarVisible, actionBarPos } = require("%rGui/hud/actionBarState.nut")
-let { dmgIndicatorWidth } = require("%rGui/hud/dmgIndicatorState.nut")
-let { isSpectatorMode } = require("%rGui/hudState.nut")
-let { bw } = require("%rGui/style/screenState.nut")
 let { activeOrderLogContent } = require("%rGui/activeOrder.nut")
 
 let tabsList = [
@@ -46,8 +46,8 @@ let currentLog = Computed(function(prev) {
 let showOutId = {}
 let fastFadeOutId = {}
 let slowFadeOutId = {}
-let fastDuration = 0.2
-let slowDuration = 5
+const fastDuration = 0.2
+const slowDuration = 5
 let opacityAnim = { prop = AnimProp.opacity, easing = OutCubic }
 
 let logsContainerAnims = [
@@ -67,7 +67,7 @@ function startAnim(animId) {
   anim_start(animId)
 }
 
-let hideNewMessageDelay = 5
+const hideNewMessageDelay = 5
 function hideNewMessage() {
   isNewMessage.set(false)
   if (!isInteractive.get())

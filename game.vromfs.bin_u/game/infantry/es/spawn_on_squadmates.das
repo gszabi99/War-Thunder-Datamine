@@ -53,15 +53,13 @@ def set_ui_minimap_indicator_blink_for_unit_eid(unit_eid : EntityId; time : floa
     var unit = unit__ref.unit
     setBlinkTime(*unit, time)
 
-[unused_argument(is_candidate)]
 def set_ui_minimap_indicator_respawn_candidate_for_unit_eid(unit_eid : EntityId; is_candidate : bool)
   query(unit_eid) <| $ [es] (var unit__ref : UnitRef)
     var unit = unit__ref.unit
     var gm = unit |> as_gm()
     if gm == null
       return
-    static_if typeinfo has_field<uiMinimapIndicatorRespawnCandidate>(*gm)
-      gm.uiMinimapIndicatorRespawnCandidate = is_candidate
+    gm.uiMinimapIndicatorRespawnCandidate = is_candidate
 
 [es(tag=gameClient, on_appear)]
 def squadmates_spawn_trace_check_init(evt : Event;
@@ -84,21 +82,20 @@ def set_prev_positions_on_spawn_on_unit(evt : Event;
         resize(spawn_dynamic_respawn__prevPositions, dynamic_respawn__prevPosCount)
       spawn_dynamic_respawn__curIterIdx = on_dynamic_respawn__curIterIdx
 
-[unused_argument(pos, margin)]
-def private is_spawn_pos_inside_capzone(pos : float3; margin : float) : bool
-  static_if typeinfo(builtin_function_exists @@ < (arg0 : float3&; arg1 : float) : bool > _::is_pos_within_any_capzone_radius)
-    return is_pos_within_any_capzone_radius(pos, margin)
-  return false
+def private is_spawn_pos_banned_by_capzone(pos : float3; margin : float) : bool
+  if !get_mission_forbid_spawn_on_squadmates_in_capzones()
+    return false
+  return is_pos_within_any_capzone_radius(pos, margin)
 
 [es(REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
 def save_dynamic_respawn_positions(evt : Event)
-  query() <| $ [es, unused_argument(dynamic_respawn__capzoneMargin)] (unit__ref : UnitRef;
-                                                                      human_net_phys : HumanActor;
-                                                                      dynamic_respawn__posDiffCacheSaveSq : float;
-                                                                      dynamic_respawn__capzoneMargin : float = 10.;
-                                                                      dynamic_respawn__prevPosCount : int;
-                                                                      var dynamic_respawn__curIterIdx : int&;
-                                                                      var dynamic_respawn__prevPositions : Point3List&)
+  query() <| $ [es] (unit__ref : UnitRef;
+                     human_net_phys : HumanActor;
+                     dynamic_respawn__posDiffCacheSaveSq : float;
+                     dynamic_respawn__capzoneMargin : float = 10.;
+                     dynamic_respawn__prevPosCount : int;
+                     var dynamic_respawn__curIterIdx : int&;
+                     var dynamic_respawn__prevPositions : Point3List&)
     let unit = unit__ref.unit
     if !unit.isAlive || unit.isDelayed || unit.isLoading
       return
@@ -109,7 +106,7 @@ def save_dynamic_respawn_positions(evt : Event)
     let humanPos = tm[3] + float3(0., 1., 0.)
 
     if length(dynamic_respawn__prevPositions) < dynamic_respawn__prevPosCount
-      if is_spawn_pos_inside_capzone(humanPos, dynamic_respawn__capzoneMargin)
+      if is_spawn_pos_banned_by_capzone(humanPos, dynamic_respawn__capzoneMargin)
         return
       resize(dynamic_respawn__prevPositions, dynamic_respawn__prevPosCount)
       dynamic_respawn__curIterIdx = 0
@@ -122,7 +119,7 @@ def save_dynamic_respawn_positions(evt : Event)
       if distSq < dynamic_respawn__posDiffCacheSaveSq
         return
 
-    if is_spawn_pos_inside_capzone(humanPos, dynamic_respawn__capzoneMargin)
+    if is_spawn_pos_banned_by_capzone(humanPos, dynamic_respawn__capzoneMargin)
       return
 
     dynamic_respawn__curIterIdx = (dynamic_respawn__curIterIdx + 1) % dynamic_respawn__prevPosCount
@@ -222,32 +219,26 @@ def check_dynamic_respawn_blocked_conditions(evt : Event)
       set(eid, "dynamic_respawn__onUnitAllowed", res)
 
 
-def private get_spawn_on_players_count() : int
-  static_if typeinfo(builtin_function_exists @@ < () : int > _::get_mission_spawn_on_players_count)
-    return get_mission_spawn_on_players_count()
-  return 0
-
-def private is_extra_spawn_player(player_id : int) : bool
-  var res = false
+def private collect_extra_spawn_players(var extra_spawn_players : array<int>&)
   find_query() <| $ [es] (is_local : bool;
                           dynamic_respawn__extraSpawnPlayers : IntList)
     if !is_local
       return false
     for pid in dynamic_respawn__extraSpawnPlayers
-      if pid == player_id
-        res = true
-        break
+      extra_spawn_players |> push(pid)
     return true
-  return res
 
-[unused_argument(local_player)]
+def private is_extra_spawn_player(player_id : int; extra_spawn_players : array<int>) : bool
+  for pid in extra_spawn_players
+    if pid == player_id
+      return true
+  return false
+
 def private is_in_local_squad(p : MPlayer; local_player : MPlayer) : bool
-  static_if typeinfo safe_has_property < squadId > (p)
-    return p.squadId != INVALID_SQUAD_ID && p.squadId == local_player.squadId
-  return p.isInHeroSquad
+  return p.squadId != INVALID_SQUAD_ID && p.squadId == local_player.squadId
 
 def private refresh_extra_spawn_players(local_player_id : int; var extra_players : IntList&)
-  let maxCount = get_spawn_on_players_count()
+  let maxCount = get_mission_spawn_on_players_count()
   if maxCount <= 0
     return
   let localPlayer = player_get_by_id(local_player_id)
@@ -311,73 +302,78 @@ def extra_spawn_players_on_player_appear(evt : Event)
     refresh_extra_spawn_players(base_player_id, dynamic_respawn__extraSpawnPlayers)
     return true
 
-[es(tag=gameClient, on_event=ParallelUpdateFrameDelayed)]
-def squadmates_spawn_position(evt : Event;
-                              is_local : bool;
-                              base_player_id : int;
-                              var player_spawn__eid : EntityId&)
-  if is_local
-    return
-  let player = player_get_by_id(base_player_id)
-  if player == null
-    return
-  let canSpawnOnPlayer = player.isInHeroSquad || is_extra_spawn_player(base_player_id)
-  let isExtraSpawnCandidate = canSpawnOnPlayer && !player.isInHeroSquad
-  let needSpawnerEntity = canSpawnOnPlayer || get_spawn_on_players_count() > 0
+[es(tag=gameClient, REQUIRE=squad_dynamic_respawn, on_event=ParallelUpdateFrameDelayed)]
+def squadmates_spawn_position(evt : Event)
+  var extraSpawnPlayers : array<int>
+  collect_extra_spawn_players(extraSpawnPlayers)
+  let spawnOnPlayersCount = get_mission_spawn_on_players_count()
+  let localPlayer = player_get_local()
+  query() <| $ [es] (is_local : bool;
+                     base_player_id : int;
+                     var player_spawn__eid : EntityId&)
+    if is_local
+      return
+    let player = player_get_by_id(base_player_id)
+    if player == null
+      return
+    let canSpawnOnPlayer = player.isInHeroSquad || is_extra_spawn_player(base_player_id, extraSpawnPlayers)
+    let isExtraSpawnCandidate = canSpawnOnPlayer && !player.isInHeroSquad
+    let isLocalTeamPlayer = localPlayer != null && player.team == localPlayer.team
+    let needSpawnerEntity = canSpawnOnPlayer || (spawnOnPlayersCount > 0 && isLocalTeamPlayer)
 
-  let ownedUnit = getOwnedUnit(*player)
-  if needSpawnerEntity && ownedUnit != null && (ownedUnit.isHuman || has(ownedUnit.eid, "vehicle_seats__seatEids"))
-    if !player_spawn__eid
-      player_spawn__eid = createEntity("squad_dynamic_respawn") <| $(var init : ComponentsInitializer)
-        set(init, "transform", ownedUnit.unitTm)
-        set(init, "dynamic_respawn__active", canSpawnOnPlayer && ownedUnit.isAlive && !ownedUnit.isDelayed)
-        set(init, "dynamic_respawn__unitEid", ownedUnit.eid)
-        set(init, "dynamic_respawn__playerId", base_player_id)
-      set_ui_minimap_indicator_respawn_candidate_for_unit_eid(ownedUnit.eid, isExtraSpawnCandidate)
-    elif !canSpawnOnPlayer
+    let ownedUnit = getOwnedUnit(*player)
+    if needSpawnerEntity && ownedUnit != null && (ownedUnit.isHuman || has(ownedUnit.eid, "vehicle_seats__seatEids"))
+      if !player_spawn__eid
+        player_spawn__eid = createEntity("squad_dynamic_respawn") <| $(var init : ComponentsInitializer)
+          set(init, "transform", ownedUnit.unitTm)
+          set(init, "dynamic_respawn__active", canSpawnOnPlayer && ownedUnit.isAlive && !ownedUnit.isDelayed)
+          set(init, "dynamic_respawn__unitEid", ownedUnit.eid)
+          set(init, "dynamic_respawn__playerId", base_player_id)
+        set_ui_minimap_indicator_respawn_candidate_for_unit_eid(ownedUnit.eid, isExtraSpawnCandidate)
+      elif !canSpawnOnPlayer
+        query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
+                                            var dynamic_respawn__unitEid : EntityId&;
+                                            dynamic_respawn__minimapScale : float)
+          dynamic_respawn__active = false
+          if dynamic_respawn__unitEid != INVALID_ENTITY_ID
+            set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, dynamic_respawn__minimapScale, false, false)
+            set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
+            dynamic_respawn__unitEid = INVALID_ENTITY_ID
+      else
+        set_ui_minimap_indicator_respawn_candidate_for_unit_eid(ownedUnit.eid, isExtraSpawnCandidate)
+        query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
+                                            var dynamic_respawn__blocked : bool&;
+                                            var dynamic_respawn__unitEid : EntityId&;
+                                            var transform : float3x4&;
+                                            var dynamic_respawn__minimapScaleInited : bool&;
+                                            dynamic_respawn__selected : bool;
+                                            dynamic_respawn__highlight : bool;
+                                            dynamic_respawn__minimapScale : float;
+                                            dynamic_respawn__minimapSelectedScale : float)
+          dynamic_respawn__active = ownedUnit.isAlive && !ownedUnit.isDelayed
+          let respawnOnUnitAllowed = !(get_bool(ownedUnit.eid, "dynamic_respawn__onUnitAllowed") ?? true)
+          let canBlockSpawn = get_bool(ownedUnit.eid, "dynamic_respawn__onUnitCanBlockSpawn") ?? false
+          dynamic_respawn__blocked = canBlockSpawn && !respawnOnUnitAllowed
+          if is_respawn_screen() && respawnOnUnitAllowed
+            set_ui_minimap_indicator_blink_for_unit_eid(ownedUnit.eid)
+          transform = ownedUnit.unitTm
+          let scale = dynamic_respawn__selected ? dynamic_respawn__minimapSelectedScale : dynamic_respawn__minimapScale
+          if dynamic_respawn__unitEid != ownedUnit.eid
+            set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, 1., dynamic_respawn__highlight, false)
+            set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
+            set_ui_minimap_indicator_scale_for_unit_eid(ownedUnit.eid, scale, dynamic_respawn__highlight, dynamic_respawn__selected)
+            dynamic_respawn__unitEid = ownedUnit.eid
+          elif !dynamic_respawn__minimapScaleInited
+            dynamic_respawn__minimapScaleInited = true
+            set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, scale, dynamic_respawn__highlight, dynamic_respawn__selected)
+    elif !!player_spawn__eid
       query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
                                           var dynamic_respawn__unitEid : EntityId&;
                                           dynamic_respawn__minimapScale : float)
         dynamic_respawn__active = false
-        if dynamic_respawn__unitEid != INVALID_ENTITY_ID
-          set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, dynamic_respawn__minimapScale, false, false)
-          set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
-          dynamic_respawn__unitEid = INVALID_ENTITY_ID
-    else
-      set_ui_minimap_indicator_respawn_candidate_for_unit_eid(ownedUnit.eid, isExtraSpawnCandidate)
-      query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
-                                          var dynamic_respawn__blocked : bool&;
-                                          var dynamic_respawn__unitEid : EntityId&;
-                                          var transform : float3x4&;
-                                          var dynamic_respawn__minimapScaleInited : bool&;
-                                          dynamic_respawn__selected : bool;
-                                          dynamic_respawn__highlight : bool;
-                                          dynamic_respawn__minimapScale : float;
-                                          dynamic_respawn__minimapSelectedScale : float)
-        dynamic_respawn__active = ownedUnit.isAlive && !ownedUnit.isDelayed
-        let respawnOnUnitAllowed = !(get_bool(ownedUnit.eid, "dynamic_respawn__onUnitAllowed") ?? true)
-        let canBlockSpawn = get_bool(ownedUnit.eid, "dynamic_respawn__onUnitCanBlockSpawn") ?? false
-        dynamic_respawn__blocked = canBlockSpawn && !respawnOnUnitAllowed
-        if is_respawn_screen() && respawnOnUnitAllowed
-          set_ui_minimap_indicator_blink_for_unit_eid(ownedUnit.eid)
-        transform = ownedUnit.unitTm
-        let scale = dynamic_respawn__selected ? dynamic_respawn__minimapSelectedScale : dynamic_respawn__minimapScale
-        if dynamic_respawn__unitEid != ownedUnit.eid
-          set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, 1., dynamic_respawn__highlight, false)
-          set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
-          set_ui_minimap_indicator_scale_for_unit_eid(ownedUnit.eid, scale, dynamic_respawn__highlight, dynamic_respawn__selected)
-          dynamic_respawn__unitEid = ownedUnit.eid
-        elif !dynamic_respawn__minimapScaleInited
-          dynamic_respawn__minimapScaleInited = true
-          set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, scale, dynamic_respawn__highlight, dynamic_respawn__selected)
-  elif !!player_spawn__eid
-    query(player_spawn__eid) <| $ [es] (var dynamic_respawn__active : bool&;
-                                        var dynamic_respawn__unitEid : EntityId&;
-                                        dynamic_respawn__minimapScale : float)
-      dynamic_respawn__active = false
-      set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, dynamic_respawn__minimapScale, false, false)
-      set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
-      dynamic_respawn__unitEid = INVALID_ENTITY_ID
+        set_ui_minimap_indicator_scale_for_unit_eid(dynamic_respawn__unitEid, dynamic_respawn__minimapScale, false, false)
+        set_ui_minimap_indicator_respawn_candidate_for_unit_eid(dynamic_respawn__unitEid, false)
+        dynamic_respawn__unitEid = INVALID_ENTITY_ID
 
 [es(tag=gameClient, on_disappear)]
 def squadmates_spawn_position_destroy(evt : Event;
@@ -503,7 +499,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
       evt.spawnTm = unit.unitTm
       var verifyDebugDeltaSq = FLT_MAX
       let requestPosCorrectly = length(evt.requestPos) > 0.f 
-      if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(evt.requestPos)
+      if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_banned_by_capzone(evt.requestPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(evt.requestPos)
         for pos in *dynamic_respawn__prevPositions
           let distSq = length_sq(pos - evt.requestPos)
           if distSq < verifyDebugDeltaSq
@@ -527,7 +523,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
         if foundNavmesh
           evt.spawnTm[3] = resPos
         dropObjectOnNavmesh(evt.spawnTm, 2.5, 1.)
-        if is_spawn_pos_inside_capzone(evt.spawnTm[3], dynamic_respawn__capzoneMargin) || is_spawn_pos_blocked_by_vehicle(evt.spawnTm[3])
+        if is_spawn_pos_banned_by_capzone(evt.spawnTm[3], dynamic_respawn__capzoneMargin) || is_spawn_pos_blocked_by_vehicle(evt.spawnTm[3])
           print("[SPSQUAD] spawn unit {eid} on human {spawnOnEid} FALLBACK REJECTED (capzone or blocked by vehicle) fallbackPos=({evt.spawnTm[3]}) unitPos=({unitPos})")
           return
         evt.verified = true
@@ -546,7 +542,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
       else
         evt.spawnTm = unit.unitTm
         let requestPosCorrectly = length(evt.requestPos) > 0.f 
-        if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_inside_capzone(evt.requestPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(evt.requestPos)
+        if dynamic_respawn__prevPositions != null && requestPosCorrectly && !is_spawn_pos_banned_by_capzone(evt.requestPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(evt.requestPos)
           for pos in *dynamic_respawn__prevPositions
             if length_sq(pos - evt.requestPos) < 100.f 
               evt.verified = true
@@ -556,7 +552,7 @@ def squadmates_spawn_calculation_and_verify(var evt : EventCalcAndVerifySpawnTm;
         if !evt.verified && dynamic_respawn__prevPositions != null && length(*dynamic_respawn__prevPositions) > 0
           let pick = rnd_int(0, length(*dynamic_respawn__prevPositions) - 1)
           let fallbackPos = (*dynamic_respawn__prevPositions)[pick]
-          if !is_spawn_pos_inside_capzone(fallbackPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(fallbackPos)
+          if !is_spawn_pos_banned_by_capzone(fallbackPos, dynamic_respawn__capzoneMargin) && !is_spawn_pos_blocked_by_vehicle(fallbackPos)
             evt.verified = true
             evt.spawnTm[3] = fallbackPos
             print("[SPSQUAD] spawn unit {eid} on transport {spawnOnEid} FALLBACK nearby (no free seat, server candidate) fallbackPos=({fallbackPos}) unitPos=({unitPos})")

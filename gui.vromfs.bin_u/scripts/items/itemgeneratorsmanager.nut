@@ -1,6 +1,6 @@
+from "%sqStdLibs/helpers/u.nut" import search
 from "%scripts/dagui_library.nut" import *
 
-let { search } = require("%sqStdLibs/helpers/u.nut")
 let { generatorsCollection } = require("%scripts/items/itemsManagerState.nut")
 
 

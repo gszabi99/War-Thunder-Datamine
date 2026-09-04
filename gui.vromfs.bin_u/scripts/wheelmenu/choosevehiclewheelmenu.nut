@@ -1,17 +1,18 @@
+from "%globalScripts/controls/shortcutActions.nut" import toggleShortcut
+from "%sqstd/platform.nut" import isPC
+from "controls" import isXInputDevice
+from "eventbus" import eventbus_subscribe
 from "%scripts/dagui_library.nut" import *
 
-let { isPC } = require("%sqstd/platform.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isXInputDevice } = require("controls")
-let { eventbus_subscribe } = require("eventbus")
+let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
+let { wheelMenuHandler } = require("%scripts/wheelmenu/wheelmenu.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 
 
-gui_handlers.chooseVehicleMenuHandler <- class (gui_handlers.wheelMenuHandler) {
+let chooseVehicleMenuHandler = class (wheelMenuHandler) {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_UNLIM_CTRL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                  | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
@@ -46,8 +47,9 @@ gui_handlers.chooseVehicleMenuHandler <- class (gui_handlers.wheelMenuHandler) {
     toggleShortcut(this.menu[idx].shortcutId)
   }
 }
+register_gui_handler("chooseVehicleMenuHandler", chooseVehicleMenuHandler)
 
-let getMenuHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.chooseVehicleMenuHandler)
+let getMenuHandler = @() handlersManager.findHandlerClassInScene(chooseVehicleMenuHandler)
 
 function makeMenuView(cfg) {
   let menu = cfg.map(function(item) {
@@ -87,7 +89,7 @@ function openMenu(cfg) {
   if (handler)
     handler.reinitScreen(params)
   else
-    handlersManager.loadHandler(gui_handlers.chooseVehicleMenuHandler, params)
+    handlersManager.loadHandler(chooseVehicleMenuHandler, params)
 }
 
 

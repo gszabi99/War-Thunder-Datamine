@@ -1,27 +1,18 @@
-from "%scripts/dagui_natives.nut" import get_axis_name, joystick_get_default
+import "%sqStdLibs/helpers/u.nut" as u
+import "DataBlock" as DataBlock
+from "%sqStdLibs/helpers/net_errors.nut" import script_net_assert_once
+from "%sqstd/datablock.nut" import copyParamsToTable, eachBlock, eachParam, blkFromPath
+from "%sqstd/string.nut" import startsWith
+from "%globalScripts/inputDeviceConsts.nut" import *
+from "%scripts/dagui_natives.nut" import joystick_get_default
 from "%scripts/dagui_library.nut" import *
 from "controls" import ActivationCondition
-let u = require("%sqStdLibs/helpers/u.nut")
 
-let DataBlock  = require("DataBlock")
-let { copyParamsToTable, eachBlock, eachParam, blkFromPath } = require("%sqstd/datablock.nut")
-let { startsWith } = require("%sqstd/string.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { getControlsPresetFilename, parseControlsPresetFileName
-} = require("%scripts/controls/controlsPresets.nut")
+let { getControlsPresetFilename, parseControlsPresetFileName } = require("%scripts/controls/controlsPresets.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
-const PRESET_DEFAULT_VERSION = 4
 const FALLBACKS_ACTUAL_VERSION = 3
 
-const BACKUP_OLD_CONTROLS_DEFAULT = 0 
-
-
-function getJoystickBlockV4(blk) {
-  if (u.isDataBlock(blk?["joysticks"]))
-    return blk["joysticks"]?["joystickSettings"]
-  return null
-}
 
 let dataArranging = {
   function comparator(lhs, rhs) {
@@ -105,7 +96,7 @@ function isSameMapping(lhs, rhs) {
 
   for (local j = 0; j < lhs.len(); j++)
     foreach (attr in deviceMapAttr)
-      if (getTblValue(attr, lhs[j], noValue) != getTblValue(attr, rhs[j], noValue))
+      if ((lhs[j]?[attr] ?? noValue) != (rhs[j]?[attr] ?? noValue))
        return false
 
   return true
@@ -133,7 +124,6 @@ ControlsPreset = class {
   axes            = null
   params          = null
   deviceMapping   = null
-  controlsV4Blk   = null
   isLoaded        = false
   appliedFallbacksVer = 0
 
@@ -164,7 +154,6 @@ ControlsPreset = class {
       this.axes            = u.copy(data.axes)
       this.params          = u.copy(data.params)
       this.deviceMapping   = u.copy(data.deviceMapping)
-      this.controlsV4Blk   = u.copy(data.controlsV4Blk)
       this.appliedFallbacksVer = data.appliedFallbacksVer
       this.isLoaded        = true
     }
@@ -196,7 +185,7 @@ ControlsPreset = class {
 
   function getAxis(name) {
     if (!u.isString(name)) { 
-      let message = "Error: ControlsPreset.getAxis(name), name must be string"
+      const message = "Error: ControlsPreset.getAxis(name), name must be string"
       script_net_assert_once("ControlsPreset.getAxis() failed", message)
       return this.getDefaultAxis("")
     }
@@ -406,54 +395,27 @@ ControlsPreset = class {
 
   function loadFromBlk(blk, presetChain) {
     local controlsBlk = blk?.controls
-    let version = controlsBlk != null ?
-      getTblValue("version", controlsBlk, PRESET_DEFAULT_VERSION) :
-      getTblValue("controlsVer", blk, PRESET_DEFAULT_VERSION)
+    let isLegacyControlsPreset = controlsBlk == null
+                              || (controlsBlk?.version ?? -1) < PRESET_ACTUAL_VERSION
 
-    let shouldBackupOldControls =
-      getTblValue("shouldBackupOldControls", blk, BACKUP_OLD_CONTROLS_DEFAULT)
-
-    let shouldForgetBasePresets =
-      getTblValue("shouldForgetBasePresets", blk, false)
-
-    if (version < PRESET_ACTUAL_VERSION && u.isString(blk?.hotkeysPreset) && blk?.hotkeysPreset != "") {
-      this.loadFromPreset(blk?.hotkeysPreset, presetChain)
+    if (isLegacyControlsPreset) {
+      
+      
+      
       return
     }
 
-    let shouldLoadOldControls = (version < PRESET_ACTUAL_VERSION) || shouldBackupOldControls;
-    if (shouldLoadOldControls) {
-      log("ControlsPreset: BackupOldControls")
-      this.controlsV4Blk = DataBlock()
-      foreach (backupBlock in
-        ["hotkeys", "joysticks", "controlsVer", "hotkeysPreset"])
-        if (backupBlock in blk) {
-          if (u.isDataBlock(blk[backupBlock])) {
-            this.controlsV4Blk[backupBlock] <- DataBlock()
-            this.controlsV4Blk[backupBlock].setFrom(blk[backupBlock])
-          }
-          else
-            this.controlsV4Blk[backupBlock] <- blk[backupBlock]
-        }
-      if (version < PRESET_ACTUAL_VERSION)
-        controlsBlk = this.controlsV4Blk
-      if (!shouldBackupOldControls)
-        this.controlsV4Blk = null
-    }
-
+    let version = controlsBlk.version
     this.loadBasePresetsFromBlk(controlsBlk, version, presetChain)
 
     log($"ControlsPreset: LoadControls v{version}")
 
-    this.loadHotkeysFromBlk    (controlsBlk, version)
-    this.loadAxesFromBlk       (controlsBlk, version)
-    this.loadParamsFromBlk     (controlsBlk, version)
-    this.loadJoyMappingFromBlk (controlsBlk, version)
+    this.loadHotkeysFromBlk    (controlsBlk)
+    this.loadAxesFromBlk       (controlsBlk)
+    this.loadParamsFromBlk     (controlsBlk)
+    this.loadJoyMappingFromBlk (controlsBlk)
     this.appliedFallbacksVer = controlsBlk?.appliedFallbacksVer ?? 0
     this.isLoaded = true
-
-    if (shouldForgetBasePresets)
-      this.basePresetPaths = {}
 
     this.debugPresetStats()
   }
@@ -475,10 +437,6 @@ ControlsPreset = class {
     controlsDiff.saveParamsToBlk     (controlsBlk)
     controlsDiff.saveJoyMappingToBlk (controlsBlk)
     blk["controls"] <- controlsBlk
-
-    
-    if (this.controlsV4Blk != null)
-      u.extend(blk, this.controlsV4Blk)
 
     this.debugPresetStats()
   }
@@ -505,7 +463,7 @@ ControlsPreset = class {
     let usedAxesIds = []
     foreach (axesName, otherAxis in appliedPreset.axes) {
       this.setAxis(axesName, otherAxis)
-      if (getTblValue("axisId", otherAxis, -1) >= 0)
+      if ((otherAxis?.axisId ?? -1) >= 0)
         usedAxesIds.append(otherAxis["axisId"])
     }
 
@@ -613,81 +571,44 @@ ControlsPreset = class {
     }
   }
 
-  function loadHotkeysFromBlk(blk, version) {
+  function loadHotkeysFromBlk(blk) {
     if (!u.isDataBlock(blk?["hotkeys"]))
       return
     let blkHotkeys = blk["hotkeys"]
 
-    if (version >= PRESET_ACTUAL_VERSION) {
-      
-      let usedHotkeys = []
-      for (local j = 0; j < blkHotkeys.blockCount(); j++) {
-        let blkHotkey = blkHotkeys.getBlock(j)
-        let hotkeyName = blkHotkey.getBlockName()
-        let activationType = blkHotkey?.activationType ?? ActivationCondition.DEFAULT
-        let shortcut = []
+    let usedHotkeys = []
+    for (local j = 0; j < blkHotkeys.blockCount(); j++) {
+      let blkHotkey = blkHotkeys.getBlock(j)
+      let hotkeyName = blkHotkey.getBlockName()
+      let activationType = blkHotkey?.activationType ?? ActivationCondition.DEFAULT
+      let shortcut = []
 
-        for (local k = 0; k < blkHotkey.paramCount(); k++) {
-          let deviceType = blkHotkey.getParamName(k)
-          let deviceId = getTblValue(deviceType, deviceIdByType, null)
-          let buttonId = blkHotkey.getParamValue(k)
+      for (local k = 0; k < blkHotkey.paramCount(); k++) {
+        let deviceType = blkHotkey.getParamName(k)
+        let deviceId = deviceIdByType?[deviceType]
+        let buttonId = blkHotkey.getParamValue(k)
 
-          if (deviceId == null || !u.isInteger(buttonId) || buttonId == -1)
-            continue
-
-          shortcut.append({
-            deviceId = deviceId
-            buttonId = buttonId
-            activationType
-          })
-        }
-
-        if (usedHotkeys.indexof(hotkeyName) == null) {
-          usedHotkeys.append(hotkeyName)
-          this.resetHotkey(hotkeyName)
-        }
-        this.getHotkey(hotkeyName).append(shortcut)
-      }
-    }
-    else {
-      
-      foreach (blkEvent in blkHotkeys % "event") {
-        if (!u.isString(blkEvent?["name"]))
+        if (deviceId == null || !u.isInteger(buttonId) || buttonId == -1)
           continue
 
-        let hotkeyName = blkEvent["name"]
-        this.resetHotkey(hotkeyName)
-
-        let event = []
-        foreach (blkShortcut in blkEvent % "shortcut") {
-          if (!u.isDataBlock(blkShortcut))
-            continue
-
-          let shortcut = []
-          foreach (blkButton in blkShortcut % "button") {
-            if (!u.isInteger(blkButton?["deviceId"]) || !u.isInteger(blkButton?["buttonId"]))
-              continue
-
-            shortcut.append({
-              deviceId = blkButton["deviceId"]
-              buttonId = blkButton["buttonId"]
-              activationType = ActivationCondition.DEFAULT
-            })
-          }
-          event.append(shortcut)
-        }
-        this.setHotkey(hotkeyName, event)
+        shortcut.append({
+          deviceId = deviceId
+          buttonId = buttonId
+          activationType
+        })
       }
+
+      if (usedHotkeys.indexof(hotkeyName) == null) {
+        usedHotkeys.append(hotkeyName)
+        this.resetHotkey(hotkeyName)
+      }
+      this.getHotkey(hotkeyName).append(shortcut)
     }
   }
 
 
-  function loadAxesFromBlk(blk, version) {
-    local blkAxes
-    if (version >= PRESET_ACTUAL_VERSION)
-      blkAxes = blk?["axes"]
-    else
-      blkAxes = getJoystickBlockV4(blk)
+  function loadAxesFromBlk(blk) {
+    local blkAxes = blk?["axes"]
 
     if (!u.isDataBlock(blkAxes))
       return
@@ -695,35 +616,13 @@ ControlsPreset = class {
     eachBlock(blkAxes, function(blkAxis, name) {
       if (startsWith(name, "square") || name == "mouse" || name == "devices" || name == "hangar")
         return
-      if (version < PRESET_ACTUAL_VERSION)
-        this.resetAxis(name)
-
       copyParamsToTable(blkAxis, this.getAxis(name))
     }, this)
-
-    
-    if (version < PRESET_ACTUAL_VERSION) {
-      let blkMouseAxes = blkAxes?["mouse"]
-      let mouseAxes = u.copy(this.compatibility.mouseAxesDefaults)
-
-      if (u.isDataBlock(blkMouseAxes))
-        foreach (idx, axisId in blkMouseAxes % "axis")
-          mouseAxes[idx] = u.isInteger(axisId) ? get_axis_name(axisId) : ""
-
-      foreach (idx, axisName in mouseAxes)
-        if (u.isString(axisName) && axisName.len() > 0)
-          this.getAxis(axisName).mouseAxisId <- idx
-    }
   }
 
 
-  function loadParamsFromBlk(blk, version) {
-    local blkParams
-    if (version >= PRESET_ACTUAL_VERSION)
-      blkParams = blk?["params"]
-    else
-      blkParams = getJoystickBlockV4(blk)
-
+  function loadParamsFromBlk(blk) {
+    local blkParams = blk?["params"]
     if (blkParams == null)
       return
 
@@ -731,7 +630,7 @@ ControlsPreset = class {
   }
 
 
-  function loadJoyMappingFromBlk(blk, _version) {
+  function loadJoyMappingFromBlk(blk) {
     let blkJoyMapping = blk?.deviceMapping
     if (blkJoyMapping == null)
       return
@@ -787,7 +686,7 @@ ControlsPreset = class {
         let blkShortcut = DataBlock()
         local activationType = ActivationCondition.DEFAULT
         foreach (button in shortcut) {
-          let deviceName = getTblValue(button.deviceId, deviceTypeById, null)
+          let deviceName = deviceTypeById?[button.deviceId]
           if (deviceName == null)
             continue
           blkShortcut[deviceName] <- button.buttonId
@@ -1042,7 +941,7 @@ ControlsPreset = class {
     }
 
     function getActualBasePresetPaths(presetPath) {
-      let legacyPerGamePrefix = "wt/"
+      const legacyPerGamePrefix = "wt/"
       let legacyPrefixPos = presetPath.indexof(legacyPerGamePrefix)
       if (legacyPrefixPos == 0) {
         let modernPath = presetPath.slice(legacyPerGamePrefix.len())
