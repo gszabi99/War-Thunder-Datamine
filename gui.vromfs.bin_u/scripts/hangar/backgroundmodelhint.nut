@@ -81,7 +81,7 @@ function openDelayedOrModalTooltip(obj, tooltipProvider, unitName, params, isCur
     return
   }
   let handler = handlersManager.getActiveBaseHandler()
-  openModalInfo(obj.getParent(), handler, tooltipProvider, unitName, params, null, isCursorInBoundsOptional)
+  openModalInfo(obj.getParent().getParent(), handler, tooltipProvider, unitName, params, null, isCursorInBoundsOptional)
 }
 
 function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
@@ -93,7 +93,8 @@ function fillSecondaryWeaponHint(obj, unitName, weaponBlkName, presetName) {
   obj.show(true)
   if (presetName == "")
     presetName = weapon.presetId
-  let params = { blkPath = weaponBlkName, tType = weapon.trigger, presetName = presetName }
+  let params = { blkPath = weaponBlkName, tType = weapon.trigger, presetName = presetName,
+    tooltipId = weaponBlkName }
   let isCursorInBoundsOptional = @() isShellFocusedInHangar(weaponBlkName)
   let tooltipObj = obj.findObject("shell_click_btn") ?? obj
   openDelayedOrModalTooltip(tooltipObj, SINGLE_WEAPON, unitName, params, isCursorInBoundsOptional,
@@ -121,7 +122,7 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
   let tooltipObj = obj.findObject("shell_click_btn") ?? obj
   let isCursorInBoundsOptional = @() isShellFocusedInHangar(bulletName)
   if (!isBulletBelt) {
-    let params = { modName = bulletSetName }
+    let params = { modName = bulletSetName, tooltipId = bulletSetName }
     params.__update({ forceHideActionText = true })
     openDelayedOrModalTooltip(tooltipObj, MODIFICATION, unitName, params, isCursorInBoundsOptional,
       @() MODIFICATION.getTooltipId(unitName, bulletSetName, params))
@@ -142,6 +143,7 @@ function fillBulletHint(obj, unitName, bulletName, bulletType) {
       modName = bulletName
       bSet
       bulletParams
+      tooltipId = $"{bulletName}_{modName}"
     }
     params.__update({ forceHideActionText = true })
     openDelayedOrModalTooltip(tooltipObj, SINGLE_BULLET, unitName, params, isCursorInBoundsOptional,

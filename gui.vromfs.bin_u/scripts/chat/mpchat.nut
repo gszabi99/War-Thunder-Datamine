@@ -5,7 +5,7 @@ from "guiMission" import get_player_army_for_hud
 from "string" import format
 from "replays" import is_replay_playing
 from "eventbus" import eventbus_send, eventbus_subscribe
-from "chat" import chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL
+from "chat" import chat_on_text_update, chat_on_send, CHAT_MODE_ALL
 from "mission" import get_mplayer_by_userid
 from "scriptRespondent" import registerRespondent
 from "dagor.workcycle" import defer
@@ -441,20 +441,6 @@ let chatHandler = {
     let sceneData = findSceneDataByObj(obj)
     if (sceneData)
       updateChatScene(sceneData, dt)
-  }
-
-  function onChatIngameRequestActivate(_obj = null) {
-    toggle_ingame_chat(true)
-  }
-
-  function onChatIngameRequestCancel(_obj = null) {
-    toggle_ingame_chat(false)
-  }
-
-  function onChatIngameRequestEnter(obj) {
-    let editboxObj = checkObj(obj) ? obj.getParent().findObject("chat_input") : null
-    if (checkObj(editboxObj) && editboxObj?["on_activate"] == "onChatEntered")
-      this.onChatEntered(editboxObj)
   }
 
   function onChatEntered(obj) {

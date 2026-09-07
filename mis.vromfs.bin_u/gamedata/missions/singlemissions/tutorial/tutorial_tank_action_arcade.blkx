@@ -144,8 +144,6 @@
             "ID_ACTION_BAR_ITEM_4",
             "ID_ACTION_BAR_ITEM_5",
             "AXIS_ZOOM",
-            "ID_TOGGLE_VIEW_GM",
-            "ID_TOGGLE_VIEW",
             "ID_ZOOM",
             "ID_ZOOM_TOGGLE",
             "ID_TARGET_CAMERA",
@@ -1032,6 +1030,11 @@
             "accuracy": 0.0,
             "maxDeviationAngle": 1.0,
             "effShootingRate": 0.0
+          },
+          {
+            "object": "@player",
+            "attack_type": "fire_at_will",
+            "effShootingRate": 1.0
           }
         ],
         "varSetInt": {
@@ -1099,6 +1102,10 @@
           "shouldKeepFormation": false,
           "teleportHeightValue": 1000.0,
           "horizontalDirectionForTeleport": true,
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "pl_column_sq",
           "object_type": "isNotMarked"
         },
@@ -1221,12 +1228,12 @@
           "value": 0,
           "var": "time_since_last_kill"
         },
-        "unitSetProperties": {
+        "__unitSetProperties": {
+          "object": "pl_column_sq",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "pl_column_sq",
           "accuracy": 0.0,
           "maxDeviationAngle": 5.0,
           "effShootingRate": 0.0
@@ -1288,17 +1295,23 @@
           "doExplosion": true,
           "useForTriggerFiltered": true
         },
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "dropAccuracy",
-          "object_var_comp_op": "equal",
-          "object_var_value": 1,
-          "object": "pl_column_sq",
-          "object_type": "isUnitVar",
-          "accuracy": 0.0,
-          "maxDeviationAngle": 1.0,
-          "effShootingRate": 0.0
-        },
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "dropAccuracy",
+            "object_var_comp_op": "equal",
+            "object_var_value": 1,
+            "object": "pl_column_sq",
+            "object_type": "isUnitVar",
+            "accuracy": 0.0,
+            "maxDeviationAngle": 1.0,
+            "effShootingRate": 0.0
+          },
+          {
+            "object": "@player",
+            "effShootingRate": 1.0
+          }
+        ],
         "varSetInt": {
           "value": 0,
           "var": "time_since_last_kill"
@@ -2053,6 +2066,12 @@
         }
       },
       "actions": {
+        "unitSetProperties": {
+          "object": "@player",
+          "attack_type": "fire_at_will",
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
         "bigQueryAddRecord": {
           "name": "tutorial_tank_action_arcade",
           "params": "task 5/12: flanking done"
@@ -2722,18 +2741,31 @@
             "time": 10.0
           }
         ],
-        "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "object": "pl_column_sq",
-          "accuracy": 0.0,
-          "airAccuracy": 0.0,
-          "maxDeviationAngle": 5.0,
-          "effShootingRate": 0.0,
-          "airEffShootingRate": 0.0
-        },
+        "unitSetProperties": [
+          {
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "object": "pl_column_sq",
+            "accuracy": 0.0,
+            "airAccuracy": 0.0,
+            "maxDeviationAngle": 5.0,
+            "effShootingRate": 0.0,
+            "airEffShootingRate": 0.0
+          },
+          {
+            "object": "@player",
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "accuracy": 1.0,
+            "airAccuracy": 1.0,
+            "effShootingRate": 1.0,
+            "airEffShootingRate": 1.0
+          }
+        ],
         "moAddMissionObjective": {
           "target": "karantan_tutorial_05_repel_air_attack",
           "object_var_comp_op": "equal",
@@ -3288,6 +3320,11 @@
       "actions": {
         "playerLockTarget": {
           "target": "@player"
+        },
+        "unitSetProperties": {
+          "object": "@player",
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
         },
         "triggerEnable": {
           "target": "hint_text_target_bombers"
@@ -4656,12 +4693,13 @@
           ]
         },
         "unitSetProperties": {
+          "object": "@player",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "@player",
-          "isImmortal": false
+          "isImmortal": false,
+          "effShootingRate": 1.0
         },
         "triggerEnable": [
           {
@@ -4752,7 +4790,10 @@
         },
         "triggerEnable": [
           {
-            "target": "hint_text_weak_spots"
+            "target": [
+              "hint_text_weak_spots",
+              "enable_view"
+            ]
           },
           {
             "target": [
@@ -4834,10 +4875,8 @@
       },
       "conditions": {},
       "actions": {
-        "gameMPChangeScore": {
-          "value": -25,
-          "valueSystem": "percentage",
-          "team": "B"
+        "missionCompleted": {
+          "timer": false
         }
       },
       "else_actions": {}
@@ -6433,6 +6472,8 @@
             "fov_accel": 0.0,
             "mustHaveGui": false,
             "min_cam_alt": 1.0,
+            "distance": 30.0,
+            "splineSpeed": 100.0,
             "linear_at": [
               0.01,
               -1.0,
@@ -6519,7 +6560,7 @@
               "time": 2.0
             },
             {
-              "time": 1.0
+              "time": 5.0
             }
           ],
           "triggerActivate": [
@@ -6713,7 +6754,7 @@
             "attack_type": "fire_at_will"
           },
           "wait": {
-            "time": 1.0
+            "time": 5.0
           },
           "missionStopCutscene": {},
           "triggerActivate": {
@@ -6878,7 +6919,7 @@
               "time": 3.0
             },
             {
-              "time": 2.0
+              "time": 5.0
             }
           ],
           "__missionPlayDialogue": {
@@ -7148,7 +7189,7 @@
               "time": 1.0
             },
             {
-              "time": 1.0
+              "time": 5.0
             }
           ],
           "missionPlayDialogue": {
@@ -7255,7 +7296,7 @@
             "showInGame": false
           },
           "wait": {
-            "time": 1.0
+            "time": 5.0
           },
           "missionStopCutscene": {},
           "triggerEnable": {

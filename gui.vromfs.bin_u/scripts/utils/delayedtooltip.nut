@@ -3,7 +3,6 @@ from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "json" import parse_json
 from "%scripts/dagui_natives.nut" import is_mouse_last_time_used, periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
-from "types" import Table
 
 let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { show_obj, setPopupMenuPosAndAlign } = require("%scripts/sqDagui/daguiUtil.nut")
@@ -15,7 +14,7 @@ let { posNavigator } = require("%scripts/sqDagui/guiBhv/bhvPosNavigator.nut")
 let { InContainersNavigator } = require("%scripts/sqDagui/guiBhv/bhvInContainersNavigator.nut")
 let { canShowUnitContextMenu } = require("%scripts/unit/contextMenu.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { openModalInfo, closeModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
+let { openModalInfo, closeModalInfo, getModalTooltipParent } = require("%scripts/modalInfo/modalInfo.nut")
 
 const WAIT_ICON_ID = "__delayed_tooltip_wait_icon__"
 const TOOLTIP_ID = "__delayed_tooltip_obj__"
@@ -24,11 +23,13 @@ let waitIconMarkup = "holdWaitPlace { id:t='{0}'; holdWaitIconBg {} holdWaitIcon
   .subst(WAIT_ICON_ID)
 let tooltipObjMarkup = "tooltipObj { id:t='{0}'; position:t='root'; order-popup:t='yes' }"
   .subst(TOOLTIP_ID)
+
 let needActionAfterHoldPID = dagui_propid_add_name_id("need-action-after-hold")
 
 local waitPlace = null
 local tooltipData = null 
 local tooltipPlace = null
+local modalTooltipPlace = null
 local hintPlace = null
 local hintTgt = null
 let hasTooltip = @(obj) (obj?.tooltipId ?? "") != ""
@@ -44,7 +45,13 @@ function hideTooltip() {
   show_obj(tooltipPlace, false)
   tooltipPlace = null
   tooltipData = null
+
   closeModalInfo(true)
+  if (openedTooltipObjs.len() > 0)
+    return
+
+  show_obj(modalTooltipPlace, false)
+  modalTooltipPlace = null
 }
 
 function hideHint() {
@@ -76,6 +83,7 @@ function startValidateTimer(isCursorInBoundsOptional) {
 function getInfoObjForObj(obj, curInfoObj, infoObjId, ctor) {
   if (curInfoObj?.isValid() && curInfoObj.getParent().isVisible())
     return curInfoObj
+
   let rootObj = obj.getScene().getRoot()
   local sceneObj = obj
   while (true) {
@@ -97,7 +105,8 @@ let mkObjCtorByMarkup = @(objId, markup) function(sceneObj) {
 let waitIconCtor = mkObjCtorByMarkup(WAIT_ICON_ID, waitIconMarkup)
 let getWaitIconForObj = @(obj) getInfoObjForObj(obj, waitPlace, WAIT_ICON_ID, waitIconCtor)
 let tooltipCtor = mkObjCtorByMarkup(TOOLTIP_ID, tooltipObjMarkup)
-let getTooltipForObj  = @(obj) getInfoObjForObj(obj, tooltipPlace, TOOLTIP_ID, tooltipCtor)
+let getTooltipForObj = @(obj) getInfoObjForObj(obj, tooltipPlace, TOOLTIP_ID, tooltipCtor)
+
 let getHintForObj  = @(obj) getInfoObjForObj(obj, hintPlace, HINT_ID,
   @(sceneObj) sceneObj.getScene().createElementByObject(sceneObj, "%gui/tooltips/holdTooltipHint.blk", "holdWaitPlace", null))
 
@@ -117,41 +126,21 @@ function showWaitIconForObj(obj) {
   waitPlace = wIcon
 }
 
-function fillTooltipObj(tooltipObj, initObj, tooltipId, isOpenByHoldBtn = false, isCursorInBoundsOptional = @() null) {
-  let params = parse_json(tooltipId)
-  params.isOpenByHoldBtn <- isOpenByHoldBtn
-  if (!(params instanceof Table) || !("ttype" in params) || !("id" in params))
-    return false
-
-  let tooltipType = getTooltipType(params.ttype)
-
-  if (tooltipType.isModalTooltip) {
-    let realObj = openModalInfo(tooltipObj, BaseGuiHandlerWT, tooltipType, params.id, params, initObj, isCursorInBoundsOptional)
-    if (realObj == null)
-      return false
-    openedTooltipObjs.append(addEventListenersTooltip(realObj, null, tooltipType, params.id, params))
-    return false
-  }
-
-  tooltipObj["class"] = tooltipType.isEmptyTooltipObjClass ? "empty" : ""
-  let isSuccess = fillTooltip(tooltipObj, null, tooltipType, params.id, params)
-  if (isSuccess)
-    tooltipData = addEventListenersTooltip(tooltipObj, null, tooltipType, params.id, params)
-  return isSuccess
-}
-
-function showTooltipForObj(obj, isOpenByHoldBtn = false, isCursorInBoundsOptional = @() null) {
-  let tooltipId = obj?.tooltipId
-  let tooltip = getTooltipForObj(obj)
-  if (!tooltip)
+function showTooltip(obj, tooltipNest, params) {
+  tooltipNest = tooltipNest ?? getTooltipForObj(obj)
+  if (!tooltipNest)
     return
-  if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
+  if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltipNest))
     hideTooltip()
 
-  let isSuccess = fillTooltipObj(tooltip, obj, tooltipId ?? "", isOpenByHoldBtn, isCursorInBoundsOptional)
-  show_obj(tooltip, isSuccess)
-  tooltipPlace = tooltip
+  let tooltipType = params.tooltipType
+  tooltipNest["class"] = tooltipType.isEmptyTooltipObjClass ? "empty" : ""
+  let isSuccess = fillTooltip(tooltipNest, null, tooltipType, params.id, params)
+  if (isSuccess)
+    tooltipData = addEventListenersTooltip(tooltipNest, null, tooltipType, params.id, params)
 
+  tooltipPlace = tooltipNest
+  show_obj(tooltipPlace, isSuccess)
   if (!isSuccess)
     return
 
@@ -160,8 +149,44 @@ function showTooltipForObj(obj, isOpenByHoldBtn = false, isCursorInBoundsOptiona
     return
   }
   let align = obj.getFinalProp("tooltip-align") ?? ALIGN.RIGHT
-  tooltip.getScene().applyPendingChanges(false)
-  setPopupMenuPosAndAlign(obj, align, tooltip)
+  tooltipNest.getScene().applyPendingChanges(false)
+  setPopupMenuPosAndAlign(obj, align, tooltipNest)
+}
+
+function showModalTooltip(initObj, tooltipNest, isCursorInBoundsOptional, params) {
+  tooltipNest = tooltipNest ?? getModalTooltipParent(initObj)
+  if (!tooltipNest)
+    return
+  if (modalTooltipPlace?.isValid() && !modalTooltipPlace.isEqual(tooltipNest))
+    hideTooltip()
+
+  let tooltipType = params.tooltipType
+  let realObj = openModalInfo(initObj, BaseGuiHandlerWT, tooltipType, params.id, params, tooltipNest, isCursorInBoundsOptional)
+  if (realObj == null)
+    return false
+  if (realObj?.infoWnd)
+    openedTooltipObjs.append(addEventListenersTooltip(realObj.infoWnd, null, tooltipType, params.id, params))
+
+  if (!realObj?.isChildTooltip || realObj?.oldWnd)
+    modalTooltipPlace = tooltipNest
+  show_obj(modalTooltipPlace, true)
+}
+
+function showTooltipForObj(obj, tooltipNest = null, isOpenByHoldBtn = false, isCursorInBoundsOptional = @() null) {
+  let tooltipId = obj?.tooltipId
+  let params = parse_json(tooltipId)
+  params.isOpenByHoldBtn <- isOpenByHoldBtn
+  params.tooltipType <- getTooltipType(params.ttype)
+  params.tooltipId <- tooltipId
+
+  if (!("ttype" in params) || !("id" in params))
+    return false
+
+  if (params.tooltipType?.isModalTooltip) {
+    showModalTooltip(obj, tooltipNest, isCursorInBoundsOptional, params)
+  } else {
+    showTooltip(obj, tooltipNest, params)
+  }
 }
 
 function showHintForObj(obj) {
@@ -199,7 +224,7 @@ function onHoldStart(obj, _listObj = null) {
   hideWaitIcon()
   hideHint()
   if (hasTooltip(obj))
-    showTooltipForObj(obj, true)
+    showTooltipForObj(obj, null, true)
 }
 
 function onHoldStop(_obj, _listObj = null) {
@@ -218,7 +243,7 @@ function restartHintTask(cb, delay = 1) {
   hoverHintTask = periodic_task_register({}, cb, delay)
 }
 
-function onHover(obj, isCursorInBoundsOptional = @() false) {
+function onHover(obj, isCursorInBoundsOptional = @() false, tooltipNest = null) {
   hideWaitIcon()
   let isHovered = obj.isHovered() || isCursorInBoundsOptional()
   let isSame = hintTgt?.isValid() && hintTgt.isEqual(obj)
@@ -237,7 +262,7 @@ function onHover(obj, isCursorInBoundsOptional = @() false) {
     if (hintTgt?.isValid())
       if (is_mouse_last_time_used()) {
         if (hasTooltip(obj))
-          showTooltipForObj(hintTgt, false, isCursorInBoundsOptional)
+          showTooltipForObj(hintTgt, tooltipNest, false, isCursorInBoundsOptional)
       }
       else
         if(showConsoleButtons.get())

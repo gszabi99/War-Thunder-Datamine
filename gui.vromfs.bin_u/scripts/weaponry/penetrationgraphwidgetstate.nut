@@ -65,7 +65,7 @@ function setPendingPenetrationGraph(obj, handler) {
 addListenersWithoutEnv({
   
   ModalInfoPositioned = function(p) {
-    if (!pendingObj?.isValid() || !pendingObj.isEqual(p.infoWnd))
+    if (!pendingObj?.isValid() || !(pendingObj.isEqual(p.infoWnd)))
       return
     let obj = pendingObj
     let handler = pendingHandler

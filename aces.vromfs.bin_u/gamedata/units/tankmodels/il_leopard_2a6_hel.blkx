@@ -307,11 +307,6 @@
       "turret_10_top_dm": {
         "armorThickness": 20.0
       },
-      "ex_decor_l_10_dm": {
-        "armorThickness": 5.0,
-        "hp": 100.0,
-        "hidableInViewer": true
-      },
       "turret_11_side_dm": {
         "armorThickness": 20.0,
         "hidableInViewer": true
@@ -342,10 +337,6 @@
       },
       "ex_armor_body_07_dm": {
         "armorThickness": 10.0,
-        "hidableInViewer": true
-      },
-      "ex_armor_body_10_dm": {
-        "armorThickness": 30.0,
         "hidableInViewer": true
       },
       "turret_02_back_dm": {
@@ -725,7 +716,6 @@
         "cumulativeArmorQuality": 0.15,
         "hp": 200.0,
         "ex_decor_04_dm": {},
-        "ex_decor_l_06_dm": {},
         "ex_decor_l_11_dm": {
           "armorThickness": 10.0
         },
@@ -2428,6 +2418,14 @@
         }
       },
       {
+        "xrayDmPart": "composite_armor_turret_12_dm",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_turret_12_dm"
+          }
+        }
+      },
+      {
         "xrayDmPart": "firewall_armor_02_dm",
         "titleLoc": "RHA_tank_modern",
         "armorArrayText": {
@@ -2436,7 +2434,15 @@
           }
         }
       }
-    ]
+    ],
+    "armorArrayHullSide": {
+      "xrayDmPart": "composite_armor_hull_05_dm",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_05_dm"
+        }
+      }
+    }
   },
   "MetaParts": {
     "closed_fightning_compartment": {
@@ -4374,10 +4380,10 @@
         "nightVision": {
           "gunnerThermal": {
             "resolution": [
-              500,
-              300
+              800,
+              600
             ],
-            "noiseFactor": 0.05
+            "noiseFactor": 0.04
           },
           "commanderViewThermal": {
             "resolution": [
@@ -4388,10 +4394,10 @@
           },
           "driverIr": {
             "resolution": [
-              800,
-              600
+              1200,
+              800
             ],
-            "lightMult": 5.0,
+            "lightMult": 7.0,
             "ghosting": 0.6,
             "noiseFactor": 0.2
           }

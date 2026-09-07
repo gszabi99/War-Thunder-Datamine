@@ -2474,6 +2474,14 @@
       {
         "name": "b_26b_indonesia_kalong_5in_rockets",
         "blk": "gameData/FlightModels/weaponPresets/b_26b_indonesia_kalong_5in_rockets.blk"
+      },
+      {
+        "name": "b_26b_indonesia_kalong_sura_he",
+        "blk": "gameData/FlightModels/weaponPresets/b_26b_indonesia_kalong_sura_he.blk"
+      },
+      {
+        "name": "b_26b_indonesia_kalong_sura_heat",
+        "blk": "gameData/FlightModels/weaponPresets/b_26b_indonesia_kalong_sura_heat.blk"
       }
     ]
   },
@@ -2484,8 +2492,34 @@
     "maxDisbalance": 400.0,
     "HideNodes": {
       "node": [
-        "rocket_pylon_l",
-        "rocket_pylon_r",
+        "rocket_pylon_l_001",
+        "rocket_pylon_l_002",
+        "rocket_pylon_l_003",
+        "rocket_pylon_l_004",
+        "rocket_pylon_l_005",
+        "rocket_pylon_l_006",
+        "rocket_pylon_l_007",
+        "rocket_pylon_r_001",
+        "rocket_pylon_r_002",
+        "rocket_pylon_r_003",
+        "rocket_pylon_r_004",
+        "rocket_pylon_r_005",
+        "rocket_pylon_r_006",
+        "rocket_pylon_r_007",
+        "missile_pylon_001",
+        "missile_pylon_002",
+        "missile_pylon_003",
+        "missile_pylon_004",
+        "missile_pylon_005",
+        "missile_pylon_006",
+        "missile_pylon_007",
+        "missile_pylon_008",
+        "missile_pylon_009",
+        "missile_pylon_010",
+        "missile_pylon_011",
+        "missile_pylon_012",
+        "missile_pylon_013",
+        "missile_pylon_014",
         "bomb_pylon_1",
         "bomb_pylon_2",
         "bomb_pylon_3",
@@ -2799,15 +2833,18 @@
       },
       {
         "index": 1,
-        "tier": 7,
-        "order": 2,
+        "tier": 10,
+        "order": 1,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small_group_x7",
-            "name": "hvar_x7_left",
+            "iconType": "rockets_he_large_group",
+            "name": "hvar_slot1",
             "reqModification": "frc_mk5",
             "ShowNodes": {
-              "node": "rocket_pylon_l"
+              "node": [
+                "rocket_pylon_l_001",
+                "rocket_pylon_l_002"
+              ]
             },
             "Weapon": [
               {
@@ -2827,13 +2864,44 @@
                 "emitter": "5_in_hvar_3",
                 "bullets": 1,
                 "order": 3
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "sura_he_slot1",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_001",
+                "missile_pylon_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap001",
+                "bullets": 1,
+                "order": 1
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_5",
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap002",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap003",
                 "bullets": 1,
                 "order": 5
               },
@@ -2841,17 +2909,86 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_7",
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap004",
                 "bullets": 1,
                 "order": 7
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x4",
+            "name": "sura_heat_slot1",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_001",
+                "missile_pylon_002"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap001",
+                "bullets": 1,
+                "order": 1
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap002",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap003",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap004",
+                "bullets": 1,
+                "order": 7
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "tier": 9,
+        "order": 3,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group",
+            "name": "hvar_slot2",
+            "reqModification": "frc_mk5",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_l_003",
+                "rocket_pylon_l_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_9",
+                "emitter": "5_in_hvar_5",
                 "bullets": 1,
                 "order": 9
               },
@@ -2860,9 +2997,216 @@
                 "external": true,
                 "separate": true,
                 "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_11",
+                "emitter": "5_in_hvar_7",
                 "bullets": 1,
                 "order": 11
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "sura_he_slot2",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_003",
+                "missile_pylon_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap005",
+                "bullets": 1,
+                "order": 9
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap006",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap007",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap008",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x4",
+            "name": "sura_heat_slot2",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_003",
+                "missile_pylon_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap005",
+                "bullets": 1,
+                "order": 9
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap006",
+                "bullets": 1,
+                "order": 11
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap007",
+                "bullets": 1,
+                "order": 13
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap008",
+                "bullets": 1,
+                "order": 15
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "tier": 8,
+        "order": 5,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large",
+            "name": "hvar_slot3",
+            "reqModification": "frc_mk5",
+            "ShowNodes": {
+              "node": "rocket_pylon_l_005"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_9",
+              "bullets": 1,
+              "order": 17
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "sura_he_slot3",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": "missile_pylon_005"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap009",
+                "bullets": 1,
+                "order": 17
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap010",
+                "bullets": 1,
+                "order": 19
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "sura_heat_slot3",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": "missile_pylon_005"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap009",
+                "bullets": 1,
+                "order": 17
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap010",
+                "bullets": 1,
+                "order": 19
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "tier": 7,
+        "order": 7,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group",
+            "name": "hvar_slot4",
+            "reqModification": "frc_mk5",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_l_006",
+                "rocket_pylon_l_007"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+                "emitter": "5_in_hvar_11",
+                "bullets": 1,
+                "order": 21
               },
               {
                 "trigger": "rockets",
@@ -2871,13 +3215,111 @@
                 "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
                 "emitter": "5_in_hvar_13",
                 "bullets": 1,
-                "order": 13
+                "order": 23
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "sura_he_slot4",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_006",
+                "missile_pylon_007"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap011",
+                "bullets": 1,
+                "order": 21
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap012",
+                "bullets": 1,
+                "order": 23
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap013",
+                "bullets": 1,
+                "order": 25
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap014",
+                "bullets": 1,
+                "order": 27
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x4",
+            "name": "sura_heat_slot4",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_006",
+                "missile_pylon_007"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap011",
+                "bullets": 1,
+                "order": 21
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap012",
+                "bullets": 1,
+                "order": 23
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap013",
+                "bullets": 1,
+                "order": 25
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap014",
+                "bullets": 1,
+                "order": 27
               }
             ]
           },
           {
             "iconType": "doublebarreled_box",
-            "name": "gun_pod",
+            "name": "gun_pod_slot4",
             "reqModification": "a_26_gunpod",
             "ShowNodes": {
               "node": "gunpod_browning_001"
@@ -2919,41 +3361,27 @@
         ]
       },
       {
-        "index": 2,
+        "index": 5,
         "tier": 6,
-        "order": 15,
+        "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
-            "iconType": "bombs_middle_group_x4",
-            "name": "mk82",
+            "iconType": "bombs_middle_group_x2",
+            "name": "mk82_slot5",
             "reqModification": "b-25_sbc",
             "Weapon": [
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-                "emitter": "bomb1000lb1",
+                "emitter": "bomb2000lb1",
                 "bullets": 1,
                 "machLimit": 1.01
               },
               {
                 "trigger": "bombs",
                 "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-                "emitter": "bomb1000lb2",
-                "bullets": 1,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-                "emitter": "bomb1000lb3",
-                "bullets": 1,
-                "machLimit": 1.01
-              },
-              {
-                "trigger": "bombs",
-                "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
-                "emitter": "bomb1000lb4",
+                "emitter": "bomb2000lb2",
                 "bullets": 1,
                 "machLimit": 1.01
               }
@@ -3052,7 +3480,7 @@
           },
           {
             "iconType": "bombs_middle_group_x4",
-            "name": "ofab_250",
+            "name": "ofab_250_slot5",
             "reqModification": "b-25_sbc",
             "Weapon": [
               {
@@ -3179,15 +3607,412 @@
         ]
       },
       {
-        "index": 3,
+        "index": 6,
         "tier": 5,
+        "order": 8,
         "WeaponPreset": [
           {
-            "iconType": "rockets_he_small_group_x7",
-            "name": "hvar_x7_right",
+            "iconType": "rockets_he_large_group",
+            "name": "hvar_slot6",
             "reqModification": "frc_mk5",
             "ShowNodes": {
-              "node": "rocket_pylon_r"
+              "node": [
+                "rocket_pylon_r_006",
+                "rocket_pylon_r_007"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+                "emitter": "5_in_hvar_12",
+                "bullets": 1,
+                "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+                "emitter": "5_in_hvar_14",
+                "bullets": 1,
+                "order": 24
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "sura_he_slot6",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_013",
+                "missile_pylon_014"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap025",
+                "bullets": 1,
+                "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap026",
+                "bullets": 1,
+                "order": 24
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap027",
+                "bullets": 1,
+                "order": 26
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap028",
+                "bullets": 1,
+                "order": 28
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x4",
+            "name": "sura_heat_slot6",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_013",
+                "missile_pylon_014"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap025",
+                "bullets": 1,
+                "order": 22
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap026",
+                "bullets": 1,
+                "order": 24
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap027",
+                "bullets": 1,
+                "order": 26
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap028",
+                "bullets": 1,
+                "order": 28
+              }
+            ]
+          },
+          {
+            "iconType": "doublebarreled_box",
+            "name": "gun_pod_slot6",
+            "reqModification": "a_26_gunpod",
+            "ShowNodes": {
+              "node": "gunpod_browning_002"
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover9_dm",
+                "mgun12_dm",
+                "mgun11_dm"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_underwing.blk",
+                "emitter": "flare16",
+                "flash": "flare16",
+                "bullets": 300,
+                "dm": "mgun12_dm",
+                "traceOffset": 1,
+                "spread": 1.0,
+                "counterIndex": 1,
+                "external": true
+              },
+              {
+                "trigger": "additional gun",
+                "blk": "gameData/Weapons/gunBrowning50_M2_underwing.blk",
+                "emitter": "flare15",
+                "flash": "flare15",
+                "bullets": 300,
+                "dm": "mgun11_dm",
+                "traceOffset": 1,
+                "spread": 1.0,
+                "counterIndex": 1,
+                "external": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "tier": 4,
+        "order": 6,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large",
+            "name": "hvar_slot7",
+            "reqModification": "frc_mk5",
+            "ShowNodes": {
+              "node": "rocket_pylon_r_005"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+              "emitter": "5_in_hvar_10",
+              "bullets": 1,
+              "order": 18
+            }
+          },
+          {
+            "iconType": "rockets_he_large_group_x2",
+            "name": "sura_he_slot7",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": "missile_pylon_012"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap023",
+                "bullets": 1,
+                "order": 18
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap024",
+                "bullets": 1,
+                "order": 20
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x2",
+            "name": "sura_heat_slot7",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": "missile_pylon_012"
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap023",
+                "bullets": 1,
+                "order": 18
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap024",
+                "bullets": 1,
+                "order": 20
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "tier": 3,
+        "order": 4,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group",
+            "name": "hvar_slot8",
+            "reqModification": "frc_mk5",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_r_003",
+                "rocket_pylon_r_004"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+                "emitter": "5_in_hvar_6",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
+                "emitter": "5_in_hvar_8",
+                "bullets": 1,
+                "order": 12
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "sura_he_slot8",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_010",
+                "missile_pylon_011"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap019",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap020",
+                "bullets": 1,
+                "order": 12
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap021",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap022",
+                "bullets": 1,
+                "order": 16
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_ap_large_group_x4",
+            "name": "sura_heat_slot8",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_010",
+                "missile_pylon_011"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap019",
+                "bullets": 1,
+                "order": 10
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap020",
+                "bullets": 1,
+                "order": 12
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap021",
+                "bullets": 1,
+                "order": 14
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap022",
+                "bullets": 1,
+                "order": 16
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "tier": 2,
+        "order": 2,
+        "WeaponPreset": [
+          {
+            "iconType": "rockets_he_large_group",
+            "name": "hvar_slot9",
+            "reqModification": "frc_mk5",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_r_001",
+                "rocket_pylon_r_002"
+              ]
             },
             "Weapon": [
               {
@@ -3207,13 +4032,44 @@
                 "emitter": "5_in_hvar_4",
                 "bullets": 1,
                 "order": 4
+              }
+            ]
+          },
+          {
+            "iconType": "rockets_he_small_group",
+            "name": "sura_he_slot9",
+            "reqModification": "type_r80_sura",
+            "ShowNodes": {
+              "node": [
+                "missile_pylon_008",
+                "missile_pylon_009"
+              ]
+            },
+            "Weapon": [
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap015",
+                "bullets": 1,
+                "order": 2
               },
               {
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_6",
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap016",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap017",
                 "bullets": 1,
                 "order": 6
               },
@@ -3221,78 +4077,59 @@
                 "trigger": "rockets",
                 "external": true,
                 "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_8",
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_sura_fl_us3.blk",
+                "emitter": "80_mm_sura_rocket_ap018",
                 "bullets": 1,
                 "order": 8
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_10",
-                "bullets": 1,
-                "order": 10
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_12",
-                "bullets": 1,
-                "order": 12
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "blk": "gameData/Weapons/rocketGuns/us_5_in_hvar_2.blk",
-                "emitter": "5_in_hvar_14",
-                "bullets": 1,
-                "order": 14
               }
             ]
           },
           {
-            "iconType": "doublebarreled_box",
-            "name": "gun_pod",
-            "reqModification": "a_26_gunpod",
+            "iconType": "rockets_ap_large_group_x4",
+            "name": "sura_heat_slot9",
+            "reqModification": "type_r80_sura",
             "ShowNodes": {
-              "node": "gunpod_browning_002"
-            },
-            "ShowDmParts": {
               "node": [
-                "cover9_dm",
-                "mgun11_dm",
-                "mgun12_dm"
+                "missile_pylon_008",
+                "missile_pylon_009"
               ]
             },
             "Weapon": [
               {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunBrowning50_M2_underwing.blk",
-                "emitter": "flare15",
-                "flash": "flare15",
-                "bullets": 300,
-                "dm": "mgun11_dm",
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap015",
+                "bullets": 1,
+                "order": 2
               },
               {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunBrowning50_M2_underwing.blk",
-                "emitter": "flare16",
-                "flash": "flare16",
-                "bullets": 300,
-                "dm": "mgun12_dm",
-                "traceOffset": 1,
-                "spread": 1.0,
-                "counterIndex": 1,
-                "external": true
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap016",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap017",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "rockets",
+                "external": true,
+                "separate": true,
+                "blk": "gameData/Weapons/rocketGuns/sws_80_mm_hs_r80_sura.blk",
+                "emitter": "80_mm_sura_rocket_ap018",
+                "bullets": 1,
+                "order": 8
               }
             ]
           }
@@ -3384,14 +4221,6 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "b-25_sbc": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "frc_mk5": {
-      "modClass": "weapon",
-      "tier": 2
-    },
     "bmg50_turret_belt_pack": {
       "tier": 3
     },
@@ -3400,7 +4229,19 @@
       "tier": 4
     },
     "50cal_turret_ap": {},
-    "50cal_turret_api": {}
+    "50cal_turret_api": {},
+    "b-25_sbc": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "frc_mk5": {
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "type_r80_sura": {
+      "modClass": "weapon",
+      "tier": 3
+    }
   },
   "user_skin": {
     "name": "b_26b_indonesia_kalong",

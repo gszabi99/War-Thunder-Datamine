@@ -9,6 +9,9 @@ let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { isActionsListOpen } = require("%scripts/actionsList/actionsListState.nut")
 
 const MODAL_INFO_HOLDER_PATH = "%gui/modalInfo/modalInfoHolder.blk"
+const MODAL_TOOLTIP_ID = "__delayed_modal_tooltip_obj__"
+let modalTooltipObjMarkup = "tooltipObj { id:t='{0}'; position:t='root'; order-popup:t='yes' }"
+  .subst(MODAL_TOOLTIP_ID)
 
 let watchedObjects = []
 local timer = null
@@ -30,6 +33,27 @@ function startTimer() {
     timer = setInterval(0.05, onTimerTick)
 }
 
+function getModalTooltipParent(obj) {
+  if (obj?.isValid() && obj?.id == MODAL_TOOLTIP_ID)
+    return obj
+
+  let rootObj = obj.getScene().getRoot()
+  local sceneObj = obj
+  while (true) {
+    let parentObj = sceneObj.getParent()
+    if (!parentObj?.isValid() || parentObj.isEqual(rootObj))
+      break
+    sceneObj = parentObj
+  }
+
+  let res = sceneObj.findObject(MODAL_TOOLTIP_ID)
+  if (res?.isValid())
+    return res
+
+  sceneObj.getScene().appendWithBlk(sceneObj, modalTooltipObjMarkup)
+  return sceneObj.findObject(MODAL_TOOLTIP_ID)
+}
+
 let isUseGamePad = @() !is_mouse_last_time_used() && showConsoleButtons.get()
 
 function updateTimer() {
@@ -39,25 +63,33 @@ function updateTimer() {
     startTimer()
 }
 
+function destroyOneModalInfo(modalData, removeHolder = true) {
+  let { infoWnd, infoWndHolder } = modalData
+  if (infoWnd?.isValid()) {
+    let guiScene = infoWnd.getScene()
+    broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
+    guiScene.destroyElement(infoWnd)
+  }
+  if (removeHolder && infoWndHolder?.isValid()) {
+    let guiScene = infoWndHolder.getScene()
+    guiScene.destroyElement(infoWndHolder)
+  }
+}
+
 function closeLastModalInfo(removeHolder = true) {
   clearTimer(holdTimer)
   if (watchedObjects.len() == 0)
     return
 
-  let { fakeInitiator, infoWndHolder, infoWnd } = watchedObjects.pop()
-  broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
-
-  local guiScene = null
-  if (infoWnd.isValid()) {
-    guiScene = infoWnd.getScene()
-    guiScene.destroyElement(infoWnd)
-  }
-  if (fakeInitiator.isValid())
+  let modalData = watchedObjects.pop()
+  let { fakeInitiator, infoWndHolder } = modalData
+  destroyOneModalInfo(modalData, false)
+  if (fakeInitiator?.isValid())
     move_mouse_on_obj(fakeInitiator)
 
   if (infoWndHolder?.isValid()) {
     if (removeHolder) {
-      guiScene = guiScene ?? infoWndHolder.getScene()
+      let guiScene = infoWndHolder.getScene()
       guiScene.destroyElement(infoWndHolder)
     } else
       lastHolder = infoWndHolder
@@ -214,33 +246,23 @@ function destroy() {
   if (watchedObjects.len() == 0)
     return
 
-  let infoWnds = watchedObjects.map(@(t) t.infoWnd)
-  infoWnds.each(function(infoWnd) {
-    if (infoWnd?.isValid()) {
-      let guiScene = infoWnd.getScene()
-      broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
-      guiScene.destroyElement(infoWnd)
-    }
-  })
+  while (watchedObjects.len() > 0)
+    destroyOneModalInfo(watchedObjects.pop())
 
-  let holders = watchedObjects.map(@(t) t.infoWndHolder)
-  holders.each(function(infoWndHolder) {
-    if (infoWndHolder?.isValid()) {
-      let guiScene = infoWndHolder.getScene()
-      guiScene.destroyElement(infoWndHolder)
-    }
-  })
-
-  watchedObjects.clear()
   updateTimer()
 }
 
 function removeInvalidWatchedObjects() {
-  watchedObjects.replace(watchedObjects.filter(function(objects) {
-    let { infoWnd, infoWndHolder, initiatorObj } = objects
-    return infoWnd?.isValid() && (infoWndHolder?.isValid() ?? true) && initiatorObj?.isValid()
+  watchedObjects.replace(watchedObjects.filter(function(modalData) {
+    let { infoWnd, infoWndHolder, initiatorObj } = modalData
+    let isValidInitiator = initiatorObj?.isValid() && initiatorObj?.isVisible()
+    let needRemove = !isValidInitiator || !infoWnd?.isValid() || !(infoWndHolder?.isValid() ?? true)
+    if (needRemove)
+      destroyOneModalInfo(modalData)
+    return !needRemove
   }))
 }
+
 
 local isInAct = false
 onTimerTick = function() {
@@ -257,42 +279,55 @@ onTimerTick = function() {
   let cursorPos = getCursorPos()
   isInAct = true
 
-  let { infoWnd, infoWndHolder, initiatorObj, infoWndBounds, isCursorInBoundsOptional } = watchedObjects[watchedObjects.len() - 1]
+  let modalData = watchedObjects[watchedObjects.len() - 1]
+  let { initiatorObj, infoWndBounds, isCursorInBoundsOptional } = modalData
   let boundsArr = [infoWndBounds]
   if (initiatorObj.isValid())
     boundsArr.append(getObjectBounds(initiatorObj))
   if (!isCursorInBounds(boundsArr, cursorPos) && !(isCursorInBoundsOptional?() ?? false)) {
     watchedObjects.pop()
-    if (infoWnd?.isValid()) {
-      broadcastEvent("RemoveOpenedModalInfo", { objs = [infoWnd] })
-      let guiScene = infoWnd.getScene()
-      guiScene.destroyElement(infoWnd)
-    }
-
-    if (infoWndHolder?.isValid()) {
-      let guiScene = infoWndHolder.getScene()
-      guiScene.destroyElement(infoWndHolder)
-    }
+    destroyOneModalInfo(modalData)
   }
   isInAct = false
 }
 
-function addModalInfo(initiatorObj, handler, tooltipType, id, params, isCursorInBoundsOptional) {
-  if (watchedObjects.findindex(@(o) o.id == id && o.initiatorObj?.isValid() && o.initiatorObj.isEqual(initiatorObj)) != null)
-    return null
+function addModalInfo(initiatorObj, tooltipNest, handler, tooltipType, id, params, isCursorInBoundsOptional) {
+  let index = watchedObjects.findindex(@(o) o.initiatorObj?.isValid() &&
+    (((o.params?.tooltipId != null) && (o.params.tooltipId == params?.tooltipId))
+    || (o.id == id && o.initiatorObj.isEqual(initiatorObj))))
+  if (index != null) {
+    return { oldWnd = watchedObjects[index].infoWnd }
+  }
+
+  local parentIndex = -1
+  let watchedCount = watchedObjects.len()
+  for (local i = watchedCount-1; i >= 0; i--) {
+    let data = watchedObjects[i]
+    if (data.infoWnd.isValid() && data.infoWnd.isObjExist(initiatorObj)) {
+      parentIndex = i
+      break
+    }
+  }
+
+  let isChildTooltip = parentIndex >= 0
+  if (isChildTooltip) {
+    tooltipNest = watchedObjects[parentIndex].infoWnd.findObject("next_modal_hints") ?? tooltipNest
+  }
 
   let initiatorBounds = getObjectBounds(initiatorObj)
   let infosPlaceBounds = createInfoPlaceBounds()
-  let { infoWnd, infoWndHolder = null} = isUseGamePad()
-    ? createInfoHolderModal(initiatorObj)
-    : createInfoHolder(initiatorObj)
+  let needModalWindow = isUseGamePad()
+  let { infoWnd, infoWndHolder = null } = needModalWindow
+    ? createInfoHolderModal(tooltipNest)
+    : createInfoHolder(tooltipNest)
 
   let prefSide = params?.modalPreferredSide ?? tooltipType.modalPreferredSide
   let maxHeight = prefSide != "center" ? null
     : max(initiatorBounds.top - infosPlaceBounds.top,
         infosPlaceBounds.bottom - initiatorBounds.bottom)
 
-  tooltipType.fillTooltip(infoWnd, handler, id, params.__update({ maxHeight }))
+  let contentObj = infoWnd.findObject("modal_tooltip_content") ?? infoWnd
+  tooltipType.fillTooltip(contentObj, handler, id, params.__update({ maxHeight, infoWnd }))
   infoWnd.getScene().applyPendingChanges(false)
 
   let infoWndBounds = getObjectBounds(infoWnd)
@@ -307,7 +342,7 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params, isCursorIn
     fakeInitiator["size"] = $"{initiatorBounds.width}, {initiatorBounds.height}"
   }
 
-  watchedObjects.append({
+  let watchedObj = {
     id
     infoWnd
     infoWndHolder
@@ -315,31 +350,34 @@ function addModalInfo(initiatorObj, handler, tooltipType, id, params, isCursorIn
     infoWndBounds
     fakeInitiator
     isCursorInBoundsOptional
-  })
-
+    params
+    isChildTooltip
+  }
+  watchedObjects.append(watchedObj)
   updateTimer()
-  return infoWnd
+  return watchedObj
 }
 
 function closeModalInfo(isDelayed = false) {
   if (watchedObjects.len() == 0)
     return
-  let bounds = watchedObjects.map(@(t) t.infoWndBounds)
+  let bounds = watchedObjects.map(@(t) (t.infoWnd?.isValid() && t.infoWnd.isVisible()) ? t.infoWndBounds : null)
   if (isDelayed)
-    bounds.extend(watchedObjects.map(@(t) t.initiatorObj.isValid()
+    bounds.extend(watchedObjects.map(@(t) (t.initiatorObj.isValid() && t.infoWnd?.isValid() && t.infoWnd.isVisible())
       ? getObjectBounds(t.initiatorObj)
       : null
     ))
-
-  if (isCursorInBounds(bounds, getCursorPos()))
+  let isBounds = isCursorInBounds(bounds, getCursorPos())
+  if (isBounds)
     return
   broadcastEvent("RemoveOpenedModalInfo", { objs = watchedObjects.map(@(t) t.infoWnd) })
 }
 
-function openModalInfo(obj, handler, tooltipType, id, params, initObj = null, isCursorInBoundsOptional = @() null) {
+function openModalInfo(initObj, handler, tooltipType, id, params, tooltipNest = null, isCursorInBoundsOptional = @() null) {
   if (isActionsListOpen.get() == true)
     return null
-  return addModalInfo(initObj ?? obj.getParent(), handler, tooltipType, id, params, isCursorInBoundsOptional)
+
+  return addModalInfo(initObj, tooltipNest ?? initObj.getParent(), handler, tooltipType, id, params, isCursorInBoundsOptional)
 }
 
 isActionsListOpen.subscribe(@(_) destroy())
@@ -350,4 +388,5 @@ return {
   destroyModalInfo = destroy
   getModalInfoByUnitId = @(id) watchedObjects.findvalue(@(o) o.id == id)
   isUseGamePad
+  getModalTooltipParent
 }

@@ -2,7 +2,7 @@ from "daRg" import sh, sw, set_kb_focus
 require("interop.nut")
 require("daeditor_es.nut")
 
-let { showHelp, editorIsActive, editorFreeCam, showTemplateSelect, propPanelVisible, showPointAction, typePointAction, entitiesListUpdateTrigger } = require("state.nut")
+let { showHelp, editorIsActive, editorFreeCam, showTemplateSelect, propPanelVisible, showPointAction, typePointAction } = require("state.nut")
 
 editorIsActive.subscribe(function(v){ if(v == false) set_kb_focus(null) })
 editorFreeCam.subscribe(function(v){ if(v == true) set_kb_focus(null) })
@@ -45,7 +45,6 @@ return function() {
       showPointAction
       typePointAction
       showHelp
-      entitiesListUpdateTrigger
       editorFreeCam
     ]
 

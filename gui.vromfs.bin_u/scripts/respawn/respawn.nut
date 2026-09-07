@@ -1529,9 +1529,9 @@ let RespawnHandler = class (MPStatistics) {
       return false
 
     let currBasesList = clone this.respawnBasesList
+    let crew = this.getCurCrew()
+    setSelectedUnitInfo(unit.name, crew.idInCountry)
     if (this.canChangeAircraft) {
-      let crew = this.getCurCrew()
-      setSelectedUnitInfo(unit.name, crew.idInCountry)
       let rbData = respawnBases.getRespawnBasesData(unit, needToShowBadWeatherWarning.get() && !this.ignoreBadWeather)
       this.curRespawnBase = rbData.selBase
       this.respawnBasesList = rbData.basesList

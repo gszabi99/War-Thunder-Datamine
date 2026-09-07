@@ -57,6 +57,7 @@
 @const extraInfoBlockBgColor:#2B3B45;
 
 @const shopItemPad: 4*@sf/@pf;
+@const slotExtraInfoSidePad: (0.05@slot_button_fullWidth)\1;
 @const rentIconSize: 26@sf/@pf\2*2;
 @const bottomButtonsDivTopOffset: 1@dp;
 @const extraInfoTopShade: 2@dp;
@@ -730,8 +731,7 @@ firstChoiceItem > slotBottomGradientLine {
   size:pw, 2@slotbarBottomLineHeight;
 }
 
-unitCell[selected=yes] > shopItem > slotTopGradientLine,
-unitCell[selected=yes] > shopItem > slotBottomGradientLine,
+unitCell[selected=yes] > shopItem > slotSelectionRectangle,
 unitCell[selected=no] > shopItem:hover > slotBottomGradientLine,
 firstChoiceItem[selected=yes] > slotHoverHighlight,
 firstChoiceItem[selected=yes] > slotTopGradientLine,
@@ -1111,8 +1111,8 @@ specIconBlock > shopTrainedImg, specIconBlock > warningIcon {
 }
 
 extraInfoBlock {
-  size:1.1pw, @slotExtraInfoHeight;
-  pos:pw/2-w/2, ph+@sf/@pf;
+  size:pw+2@slotExtraInfoSidePad, @slotExtraInfoHeight;
+  pos:-1@slotExtraInfoSidePad, ph+@sf/@pf;
   position:absolute;
   css-hier-invalidate:yes;
   not-input-transparent:yes;
@@ -1123,7 +1123,7 @@ CountriesCrews[needHugeFooter=yes] extraInfoBlock {
 }
 
 extraInfoBlock[needHugeFooter=yes] {
-  size:1.1pw, @slotExtraInfoHeightHuge;
+  size:pw+2@slotExtraInfoSidePad, @slotExtraInfoHeightHuge;
 }
 
 CountriesCrews[needHugeFooter=yes] extraInfoBlockHint {
@@ -1136,8 +1136,8 @@ extraInfoBlockHint[needHugeFooter=yes] {
 
 extraInfoBlock > content {
   re-type:9rect;
-  size:1/1.1*pw, ph;
-  pos:pw/2-w/2, 0;
+  size:pw-2@slotExtraInfoSidePad, ph;
+  pos:1@slotExtraInfoSidePad, 0;
   position:absolute;
   background-color:@extraInfoBlockBgColor;
   css-hier-invalidate:yes;

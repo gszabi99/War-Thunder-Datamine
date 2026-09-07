@@ -738,10 +738,8 @@ function createParam(param, width, height, style, colorWatch, options) {
 
 let TrtModeForRpm = TrtMode[0]
 
-let agmBlinkComputed = Computed(@() (IsAgmLaunchZoneVisible.get() &&
-  (!IsInsideLaunchZoneYawPitch.get() || (IsRangefinderEnabled.get() && !IsInsideLaunchZoneDist.get()))))
 let agmBlinkTrigger = {}
-agmBlinkComputed.subscribe(@(v) v ? anim_start(agmBlinkTrigger) : anim_request_stop(agmBlinkTrigger))
+IsOutsideAgmLaunchZone.subscribe(@(v) v ? anim_start(agmBlinkTrigger) : anim_request_stop(agmBlinkTrigger))
 
 let atgmLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.get())
 let atgmLaunchZoneTrigger = {}
@@ -819,7 +817,7 @@ let textParamsMapMain = {
     additionalComputed = Computed(@() loc(AgmName.get()))
     alertStateCaptionComputed = Computed(@() IsAgmEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsAgmEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
-    blinkComputed = agmBlinkComputed
+    blinkComputed = IsOutsideAgmLaunchZone
     blinkTrigger = agmBlinkTrigger
   },
   [AirParamsMain.BOMBS] = {

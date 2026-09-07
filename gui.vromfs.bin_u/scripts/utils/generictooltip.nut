@@ -8,7 +8,7 @@ from "types" import Table
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { openModalInfo, closeModalInfo } = require("%scripts/modalInfo/modalInfo.nut")
+let { openModalInfo, closeModalInfo, getModalTooltipParent } = require("%scripts/modalInfo/modalInfo.nut")
 
 dagui_propid_add_name_id("tooltipId")
 
@@ -54,7 +54,7 @@ function addEventListenersTooltip(obj, handler, tooltipType, id, params) {
   return data
 }
 
-function openGenericTooltip(obj, handler) {
+function openGenericTooltip(obj, handler, modalParent = null) {
   removeInvalidTooltipObjs()
   if (!checkObj(obj))
     return
@@ -71,12 +71,15 @@ function openGenericTooltip(obj, handler) {
 
   let tooltipType = getTooltipType(params.ttype)
   let id = params.id
+  params.tooltipId <- tooltipId
 
   if (tooltipType.isModalTooltip) {
-    let realObj = openModalInfo(obj, handler, tooltipType, id, params)
-    if (realObj == null)
+    modalParent = modalParent ?? getModalTooltipParent(obj)
+    let modalInfo = openModalInfo(obj.getParent(), handler, tooltipType, id, params, modalParent)
+    if (modalInfo == null)
       return false
-    openedTooltipObjs.append(addEventListenersTooltip(realObj, handler, tooltipType, id, params))
+    if (modalInfo?.infoWnd)
+      openedTooltipObjs.append(addEventListenersTooltip(modalInfo.infoWnd, handler, tooltipType, id, params))
     return
   }
 

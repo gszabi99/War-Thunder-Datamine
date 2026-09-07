@@ -206,6 +206,9 @@ let FixedGunOverheat = Watched(0.0)
 let IsRangefinderEnabled = Watched(false)
 let RangefinderDist = Watched(0)
 
+let IsOutsideAgmLaunchZone = Computed(@() IsAgmLaunchZoneVisible.get() &&
+  (!IsInsideLaunchZoneYawPitch.get() || (IsRangefinderEnabled.get() && !IsInsideLaunchZoneDist.get())))
+
 let TurretsDirectionX = []
 let TurretsDirectionY = []
 let TurretsOverheat = []
@@ -340,6 +343,7 @@ let helicopterState = {
 
   IsInsideLaunchZoneYawPitch,
   IsInsideLaunchZoneDist,
+  IsOutsideAgmLaunchZone,
 
   IsLaserDesignatorEnabled,
   IsATGMOutOfTrackerSector,

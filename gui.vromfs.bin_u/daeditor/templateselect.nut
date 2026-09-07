@@ -2,7 +2,8 @@ import "daEditorEmbedded" as daEditor
 from "%darg/ui_imports.nut" import *
 
 let entity_editor = require_optional("entity_editor")
-let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback, allScenesWatcher, getAllScenes } = require("state.nut")
+let { showTemplateSelect, editorIsActive, showDebugButtons, selectedTemplatesGroup, addEntityCreatedCallback } = require("state.nut")
+let { allModifiableScenes, sceneToComboboxEntry } = require("sceneModel.nut")
 let { colors } = require("components/style.nut")
 let txt = require("%daeditor/components/text.nut").dtext
 
@@ -13,13 +14,10 @@ let combobox = require("%daeditor/components/combobox.nut")
 let { makeVertScroll } = require("%daeditor/components/scrollbar.nut")
 let { mkTemplateTooltip } = require("components/templateHelp.nut")
 
-let { sceneToComboboxEntry, canSceneBeModified } = require("%daeditor/daeditor_es.nut")
-let { sortScenesByLoadType } = require("components/sceneSorting.nut")
 let {DE4_MODE_SELECT} = daEditor
 
 const noSceneSelected = "UNKNOWN:0"
-let allModifiableScenes = Watched([])
-let allSceneTexts = Watched([noSceneSelected])
+let allSceneTexts = Computed(@() allModifiableScenes.get().map(@(scene, _idx) sceneToComboboxEntry(scene)).append(noSceneSelected))
 let selectedScene = Watched(noSceneSelected)
 let selectedItem = Watched(null)
 let filterText = Watched("")
@@ -191,28 +189,20 @@ function doValidateTemplates(idx) {
 }
 doRepeatValidateTemplates = doValidateTemplates
 
-allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  allSceneTexts.set(v.filter(@(scene) canSceneBeModified(scene)).map(@(scene, _idx) sceneToComboboxEntry(scene)))
-  allSceneTexts.get().append(noSceneSelected)
-  local scene = entity_editor?.get_instance().getTargetScene()
+function syncSelectedScene(_v) {
+  local scene = entity_editor?.get_instance()?.getTargetScene()
   let sceneText = (scene != null && ("loadType" in scene) && ("id" in scene)) ? sceneToComboboxEntry(scene) : null
   if (sceneText != null && allSceneTexts.get().contains(sceneText)) {
     selectedScene.set(sceneText)
   } else {
     selectedScene.set(noSceneSelected)
   }
-})
+}
 
 function dialogRoot() {
   let templatesGroups = entity_editor?.get_instance().getEcsTemplatesGroups()
   const maxTemplatesInList = 1000
 
-  local scenes = getAllScenes().map(function (item, ind) {
-      item.index <- ind
-      return item
-      }) ?? [] 
-  scenes.sort(sortScenesByLoadType)
-  allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
   let selectedSceneIndex = selectedScene.get() != noSceneSelected ? allSceneTexts.get().indexof(selectedScene.get()) : null
   let sceneInfo = selectedSceneIndex != null ? allModifiableScenes.get()[selectedSceneIndex] : null
   let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
@@ -284,7 +274,13 @@ function dialogRoot() {
     size = const [flex(), flex()]
     flow = FLOW_HORIZONTAL
 
-    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene, allScenesWatcher]
+    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene, allModifiableScenes]
+    
+    onAttach = function() {
+      syncSelectedScene(null)
+      allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(syncSelectedScene)
+    }
+    onDetach = @() allModifiableScenes.unsubscribe(syncSelectedScene)
 
     children = [
       {
@@ -318,6 +314,8 @@ function dialogRoot() {
             size = const [flex(),fontH(100)]
             children = combobox({
               value = selectedScene
+              
+              changeVarOnListUpdate = false
               update = function(v) {
                 local id = -1
                 if (v != noSceneSelected) {

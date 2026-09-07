@@ -9,11 +9,12 @@
 @const comboExpanedBgColor:          #505050;
 @const comboOptionColor:             #585858;
 @const comboSelOptionColor:          #f1f1f1;
+@const comboHoverOptionColor:        #909090;
 @const comboListBgColor:             #212121;
 
 @const comboExpandedTextColor:       #e0e0e0;
 @const comboExpandedSelTextColor:    #3b3b3b;
-@const comboExpandedHoverTextColor:  #3b3b3b;
+@const comboExpandedHoverTextColor:  #F3F3F3;
 
 @const comboExpandedLockedTextColor: #ff5c41;
 
@@ -274,8 +275,11 @@ ComboBox > listBox[listboxAlign=bottom] > option {
   margin-top:@dp;
 }
 
-ComboBox > listBox > option:current,
 ComboBox > listBox > option:hover {
+  background-color:@comboHoverOptionColor;
+}
+
+ComboBox > listBox > option:current {
   background-color:@comboSelOptionColor;
 }
 
@@ -353,7 +357,10 @@ tr[optionHeight=oneAndHalf] > td > ComboBox:expanded option[shown-option=yes] {
   size:pw,1.5@comboOptContainerHeight;
 }
 
-ComboBox.invertIconsOnHover > listBox > option:hover > optionImg,
-ComboBox.invertIconsOnHover > listBox > option:current > optionImg {
+ComboBox.invertIconsOnHover > listBox > option:hover > optionImg {
   background-color:@comboExpandedHoverTextColor;
+}
+
+ComboBox.invertIconsOnHover > listBox > option:current > optionImg {
+  background-color:@comboExpandedSelTextColor;
 }

@@ -3,8 +3,7 @@ from "%darg/ui_imports.nut" import *
 from "types" import Integer
 
 let entity_editor = require_optional("entity_editor")
-let { selectedEntity, selectedEntities, selectedCompName, markedScenes, sceneIdMap } = require("state.nut")
-let { fileName } = require("%sqstd/path.nut")
+let { selectedEntity, selectedEntities, selectedCompName, markedScenes } = require("state.nut")
 let ecs = require("%sqstd/ecs.nut")
 
 
@@ -72,37 +71,6 @@ function getScenePrettyName(index) {
   return entity_editor?.get_instance().getScenePrettyName(index) ?? ""
 }
 
-function sceneToComboboxEntry(scene): string {
-  if (scene.importDepth == 0 && !scene.hasParent) {
-    return "MAIN"
-  }
-
-  local prettyName = getScenePrettyName(scene.id)
-  local strippedPath = fileName(scene.path)
-  local loadType = getSceneLoadTypeText(scene)
-  return $"{loadType}:{scene.id}:{prettyName.len() == 0 ? strippedPath : $"{prettyName} ({strippedPath})"}"
-}
-
-function canSceneBeModified(scene): bool {
-  if (scene == null) {
-    return false
-  }
-
-  while (scene?.loadType != null) {
-    if (scene.loadType != 3 || (scene.importDepth != 0 && !entity_editor?.get_instance().isChildScene(scene.id))) {
-      return false
-    }
-
-    if (entity_editor?.get_instance()?.isSceneInLockedHierarchy(scene.id)) {
-      return false
-    }
-
-    scene = sceneIdMap?.get()[scene.parent]
-  }
-
-  return true
-}
-
 function isEntityInLockedHierarchy(eid) {
   if (entity_editor?.get_instance()?.isEntityLocked(eid) ?? false) {
     return true
@@ -125,7 +93,5 @@ return {
   matchEntityByScene
 
   getScenePrettyName
-  sceneToComboboxEntry
-  canSceneBeModified
   isEntityInLockedHierarchy
 }

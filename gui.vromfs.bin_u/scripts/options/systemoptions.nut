@@ -2445,18 +2445,14 @@ function configWrite() {
   }
 
   log("[sysopt] Saving config:")
-  foreach (sectionIdx, tag in mActiveTabTags) {
-    foreach (optionId in mUiStruct?[sectionIdx].items ?? []) {
-      if (!(optionId in mCfgCurrent))
-        continue
-      let value = mCfgCurrent[optionId]
-      if (tag == "")
-        mCfgCommon[optionId] <- value
-      else {
-        if (tag not in mCfgDiffsCurrent)
-          mCfgDiffsCurrent[tag] <- {}
-        mCfgDiffsCurrent[tag][optionId] <- value
-      }
+  foreach (optionId, value in mCfgCurrent) {
+    let tag = getActiveTagForOption(optionId)
+    if (tag == "")
+      mCfgCommon[optionId] <- value
+    else {
+      if (tag not in mCfgDiffsCurrent)
+        mCfgDiffsCurrent[tag] <- {}
+      mCfgDiffsCurrent[tag][optionId] <- value
     }
   }
 

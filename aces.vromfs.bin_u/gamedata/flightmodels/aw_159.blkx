@@ -72,6 +72,11 @@
         "hp": 19.5
       }
     },
+    "dural5": {
+      "radar_dm": {
+        "hp": 35.0
+      }
+    },
     "protected_controls": {
       "propeller_shaft1_dm": {
         "hp": 39.5
@@ -480,6 +485,31 @@
       },
       {
         "name": "propeller_shaft2_dm"
+      },
+      {
+        "name": "radar_dm",
+        "onHit": [
+          {
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
+          },
+          {
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
+          }
+        ],
+        "onKill": {
+          "damage": 200.0,
+          "spar1_l_dm": 1.0,
+          "spar1_r_dm": 1.0,
+          "canCut": true
+        }
       },
       {
         "name": "stab_dm",
@@ -1308,6 +1338,230 @@
         "engine2",
         "engine3",
         "engine4"
+      ]
+    },
+    "multifunctionDisplays": {
+      "display": [
+        {
+          "textureArea": [
+            0.0,
+            0.0,
+            0.25,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "rwr"
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "night_vision",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.0,
+            0.5,
+            0.5
+          ],
+          "fontScale": 0.7,
+          "page": [
+            {
+              "type": "radar",
+              "scale": 0.95
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
+            0.0,
+            0.75,
+            0.5
+          ],
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "scale": 0.95
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.75,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "page": {
+            "type": "custom",
+            "pageName": "ah64Flt"
+          }
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.25,
+            1.0
+          ],
+          "page": {
+            "type": "hsd",
+            "scale": 1.0,
+            "color": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "font": "hud",
+            "fontSize": 19,
+            "lineWidth": 2.0,
+            "lineColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "orient": "northUp",
+            "centerMarkType": "heli",
+            "centerMarkFillColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "centerMarkLineColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "centerMarkScale": 0.05,
+            "centerMarkSpeed": true,
+            "spi": true,
+            "spiColor": [
+              255,
+              191,
+              0,
+              255
+            ],
+            "spiInfo": true,
+            "distScale": false,
+            "distScaleBeyondAzScale": false,
+            "distScaleStepSize": 5000.0,
+            "distScaleColor": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "distScaleNumbers": false,
+            "distScaleNumbersAngle": 45.0,
+            "distScaleNumbersFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "azScaleType": "dots",
+            "azScaleSize": 12000.0,
+            "azScaleColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "headingIndFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "centerCross": false,
+            "time": true,
+            "mapBackground": true,
+            "markers": true,
+            "extent": 30000.0,
+            "metricUnits": false
+          }
+        },
+        {
+          "textureArea": [
+            0.25,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": {
+            "type": "devices",
+            "compass": {
+              "texture": "us_mfd_compass",
+              "position": [
+                180.0,
+                190.0
+              ],
+              "backgroundTexCoord": [
+                0.0,
+                0.0,
+                0.5,
+                1.0
+              ],
+              "arrowTexCoord": [
+                0.5,
+                0.0,
+                1.0,
+                1.0
+              ],
+              "size": [
+                330.0,
+                330.0
+              ],
+              "arrowSize": [
+                192.0,
+                192.0
+              ],
+              "ranges": {
+                "limits": [
+                  0.0,
+                  360.0,
+                  0.0,
+                  -2.0
+                ]
+              }
+            }
+          }
+        }
       ]
     }
   },

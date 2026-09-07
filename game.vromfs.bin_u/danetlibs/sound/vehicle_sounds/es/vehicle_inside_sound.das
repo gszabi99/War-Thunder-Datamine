@@ -62,6 +62,8 @@ def vehicle_inside_vibration_sound(evt : Event;
                                    vehicle_inside_sound_enabled : bool;
                                    vehicle_sound_speed_state__speed : float;
                                    transform : float3x4)
+  if empty(vehicle_inside_vibration_sound__path) 
+    return
   if vehicle_inside_vibration_sound__event |> play_or_abandon(vehicle_inside_vibration_sound__path, transform[3], vehicle_inside_sound_enabled)
     set_pos(vehicle_inside_vibration_sound__event, transform[3])
     set_var(vehicle_inside_vibration_sound__event, "speed", vehicle_sound_speed_state__speed)

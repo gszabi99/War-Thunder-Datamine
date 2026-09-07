@@ -15,8 +15,6 @@ let {is_editor_activated=@() false, get_scene_filepath=@() null, set_start_work_
 let selectedEntity = Watched(ecs.INVALID_ENTITY_ID)
 let selectedEntities = mkEcsComputedEidMap({ comps = ["eid"], comps_rq = ["daeditor__selected"] })
 let markedScenes = mkWatched(persist, "markedScenes", {})
-let allScenesWatcher = mkWatched(persist, "allScenes", null)
-let sceneIdMap = mkWatched(persist, "sceneIdMap", null)
 const SETTING_EDITOR_WORKMODE = "daEditor/workMode"
 const SETTING_EDITOR_TPLGROUP = "daEditor/templatesGroup"
 const SETTING_EDITOR_PROPS_ON_SELECT = "daEditor/showPropsOnSelect"
@@ -176,22 +174,6 @@ function handleEntityMoved(eid) {
   }
 }
 
-function getAllScenes() {
-  if (allScenesWatcher.get() == null || allScenesWatcher.get().len() == 0) {
-    allScenesWatcher.set(get_instance()?.getSceneImports() ?? [])
-    sceneIdMap.set(allScenesWatcher.get().map(@(item) [item.id, item]).totable())
-  }
-
-  return allScenesWatcher.get()
-}
-
-function updateAllScenes() {
-  allScenesWatcher.set(get_instance()?.getSceneImports() ?? [])
-  sceneIdMap.set(allScenesWatcher.get().map(@(item) [item.id, item]).totable())
-}
-
-sceneListUpdateTrigger.subscribe_with_nasty_disregard_of_frp_update(@(_v) updateAllScenes())
-
 return {
   EntitySelectWndId = "entity_select"
   SceneOutlinerWndId = "scene_outliner"
@@ -247,9 +229,4 @@ return {
   handleEntityMoved
 
   wantOpenRISelect = Watched(false)
-
-  allScenesWatcher
-  getAllScenes
-  updateAllScenes
-  sceneIdMap
 }

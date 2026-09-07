@@ -7,9 +7,8 @@ let { DE4_MODE_CREATE_ENTITY = null, get_instance = @() null } = require_optiona
 let { LogsWindowId, EntitySelectWndId, SceneOutlinerWndId, propPanelVisible, propPanelClosed,
   showHelp, markedScenes, de4editMode, de4workMode, de4workModes, showUIinEditor, editorTimeStop,
   gizmoBasisType, gizmoBasisTypeNames, gizmoBasisTypeEditingDisabled, gizmoCenterType,
-  gizmoCenterTypeNames, sceneIdMap, updateAllScenes } = require("state.nut")
-
-let { sortScenesByLoadType } = require("components/sceneSorting.nut")
+  gizmoCenterTypeNames } = require("state.nut")
+let { sceneIdMap, sortedScenes, updateAllScenes } = require("sceneModel.nut")
 
 let pictureButton = require("components/pictureButton.nut")
 let { addModalWindow, removeModalWindow } = require("%daeditor/components/modalWindows.nut")
@@ -210,12 +209,7 @@ function showMessageboxSaveScenes(modifiedSceneIds) {
 let markedSceneText = Computed(function() {
   local nMrk = 0
   local path = ""
-  local scenes = get_instance()?.getSceneImports().map(function (item, ind) {
-      item.index <- ind
-      return item
-      }) ?? []
-  scenes.sort(sortScenesByLoadType)
-  foreach (scene in scenes) {
+  foreach (scene in sortedScenes.get()) {
     local isMarked = markedScenes.get()?[scene?.id] ?? false
     if (isMarked) {
       if (nMrk == 0) {

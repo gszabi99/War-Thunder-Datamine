@@ -8,8 +8,8 @@ from "types" import Table, Array, String
 let entity_editor = require_optional("entity_editor")
 let { isCompReadOnly, updateComp, valueAtPath } = require("components/attrUtil.nut")
 let { filterString, propPanelVisible, propPanelClosed, selectedCompName, extraPropPanelCtors, selectedEntity,
-  selectedEntities, de4workMode, wantOpenRISelect, sceneIdMap, getAllScenes, allScenesWatcher,
-  edObjectFlagsUpdateTrigger } = require("state.nut")
+  selectedEntities, de4workMode, wantOpenRISelect, edObjectFlagsUpdateTrigger } = require("state.nut")
+let { sceneIdMap, allModifiableScenes, sceneToComboboxEntry, canSceneBeModified } = require("sceneModel.nut")
 let { colors, gridHeight } = require("components/style.nut")
 
 let selectedCompComp = Watched(null)
@@ -40,9 +40,7 @@ let compNameFilter = require("components/apNameFilter.nut")(filterString, select
 let { riSelectShown, riSelectWindow, openRISelectForEntity } = require("riSelect.nut")
 
 let combobox = require("%daeditor/components/combobox.nut")
-let { getEntityExtraName, getSceneLoadTypeText, sceneToComboboxEntry, canSceneBeModified,
-  isEntityInLockedHierarchy } = require("%daeditor/daeditor_es.nut")
-let { sortScenesByLoadType } = require("components/sceneSorting.nut")
+let { getEntityExtraName, getSceneLoadTypeText, isEntityInLockedHierarchy } = require("%daeditor/daeditor_es.nut")
 
 let ecs = require("%sqstd/ecs.nut")
 
@@ -88,15 +86,9 @@ let windowState = Watched({
   size = [sw(29), sh(80)]
 })
 
-let allModifiableScenes = Watched([])
-let allSceneTexts = Watched([])
-
 const noSceneParent = "No Scene"
 
-allModifiableScenes.subscribe_with_nasty_disregard_of_frp_update(function(v) {
-  allSceneTexts.set(v.filter(@(scene) canSceneBeModified(scene)).map(@(scene, _idx) sceneToComboboxEntry(scene)))
-  allSceneTexts.get().append(noSceneParent)
-})
+let allSceneTexts = Computed(@() allModifiableScenes.get().map(@(scene, _idx) sceneToComboboxEntry(scene)).append(noSceneParent))
 
 function onMoveResize(dx, dy, dw, dh): table {
   let w = windowState.get()
@@ -1281,8 +1273,10 @@ function mkSceneComboBox(eid, sceneId) {
     currentScene.set(sceneToComboboxEntry(scene))
   }
 
+  
   return combobox(
     { value = currentScene,
+      changeVarOnListUpdate = false,
       update = function(v) {
         local newSceneId = ecs.INVALID_SCENE_ID
         if (v != noSceneParent) {
@@ -1328,7 +1322,7 @@ function mkEntityEditableDataRows(eid) {
         eventPassThrough = true
         onElemState = @(sf) stateFlags.set(sf & S_TOP_HOVER)
         group = group
-        watch = allScenesWatcher
+        watch = sceneIdMap
         children = [
           @(){
             size = [flex(), gridHeight]
@@ -1418,14 +1412,6 @@ let templateFilter = nameFilter(templateFilterText, {
 })
 
 function compPanel() {
-  local scenes = getAllScenes().map(function (item, ind) {
-    item.index <- ind
-    return item
-  }) ?? [] 
-
-  scenes.sort(sortScenesByLoadType)
-  allModifiableScenes.set(scenes.filter(@(scene) canSceneBeModified(scene)))
-
   if (!propPanelVisible.get()) {
     return {
       watch = propPanelVisible

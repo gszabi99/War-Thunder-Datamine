@@ -281,7 +281,8 @@ let tooltipTypes = {
     isCustomTooltipFill = true
     modalPreferredSide = "center"
     fillTooltip = function(obj, handler, _id, params) {
-      let { weaponBlkName = "", bulletName = "", bulletNameTxt = "", esUnitType = null } = params ?? {}
+      let { infoWnd = null, weaponBlkName = "", bulletName = "", bulletNameTxt = "",
+        esUnitType = null } = params ?? {}
       if (bulletName == "")
         return false
 
@@ -293,7 +294,7 @@ let tooltipTypes = {
 
       
       
-      setPendingPenetrationGraph(obj, handler)
+      setPendingPenetrationGraph(infoWnd ?? obj, handler)
       
       requestTooltipPenetrationGraphData({ weaponBlkName, bulletName, esUnitType })
       return true

@@ -154,7 +154,7 @@ register_command(debug_open_url, "debug.open_url")
 register_command(function() {
   getAllUnits().each(@(unit) unit.modificators = null)
 }, "debug.remove_unit_modificators")
-
+register_command(@(video) debugWnd("%gui/debugTools/dbgVideo.tpl", { video }), "debug.show_video")
 
 return {
   debug_get_skyquake_path

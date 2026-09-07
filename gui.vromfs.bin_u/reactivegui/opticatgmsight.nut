@@ -1,12 +1,15 @@
 from "%rGui/planeState/planeFlyState.nut" import Roll
 from "%rGui/airHudElems.nut" import turretAngles
-from "%rGui/airState.nut" import IsMfdSightHudVisible, MfdSightPosSize
+from "%rGui/airState.nut" import IsMfdSightHudVisible, MfdSightPosSize, IsOutsideAgmLaunchZone
 from "%sqstd/math.nut" import pow, ceil
 from "guidanceConstants" import GuidanceLockResult
 from "%rGui/globals/ui_library.nut" import *
 
 let agmAimState = require("%rGui/agmAimState.nut")
 let gbuAimState = require("%rGui/guidedBombsAimState.nut")
+
+let launchZoneBlinkTrigger = {}
+IsOutsideAgmLaunchZone.subscribe(@(v) v ? anim_start(launchZoneBlinkTrigger) : anim_request_stop(launchZoneBlinkTrigger))
 
 
 let opticalSight = @(width, height,
@@ -18,6 +21,7 @@ let opticalSight = @(width, height,
 
   let aspectX = height / width
   const pxToVec = 0.1
+  const blinkDuration = 0.5
   let isMfdVis = IsMfdSightHudVisible.get()
   let sightSh = @(h) isMfdVis ? ceil(h * MfdSightPosSize.get()[3] / 100.0) : sh(h)
   let sightSw = @(w) isMfdVis ? ceil(w * MfdSightPosSize.get()[2] / 100) : sw(w)
@@ -39,6 +43,8 @@ let opticalSight = @(width, height,
     rendObj = ROBJ_VECTOR_CANVAS
     color = opticColor
     lineWidth = lineWidth * 2
+    animations = [{ prop = AnimProp.opacity, to = 0, duration = blinkDuration, play = IsOutsideAgmLaunchZone.get(),
+      loop = true, easing = InOutSine, trigger = launchZoneBlinkTrigger }]
     commands = [
       [VECTOR_LINE, 50, 0, 50, 50 - hSizeY],
       [VECTOR_LINE, 0, 50, 50 - hSizeX, 50],
@@ -155,6 +161,8 @@ let opticalSight = @(width, height,
     opacity = 1.0 - 0.7 * cursorOutAreaPosPercent.get()
     lineWidth = lineWidth * 2
     fillColor = 0
+    animations = [{ prop = AnimProp.opacity, to = 0, duration = blinkDuration, play = IsOutsideAgmLaunchZone.get(),
+      loop = true, easing = InOutSine, trigger = launchZoneBlinkTrigger }]
     pos = const [sw(50), sh(50)]
     commands = isLockReleaseAreaVisible.get() ? [[VECTOR_RECTANGLE, -50, -50, 100, 100]] : null
   }
@@ -176,7 +184,7 @@ let opticalSight = @(width, height,
     size = [width, height]
     watch = [TrackerVisible, TrackerSize, GuidanceLockState, PointIsTarget]
     children = [fullscreenCrosshair, rollIndicator, releaseTargetLockArea, releaseTargetLockCursor, fovLimits,
-      turretAngles(opticColorWatch, sightHdpx(150), sightHdpx(150), sightSw(50), sightSh(90), 0.5, true)
+      turretAngles(opticColorWatch, sightHdpx(150), sightHdpx(150), sightSw(50), sightSh(90), blinkDuration, true)
     ]
   }
 }

@@ -5,7 +5,8 @@ from "components/style.nut" import colors
 from "%darg/laconic.nut" import *
 
 let entity_editor = require_optional("entity_editor")
-let { EntitySelectWndId, selectedEntities, de4workMode, sceneIdMap } = require("state.nut")
+let { EntitySelectWndId, selectedEntities, de4workMode } = require("state.nut")
+let { sceneIdMap } = require("sceneModel.nut")
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
 let { setTooltip } = require("components/cursors.nut")

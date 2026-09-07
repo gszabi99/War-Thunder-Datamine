@@ -1311,5 +1311,46 @@
         "Bip01 Spine1": "Bip01 Neck"
       }
     }
+  },
+  "attachable_wear_ag_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_ag_jacket_item",
+    "animchar__res": "ag_jacket_char",
+    "collres__res": "ag_jacket_collision"
+  },
+  "attachable_wear_ag_jacket_brown_item": {
+    "_use": "attachable_wear_ag_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.461,
+          0.367,
+          0.24,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_ag_jacket_btn_item": {
+    "_use": "attachable_wear_ag_jacket_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "btn_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "camouflage_scale_and_offset": [
+          3.0,
+          3.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
   }
 }
