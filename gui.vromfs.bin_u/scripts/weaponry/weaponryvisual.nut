@@ -13,6 +13,7 @@ let { getByCurBundle, canResearchItem, getItemUnlockCost, getBundleCurItem, isCa
 let { isBullets, isFakeBullet, getBulletsSetData, getModifIconItem, isBulletsWithoutTracer } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getBulletsIconView } = require("%scripts/weaponry/bulletsVisual.nut")
 let { getModItemName, getFullItemCostText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { isWeaponAllowedByGameModeRestrictions } = require("%scripts/weaponry/weaponryInfo.nut")
 let { MODIFICATION, WEAPON, SPARE, PRIMARY_WEAPON, INFANTRY_WEAPON, INFANTRY_ARMOR } = require("%scripts/weaponry/weaponryTooltips.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -164,6 +165,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     progressPaused            = ""
     oldResearchProgress       = ""
     priceText                 = ""
+    isBlockedByGameModeRestrictions = false
     optEquipped               = ""
     optStatus                 = ""
     amountText                = ""
@@ -343,6 +345,15 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       res.priceText = rpText
     }
   }
+
+  if (item.type == weaponsItem.weapon && !isWeaponAllowedByGameModeRestrictions(unit, item)) {
+    res.isBlockedByGameModeRestrictions = true
+    let notAvailableText = colorize("badTextColor", loc("leaderboards/notAvailable"))
+    res.priceText = notAvailableText
+    res.spawnScoreCost = notAvailableText
+    res.nameTextWithPrice = "".concat(res.nameText, loc("ui/parentheses/space", { text = notAvailableText }))
+  }
+
   res.isShowPrice = res.priceText != "" && !params?.hideSpawnScoreCost
   local optStatus = "locked"
   if (params?.researchFinished && !(statusTbl.amount || statusTbl.unlocked))

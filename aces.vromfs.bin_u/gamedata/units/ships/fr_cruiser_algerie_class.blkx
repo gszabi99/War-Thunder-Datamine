@@ -2110,9 +2110,6 @@
       "bulkhead_05_dm": {
         "hp": 8000.0
       },
-      "bulkhead_06_dm": {
-        "hp": 8000.0
-      },
       "bulkhead_07_dm": {
         "hp": 8000.0
       },
@@ -2266,6 +2263,10 @@
         "armorThickness": 30.0,
         "hp": 10000.0
       },
+      "armor_cit_09_dm": {
+        "armorThickness": 70.0,
+        "hp": 10000.0
+      },
       "armor_cit_04_dm": {
         "armorThickness": 100.0,
         "hp": 10000.0
@@ -2279,7 +2280,11 @@
         "hp": 10000.0
       },
       "armor_cit_07_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 18.0,
+        "hp": 10000.0
+      },
+      "armor_cit_08_dm": {
+        "armorThickness": 50.0,
         "hp": 10000.0
       }
     },
@@ -2331,6 +2336,22 @@
         "armorThickness": 20.0,
         "hp": 2000.0
       },
+      "armor_cit_l_08_dm": {
+        "armorThickness": 60.0,
+        "hp": 2000.0
+      },
+      "armor_cit_l_09_dm": {
+        "armorThickness": 50.0,
+        "hp": 2000.0
+      },
+      "armor_cit_l_10_dm": {
+        "armorThickness": 50.0,
+        "hp": 2000.0
+      },
+      "armor_cit_l_11_dm": {
+        "armorThickness": 60.0,
+        "hp": 2000.0
+      },
       "armor_cit_r_01_dm": {
         "armorThickness": 40.0,
         "hp": 2000.0
@@ -2357,6 +2378,22 @@
       },
       "armor_cit_r_07_dm": {
         "armorThickness": 20.0,
+        "hp": 2000.0
+      },
+      "armor_cit_r_08_dm": {
+        "armorThickness": 60.0,
+        "hp": 2000.0
+      },
+      "armor_cit_r_09_dm": {
+        "armorThickness": 50.0,
+        "hp": 2000.0
+      },
+      "armor_cit_r_10_dm": {
+        "armorThickness": 50.0,
+        "hp": 2000.0
+      },
+      "armor_cit_r_11_dm": {
+        "armorThickness": 60.0,
         "hp": 2000.0
       }
     },
@@ -2444,19 +2481,19 @@
         "hp": 10000.0
       },
       "turret_01_bottom_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_02_bottom_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_03_bottom_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_04_bottom_dm": {
-        "armorThickness": 20.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_01_top_dm": {
@@ -2818,10 +2855,10 @@
         "hp": 2200.0
       },
       "ammunition_storage_shells_03_dm": {
-        "hp": 2200.0
+        "hp": 2816.0
       },
       "ammunition_storage_shells_04_dm": {
-        "hp": 2200.0
+        "hp": 2268.0
       },
       "ammunition_storage_shells_05_dm": {
         "hp": 2200.0
@@ -2852,7 +2889,7 @@
         "hp": 3900.0
       },
       "ammunition_storage_charges_07_dm": {
-        "hp": 3900.0
+        "hp": 4983.0
       },
       "ammunition_storage_charges_08_dm": {
         "hp": 3900.0
@@ -2871,10 +2908,10 @@
         "hp": 1600.0
       },
       "ammunition_storage_aux_03_dm": {
-        "hp": 1670.0
+        "hp": 2100.0
       },
       "ammunition_storage_aux_04_dm": {
-        "hp": 1600.0
+        "hp": 1694.0
       },
       "ammunition_storage_aux_05_dm": {
         "hp": 1600.0
@@ -3027,7 +3064,7 @@
         "hp": 1000.0
       },
       "pump_02_dm": {
-        "hp": 1000.0
+        "hp": 772.0
       }
     },
     "asw_mounts": {
@@ -3049,7 +3086,19 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 5.0,
       "dmgState": 0.0,
-      "napalmDamageMult": 1.0
+      "napalmDamageMult": 1.0,
+      "antenna_target_location_01_dm": {
+        "hp": 350.0
+      },
+      "antenna_target_location_02_dm": {
+        "hp": 350.0
+      },
+      "antenna_target_location_03_dm": {
+        "hp": 350.0
+      },
+      "antenna_target_location_04_dm": {
+        "hp": 350.0
+      }
     },
     "fire_control": {
       "armorClass": "ship_structural_steel",
@@ -3115,7 +3164,7 @@
     "sailor6": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 31
+      "crew": 30
     },
     "sailor7": {
       "dmPart": "main_caliber_turret_01_dm",
@@ -3185,7 +3234,7 @@
     "sailor20": {
       "dmPart": "ammunition_storage_aux_03_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 8
     },
     "sailor21": {
       "dmPart": "ammunition_storage_aux_04_dm",
@@ -4078,6 +4127,16 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/naval/fr_me140_mr126.blk",
+      "designationFromBody": true,
+      "dmPart": [
+        "antenna_target_location_01_dm",
+        "antenna_target_location_02_dm",
+        "antenna_target_location_03_dm",
+        "antenna_target_location_04_dm"
+      ]
+    },
     "fireDirecting": [
       {
         "dmPartMain": "fire_control_room_01_dm",
@@ -4145,6 +4204,19 @@
           "secondary": true,
           "machinegun": false
         }
+      }
+    ]
+  },
+  "radarAnimations": {
+    "anim": [
+      {
+        "radarAnimVar": "radar_target_yaw_rotate",
+        "animatedRadarIdx": 0
+      },
+      {
+        "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 50.0,
+        "animatedRadarIdx": 1
       }
     ]
   },

@@ -562,7 +562,11 @@ class Component : Canvas
     setFontSize(int(float(fontSize) * 1.3))
     setColor(COLOR_GREEN)
     drawStrAnchored(float2(0.97, 0.09), "{roundi(altM)}", AnchorHorz.Right, AnchorVert.Center)
-    drawStrAnchored(float2(0.97, 0.96), "{roundi(altBaroM)}p", AnchorHorz.Right, AnchorVert.Center)
+    if isChina
+      drawStrAnchored(float2(0.97, 0.96), "雷高", AnchorHorz.Right, AnchorVert.Center)
+      drawStrAnchored(float2(0.87, 0.96), "{roundi(altBaroM)}", AnchorHorz.Right, AnchorVert.Center)
+    else
+      drawStrAnchored(float2(0.97, 0.96), "{roundi(altBaroM)}р", AnchorHorz.Right, AnchorVert.Center)
     setFontSize(fontSize)
 
 
@@ -1023,14 +1027,15 @@ class Component : Canvas
     let lx = 0.97
     let ls = 0.045
     if isChina
+      let lsc = 0.08
       drawStrAnchored(float2(lx, 0.15), "电", AnchorHorz.Center, AnchorVert.Center)
-      drawStrAnchored(float2(lx, 0.15 + ls), "源", AnchorHorz.Center, AnchorVert.Center)
+      drawStrAnchored(float2(lx, 0.15 + lsc), "源", AnchorHorz.Center, AnchorVert.Center)
 
       drawStrAnchored(float2(lx, 0.45), "挂", AnchorHorz.Center, AnchorVert.Center)
-      drawStrAnchored(float2(lx, 0.45 + ls), "载", AnchorHorz.Center, AnchorVert.Center)
+      drawStrAnchored(float2(lx, 0.45 + lsc), "载", AnchorHorz.Center, AnchorVert.Center)
 
       drawStrAnchored(float2(lx, 0.75), "系", AnchorHorz.Center, AnchorVert.Center)
-      drawStrAnchored(float2(lx, 0.75 + ls), "统", AnchorHorz.Center, AnchorVert.Center)
+      drawStrAnchored(float2(lx, 0.75 + lsc), "统", AnchorHorz.Center, AnchorVert.Center)
     else
       drawStrAnchored(float2(lx, 0.15), "Е", AnchorHorz.Center, AnchorVert.Center)
       drawStrAnchored(float2(lx, 0.15 + ls), "С", AnchorHorz.Center, AnchorVert.Center)

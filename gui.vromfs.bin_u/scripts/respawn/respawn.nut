@@ -72,7 +72,8 @@ let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible, getOverrideBullets, getWeaponByName,
+  getWeaponBlockedByGameModeMinRank, getWeaponBlockedByGameModeText } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getModificationName, getUnitLastBullets, getBeltlessGunsWeapNames } = require("%scripts/weaponry/bulletsInfo.nut")
 let { AMMO, getAmmoAmount, getAmmoMaxAmountInSession, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
@@ -170,6 +171,12 @@ function getTotalNuclearYield(unitName, weaponName) {
     totalNuclearYieldCache[key] <- get_wpcost_blk()?[unitName].weapons[weaponName]?.totalNuclearYield ?? 0
 
   return totalNuclearYieldCache[key]
+}
+
+function getSelectedWeaponBlockedByGameModeMinRank(unit) {
+  if (unit == null)
+    return 0
+  return getWeaponBlockedByGameModeMinRank(unit, getWeaponByName(unit, getLastWeapon(unit.name)))
 }
 
 function getHumanSpeed(weight) {
@@ -2055,6 +2062,13 @@ let RespawnHandler = class (MPStatistics) {
     if (!(this.curZoneRespawnBase?.isAvailable ?? true))
       return { text = loc("multiplayer/zoneRespawnUnavailable"), id = "zone_respawn_unavailable" }
 
+    if (this.isLowNuclearEscalationStage())
+      return { text = loc("multiplayer/lowEscalationStage"), id = "low_escalation_stage" }
+
+    let blockedWeaponText = getWeaponBlockedByGameModeText(unit, getWeaponByName(unit, getLastWeapon(unit.name)))
+    if (blockedWeaponText != "")
+      return { text = blockedWeaponText, id = "weapon_unavailable_in_mode" }
+
     if (this.missionRules.isWarpointsRespawnEnabled && this.isRespawn) {
       let respawnPrice = this.getRespawnWpTotalCost()
       if (respawnPrice > 0 && respawnPrice > this.sessionWpBalance)
@@ -2068,9 +2082,6 @@ let RespawnHandler = class (MPStatistics) {
 
     if (this.isRespawn && !this.missionRules.canRespawnOnUnitByRageTokens(unit))
       return { text = loc("multiplayer/noRageTokens"), id = "not_enought_score" }
-
-    if (this.isLowNuclearEscalationStage())
-      return { text = loc("multiplayer/lowEscalationStage"), id = "low_escalation_stage" }
 
     if (this.missionRules.isSpawnDelayEnabled && this.isRespawn) {
       let slotDelay = this.getInterpolatedSlotDelay(crew.idInCountry, this.curRespawnBase.id)
@@ -2355,6 +2366,7 @@ let RespawnHandler = class (MPStatistics) {
         infoTextsArr.append(this.missionRules.getRespawnInfoTextForUnit(unit))
         let isRulesRespAvailable = this.missionRules.isRespawnAvailable(unit)
         isAvailResp = isAvailResp && isRulesRespAvailable && !this.isLowNuclearEscalationStage()
+          && getSelectedWeaponBlockedByGameModeMinRank(unit) == 0
       }
     }
 

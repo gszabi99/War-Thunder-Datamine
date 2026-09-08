@@ -10,7 +10,7 @@ let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets
 let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
-let { getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes, needSecondaryWeaponsWnd, isWeaponUnavailableInMission } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, isWeaponEnabled, isDefaultTorpedoes, needSecondaryWeaponsWnd, isWeaponUnavailableInMission, isWeaponAllowedByGameModeRestrictions } = require("%scripts/weaponry/weaponryInfo.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let { getUnitLastBullets, getBulletGroupIndex, getWeaponBlkNameByGroupIdx } = require("%scripts/weaponry/bulletsInfo.nut")
 let { INF_VIEW_SIZE_MULTIPLIER } = require("%scripts/weaponry/weaponryPresets.nut")
@@ -48,7 +48,8 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
     list.append({
       weaponryItem = weapon
       selected = curWeaponName == weapon.name
-      enabled = isForcedAvailable || needShowDefTorpedoes || isWeaponEnabled(unit, weapon)
+      enabled = (isForcedAvailable || needShowDefTorpedoes || isWeaponEnabled(unit, weapon))
+        && isWeaponAllowedByGameModeRestrictions(unit, weapon)
     })
   }
 

@@ -184760,66 +184760,6 @@
       }
     },
     {
-      "id": "human_kill_entire_squad_rapid",
-      "type": "streak",
-      "isMultiStage": true,
-      "isAfterFlight": false,
-      "wpA": [
-        300.0,
-        300.0,
-        300.0
-      ],
-      "wpB": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "expA": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "expB": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "stage": {
-        "param": 1,
-        "amount_exp": 0,
-        "amount_warpoints": 300
-      },
-      "mode": {
-        "type": "killedGroundScore",
-        "includeHumans": true,
-        "num": 100500,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "targetIsPlayer",
-            "includeBots": true
-          },
-          {
-            "type": "targetType",
-            "unitType": "human"
-          },
-          {
-            "type": "offenderType",
-            "unitType": "human"
-          },
-          {
-            "type": "offenderIsEntireHumanSquadKiller"
-          },
-          {
-            "type": "entireHumanSquadKillTime",
-            "squadKillTime": 5.0
-          }
-        ]
-      }
-    },
-    {
       "id": "hidden_win_streak",
       "type": "streak",
       "amount_exp": 0,
@@ -185378,7 +185318,6 @@
           "global_kills_without_death",
           "human_row_melee_kill",
           "human_row_ai_members_kill",
-          "human_kill_entire_squad_rapid",
           "killStreak_fighter_survived",
           "killStreak_attacker_survived",
           "killStreak_bomber_survived"

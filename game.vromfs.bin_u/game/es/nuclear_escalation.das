@@ -148,9 +148,9 @@ def for_each_tank_column_target(army : int; cb : block<(eid : EntityId; pos : fl
         ++freeSlots
     if team != army || freeSlots > 0
       cb(eid, transform[3])
-  query() <| $ [es(REQUIRE=airfield_aa__nuclearEscalationField)] (eid : EntityId;
-                                                                  team : int;
-                                                                  transform : float3x4)
+  query() <| $ [es(REQUIRE=airfield__nuclearEscalationField)] (eid : EntityId;
+                                                               team : int;
+                                                               transform : float3x4)
     if team != army
       cb(eid, transform[3])
 
@@ -666,9 +666,9 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
         return true
     return false
   
-  query(units_column__target) <| $ [es(REQUIRE=airfield_aa__nuclearEscalationField)] (var team : int&;
-                                                                                      airfield_aa__ticketsByCapture : int;
-                                                                                      transform : float3x4)
+  query(units_column__target) <| $ [es(REQUIRE=airfield__nuclearEscalationField)] (var team : int&;
+                                                                                   airfield__ticketsByCapture : int;
+                                                                                   transform : float3x4)
     for unitEid in units_column__units
       query(unitEid) <| $ [es] (unit__ref aka column_unit__ref : UnitRef)
         if (!column_unit__ref.unit.isDelayed &&
@@ -676,7 +676,7 @@ def tank_column_capture_check_es(act : UpdateStageInfoAct;
          length_sq(column_unit__ref.unit.pos - transform[3]) < 50. * 50.)
           if column_unit__ref.unit.army != team
             if !capture_blocked(transform[3], column_unit__ref.unit.army, 50.)
-              change_mp_tickets_for_team(team, -airfield_aa__ticketsByCapture)
+              change_mp_tickets_for_team(team, -airfield__ticketsByCapture)
               team = column_unit__ref.unit.army
 
 [es(tag=server, on_appear)]
@@ -901,31 +901,6 @@ def change_team_of_child_units_es(evt : Event;
   for unitEid in units_spawn_on_init__units
     query(unitEid) <| $ [es] (var team aka child_team : int&)
       child_team = parent_team
-
-[es(tag=server, track=team)]
-def change_team_of_airfield_es(evt : Event;
-                               team : int;
-                               spawnedOnAirfieldId : int)
-  if spawnedOnAirfieldId >= 0
-    var af = get_airfield_by_id(spawnedOnAirfieldId)
-    if af != null
-      *af |> captureField(team)
-
-[es(tag=server)]
-def on_airfield_active_state_changed_es(evt : EventAirfieldActiveStateChanged;
-                                        spawnedOnAirfieldId : int;
-                                        units_spawn_on_init__units : EidList)
-  if spawnedOnAirfieldId < 0 || spawnedOnAirfieldId != evt.airfieldId
-    return
-  for unitEid in units_spawn_on_init__units
-    query(unitEid) <| $ [es] (unit__ref : UnitRef;
-                              var restore_unit_by_timer__restoreAtTime : float&;
-                              var restore_unit_by_timer__isRestoringActive : bool&)
-      restore_unit_by_timer__isRestoringActive = evt.active
-      if !evt.active
-        restore_unit_by_timer__restoreAtTime = -1.
-      elif !unit__ref.unit.isDelayed && !unit__ref.unit.isAlive
-        restore_unit_by_timer__restoreAtTime = get_sync_time()
 
 [es(on_event=CmdUnitAttackTarget, REQUIRE_NOT=unit_init_attack_type__targets)]
 def on_unit_attack_nuclear_escalation_target_es(evt : Event;

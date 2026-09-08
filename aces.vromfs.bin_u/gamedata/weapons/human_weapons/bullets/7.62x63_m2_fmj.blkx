@@ -1,18 +1,27 @@
 {
-  "mass": 0.0097,
-  "cartridgeMass": 0.0269,
-  "caliber": 0.00762,
-  "speed": 830.0,
-  "maxDistance": 1500.0,
-  "bulletType": "ball",
   "bulletName": "7_62mm_m2_ball",
+  "mass": 0.00984943,
+  "cartridgeMass": 0.0256604,
+  "caliber": 0.00762,
+  "speed": 854.964,
+  "Cx": 0.37958,
+  "ballisticCaliber": 0.007836,
+  "damageCaliber": 0.007836,
+  "damageMass": 0.00641509,
+  "maxDistance": 2000.0,
+  "normalizationPreset": "default",
+  "ricochetPreset": "default",
+  "groundRicochetPreset": "default",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.3,
+  "bulletType": "ball",
+  "slopeEffectPreset": "ap",
+  "shellAnimation": "video/shells_animations/ball.ivf",
   "effectiveDistance": 350.0,
   "relativeVelHitShift": [
     300.0,
-    1000.0
-  ],
-  "relativeVelArmorShift": [
-    200.0,
     1000.0
   ],
   "selfDestructionFx": "hit_5_7mm_metal_he",
@@ -23,6 +32,35 @@
   "groundRicochetEffect": "hit_5_7mm_dirt_ap",
   "explosionPatchRadius": 0.3,
   "rendinstDamageRadius": 0.0,
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  },
+  "damage": {
+    "kinetic": {
+      "damageType": "generic",
+      "demarrePenetrationK": 0.345,
+      "demarreSpeedPow": 1.675,
+      "demarreMassPow": 0.65,
+      "demarreCaliberPow": 1.07
+    }
+  },
   "hitpower": {
     "HitPower0m": [
       1.45,
@@ -70,32 +108,6 @@
     ],
     "HitPower1500m": [
       0.5,
-      1500.0
-    ]
-  },
-  "armorpower": {
-    "ArmorPower0m": [
-      5.0,
-      5.0
-    ],
-    "ArmorPower100m": [
-      4.0,
-      100.0
-    ],
-    "ArmorPower500m": [
-      2.0,
-      500.0
-    ],
-    "ArmorPower1000m": [
-      1.0,
-      1000.0
-    ],
-    "ArmorPower1450m": [
-      0.1,
-      1450.0
-    ],
-    "ArmorPower1500m": [
-      0.0,
       1500.0
     ]
   },

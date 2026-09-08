@@ -343,11 +343,6 @@
             "fromDescriptor": "front_airfield_hp"
           }
         ],
-        "varSetInt": {
-          "value": -1000,
-          "var": "destroy_airfield_team_tickets_num",
-          "fromDescriptor": "destroy_airfield_team_tickets_num"
-        },
         "varSetBool": {
           "value": false,
           "var": "has_strategic_bombers",
@@ -1402,368 +1397,6 @@
       },
       "else_actions": {}
     },
-    "check_destroy_airfield": {
-      "isCategory": true,
-      "is_enabled": true,
-      "t1_airfield_main_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "has_strategic_bombers",
-            "value": false,
-            "comparasion_func": "equal"
-          },
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_main"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      },
-      "t1_airfield_01_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_01"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      },
-      "t1_airfield_02_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_02"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      },
-      "t1_airfield_03_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_03"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      },
-      "t1_airfield_04_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_04"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      },
-      "t1_airfield_05_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t1_airfield_05"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "A"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_airfield_main_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "varCompareBool": {
-            "var_value": "has_strategic_bombers",
-            "value": false,
-            "comparasion_func": "equal"
-          },
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_main"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_airfield_01_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_01"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_airfield_02_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_02"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_airfield_03_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_03"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_airfield_04_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_04"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      },
-      "t2_airfield_05_check": {
-        "is_enabled": true,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 1.0
-          }
-        },
-        "conditions": {
-          "airfieldWhenStatus": {
-            "object_type": "isBombingAreaDestroyed",
-            "object": "t2_airfield_05"
-          }
-        },
-        "actions": {
-          "gameMPChangeScore": {
-            "value": 0,
-            "valueSystem": "amount",
-            "var": "destroy_airfield_team_tickets_num",
-            "team": "B"
-          }
-        },
-        "else_actions": {}
-      }
-    },
     "check_win": {
       "isCategory": true,
       "is_enabled": true,
@@ -1781,11 +1414,6 @@
           }
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "has_strategic_bombers",
-            "value": true,
-            "comparasion_func": "equal"
-          },
           "airfieldWhenStatus": {
             "object_type": "isBombingAreaDestroyed",
             "object": "t2_airfield_main"
@@ -1842,11 +1470,6 @@
           }
         },
         "conditions": {
-          "varCompareBool": {
-            "var_value": "has_strategic_bombers",
-            "value": true,
-            "comparasion_func": "equal"
-          },
           "airfieldWhenStatus": {
             "object_type": "isBombingAreaDestroyed",
             "object": "t1_airfield_main"
@@ -1946,7 +1569,6 @@
   "variables": {
     "main_airfield_hp": 0.0,
     "front_airfield_hp": 0.0,
-    "destroy_airfield_team_tickets_num": 0,
     "has_strategic_bombers": false,
     "mission_rank": 0
   },
@@ -1986,6 +1608,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2040,6 +1663,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2094,6 +1718,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2148,6 +1773,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2202,6 +1828,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2256,6 +1883,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2310,6 +1938,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -2364,6 +1993,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -4103,12 +3733,20 @@
           "sam_site_s75": {
             "rankRange": [
               0,
-              30
+              26
             ],
             "sam_site__attackers_group_idx": 1,
             "sam_site__max_attackers_per_target": 2
           },
           "sam_site_buk": {
+            "rankRange": [
+              27,
+              30
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk_m1": {
             "rankRange": [
               31,
               36
@@ -4160,12 +3798,20 @@
           "sam_site_s75": {
             "rankRange": [
               0,
-              30
+              26
             ],
             "sam_site__attackers_group_idx": 1,
             "sam_site__max_attackers_per_target": 2
           },
           "sam_site_buk": {
+            "rankRange": [
+              27,
+              30
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk_m1": {
             "rankRange": [
               31,
               36
@@ -4217,12 +3863,20 @@
           "sam_site_s75": {
             "rankRange": [
               0,
-              30
+              26
             ],
             "sam_site__attackers_group_idx": 1,
             "sam_site__max_attackers_per_target": 2
           },
           "sam_site_buk": {
+            "rankRange": [
+              27,
+              30
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk_m1": {
             "rankRange": [
               31,
               36
@@ -4274,12 +3928,20 @@
           "sam_site_s75": {
             "rankRange": [
               0,
-              30
+              26
             ],
             "sam_site__attackers_group_idx": 1,
             "sam_site__max_attackers_per_target": 2
           },
           "sam_site_buk": {
+            "rankRange": [
+              27,
+              30
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk_m1": {
             "rankRange": [
               31,
               36
@@ -4331,6 +3993,14 @@
           "sam_site_s75": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -4385,9 +4055,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -4442,9 +4120,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -4499,9 +4185,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -4556,9 +4250,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -4613,9 +4315,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -5290,6 +5000,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -5344,6 +5055,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -5398,6 +5110,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -5452,6 +5165,7 @@
           "active": true
         },
         "additionalEcsTemplates": {
+          "nuclear_escalation_airfield": {},
           "airfield_aa_1970": {
             "rankRange": [
               0,
@@ -5506,9 +5220,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -5571,9 +5293,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -5639,6 +5369,14 @@
           "sam_site_s75": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -5696,6 +5434,14 @@
           "sam_site_s75": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,
@@ -7739,12 +7485,20 @@
           "sam_site_s75": {
             "rankRange": [
               0,
-              30
+              26
             ],
             "sam_site__attackers_group_idx": 1,
             "sam_site__max_attackers_per_target": 2
           },
           "sam_site_buk": {
+            "rankRange": [
+              27,
+              30
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_buk_m1": {
             "rankRange": [
               31,
               36
@@ -7913,9 +7667,17 @@
           "active": true
         },
         "additionalEcsTemplates": {
-          "sam_site_hawk_1970": {
+          "sam_site_hawk_early": {
             "rankRange": [
               0,
+              26
+            ],
+            "sam_site__attackers_group_idx": 1,
+            "sam_site__max_attackers_per_target": 2
+          },
+          "sam_site_hawk_1970": {
+            "rankRange": [
+              27,
               30
             ],
             "sam_site__attackers_group_idx": 1,

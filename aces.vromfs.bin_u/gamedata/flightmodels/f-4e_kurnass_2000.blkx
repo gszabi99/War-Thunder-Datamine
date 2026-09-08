@@ -3474,6 +3474,10 @@
       {
         "name": "kurnass_2000_agm_45b_10",
         "blk": "gameData/FlightModels/weaponPresets/kurnass_2000_agm_45b_10.blk"
+      },
+      {
+        "name": "kurnass_2000_delilah_arm",
+        "blk": "gameData/flightModels/weaponPresets/kurnass_2000_delilah_arm.blk"
       }
     ]
   },
@@ -4199,6 +4203,46 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/is_delilah_ir.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 3,
+                "preset": "python3"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_9g"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_9l_slot3_default"
+              },
+              {
+                "slot": 3,
+                "preset": "aim_9l"
+              }
+            ]
+          },
+          {
+            "iconType": "arm_type_f",
+            "name": "delilah_arm",
+            "reqModification": "us_arm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah_arm.blk",
               "emitter": "us_2000lb_gbu_8_002",
               "bullets": 1,
               "external": true,
@@ -5348,6 +5392,46 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/rocketGuns/is_delilah_ir.blk",
+              "emitter": "us_2000lb_gbu_8_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 6,
+              "preset": "is_asw_55_pod"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 9,
+                "preset": "python3"
+              },
+              {
+                "slot": 9,
+                "preset": "aim_9g"
+              },
+              {
+                "slot": 9,
+                "preset": "aim_9l_slot9_default"
+              },
+              {
+                "slot": 9,
+                "preset": "aim_9l"
+              }
+            ]
+          },
+          {
+            "iconType": "arm_type_f",
+            "name": "delilah_arm",
+            "reqModification": "us_arm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/is_delilah_arm.blk",
               "emitter": "us_2000lb_gbu_8_003",
               "bullets": 1,
               "external": true,

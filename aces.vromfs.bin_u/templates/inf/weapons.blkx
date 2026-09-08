@@ -1675,16 +1675,28 @@
     ],
     "weapon__aimNodeOffset": 0.3,
     "gun_shell_ejection__templateName": "45_acp_ejected_shell",
+    "gun_shell_ejection__timeMult": 1.3,
     "gun_anim_var__tpsGunOffsetAlong": -0.03,
     "gun_anim_var__tpsGunOffsetAcross": 0.04,
     "gun_anim_var__tpsGunOffsetUp": -0.15,
     "gun_anim_var__fpsGunOffsetAlong": 0.05,
     "gun_anim_var__fpsGunOffsetAcross": 0.01,
     "gun_anim_var__fpsGunOffsetUp": -0.015,
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "gun_anim_var__fpsGunOffsetLeanLAcross": -0.05,
+    "gun_anim_var__fpsGunOffsetLeanLUp": -0.01,
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.05,
+          0.01
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -1895,7 +1907,6 @@
     "gun__shotFreq": 5.333,
     "gun__automaticReload": false,
     "gun_spread__maxDeltaAngle": 0.17,
-    "gun__projectileVelocityMult": 1.0277108,
     "gun_deviation__omegaRange": [
       30.0,
       90.0
@@ -1932,7 +1943,7 @@
       "ammoHolders": "m1_garand_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/30_06_springfield.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x63_m2_fmj.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -2076,7 +2087,7 @@
       "ammoHolders": "m1903_springfield_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/30_06_springfield.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x63_m2_fmj.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -2189,6 +2200,7 @@
     "gun__sightsDistance": 0.3,
     "gun__shotFreq": 10.0,
     "gun_spread__maxDeltaAngle": 0.05,
+    "gun__projectileVelocityMult": 0.98930484,
     "gun_deviation__omegaRange": [
       30.0,
       90.0
@@ -2224,7 +2236,7 @@
       "ammoHolders": "browning_m1918_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/30_06_springfield_tracer.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x63_m1_fmj_t.blk"
     },
     "gun__firingModes:array": {
       "mode:object": [
@@ -2267,11 +2279,12 @@
     "gun__recoilDir": 0.0,
     "gun__visualRecoilMult": 3.0,
     "gun__recoilOriMultInAim": [
-      1.0,
-      1.0,
-      1.0
+      0.1,
+      0.1,
+      0.1
     ],
     "gun__recoilOffsMult": 0.1,
+    "gun__projectileVelocityMult": 0.98930484,
     "gun_attach__slot": "weapon",
     "gun__adsSpeedMult": 0.5,
     "meleeSoundType": "rifle",
@@ -2292,10 +2305,19 @@
     "gun_anim_var__fpsGunOffsetAlong": 0.0,
     "gun_anim_var__fpsGunOffsetAcross": 0.04,
     "gun_anim_var__fpsGunOffsetUp": -0.01,
-    "_group": {
-      "_tags": "sound",
-      "gun_sound__forceOneshot": true
-    },
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.1,
+          0.01
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "options:array": {
@@ -2387,7 +2409,7 @@
       "ammoHolders": "browning_m1919a6_magazine"
     },
     "gun__shells:array": {
-      "shells": "gameData/weapons/human_weapons/bullets/30_06_springfield_tracer.blk"
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x63_m1_fmj_t.blk"
     },
     "gun__firingModes:array": {
       "mode:object": {
@@ -10617,14 +10639,40 @@
     "gun_anim_var__tpsGunOffsetUp": 0.07,
     "gun_anim_var__fpsGunOffsetAlong": 0.25,
     "gun_anim_var__fpsGunOffsetAcross": 0.03,
-    "weapon__aimNodeOffset": 0.4,
     "gun__length": 0.4,
-    "gun__recoilAmount": 0.2,
-    "gun__recoilDirAmount": 0.5,
-    "gun__recoilDir": 0.0,
+    "gun__recoilAmount": 0.13,
+    "gun__recoilDirAmount": 0.55,
+    "gun__recoilControlMult": 0.1,
+    "gun__recoilDir": 3.14159,
     "gun__visualRecoilMult": 2.0,
     "meleeSoundType": "rifle",
     "gun__showChamberedAmmo": true,
+    "weapon__aimSightPresetIndex": -1,
+    "weap__current_sight_preset": 0,
+    "_replicated": [
+      "weap__current_sight_preset",
+      "gun__launchVerticalAngle"
+    ],
+    "gun__launchVerticalAngle": 0.03737,
+    "weapon_frontsight_node__nodeIdx": -1,
+    "weapon_rearsight_node__nodeName": "rearsight_aim",
+    "weapon_frontsight_node__nodeName": "frontsight_aim",
+    "weapon__aimPointRelativePos": 1.0,
+    "gun__magnification": 3.0,
+    "weapon__aimNodeOffset": 0.2,
+    "_group": {
+      "_tags": "render",
+      "weapon_rearsight_node__nodeIdx": -1,
+      "weapon_rearsight_node__nodeTm": {}
+    },
+    "sightPresets:array": {
+      "preset:object": {
+        "loc": "sight/50m",
+        "distance": 50.0,
+        "additionalVertAngle": 0.03737,
+        "aimNodeOffset": 0.2
+      }
+    },
     "gun_sound__shotPath:shared:object": {
       "_tags": "sound",
       "path": "/weapon/antivehicle/rpg_7"

@@ -1,6 +1,6 @@
 import "string" as string
 from "%rGui/planeState/planeFlyState.nut" import Speed, BarAltitude, Overload, Mach, Aoa, CompassValue, Tas
-from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, metrToFeet, metrToNavMile
+from "%rGui/planeIlses/ilsConstants.nut" import mpsToKnots, mpsToKmh, metrToFeet, metrToNavMile
 from "%rGui/style/airHudStyle.nut" import hudFontHgt
 from "%rGui/planeState/planeToolsState.nut" import HmdYaw, RadarTargetDist, CannonMode, RocketMode, BombingMode, BombCCIPMode
 from "%rGui/rocketAamAimState.nut" import TrackerVisible, TrackerX, TrackerY, GuidanceLockState
@@ -55,42 +55,53 @@ let crosshair = {
   ]
 }
 
-let IasValue = Computed(@() round(Speed.get() * mpsToKnots).tointeger())
-let TasValue = Computed(@() round(Tas.get() * mpsToKnots).tointeger())
+let IasValueKts = Computed(@() round(Speed.get() * mpsToKnots).tointeger())
+let TasValueKts = Computed(@() round(Tas.get() * mpsToKnots).tointeger())
+let IasValueKph = Computed(@() round(Speed.get() * mpsToKmh).tointeger())
+let TasValueKph = Computed(@() round(Tas.get() * mpsToKmh).tointeger())
 
-let speedData = @() {
-  pos = const [pw(38), ph(45)]
-  size = const [pw(5), SIZE_TO_CONTENT]
-  flow = FLOW_VERTICAL
-  halign = ALIGN_LEFT
-  children = [
-    @() boxedTemplate.__merge({
-      halign = ALIGN_RIGHT
-      children = [
-        @() textTemplateLarge.__merge({
-          watch = IasValue
-          text = string.format("%4d", IasValue.get())
-        })
-      ]
-    }),
-    @() textTemplate.__merge({
-      watch = TasValue
-      margin = const [10, 0]
-      text = string.format("TS%4d", TasValue.get())
-    })
-  ]
+function speedDataComp(useMetric) {
+  let iasVal = useMetric ? IasValueKph : IasValueKts
+  let tasVal = useMetric ? TasValueKph : TasValueKts
+  return @() {
+    pos = const [pw(38), ph(45)]
+    size = const [pw(5), SIZE_TO_CONTENT]
+    flow = FLOW_VERTICAL
+    halign = ALIGN_LEFT
+    children = [
+      @() boxedTemplate.__merge({
+        halign = ALIGN_RIGHT
+        children = [
+          @() textTemplateLarge.__merge({
+            watch = iasVal
+            text = string.format("%4d", iasVal.get())
+          })
+        ]
+      }),
+      @() textTemplate.__merge({
+        watch = tasVal
+        margin = const [10, 0]
+        text = string.format("TS%4d", tasVal.get())
+      })
+    ]
+  }
 }
 
-let BaroAltValue = Computed(@() (BarAltitude.get() * metrToFeet).tointeger())
-let baroAlt = @() boxedTemplate.__merge({
-  pos = const [pw(58), ph(45)]
-  halign = ALIGN_RIGHT
-  children = [
-  @() textTemplateLarge.__merge({
-    watch = BaroAltValue
-    text = BaroAltValue.get() < 1000 ? string.format("  ,%03d", BaroAltValue.get() % 1000) : string.format("%2d,%03d", BaroAltValue.get() / 1000, BaroAltValue.get() % 1000)
-  })
-]})
+let BaroAltValueFt = Computed(@() (BarAltitude.get() * metrToFeet).tointeger())
+let BaroAltValueM = Computed(@() BarAltitude.get().tointeger())
+function baroAltComp(useMetric) {
+  return @() boxedTemplate.__merge({
+    pos = const [pw(58), ph(45)]
+    halign = ALIGN_RIGHT
+    children = [
+    @() textTemplateLarge.__merge({
+      watch = useMetric ? BaroAltValueM : BaroAltValueFt
+      text = useMetric
+        ? string.format("%d", BaroAltValueM.get())
+        : BaroAltValueFt.get() < 1000 ? string.format("  ,%03d", BaroAltValueFt.get() % 1000) : string.format("%2d,%03d", BaroAltValueFt.get() / 1000, BaroAltValueFt.get() % 1000)
+    })
+  ]})
+}
 
 let AGMasterMode =  Computed(@() CannonMode.get() || BombingMode.get() || BombCCIPMode.get() || RocketMode.get())
 let weaponData = @() {
@@ -449,12 +460,12 @@ let radarTargetData = @(){
    ] : null
 }
 
-let hmd = @(width, height) {
+let hmd = @(width, height, isMetric = false) {
     size = [width, height]
     children = [
       crosshair
-      speedData
-      baroAlt
+      speedDataComp(isMetric)
+      baroAltComp(isMetric)
       airData
       weaponData
       compassWrap(width, height, generateCompassMark)

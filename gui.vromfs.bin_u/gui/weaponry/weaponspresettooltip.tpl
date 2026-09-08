@@ -149,6 +149,46 @@ tdiv {
     }
     <</presetCompositionHint>>
 
+    <<#gameModeRestrictions>>
+    tdiv {
+      flow:t='vertical'
+      width:t='pw'
+      padding-bottom:t='1/2@bulletTooltipPadding'
+
+      tooltipDesc {
+        tinyFont:t='yes'
+        <<#presetsNames>>
+        padding:t='1@bulletTooltipPadding'
+        text:t='<<gameModeRestrictionsTitle>><<?ui/colon>>'
+        <</presetsNames>>
+        <<^presetsNames>>
+        text:t='<<gameModeRestrictionsTitle>>'
+        padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
+        background-color:t='@frameHeaderBackgroundColor'
+        <</presetsNames>>
+      }
+
+      <<#gameModeRestrictionsParams>>
+      tdiv {
+        <<#presetsNames>>
+        padding:t='1@bulletTooltipPadding, 0'
+        margin-bottom:t='1/2@bulletTooltipPadding'
+        <</presetsNames>>
+        <<^presetsNames>>
+        padding:t='1@bulletTooltipPadding, 1@bulletTooltipPadding'
+        <</presetsNames>>
+        activeText { text:t='<<modeName>>'; smallFont:t='yes' }
+        textareaNoTab {
+          text:t=' - <<brText>>'
+          smallFont:t='yes'
+          valign:t='center'
+          overlayTextColor:t='minor'
+        }
+      }
+      <</gameModeRestrictionsParams>>
+    }
+    <</gameModeRestrictions>>
+
     tdiv {
       id:t='estimatedDamageNest'
       width:t='pw'

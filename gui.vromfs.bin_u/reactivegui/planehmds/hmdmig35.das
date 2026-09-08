@@ -282,7 +282,7 @@ class Component : Canvas
   def drawTargetMark()
     if !trackedTargetVisible
       return
-    let p = toRelPos(trackedTargetAbsPos)
+    let p = hasLockedTarget ? toRelPos(lockedTargetAbsPos) : toRelPos(trackedTargetAbsPos)
     let sz = 0.017
     drawLine(float2(p.x, p.y - sz), float2(p.x + sz, p.y))
     drawLine(float2(p.x + sz, p.y), float2(p.x, p.y + sz))
@@ -291,6 +291,7 @@ class Component : Canvas
 
 
   // S11 - locked target mark (square around diamond, crossed after launch)
+  // line from square toward sight ring center
   def drawLockedTargetMark()
     if !hasLockedTarget
       return
@@ -303,6 +304,15 @@ class Component : Canvas
     if isLockAfterLaunch
       drawLine(float2(p.x - sz, p.y - sz), float2(p.x + sz, p.y + sz))
       drawLine(float2(p.x + sz, p.y - sz), float2(p.x - sz, p.y + sz))
+    // line from square edge toward sight ring center (0,0)
+    let dist = length(p)
+    let maxLineLen = 0.16
+    let lineLen = clamp(dist - sz * 2.0, 0.0, maxLineLen)
+    if lineLen > 0.005
+      let dir = normalize(float2(0.0) - p)
+      let lineStart = p + dir * sz
+      let lineEnd = lineStart + dir * lineLen
+      drawLine(lineStart, lineEnd)
 
 
   // S7 - dangerous altitude (arrow up below center)

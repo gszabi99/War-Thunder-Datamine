@@ -114,7 +114,7 @@ let planeHmd = @(width, height) function() {
       (isF106 ? hmdF106(width, height) : null),
       (isAh56 ? hmdAh56(width, height) : null),
       (isHssReticle ? hmdHssReticle(width, height) : null),
-      (isTargo ? hmdTargo(width, height) : null),
+      (isTargo ? hmdTargo(width, height, isMetric) : null),
       (isJhmcsGen2 ? hmdJhmcsGen2(width, height) : null),
       (isZ10 ? hmdZ10(width, height) : null),
       (isTkxGen1 ? hmdTkxGen1(width, height) : null),

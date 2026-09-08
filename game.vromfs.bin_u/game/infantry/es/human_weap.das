@@ -226,6 +226,29 @@ def human_init_weapon_from_modification_es(evt : CmdInitComponent;
         set(inventory__itemCreateTemplates, itemTemplateName, inventoryItemNum)
 
 
+def fill_slots_weapons(preset_blk : DataBlock;
+                       crew_member_idx : int;
+                       eid : EntityId;
+                       unit_crew__customizableSlots : IntList;
+                       var slots_weapons : table<uint; string>) : bool
+  var foundSoldier = false
+  for soldier_i in 0u..preset_blk.blockCount
+    let soldierBlock = datablock_get_block(preset_blk, soldier_i)
+    let soldierInd = datablock_getInt(*soldierBlock, "index", -1)
+    if soldierInd == crew_member_idx
+      foundSoldier = true
+      for slot_i in 0u..soldierBlock.blockCount
+        datablock_get_block(*soldierBlock, slot_i) <| $(slotBlk)
+          let slot = datablock_getInt(slotBlk, "slot", -1)
+          let preset = clone_string(datablock_getStr(slotBlk, "preset", ""))
+          if slot >= 0 && preset != ""
+            if find_index(unit_crew__customizableSlots, slot) >= 0
+              slots_weapons.insert(uint(slot), preset)
+            else
+              logerr("It is possible to customize weapons only in the following slots: {unit_crew__customizableSlots}, not in {slot} for soldier {eid} ({getEntityTemplateName(eid)})")
+  return foundSoldier
+
+
 [es(tag=server, REQUIRE=(unit__ref, human))]
 def human_init_weapon_preset_es(evt : CmdInitComponent;
                                 eid : EntityId;
@@ -254,43 +277,48 @@ def human_init_weapon_preset_es(evt : CmdInitComponent;
   if presetNameFromUi == ""
     return
 
-  let weaponPresetsBlk = datablock_get_block_by_name(evt.data.modelBlk, "weapon_presets")
   let weaponSlotsBlk = datablock_get_block_by_name(evt.data.modelBlk, "WeaponSlots")
-  if weaponPresetsBlk == null || weaponSlotsBlk == null
-    logerr("no weapon_presets or WeaponSlots for soldier {eid} ({getEntityTemplateName(eid)}) of a player {ownedByPlr}")
+  if weaponSlotsBlk == null
+    logerr("no WeaponSlots for soldier {eid} ({getEntityTemplateName(eid)}) of a player {ownedByPlr}")
     return
 
-  var chosenPresetBlk = ""
-  for preset_i in 0u..weaponPresetsBlk.blockCount
-    let preset = datablock_get_block(*weaponPresetsBlk, preset_i)
-    let presetName = datablock_getStr(*preset, "name", "")
-    if presetName == presetNameFromUi
-      chosenPresetBlk = datablock_getStr(*preset, "blk", "")
-      break
-
-  if chosenPresetBlk == ""
-    logerr("preset {presetNameFromUi} wasn't found in weaponPresets for soldier {eid} ({getEntityTemplateName(eid)}) of player {ownedByPlr}")
-    return
-
-  print("spawning soldier {eid} ({getEntityTemplateName(eid)}) with preset {chosenPresetBlk}")
-
-  using() <| $(var chosenPreset : DataBlock)
-    if !datablock_load(chosenPreset, chosenPresetBlk)
+  if is_custom_weapon_preset_name(presetNameFromUi)
+    let unitName = string(unit__ref.unit.name)
+    let customPresetBlk = get_custom_weapon_preset_blk(ownedByPlr, unitName, presetNameFromUi)
+    if customPresetBlk == null
+      logerr("custom preset {presetNameFromUi} of unit '{unitName}' wasn't found in the profile of a player {ownedByPlr} for soldier {eid} ({getEntityTemplateName(eid)})")
       return
 
-    for soldier_i in 0u..chosenPreset.blockCount
-      let soldierBlock = datablock_get_block(chosenPreset, soldier_i)
-      let soldierInd = datablock_getInt(*soldierBlock, "index", -1)
-      if soldierInd == crewMemberIdx
-        for slot_i in 0u..soldierBlock.blockCount
-          datablock_get_block(*soldierBlock, slot_i) <| $(slotBlk)
-            let slot = datablock_getInt(slotBlk, "slot", -1)
-            let preset = clone_string(datablock_getStr(slotBlk, "preset", ""))
-            if slot >= 0 && preset != ""
-              if find_index(unit_crew__customizableSlots, slot) >= 0
-                slotsWeapons.insert(uint(slot), preset)
-              else
-                logerr("It is possible to customize weapons only in the following slots: {unit_crew__customizableSlots}, not in {slot} for soldier {eid} ({getEntityTemplateName(eid)})")
+    if !fill_slots_weapons(*customPresetBlk, crewMemberIdx, eid, unit_crew__customizableSlots, slotsWeapons)
+      logerr("custom preset {presetNameFromUi} of unit '{unitName}' has no record for soldier #{crewMemberIdx}, {eid} ({getEntityTemplateName(eid)}) of a player {ownedByPlr} -- was it saved before the squad had this many members?")
+      return
+
+    print("spawning soldier {eid} ({getEntityTemplateName(eid)}) with custom preset {presetNameFromUi}")
+  else
+    let weaponPresetsBlk = datablock_get_block_by_name(evt.data.modelBlk, "weapon_presets")
+    if weaponPresetsBlk == null
+      logerr("no weapon_presets for soldier {eid} ({getEntityTemplateName(eid)}) of a player {ownedByPlr}")
+      return
+
+    var chosenPresetBlk = ""
+    for preset_i in 0u..weaponPresetsBlk.blockCount
+      let preset = datablock_get_block(*weaponPresetsBlk, preset_i)
+      let presetName = datablock_getStr(*preset, "name", "")
+      if presetName == presetNameFromUi
+        chosenPresetBlk = datablock_getStr(*preset, "blk", "")
+        break
+
+    if chosenPresetBlk == ""
+      logerr("preset {presetNameFromUi} wasn't found in weaponPresets for soldier {eid} ({getEntityTemplateName(eid)}) of player {ownedByPlr}")
+      return
+
+    print("spawning soldier {eid} ({getEntityTemplateName(eid)}) with preset {chosenPresetBlk}")
+
+    using() <| $(var chosenPreset : DataBlock)
+      if !datablock_load(chosenPreset, chosenPresetBlk)
+        return
+
+      fill_slots_weapons(chosenPreset, crewMemberIdx, eid, unit_crew__customizableSlots, slotsWeapons)
 
   for slotInd, weaponName in keys(slotsWeapons), values(slotsWeapons)
     for weaponSlot_i in 0u..weaponSlotsBlk.blockCount
@@ -664,9 +692,10 @@ def set_current_gun(eid : EntityId;
                     human_weap__gunEids : EidList;
                     cur_gun : int;
                     var human_weap__currentGunSlot : int&;
-                    var human_weap__previousGunSlot : int&)
+                    var human_weap__previousGunSlot : int&;
+                    force : bool = false)
   human_weap__previousGunSlot = human_weap__currentGunSlot
-  if human_weap__currentGunSlot == cur_gun
+  if !force && human_weap__currentGunSlot == cur_gun
     return
 
   human_weap__currentGunSlot = cur_gun
@@ -713,8 +742,9 @@ def human_weap_es_impl(var human_weap__currentGunSlot : int&;
 
   let animSlot = isInVehicle && !isInVehicleHidden && !human_vehicle__isHoldingGunPassenger && !action__running ? -1 : curSlot
 
-  if human_weap__currentGunSlot != curSlot || (animSlot < 0 && has_any_attached_gun(human_weap__gunEids))
-    set_current_gun(eid, human_weap__gunEids, animSlot, human_weap__currentGunSlot, human_weap__previousGunSlot)
+  let force = (animSlot < 0 && has_any_attached_gun(human_weap__gunEids))
+  if human_weap__currentGunSlot != curSlot || force
+    set_current_gun(eid, human_weap__gunEids, animSlot, human_weap__currentGunSlot, human_weap__previousGunSlot, force)
   human_weap__currentGunSlot = curSlot
 
   if !isDowned

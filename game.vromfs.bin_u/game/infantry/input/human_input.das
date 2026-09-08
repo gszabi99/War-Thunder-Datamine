@@ -1019,7 +1019,7 @@ def human_crew_input_es(evt : EventOnKeyDown;
     print("SWITCH TO CREW {eid}->{soldierToSwitch}")
 
 
-[es(tag=input, after=human_input_es)]
+[es(tag=input, REQUIRE=hero, after=human_input_es)]
 def human_sprint_strafe(info : UpdateStageUpdateInput;
                         double_sprint__isActive : bool;
                         double_sprint__strafeSpeed : float;

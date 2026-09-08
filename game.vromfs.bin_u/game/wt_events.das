@@ -866,6 +866,13 @@ struct EventAirfieldActiveStateChanged
   airfieldId : int
   active : bool
 
+[cpp_event(broadcast)]
+struct EventOnBombingZoneDamaged
+  id : int
+  hp : float
+  hpMax : float
+  airfieldId : int
+
 [event(unicast)]
 struct CmdUnitAttackTarget {}
 

@@ -1,12 +1,13 @@
 import "%sqStdLibs/helpers/u.nut" as u
 from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%globalScripts/modeXrayLib.nut" import addBandsText
-from "blkGetters" import get_game_params_blk
+from "blkGetters" import get_game_params_blk, get_wpcost_blk, get_current_mission_info_cached
 from "dagor.math" import Point2
-from "string" import format
-from "mission" import get_current_mission_name, get_game_mode
+from "string" import format, split_by_chars
+from "mission" import get_current_mission_name, get_game_mode, get_mission_custom_state
 from "unitCustomization" import set_last_weapon
 from "%sqstd/datablock.nut" import eachBlock
+import "DataBlock" as DataBlock
 from "guiOptions" import set_unit_option
 from "%sqstd/string.nut" import lastIndexOf, INVALID_INDEX, endsWith
 from "chardResearch" import shopIsModificationPurchased
@@ -17,6 +18,7 @@ from "%scripts/dagui_library.nut" import *
 from "weaponryOptions" import get_option_torpedo_dive_depth, get_option_torpedo_dive_depth_auto
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
 from "types" import String
+from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 
 let { zero_money } = require("%scripts/money.nut")
 let { get_difficulty_by_ediff, g_difficulty } = require("%scripts/difficulty.nut")
@@ -25,7 +27,7 @@ let { getModificationByName, isModificationEnabled } = require("%scripts/weaponr
 let { AMMO, getAmmoCost, getAmmoAmount, checkAmmoAmount, getAmmoMaxAmount } = require("%scripts/weaponry/ammoInfo.nut")
 let { saclosMissileBeaconIRSourceBand } = require("%scripts/weaponry/weaponsParams.nut")
 let { getMissionEditSlotbarBlk } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
+let { getUnitPresets, getWeaponsByTypes, getPresetWeapons, getWeaponBlkParams, isCustomPreset } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getTntEquivalentText, getDestructionInfoTexts, getNuclearWeaponAdditionalInfo } = require("%scripts/weaponry/dmgModel.nut")
 let { getSavedWeapon, getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
@@ -413,6 +415,114 @@ function getWeaponNameByBlkPath(weaponBlkPath) {
   let idxStart = idxLastSlash != INVALID_INDEX ? (idxLastSlash + 1) : 0
   let idxEnd = endsWith(weaponBlkPath, ".blk") ? -4 : weaponBlkPath.len()
   return weaponBlkPath.slice(idxStart, idxEnd)
+}
+
+function getWpcostWeaponNameFromBlkPath(weaponBlkPath) {
+  let pathWithoutExt = weaponBlkPath.slice(0, weaponBlkPath.len() - 4).tolower()
+  let pathParts = split_by_chars(pathWithoutExt, "/")
+  if (pathParts.len() == 0)
+    return ""
+  return pathParts.len() > 1
+    ? $"{pathParts[pathParts.len() - 2]}_{pathParts[pathParts.len() - 1]}"
+    : pathParts[0]
+}
+
+function getGameModeRestrictionsMinRank(restrictionsBlk) {
+  if (restrictionsBlk == null)
+    return 0
+  let missionState = get_mission_custom_state(false)
+  let economicName = missionState?.matchingEconomicName ?? ""
+  let tag = missionState?.matchingTag ?? ""
+  local minRank = 0
+  for (local i = 0; i < restrictionsBlk.blockCount(); i++) {
+    let modeBlk = restrictionsBlk.getBlock(i)
+    let restrictionModeName = modeBlk.getBlockName()
+    if (economicName.indexof(restrictionModeName) != null || tag.indexof(restrictionModeName) != null)
+      minRank = max(minRank, modeBlk?.minRank ?? 0)
+  }
+  return minRank
+}
+
+function mergeGameModeRestrictions(dst, src) {
+  for (local i = 0; i < src.blockCount(); i++) {
+    let srcModeBlk = src.getBlock(i)
+    let modeKey = srcModeBlk.getBlockName()
+    if (dst.getBlockByName(modeKey) == null)
+      dst[modeKey] <- srcModeBlk
+    else if ((srcModeBlk?.minRank ?? 0) > (dst[modeKey]?.minRank ?? 0))
+      dst[modeKey].minRank = srcModeBlk.minRank
+  }
+}
+
+function getWeaponGameModeRestrictionsBlk(unit, weapon) {
+  if (unit == null || weapon == null)
+    return null
+  let weaponName = weapon instanceof String ? null : weapon?.name
+  let weaponBlk = weapon instanceof String ? weapon : weapon?.blk
+  local res = null
+  if (weaponName != null)
+    res = get_wpcost_blk()?[unit.name].weapons[weaponName].GameModeRestrictions
+  if (res == null && weaponBlk != null)
+    res = get_wpcost_blk()?[unit.name].weapons[getWpcostWeaponNameFromBlkPath(weaponBlk)].GameModeRestrictions
+  if (weaponName == null || !isCustomPreset(weapon))
+    return res
+  let unitBlk = getFullUnitBlk(unit.name)
+  foreach (presetWeapon in getPresetWeapons(unitBlk, weapon, unit.name)) {
+    let singleWeaponName = getWpcostWeaponNameFromBlkPath(presetWeapon.blk)
+    let singleWeaponBlk = get_wpcost_blk()?[unit.name].weapons[singleWeaponName]
+    if (singleWeaponBlk == null) {
+      logerr($"GameModeRestrictions: custom preset weapon {singleWeaponName} not found in wpcost of {unit.name}")
+      continue
+    }
+    let singleRestrictions = singleWeaponBlk?.GameModeRestrictions
+    if (singleRestrictions == null)
+      continue
+    if (res == null)
+      res = DataBlock()
+    mergeGameModeRestrictions(res, singleRestrictions)
+  }
+  return res
+}
+
+function getWeaponBlockedByGameModeMinRank(unit, weapon) {
+  if (!isInFlight() || unit == null || weapon == null)
+    return 0
+  let minRank = getGameModeRestrictionsMinRank(getWeaponGameModeRestrictionsBlk(unit, weapon))
+  let sessionMaxRank = get_current_mission_info_cached()?.ranks.max ?? 0
+  return (sessionMaxRank > 0 && sessionMaxRank < minRank) ? minRank : 0
+}
+
+function isWeaponAllowedByGameModeRestrictions(unit, weapon) {
+  return getWeaponBlockedByGameModeMinRank(unit, weapon) == 0
+}
+
+function getWeaponGameModeRestrictionsRows(unit, weapon) {
+  let restrictions = getWeaponGameModeRestrictionsBlk(unit, weapon)
+  if (restrictions == null)
+    return null
+  let res = []
+  for (local i = 0; i < restrictions.blockCount(); i++) {
+    let modeBlk = restrictions.getBlock(i)
+    let minRank = modeBlk?.minRank ?? 0
+    if (minRank <= 0)
+      continue
+    res.append({
+      modeName = loc($"mode/{modeBlk.getBlockName()}")
+      brText = loc("weaponry/gameModeRestrictions/br", { br = format("%.1f", calcBattleRatingFromRank(minRank)) })
+    })
+  }
+  return res.len() > 0 ? res : null
+}
+
+function getWeaponBlockedByGameModeText(unit, weapon) {
+  let blockedMinRank = getWeaponBlockedByGameModeMinRank(unit, weapon)
+  if (blockedMinRank <= 0)
+    return ""
+  let sessionMaxRank = get_current_mission_info_cached()?.ranks.max ?? 0
+  return loc("multiplayer/weaponUnavailableInMode", {
+    minSessionRank = format("%.1f", calcBattleRatingFromRank(blockedMinRank))
+    sessionRank = format("%.1f", calcBattleRatingFromRank(sessionMaxRank))
+  })
 }
 
 let skipWeaponParams = { num = true, ammo = true, tiers = true, additionalMassKg = true }
@@ -1379,6 +1489,10 @@ return {
   isMissileBullet
   isGuidedBomb
   isWeaponUnavailableInMission
+  getWeaponGameModeRestrictionsRows
+  getWeaponBlockedByGameModeMinRank
+  isWeaponAllowedByGameModeRestrictions
+  getWeaponBlockedByGameModeText
   convertTriggerToTriggerForLoc
   additionalMarkupTypes
   additionalMarkupByType

@@ -26,7 +26,7 @@ def set_lookat_from_sight_node(cur_time : float;
                                action__running : bool;
                                var camera__look_at : DPoint3&;
                                var gun_aim_offset : float2&;
-                               var camera__lastValidGunAimPos : float3&)
+                               var camera__lastValidScopeAimOffset : float3&)
   if optics_cam_node < 0
     return
 
@@ -74,10 +74,13 @@ def set_lookat_from_sight_node(cur_time : float;
     elif (isCameraAlwaysOnScope != null || bipod_enabled) && !action__running
       baseValue = 1.0
   let lerpFactor = lerp(0.0, max(zoomPosition, baseValue), aimPosition)
+
+  let humanPos = lerp(hphys.previousState.location.P, hphys.currentState.location.P, interpK)
   if !human_net_phys.phys.currentState |> human_phys_state_can_aim()
-    wpos = DPoint3(camera__lastValidGunAimPos) + DPoint3(wtmOfs)
+    wpos = humanPos + DPoint3(camera__lastValidScopeAimOffset)
   else
-    camera__lastValidGunAimPos = float3(wpos) - wtmOfs
+    camera__lastValidScopeAimOffset = float3(wpos - humanPos)
+
   camera__look_at = lerp(camera__look_at, wpos, lerpFactor)
   gun_aim_offset = lerp(float2(0.0, 0.0), aimOffset, float2(lerpFactor))
 
@@ -93,7 +96,7 @@ def optics_lookat_camera_impl(cur_time : float;
                               bipod__enabled : bool;
                               var camera__look_at : DPoint3&;
                               var camera__gunAimOffset : float2&;
-                              var camera__lastValidGunAimPos : float3&)
+                              var camera__lastValidScopeAimOffset : float3&)
   var gunScopeEid = human_weap__currentScope
   let isIntegratedScope = get_bool(human_weap__currentGunEid, "gun__integratedScope") ?? false
   if isIntegratedScope && !gunScopeEid
@@ -139,7 +142,7 @@ def optics_lookat_camera_impl(cur_time : float;
                                action__running,
                                camera__look_at,
                                camera__gunAimOffset,
-                               camera__lastValidGunAimPos)
+                               camera__lastValidScopeAimOffset)
 
 
 [es(tag=render,
@@ -155,13 +158,13 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                   human_weap__currentScope : EntityId;
                                   var camera__look_at : DPoint3&;
                                   var camera__gunAimOffset : float2&;
-                                  var camera__lastValidGunAimPos : float3&;
+                                  var camera__lastValidScopeAimOffset : float3&;
                                   action__running : bool = false;
                                   bipod__enabled : bool = false)
   optics_lookat_camera_impl(info.curTime, human__aimTm, human_net_phys, human_weap__currentGunEid,
                             human_weap__gunOffset, bindedCamera, human_weap__currentScope,
                             action__running, bipod__enabled,
-                            camera__look_at, camera__gunAimOffset, camera__lastValidGunAimPos)
+                            camera__look_at, camera__gunAimOffset, camera__lastValidScopeAimOffset)
 
 
 [es(tag=render, REQUIRE=watchedByPlr, after=human_seat_bake_slot_attach_es)]
@@ -174,10 +177,10 @@ def human_seat_optics_lookat_es(evt : CmdHumanSeatBake;
                                 human_weap__currentScope : EntityId;
                                 var camera__look_at : DPoint3&;
                                 var camera__gunAimOffset : float2&;
-                                var camera__lastValidGunAimPos : float3&;
+                                var camera__lastValidScopeAimOffset : float3&;
                                 action__running : bool = false;
                                 bipod__enabled : bool = false)
   optics_lookat_camera_impl(evt.curTime, human__aimTm, human_net_phys, human_weap__currentGunEid,
                             human_weap__gunOffset, bindedCamera, human_weap__currentScope,
                             action__running, bipod__enabled,
-                            camera__look_at, camera__gunAimOffset, camera__lastValidGunAimPos)
+                            camera__look_at, camera__gunAimOffset, camera__lastValidScopeAimOffset)

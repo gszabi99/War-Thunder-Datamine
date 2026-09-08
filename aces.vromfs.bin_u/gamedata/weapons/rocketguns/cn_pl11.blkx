@@ -46,14 +46,7 @@
     "maxDistance": 80000.0,
     "minDistance": 30.0,
     "rangeMax": 80000.0,
-    "extPressureToThrustMult": [
-      101300.0,
-      1.0,
-      26500.0,
-      1.25
-    ],
     "CyK": 3.5,
-    "CxAoA": 0.8,
     "loadFactorMax": 25.0,
     "guidanceType": "radar",
     "guidanceSfx": "",
@@ -133,9 +126,14 @@
       "lockAfterLaunch": true,
       "lockTimeOut": 0.75,
       "afterLaunchSpeedUp": 170.0,
+      "disableTOFInHud": true,
       "warmUpTime": 0.5,
       "workTime": 100.0,
       "breakLockMaxTime": 5.0,
+      "timeTableCorrection": [
+        0.368,
+        0.764
+      ],
       "radarSeeker": {
         "band": 8,
         "sideLobesAttenuation": -20.0,
@@ -190,9 +188,9 @@
         "timeOut": 0.5,
         "propNavMult": 4.0,
         "reqAccelMax": 25.0,
-        "accelControlProp": 0.002977,
+        "accelControlProp": 0.013749,
         "accelControlIntg": 0.032945,
-        "accelControlDiff": 0.000511,
+        "accelControlDiff": 0.001476,
         "baseIndSpeed": 1800.0,
         "accelControlIntgLim": 1.0
       },
@@ -208,28 +206,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          513.087,
-          1132.58,
-          696.565,
-          1197.57
+          594.936,
+          1131.72,
+          681.44,
+          1196.28
         ],
         "rangeMax": [
-          6729.13,
-          34265.1,
-          8160.4,
-          35763.6
+          6402.59,
+          33920.3,
+          7836.91,
+          35424.8
         ],
         "rangeMinDogfight": [
-          570.978,
-          1809.91,
-          772.539,
-          1842.69
+          616.961,
+          1841.94,
+          762.807,
+          1803.93
         ],
         "rangeMaxDogfight": [
-          13482.9,
-          7211.18,
-          14861.1,
-          11748.0
+          13181.4,
+          7043.4,
+          14576.4,
+          11481.9
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -240,10 +238,10 @@
           0.0
         ],
         "timeMax": [
-          22.5418,
-          45.0,
-          24.2502,
-          45.0163
+          22.0418,
+          45.0164,
+          23.8335,
+          45.0
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -262,28 +260,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          703.203,
-          1234.16,
-          725.562,
-          1357.55
+          660.001,
+          1309.69,
+          805.437,
+          1246.12
         ],
         "rangeMax": [
-          12490.8,
-          39044.2,
-          14593.5,
-          41033.9
+          10376.0,
+          37030.0,
+          12493.9,
+          39059.4
         ],
         "rangeMinDogfight": [
-          797.732,
-          2022.94,
-          943.305,
-          1977.39
+          752.426,
+          2060.17,
+          883.644,
+          1982.62
         ],
         "rangeMaxDogfight": [
-          19063.1,
-          23271.7,
-          20893.7,
-          25432.4
+          17307.4,
+          21003.9,
+          19106.3,
+          23275.2
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -294,10 +292,10 @@
           0.0
         ],
         "timeMax": [
-          37.3254,
+          34.3336,
           45.0,
-          39.7291,
-          45.0
+          37.0834,
+          45.0181
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -316,28 +314,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          755.525,
-          1469.54,
-          861.586,
-          1575.72
+          731.896,
+          1406.78,
+          876.486,
+          1434.9
         ],
         "rangeMax": [
-          21389.8,
-          45748.9,
-          23867.8,
-          48226.9
+          17160.0,
+          41522.2,
+          19714.4,
+          44076.5
         ],
         "rangeMinDogfight": [
-          2144.22,
-          2274.76,
-          2277.7,
-          2280.7
+          960.057,
+          2366.35,
+          965.141,
+          2283.3
         ],
         "rangeMaxDogfight": [
-          28930.4,
-          34775.0,
-          31144.2,
-          37184.6
+          24794.6,
+          30674.2,
+          27492.1,
+          33157.5
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -348,10 +346,10 @@
           0.0
         ],
         "timeMax": [
-          45.016,
-          45.0188,
-          45.0103,
-          45.0162
+          45.0076,
+          45.0,
+          45.0,
+          45.0187
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -370,28 +368,28 @@
         ],
         "targetMach2Mult": -1.0,
         "rangeMin": [
-          879.162,
-          1664.34,
-          1048.87,
-          3635.71
+          852.369,
+          1660.14,
+          995.363,
+          1699.78
         ],
         "rangeMax": [
-          27240.0,
-          50628.3,
-          30227.7,
-          53618.6
+          22021.5,
+          45410.2,
+          25054.9,
+          48446.7
         ],
         "rangeMinDogfight": [
-          910.387,
-          2652.61,
-          956.843,
-          2611.4
+          1654.36,
+          3957.32,
+          1274.74,
+          2670.3
         ],
         "rangeMaxDogfight": [
-          39965.4,
-          35083.9,
-          42677.1,
-          38324.0
+          35292.3,
+          29288.0,
+          38027.0,
+          32653.9
         ],
         "rangeMaxAltDiff": [
           500.0,
@@ -403,9 +401,9 @@
         ],
         "timeMax": [
           45.0,
-          45.0182,
-          45.0159,
-          45.0
+          45.0,
+          45.0,
+          45.0181
         ],
         "timeMaxAltDiff": [
           500.0,
@@ -567,7 +565,10 @@
           },
           {
             "shellState": "onUnit",
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.05,
             "fire": 0.45,
             "break": 0.5,
@@ -576,25 +577,10 @@
           },
           {
             "shellState": "onUnit",
-            "damageType": "genericLongRod",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.5,
             "fire": 0.3,
             "break": 0.2,

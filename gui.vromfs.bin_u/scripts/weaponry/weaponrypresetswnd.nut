@@ -21,7 +21,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { sortPresetsList, setFavoritePresets, getWeaponryPresetView, getWeaponryByPresetInfo, getCustomWeaponryPresetView } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { move_mouse_on_obj } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, setLastWeapon, getWeaponBlockedByGameModeText } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getTierDescTbl, updateWeaponTooltip, getTierTooltipParams } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
@@ -244,6 +244,8 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     local hasDifferentCost = false
     local prevCostText = ""
     foreach (resData in res) {
+      if (resData?.weaponryItem.isBlockedByGameModeRestrictions ?? false)
+        continue
       let currentCostText = resData?.weaponryItem.spawnScoreCost
       if (currentCostText == null)
         continue
@@ -255,7 +257,7 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     }
     if (!hasDifferentCost)
       foreach (resData in res)
-        if (resData?.weaponryItem)
+        if (resData?.weaponryItem && !resData.weaponryItem.isBlockedByGameModeRestrictions)
           resData.weaponryItem.nameTextWithPrice = resData.weaponryItem.nameText
 
     return res
@@ -413,6 +415,12 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
 
   function doItemAction(item) {
     this.guiScene.playSound("check")
+    let blockedWeaponText = getWeaponBlockedByGameModeText(this.unit, item)
+    if (blockedWeaponText != "") {
+      showInfoMsgBox(blockedWeaponText)
+      return
+    }
+
     if (this.onChangeValueCb) {
       this.onChangeValueCb(item)
       this.updateChoosenWeapon()

@@ -22,7 +22,9 @@
   "support_unit_class": "structures/ussr_122mm_m30",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
+  "autoSightDistanceCorrection": true,
   "subclass": "heavyVehicle",
+  "onRadarAs": "tracked",
   "moveType": "vehicle",
   "maxFwdSpeed": 60.0,
   "maxRevSpeed": 10.0,
@@ -560,7 +562,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       },
       "power_system_01_dm": {
         "hp": 60.0,
@@ -1139,42 +1142,30 @@
             "fHitCritical": true
           },
           {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.075,
             "fire": 0.075,
             "damage": 70.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "expl": 0.075,
-            "fire": 0.075,
-            "damage": 70.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.15,
             "fire": 0.15,
             "damage": 200.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "expl": 0.15,
-            "fire": 0.15,
-            "damage": 200.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "expl": 0.25,
-            "fire": 0.25,
-            "damage": 300.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.25,
             "fire": 0.25,
             "damage": 300.0,
@@ -1225,13 +1216,10 @@
             "fire": 0.5
           },
           {
-            "damageType": "generic",
-            "expl": 0.5,
-            "full_expl": 0.1,
-            "fire": 0.4
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.5,
             "full_expl": 0.1,
             "fire": 0.4
@@ -1310,79 +1298,58 @@
             "fHitCritical": true
           },
           {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.05,
             "damage": 20.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.05,
-            "damage": 20.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.1,
             "damage": 70.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.1,
-            "damage": 70.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.2,
             "expl": 0.2,
             "damage": 200.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.2,
-            "expl": 0.2,
-            "damage": 200.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.4,
             "expl": 0.6,
             "damage": 250.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.4,
-            "expl": 0.6,
-            "damage": 250.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.3,
             "expl": 0.7,
             "damage": 300.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.3,
-            "expl": 0.7,
-            "damage": 300.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "expl": 1.0,
-            "damage": 600.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 1.0,
             "damage": 600.0,
             "fHitCritical": true
@@ -1413,49 +1380,37 @@
             "fHitCritical": true
           },
           {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.05,
             "damage": 20.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.05,
-            "damage": 20.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.1,
             "damage": 70.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.1,
-            "damage": 70.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.3,
             "damage": 200.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.3,
-            "damage": 200.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.4,
-            "damage": 300.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.4,
             "damage": 300.0,
             "fHitCritical": true
@@ -1488,25 +1443,19 @@
             "fHitCritical": true
           },
           {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.05,
             "damage": 70.0,
             "fHitCritical": true
           },
           {
-            "damageType": "genericLongRod",
-            "fire": 0.05,
-            "damage": 70.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "generic",
-            "fire": 0.1,
-            "damage": 200.0,
-            "fHitCritical": true
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "fire": 0.1,
             "damage": 200.0,
             "fHitCritical": true
@@ -1680,16 +1629,10 @@
             }
           },
           {
-            "damageType": "generic",
-            "damage": 0.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.05,
-              "fxEventName": "fire_after_hit_tiny"
-            }
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "damage": 0.0,
             "action": {
               "type": "fxEvent",
@@ -1707,16 +1650,10 @@
             }
           },
           {
-            "damageType": "generic",
-            "damage": 30.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.2,
-              "fxEventName": "fire_after_hit_small"
-            }
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "damage": 30.0,
             "action": {
               "type": "fxEvent",
@@ -1734,7 +1671,10 @@
             }
           },
           {
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "damage": 50.0,
             "action": {
               "type": "fxEvent",
@@ -1743,25 +1683,10 @@
             }
           },
           {
-            "damageType": "genericLongRod",
-            "damage": 50.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.4,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "cumulative",
-            "damage": 80.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.4,
-              "fxEventName": "fire_after_hit_med"
-            }
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "cumulative",
+              "genericLongRod"
+            ],
             "damage": 80.0,
             "action": {
               "type": "fxEvent",
@@ -1779,16 +1704,10 @@
             }
           },
           {
-            "damageType": "generic",
-            "damage": 120.0,
-            "action": {
-              "type": "fxEvent",
-              "probability": 0.7,
-              "fxEventName": "fire_after_hit_big"
-            }
-          },
-          {
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "damage": 120.0,
             "action": {
               "type": "fxEvent",
@@ -1806,6 +1725,100 @@
             }
           }
         ]
+      },
+      {
+        "name": [
+          "wheel_l_drive_dm",
+          "wheel_r_drive_dm",
+          "wheel_r_back_dm",
+          "wheel_r_front_dm",
+          "wheel_l_back_dm",
+          "wheel_l_front_dm",
+          "wheel_l_01_dm",
+          "wheel_r_01_dm",
+          "wheel_l_02_dm",
+          "wheel_r_02_dm",
+          "wheel_l_03_dm",
+          "wheel_r_03_dm",
+          "wheel_l_04_dm",
+          "wheel_r_04_dm",
+          "wheel_l_05_dm",
+          "wheel_r_05_dm",
+          "wheel_l_06_dm",
+          "wheel_r_06_dm"
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.01
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1839,6 +1852,13 @@
         }
       }
     }
+  },
+  "gunConvergence": {
+    "updateFromRangefinder": true,
+    "minDistance": 200.0,
+    "defaultDistance": 1000.0,
+    "vertical": true,
+    "horizontal": true
   },
   "MetaParts": {
     "closed_fightning_compartment": {
@@ -2261,12 +2281,19 @@
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "bone_mg_twin_01",
         "flash": "emtr_mg_flame",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
+        "maxAdditionalPitch": 0.0,
+        "defaultYaw": [
+          0.0,
+          0.0
+        ],
+        "defaultPitch": [
+          0.0,
+          0.0
+        ],
         "barrelDP": "gun_barrel_01_dm",
-        "parkInDeadzone": false,
-        "speedYaw": 30.0,
-        "speedPitch": 20.0,
+        "useAnimFlashNode": true,
+        "speedYaw": 5.5,
+        "speedPitch": 4.0,
         "fireConeAngle": [
           1.0,
           15.0
@@ -2283,7 +2310,6 @@
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
-        "showBulletsInHud": false,
         "turret": {
           "head": "bone_mg_twin_01",
           "gun": "bone_mg_twin_01",
@@ -2309,7 +2335,6 @@
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
         "emitter": "bone_mg_aa_h_01",
         "flash": "emtr_mg_flame_01",
-        "useEmitter": true,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_02_dm",
@@ -3309,6 +3334,151 @@
       ]
     }
   },
+  "ammoStowages": {
+    "ammo1": {
+      "removeLoadedAmmo": true,
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "replenishmentDelay": 4.0,
+      "replenishmentTime": 10.0,
+      "shells": [
+        {
+          "autoLoad": true,
+          "autoloader": "autoloader_dm",
+          "ammo_turret_01_dm": {
+            "count": 1
+          },
+          "ammo_turret_02_dm": {
+            "count": 1
+          },
+          "ammo_turret_03_dm": {
+            "count": 1
+          },
+          "ammo_turret_04_dm": {
+            "count": 1
+          },
+          "ammo_turret_05_dm": {
+            "count": 1
+          },
+          "ammo_turret_06_dm": {
+            "count": 1
+          },
+          "ammo_turret_07_dm": {
+            "count": 1
+          },
+          "ammo_turret_08_dm": {
+            "count": 1
+          },
+          "ammo_turret_09_dm": {
+            "count": 1
+          },
+          "ammo_turret_10_dm": {
+            "count": 1
+          },
+          "ammo_turret_11_dm": {
+            "count": 1
+          },
+          "ammo_turret_12_dm": {
+            "count": 1
+          }
+        },
+        {
+          "reloadTimeMult": 1.28,
+          "ammo_body_01_dm": {
+            "count": 1
+          },
+          "ammo_body_02_dm": {
+            "count": 1
+          },
+          "ammo_body_03_dm": {
+            "count": 1
+          },
+          "ammo_body_04_dm": {
+            "count": 1
+          },
+          "ammo_body_05_dm": {
+            "count": 1
+          },
+          "ammo_body_06_dm": {
+            "count": 1
+          },
+          "ammo_body_07_dm": {
+            "count": 1
+          },
+          "ammo_body_08_dm": {
+            "count": 1
+          },
+          "ammo_body_09_dm": {
+            "count": 1
+          },
+          "ammo_body_10_dm": {
+            "count": 1
+          },
+          "ammo_body_11_dm": {
+            "count": 1
+          },
+          "ammo_body_12_dm": {
+            "count": 1
+          },
+          "ammo_body_13_dm": {
+            "count": 1
+          },
+          "ammo_body_14_dm": {
+            "count": 1
+          },
+          "ammo_body_15_dm": {
+            "count": 1
+          },
+          "ammo_body_16_dm": {
+            "count": 1
+          },
+          "ammo_body_17_dm": {
+            "count": 1
+          },
+          "ammo_body_18_dm": {
+            "count": 1
+          },
+          "ammo_body_19_dm": {
+            "count": 1
+          },
+          "ammo_body_20_dm": {
+            "count": 1
+          },
+          "ammo_body_21_dm": {
+            "count": 1
+          },
+          "ammo_body_22_dm": {
+            "count": 1
+          },
+          "ammo_body_23_dm": {
+            "count": 1
+          },
+          "ammo_body_24_dm": {
+            "count": 1
+          },
+          "ammo_body_25_dm": {
+            "count": 1
+          },
+          "ammo_body_26_dm": {
+            "count": 1
+          },
+          "ammo_body_27_dm": {
+            "count": 1
+          },
+          "ammo_body_28_dm": {
+            "count": 1
+          },
+          "ammo_body_29_dm": {
+            "count": 1
+          },
+          "ammo_body_30_dm": {
+            "count": 1
+          }
+        }
+      ]
+    }
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -3595,12 +3765,19 @@
               "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
               "emitter": "bone_mg_twin_01",
               "flash": "emtr_mg_flame",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
+              "maxAdditionalPitch": 0.0,
+              "defaultYaw": [
+                0.0,
+                0.0
+              ],
+              "defaultPitch": [
+                0.0,
+                0.0
+              ],
               "barrelDP": "gun_barrel_01_dm",
-              "parkInDeadzone": false,
-              "speedYaw": 30.0,
-              "speedPitch": 20.0,
+              "useAnimFlashNode": true,
+              "speedYaw": 5.5,
+              "speedPitch": 4.0,
               "fireConeAngle": [
                 1.0,
                 15.0
@@ -3617,7 +3794,6 @@
               "errMeasureVelDir": 0.0,
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
-              "showBulletsInHud": false,
               "turret": {
                 "head": "bone_mg_twin_01",
                 "gun": "bone_mg_twin_01",
@@ -3643,7 +3819,6 @@
               "blk": "gameData/Weapons/groundModels_weapons/7_62mm_FN_MAG60_40_user_machinegun.blk",
               "emitter": "bone_mg_aa_h_01",
               "flash": "emtr_mg_flame_01",
-              "useEmitter": true,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "barrelDP": "gun_barrel_02_dm",

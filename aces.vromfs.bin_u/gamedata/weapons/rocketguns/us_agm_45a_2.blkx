@@ -6,10 +6,9 @@
   "sound": "weapon.rocketgun_132",
   "helicopterGroup": 2,
   "mesh": "us_agm45_shrike_missile",
-  "rollForDemonstration": 90.0,
   "offsetForDemonstration": [
     0.0,
-    0.15,
+    0.115,
     0.0
   ],
   "tags": {},
@@ -50,14 +49,7 @@
     "maxDistance": 50000.0,
     "minDistance": 10000.0,
     "rangeMax": 50000.0,
-    "extPressureToThrustMult": [
-      101300.0,
-      1.0,
-      26500.0,
-      1.25
-    ],
     "CyK": 3.5,
-    "CxAoA": 0.8,
     "loadFactorMax": 10.0,
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
@@ -245,7 +237,10 @@
           },
           {
             "shellState": "onUnit",
-            "damageType": "generic",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.05,
             "fire": 0.45,
             "break": 0.5,
@@ -254,25 +249,10 @@
           },
           {
             "shellState": "onUnit",
-            "damageType": "genericLongRod",
-            "expl": 0.05,
-            "fire": 0.45,
-            "break": 0.5,
-            "damage": 3.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "generic",
-            "expl": 0.5,
-            "fire": 0.3,
-            "break": 0.2,
-            "damage": 30.0,
-            "fHitCritical": true
-          },
-          {
-            "shellState": "onUnit",
-            "damageType": "genericLongRod",
+            "damageType": [
+              "generic",
+              "genericLongRod"
+            ],
             "expl": 0.5,
             "fire": 0.3,
             "break": 0.2,

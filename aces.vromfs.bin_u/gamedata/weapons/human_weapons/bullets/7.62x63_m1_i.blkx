@@ -1,18 +1,27 @@
 {
-  "mass": 0.0097,
-  "cartridgeMass": 0.0269,
+  "bulletName": "7_62mm_m1_i",
+  "mass": 0.00907185,
+  "cartridgeMass": 0.025142,
   "caliber": 0.00762,
-  "speed": 830.0,
-  "maxDistance": 1500.0,
-  "bulletType": "ball",
-  "bulletName": "7_62mm_ap",
+  "speed": 845.82,
+  "Cx": 0.37447,
+  "ballisticCaliber": 0.007836,
+  "damageCaliber": 0.007836,
+  "damageMass": 0.00362874,
+  "maxDistance": 2000.0,
+  "normalizationPreset": "default",
+  "ricochetPreset": "default",
+  "groundRicochetPreset": "he_small_caliber_ground",
+  "stabilityThreshold": 0.05,
+  "stabilityCaliberToArmorThreshold": 5.0,
+  "stabilityReductionAfterRicochet": 0.5,
+  "stabilityReductionAfterPenetration": 0.3,
+  "bulletType": "i_ball",
+  "slopeEffectPreset": "ap",
+  "shellAnimation": "video/shells_animations/i_ball.ivf",
   "effectiveDistance": 350.0,
   "relativeVelHitShift": [
     300.0,
-    1000.0
-  ],
-  "relativeVelArmorShift": [
-    200.0,
     1000.0
   ],
   "selfDestructionFx": "hit_5_7mm_metal_he",
@@ -23,6 +32,35 @@
   "groundRicochetEffect": "hit_5_7mm_dirt_ap",
   "explosionPatchRadius": 0.3,
   "rendinstDamageRadius": 0.0,
+  "stabilityRicochetModifier": {
+    "mod1": [
+      0.0,
+      0.05
+    ],
+    "mod2": [
+      20.0,
+      0.1
+    ],
+    "mod3": [
+      [
+        30.0,
+        0.2
+      ],
+      [
+        45.0,
+        0.3
+      ]
+    ]
+  },
+  "damage": {
+    "kinetic": {
+      "damageType": "generic",
+      "demarrePenetrationK": 0.345,
+      "demarreSpeedPow": 1.675,
+      "demarreMassPow": 0.65,
+      "demarreCaliberPow": 1.07
+    }
+  },
   "hitpower": {
     "HitPower0m": [
       1.45,
@@ -71,36 +109,6 @@
     "HitPower1500m": [
       0.5,
       1500.0
-    ]
-  },
-  "armorpower": {
-    "ArmorPower0m": [
-      14.0,
-      5.0
-    ],
-    "ArmorPower100m": [
-      12.5,
-      100.0
-    ],
-    "ArmorPower300m": [
-      9.2,
-      300.0
-    ],
-    "ArmorPower600m": [
-      6.0,
-      600.0
-    ],
-    "ArmorPower1000m": [
-      3.0,
-      1000.0
-    ],
-    "ArmorPower1500m": [
-      1.5,
-      1500.0
-    ],
-    "ArmorPower1600m": [
-      0.0,
-      1600.0
     ]
   },
   "collisions": {

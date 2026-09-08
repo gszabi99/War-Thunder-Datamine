@@ -21,7 +21,7 @@ let weaponryEffects = require("%scripts/weaponry/weaponryEffects.nut")
 let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItemStatusTbl, getRepairCostCoef, isResearchableItem, countWeaponsUpgrade, getItemUpgradesList } = require("%scripts/weaponry/itemInfo.nut")
 let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet, getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData, isPairBulletsGroup } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets, checkBulletParamsBeforeRender } = require("%scripts/weaponry/bulletsVisual.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES, getPrimaryWeaponsList, isWeaponEnabled, addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes } = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES, getPrimaryWeaponsList, isWeaponEnabled, addWeaponsFromBlk, getWeaponExtendedInfo, getWeaponNameByBlkPath, isMissileWeapon, isGuidedBomb, getAdditionalWeaponMarkupTypes, getWeaponGameModeRestrictionsRows } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModElements, getFullItemCostText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getPresetCompositionViewParams } = require("%scripts/weaponry/infantryWeapons.nut")
 let { getUnitArmorData, getArmorIconViewData } = require("%scripts/weaponry/infantryArmor.nut")
@@ -213,6 +213,15 @@ function getTierTooltipParams(weaponry, presetName, tierId) {
   }
 }
 
+function addGameModeRestrictionsToDescTbl(descTbl, unit, weaponOrBlkPath) {
+  let gameModeRestrictionsRows = getWeaponGameModeRestrictionsRows(unit, weaponOrBlkPath)
+  if (gameModeRestrictionsRows != null)
+    descTbl.gameModeRestrictions <- {
+      gameModeRestrictionsTitle = loc("weaponry/gameModeRestrictions/header")
+      gameModeRestrictionsParams = gameModeRestrictionsRows
+    }
+}
+
 function getSingleWeaponDescTbl(unit, params) {
   let { blkPath, tType, presetName } = params
   let weapons = addWeaponsFromBlk({}, getUnitWeaponsByPreset(unit, blkPath, presetName), unit)
@@ -229,6 +238,7 @@ function getSingleWeaponDescTbl(unit, params) {
   if (presetsWeapons.len())
     res.presetsWeapons <- presetsWeapons
 
+  addGameModeRestrictionsToDescTbl(res, unit, blkPath)
   addArmorPiercingDataToDescTbl(res, unit, blkPath, tType, weaponInfoData)
   return res
 }
@@ -325,6 +335,8 @@ function getTierDescTbl(unit, params) {
     bulletParams = weaponryDesc?.bulletParams
     bulletPenetrationData = weaponryDesc?.bulletPenetrationData
   })
+
+  addGameModeRestrictionsToDescTbl(res, unit, params.blk)
 
   let additionalWeaponryDesc = addWeaponry
     ? getWeaponDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
@@ -574,6 +586,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       else if (presetsWeapons.len())
         res.presetsWeapons <- presetsWeapons
     }
+    addGameModeRestrictionsToDescTbl(res, unit, item)
     if ((item.rocket || item.bomb) && (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED) {
       let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, item.name, true, true))
       addArmorPiercingToDesc(bulletsData, res)

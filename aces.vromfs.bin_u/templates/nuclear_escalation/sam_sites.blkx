@@ -88,6 +88,34 @@
       }
     }
   },
+  "sam_site_buk_m1": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "ussr_ai_sam_launcher_9a310m1",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "death_substract_tickets": 30,
+            "count": 2,
+            "rearmTimeOnField": 20.0,
+            "bulletsCount:list<i>": {
+              "c": 4
+            }
+          },
+          {
+            "name": "ussr_ai_sam_radar_9s18m1",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "death_substract_tickets": 100,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
   "sam_site_buk_m3": {
     "_use": "sam_site",
     "_group": {
@@ -215,6 +243,41 @@
           },
           {
             "name": "us_ai_sam_radar_cwar",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "detector_radar",
+            "death_substract_tickets": 100,
+            "count": 1
+          }
+        ]
+      }
+    }
+  },
+  "sam_site_hawk_early": {
+    "_use": "sam_site",
+    "_group": {
+      "_tags": "server",
+      "sam_site__unitSettings:array": {
+        "unit:object": [
+          {
+            "name": "us_ai_sam_launcher_m192_early",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "launcher",
+            "death_substract_tickets": 30,
+            "count": 3,
+            "rearmTimeOnField": 20.0,
+            "bulletsCount:list<i>": {
+              "c": 3
+            }
+          },
+          {
+            "name": "us_ai_sam_radar_an_mpq_33",
+            "templateName": "tank+sam_site_unit",
+            "spawnName": "tracker_radar",
+            "death_substract_tickets": 100,
+            "count": 1
+          },
+          {
+            "name": "us_ai_sam_radar_an_mpq_34_cwar",
             "templateName": "tank+sam_site_unit",
             "spawnName": "detector_radar",
             "death_substract_tickets": 100,
