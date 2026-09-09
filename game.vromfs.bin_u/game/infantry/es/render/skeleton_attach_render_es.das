@@ -4,6 +4,7 @@ require AnimV20
 require DagorSystem
 require DagorMath
 require GeomNodeTree
+require CollRes
 require %game.events
 require %appGame.infantry.es.animchar.attach_common
 
@@ -192,7 +193,10 @@ def init_skeleton_attachment_wtm_ofs(evt : Event;
     let fastPhysSimTimeOnReset = 1.5
     attachment_animchar |> animchar_updateFastPhys(fastPhysSimTimeOnReset)
 
+
+
 def save_cur_geom_node_tree(animchar : AnimcharBaseComponent&;
+                            collres : CollisionResource;
                             var saved_animchar : AnimcharBaseComponent&)
   assume nodeTree = *(animchar.nodeTree)
   assume savedNodeTree = *(saved_animchar.nodeTree)
@@ -204,44 +208,50 @@ def save_cur_geom_node_tree(animchar : AnimcharBaseComponent&;
   let wtmOfs = geomtree_getWtmOfs(nodeTree)
   geomtree_setWtmOfs(savedNodeTree, wtmOfs)
 
-  for i in range(0, int(nodeCount))
-    geomtree_getNodeTm(savedNodeTree, i) = geomtree_getNodeTm(nodeTree, i)
-    geomtree_getNodeWtmRel(savedNodeTree, i) = geomtree_getNodeWtmRel(nodeTree, i)
+  for i in range(collres_get_nodesCount(collres))
+    let node = collres |> collres_get_node(i)
+    let nodeNo = node.geomNodeId
+    if uint(nodeNo) < nodeCount
+      geomtree_getNodeWtmRel(savedNodeTree, nodeNo) = geomtree_getNodeWtmRel(nodeTree, nodeNo)
 
 def save_attaches_animchar_tree(attaches_list : EidList const?)
   if attaches_list == null
     return
   for attach in *attaches_list
     query(attach) <| $ [es] (animchar : AnimcharBaseComponent&;
+                             collres : CollisionResource;
                              attaches_list : EidList const?;
                              var saved_animchar : AnimcharBaseComponent&)
-      save_cur_geom_node_tree(animchar, saved_animchar)
+      save_cur_geom_node_tree(animchar, collres, saved_animchar)
       save_attaches_animchar_tree(attaches_list)
 
 
 [es(tag=gameClient, on_appear, REQUIRE=deadEntity)]
 def skeleton_attach_save_on_dead_es(evt : Event;
                                     animchar : AnimcharBaseComponent&;
+                                    collres : CollisionResource;
                                     attaches_list : EidList const?;
                                     var saved_animchar : AnimcharBaseComponent&)
-  save_cur_geom_node_tree(animchar, saved_animchar)
+  save_cur_geom_node_tree(animchar, collres, saved_animchar)
   save_attaches_animchar_tree(attaches_list)
   
 
 [es(tag=render, parallel_for=4, REQUIRE_NOT=deadEntity, no_order)] 
 def skeleton_attach_save_for_grid_es(evt : UpdateStageInfoAct;
                                      animchar : AnimcharBaseComponent&;
+                                     collres : CollisionResource;
                                      var saved_animchar : AnimcharBaseComponent&)
-  save_cur_geom_node_tree(animchar, saved_animchar)
+  save_cur_geom_node_tree(animchar, collres, saved_animchar)
 
 
 [es(tag=render, REQUIRE=deadEntity, no_order)]
 def skeleton_attach_save_for_knocked_down_es(evt : UpdateStageInfoAct;
                                              animchar : AnimcharBaseComponent&;
+                                             collres : CollisionResource;
                                              reanimation__knockedDown : bool;
                                              var saved_animchar : AnimcharBaseComponent&)
   if reanimation__knockedDown
-    save_cur_geom_node_tree(animchar, saved_animchar)
+    save_cur_geom_node_tree(animchar, collres, saved_animchar)
 
 
 

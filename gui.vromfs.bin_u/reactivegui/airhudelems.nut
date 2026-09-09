@@ -507,6 +507,7 @@ function getCannonsCaption(mode) {
   return "".join(texts)
 }
 
+
 function getIRCMCaption(state) {
   let texts = []
   if (state == IRCMMode.IRCM_ENABLED)
@@ -794,6 +795,7 @@ let textParamsMapMain = {
     titleComputed = Computed(@() getAdditionalCannonCaption(CannonsAdditionalMode.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonsAdditionalCount.get(), CannonsAdditionalSeconds.get()))
     isSelectedComputed = Computed(@() CannonsAdditionalSelected.get())
+    additionalComputed = CannonsAdditionalName
     alertStateCaptionComputed = Computed(@() IsCanAdditionalEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsCanAdditionalEmpty.get() ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   },
@@ -927,11 +929,13 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   let MachineGunsAmmoCount = MachineGunsCount[idx]
   let MachineGunsAmmoReloadTime = MachineGunsReloadTime[idx]
   let MachineGunsModeLocal = MachineGunsMode[idx]
+  let MachineGunsNameLocal = MachineGunsName[idx]
 
   textParamsMapMain[AirParamsMain.MACHINE_GUNS_1 + idx] <- {
     titleComputed = Computed(@() getMachineGunCaption(MachineGunsModeLocal.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(MachineGunsAmmoCount.get(), MachineGunsAmmoReloadTime.get()))
     isSelectedComputed = Computed(@() !!MachineGunsSelectedArray.get()?[idx])
+    additionalComputed = MachineGunsNameLocal
     alertStateCaptionComputed = Computed(@() IsMachineGunsEmpty.get()?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() IsMachineGunsEmpty.get()?[idx] ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
   }
@@ -942,6 +946,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
   let CannonAmmoCount = CannonCount[idx]
   let CannonAmmoReloadTime = CannonReloadTime[idx]
   let CannonModeLocal = CannonMode[idx]
+  let CannonNameLocal = CannonName[idx]
   let blinkComputed = Computed(@() GunInDeadZone.get())
   let blinkTrigger = {}
   blinkComputed.subscribe(@(v) v ? anim_start(blinkTrigger) : anim_request_stop(blinkTrigger))
@@ -949,6 +954,7 @@ for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
     titleComputed = Computed(@() getCannonsCaption(CannonModeLocal.get()))
     valueComputed = Computed(@() generateBulletsTextFunction(CannonAmmoCount.get(), CannonAmmoReloadTime.get()))
     isSelectedComputed = Computed(@() !!CannonSelectedArray.get()?[idx] || CannonSelected.get())
+    additionalComputed = CannonNameLocal
     alertStateCaptionComputed = Computed(@() (IsCannonEmpty.get()?[idx] || isCannonJamed.get()?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     alertValueStateComputed = Computed(@() (IsCannonEmpty.get()?[idx] || isCannonJamed.get()?[idx]) ? HudColorState.HIGH_ALERT :  HudColorState.ACTIV)
     blinkComputed

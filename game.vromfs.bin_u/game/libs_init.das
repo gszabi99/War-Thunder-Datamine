@@ -9,6 +9,7 @@ require gameLibs.route_prober.route_prober_init
 require gameLibs.console_commands.console_commands_init
 require gameLibs.imgui_daeditor.imgui_daeditor_init
 require gameLibs.assets_import.assets_import_init
+require gameLibs.netDebugDraw.netDebugDraw_init
 
 def load_libs() : bool
   var ok = true
@@ -18,6 +19,7 @@ def load_libs() : bool
   ok = load_console_commands("%gameLibs/console_commands") && ok
   ok = load_imgui_daeditor("%gameLibs/imgui_daeditor") && ok
   ok = load_assets_import("%gameLibs/assets_import") && ok
+  ok = load_netDebugDraw("%gameLibs/netDebugDraw") && ok
 
   return ok
 

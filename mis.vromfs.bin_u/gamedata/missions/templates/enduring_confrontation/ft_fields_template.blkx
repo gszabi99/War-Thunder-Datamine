@@ -53,14 +53,14 @@
         "unitSetProperties": [
           {
             "targetChangeProf": 0.25,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "ft_t1_medium_aaa_squad",
               "ft_t2_medium_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "targetAir": true,
             "targetGnd": false,
             "accuracy": 0.75,
@@ -78,14 +78,14 @@
           },
           {
             "targetChangeProf": 0.25,
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": [
               "ft_t1_big_aaa_squad",
               "ft_t2_big_aaa_squad"
             ],
+            "object_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "accuracy": 0.75,
             "airAccuracy": 0.75,
             "checkVisibilityTarget": true,
@@ -486,6 +486,7 @@
             "var": "ft_generate_t1_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t1_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t1_prev_value"
           },
           "varSetString": [
@@ -831,6 +832,7 @@
             "var": "ft_generate_t2_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t2_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t2_prev_value"
           },
           "varSetString": [
@@ -1150,6 +1152,7 @@
             "var": "ft_generate_t1_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t1_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t1_prev_value"
           },
           "varSetString": {
@@ -1231,6 +1234,7 @@
             "var": "ft_generate_t1_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t1_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t1_prev_value"
           },
           "varSetString": {
@@ -1312,6 +1316,7 @@
             "var": "ft_generate_t1_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t1_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t1_prev_value"
           },
           "varSetString": {
@@ -2451,6 +2456,7 @@
             "var": "ft_generate_t2_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t2_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t2_prev_value"
           },
           "varSetString": {
@@ -2532,6 +2538,7 @@
             "var": "ft_generate_t2_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t2_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t2_prev_value"
           },
           "varSetString": {
@@ -2613,6 +2620,7 @@
             "var": "ft_generate_t2_add_idx",
             "from": 1,
             "to_not_including": 5,
+            "var_to_not_including": "ft_t2_max_airfields_count_in_row",
             "check_prev_value": "ft_generate_t2_prev_value"
           },
           "varSetString": {
@@ -4070,24 +4078,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar",
-              "unitToSpawnCount": 1,
               "object": "@ft_t1_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name"
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar",
-              "unitToSpawnCount": 1,
               "object": "@ft_t1_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name"
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar",
-              "unitToSpawnCount": 1,
               "object": "@ft_t1_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name"
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
             }
           ],
           "triggerEnable": {
@@ -4144,24 +4152,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar_snow",
-              "unitToSpawnCount": 1,
               "object": "@ft_t1_snowed_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name"
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar_snow",
-              "unitToSpawnCount": 1,
               "object": "@ft_t1_snowed_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name"
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar_snow",
-              "unitToSpawnCount": 1,
               "object": "@ft_t1_snowed_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t1_airfield_name"
+              "target": "@ft_generate_t1_airfield_name",
+              "unitToSpawnCount": 1
             }
           ],
           "triggerEnable": {
@@ -4262,24 +4270,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar",
-              "unitToSpawnCount": 1,
               "object": "@ft_t2_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name"
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar",
-              "unitToSpawnCount": 1,
               "object": "@ft_t2_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name"
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar",
-              "unitToSpawnCount": 1,
               "object": "@ft_t2_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name"
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
             }
           ],
           "triggerEnable": {
@@ -4336,24 +4344,24 @@
           "unitSpawnOnObjectGroup": [
             {
               "type": "air_main_radar_snow",
-              "unitToSpawnCount": 1,
               "object": "@ft_t2_snowed_main_radar_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name"
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar_snow",
-              "unitToSpawnCount": 1,
               "object": "@ft_t2_snowed_flight_radar_01_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name"
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
             },
             {
               "type": "air_flight_radar_snow",
-              "unitToSpawnCount": 1,
               "object": "@ft_t2_snowed_flight_radar_02_name",
               "object_type": "isDelayed",
-              "target": "@ft_generate_t2_airfield_name"
+              "target": "@ft_generate_t2_airfield_name",
+              "unitToSpawnCount": 1
             }
           ],
           "triggerEnable": {
@@ -9780,11 +9788,11 @@
           "unitSetProperties": {
             "stabInfluenceEnabled": true,
             "realisticAI": false,
+            "object": "@st_t1_generate_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@st_t1_generate_name"
+            "object_var_value": 0
           },
           "unitMoveTo": {
             "object_marking": 0,
@@ -9817,7 +9825,6 @@
             "playerAttracted": false,
             "object": "@st_t1_generate_name",
             "target": "t1_enemy_planes_squad",
-            "resetObjectToFollow": false,
             "fireRandom": true,
             "targetTypeName": "airplane",
             "targetDistMax": 7000.0,
@@ -9831,7 +9838,8 @@
             "targetToAnchorDist": [
               6000.0,
               7000.0
-            ]
+            ],
+            "resetObjectToFollow": false
           },
           "varSetString": {
             "value": "sentinnel ",
@@ -10238,11 +10246,11 @@
           "unitSetProperties": {
             "stabInfluenceEnabled": true,
             "realisticAI": false,
+            "object": "@st_t2_generate_name",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "object": "@st_t2_generate_name"
+            "object_var_value": 0
           },
           "unitMoveTo": {
             "object_marking": 0,
@@ -10275,7 +10283,6 @@
             "playerAttracted": false,
             "object": "@st_t2_generate_name",
             "target": "t2_enemy_planes_squad",
-            "resetObjectToFollow": false,
             "fireRandom": true,
             "targetTypeName": "airplane",
             "targetDistMax": 7000.0,
@@ -10289,7 +10296,8 @@
             "targetToAnchorDist": [
               6000.0,
               7000.0
-            ]
+            ],
+            "resetObjectToFollow": false
           },
           "varSetString": {
             "value": "sentinnel ",
@@ -11199,7 +11207,6 @@
               "playerAttracted": false,
               "object": "@st_rearm_t1_sentinell_name",
               "target": "t2_enemy_planes_squad",
-              "resetObjectToFollow": false,
               "fireRandom": true,
               "targetTypeName": "airplane",
               "targetDistMax": 7000.0,
@@ -11212,7 +11219,8 @@
               "targetToAnchorDist": [
                 6000.0,
                 7000.0
-              ]
+              ],
+              "resetObjectToFollow": false
             },
             "comment": [
               {
@@ -11295,7 +11303,6 @@
               "playerAttracted": false,
               "object": "@st_rearm_t2_sentinell_name",
               "target": "t1_enemy_planes_squad",
-              "resetObjectToFollow": false,
               "fireRandom": true,
               "targetTypeName": "airplane",
               "targetDistMax": 7000.0,
@@ -11308,7 +11315,8 @@
               "targetToAnchorDist": [
                 6000.0,
                 7000.0
-              ]
+              ],
+              "resetObjectToFollow": false
             },
             "comment": [
               {
@@ -13253,8 +13261,10 @@
     }
   },
   "variables": {
-    "ft_t1_max_airfields_count": 6,
-    "ft_t2_max_airfields_count": 6,
+    "ft_t1_max_airfields_count_in_row": 5,
+    "ft_t2_max_airfields_count_in_row": 5,
+    "ft_t1_max_airfields_count": 7,
+    "ft_t2_max_airfields_count": 7,
     "ft_generate_t1_idx": 0,
     "ft_generate_t2_idx": 0,
     "ft_distance_check_t1_check_idx": 0,

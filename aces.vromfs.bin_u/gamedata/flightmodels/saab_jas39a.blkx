@@ -2962,6 +2962,13 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_rockets_rb_75t.blk"
       },
       {
+        "name": "saab_jas39a_rb_15",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_rb_15.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "saab_jas39a_120kg_m71",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39a_120kg_m71.blk"
       },
@@ -3315,7 +3322,6 @@
           {
             "iconType": "nar_ap_special",
             "name": "m70b",
-            "reqModification": "swe_135mm_m70b",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3370,7 +3376,6 @@
           {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3386,7 +3391,6 @@
           {
             "iconType": "bombs_heavy_high_drag_group_x4",
             "name": "m71_retarded",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3402,7 +3406,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gbu_12",
-            "reqModification": "us_gbu_12",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3423,7 +3427,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "gbu_16",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3444,7 +3448,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "mk_82_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3461,7 +3464,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "mk_82_snakeye_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -3627,7 +3629,6 @@
           {
             "iconType": "nar_ap_special",
             "name": "m70b",
-            "reqModification": "swe_135mm_m70b",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3680,9 +3681,24 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_002",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3698,7 +3714,6 @@
           {
             "iconType": "bombs_heavy_high_drag_group_x4",
             "name": "m71_retarded",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3714,7 +3729,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gbu_12",
-            "reqModification": "us_gbu_12",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3735,7 +3750,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "gbu_16",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3756,7 +3771,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "gbu_10",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3777,7 +3792,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "gbu_24",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3798,7 +3813,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "mk_82_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3815,7 +3829,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "mk_82_snakeye_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -4061,7 +4074,6 @@
           {
             "iconType": "nar_ap_special",
             "name": "m70b",
-            "reqModification": "swe_135mm_m70b",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4114,9 +4126,24 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_003",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4132,7 +4159,6 @@
           {
             "iconType": "bombs_heavy_high_drag_group_x4",
             "name": "m71_retarded",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4148,7 +4174,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gbu_12",
-            "reqModification": "us_gbu_12",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4169,7 +4195,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "gbu_16",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4190,7 +4216,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "gbu_10",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4211,7 +4237,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "gbu_24",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4232,7 +4258,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "mk_82_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4249,7 +4274,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "mk_82_snakeye_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_4"
             },
@@ -4437,7 +4461,6 @@
           {
             "iconType": "nar_ap_special",
             "name": "m70b",
-            "reqModification": "swe_135mm_m70b",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -4492,7 +4515,6 @@
           {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -4508,7 +4530,6 @@
           {
             "iconType": "bombs_heavy_high_drag_group_x4",
             "name": "m71_retarded",
-            "reqModification": "swd_aj37_120kg_m71",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -4524,7 +4545,7 @@
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gbu_12",
-            "reqModification": "us_gbu_12",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -4545,7 +4566,7 @@
           {
             "iconType": "guided_bomb_large_laser",
             "name": "gbu_16",
-            "reqModification": "us_gbu_16",
+            "reqModification": "us_gbu_laser",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -4566,7 +4587,6 @@
           {
             "iconType": "bombs_middle_group_x2",
             "name": "mk_82_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -4583,7 +4603,6 @@
           {
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "mk_82_snakeye_x2",
-            "reqModification": "us_500lb_mk82",
             "ShowNodes": {
               "node": "pylon_5"
             },
@@ -5014,28 +5033,22 @@
     "akan_85_armor_targets": {},
     "akan_85_stealth": {},
     "akan_85_belt_pack": {
-      "tier": 1
+      "prevModification": "asm",
+      "tier": 1,
+      "modClass": "weapon"
     },
     "akan_85_new_gun": {
       "reqModification": "akan_85_belt_pack",
-      "tier": 3
-    },
-    "swd_aj37_120kg_m71": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "us_500lb_mk82": {
-      "modClass": "weapon",
       "tier": 2,
-      "reqModification": "swd_aj37_120kg_m71"
-    },
-    "swe_135mm_m70b": {
-      "modClass": "weapon",
-      "prevModification": "us_500lb_mk82",
-      "tier": 3
+      "modClass": "weapon"
     },
     "swd_rb75": {
-      "reqModification": "swe_135mm_m70b",
+      "prevModification": "akan_85_new_gun",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "swd_rb75t": {
+      "reqModification": "swd_rb75",
       "modClass": "weapon",
       "tier": 4
     },
@@ -5053,29 +5066,17 @@
       "modClass": "weapon",
       "reqModification": "swe_rb71"
     },
-    "swd_rb75t": {
-      "prevModification": "swd_rb74m",
-      "reqModification": "swd_rb75",
-      "modClass": "weapon",
-      "tier": 4
-    },
     "gr_litening_pod": {
       "modClass": "weapon",
       "tier": 1
     },
-    "us_gbu_12": {
+    "us_gbu_laser": {
       "reqModification": "gr_litening_pod",
       "modClass": "weapon",
       "tier": 2
     },
-    "us_gbu_16": {
-      "reqModification": "us_gbu_12",
-      "tier": 3,
-      "modClass": "weapon"
-    },
-    "us_gbu_24": {
-      "reqModification": "us_gbu_16",
-      "tier": 4,
+    "asm": {
+      "tier": 1,
       "modClass": "weapon"
     }
   },

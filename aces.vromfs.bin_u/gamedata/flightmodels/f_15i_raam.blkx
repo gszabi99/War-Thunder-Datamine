@@ -4928,6 +4928,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_gbu_15v2.blk"
       },
       {
+        "name": "f_15i_raam_gbu_15v2_tutorial",
+        "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_gbu_15v2_tutorial.blk"
+      },
+      {
         "name": "f_15i_raam_spice_250",
         "blk": "gameData/FlightModels/weaponPresets/f_15i_raam_spice_250.blk"
       },
@@ -5436,6 +5440,10 @@
                 0.0,
                 0.1
               ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "is_asw_55_pod"
             }
           },
           {
@@ -9427,6 +9435,22 @@
               "separate": true,
               "machLimit": 1.1
             }
+          },
+          {
+            "iconType": "rls",
+            "name": "is_asw_55_pod",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/is_asw_55_pod.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1
+            }
           }
         ]
       },
@@ -13082,6 +13106,10 @@
                 0.0,
                 0.1
               ]
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "is_asw_55_pod"
             }
           },
           {

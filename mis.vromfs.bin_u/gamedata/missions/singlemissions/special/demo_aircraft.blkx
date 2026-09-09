@@ -168,7 +168,27 @@
           "object": "t1_player01",
           "move_type": "teleport",
           "velocity": 550.0
-        }
+        },
+        "unitSetProperties": [
+          {
+            "object": "t1_players_squad",
+            "avoidFriendlyFire": true
+          },
+          {
+            "object": "armada_squad",
+            "controls": {},
+            "plane": {
+              "targetDeviation": {
+                "trigger": "gunner",
+                "defaultVal": 8.0,
+                "limits": [
+                  5.0,
+                  10.0
+                ]
+              }
+            }
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -194,14 +214,6 @@
         "unitLoadBehTree": {
           "name": "missionHitThePoint",
           "objects": "armada_squad"
-        },
-        "unitAttackTarget": {
-          "playerAttracted": false,
-          "object": "armada_squad",
-          "attack_type": "attack_target",
-          "target": "t1_players_squad",
-          "trackingTime": 3.0,
-          "fireRandom": true
         },
         "unitMoveTo": [
           {
@@ -988,8 +1000,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
-        "crewSkillK": 0.0,
-        "applyAllMods": false,
+        "crewSkillK": 1.0,
+        "applyAllMods": true,
         "props": {
           "army": 1,
           "count": 4,

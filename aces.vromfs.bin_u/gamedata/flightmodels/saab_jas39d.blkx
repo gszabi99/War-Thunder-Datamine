@@ -3137,6 +3137,13 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39d_rockets_agm_65g.blk"
       },
       {
+        "name": "saab_jas39c_rb_15",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_rb_15.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "saab_jas39d_120kg_m71",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39d_120kg_m71.blk"
       },
@@ -4079,6 +4086,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_002",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
             "ShowNodes": {
@@ -4959,6 +4982,22 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_003",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -6145,6 +6184,10 @@
       "prevModification": "us_gbu_laser",
       "modClass": "weapon",
       "tier": 4
+    },
+    "asm": {
+      "tier": 1,
+      "modClass": "weapon"
     }
   },
   "user_skin": {

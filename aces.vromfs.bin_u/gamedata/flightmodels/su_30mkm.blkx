@@ -3596,27 +3596,6 @@
         "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_59m.blk"
       },
       {
-        "name": "su_30mkm_kh_59mke",
-        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_59mke.blk",
-        "weaponConfig": {
-          "presetType": "AIR_TO_SEA"
-        }
-      },
-      {
-        "name": "su_30mkm_kh_31pd",
-        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_31pd.blk",
-        "weaponConfig": {
-          "presetType": "AIR_TO_RADAR"
-        }
-      },
-      {
-        "name": "su_30mkm_kh_31a",
-        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_31a.blk",
-        "weaponConfig": {
-          "presetType": "AIR_TO_SEA"
-        }
-      },
-      {
         "name": "su_30mkm_kh_38l",
         "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_38l.blk"
       },
@@ -3627,6 +3606,41 @@
       {
         "name": "su_30mkm_grom_2",
         "blk": "gameData/FlightModels/weaponPresets/su_30mkm_grom_2.blk"
+      },
+      {
+        "name": "su_30mkm_kh_31pd",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_31pd.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_RADAR"
+        }
+      },
+      {
+        "name": "su_30mkm_kh_58",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_58.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_RADAR"
+        }
+      },
+      {
+        "name": "su_30mkm_kh_59mke",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_59mke.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "su_30mkm_kh_31a",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_31a.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "su_30mkm_kh_35",
+        "blk": "gameData/FlightModels/weaponPresets/su_30mkm_kh_35.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       },
       {
         "name": "su_30mkm_ofab_100_120",
@@ -4905,6 +4919,31 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_58_slot3",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_aku_58",
+                "pylon_3_aku_58_fin1",
+                "pylon_3_aku_58_fin2",
+                "pylon_3_aku_58_fin3",
+                "pylon_3_aku_58_fin4",
+                "pylon_3_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ushke.blk",
+              "emitter": "pylon_3_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
+            }
+          },
+          {
             "iconType": "arm_kh31_type_c",
             "name": "kh_31pd_slot3",
             "reqModification": "su_arm",
@@ -4954,6 +4993,31 @@
               "separate": true,
               "order": 7,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot3",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "pylon_3_aku_58",
+                "pylon_3_aku_58_fin1",
+                "pylon_3_aku_58_fin2",
+                "pylon_3_aku_58_fin3",
+                "pylon_3_aku_58_fin4",
+                "pylon_3_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35ue.blk",
+              "emitter": "pylon_3_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 7
             }
           },
           {
@@ -5780,6 +5844,31 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_58_slot4",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_aku_58",
+                "pylon_11_aku_58_fin1",
+                "pylon_11_aku_58_fin2",
+                "pylon_11_aku_58_fin3",
+                "pylon_11_aku_58_fin4",
+                "pylon_11_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ushke.blk",
+              "emitter": "pylon_11_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
+            }
+          },
+          {
             "iconType": "arm_kh31_type_c",
             "name": "kh_31pd_slot4",
             "reqModification": "su_arm",
@@ -5829,6 +5918,31 @@
               "separate": true,
               "order": 5,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot4",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_11",
+                "pylon_11_aku_58",
+                "pylon_11_aku_58_fin1",
+                "pylon_11_aku_58_fin2",
+                "pylon_11_aku_58_fin3",
+                "pylon_11_aku_58_fin4",
+                "pylon_11_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35ue.blk",
+              "emitter": "pylon_11_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 5
             }
           },
           {
@@ -6218,6 +6332,31 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_58_slot5",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "pylon_9_aku_58",
+                "pylon_9_aku_58_fin1",
+                "pylon_9_aku_58_fin2",
+                "pylon_9_aku_58_fin3",
+                "pylon_9_aku_58_fin4",
+                "pylon_9_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ushke.blk",
+              "emitter": "pylon_9_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
+            }
+          },
+          {
             "iconType": "arm_kh31_type_c",
             "name": "kh_31pd_slot5",
             "reqModification": "su_arm",
@@ -6267,6 +6406,31 @@
               "separate": true,
               "order": 15,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot5",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "pylon_9_aku_58",
+                "pylon_9_aku_58_fin1",
+                "pylon_9_aku_58_fin2",
+                "pylon_9_aku_58_fin3",
+                "pylon_9_aku_58_fin4",
+                "pylon_9_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35ue.blk",
+              "emitter": "pylon_9_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 15
             }
           },
           {
@@ -7518,6 +7682,31 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_58_slot8",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "pylon_10_aku_58",
+                "pylon_10_aku_58_fin1",
+                "pylon_10_aku_58_fin2",
+                "pylon_10_aku_58_fin3",
+                "pylon_10_aku_58_fin4",
+                "pylon_10_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ushke.blk",
+              "emitter": "pylon_10_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 16
+            }
+          },
+          {
             "iconType": "arm_kh31_type_c",
             "name": "kh_31pd_slot8",
             "reqModification": "su_arm",
@@ -7567,6 +7756,31 @@
               "separate": true,
               "order": 16,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot8",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_10",
+                "pylon_10_aku_58",
+                "pylon_10_aku_58_fin1",
+                "pylon_10_aku_58_fin2",
+                "pylon_10_aku_58_fin3",
+                "pylon_10_aku_58_fin4",
+                "pylon_10_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35ue.blk",
+              "emitter": "pylon_10_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 16
             }
           },
           {
@@ -8042,6 +8256,31 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_58_slot9",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_aku_58",
+                "pylon_12_aku_58_fin1",
+                "pylon_12_aku_58_fin2",
+                "pylon_12_aku_58_fin3",
+                "pylon_12_aku_58_fin4",
+                "pylon_12_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ushke.blk",
+              "emitter": "pylon_12_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6
+            }
+          },
+          {
             "iconType": "arm_kh31_type_c",
             "name": "kh_31pd_slot9",
             "reqModification": "su_arm",
@@ -8091,6 +8330,31 @@
               "separate": true,
               "order": 6,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot9",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_12",
+                "pylon_12_aku_58",
+                "pylon_12_aku_58_fin1",
+                "pylon_12_aku_58_fin2",
+                "pylon_12_aku_58_fin3",
+                "pylon_12_aku_58_fin4",
+                "pylon_12_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35ue.blk",
+              "emitter": "pylon_12_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 6
             }
           },
           {
@@ -8822,6 +9086,31 @@
             }
           },
           {
+            "iconType": "arm_type_c",
+            "name": "kh_58_slot10",
+            "reqModification": "su_arm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_aku_58",
+                "pylon_4_aku_58_fin1",
+                "pylon_4_aku_58_fin2",
+                "pylon_4_aku_58_fin3",
+                "pylon_4_aku_58_fin4",
+                "pylon_4_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_58ushke.blk",
+              "emitter": "pylon_4_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
+            }
+          },
+          {
             "iconType": "arm_kh31_type_c",
             "name": "kh_31pd_slot10",
             "reqModification": "su_arm",
@@ -8871,6 +9160,31 @@
               "separate": true,
               "order": 8,
               "machLimit": 1.5
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "kh_35_slot10",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "pylon_4_aku_58",
+                "pylon_4_aku_58_fin1",
+                "pylon_4_aku_58_fin2",
+                "pylon_4_aku_58_fin3",
+                "pylon_4_aku_58_fin4",
+                "pylon_4_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/rocketGuns/su_kh_35ue.blk",
+              "emitter": "pylon_4_aku_58_kh_29",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 8
             }
           },
           {

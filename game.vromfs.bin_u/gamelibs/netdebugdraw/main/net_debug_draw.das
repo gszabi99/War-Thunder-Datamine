@@ -1,10 +1,14 @@
-module net_draw_debug_common shared
+module net_debug_draw shared
 require ecs
 require net
 require DagorMath
 require DagorDebug3D
 require ECSGlobalTags
-require danetlibs.render_debug.main.render_debug_events
+require gameLibs.netDebugDraw.main.net_debug_draw_events
+
+
+
+
 
 def net_draw_debug_line_buffered(p0 : float3; p1 : float3; color : E3DCOLOR; frames : int)
   if is_server()

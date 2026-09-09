@@ -3217,6 +3217,13 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_brimstone.blk"
       },
       {
+        "name": "saab_jas39e_rb_15",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_rb_15.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "saab_jas39e_120kg_m71",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39e_120kg_m71.blk"
       },
@@ -3736,6 +3743,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_001",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
             "ShowNodes": {
@@ -4220,6 +4243,22 @@
             "DependentWeaponPreset": {
               "slot": 7,
               "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_002",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -7392,6 +7431,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_4"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_003",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "m71",
             "ShowNodes": {
@@ -8022,6 +8077,22 @@
             "DependentWeaponPreset": {
               "slot": 7,
               "preset": "litening_pod"
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "pylon_5"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_004",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -8682,7 +8753,12 @@
       "modClass": "weapon",
       "tier": 4
     },
+    "asm": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "swd_rb74m": {
+      "prevModification": "asm",
       "tier": 2,
       "modClass": "weapon"
     },

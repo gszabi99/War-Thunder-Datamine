@@ -245,7 +245,7 @@ def gun_sound_on_shot(pos : float3;
                 gun_sound__prefix)
 
 
-[es(tag=sound, REQUIRE=gunSound, REQUIRE_NOT=deadEntity)]
+[es(tag=sound, REQUIRE=gunSound)]
 def gun_sound_on_net_shot(evt : CmdNetShot;
                           gun : Gun;
                           gun__timeBetweenShots : float = 0.;
@@ -300,7 +300,7 @@ def gun_sound_on_net_shot(evt : CmdNetShot;
                     gun_sound__prefix)
 
 
-[es(tag=sound, REQUIRE=gunSound, REQUIRE_NOT=deadEntity)]
+[es(tag=sound, REQUIRE=gunSound)]
 def gun_sound_on_shot_evt(evt : EventShot;
                           gun : Gun;
                           gun__timeBetweenShots : float = 0.;
@@ -540,3 +540,7 @@ def gun_owner_sound_event_group_on_unloaded(evt : Event;
     release_all_sounds(gun_owner_sound_event_group)
 
 
+[es(tag=sound, on_disappear, REQUIRE=gunSound)]
+def gun_sound_on_disappear(evt : Event;
+                           gun_sound__event : SoundEvent)
+  set_var_optional(gun_sound__event, "on_shot", 0.)

@@ -16,7 +16,6 @@ def human_death_sound(evt : EventEntityDied;
                       is_watched_sound : bool = false;
                       human_sound_geomtree_nodes__headNodeId = -1;
                       animchar : AnimcharBaseComponent const? = null;
-                      human_weap__currentGunEid :  EntityId;
                       human_suicide_sound__path : string;
                       transform : float3x4;
                       sound_tags : Object;
@@ -30,10 +29,6 @@ def human_death_sound(evt : EventEntityDied;
     let voicePos = get_human_voice_3d_pos(is_watched_sound, transform, human_sound_geomtree_nodes__headNodeId, animchar)
     human_death_sound__event |> reset(play_voice("death", human_voice_sound__path, human_voice_sound__descs, sound_tags, is_watched_sound, voicePos, human_speech__locale, false))
     human_death_sound__event.abandonOnReset = true
-
-    query(human_weap__currentGunEid) <| $ [es] (gun_sound__event : SoundEvent)
-      if (is_playing(gun_sound__event))
-        set_var_optional(gun_sound__event, "on_shot", 0.)
 
     if evt.offender == evt.victim
       oneshot("{human_sound__prefix}{get_watched_sound_event_folder(is_watched_sound)}/{human_suicide_sound__path}", voicePos)

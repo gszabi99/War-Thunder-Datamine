@@ -23,6 +23,7 @@ def set_lookat_from_sight_node(cur_time : float;
                                gunmod_eid : EntityId;
                                gunmod__bipodScopeOffset : float;
                                bipod_enabled : bool;
+                               use_scope_axis : bool;
                                action__running : bool;
                                var camera__look_at : DPoint3&;
                                var gun_aim_offset : float2&;
@@ -59,7 +60,7 @@ def set_lookat_from_sight_node(cur_time : float;
       var rotTm : float3x4
       rotzTM(-aimOffset.y, rotTm)
       aimTm = human__aimTm * rotTm
-    let lookDir = normalize(aimTm[0])
+    let lookDir = use_scope_axis ? float3(nodeDir) : normalize(aimTm[0])
     let rawShift = cvt(fov, cam_fov_min, cam_fov_max, cam_shift_min, cam_shift_max)
     let baseShift = bipod_enabled ? lerp(gunmod__bipodScopeOffset, rawShift, zoomPosition) : rawShift
     let shift = baseShift + human_weap__gunOffset.x * gunmod__gunOffsetMult
@@ -86,6 +87,7 @@ def set_lookat_from_sight_node(cur_time : float;
 
 
 def optics_lookat_camera_impl(cur_time : float;
+                              is_in_vehicle : bool;
                               human__aimTm : float3x4;
                               human_net_phys : HumanActor;
                               human_weap__currentGunEid : EntityId;
@@ -139,6 +141,7 @@ def optics_lookat_camera_impl(cur_time : float;
                                gunScopeEid,
                                gunmod__bipodScopeOffset,
                                bipod__enabled,
+                               is_in_vehicle,
                                action__running,
                                camera__look_at,
                                camera__gunAimOffset,
@@ -160,8 +163,9 @@ def human_optics_lookat_camera_es(info : UpdateStageInfoAct;
                                   var camera__gunAimOffset : float2&;
                                   var camera__lastValidScopeAimOffset : float3&;
                                   action__running : bool = false;
+                                  isInVehicle : bool = false;
                                   bipod__enabled : bool = false)
-  optics_lookat_camera_impl(info.curTime, human__aimTm, human_net_phys, human_weap__currentGunEid,
+  optics_lookat_camera_impl(info.curTime, isInVehicle, human__aimTm, human_net_phys, human_weap__currentGunEid,
                             human_weap__gunOffset, bindedCamera, human_weap__currentScope,
                             action__running, bipod__enabled,
                             camera__look_at, camera__gunAimOffset, camera__lastValidScopeAimOffset)
@@ -179,8 +183,9 @@ def human_seat_optics_lookat_es(evt : CmdHumanSeatBake;
                                 var camera__gunAimOffset : float2&;
                                 var camera__lastValidScopeAimOffset : float3&;
                                 action__running : bool = false;
+                                isInVehicle : bool = false;
                                 bipod__enabled : bool = false)
-  optics_lookat_camera_impl(evt.curTime, human__aimTm, human_net_phys, human_weap__currentGunEid,
+  optics_lookat_camera_impl(evt.curTime, isInVehicle, human__aimTm, human_net_phys, human_weap__currentGunEid,
                             human_weap__gunOffset, bindedCamera, human_weap__currentScope,
                             action__running, bipod__enabled,
                             camera__look_at, camera__gunAimOffset, camera__lastValidScopeAimOffset)

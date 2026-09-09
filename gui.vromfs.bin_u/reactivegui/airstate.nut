@@ -111,7 +111,7 @@ let CritIas = Watched(false)
 
 let CannonState = []
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  CannonState.append(Watched({ count = 0, seconds = -1, selected = false, mode = 0 }))
+  CannonState.append(Watched({ count = 0, seconds = -1, selected = false, mode = 0, name = "" }))
 }
 let CannonSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
 let CannonSelected = Watched(false)
@@ -160,7 +160,7 @@ let TurretSightLineWidthFactor = Watched(1.0)
 
 let MachineGunState = []
 for (local i = 0; i < NUM_CANNONS_MAX; ++i) {
-  MachineGunState.append(Watched({ count = 0, seconds = -1, selected = false, mode = 0 }))
+  MachineGunState.append(Watched({ count = 0, seconds = -1, selected = false, mode = 0, name = "" }))
 }
 let MachineGunsSelectedArray = Watched(array(NUM_CANNONS_MAX, false))
 let IsMachineGunsEmpty = Watched(array(NUM_CANNONS_MAX, false))
@@ -172,7 +172,7 @@ let RocketsState = Watched({
   count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1 })
 let TorpedoesState = Watched({                                                    
   count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1, weaponIdx = -1 })
-let AdditionalCannonsState = Watched({ count = 0, seconds = -1, mode = 0, selected = false })
+let AdditionalCannonsState = Watched({ count = 0, seconds = -1, mode = 0, selected = false, name = "" })
 let AgmState = Watched({
   count = 0, seconds = -1, timeToHit = -1, timeToWarning = -1, selected = false, name = "", actualCount = -1, weaponIdx = -1 })
 let AamState = Watched({ count = 0, seconds = -1, timeToHit = -1, selected = false, name = "", actualCount = -1, weaponIdx = -1 })
@@ -384,6 +384,7 @@ let helicopterState = {
   CannonCount = CannonState.map(@(c) Computed(@() c.get().count)),
   CannonReloadTime = CannonState.map(@(c) Computed(@() c.get().seconds)),
   CannonMode = CannonState.map(@(c) Computed(@() c.get().mode)),
+  CannonName = CannonState.map(@(c) Computed(@() c.get().name)),
   IsCannonEmpty,
   isCannonJamed,
   CannonSelectedArray,
@@ -399,6 +400,7 @@ let helicopterState = {
   CannonsAdditionalSeconds = Computed(@() AdditionalCannonsState.get().seconds),
   CannonsAdditionalMode =  Computed(@() AdditionalCannonsState.get().mode),
   CannonsAdditionalSelected = Computed(@() AdditionalCannonsState.get().selected),
+  CannonsAdditionalName = Computed(@() AdditionalCannonsState.get().name),
 
   AgmCount = Computed(@() AgmState.get().count),
   AgmSeconds = Computed(@() AgmState.get().seconds),
@@ -443,6 +445,7 @@ let helicopterState = {
   MachineGunsCount = MachineGunState.map(@(c) Computed(@() c.get().count)),
   MachineGunsReloadTime = MachineGunState.map(@(c) Computed(@() c.get().seconds)),
   MachineGunsMode = MachineGunState.map(@(c) Computed(@() c.get().mode)),
+  MachineGunsName = MachineGunState.map(@(c) Computed(@() c.get().name)),
 
   BombsCount = Computed(@() BombsState.get().count),
   BombsSeconds = Computed(@() BombsState.get().seconds),
@@ -595,9 +598,10 @@ interop.updateisCannonJamed <- function(index, is_jamed) {
 }
 
 interop.updateCannonsArray <- function(tb) {
-  let { index, count, seconds, selected, mode } = tb
+  let { index, count, seconds, selected, mode, name } = tb
   let curVal = CannonState[index].get()
-  if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected || curVal.mode != mode)
+  if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected || curVal.mode != mode
+    || curVal.name != name)
     CannonState[index].set(tb)
 
   if (selected != CannonSelectedArray.get()[index])
@@ -605,9 +609,10 @@ interop.updateCannonsArray <- function(tb) {
 }
 
 interop.updateMachineGunsArray <- function(tb) {
-  let { index, count, seconds, selected, mode } = tb
+  let { index, count, seconds, selected, mode, name } = tb
   let curVal = MachineGunState[index].get()
-  if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected || curVal.mode != mode)
+  if (curVal.count != count || curVal.seconds != seconds || curVal.selected != selected || curVal.mode != mode
+    || curVal.name != name)
     MachineGunState[index].set(tb)
 
   if (selected != MachineGunsSelectedArray.get()[index])
@@ -645,9 +650,10 @@ interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
 }
 
 interop.updateAdditionalCannons <- function(tb) {
-  let { count, seconds, mode, selected } = tb
+  let { count, seconds, mode, selected, name } = tb
   let curVal = AdditionalCannonsState.get()
-  if (curVal.count != count || curVal.seconds != seconds || curVal.mode != mode || curVal.selected != selected)
+  if (curVal.count != count || curVal.seconds != seconds || curVal.mode != mode || curVal.selected != selected
+    || curVal.name != name)
     AdditionalCannonsState.set(tb)
 }
 

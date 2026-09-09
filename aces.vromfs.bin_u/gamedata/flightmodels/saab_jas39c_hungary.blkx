@@ -4196,6 +4196,13 @@
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_south_africa_rockets_agm_65h.blk"
       },
       {
+        "name": "saab_jas39c_rb_15",
+        "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_rb_15.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "saab_jas39c_south_africa_gbu_12",
         "blk": "gameData/FlightModels/weaponPresets/saab_jas39c_south_africa_gbu_12.blk"
       },
@@ -5011,6 +5018,22 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "nato_pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_002",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -5833,6 +5856,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "ShowNodes": {
+              "node": "nato_pylon_3"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "alkan_tsc_003",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "guided_bomb_middle_jdam",
             "name": "us_gbu_38",
             "reqModification": "us_jdam",
@@ -6615,6 +6654,10 @@
       "prevModification": "us_jdam",
       "modClass": "weapon",
       "tier": 4
+    },
+    "asm": {
+      "tier": 1,
+      "modClass": "weapon"
     }
   },
   "user_skin": {

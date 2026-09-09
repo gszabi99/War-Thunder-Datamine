@@ -1,6 +1,8 @@
-module render_debug_events shared
+module net_debug_draw_events shared
 require ecs
 require DagorMath
+
+
 
 [event(broadcast, routing=ROUTING_SERVER_TO_CLIENT, net_liable=ignore)]
 struct CmdDebugDrawLine

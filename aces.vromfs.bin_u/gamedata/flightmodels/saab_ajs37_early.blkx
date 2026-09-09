@@ -3323,6 +3323,19 @@
             }
           },
           {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "bomblavett_m71_001",
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "ltc",
             "name": "ltc_left",
             "ShowNodes": {
@@ -3766,6 +3779,19 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "rb_15",
+            "reqModification": "asm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gamedata/weapons/rocketGuns/swd_rb_15f.blk",
+              "bullets": 1,
+              "emitter": "bomblavett_m71_004",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -4656,9 +4682,14 @@
       "tier": 3,
       "modClass": "armor"
     },
+    "asm": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
     "swe_rb24j": {
       "tier": 2,
-      "modClass": "weapon"
+      "modClass": "weapon",
+      "prevModification": "asm"
     },
     "swd_rb74": {
       "tier": 4,
@@ -5375,6 +5406,13 @@
       {
         "name": "saab_ajs37_rockets_rb_75t",
         "blk": "gameData/FlightModels/weaponPresets/saab_ajs37_rockets_rb_75t.blk"
+      },
+      {
+        "name": "saab_ajs37_rb_15",
+        "blk": "gameData/FlightModels/weaponPresets/saab_ajs37_rb_15.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       },
       {
         "name": "saab_ajs37_120kg_m71",

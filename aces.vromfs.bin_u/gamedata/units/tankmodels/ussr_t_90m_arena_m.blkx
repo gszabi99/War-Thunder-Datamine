@@ -597,7 +597,7 @@
     "relict_era_hull_side_bag": {
       "armorClass": "ERA_Relict",
       "kineticProtectionEquivalent": 20.0,
-      "cumulativeProtectionEquivalent": 600.0,
+      "cumulativeProtectionEquivalent": 400.0,
       "hp": 350.0,
       "armorThickness": 30.0,
       "genericArmorQuality": 0.1,
@@ -677,7 +677,7 @@
     "relict_era_turret_side_bag": {
       "armorClass": "ERA_Relict",
       "kineticProtectionEquivalent": 20.0,
-      "cumulativeProtectionEquivalent": 600.0,
+      "cumulativeProtectionEquivalent": 400.0,
       "hp": 350.0,
       "armorThickness": 30.0,
       "genericArmorQuality": 0.1,
@@ -2305,8 +2305,36 @@
         "onKill": {
           "track_l_dm": 1.0
         }
+      },
+      {
+        "name": "ex_armor_14_dm",
+        "onKill": {
+          "ex_era_hull_78_dm": 1.0
+        }
       }
     ]
+  },
+  "unitDmPartFx": {
+    "ex_era_hull_78_dm": {
+      "onKill": {
+        "hideNodes": [
+          {
+            "main": "ex_armor_15"
+          },
+          {
+            "main": "ex_armor_10"
+          }
+        ],
+        "showNodes": [
+          {
+            "dmg": "ex_decor_15_dmg"
+          },
+          {
+            "dmg": "ex_decor_10_dmg"
+          }
+        ]
+      }
+    }
   },
   "fuelTanks": {
     "r1": {
