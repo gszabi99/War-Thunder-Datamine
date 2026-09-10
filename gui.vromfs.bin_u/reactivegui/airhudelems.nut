@@ -1245,7 +1245,7 @@ function getAgmLaunchDistanceRangeCommands(_visible, enabled, distMin, distMax, 
   return commands
 }
 
-function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, isSeekerSight = false, style = {}) {
+function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, style = {}) {
 
   const offset = 1.3
   const crossL = 2
@@ -1268,7 +1268,7 @@ function turretAngles(colorWatch, width, height, aspect, blinkDuration = 0.5, is
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     color = colorWatch.get()
-    opacity = isAtgmGuidanceRangeVisible.get() && atgmLaunchZoneBlinking.get() && !isSeekerSight ? 1 : 0
+    opacity = isAtgmGuidanceRangeVisible.get() && atgmLaunchZoneBlinking.get() ? 1 : 0
     watch = [atgmLaunchZoneBlinking, isAtgmGuidanceRangeVisible]
     pos = [0, sh(-1.8)]
     text = loc("HUD/AGM_OUTSIDE_LAUNCH_ZONE")
@@ -1446,11 +1446,11 @@ let helicopterRocketAim = @(width, height, color, style = HudStyle.styleLineFore
 }
 
 const turretAnglesAspect = 2.0
-let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blinkDuration = 0.5, isSeekerSight = false, style = {}) {
+let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blinkDuration = 0.5, style = {}) {
   return {
     pos = [posX - turretAnglesAspect * width * 0.5, posY - height]
     size = SIZE_TO_CONTENT
-    children = turretAngles(colorWatch, width, height, turretAnglesAspect, blinkDuration, isSeekerSight, style)
+    children = turretAngles(colorWatch, width, height, turretAnglesAspect, blinkDuration, style)
   }
 }
 
@@ -1538,6 +1538,60 @@ function agmLaunchZone(colorWatch, _w, _h) {
     color = colorWatch.get()
     children = [ zoneElem ]
     watch = colorWatch
+  }
+}
+
+function agmOutOfLaunchZoneArrow(colorWatch, w, h, style = {}) {
+  return function() {
+    local drawArrowCommands = null
+    local arrowTransform = null
+    if (IsAgmLaunchZoneVisible.get()) {
+      let yawToZone = clamp(TurretYaw.get(), AgmLaunchZoneYawMin.get(), AgmLaunchZoneYawMax.get()) - TurretYaw.get()
+      let pitchToZone = clamp(TurretPitch.get(), AgmLaunchZonePitchMin.get(), AgmLaunchZonePitchMax.get()) - TurretPitch.get()
+      if (yawToZone != 0.0 || pitchToZone != 0.0) {
+        let ax = yawToZone
+        let ay = -pitchToZone
+        local x1, y1
+        let aax = math.abs(ax), aay = math.abs(ay)
+        if (aax >= aay) {
+          x1 = ax <= 0 ? -1 : 1
+          y1 = (ay / ax) * x1
+        }
+        else {
+          y1 = ay <= 0 ? -1 : 1
+          x1 = (ax / ay) * y1
+        }
+        x1 = x1 * 50. + 50.
+        y1 = y1 * 50. + 50.
+
+        let sxh = 2.0, syh = 3.0, d = 0.5
+        drawArrowCommands = [
+          [VECTOR_LINE, 0, 0,   sxh, syh,   sxh * d, syh,   sxh * d, syh * 2.0,   0, syh * 2.0 ],
+          [VECTOR_LINE, 0, 0,  -sxh, syh,  -sxh * d, syh,  -sxh * d, syh * 2.0,  -0, syh * 2.0 ]
+        ]
+        arrowTransform = {
+          translate = [w * x1 * 0.01, h * y1 * 0.01]
+          pivot = [0, 0]
+          rotate = math.atan2(ay, ax) * (180. / math.PI) + 90.
+        }
+      }
+    }
+    return {
+      rendObj = ROBJ_VECTOR_CANVAS
+      halign = ALIGN_CENTER
+      valign = ALIGN_CENTER
+      size = [w, h]
+      color = colorWatch.get()
+      lineWidth = style?.lineWidth
+      animations = style?.blinkAnimation
+      watch = [ colorWatch, IsAgmLaunchZoneVisible,
+        AgmLaunchZoneYawMin, AgmLaunchZoneYawMax,
+        AgmLaunchZonePitchMin, AgmLaunchZonePitchMax,
+        TurretYaw, TurretPitch
+      ]
+      commands = drawArrowCommands
+      transform = arrowTransform
+    }
   }
 }
 
@@ -1809,6 +1863,7 @@ return {
   horSpeed = HelicopterHorizontalSpeedComponent
   turretAngles = turretAnglesComponent
   agmLaunchZone = agmLaunchZone
+  agmOutOfLaunchZoneArrow = agmOutOfLaunchZoneArrow
   agmLaunchZoneTps = agmLaunchZoneTps
   sight = sightComponent
   launchDistanceMax = launchDistanceMaxComponent

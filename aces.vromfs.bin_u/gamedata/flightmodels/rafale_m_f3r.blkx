@@ -3125,6 +3125,13 @@
       {
         "name": "rafale_c_f3_aasm_250_sbu_54",
         "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_aasm_250_sbu_54.blk"
+      },
+      {
+        "name": "rafale_c_f3_am39",
+        "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_am39.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -3793,6 +3800,18 @@
             "DependentWeaponPreset": {
               "slot": 6,
               "preset": "damocles"
+            }
+          },
+          {
+            "iconType": "missile_air_to_earth_special",
+            "name": "am39_slot7",
+            "reqModification": "asm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/fr_lm_3787_exocet_rafale.blk",
+              "emitter": "fr_lm_3787_exocet_pylon",
+              "external": true,
+              "separate": true
             }
           },
           {
@@ -5458,17 +5477,22 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "fr_aasm_250_sbu_38": {
+    "fr_aasm_250_sbu_54": {
+      "reqModification": "us_gbu_laser",
+      "modClass": "weapon",
+      "tier": 3
+    },
+    "asm": {
       "modClass": "weapon",
       "tier": 1
     },
-    "fr_aasm_250_sbu_64": {
-      "reqModification": "fr_aasm_250_sbu_38",
+    "fr_aasm_250_sbu_38": {
+      "prevModification": "asm",
       "modClass": "weapon",
       "tier": 2
     },
-    "fr_aasm_250_sbu_54": {
-      "reqModification": "fr_aasm_250_sbu_64",
+    "fr_aasm_250_sbu_64": {
+      "prevModification": "fr_aasm_250_sbu_38",
       "modClass": "weapon",
       "tier": 3
     }

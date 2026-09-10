@@ -279,31 +279,58 @@ class Component : Canvas
 
 
   // S11 - tracked target diamond (world-linked via world_to_hmd_screen)
+  // squeezed on X axis, filled dot at center
   def drawTargetMark()
     if !trackedTargetVisible
       return
     let p = hasLockedTarget ? toRelPos(lockedTargetAbsPos) : toRelPos(trackedTargetAbsPos)
-    let sz = 0.017
-    drawLine(float2(p.x, p.y - sz), float2(p.x + sz, p.y))
-    drawLine(float2(p.x + sz, p.y), float2(p.x, p.y + sz))
-    drawLine(float2(p.x, p.y + sz), float2(p.x - sz, p.y))
-    drawLine(float2(p.x - sz, p.y), float2(p.x, p.y - sz))
+    let szY = 0.017
+    let szX = 0.01
+    drawLine(float2(p.x, p.y - szY), float2(p.x + szX, p.y))
+    drawLine(float2(p.x + szX, p.y), float2(p.x, p.y + szY))
+    drawLine(float2(p.x, p.y + szY), float2(p.x - szX, p.y))
+    drawLine(float2(p.x - szX, p.y), float2(p.x, p.y - szY))
+    // filled dot at center
+    setFillColor(color)
+    drawFilledPoly(to_array_move(fixed_array(
+      float2(p.x - 0.003, p.y),
+      float2(p.x, p.y - 0.003),
+      float2(p.x + 0.003, p.y),
+      float2(p.x, p.y + 0.003))))
+    setFillColor(E3DCOLOR(0u))
 
 
-  // S11 - locked target mark (square around diamond, crossed after launch)
+  // S11 - locked target mark: square + circle + diamond inside
+  // square lines break where circle passes through sides
   // line from square toward sight ring center
   def drawLockedTargetMark()
     if !hasLockedTarget
       return
     let p = toRelPos(lockedTargetAbsPos)
     let sz = 0.022
-    drawLine(float2(p.x - sz, p.y - sz), float2(p.x + sz, p.y - sz))
-    drawLine(float2(p.x + sz, p.y - sz), float2(p.x + sz, p.y + sz))
-    drawLine(float2(p.x + sz, p.y + sz), float2(p.x - sz, p.y + sz))
-    drawLine(float2(p.x - sz, p.y + sz), float2(p.x - sz, p.y - sz))
+    let cr = sz * 0.85  // circle slightly smaller than half square side
+    // circle
+    drawCircle(p, cr)
+    // square corners — lines from corner to where circle intersects each side
+    let ci = cr * 0.707 // circle intersection offset at 45 deg (cos45)
+    // top-left corner
+    drawLine(float2(p.x - sz, p.y - sz), float2(p.x, p.y - sz))
+    drawLine(float2(p.x - sz, p.y - sz), float2(p.x - sz, p.y))
+    // top-right corner
+    drawLine(float2(p.x, p.y - sz), float2(p.x + sz, p.y - sz))
+    drawLine(float2(p.x + sz, p.y - sz), float2(p.x + sz, p.y))
+    // bottom-right corner
+    drawLine(float2(p.x + sz, p.y), float2(p.x + sz, p.y + sz))
+    drawLine(float2(p.x + sz, p.y + sz), float2(p.x, p.y + sz))
+    // bottom-left corner
+    drawLine(float2(p.x, p.y + sz), float2(p.x - sz, p.y + sz))
+    drawLine(float2(p.x - sz, p.y + sz), float2(p.x - sz, p.y))
     if isLockAfterLaunch
-      drawLine(float2(p.x - sz, p.y - sz), float2(p.x + sz, p.y + sz))
-      drawLine(float2(p.x + sz, p.y - sz), float2(p.x - sz, p.y + sz))
+      // cross lines inside circle, from center area to circle edge
+      drawLine(float2(p.x, p.y), float2(p.x - ci, p.y - ci))
+      drawLine(float2(p.x, p.y), float2(p.x + ci, p.y + ci))
+      drawLine(float2(p.x, p.y), float2(p.x + ci, p.y - ci))
+      drawLine(float2(p.x, p.y), float2(p.x - ci, p.y + ci))
     // line from square edge toward sight ring center (0,0)
     let dist = length(p)
     let maxLineLen = 0.16
@@ -379,6 +406,7 @@ class Component : Canvas
     pushLocalAxes(float2(0.0), float2(0.67, 0.67))
     setFullCanvasViewport()
 
+    setLineWidth(baseLineW + 0.5)
     drawSightRing()
     drawAltitude()
     drawHeading()
@@ -388,12 +416,10 @@ class Component : Canvas
     drawRangeScale()
     drawLaunchPermission()
     drawPylons()
-
-    drawTargetMark()
-    drawLockedTargetMark()
-
     drawDangerousAlt()
     drawRadarScanZone()
+    drawTargetMark()
+    drawLockedTargetMark()
 
     restoreViewport()
     popAxes()

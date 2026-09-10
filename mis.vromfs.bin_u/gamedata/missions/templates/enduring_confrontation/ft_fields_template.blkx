@@ -1715,16 +1715,8 @@
           ]
         },
         "actions": {
-          "comment": [
-            {
-              "value": "probuzhdaem vremenno  proveryaemuyu cel'"
-            },
-            {
-              "value": "vse sushchnosti est'. proveryaem distanciyu"
-            }
-          ],
-          "unitWakeUp": {
-            "target": "@ft_generate_t1_target_name"
+          "comment": {
+            "value": "vse sushchnosti est'. proveryaem distanciyu"
           },
           "triggerEnable": {
             "target": "ft_generate_t1_distance_check"
@@ -2674,7 +2666,13 @@
               "value": "sozdaem imya lokalizacii"
             },
             {
+              "value": "sozdaem imya peremennoj dlya hraneniya imeni zony"
+            },
+            {
               "value": "sozdaem imya bombovoj zony"
+            },
+            {
+              "value": "zapolnyaem peremenuyu"
             },
             {
               "value": "poluchaem imya zony frontlajna v kotorom nahoditsya aerodrom"
@@ -2698,6 +2696,10 @@
             {
               "value": "missions/airfield_spawn",
               "var": "ft_generate_t2_loc_name"
+            },
+            {
+              "value": "ft_t2_airfield_",
+              "var": "ft_generate_t2_area_var_name"
             },
             {
               "value": "ft_t2_airfield_",
@@ -2741,6 +2743,16 @@
               "var": "ft_generate_t2_loc_name"
             },
             {
+              "value": "@ft_generate_t2_idx",
+              "digits": 2,
+              "var": "ft_generate_t2_area_var_name"
+            },
+            {
+              "value": "_bomb_zone",
+              "digits": 0,
+              "var": "ft_generate_t2_area_var_name"
+            },
+            {
               "value": "@ft_generate_t2_cur_idx",
               "digits": 2,
               "var": "ft_generate_t2_area_name"
@@ -2766,10 +2778,16 @@
               "var": "ft_generate_t2_own_state_name"
             }
           ],
-          "varGetStringValue": {
-            "from_var_name": "ft_generate_t2_airfield_name",
-            "var": "@ft_generate_t2_var_name"
-          },
+          "varGetStringValue": [
+            {
+              "from_var_name": "ft_generate_t2_airfield_name",
+              "var": "@ft_generate_t2_var_name"
+            },
+            {
+              "from_var_name": "ft_generate_t2_area_name",
+              "var": "@ft_generate_t2_area_var_name"
+            }
+          ],
           "getOwnArea": {
             "name": "@ft_generate_t2_area_name",
             "template": "flt_area_",
@@ -2829,11 +2847,18 @@
               "value": "generiruem zanovo"
             }
           ],
-          "varModify": {
-            "operator": "add",
-            "value": -1.0,
-            "var": "ft_generate_t2_idx"
-          },
+          "varModify": [
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "ft_generate_t2_idx"
+            },
+            {
+              "operator": "add",
+              "value": -1.0,
+              "var": "@ft_generate_t2_cur_idx_var_name"
+            }
+          ],
           "triggerEnable": {
             "target": "ft_generate_t2_airfield_rotator"
           }
@@ -2981,7 +3006,7 @@
             },
             {
               "target": "@ft_generate_t2_area_name",
-              "type": "unit"
+              "type": "area"
             }
           ]
         },
@@ -3268,7 +3293,7 @@
           "varCompareInt": {
             "var_value": "ft_generate_t2_aaa_field_idx",
             "value": 3,
-            "comparasion_func": "less",
+            "comparasion_func": "notMore",
             "var_value_other": "ft_t2_max_airfields_count"
           }
         },
@@ -3880,7 +3905,7 @@
             "showOnMap": true,
             "separate_fuel_time": true,
             "modular_airfield": true,
-            "respawnAirBackup": "missions/t1_backup_zone",
+            "respawnAirBackup": "missions/t2_backup_zone",
             "tags": {
               "type_bomber": false,
               "none_can_spawn": false,
@@ -4072,7 +4097,7 @@
               "value": "unit exists. placing"
             },
             {
-              "value": "return to main rotation"
+              "value": "check snow radar"
             }
           ],
           "unitSpawnOnObjectGroup": [
@@ -4104,7 +4129,7 @@
         },
         "else_actions": {
           "comment": {
-            "value": "no units. return to main rotation"
+            "value": "no units.check snow radar"
           },
           "triggerEnable": {
             "target": "ft_generate_t1_snowed_radar_place"
@@ -4264,7 +4289,7 @@
               "value": "unit exists. placing"
             },
             {
-              "value": "return to main rotation"
+              "value": "check snow radar"
             }
           ],
           "unitSpawnOnObjectGroup": [
@@ -4291,15 +4316,15 @@
             }
           ],
           "triggerEnable": {
-            "target": "ft_generate_t2_airfield_rotator"
+            "target": "ft_generate_t2_snowed_radar_place"
           }
         },
         "else_actions": {
           "comment": {
-            "value": "no units. return to main rotation"
+            "value": "no units. check snow radar"
           },
           "triggerEnable": {
-            "target": "ft_generate_t2_airfield_rotator"
+            "target": "ft_generate_t2_snowed_radar_place"
           }
         }
       },
@@ -5157,7 +5182,7 @@
               "object_var_name": "",
               "object_marking": 0,
               "extendedEnding": true,
-              "team": "A",
+              "team": "B",
               "unit_or_area": "@ft_complete_objective_t1_zone_name"
             },
             {
@@ -5166,7 +5191,7 @@
               "object_var_comp_op": "equal",
               "object_var_name": "",
               "object_marking": 0,
-              "team": "Both",
+              "team": "B",
               "object_type": "isAlive"
             }
           ],
@@ -7857,11 +7882,6 @@
             "var_value": "ft_airfield_module_hp",
             "airfield": "@ft_detect_t2_airfield_name"
           },
-          "airfieldGetModuleHP": {
-            "object": "@ft_detect_t2_airfield_name",
-            "module": "parking",
-            "var": "ft_t2_parking_hp"
-          },
           "airfieldSetVisibility": {
             "target": "@ft_detect_t2_airfield_name",
             "team": "Both"
@@ -9160,7 +9180,7 @@
               "var_value": "lbt_battle_01_to_name",
               "value": 0,
               "comparasion_func": "notEqual",
-              "var_value_other": "@ft_enable_t1_own_area_name"
+              "var_value_other": "ft_enable_t1_own_area_idx"
             },
             {
               "var_value": "lbt_battle_02_to_name",
@@ -9182,7 +9202,7 @@
               "value": "airifield and battle in one zone"
             },
             {
-              "value": "disable spawns"
+              "value": "enable spawns"
             },
             {
               "value": "idem dal'she po spisku"
@@ -9211,7 +9231,7 @@
             "modular_airfield": true,
             "respawnAirBackup": "@ft_generate_t1_backup_spawn_name",
             "tags": {
-              "none_can_spawn": true,
+              "none_can_spawn": false,
               "helicopter": false,
               "tank": false,
               "artillery": false,
@@ -9454,19 +9474,19 @@
               "var_value": "lbt_battle_01_to_name",
               "value": 0,
               "comparasion_func": "notEqual",
-              "var_value_other": "@ft_enable_t1_own_area_name"
+              "var_value_other": "ft_enable_t2_own_area_idx"
             },
             {
               "var_value": "lbt_battle_02_to_name",
               "value": 0,
               "comparasion_func": "notEqual",
-              "var_value_other": "ft_enable_t1_own_area_idx"
+              "var_value_other": "ft_enable_t2_own_area_idx"
             },
             {
               "var_value": "lbt_battle_03_to_name",
               "value": 0,
               "comparasion_func": "notEqual",
-              "var_value_other": "ft_enable_t1_own_area_idx"
+              "var_value_other": "ft_enable_t2_own_area_idx"
             }
           ]
         },
@@ -9476,7 +9496,7 @@
               "value": "airifield and battle in one zone"
             },
             {
-              "value": "disable spawns"
+              "value": "enable spawns"
             },
             {
               "value": "idem dal'she po spisku"
@@ -11030,11 +11050,11 @@
             "varGetStringValue": [
               {
                 "from_var_name": "@st_rearm_t1_airfield_var_name",
-                "var": "st_rearm_t1_airfield_target_name"
+                "var": "st_rearm_t1_airfield_name"
               },
               {
-                "from_var_name": "st_rearm_t1_airfield_var_name",
-                "var": "st_rearm_t1_airfield_name"
+                "from_var_name": "st_rearm_t1_airfield_name",
+                "var": "st_rearm_t1_airfield_target_name"
               }
             ],
             "triggerEnable": {
@@ -11128,12 +11148,12 @@
             ],
             "varGetStringValue": [
               {
-                "from_var_name": "st_rearm_t2_airfield_var_name",
+                "from_var_name": "@st_rearm_t2_airfield_var_name",
                 "var": "st_rearm_t2_airfield_name"
               },
               {
-                "from_var_name": "st_rearm_t2_airfield_var_name",
-                "var": "st_rearm_t2_airfield_name"
+                "from_var_name": "st_rearm_t2_airfield_name",
+                "var": "st_rearm_t2_airfield_target_name"
               }
             ],
             "triggerEnable": {
@@ -11145,7 +11165,7 @@
               "value": "perezhapuskaem rotaciyu"
             },
             "triggerEnable": {
-              "target": "st_t1_rearm_rotation_restart"
+              "target": "st_t2_rearm_rotation_restart"
             }
           }
         },
@@ -11215,7 +11235,7 @@
                 100.0,
                 7000.0
               ],
-              "anchorTarget": "@st_t2_generate_target_name",
+              "anchorTarget": "@st_t1_generate_target_name",
               "targetToAnchorDist": [
                 6000.0,
                 7000.0
@@ -12562,7 +12582,7 @@
               "input_var": "ft_damage_t2_storage_hp"
             },
             {
-              "value": 1.0,
+              "value": 0.0,
               "var": "ft_damage_t2_storage_slow",
               "input_var": "ft_damage_t2_storage_hp_percent"
             }
@@ -12991,7 +13011,7 @@
             }
           ],
           "triggerEnable": {
-            "target": "ft_damage_t1_rotator"
+            "target": "ft_damage_t2_rotator"
           }
         },
         "else_actions": {
@@ -13281,8 +13301,6 @@
     "ft_generate_t2_area_name": "",
     "ft_generate_t1_loc_name": "",
     "ft_generate_t2_loc_name": "",
-    "ft_generate_t1_target_name": "",
-    "ft_generate_t2_target_name": "",
     "ft_generate_t1_aaa_idx": 0,
     "ft_generate_t2_aaa_idx": 0,
     "ft_generate_t1_aaa_name": "",
@@ -13595,7 +13613,6 @@
     "ft_helicopters_pad_exclusive": false,
     "ft_generate_t1_backup_spawn_name": "",
     "ft_generate_t2_backup_spawn_name": "",
-    "ft_t2_parking_hp": 0.0,
     "ft_disable_t1_own_area_name": "",
     "ft_disable_t2_own_area_name": "",
     "ft_disable_t1_own_area_idx": 0,

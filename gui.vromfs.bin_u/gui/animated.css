@@ -46,6 +46,10 @@ hoverSize[move=yes] {
   order-popup:no;
 }
 
+hoverSize[moveOut=yes][_size-timer=1] {
+  move:no;
+}
+
 shopWnd {
   size-time:-250;
   size-func:squareInv;
@@ -83,25 +87,6 @@ shopWnd > tdiv {
 
 shopWnd[moveOut=no][height=0] > tdiv > frame {
   display:hide;
-}
-
-hideSize {
-  size-time:-250;
-  size-func:squareInv;
-  size-backfunc:square;
-  css-hier-invalidate:yes;
-}
-hideSize[moveOut] {
-  move:yes;
-}
-hideSize[moveOut=yes] {
-  size-time:250;
-}
-hideSize[moveOut=no][height=0], hideSize[moveOut=yes][_size-timer=1], hoverSize[moveOut=yes][_size-timer=1] {
-  move:no;
-}
-hideSize[move=yes] {
-  behaviour:basicSize;
 }
 
 imgLayer {

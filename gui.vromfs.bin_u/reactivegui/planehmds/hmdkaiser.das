@@ -12,6 +12,7 @@ require app
 require hud
 require WTVr
 require strings
+require WTCamera
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 
@@ -23,6 +24,24 @@ struct PropStorage
 def set_color_alpha(col : E3DCOLOR)
   let col4 = is_hmd_enabled() ? float4(Color4(col)) * 0.5 : float4(Color4(col)) * 0.3
   return E3DCOLOR(Color4(col4))
+
+
+def get_rocket_ccip_pos(fmw : FlightModelWrap?; var hasPos : bool&; var absPos : float2&)
+  hasPos = false
+  if fmw == null
+    return
+  if (*fmw).sightMode != int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET)
+    return
+  let fcm = get_app().flightControlMode
+  if fcm == null
+    return
+  if !(*fcm).isRocketsConstantlyComputingSightActive || !(*fcm).isRocketImpactValid
+    return
+  let impactPos = (*fcm).rocketImpactPosition
+  var screenPos : float2
+  if world_to_hmd_screen(impactPos, screenPos)
+    hasPos = true
+    absPos = screenPos
 
 
 class Component : Canvas
@@ -45,6 +64,9 @@ class Component : Canvas
 
   hasTarget : bool = false
   targetAbsPos : float2
+
+  hasRocketCCIP : bool = false
+  rocketAbsPos : float2
 
 
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
@@ -73,6 +95,8 @@ class Component : Canvas
         if hmdPos.x >= rdata.size.x * margin && hmdPos.x <= rdata.size.x * (1.0 - margin) && hmdPos.y >= rdata.size.y * margin && hmdPos.y <= rdata.size.y * (1.0 - margin)
           hasTarget = true
           targetAbsPos = hmdPos
+
+    get_rocket_ccip_pos(fmw, hasRocketCCIP, rocketAbsPos)
 
     setColor(set_color_alpha(*fmw.cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS)))
     baseLineW = floor(3.0 * fmw.cockpit.ilsLineWidthScale)
@@ -389,6 +413,17 @@ class Component : Canvas
     drawLine(float2(gap, cy), float2(gap, cy + vertLen))
 
 
+  def drawRocketReticle()
+    if !hasRocketCCIP
+      return
+    let p = toRelPos(rocketAbsPos)
+    let hw = 0.01
+    let hh = 0.025
+    drawLine(float2(p.x - hw, p.y - hh), float2(p.x + hw, p.y - hh))
+    drawLine(float2(p.x - hw, p.y + hh), float2(p.x + hw, p.y + hh))
+    drawLine(float2(p.x, p.y - hh), float2(p.x, p.y + hh))
+
+
   def draw()
     return if !isValid
     setFullCanvasViewport()
@@ -404,6 +439,7 @@ class Component : Canvas
     drawAirspeed()
     drawBankAngle()
     drawTargetReticle()
+    drawRocketReticle()
 
     restoreViewport()
 

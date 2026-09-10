@@ -9,22 +9,6 @@ airInfoBlock {
   behaviour:Timer;
 }
 
-airInfoBlock > bgGradientLeft {
-  size:pw - 0.5(sw - @swMain), ph;
-  pos:pw-w, 0;
-  position:absolute;
-  background-image: #ui/gameuiskin#expandable_item_ww_transp_reflect;
-  re-type:9rect;
-  background-position:3, 3, 33, 3;
-  color-factor:175;
-  background-color:@white;
-  background-repeat:expand;
-}
-
-airInfoBlock[toggled=no] > bgGradientLeft {
-  background-color:@transparent;
-}
-
 airInfoBlock textarea, airInfoBlock text {
   font:@fontSmall;
   paragraph-indent:0;
@@ -45,34 +29,9 @@ airInfoHeader {
   pos: 0, 0.5ph-0.5h;
 }
 
-airInfoPanel, airInfoPanel > tr, airInfoPanel > tr > td {
-  css-hier-invalidate:yes;
-}
-
-airInfoPanel referenceProgress,
 airInfoInTooltip referenceProgress {
   width:0.48@airInfoPanelWidth - 2@blockInterval;
   pos:0, ph - h;
-}
-
-airInfoPanel > tr > td {
-  width:0.48@airInfoPanelWidth;
-  padding:0, 0, 1@blockInterval, 0;
-  overflow:hidden;
-}
-
-airInfoPanel > tr > td[hasIncreasedSize=yes] {
-  width:0.55@airInfoPanelWidth;
-}
-
-airInfoPanel > tr > td > textarea,
-airInfoPanel > tr > td > textareaNoTab {
-  auto-scroll:slow;
-  font:@fontSmall;
-}
-
-airInfoPanel[showStatsProgress=yes] > tr > td {
-  min-height:1@fontHeightSmall + 1@blockInterval + 2@referenceProgressHeight + @referenceProgressOffset;
 }
 
 airInfoInTooltip > tr {

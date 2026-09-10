@@ -78,8 +78,11 @@ function openGenericTooltip(obj, handler, modalParent = null) {
     let modalInfo = openModalInfo(obj.getParent(), handler, tooltipType, id, params, modalParent)
     if (modalInfo == null)
       return false
-    if (modalInfo?.infoWnd)
-      openedTooltipObjs.append(addEventListenersTooltip(modalInfo.infoWnd, handler, tooltipType, id, params))
+    let { infoWnd = null } = modalInfo
+    if (infoWnd != null) {
+      let contentObj = infoWnd.findObject("modal_tooltip_content")
+      openedTooltipObjs.append(addEventListenersTooltip(contentObj, handler, tooltipType, id, params))
+    }
     return
   }
 

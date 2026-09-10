@@ -9,15 +9,6 @@ focus_border {
   input-transparent:yes;
 }
 
-focus_border_in_scroll {
-  re-type:9rect;
-  size:pw, ph;
-  pos:0, 0;
-  position:fixed;
-  input-transparent:yes;
-  display:hide;
-}
-
 imgButton > focus_border, mapNest > focus_border {
   alwaysVisible:yes;
 }
@@ -50,18 +41,12 @@ mapNest > focus_border {
   foreground-color: @inactiveFocusBorderColorWhite;
 }
 
-
-[show_console_buttons=yes] focus_border_in_scroll {
-  display:show;
-}
-
 [alwaysShowBorder="yes"] > unitItemContainer:hover > shopItem > focus_border,
 [alwaysShowBorder="yes"] > unitCell[selected=yes]:hover > shopItem > focus_border,
 [show_console_buttons=yes] :hover > focus_border,
 [show_console_buttons=yes] slotbarTable :hover > shopItem > focus_border,
 [show_console_buttons=yes] [selected=yes]:hover > focus_border,
 [show_console_buttons=yes] wwConflictSideBlock:hover > conflictCountry > focus_border,
-[show_console_buttons=yes] :hover focus_border_in_scroll,
 [show_console_buttons=yes] button:hover,
 [show_console_buttons=yes] emptyButton:hover,
 [show_console_buttons=yes] hoverButton:hover,
@@ -75,11 +60,9 @@ mapNest > focus_border {
 [show_console_buttons=yes] RadioButton:hover,
 [show_console_buttons=yes] decorCategory:hover,
 [show_console_buttons=yes] buttonPlayer[selected=yes],
-[show_console_buttons=yes] gameModeItem:hover,
 [show_console_buttons=yes] div.dropDown:hover,
 [show_console_buttons=yes] multiOption:hover,
 [show_console_buttons=yes] gameModeBlock[selected=yes],
-[show_console_buttons=yes] activateTab:hover,
 [show_console_buttons=yes] promoButton[hasFocusBorder=yes]:hover,
 [show_console_buttons=yes] battlePassStage:hover,
 [show_console_buttons=yes] PosOptionsNavigator > cell[selected=yes],
@@ -90,8 +73,6 @@ mapNest > focus_border {
 [show_console_buttons=yes] expandable:hover,
 [show_console_buttons=yes] weaponry_item:hover,
 [show_console_buttons=yes] ww_map_item[selected=yes],
-[show_console_buttons=yes] wwTopNest[selected=yes],
-[show_console_buttons=yes] WwBattlesGroup:hover,
 [show_console_buttons=yes] imgSelectable:hover,
 [show_console_buttons=yes] memberView:hover,
 [show_console_buttons=yes] craftBranchBody > itemBlock:hover > itemDiv > focus_border,

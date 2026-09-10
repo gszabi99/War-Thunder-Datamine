@@ -1,52 +1,97 @@
 {
   "tdiv": {
     "id": "gc_navbar_sizer",
-    "size": "pw, ph",
-    "navLeft": {
-      "Button_text": [
-        {
-          "id": "btn_view_replay",
-          "text": "#mainmenu/btnViewReplay",
-          "btnName": "start",
-          "_on_click": "onViewReplay",
-          "display": "hide",
-          "ButtonImg": {}
+    "margin": "2@debrWndPad",
+    "width": "pw",
+    "flow": "vertical",
+    "tdiv": [
+      {
+        "position": "relative",
+        "size": "pw, 1@navBarBattleButtonHeight",
+        "margin": "0, 2@debrWndPad",
+        "navLeft": {
+          "Button_text": [
+            {
+              "id": "btn_view_replay",
+              "text": "#mainmenu/btnViewReplay",
+              "btnName": "start",
+              "_on_click": "onViewReplay",
+              "display": "hide",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_save_replay",
+              "text": "#mainmenu/btnSaveReplay",
+              "_on_click": "onSaveReplay",
+              "display": "hide",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_parse_replay",
+              "text": "#hitsAnalisys",
+              "on_click": "onParseReplay",
+              "display": "hide",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_requirements_list",
+              "text": "#unlocks/requirements",
+              "_on_click": "onViewBattleTaskRequirements",
+              "display": "hide",
+              "enable": "no",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_user_options",
+              "text": "#mainmenu/btnUserAction",
+              "btnName": "RB",
+              "on_click": "onUserOptions",
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_view_highlights",
+              "class": "image",
+              "text": "#mainmenu/btnViewHighlights",
+              "_on_click": "onViewHighlights",
+              "display": "hide",
+              "enable": "no",
+              "isColoredImg": "yes",
+              "img": {
+                "background-image": "#ui/gameuiskin#nv_icon"
+              },
+              "ButtonImg": {}
+            }
+          ]
         },
-        {
-          "id": "btn_save_replay",
-          "text": "#mainmenu/btnSaveReplay",
-          "_on_click": "onSaveReplay",
-          "display": "hide",
-          "ButtonImg": {}
+        "navMiddle": {
+          "id": "nav_middle",
+          "Button_text": {
+            "id": "btn_skip",
+            "text": "#msgbox/btn_skip",
+            "_on_click": "goBack",
+            "btnName": "B",
+            "ButtonImg": {}
+          }
         },
-        {
-          "id": "btn_parse_replay",
-          "text": "#hitsAnalisys",
-          "on_click": "onParseReplay",
-          "display": "hide",
-          "ButtonImg": {}
-        },
-        {
-          "id": "btn_requirements_list",
-          "text": "#unlocks/requirements",
-          "_on_click": "onViewBattleTaskRequirements",
-          "display": "hide",
-          "enable": "no",
-          "ButtonImg": {}
-        },
-        {
-          "id": "btn_user_options",
-          "text": "#mainmenu/btnUserAction",
-          "btnName": "RB",
-          "on_click": "onUserOptions",
-          "ButtonImg": {}
+        "navRight": {
+          "Button_text": {
+            "id": "btn_back",
+            "text": "#mainmenu/btnQuit",
+            "_on_click": "goBack",
+            "btnName": "B",
+            "display": "hide",
+            "visualStyle": "secondary",
+            "buttonWink": {},
+            "ButtonImg": {}
+          }
         }
-      ]
-    },
-    "navMiddle": {
-      "id": "nav_middle",
-      "Button_text": [
-        {
+      },
+      {
+        "position": "relative",
+        "margin": "0, 2@debrWndPad",
+        "left": "(pw-w)/2",
+        "height": "1@navBarBattleButtonHeight",
+        "Button_text": {
           "id": "btn_next",
           "class": "battle",
           "navButtonFont": "yes",
@@ -67,43 +112,9 @@
             "id": "btn_next_text",
             "text": "#mainmenu/btnOk"
           }
-        },
-        {
-          "id": "btn_skip",
-          "text": "#msgbox/btn_skip",
-          "_on_click": "goBack",
-          "btnName": "B",
-          "ButtonImg": {}
         }
-      ]
-    },
-    "navRight": {
-      "Button_text": [
-        {
-          "id": "btn_view_highlights",
-          "class": "image",
-          "text": "#mainmenu/btnViewHighlights",
-          "_on_click": "onViewHighlights",
-          "display": "hide",
-          "enable": "no",
-          "isColoredImg": "yes",
-          "img": {
-            "background-image": "#ui/gameuiskin#nv_icon"
-          },
-          "ButtonImg": {}
-        },
-        {
-          "id": "btn_back",
-          "text": "#mainmenu/btnQuit",
-          "_on_click": "goBack",
-          "btnName": "B",
-          "display": "hide",
-          "visualStyle": "secondary",
-          "buttonWink": {},
-          "ButtonImg": {}
-        }
-      ]
-    }
+      }
+    ]
   },
   "dummy": [
     {

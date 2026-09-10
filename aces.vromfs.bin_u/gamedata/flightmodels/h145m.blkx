@@ -79,9 +79,6 @@
   "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": [
       {
@@ -1966,7 +1963,7 @@
               "node": "cannon1_dm"
             },
             "Weapon": {
-              "trigger": "cannon",
+              "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGLAT_M621.blk",
               "emitter": "flare5",
               "flash": "flare5",
@@ -2181,7 +2178,7 @@
               "node": "cannon2_dm"
             },
             "Weapon": {
-              "trigger": "cannon",
+              "trigger": "additional gun",
               "blk": "gameData/Weapons/cannonGLAT_M621.blk",
               "emitter": "flare6",
               "flash": "flare6",
@@ -2380,11 +2377,11 @@
       {
         "avionics": "guidance",
         "health": {
-          "dm": "electronic_block2_dm",
+          "dm": "electronic_block1_dm",
           "killHp": 0.01
         },
         "damage": {
-          "dm": "electronic_block2_dm",
+          "dm": "electronic_block1_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",
@@ -2610,6 +2607,89 @@
         },
         "damage": {
           "dm": "optic_block1_dm",
+          "damageTypeHitEffect": [
+            {
+              "damageType": "shatter",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 11.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.2
+                },
+                {
+                  "damage": 35.0,
+                  "prob": 0.4
+                }
+              ]
+            },
+            {
+              "damageType": "generic",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            },
+            {
+              "damageType": "explosion",
+              "hitEffect": [
+                {
+                  "damage": 5.0,
+                  "prob": 0.05
+                },
+                {
+                  "damage": 12.0,
+                  "prob": 0.1
+                },
+                {
+                  "damage": 20.0,
+                  "prob": 0.3
+                },
+                {
+                  "damage": 40.0,
+                  "prob": 0.5
+                },
+                {
+                  "damage": 100.0,
+                  "prob": 0.7
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "avionics": "optics",
+        "health": {
+          "dm": "electronic_block1_dm",
+          "killHp": 0.01
+        },
+        "damage": {
+          "dm": "electronic_block1_dm",
           "damageTypeHitEffect": [
             {
               "damageType": "shatter",

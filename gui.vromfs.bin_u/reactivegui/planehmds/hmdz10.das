@@ -234,7 +234,7 @@ def draw_rocket_ccip(var ctx : GuiContext&; rdata : ElemRenderData& const; data 
 
   let impactPos = fcm.rocketImpactPosition
   var screenPos = float2(0.f)
-  if world_to_screen(impactPos, screenPos)
+  if world_to_hmd_screen(impactPos, screenPos)
     ctx |> draw_line(
       screenPos.x,
       screenPos.y - rdata.size.y * 0.03,

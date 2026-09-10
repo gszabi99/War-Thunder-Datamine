@@ -77,7 +77,7 @@ optionsList[dontUseAxisShortcuts=yes] {
   shortcutUp:'J:Dpad.Up | Up';
 }
 
-slider, sliderProgress, invisSlider {
+slider, invisSlider {
   shortcutLeft:"@shortcutLeftGamepad | Left";
   shortcutRight:"@shortcutRightGamepad | Right";
   shortcutUp:"";
@@ -91,7 +91,7 @@ invisSlider[horizontalByShifts=yes], weaponBody[horizontalByShifts=yes] {
   shortcutRight:"J:RB";
 }
 
-[swap_ab=yes] slider, [swap_ab=yes] sliderProgress, [swap_ab=yes] invisSlider {
+[swap_ab=yes] slider, [swap_ab=yes] invisSlider {
   shortcutSetValueByCursor:"Space | J:B | J:RT";
 }
 
@@ -100,13 +100,7 @@ slider[canWrap=yes], invisSlider[canWrap=yes] {
   shortcutWrapDown: "@shortcutDownGamepad | Down";
 }
 
-spinnerListBox {
-  shortcutLeft: "@shortcutLeftGamepad | Left";
-  shortcutRight: "@shortcutRightGamepad | Right";
-}
-
-[dontUseAxisShortcuts=yes] slider, [dontUseAxisShortcuts=yes] sliderProgress,
-[dontUseAxisShortcuts=yes] spinnerListBox {
+[dontUseAxisShortcuts=yes] slider {
   shortcutLeft:"J:Dpad.Left | Left";
   shortcutRight:"J:Dpad.Right | Right";
 }
@@ -136,7 +130,7 @@ ScrollBar {
   shortcutMoveDown:"PageDown | J:R.Thumb.Down";
 }
 
-textarea, textAreaCentered, helpText, awardText, [scrollbarShortcuts=yes] {
+textarea, textAreaCentered, [scrollbarShortcuts=yes] {
   scrollBox-resendShortcut:yes;
   accesskeyMoveUp:"PageUp | J:R.Thumb.Up";
   accesskeyMoveDown:"PageDown | J:R.Thumb.Down";

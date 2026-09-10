@@ -50,9 +50,6 @@
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_i_24_ejection_para",
   "ilsElbit967": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3669,6 +3666,10 @@
       {
         "name": "f_4e_aup_greece_agm_45b_10",
         "blk": "gameData/flightModels/weaponPresets/f_4e_aup_greece_agm_45b_10.blk"
+      },
+      {
+        "name": "f_4e_aup_greece_agm_45b_9",
+        "blk": "gameData/flightModels/weaponPresets/f_4e_aup_greece_agm_45b_9.blk"
       }
     ]
   },
@@ -4116,6 +4117,22 @@
               "external": true,
               "separate": true
             }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_9_slot1",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_l_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_9.blk",
+              "emitter": "lau_34a_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
         ]
       },
@@ -4331,6 +4348,19 @@
             }
           },
           {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_9_slot2",
+            "reqModification": "us_arm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_9.blk",
+              "emitter": "lau_34a_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm_65d_slot2",
             "reqModification": "us_agm_65d",
@@ -4498,7 +4528,17 @@
                 "node": "optic2_gun",
                 "powerButtonIdx": -1
               }
-            }
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 6,
+                "preset": "mer_lau_3a_slot6"
+              },
+              {
+                "slot": 6,
+                "preset": "mer_lau_10a_slot6"
+              }
+            ]
           }
         ]
       },
@@ -5020,6 +5060,19 @@
             }
           },
           {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_9_slot10",
+            "reqModification": "us_arm",
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_9.blk",
+              "emitter": "lau_34a_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm_65d_slot10",
             "reqModification": "us_agm_65d",
@@ -5309,6 +5362,22 @@
             "Weapon": {
               "trigger": "atgm",
               "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_10.blk",
+              "emitter": "lau_34a_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "arm_type_s",
+            "name": "agm_45b_9_slot11",
+            "reqModification": "us_arm",
+            "ShowNodes": {
+              "node": "pylon_r_out"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/containers/lau34_launcher_agm_45b_9.blk",
               "emitter": "lau_34a_004",
               "bullets": 1,
               "external": true,

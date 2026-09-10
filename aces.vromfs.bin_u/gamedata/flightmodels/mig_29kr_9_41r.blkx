@@ -11,6 +11,8 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
+  "haveOpticTurret": true,
+  "laserDesignator": true,
   "ilsHasRadarHud": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
@@ -2772,6 +2774,9 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "sightInFov": 0.75,
+    "sightOutFov": 4.0,
+    "sightFov": 1.0,
     "hmdScreenBlockRad": 0.06,
     "hmdEnabledByDefault": true,
     "mirror": true,
@@ -3602,8 +3607,36 @@
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
   },
+  "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        1200,
+        800
+      ],
+      "noiseFactor": 0.04,
+      "index": 1
+    }
+  },
   "gunnerOpticFps": {
     "TV": {
+      "pos": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -90.0,
+        90.0,
+        -15.0,
+        60.0
+      ],
+      "opticType": "",
+      "turretNo": 0,
+      "nvIndex": 1
+    },
+    "TV1": {
       "pos": [
         3.9,
         0.9,
@@ -3621,7 +3654,7 @@
       "turretNo": 0,
       "name": "KAB500KR_1500KR"
     },
-    "TV1": {
+    "TV2": {
       "pos": [
         3.9,
         0.9,
@@ -3651,6 +3684,9 @@
       },
       {
         "blk": "gameData/sensors/su_spo-150.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ],
     "sensorsMode": [
@@ -4126,12 +4162,12 @@
               },
               "limits": {
                 "yaw": [
-                  -30.0,
-                  30.0
+                  -90.0,
+                  90.0
                 ],
                 "pitch": [
                   -80.0,
-                  15.0
+                  60.0
                 ]
               }
             },

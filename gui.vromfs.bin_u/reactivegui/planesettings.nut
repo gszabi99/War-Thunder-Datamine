@@ -67,9 +67,12 @@ function updateSettings(blk_name) {
       mfdRwrSettingsUpd(pageBlk)
   }
   let isChina = blk.getBool("chinaLang", false)
+  let isMetricMfd = blk.getBool("isMetricMfd", false)
   foreach(pageBlk in customPagesBlks) {
     if (isChina && !pageBlk.paramExists("chinaLang"))
       pageBlk.setBool("chinaLang", true)
+    if (isMetricMfd && !pageBlk.paramExists("isMetricUnits"))
+      pageBlk.setBool("isMetricUnits", true)
     customPageSettingsUpd(pageBlk)
   }
 }

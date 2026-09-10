@@ -2892,10 +2892,6 @@ let RespawnHandler = class (MPStatistics) {
       this.guiScene.replaceContentFromText(comboBox, markup, markup.len(), this)
     }
 
-    let crew = this.getCurCrew()
-    let slotObj = crew && getSlotObj(this.scene, crew.idCountry, crew.idInCountry)
-    showObjById("buttonsDiv", show && this.isRespawn, slotObj)
-
     this.scene.findObject("tooltips_switch_box").setValue(
       get_gui_option_in_mode(USEROPT_SHOW_HUD_MAP_TOOLTIP, OPTIONS_MODE_GAMEPLAY, true)
     )

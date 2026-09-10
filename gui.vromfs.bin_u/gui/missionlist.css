@@ -7,7 +7,6 @@
 
 @const missionBoxImageOffsetX: 12*@sf/@pf_outdated;
 @const missionItemTextPaddingLeft: 3@sf/@pf;
-@const unlockConditionHeaderLeftPadding: @unlockHeaderIconSize+@scrn_tgt/100.0;
 @const bigMedalPlaceYpos: 2@scrn_tgt/100.0;
 
 mission_item_text
@@ -261,19 +260,6 @@ hiddenDiv[isSmallView=yes] > unlockCondition > unlockImg {
 
 unlockImg[background-image] {
   background-color:@white;
-}
-
-bigMedalPlace {
-  height:1@profileMedalSize;
-  width:h;
-  position:relative;
-}
-bigMedalPlace[midSize=yes] {
-  height:256@sf/@pf;
-}
-
-bigMedalPlace[double=yes] {
-  height:1@profileMedalSizeBig;
 }
 
 bigMedalImg {

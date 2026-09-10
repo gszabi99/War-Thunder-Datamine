@@ -69,7 +69,7 @@ let bhvUpdateByWatched = class {
       if (watch == null || updateFunc == null)
         continue
 
-      let updateObjectFunc = @(watchValue) updateFunc(obj, watchValue)
+      let updateObjectFunc = @(watchValue) obj.isValid() ? updateFunc(obj, watchValue) : null
       updateObjectFunc(watch.get())
       watch.subscribe(updateObjectFunc)
       subscriptions.append({

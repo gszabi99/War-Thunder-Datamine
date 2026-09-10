@@ -138,7 +138,7 @@ function commonSight(width, height) {
     children = [
       compassElem(baseColor, compassSize, compassPos)
       missileSalvoTimer(baseColor, sw(50) - hdpx(150), sh(90) - hdpx(174))
-      turretAngles(baseColor, hdpx(150), hdpx(150), sw(50), sh(90), 0.22, false, turretAnglesStyle)
+      turretAngles(baseColor, hdpx(150), hdpx(150), sw(50), sh(90), 0.22, turretAnglesStyle)
       reticle(sw(50), sh(50))
       lockSightIndicator
       targetSizeIndicator(baseColor, sw(100), sh(100))

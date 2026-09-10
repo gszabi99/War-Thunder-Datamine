@@ -54,7 +54,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText, isUnitEnabledForSlotbar, getSpareCountText, calcUnitSlotMissionInfoTextsWidth, getSlotCrewHint } = require("%scripts/slotbar/slotbarView.nut")
 let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameModeEdiff, getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew, updateCrewSkillsAvailable, isCrewNeedUnseenIcon, gui_modal_crew } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { isCrewListOverrided, getCrewsListVersion, getCrewsList, getCrewById } = require("%scripts/slotbar/crewsList.nut")
@@ -73,6 +73,7 @@ let { getCountryOverride, getCountryStyle, countryDisplayStyle, isCountryOverrid
 let { isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getCurrentSlotbarPreset, getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let { purchaseConfirmation } = require("%scripts/purchase/purchaseConfirmationHandler.nut")
+let { getGameModeIdByUnits } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -333,7 +334,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
     return data
   }
 
-  function getUnitStatus(unit, crew, country) {
+  function getUnitStatus(unit, crew, country, customGameMode = null) {
     let isUnlocked = (!this.needCheckUnitUnlock || !isRequireUnlockForUnit(unit))
       && isUnitUnlockedInSlotbar(unit, crew, country, this.missionRules, true)
     if (unit == null)
@@ -353,7 +354,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         isUnlocked
       }
 
-    local disabled = !isUnitEnabledForSlotbar(unit, this)
+    local disabled = !isUnitEnabledForSlotbar(unit, this, customGameMode)
     if (this.checkRespawnBases)
       disabled = disabled || !getAvailableRespawnBases(unit.tags).len()
     if (disabled)
@@ -407,6 +408,14 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         continue
 
       let curPreset = presetIdx != null ? getPresetsListFromSlotbar(listCountry)?[presetIdx] : getCurrentSlotbarPreset(listCountry)
+
+      local customGameMode = null
+      if (presetIdx != null) {
+        let curPresetGameModeId = curPreset?.gameModeId ?? ""
+        let customGameModeId = curPresetGameModeId != "" ? curPresetGameModeId : getGameModeIdByUnits(curPreset?.units ?? [])
+        customGameMode = getGameModeById(customGameModeId)
+      }
+
       local crewInSlots = curPreset?.crewInSlots ?? []
       if (!needEmptySlot)
         crewInSlots = crewInSlots.filter(@(id) curPreset?.crews.contains(id) ?? false)
@@ -418,7 +427,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
         if (!unit && !needEmptySlot)
           continue
         let unitName = unit?.name ?? ""
-        let { isUnlocked, status } = this.getUnitStatus(unit, crew, country)
+        let { isUnlocked, status } = this.getUnitStatus(unit, crew, country, customGameMode)
         let isUnitForcedVisible = this.missionRules && this.missionRules.isUnitForcedVisible(unitName)
         let isUnitForcedHiden = this.missionRules && this.missionRules.isUnitForcedHiden(unitName)
         let isUnitEnabledByRandomGroups = !this.missionRules || this.missionRules.isUnitEnabledByRandomGroups(unitName)
@@ -1430,6 +1439,9 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
   }
 
   function updateSlotsStatuses(unitSlots) {
+    if (this.previewPresetIdx != null)
+      return
+
     foreach (slot in unitSlots) {
       let { obj, unit, crew } = slot
       obj.shopStat = !isInFlight() && (isCrewListOverrided.get() || (crew.isUnitOverrided ?? false))

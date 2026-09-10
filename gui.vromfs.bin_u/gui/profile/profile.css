@@ -11,7 +11,6 @@
 @const profileFrameWidth: 1.0 *(1@rw-2@framePadding);
 @const maxProfileContentWidth: 1.0 * (2080@sf/@pf - 2@framePadding);
 
-@const profilePageLeftPartWidth: (0.17 * @profileFrameWidth) $min 373@sf/@pf;
 @const profilePageRightPartWidth: (0.7938 * @profileFrameWidth) $min 1642@sf/@pf;
 @const profilePagePartsMargin: (0.013 * @profileFrameWidth) $min 26@sf/@pf;
 
@@ -83,10 +82,6 @@ profileContentBigIcon > img {
 
 profileContentLeft > listbox {
   padding:0, 0, 3@sf/@pf, 0;
-}
-
-bigMedalPlace[parentSize=yes] {
-  size:pw, ph;
 }
 
 imgSelectable.profileMedals {
@@ -497,18 +492,15 @@ ComboBox[isProfileSmallSize=yes] {
   min-height:25@sf/@pf;
 }
 
-avatarImageTypeItem:hover,
 headerBackgroundItem:hover {
   background-color: @listboxHoverOptionColor;
 }
 
-avatarImageTypeItem[selected=yes],
 headerBackgroundItem[selected=yes] {
   background-color: @listboxSelOptionColor;
   color: @white;
 }
 
-avatarImageTypeItem[selected=yes] > textarea,
 headerBackgroundItem[selected=yes] > textarea {
   color: @white;
 }

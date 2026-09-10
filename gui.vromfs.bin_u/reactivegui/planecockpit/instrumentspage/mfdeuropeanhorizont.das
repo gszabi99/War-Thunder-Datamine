@@ -413,3 +413,4 @@ def setup(props : Properties&; var propStorage : PropStorage&)
   return if blk == null
 
   propStorage.fontSize = *blk->datablock_getInt("fontSize", 35)
+  propStorage.isMetricUnits = *blk->datablock_getBool("isMetricUnits", propStorage.isMetricUnits)

@@ -24,6 +24,112 @@
       }
     },
     {
+      "id": "hud_tutorial_ship_damage_info",
+      "position": "absolute",
+      "pos": "(pw-w)/2, (ph-h)/2 - 0.05sh",
+      "size": "1.45sh + @blockInterval, 0.8sh + @blockInterval",
+      "bgcolor": "#B2B2B2B2",
+      "img": {
+        "position": "absolute",
+        "pos": "(pw-w)/2, (ph-h)/2",
+        "size": "1.45sh, 0.8sh",
+        "background-image": "@!ui/images/tutorial/ship_tutorial_damage_background"
+      }
+    },
+    {
+      "id": "hud_tutorial_ship_damage_icon_1",
+      "position": "absolute",
+      "pos": "(pw-w)/2, (ph-h)/2 - 0.05sh",
+      "size": "1.45sh + @blockInterval, 0.8sh + @blockInterval",
+      "bgcolor": "#B2B2B2B2",
+      "img": [
+        {
+          "position": "absolute",
+          "pos": "(pw-w)/2, (ph-h)/2",
+          "size": "1.45sh, 0.8sh",
+          "background-image": "@!ui/images/tutorial/ship_tutorial_damage_background"
+        },
+        {
+          "position": "absolute",
+          "pos": "(pw-w)/2 - 0.03sh, (ph-h)/2 - 0.17sh",
+          "size": "50/720@shHud, 75@sf/@pf",
+          "background-position": "3, 33, 3, 7",
+          "background-repeat": "expand",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow"
+        }
+      ],
+      "textareaNoTab": {
+        "position": "absolute",
+        "pos": "(pw-w)/2, ph/2 - 0.12sh",
+        "width": "0.25pw",
+        "shadeStyle": "HudHeader3D",
+        "text": "#hud_tutorial_ship_damage_1",
+        "style": "font:@fontHudNormal; text-align:center; color:@white;"
+      }
+    },
+    {
+      "id": "hud_tutorial_ship_damage_icon_2",
+      "position": "absolute",
+      "pos": "(pw-w)/2, (ph-h)/2 - 0.05sh",
+      "size": "1.45sh + @blockInterval, 0.8sh + @blockInterval",
+      "bgcolor": "#B2B2B2B2",
+      "img": [
+        {
+          "position": "absolute",
+          "pos": "(pw-w)/2, (ph-h)/2",
+          "size": "1.45sh, 0.8sh",
+          "background-image": "@!ui/images/tutorial/ship_tutorial_damage_background"
+        },
+        {
+          "position": "absolute",
+          "pos": "(pw-w)/2, (ph-h)/2 - 0.17sh",
+          "size": "50/720@shHud, 75@sf/@pf",
+          "background-position": "3, 33, 3, 7",
+          "background-repeat": "expand",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow"
+        }
+      ],
+      "textareaNoTab": {
+        "position": "absolute",
+        "pos": "(pw-w)/2, ph/2 - 0.12sh",
+        "width": "0.25pw",
+        "shadeStyle": "HudHeader3D",
+        "text": "#hud_tutorial_ship_damage_2",
+        "style": "font:@fontHudNormal; text-align:center; color:@white;"
+      }
+    },
+    {
+      "id": "hud_tutorial_ship_damage_icon_3",
+      "position": "absolute",
+      "pos": "(pw-w)/2, (ph-h)/2 - 0.05sh",
+      "size": "1.45sh + @blockInterval, 0.8sh + @blockInterval",
+      "bgcolor": "#B2B2B2B2",
+      "img": [
+        {
+          "position": "absolute",
+          "pos": "(pw-w)/2, (ph-h)/2",
+          "size": "1.45sh, 0.8sh",
+          "background-image": "@!ui/images/tutorial/ship_tutorial_damage_background"
+        },
+        {
+          "position": "absolute",
+          "pos": "(pw-w)/2 + 0.04sh, (ph-h)/2 - 0.17sh",
+          "size": "50/720@shHud, 75@sf/@pf",
+          "background-position": "3, 33, 3, 7",
+          "background-repeat": "expand",
+          "background-image": "@!ui/images/tutorial/tutorial_tank_arrow_yellow"
+        }
+      ],
+      "textareaNoTab": {
+        "position": "absolute",
+        "pos": "(pw-w)/2, ph/2 - 0.12sh",
+        "width": "0.25pw",
+        "shadeStyle": "HudHeader3D",
+        "text": "#hud_tutorial_ship_damage_3",
+        "style": "font:@fontHudNormal; text-align:center; color:@white;"
+      }
+    },
+    {
       "id": "hud_tutorial_boat_xray_all_texts",
       "_set_aabb_by_object": "hitCamera",
       "pos": "50%pw, 50%ph",

@@ -48,15 +48,12 @@
 
 @const topCenterMessagesTopPos          0.06@shHud;
 @const topCenterMainMessagesMinHeight   0.15@shHud;
-@const bottomHudMessagesLeftPos: 1@gameChatWidth +8@sf/@pf;
 
 @const missionResultNestHeight: 0.0666@sf;
 
 @const tankGunsAmmoBlockHeight: 0.03@shHud;
 @const notificationsWithCompassTopOffset: 60@sf/@pf;
 
-@const shipCoverPartHeight: 0.3@cIco;
-@const shipCoverPartInterval: 0.1@cIco;
 
 @const hitcamDebuffIconSize: 0.02@shHud \ 1;
 @const hitcamDebuffPadding: 0.003@shHud;
@@ -424,27 +421,17 @@ hudEnemyDamage > damagePart {
   transp-time: -6000;
 }
 
-hitCameraCrew {
-  transp-base:0;
-  transp-end:255;
-  transp-func:cubeInv;
-  transp-time: -6000;
-}
-
 hudEnemyDamage > damagePart[partKilled=yes] {
   text-shade-color:#66000000;
 }
 
 hudEnemyDamage > damagePart[_blink=yes],
-hudEnemyDamage > damagePart[_blink=now],
-hitCameraCrew[_blink=yes],
-hitCameraCrew[_blink=now] {
+hudEnemyDamage > damagePart[_blink=now] {
   behaviour:basicTransparency;
   display:show;
 }
 
-hudEnemyDamage > damagePart[_blink=no],
-hitCameraCrew[_blink=no] {
+hudEnemyDamage > damagePart[_blink=no] {
   display:hide;
 }
 
@@ -472,10 +459,6 @@ hitCamLostCrewText {
   transp-func:delayed_square;
   transp-base:255;
   transp-end:0;
-}
-
-hitCameraCrew textareaNoTab {
-  font:@fontHudSmall;
 }
 
 hitCameraCritAnim {
@@ -593,68 +576,6 @@ enemyDamageStatus[id=fire_status][damage=critical] enemyDamageStatusIcon {
   background-image:#ui/gameuiskin#dm_ship_critical_fire.svg;
 }
 
-
-@const enemyDmgStatusPanelHeightLegacy: 10%@hitCameraWidth;
-@const enemyDmgStatusPanelMarginBottomLegacy: 5.2%@hitCameraWidth;
-@const enemyDmgStatusWidthLegacy: @enemyDmgStatusPanelWidth / 6;
-
-enemyDamageStatusLegacy {
-  size:@enemyDmgStatusWidthLegacy, @enemyDmgStatusPanelHeightLegacy;
-  margin-bottom:@enemyDmgStatusPanelMarginBottomLegacy;
-  css-hier-invalidate: yes;
-}
-
-enemyDamageStatusBgLegacy {
-  size:ph, ph;
-  position:absolute;
-  pos:50%(pw-w), 0;
-  background-image:#ui/gameuiskin#dmg_ship_status_bg.svg;
-  background-svg-size:ph, ph;
-  background-color:#AA000000;
-}
-
-enemyDamageStatusIconLegacy {
-  size:70%ph, 70%ph;
-  position:absolute;
-  pos:50%(pw-w), 50%(ph-h);
-  background-svg-size:70%ph, 70%ph;
-}
-
-enemyDamageStatusTxt {
-  behaviour:textArea;
-  re-type:textarea;
-  position:absolute;
-  pos:50%(pw-w), ph+3@dp;
-  font:@fontHudTiny;
-  text-align: right;
-  color: @white;
-}
-
-enemyDamageStatusLegacy[damage=none] enemyDamageStatusBgLegacy {
-  background-color:#33000000;
-}
-
-enemyDamageStatusLegacy[damage=none] enemyDamageStatusIconLegacy {
-  background-color:#728188;
-}
-
-enemyDamageStatusLegacy[damage=minor] enemyDamageStatusIconLegacy {
-  background-color:#E2AE00;
-}
-
-enemyDamageStatusLegacy[damage=moderate] enemyDamageStatusIconLegacy {
-  background-color:@orange;
-}
-
-enemyDamageStatusLegacy[damage=critical] enemyDamageStatusIconLegacy {
-  background-color:#FF4338;
-}
-
-enemyDamageStatusLegacy[damage=fatal] enemyDamageStatusIconLegacy {
-  background-color:@black;
-}
-
-
 hpProgressBar {
   behaviour:progress;
   re-type:progress;
@@ -751,11 +672,6 @@ hitCamDebuff[state=killed]     hitCamDebuffLabel { color:#ff4040; }
 hitCamDebuffLabel[isHidden=yes] {
   color:@transparent;
 }
-
-hitCamStateBlock[state=healthy]  { background-color:#9EE000;   }
-hitCamStateBlock[state=good]     { background-color:#FFC000;   }
-hitCamStateBlock[state=critical] { background-color:#ff4040;   }
-hitCamStateBlock[state=killed]   { background-color:@black; }
 
 
 

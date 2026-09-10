@@ -1,4 +1,3 @@
-@const extraInfoBgColor: #b222333f;
 @const slotShadeColor:   #66060808;
 
 @const slotBgColor                  :#B21A2228; 
@@ -59,8 +58,6 @@
 @const shopItemPad: 4*@sf/@pf;
 @const slotExtraInfoSidePad: (0.05@slot_button_fullWidth)\1;
 @const rentIconSize: 26@sf/@pf\2*2;
-@const bottomButtonsDivTopOffset: 1@dp;
-@const extraInfoTopShade: 2@dp;
 @const slotBorderSize: 1@dp;
 @const slotbarBottomLineHeight: 1@sf/@pf;
 @const slotTopLineHeight: 2@dp;
@@ -396,14 +393,6 @@ itemWinkBlock {
   transp-time:5000;
   transp-func:sin;
   transp-cycled:yes;
-}
-
-shopItem > backImg {
-  size:pw-2*@sf/@pf_outdated, ph-2*@sf/@pf_outdated;
-  pos:50%pw-50%w, 50%ph-50%h;
-  position:absolute;
-  background-color:@white;
-  input-transparent:yes;
 }
 
 bottomButtonsDiv {
@@ -1126,14 +1115,6 @@ extraInfoBlock[needHugeFooter=yes] {
   size:pw+2@slotExtraInfoSidePad, @slotExtraInfoHeightHuge;
 }
 
-CountriesCrews[needHugeFooter=yes] extraInfoBlockHint {
-  needHugeFooter:yes;
-}
-
-extraInfoBlockHint[needHugeFooter=yes] {
-  size:pw, @slotExtraInfoHeightHuge;
-}
-
 extraInfoBlock > content {
   re-type:9rect;
   size:pw-2@slotExtraInfoSidePad, ph;
@@ -1471,11 +1452,6 @@ shopItem:hover cardImg[background-image] {
   background-color:@activeTextColor;
 }
 
-shopItem > bonusesDiv {
-  pos:0, ph-h;
-  position:absolute;
-}
-
 shopItem > discount {
   background-image:#ui/gameuiskin#discount;
   rotation:-170;
@@ -1490,21 +1466,6 @@ shopItem > bonus {
 
 shopItem[group=yes] > bonus {
   pos:0, -1@slotGroupTagHeight;
-}
-
-shopItem > buttonsDiv {
-  id:buttonsDiv;
-  pos:0, 0;
-  position:absolute;
-  css-hier-invalidate:yes;
-}
-
-buttonsDiv > Button_text{
-  not-input-transparent:yes;   pos:0, -h;
-  position:relative;
-  height:@mainMenuButtonHeight;
-  width:p.p.w;
-  reduceMinimalWidth:yes;
 }
 
 shopItem Button_text.bottomAirItem,
@@ -1601,11 +1562,6 @@ shopLine[shopStat=locked], shopArrow[shopStat=locked], shopAngle[shopStat=locked
   background-color:@shopArrowLockedColor;
 }
 
-shopRow[type=locked] {
-  background-color:@shopFrameLockedColor;
-  foreground-color:@shopFrameLockedColor;
-}
-
 shopAlarmIcon {
   height:'1.2@modArrowWidth';
   width:'1.2@modArrowWidth';
@@ -1624,21 +1580,6 @@ shopItem > shopAlarmIcon {
 
 shopItem[hasAlarmIcon=yes] > shopAlarmIcon {
   display:show;
-}
-
-shopBlockTierNum{
-  re-type:text;
-  color:@commonTextColor;
-  font:@fontNormal;
-  text-align:center;
-  height:1@shop_height;
-  width:h;
-  position:absolute;
-  background-image:#ui/gameuiskin#block_bg_rounded_flat@@vs;
-  background-position:4;
-  background-repeat:expand;
-  background-color:@weaponryItem;
-  css-hier-invalidate:yes;
 }
 
 CrewsNest {

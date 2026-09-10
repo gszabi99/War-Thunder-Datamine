@@ -116,4 +116,5 @@ return {
   isAutoAbbreviation = @() isSettingsSelected("enable_auto_abbreviation")
 
   getPresetsDataByCountry
+  getGameModeIdByUnits
 }

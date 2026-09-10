@@ -2446,6 +2446,56 @@
         }
       },
       {
+        "trigger": "gunner3",
+        "triggerGroup": "smoke",
+        "blk": "gameData/Weapons/groundModels_weapons/66mm_modern_uk_smoke_grenade_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "emtr_mortar_flame_01",
+        "emitterGenRange": [
+          1,
+          8
+        ],
+        "emitterGenFmt": "emtr_mortar_flame_%02d",
+        "ignoreLoaderPenalty": true,
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 360.0,
+        "salvo": 2,
+        "salvoDelay": 0.5,
+        "speedYaw": 24.0,
+        "speedPitch": 15.0,
+        "fireConeAngle": 1.0,
+        "bullets": 8,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxRadius": 2000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "turret": {
+          "head": "bone_grenade",
+          "gun": "bone_grenade"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
         "trigger": "gunner4",
         "triggerGroup": "commander",
         "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3684,10 +3734,50 @@
     },
     "30mm_rarden_apdsfs_ammo_pack": {},
     "modern_tank_laser_rangefinder": {},
-    "tank_smoke_screen_system_mod": {
-      "modClass": "protection",
-      "tier": 4,
+    "night_vision_system": {
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "tier": 3,
       "effects": {
+        "nightVision": {
+          "nightVisionDmPart": [
+            "fire_control_system_dm",
+            "fire_control_system_01_dm"
+          ],
+          "gunnerThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "commanderViewThermal": {
+            "resolution": [
+              500,
+              300
+            ],
+            "noiseFactor": 0.05
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "slat_armor_improvement": {
+      "modClass": "protection",
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "tier": 2,
+      "effects": {
+        "rcostAddParam": 0.9,
+        "changeMass": 1260.0,
         "commonWeapons": {
           "Weapon": [
             {
@@ -3756,50 +3846,6 @@
                   -10.0,
                   40.0
                 ]
-              },
-              "limitsTable": {
-                "lim1": [
-                  -180.0,
-                  -160.0,
-                  -5.0,
-                  40.0
-                ],
-                "lim2": [
-                  -160.0,
-                  -130.0,
-                  -4.0,
-                  40.0
-                ],
-                "lim3": [
-                  -130.0,
-                  -16.0,
-                  -6.0,
-                  40.0
-                ],
-                "lim4": [
-                  -16.0,
-                  16.0,
-                  -8.0,
-                  40.0
-                ],
-                "lim5": [
-                  16.0,
-                  130.0,
-                  -6.0,
-                  40.0
-                ],
-                "lim6": [
-                  130.0,
-                  160.0,
-                  -4.0,
-                  40.0
-                ],
-                "lim7": [
-                  160.0,
-                  180.0,
-                  -5.0,
-                  40.0
-                ]
               }
             },
             {
@@ -3841,34 +3887,6 @@
                 "pitch": [
                   -0.0,
                   0.0
-                ]
-              }
-            },
-            {
-              "trigger": "gunner4",
-              "triggerGroup": "commander",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "bone_commander_sight_v",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "parkInDeadzone": false,
-              "speedYaw": 90.0,
-              "speedPitch": 90.0,
-              "turret": {
-                "head": "bone_commander_sight_h",
-                "gun": "bone_commander_sight_v",
-                "gunnerDm": "commander_dm",
-                "verDriveDm": "commander_panoramic_sight_dm",
-                "horDriveDm": "commander_panoramic_sight_dm"
-              },
-              "limits": {
-                "yaw": [
-                  -30.0,
-                  30.0
-                ],
-                "pitch": [
-                  -14.0,
-                  40.0
                 ]
               }
             },
@@ -3921,6 +3939,34 @@
                   0.0
                 ]
               }
+            },
+            {
+              "trigger": "gunner4",
+              "triggerGroup": "commander",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "bone_commander_sight_v",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 90.0,
+              "speedPitch": 90.0,
+              "turret": {
+                "head": "bone_commander_sight_h",
+                "gun": "bone_commander_sight_v",
+                "gunnerDm": "commander_dm",
+                "verDriveDm": "commander_panoramic_sight_dm",
+                "horDriveDm": "commander_panoramic_sight_dm"
+              },
+              "limits": {
+                "yaw": [
+                  -30.0,
+                  30.0
+                ],
+                "pitch": [
+                  -14.0,
+                  40.0
+                ]
+              }
             }
           ],
           "hideNodes": {
@@ -3930,52 +3976,6 @@
             ]
           }
         }
-      }
-    },
-    "night_vision_system": {
-      "image": "!#ui/gameuiskin#thermal_sight.avif",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
-      "tier": 3,
-      "effects": {
-        "nightVision": {
-          "nightVisionDmPart": [
-            "fire_control_system_dm",
-            "fire_control_system_01_dm"
-          ],
-          "gunnerThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          },
-          "commanderViewThermal": {
-            "resolution": [
-              500,
-              300
-            ],
-            "noiseFactor": 0.05
-          },
-          "driverIr": {
-            "resolution": [
-              800,
-              600
-            ],
-            "lightMult": 5.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
-    "slat_armor_improvement": {
-      "modClass": "protection",
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "tier": 2,
-      "effects": {
-        "rcostAddParam": 0.9,
-        "changeMass": 1260.0
       },
       "disableModEffects": {
         "hideNodes": {

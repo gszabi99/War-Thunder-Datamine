@@ -164,8 +164,11 @@ function showModalTooltip(initObj, tooltipNest, isCursorInBoundsOptional, params
   let realObj = openModalInfo(initObj, BaseGuiHandlerWT, tooltipType, params.id, params, tooltipNest, isCursorInBoundsOptional)
   if (realObj == null)
     return false
-  if (realObj?.infoWnd)
-    openedTooltipObjs.append(addEventListenersTooltip(realObj.infoWnd, null, tooltipType, params.id, params))
+  let { infoWnd = null } = realObj
+  if (infoWnd != null) {
+    let contentObj = infoWnd.findObject("modal_tooltip_content")
+    openedTooltipObjs.append(addEventListenersTooltip(contentObj, null, tooltipType, params.id, params))
+  }
 
   if (!realObj?.isChildTooltip || realObj?.oldWnd)
     modalTooltipPlace = tooltipNest

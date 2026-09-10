@@ -44,9 +44,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor_jet_engine": {
       "engine1_dm": {
@@ -789,16 +786,18 @@
             "smoke": 0.2
           },
           {
-            "damage": 30.0,
-            "cut": 0.25
+            "damage": 200.0,
+            "damageType": "explosion",
+            "spar1_r_dm": 0.4,
+            "spar1_l_dm": 0.4,
+            "canCut": true
           },
           {
-            "damage": 50.0,
-            "cut": 0.5
-          },
-          {
-            "damage": 65.0,
-            "cut": 1.0
+            "damage": 250.0,
+            "damageType": "explosion",
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
           }
         ],
         "onKill": [
@@ -812,23 +811,10 @@
             "nothing": 9.0
           },
           {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 3.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 65.0,
-            "cut": 1.0
+            "damage": 200.0,
+            "spar1_l_dm": 1.0,
+            "spar1_r_dm": 1.0,
+            "canCut": true
           }
         ]
       },

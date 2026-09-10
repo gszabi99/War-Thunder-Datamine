@@ -33,7 +33,7 @@ menutitle {
   text-align:left;
 }
 
-textarea, textAreaCentered, helpText, awardText, framedMessage, textAreaNoScroll,
+textarea, textAreaCentered, framedMessage, textAreaNoScroll,
 textareaNoTab, titleTextArea,textAreaSmall, tooltipDesc {
   font:@fontNormal;
   behaviour:textArea;
@@ -89,10 +89,6 @@ chatLog {
   paragraph-indent:0;
 }
 
-hudMessageStack {
-  behaviour:hudMessageStack;
-}
-
 titleTextArea {
   width:pw;
   font:@fontMedium;
@@ -133,56 +129,7 @@ textAreaSmall {
   color:@activeTextColor;
 }
 
-helpText {
-  position:absolute;
-  wrap-indent:1*@scrn_tgt/100.0;
-  color:@activeTextColor;
-}
-
-awardText {
-  width:pw;
-  margin:0, 0.5*@scrn_tgt/100.0, 0, 0.5*@scrn_tgt/100.0;
-  padding-top:1.5*@scrn_tgt/100.0;
-  padding-left:8*@scrn_tgt/100.0;
-  min-height:7*@scrn_tgt/100.0;
-}
-
-awardText > awardImg {
-  height:40*@sf/@pf_outdated;
-  width:h;
-  pos:4*@scrn_tgt/100.0-50%w,50%ph-50%h;
-  position:absolute;
-}
-
-awardText[type=unlocked] > awardImg {
-  background-color:@white;
-  background-image:#ui/gameuiskin#unlocked;
-}
-
-awardText[type=newrank] > awardImg {
-  background-color:@white;
-  background-image:#ui/gameuiskin#icon_primary_success.svg;
-}
-
-awardText[type=arcade] > awardImg {
-  background-color:@white;
-  background-image:#ui/gameuiskin#mission_complete_arcade;
-}
-
-awardText[type=realistic] > awardImg {
-  background-color:@white;
-  background-image:#ui/gameuiskin#mission_complete_realistic;
-}
-
-awardText[type=hardcore] > awardImg {
-  background-color:@white;
-  background-image:#ui/gameuiskin#mission_complete_simulator;
-}
-
-awardText[type=image] > awardImg { background-color:@white; }
-
-text, optiontext, optionValueText, header,
-optionheader, activeText, textButtonHint
+text, optiontext, optionValueText, header, activeText
 {
   re-type:text;
   color:@commonTextColor;

@@ -11,6 +11,8 @@
   "haveCCIPForGun": true,
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
+  "haveOpticTurret": true,
+  "laserDesignator": true,
   "ilsHasRadarHud": true,
   "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
@@ -2502,6 +2504,9 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "sightInFov": 0.75,
+    "sightOutFov": 4.0,
+    "sightFov": 1.0,
     "hmdScreenBlockRad": 0.06,
     "hmdEnabledByDefault": true,
     "mirror": true,
@@ -3437,6 +3442,23 @@
   "gunnerOpticFps": {
     "TV": {
       "pos": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -60.0,
+        60.0,
+        -15.0,
+        60.0
+      ],
+      "opticType": "",
+      "turretNo": 0
+    },
+    "TV1": {
+      "pos": [
         3.9,
         0.9,
         0.0
@@ -3453,7 +3475,7 @@
       "turretNo": 0,
       "name": "KH-29T"
     },
-    "TV1": {
+    "TV2": {
       "pos": [
         3.9,
         0.9,
@@ -3483,6 +3505,9 @@
       },
       {
         "blk": "gameData/sensors/su_spo-150.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ],
     "sensorsMode": [
@@ -3799,12 +3824,12 @@
                 },
                 "limits": {
                   "yaw": [
-                    -30.0,
-                    30.0
+                    -60.0,
+                    60.0
                   ],
                   "pitch": [
                     -80.0,
-                    15.0
+                    60.0
                   ]
                 }
               },
@@ -3863,12 +3888,12 @@
                 },
                 "limits": {
                   "yaw": [
-                    -30.0,
-                    30.0
+                    -60.0,
+                    60.0
                   ],
                   "pitch": [
                     -80.0,
-                    15.0
+                    60.0
                   ]
                 }
               },

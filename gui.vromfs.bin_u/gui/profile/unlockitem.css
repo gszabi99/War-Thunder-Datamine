@@ -11,24 +11,22 @@ substrateImg{
   display: show;
 }
 
-unlockStages > locked > img,
 unlockStages > unlocked > img,
-unlockStages > locked > substrateImg,
 unlockStages > unlocked > substrateImg{
   size: @unlockStageIconSize, @unlockStageIconSize;
   background-color: @white;
 }
 
-locked, unlocked{
+unlocked{
   size: @unlockStageIconSize, @unlockStageIconSize;
 }
 
-locked.even, unlocked.even{
+unlocked.even{
   position: relative;
   pos: -w/2, 0;
 }
 
-locked.odd, unlocked.odd{
+unlocked.odd{
   position: relative;
   pos: -w/2, 0.86h;
 }

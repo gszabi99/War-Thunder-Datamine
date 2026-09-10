@@ -1067,7 +1067,7 @@ function getSlotObj(slotbarObj, countryId, idInCountry) {
   return checkObj(slotObj) ? slotObj : null
 }
 
-function isUnitEnabledForSlotbar(unit, params) {
+function isUnitEnabledForSlotbar(unit, params, customGameMode = null) {
   if (!unit || unit.disableFlyout)
     return false
 
@@ -1092,7 +1092,7 @@ function isUnitEnabledForSlotbar(unit, params) {
   if (!res)
     return res
 
-  res = !mainMenuSlotbar || isUnitAllowedForGameMode(unit)
+  res = !mainMenuSlotbar || isUnitAllowedForGameMode(unit, customGameMode)
   if (!res || missionRules == null)
     return res
 

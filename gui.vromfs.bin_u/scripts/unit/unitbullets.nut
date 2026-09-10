@@ -26,7 +26,7 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = fa
     return
 
   let ammoType = bulletName != "" ? bulletName : bulletType
-  let bulletSetName = getBulletSetNameByBulletName(unit, ammoType)
+  let bulletSetName = getBulletSetNameByBulletName(unit, ammoType) ?? ammoType
 
   if (!showAsSingleBullet) {
     unitBulletsCache[unit.name].append({
@@ -40,6 +40,8 @@ function addOnceUnitBullet(unit, bullet, showAsSingleBullet = false, isShip = fa
   }
 
   let bulletsSet = getBulletsSetData(unit, bulletSetName)
+  if (bulletsSet == null)
+    return
 
   let { shellAnimation = null } = bullet
 

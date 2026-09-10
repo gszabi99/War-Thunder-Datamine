@@ -1,4 +1,4 @@
-tdiv, img, img2, pcHide, pcOnly, shopAirImg, voiceIcon {
+tdiv, img, img2, shopAirImg, voiceIcon {
   input-transparent: yes;
   if_target_pc:@target_pc;
 }
@@ -236,18 +236,6 @@ imgSelectable:hover {
 }
 imgSelectable[selected=yes] {
   background-color:@listboxSelOptionColor;
-}
-
-imgUsercardMedal {
-  size:@usercardMedalRibbonW, @usercardMedalRibbonW;
-}
-imgUsercardMedal > img {
-  size:@usercardMedalSize, @usercardMedalSize;
-  background-svg-size:@usercardMedalSize, @usercardMedalSize;
-}
-imgUsercardRibbon, imgUsercardRibbon > img {
-  size:@usercardRibbonW, @usercardRibbonH;
-  background-svg-size:@usercardRibbonW, @usercardRibbonH;
 }
 
 banImg {
