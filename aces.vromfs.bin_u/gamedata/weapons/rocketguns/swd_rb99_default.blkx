@@ -20,11 +20,11 @@
     "caliber": 0.1778,
     "length": 3.66,
     "CxK": 1.225,
-    "wingAreaMult": 1.275,
-    "finsAoaHor": 0.268941,
-    "finsAoaVer": 0.268941,
-    "finsLatAccel": 42.2579,
-    "distFromCmToStab": 0.175,
+    "wingAreaMult": 1.745,
+    "finsAoaHor": 0.452936,
+    "finsAoaVer": 0.452936,
+    "finsLatAccel": 35.0,
+    "distFromCmToStab": 0.9,
     "mass": 156.4894,
     "massEnd": 140.3415,
     "massEnd1": 109.7694,
@@ -75,7 +75,7 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "effectOffset": [
-      -1.6,
+      -1.85,
       0.0,
       0.0
     ],
@@ -177,12 +177,22 @@
         ],
         "timeOut": 0.6,
         "baseIndSpeed": 1800.0,
-        "propNavMult": 4.0,
+        "propNavMult": 6.0,
         "reqAccelMax": 35.0,
-        "accelControlProp": 0.0086,
-        "accelControlIntg": 0.0565,
-        "accelControlDiff": 0.00025,
-        "accelControlIntgLim": 1.0
+        "pid0": {
+          "time": 2.5,
+          "prop": 0.000542,
+          "intg": 0.02081,
+          "diff": 0.000073,
+          "intgLim": 1.0
+        },
+        "pid1": {
+          "time": 3.5,
+          "prop": 0.000542,
+          "intg": 0.02081,
+          "diff": 0.000028,
+          "intgLim": 1.0
+        }
       },
       "table0": {
         "altitude": 1000.0,

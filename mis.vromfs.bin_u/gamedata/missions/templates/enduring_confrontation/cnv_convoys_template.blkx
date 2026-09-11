@@ -1722,7 +1722,7 @@
             "var": "cnv_t1_modern_aaa_to_spawn"
           },
           "varSetString": {
-            "value": "cnv_t1_convoy_modrn_aaa_",
+            "value": "cnv_t1_convoy_modern_aaa_",
             "var": "cnv_t1_spawn_sub_unit_name"
           },
           "varAddString": {
@@ -17039,8 +17039,28 @@
           }
         },
         "actions": {
-          "comment": {
-            "value": "zona sushchestvuet. poluchaem indeks zony"
+          "comment": [
+            {
+              "value": "zona sushchestvuet. poluchaem indeks zony"
+            },
+            {
+              "value": "dobavlyaem k imenu zony _used chtoby ne sluchilos' povtornoj proverki"
+            },
+            {
+              "value": "zapuskaem proverki"
+            }
+          ],
+          "varGetIntFromString": {
+            "value": "@cnv_battle_t1_own_area_name",
+            "var": "cnv_battle_t1_zone_idx"
+          },
+          "varAddString": {
+            "value": "_used",
+            "digits": 0,
+            "var": "cnv_battle_t1_own_area_name"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_frontline_start"
           }
         },
         "else_actions": {
@@ -17049,6 +17069,341 @@
           },
           "triggerDisable": {
             "target": "cnv_battle_t1_army_check"
+          }
+        }
+      },
+      "cnv_battle_t1_frontline_start": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": [
+            {
+              "value": "zapominaem indeks zony"
+            },
+            {
+              "value": "nachinaem rotaciyu poiska predela poiska"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "cnv_battle_t1_limit_zone_idx",
+            "input_var": "cnv_battle_t1_zone_idx"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_limit_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_battle_t1_limit_restart": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": {
+            "value": "sleduyushchaya iteraciya cikla"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_limit_rotator"
+          }
+        },
+        "else_actions": {}
+      },
+      "cnv_battle_t1_limit_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "cnv_battle_t1_limit_zone_idx",
+            "value": 0,
+            "comparasion_func": "more",
+            "var_value_other": "flt_zones_in_col"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "prodolzhaem umen'shat'"
+            },
+            {
+              "value": "idem po ciklu"
+            }
+          ],
+          "varModify": {
+            "operator": "subAB",
+            "value": 1.0,
+            "var": "cnv_battle_t1_limit_zone_idx",
+            "use_variable": true,
+            "var_value": "flt_zones_in_col"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_limit_restart"
+          }
+        },
+        "else_actions": {
+          "comment": [
+            {
+              "value": "dostigli predela. schitaem distanciyu do pravogo kraja ryada"
+            },
+            {
+              "value": "zapuskaem rotaciyu poiska frontlajna"
+            }
+          ],
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "cnv_battle_t1_check_zone_idx",
+              "input_var": "flt_zones_in_col"
+            },
+            {
+              "value": 0,
+              "var": "cnv_battle_t1_limit_zone_idx",
+              "input_var": "cnv_battle_t1_check_zone_idx"
+            },
+            {
+              "value": 0,
+              "var": "cnv_battle_t1_zone_cur_diff_idx"
+            }
+          ],
+          "varModify": [
+            {
+              "operator": "subAB",
+              "value": 1.0,
+              "var": "cnv_battle_t1_check_zone_idx",
+              "use_variable": true,
+              "var_value": "cnv_battle_t1_limit_zone_idx"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "cnv_battle_t1_check_zone_idx"
+            }
+          ],
+          "triggerEnable": {
+            "target": "cnv_battle_t1_frontline_rotator"
+          }
+        }
+      },
+      "cnv_battle_t1_frontline_rotator": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "cnv_battle_t1_zone_cur_diff_idx",
+            "value": 0,
+            "comparasion_func": "less",
+            "var_value_other": "cnv_battle_t1_limit_zone_idx"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "mozhno proveryat' armiyu zony"
+            },
+            {
+              "value": "schitaem indeks zony"
+            },
+            {
+              "value": "poluchaem imya zony"
+            },
+            {
+              "value": "proveryaem chto zona sushchestvuet"
+            }
+          ],
+          "varModify": [
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "cnv_battle_t1_zone_cur_diff_idx"
+            },
+            {
+              "operator": "add",
+              "value": 1.0,
+              "var": "cnv_battle_t1_check_zone_idx",
+              "use_variable": true,
+              "var_value": "cnv_battle_t1_zone_cur_diff_idx"
+            }
+          ],
+          "varSetInt": {
+            "value": 0,
+            "var": "cnv_battle_t1_check_zone_idx",
+            "input_var": "cnv_battle_t1_zone_idx"
+          },
+          "varSetString": {
+            "value": "flt_area_",
+            "var": "cnv_battle_t1_check_zone_name"
+          },
+          "varAddString": {
+            "value": "@cnv_battle_t1_check_zone_idx",
+            "digits": 2,
+            "var": "cnv_battle_t1_check_zone_name"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_frontline_check_zone"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "vyshli za predel. ne udalos' startovat' bitvu"
+          },
+          "triggerDisable": {
+            "target": "cnv_battle_t1_frontline_rotator"
+          }
+        }
+      },
+      "cnv_battle_t1_frontline_check_zone": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": {
+            "target": "@cnv_battle_t1_check_zone_name",
+            "type": "area"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "zona est', sobiraem peremennuyu, hranyashchuyu armiyu"
+            },
+            {
+              "value": "poluchaem znachenie armii"
+            },
+            {
+              "value": "proveryaem armii"
+            }
+          ],
+          "varSetString": {
+            "value": "",
+            "var": "cnv_battle_t1_check_army_var_name",
+            "input_var": "cnv_battle_t1_check_zone_name"
+          },
+          "varAddString": {
+            "value": "_state",
+            "digits": 0,
+            "var": "cnv_battle_t1_check_army_var_name"
+          },
+          "varSetInt": {
+            "value": 0,
+            "var": "cnv_battle_t1_check_army_value",
+            "input_var": "@cnv_battle_t1_check_army_var_name"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_frontline_check_army"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "zony net. bitvu ne udalos' startovat'"
+          },
+          "triggerDisable": {
+            "target": "cnv_battle_t1_frontline_check_zone"
+          }
+        }
+      },
+      "cnv_battle_t1_frontline_check_army": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "cnv_battle_t1_check_army_value",
+            "value": 2,
+            "comparasion_func": "equal"
+          }
+        },
+        "actions": {
+          "comment": [
+            {
+              "value": "u zony armiya protivnika. sobiraem imya peremennoj heat"
+            },
+            {
+              "value": "naznachaem heat dostatochnyj dlya ataki armiej 2"
+            },
+            {
+              "value": "bol'she nichego ne delaem"
+            }
+          ],
+          "varSetString": {
+            "value": "",
+            "var": "cnv_battle_t1_heat_var_name",
+            "input_var": "cnv_battle_t1_check_zone_name"
+          },
+          "varAddString": {
+            "value": "_heat",
+            "digits": 0,
+            "var": "cnv_battle_t1_heat_var_name"
+          },
+          "varSetInt": {
+            "value": 20000,
+            "var": "@cnv_battle_t1_heat_var_name"
+          }
+        },
+        "else_actions": {
+          "comment": {
+            "value": "armiya ne 2. idem dal'she"
+          },
+          "triggerEnable": {
+            "target": "cnv_battle_t1_frontline_rotator"
           }
         }
       },

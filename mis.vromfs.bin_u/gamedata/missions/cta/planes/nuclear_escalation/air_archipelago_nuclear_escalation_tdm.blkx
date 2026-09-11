@@ -1107,7 +1107,14 @@
             "place_to_respawn": "t2_tactical_missile_spawn_area_03",
             "cycle_respawn": true
           }
-        ]
+        ],
+        "unitSetProperties": {
+          "object": [
+            "t1_tactical_missile_launcher_squad",
+            "t2_tactical_missile_launcher_squad"
+          ],
+          "movementTraceRI": true
+        }
       },
       "else_actions": {}
     },
@@ -1367,6 +1374,7 @@
             "t1_mlrs_squad",
             "t2_mlrs_squad"
           ],
+          "movementTraceRI": true,
           "targetChangeInterval": 5.0,
           "targetChangeProb": 1.0
         }

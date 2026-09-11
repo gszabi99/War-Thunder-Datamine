@@ -54,46 +54,14 @@
   "type": "typeTankDestroyer",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull": {
       "superstructure_front_dm": {
-        "armorThickness": 75.0
-      },
-      "body_side_dm": {
-        "armorThickness": 60.0
-      },
-      "body_front_dm": {
-        "armorThickness": 60.0
-      },
-      "body_bottom_dm": {
-        "armorThickness": 20.0
-      },
-      "body_back_dm": {
-        "armorThickness": 45.0
-      },
-      "superstructure_back_dm": {
-        "armorThickness": 45.0
-      },
-      "superstructure_side_dm": {
-        "armorThickness": 45.0
-      },
-      "superstructure_top_dm": {
-        "armorThickness": 20.0
-      },
-      "ex_armor_02_dm": {
-        "armorThickness": 20.0
-      },
-      "ex_armor_01_dm": {
-        "armorThickness": 20.0
-      },
-      "ex_decor_04_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 75.0,
+        "variableThickness": true
       },
       "composite_armor_hull_01_dm": {
         "armorThickness": 5.0,
@@ -107,7 +75,8 @@
         "variableThickness": true
       },
       "turret_commander_dm": {
-        "armorThickness": 78.0
+        "armorThickness": 70.0,
+        "variableThickness": true
       },
       "turret_01_top_dm": {
         "armorThickness": 30.0
@@ -1896,7 +1865,7 @@
         0.0,
         0.7
       ],
-      "AdvancedMass": true,
+      "AdvancedMass": false,
       "trackMass": 2500.0
     },
     "tracks": {

@@ -15,19 +15,16 @@
     "useStartSpeed": true,
     "endSpeed": 2000.0,
     "price": 3000.0,
-    "statType": [
-      "hydra",
-      "hydra"
-    ],
+    "statType": "hydra",
     "maxDeltaAngle": 0.0,
     "caliber": 0.1778,
     "length": 3.66,
     "CxK": 1.225,
-    "wingAreaMult": 1.225,
-    "finsAoaHor": 0.268941,
-    "finsAoaVer": 0.268941,
-    "finsLatAccel": 42.2579,
-    "distFromCmToStab": 0.175,
+    "wingAreaMult": 1.7,
+    "finsAoaHor": 0.452936,
+    "finsAoaVer": 0.452936,
+    "finsLatAccel": 35.0,
+    "distFromCmToStab": 0.9,
     "mass": 161.4789,
     "massEnd": 110.223,
     "timeFire": 7.75,
@@ -43,7 +40,7 @@
     "guidanceType": "radar",
     "guidanceSfx": "alarm_spin_scan",
     "explosiveType": "pbxn_110",
-    "explosiveMass": 8.6183,
+    "explosiveMass": 7.166759,
     "warheadMass": 18.14369,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -75,7 +72,7 @@
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
     "effectOffset": [
-      -1.6,
+      -1.85,
       0.0,
       0.0
     ],
@@ -159,10 +156,10 @@
       },
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 22.5,
+        "loftElevation": 22.0,
         "loftTargetElevation": -3.5,
-        "loftAngleToAccelMult": 20.0,
-        "loftTargetOmegaMax": 0.75,
+        "loftAngleToAccelMult": 5.0,
+        "loftTargetOmegaMax": 0.95,
         "timeToHitToGain0": [
           10.0,
           1.0
@@ -177,12 +174,22 @@
         ],
         "timeOut": 0.6,
         "baseIndSpeed": 1800.0,
-        "propNavMult": 4.0,
+        "propNavMult": 6.0,
         "reqAccelMax": 35.0,
-        "accelControlProp": 0.0091,
-        "accelControlIntg": 0.051,
-        "accelControlDiff": 0.00025,
-        "accelControlIntgLim": 1.0
+        "pid0": {
+          "time": 2.5,
+          "prop": 0.000532,
+          "intg": 0.017227,
+          "diff": 0.000095,
+          "intgLim": 1.0
+        },
+        "pid1": {
+          "time": 3.5,
+          "prop": 0.000532,
+          "intg": 0.017227,
+          "diff": 0.000023,
+          "intgLim": 1.0
+        }
       },
       "table0": {
         "altitude": 1000.0,
