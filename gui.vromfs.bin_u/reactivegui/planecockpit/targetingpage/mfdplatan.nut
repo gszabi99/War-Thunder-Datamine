@@ -279,238 +279,242 @@ let localTime = @() {
   }
 }
 
-let labels = {
-  size = FLEX
-  children = [
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [5, ph(23)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Т\nВ"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_FRAME
-      color = baseColor
-      size = const [pw(3), ph(10)]
-      pos = const [2, ph(22)]
-      borderWidth = 2
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [5, ph(36)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Т\nП"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [5, ph(50)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Г\n1"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [5, ph(64)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Г\n2"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [5, ph(76)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "К\nА\nИ"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [5, ph(89)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "П\nД\nВ"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [pw(97), ph(8)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Т\nМ\nС"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [pw(97), ph(20)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "П\nД\nЦ"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [pw(97), ph(48)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "С\nТ\nБ"
-      behavior = Behaviors.TextArea
-    }
-    @(){
-      watch = AimLockValid
-      size = FLEX
-      children = AimLockValid.get() ? {
+function labels(isChina) {
+  return {
+    size = FLEX
+    children = [
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [5, ph(23)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "电\n视" : "Т\nВ"
+        behavior = Behaviors.TextArea
+      }
+      {
         rendObj = ROBJ_FRAME
         color = baseColor
-        size = const [pw(3), ph(13)]
-        pos = const [pw(96.5), ph(46)]
+        size = const [pw(3), ph(10)]
+        pos = const [2, ph(22)]
         borderWidth = 2
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [5, ph(36)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "红\n外" : "Т\nП"
+        behavior = Behaviors.TextArea
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [5, ph(50)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "组\n1" : "Г\n1"
+        behavior = Behaviors.TextArea
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [5, ph(64)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "组\n2" : "Г\n2"
+        behavior = Behaviors.TextArea
+      }
+      !isChina ? {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [5, ph(76)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = "К\nА\nИ"
+        behavior = Behaviors.TextArea
       } : null
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [pw(97), ph(62)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Т\nЧ\nН"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [pw(97), ph(76)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "М\nТ\nБ"
-      behavior = Behaviors.TextArea
-    }
-    {
-      rendObj = ROBJ_TEXTAREA
-      pos = const [pw(97), ph(89)]
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "С\nК\nН"
-      behavior = Behaviors.TextArea
-    }
-    {
-      pos = const [pw(20), ph(97)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "А С"
-    }
-    {
-      pos = const [pw(32), ph(97)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "Р С П"
-    }
-    {
-      pos = const [pw(46), ph(97)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "У П У"
-    }
-    {
-      pos = const [pw(60), ph(97)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "А Л О"
-    }
-    {
-      pos = const [pw(75), ph(97)]
-      rendObj = ROBJ_TEXT
-      color = baseColor
-      font = Fonts.ils31
-      fontSize = 15
-      fontFx = FFT_GLOW
-      fontFxFactor = 1
-      fontFxColor = baseColor
-      text = "П Ш"
-    }
-  ]
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [5, ph(89)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "远\n搜" : "П\nД\nВ"
+        behavior = Behaviors.TextArea
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [pw(97), ph(8)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "机\n位" : "Т\nМ\nС"
+        behavior = Behaviors.TextArea
+      }
+      !isChina ? {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [pw(97), ph(20)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = "П\nД\nЦ"
+        behavior = Behaviors.TextArea
+      } : null
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [pw(97), ph(48)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "稳\n定" : "С\nТ\nБ"
+        behavior = Behaviors.TextArea
+      }
+      @(){
+        watch = AimLockValid
+        size = FLEX
+        children = AimLockValid.get() ? {
+          rendObj = ROBJ_FRAME
+          color = baseColor
+          size = const [pw(3), ph(13)]
+          pos = const [pw(96.5), ph(46)]
+          borderWidth = 2
+        } : null
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [pw(97), ph(62)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "精\n确" : "Т\nЧ\nН"
+        behavior = Behaviors.TextArea
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [pw(97), ph(76)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "燃\n油" : "М\nТ\nБ"
+        behavior = Behaviors.TextArea
+      }
+      {
+        rendObj = ROBJ_TEXTAREA
+        pos = const [pw(97), ph(89)]
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "检\n测" : "С\nК\nН"
+        behavior = Behaviors.TextArea
+      }
+      {
+        pos = const [pw(20), ph(97)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = isChina ? "自跟" : "А С"
+      }
+      !isChina ? {
+        pos = const [pw(32), ph(97)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = "Р С П"
+      } : null
+      !isChina ? {
+        pos = const [pw(46), ph(97)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = "У П У"
+      } : null
+      !isChina ? {
+        pos = const [pw(60), ph(97)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = "А Л О"
+      } : null
+      !isChina ? {
+        pos = const [pw(75), ph(97)]
+        rendObj = ROBJ_TEXT
+        color = baseColor
+        font = Fonts.ils31
+        fontSize = 15
+        fontFx = FFT_GLOW
+        fontFxFactor = 1
+        fontFxColor = baseColor
+        text = "П Ш"
+      } : null
+    ]
+  }
 }
 
-let shellName = @() {
-  watch = [CurWeaponName, RocketMode]
-  size = SIZE_TO_CONTENT
-  rendObj = ROBJ_TEXT
-  pos = const [pw(80), ph(90)]
-  color = baseColor
-  fontSize = 20
-  font = Fonts.ils31
-  text = RocketMode.get() ? "НАР" : (CurWeaponName.get() && CurWeaponName.get() != "" ? loc_checked(CurWeaponName.get()) : "")
+function shellName(isChina) {
+  return @() {
+    watch = [CurWeaponName, RocketMode]
+    size = SIZE_TO_CONTENT
+    rendObj = ROBJ_TEXT
+    pos = const [pw(80), ph(90)]
+    color = baseColor
+    fontSize = 20
+    font = Fonts.ils31
+    text = RocketMode.get() ? (isChina ? "火箭" : "НАР") : (CurWeaponName.get() && CurWeaponName.get() != "" ? loc_checked(CurWeaponName.get()) : "")
+  }
 }
 
 let timerValue = Computed(@() TimeBeforeBombRelease.get().tointeger())
@@ -550,7 +554,7 @@ let timerCCRP = @(){
 }
 
 
-function platan(width, height) {
+function platan(width, height, isChina = false) {
   return {
     size = [width, height]
     children = [
@@ -559,8 +563,8 @@ function platan(width, height) {
       turretPitch
       targetDistance
       localTime
-      labels
-      shellName
+      labels(isChina)
+      shellName(isChina)
       timerCCRP
     ]
   }

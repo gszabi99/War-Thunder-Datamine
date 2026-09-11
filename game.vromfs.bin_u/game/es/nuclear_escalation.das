@@ -46,7 +46,8 @@ def create_unit(template_name : string;
                 death_substract_tickets : int = 5;
                 should_target_aaa : bool = false;
                 target__tag : das_string const? = null;
-                is_restoring_active : bool = true)
+                is_restoring_active : bool = true;
+                move_sys_trace_ri : bool = true)
   if template_name.empty()
     logerr("Empty template name for unit creation")
     return INVALID_ENTITY_ID
@@ -89,6 +90,8 @@ def create_unit(template_name : string;
       init |> set("on_death_substract_team_tickets_num", death_substract_tickets)
       if !is_restoring_active
         init |> set("restore_unit_by_timer__isRestoringActive", false)
+      if move_sys_trace_ri
+        init |> set("setting__moveSysTraceRI", true)
       if target__tag != null
         init |> set("nuclear_escalation_target__tag", *target__tag)
       init |> set("nuclear_escalation_spaa_radar_on__threatSearchRad", settings_obj?.threatSearchRad ?? 20000.)
@@ -788,7 +791,7 @@ def units_spawn_on_init_es(evt : Event;
           if !posName.empty()
             nextNameSearchIndex[posName] = startIdx + 1
         let unitEid = create_unit(templateName, obj, transform * tm, team, true, 1., obj?.death_substract_tickets ?? 5,
-          false, nuclear_escalation_target__tag, shouldRestoreSpawnedUnitsByTimer)
+          false, nuclear_escalation_target__tag, shouldRestoreSpawnedUnitsByTimer, false)
         if unitEid != INVALID_ENTITY_ID
           units_spawn_on_init__units |> push(unitEid)
 

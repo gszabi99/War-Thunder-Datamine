@@ -83,6 +83,7 @@ let mfdCameraSetting = Watched({
   isOraoCam = false
   isB52hEvs = false
   isYak130Kab = false
+  isChina = false
   lineWidthScale = 1.0
   fontScale = 1.0
 })
@@ -107,6 +108,7 @@ function mfdCameraSettingUpd(blk) {
     isOraoCam = blk.getBool("mfdCamOrao", false)
     isB52hEvs = blk.getBool("mfdCamB52hEvs", false)
     isYak130Kab = blk.getBool("mfdCamYak130Kab", false)
+    isChina = blk.getBool("chinaLang", false)
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
@@ -118,7 +120,7 @@ function mfdCameraSettingUpd(blk) {
 
 let planeMfdCamera = @(width, height) function() {
   let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isMig35Ols, isDamocles, isLitening2,
-    isMi35, isMi35en, isAtlis2, isAtflir, isEurocopter, isLantirn, isF4Agm65, isOraoCam, isB52hEvs, isYak130Kab} = mfdCameraSetting.get()
+    isMi35, isMi35en, isAtlis2, isAtflir, isEurocopter, isLantirn, isF4Agm65, isOraoCam, isB52hEvs, isYak130Kab, isChina} = mfdCameraSetting.get()
   return {
     watch = mfdCameraSetting
     children = [
@@ -126,7 +128,7 @@ let planeMfdCamera = @(width, height) function() {
       isShkvalKa52 ? shkvalKa52.root(width, height) :
       isTads ? tads.root(width, height, false) :
       isTadsApache ? tads.root(width, height, true) :
-      isPlatan ? platan(width, height) :
+      isPlatan ? platan(width, height, isChina) :
       isMig35Ols ? mig35Ols(width, height) :
       isDamocles ? damocles(width, height) :
       isLitening2 ? litening2(width, height, fontScale, lineWidthScale) :

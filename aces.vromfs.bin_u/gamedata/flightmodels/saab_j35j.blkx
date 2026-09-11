@@ -2566,6 +2566,10 @@
         "blk": "gameData/flightModels/weaponPresets/saab_j35j_rb27.blk"
       },
       {
+        "name": "saab_j35j_rb28",
+        "blk": "gameData/flightModels/weaponPresets/saab_j35j_rb28.blk"
+      },
+      {
         "name": "saab_j35j_135mm_rockets",
         "blk": "gameData/flightModels/weaponPresets/saab_j35j_135mm_rockets.blk"
       },
@@ -2771,6 +2775,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_air_ir_large",
+            "name": "rb28",
+            "reqModification": "swe_rb28",
+            "ShowNodes": {
+              "node": "rocket_pylon3"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb28.blk",
+              "emitter": "rb_27_missile_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_air_midrange",
             "name": "rb27",
             "reqModification": "swe_rb27",
@@ -2926,6 +2946,22 @@
             }
           },
           {
+            "iconType": "missile_air_to_air_ir_large",
+            "name": "rb28",
+            "reqModification": "swe_rb28",
+            "ShowNodes": {
+              "node": "rocket_pylon7"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb28.blk",
+              "emitter": "rb_27_missile_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "missile_air_to_air_midrange",
             "name": "rb27",
             "reqModification": "swe_rb27",
@@ -2990,6 +3026,22 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
               "emitter": "rocket_aim9b_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_ir_large",
+            "name": "rb28",
+            "reqModification": "swe_rb28",
+            "ShowNodes": {
+              "node": "rocket_pylon8"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb28.blk",
+              "emitter": "rb_27_missile_004",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3217,6 +3269,22 @@
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/swd_rb24j.blk",
               "emitter": "rocket_aim9b_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_ir_large",
+            "name": "rb28",
+            "reqModification": "swe_rb28",
+            "ShowNodes": {
+              "node": "rocket_pylon4"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/swd_rb28.blk",
+              "emitter": "rb_27_missile_002",
               "bullets": 1,
               "external": true,
               "separate": true
@@ -3590,12 +3658,17 @@
     },
     "aden_new_gun": {
       "reqModification": "aden_belt_pack",
-      "tier": 3
+      "tier": 2
+    },
+    "swe_rb28": {
+      "tier": 3,
+      "modClass": "weapon",
+      "prevModification": "aden_new_gun"
     },
     "swe_rb27": {
       "tier": 4,
       "modClass": "weapon",
-      "prevModification": "aden_new_gun"
+      "reqModification": "swe_rb28"
     },
     "swe_m56d": {
       "modClass": "weapon",

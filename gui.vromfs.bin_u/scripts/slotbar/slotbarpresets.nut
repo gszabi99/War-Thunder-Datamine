@@ -25,7 +25,7 @@ let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById, getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList, getCrewsListByCountry, getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { slotbarPresetsByCountry, slotbarPresetsSeletected, slotbarPresetsVersion, isSlotbarPresetsLoading } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { createPresetTemplate, checkCanHaveEmptyPresets, reorderUnitsInPreset, updatePresetInfo, updatePresetFromSlotbar, createPresetFromSlotbar, getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
@@ -551,6 +551,16 @@ function onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, _selUni
   broadcastEvent("SlotbarPresetLoaded", { crewsChanged = true })
 }
 
+let isTrainCrewTasksApplied = @(tasksData) tasksData
+  .findvalue(@(task) (getCrewById(task.crewId)?.aircraft ?? "") != task.airName) == null
+
+function onTrainCrewTasksNotApplied() {
+  onTrainCrewTasksFail()
+  showInfoMsgBox(loc("msgbox/appearError"), "slotbar_preset_not_applied", true)
+  script_net_assert_once("slotbar_preset_not_applied",
+    "Crews train tasks succeeded, but crew units are not changed")
+}
+
 function loadSlotbarPreset(idx, countryId = null, skipGameModeSelect = false) {
   if (!canLoadSlotbarPreset())
     return false
@@ -630,7 +640,13 @@ function loadSlotbarPreset(idx, countryId = null, skipGameModeSelect = false) {
   suspendSlotbarUpdates()
   invalidateUnitsModificators(countryIdx)
   batchTrainCrew(tasksData, { showProgressBox = true },
-    @() onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset),
+    function() {
+      if (!isTrainCrewTasksApplied(tasksData)) {
+        onTrainCrewTasksNotApplied()
+        return
+      }
+      onTrainCrewTasksSuccess(idx, countryIdx, countryId, selCrewIdx, selUnitId, skipGameModeSelect, preset)
+    },
     onTrainCrewTasksFail)
 
   return true

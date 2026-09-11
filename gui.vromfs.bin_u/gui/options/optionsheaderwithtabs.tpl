@@ -2,13 +2,15 @@ tr {
   id:t='<<id>>'
   optContainer:t='yes'
   headerRow:t='yes'
+  <<#isHidden>>
+  display:t='hide'
+  <</isHidden>>
 
   td {
     cellType:t='left'
     width:t='0.50pw'
     optionBlockHeader {
       text:t='<<headerText>>'
-      margin-left:t='@blockInterval'
     }
   }
   td {

@@ -103,7 +103,6 @@ let Options = class (GenericOptionsModal) {
 
   stickyHeaders = null
   curStickyId = ""
-  curSysoptsObjY = 0
 
   function initScreen() {
     if (!this.optGroups)
@@ -619,7 +618,7 @@ let Options = class (GenericOptionsModal) {
     if (this.curStickyId != "") {
       let stickyObj = this.scene.findObject("stickyHeaderNest")
       this.guiScene.replaceContentFromText(stickyObj, "", 0, this)
-      this.scene.findObject(this.curStickyId).getClone(stickyObj, this)
+      this.cloneStickyHeader(stickyObj, this.curStickyId)
     }
   }
 
@@ -890,21 +889,24 @@ let Options = class (GenericOptionsModal) {
 
   function fillStickyHeaders(sysoptsObj) {
     this.stickyHeaders = []
-    local childrenOffsetY = null
+    let containerHeight = toPixels(this.guiScene, "1@optContainerHeight")
     let sysoptsObjY = sysoptsObj.getPos()[1]
     for (local i = 0; i < sysoptsObj.childrenCount(); i++) {
       let child = sysoptsObj.getChild(i)
       if (child?.headerRow != "yes")
         continue
 
-      if (childrenOffsetY == null)
-        childrenOffsetY = -toPixels(this.guiScene, "1@optContainerHeight")
-
       this.stickyHeaders.append({
         id = child.id
-        vertDiff = 2 * sysoptsObjY - child.getPos()[1] + childrenOffsetY
+        vertDiff = this.stickyHeaders.len() == 0 ? sysoptsObjY
+          : 2 * sysoptsObjY - child.getPos()[1] - containerHeight
       })
     }
+  }
+
+  function cloneStickyHeader(stickyNestObj, headerId) {
+    this.scene.findObject(headerId).getClone(stickyNestObj, this)
+    stickyNestObj.getChild(0).show(true)
   }
 
   function onUpdate(_obj, _dt) {
@@ -915,14 +917,10 @@ let Options = class (GenericOptionsModal) {
     if (this.stickyHeaders == null)
       this.fillStickyHeaders(sysoptsObj)
 
-    let sysoptsObjY = sysoptsObj.getPos()[1]
-    if (this.curSysoptsObjY == sysoptsObjY)
-      return
-
-    this.curSysoptsObjY = sysoptsObjY
-    local headerId = ""
+    let curSysoptsObjY = sysoptsObj.getPos()[1]
+    local headerId = this.stickyHeaders[0].id
     foreach (stickyHeader in this.stickyHeaders) {
-      if (sysoptsObjY >= stickyHeader.vertDiff)
+      if (curSysoptsObjY >= stickyHeader.vertDiff)
         break
 
       headerId = stickyHeader.id
@@ -932,8 +930,7 @@ let Options = class (GenericOptionsModal) {
     if (headerId != this.curStickyId) {
       this.curStickyId = headerId
       this.guiScene.replaceContentFromText(stickyObj, "", 0, this)
-      if (this.curStickyId != "")
-        this.scene.findObject(headerId).getClone(stickyObj, this)
+      this.cloneStickyHeader(stickyObj, headerId)
     }
   }
 }

@@ -12,8 +12,8 @@ from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_val
 from "%globalScripts/gameModeNativeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
-from "%scripts/mainmenu/secondGameModesPanel.nut" import setSecondGameModeActive, updateSecondGameModesPanel, isClassicGameModeEnabled
-from "%scripts/events/secondGameModesUtils.nut" import getJoinBlockReason, mainModePairs
+from "%scripts/mainmenu/secondGameModesPanel.nut" import setSecondGameModeActive, updateSecondGameModesPanel, deferNotifySecondGameModesStateChanges
+from "%scripts/events/secondGameModesUtils.nut" import getJoinBlockReason, mainModePairs, isClassicGameModeEnabled
 from "%scripts/unlocks/personalUnlocks.nut" import getNightBattlesUnlocks
 from "%scripts/rewards/awardsListWnd.nut" import openAwardsListWnd
 
@@ -165,7 +165,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
 
     this.initToBattleButton()
     this._lastGameModeId = getCurrentGameModeId()
-    this.setCurrentGameModeName()
+    this.setCurrentGameModeName(true)
     this.updateTopNoticesBlockPos()
 
     this.setCurQueue(findQueue({}, this.queueMask))
@@ -281,18 +281,18 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   }
 
   _lastGameModeId = null
-  function setGameMode(modeId) {
+  function setGameMode(modeId, forceUpdate = false) {
     let gameMode = getGameModeById(modeId)
     if (gameMode == null || modeId == this._lastGameModeId)
       return
     this._lastGameModeId = modeId
 
     this.onCountrySelectAction() 
-    this.setCurrentGameModeName()
+    this.setCurrentGameModeName(forceUpdate)
     this.reinitSlotbar()
   }
 
-  function setCurrentGameModeName() {
+  function setCurrentGameModeName(forceUpdateSecondModes = false) {
     if (!checkObj(this.gameModeChangeButtonObj))
       return
 
@@ -327,8 +327,11 @@ let InstantDomination = class (BaseGuiHandlerWT) {
       name != "" ? name : loc("mainmenu/gamemodesNotLoaded")
     )
 
-    if (secondGameModesObj)
+    if (forceUpdateSecondModes || (secondGameModesObj?.isValid() && !g_squad_manager.isSquadMember())) {
       updateSecondGameModesPanel(currentEvent, secondGameModesObj, this)
+      if (g_squad_manager.isSquadLeader())
+        deferNotifySecondGameModesStateChanges()
+    }
   }
 
   function updateUnseenGameModesCounter() {
@@ -342,6 +345,8 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   }
 
   function refreshSecondGameModesPanel(forceUpdate = false) {
+    if (g_squad_manager.isSquadMember() && !g_squad_manager.isSquadLeader())
+      return
     let secondGameModesObj = this.rootHandlerWeak?.scene.findObject("second_game_modes_nest")
     if (secondGameModesObj?.isValid())
       updateSecondGameModesPanel(getCurrentEvent(), secondGameModesObj, this, forceUpdate)
@@ -443,7 +448,7 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   }
 
   function onEventGameModesUpdated(_params) {
-    this.setGameMode(getCurrentGameModeId())
+    this.setGameMode(getCurrentGameModeId(), true)
     this.updateUnseenGameModesCounter()
     this.guiScene.performDelayed(this, function() {
       if (!this.isValid())
@@ -1457,6 +1462,16 @@ let InstantDomination = class (BaseGuiHandlerWT) {
   function onNightBattlesAdditionalAwardsBtn(_btn) {
     let unlocksList = getNightBattlesUnlocks()
     openAwardsListWnd(loc("gameMode/unique_themed_rewards"), unlocksList)
+  }
+
+  function onEventSubGameModesChanged(_p) {
+    if (!g_squad_manager.isSquadMember())
+      return
+    let secondGameModesObj = this.rootHandlerWeak?.scene.findObject("second_game_modes_nest")
+    if (!secondGameModesObj?.isValid())
+      return
+    let currentEvent = getCurrentEvent()
+    updateSecondGameModesPanel(currentEvent, secondGameModesObj, this)
   }
 
   onBackgroundModelHintTimer = @(obj, _dt) updateBackgroundModelHint(obj)

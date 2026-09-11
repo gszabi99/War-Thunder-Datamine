@@ -112,8 +112,8 @@ optionsBoxRightScroll[alignMode=left] {
 }
 
 optionsBoxRightScroll[hasStickyHeader=yes] {
-  max-height:ph - @optContainerHeight;
-  margin-top: @optContainerHeight;
+  max-height: ph - @optContainerHeight - @blockInterval;
+  margin-top: @optContainerHeight + @blockInterval;
 }
 
 optionsList {

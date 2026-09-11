@@ -14,6 +14,7 @@ from "%scripts/dagui_natives.nut" import gchat_is_connected, is_eac_inited, save
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState, squadStatusUpdateState, SQUAD_REQEST_TIMEOUT
 from "%scripts/utils_sa.nut" import gen_rnd_password
+from "%scripts/events/secondGameModesUtils.nut" import getSecondGameModesForSquadLeader
 
 let { joinSquadRoom, leaveSquadRoom, isSquadRoomJoined } = require("%scripts/chat/squadChatRoom.nut")
 
@@ -61,7 +62,7 @@ let { isInSessionRoom, getSessionLobbyRoomId, canInviteIntoSession } = require("
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getEvent } = require("%scripts/events/eventsState.nut")
-let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId, getCurrentEvent } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
@@ -83,6 +84,7 @@ enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
   DATA_UPDATED = "SquadDataUpdated"
   SET_READY = "SquadSetReady"
+  MEMBER_ADDED = "SquadMemberAdded"
   STATUS_CHANGED = "SquadStatusChanged"
   PLAYER_INVITED = "SquadPlayerInvited"
   INVITES_CHANGED = "SquadInvitesChanged"
@@ -91,6 +93,7 @@ enum squadEvent {
   NEW_APPLICATIONS = "SquadHasNewApplications"
   PROPERTIES_CHANGED = "SquadPropertiesChanged"
   LEADERSHIP_TRANSFER = "SquadLeadershipTransfer"
+  SUBGAMEMODES_CHANGED = "SubGameModesChanged"
 }
 
 enum msquadErrorId {
@@ -498,6 +501,15 @@ g_squad_manager = {
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
+  function updateLeaderSubGameModes() {
+    let modes = getSecondGameModesForSquadLeader(getCurrentEvent())
+    let squadData = getSquadData()
+    if (u.isEqual(squadData.subGameModes, modes))
+      return false
+    updSquadData("subGameModes", modes)
+    return true
+  }
+
   function updateLeaderData(isActualBR = true) {
     if (!g_squad_manager.isSquadLeader())
       return
@@ -508,6 +520,7 @@ g_squad_manager = {
 
     updSquadData("leaderBattleRating", isActualBR ? battleRating.recentBR.get() : 0)
     updSquadData("leaderGameModeId", isActualBR ? battleRating.recentBrGameModeId.get() : currentGameModeId)
+    this.updateLeaderSubGameModes()
   }
 
   function updateCurrentWWOperation() {
@@ -1083,6 +1096,7 @@ g_squad_manager = {
     updSquadData("psnSessionId", "")
     updSquadData("leaderBattleRating", 0)
     updSquadData("leaderGameModeId", "")
+    updSquadData("subGameModes", null)
     g_squad_manager.setMaxSquadSize(getSmData().COMMON_SQUAD_SIZE)
 
     updSmData("lastUpdateStatus", squadStatusUpdateState.NONE)
@@ -1186,6 +1200,7 @@ g_squad_manager = {
       g_squad_manager.denyAllAplication()
 
     broadcastEvent(squadEvent.STATUS_CHANGED)
+    broadcastEvent(squadEvent.MEMBER_ADDED)
     broadcastEvent(squadEvent.DATA_UPDATED)
   }
 
@@ -1267,6 +1282,15 @@ g_squad_manager = {
         addPopup(loc("squad/name"), loc("squad/wait_until_battle_end"))
     }
 
+    local isSubGameModesUpdated = false
+    if (!g_squad_manager.isSquadLeader()) {
+      let oldSubModes = getSquadData()?.subGameModes
+      if (!u.isEqual(resSquadData?.data.subGameModes, oldSubModes)) {
+        updSquadData("subGameModes", resSquadData?.data.subGameModes)
+        isSubGameModesUpdated = true
+      }
+    }
+
     g_squad_manager.joinSquadChatRoom()
 
     if (g_squad_manager.isSquadLeader() && !g_squad_manager.readyCheck())
@@ -1289,6 +1313,9 @@ g_squad_manager = {
     let currentCrewsReadyness = lastCrewsReadyness || g_squad_manager.isSquadLeader()
     if (lastCrewsReadyness != currentCrewsReadyness || !alreadyInSquad)
       g_squad_manager.setCrewsReadyFlag(currentCrewsReadyness)
+
+    if (isSubGameModesUpdated)
+      broadcastEvent(squadEvent.SUBGAMEMODES_CHANGED)
   }
 
   function _parseCustomSquadData(data) {
@@ -1446,6 +1473,13 @@ g_squad_manager = {
   function onEventEventsDataUpdated(_params) {
     g_squad_manager.updateLeaderData(false)
     setSquadData()
+  }
+
+  function onEventSecondGameModesChanged(_p) {
+    if (!g_squad_manager.isSquadLeader())
+      return
+    if (this.updateLeaderSubGameModes())
+      setSquadData()
   }
 }
 

@@ -32,6 +32,7 @@ let squadData = persist("squadData", @() {
   psnSessionId = ""
   leaderBattleRating = 0
   leaderGameModeId = ""
+  subGameModes = null
 })
 let processSquadDataPresence = @(func) func(squadData.presence)
 let processSquadDataProperties = @(func) func(squadData.properties)

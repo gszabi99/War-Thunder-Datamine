@@ -4,14 +4,16 @@ from "%scripts/teamsConsts.nut" import Team
 from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "%globalScripts/unitTypeConsts.nut" import ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_SHIP, ES_UNIT_TYPE_BOAT
 from "%scripts/matching/matchingGameModes.nut" import getGameModeWithTagContains, getGameModesByEconomicName, SMALL_TEAMS_GAME_MODE_TAG_PREFIX, BULLET_HELL_GAME_MODE_TAG_PREFIX, NAVAL_EC_AB_GAME_MODE_TAG_PREFIX, NAVAL_EC_RB_GAME_MODE_TAG_PREFIX, NUCLEAR_ESCALATION_GAME_MODE_TAG_PREFIX
-from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_AB_BATTLES, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_RB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_AB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_RB_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_CLASSIC_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_NUCLEAR_ESCALATION_BATTLES
+from "%scripts/options/optionsExtNames.nut" import OPTIONS_MODE_GAMEPLAY, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_AB_BATTLES, USEROPT_CAN_QUEUE_TO_CLASSIC_NAVAL_RB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_AB_BATTLES, USEROPT_CAN_QUEUE_TO_NAVAL_EC_RB_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_CLASSIC_BATTLES, USEROPT_CAN_QUEUE_TO_AIR_RB_NUCLEAR_ESCALATION_BATTLES, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES
+from "%scripts/events/eventInfo.nut" import hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName
+from "%scripts/options/options.nut" import get_gui_option_in_mode, set_gui_option_in_mode
+from "%scripts/slotbar/playerCurUnit.nut" import getPlayerCurUnit
+from "%scripts/battleRating.nut" import recentBR, getRecentSquadMrank
+from "%scripts/squads/squadState.nut" import isInSquad, getMembers
 
 let { events } = require("%scripts/events/eventsManager.nut")
-let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getTeamData, getAlowedCrafts, getForbiddenCrafts, isUnitAllowedByTeamData } = require("%scripts/events/eventTeamsInfo.nut")
 let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { isInSquad, getMembers } = require("%scripts/squads/squadState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
@@ -392,28 +394,272 @@ function getGmsTagRequests(event, modePairs) {
   return res
 }
 
+function getCurRank(event) {
+  return isInSquad()
+    ? getRecentSquadMrank()
+    : getPlayerCurUnit()?.getEconomicRank(events.getEDiffByEvent(event))
+}
+
+
+
+function isPresentNightMode(event) {
+  return hasNightGameModes(event)
+}
+
+function isNightModeSelected(_event) {
+  return get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false)
+}
+
+function isNightModeAvalible(event) {
+  let rank = getCurRank(event)
+  return rank != null && rank >= (event?.minMRankForNightBattles ?? 0)
+}
+
+function isNightModeActive(event) {
+  if (!isNightModeAvalible(event))
+    return false
+  return isNightModeSelected(event)
+}
+
+function getNightModeDetails(event) {
+  if (!isNightModeAvalible(event))
+    return loc("mainmenu/requiredBR", { br = format("%.1f", calcBattleRatingFromRank(event.minMRankForNightBattles)) })
+
+  return null
+}
+
+function setNightBattlesActive(isActive) {
+  set_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, isActive, OPTIONS_MODE_GAMEPLAY)
+}
+
+
+
+function isSmallTeamsModeSelected(_event) {
+  return get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
+}
+
+function isSmallTeamsModeAvalible(event) {
+  let curUnit = getPlayerCurUnit()
+  if (!curUnit || !curUnit.isAir())
+    return false
+
+  return getCurRank(event) >= (event?.minMRankForSmallTeamsBattles ?? 0)
+}
+
+function isSmallTeamsModeActive(event) {
+  if (!isSmallTeamsModeAvalible(event))
+    return false
+  return isSmallTeamsModeSelected(event)
+}
+
+function getSmallTeamsDetails(event) {
+  if (!isSmallTeamsModeAvalible(event))
+    return loc("mainmenu/requiredBR", { br = format("%.1f", calcBattleRatingFromRank(event.minMRankForSmallTeamsBattles)) })
+
+  return null
+}
+
+function isSmallTeamsModePresent(event) {
+  return hasSmallTeamsGameModes(event)
+}
+
+function setSmallTeamsModeActive(isActive) {
+  set_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, isActive, OPTIONS_MODE_GAMEPLAY)
+}
+
+
+
+function isBulletHellModeSelected(_event) {
+  return get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
+}
+
+function isBulletHellModeActive(event) {
+  if (!isBulletHellAvailable(event))
+    return false
+  return isBulletHellModeSelected(event)
+}
+
+function getBulletHellBattleRating(event) {
+  let mrank = getBulletHellMrank(event)
+  return mrank < 0 ? 0 : calcBattleRatingFromRank(mrank)
+}
+
+function getBulletHellDetails(event) {
+  if (isBulletHellAvailable(event))
+    return null
+
+  let text = loc("mainmenu/requiredAircraftCountWithBR", getBulletHellRequirement(event))
+  return getSquadOnlineMembers().len() > 0
+    ? " ".concat(text, loc("mainmenu/forEachSquadMember"))
+    : text
+}
+
+function setBulletHellModeActive(isActive) {
+  set_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_BULLET_HELL_BATTLES, isActive, OPTIONS_MODE_GAMEPLAY)
+}
+
+
+
+function isClassicGameModeEnabled(event) {
+  return mainModePairs.findvalue(@(cfg)
+    hasGameModeByTagPrefix(event, cfg.tagPrefix) && !isClassicModeOn(cfg)) == null
+}
+
+let getSubmodeDetails = @(event, cfg)
+  cfg.isSubmodeAvailable(event, cfg) ? null : cfg.getSubmodeRequirementText(event, cfg)
+
+function setClassicModeActive(isActive, event, cfg) {
+  if (!isActive && !canQueueWithoutClassic(event, cfg)) {
+    showInfoMsgBox(loc("mainmenu/oneMainModeRequired"))
+    return
+  }
+  set_gui_option_in_mode(cfg.classicUseropt, isActive, OPTIONS_MODE_GAMEPLAY)
+}
+
+function setSubModeActive(isActive, _event, cfg) {
+  if (!isActive && !isClassicModeOn(cfg)) {
+    showInfoMsgBox(loc("mainmenu/oneMainModeRequired"))
+    return
+  }
+  set_gui_option_in_mode(cfg.submodeUseropt, isActive, OPTIONS_MODE_GAMEPLAY)
+}
+
+let makeClassicModeEntry = @(cfg) {
+  modeId = cfg.classicModeId
+  isMainMode = true
+  name = "#mode/classic"
+  isSelected = @(_event) isClassicModeOn(cfg)
+  isPresent = @(event) hasGameModeByTagPrefix(event, cfg.tagPrefix)
+  setActiveWithEvent = @(isActive, event = null) setClassicModeActive(isActive, event, cfg)
+  getTooltipText = @(_event) loc(cfg.classicTooltipLocKey)
+}
+
+let navalEcPresentation = {
+  icon = "#ui/gameuiskin#ic_confrontation.svg"
+  iconSize = "32@sf/@pf, 24@sf/@pf"
+  name = "#missions/I2M"
+  getTooltipText = @(event, cfg) getNavalEcDesc(event, cfg.tagPrefix)
+  getBattleRating = @(event, cfg) calcBattleRatingFromRank(getNavalEcMrank(event, cfg.tagPrefix))
+}
+
+let submodeModePresentation = {
+  naval_ec_ab_mode = navalEcPresentation
+  naval_ec_rb_mode = navalEcPresentation
+  nuclear_escalation_mode = {
+    icon = "#ui/gameuiskin#ic_nuclear_escalation.svg"
+    iconSize = "24@sf/@pf, 24@sf/@pf"
+    name = "#mode/nuclear_escalation"
+    getTooltipText = @(event, cfg) getNuclearEscalationDesc(event, cfg.tagPrefix)
+    getBattleRating = @(event, cfg) calcBattleRatingFromRank(getNuclearEscalationMrank(event, cfg.tagPrefix))
+  }
+}
+
+let makeSubmodeModeEntry = @(cfg) {
+  modeId = cfg.submodeModeId
+  getDetails = @(event) getSubmodeDetails(event, cfg)
+  isSelected = @(_event) isSubModeOn(cfg)
+  isActive = @(event) canQueueWithoutClassic(event, cfg)
+  isAvalible = @(event) cfg.isSubmodeAvailable(event, cfg)
+  isPresent = @(event) hasGameModeByTagPrefix(event, cfg.tagPrefix)
+  setActiveWithEvent = @(isActive, event = null) setSubModeActive(isActive, event, cfg)
+}.__update(submodeModePresentation[cfg.submodeModeId], {
+  getTooltipText = @(event) submodeModePresentation[cfg.submodeModeId].getTooltipText(event, cfg)
+  getBattleRating = @(event) submodeModePresentation[cfg.submodeModeId].getBattleRating(event, cfg)
+})
+
+let mainGameModes = []
+foreach (cfg in mainModePairs)
+  mainGameModes.append(makeClassicModeEntry(cfg), makeSubmodeModeEntry(cfg))
+
+let additionalGameModes = [
+  {
+    modeId = "reduced_teams_mode",
+    icon = "#ui/gameuiskin#ic_reduced_team.svg",
+    iconSize = "24@sf/@pf, 24@sf/@pf",
+    name = "#mode/small_teams",
+    getDetails = getSmallTeamsDetails,
+    isSelected = isSmallTeamsModeSelected,
+    isActive = isSmallTeamsModeActive,
+    isAvalible = isSmallTeamsModeAvalible,
+    isPresent = isSmallTeamsModePresent,
+    setActive = setSmallTeamsModeActive,
+    getTooltipText = getSmallTeamsDesc
+  },
+  {
+    modeId = "bullet_hell_mode",
+    icon = "#ui/gameuiskin#ic_bullet_hell.svg",
+    iconSize = "24@sf/@pf, 24@sf/@pf",
+    name = "#events/bullet_hell",
+    getDetails = getBulletHellDetails,
+    isSelected = isBulletHellModeSelected,
+    isActive = isBulletHellModeActive,
+    isAvalible = isBulletHellAvailable,
+    isPresent = hasBulletHellGameModes,
+    setActive = setBulletHellModeActive,
+    getTooltipText = getBulletHellDesc
+    getBattleRating = getBulletHellBattleRating
+  },
+  {
+    modeId = "night_battles_mode",
+    icon = "#ui/gameuiskin#ic_night_battles.svg",
+    iconSize = "24@sf/@pf, 24@sf/@pf",
+    name = "#night_battles",
+    getDetails = getNightModeDetails,
+    isPresent = isPresentNightMode,
+    isSelected = isNightModeSelected,
+    isActive = isNightModeActive,
+    isAvalible = isNightModeAvalible,
+    setActive = setNightBattlesActive,
+    getTooltipText = getNightBattlesDesc
+    additionalBtns = [{
+      onClickFunc = "onNightBattlesAdditionalAwardsBtn"
+      img = "ui/gameuiskin#sh_unlockachievement.svg"
+      tooltip = "#gameMode/unique_themed_rewards"
+    }]
+  }
+]
+
+let headerEntry = {
+  modeId = "second_game_modes_header"
+  isHeader = true
+  name = "#events/secondGameModes"
+  isPresent = @(event) additionalGameModes.findvalue(@(mode) mode.isPresent(event)) != null
+}
+
+let secondGameModes = clone mainGameModes
+secondGameModes.append(headerEntry)
+secondGameModes.extend(additionalGameModes)
+
+function hasSecondGameModes(event) {
+  return secondGameModes.findvalue(@(mode) mode.isPresent(event)) != null
+}
+
+function getSecondGameModesForSquadLeader(event) {
+  let modes = {}
+  foreach (modeData in secondGameModes) {
+    let isModePresent = modeData.isPresent(event)
+    if (!isModePresent)
+      continue
+
+    let isSelected = modeData?.isSelected(event) ?? true
+    let isAvalible = modeData?.isAvalible(event) ?? true
+    let br = modeData?.getBattleRating != null
+      ? modeData.getBattleRating(event)
+      : recentBR.get()
+    modes[modeData.modeId] <- { isAvalible, isSelected, br }
+  }
+  return modes
+}
+
 return {
-  getNightBattlesDesc
-  getSmallTeamsDesc
-  getBulletHellDesc
-  getBulletHellMrank
-  getBulletHellRequirement
+  mainGameModes
+  secondGameModes
   isBulletHellAvailable
   hasBulletHellGameModes
-  getSquadOnlineMembers
-  hasGameModeByTagPrefix
-  isNavalEcAvailable
-  getNavalEcMrank
-  getNavalEcDesc
-  isNuclearEscalationAvailable
-  getNuclearEscalationMrank
-  getNuclearEscalationDesc
-  navalModePairs
-  airModePairs
   mainModePairs
-  isClassicModeOn
-  isSubModeOn
-  canQueueWithoutClassic
   getJoinBlockReason
   getGmsTagRequests
+  hasSecondGameModes
+  getSecondGameModesForSquadLeader
+  isClassicGameModeEnabled
 }

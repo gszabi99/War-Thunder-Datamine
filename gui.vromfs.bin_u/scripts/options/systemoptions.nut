@@ -2800,6 +2800,7 @@ function mkOptionHeaderRow(sectionIdx, title, addInfo, tabs) {
     headerText = "".concat(loc(title), addTxt)
     sectionIdx
     tabs = null
+    isHidden = sectionIdx == 0
   }
   if (hasFeature("HasTabsInGraphicsOption")) {
     view.tabs = tabs.map(@(tab, tabIdx) {
