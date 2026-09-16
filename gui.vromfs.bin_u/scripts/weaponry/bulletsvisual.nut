@@ -9,6 +9,7 @@ from "%sqstd/string.nut" import stripTags
 from "string" import format
 from "guiMission" import get_mission_difficulty_int
 from "gameplayBinding" import isInFlight
+from "guiRespawn" import isRespawnScreen
 from "%scripts/dagui_natives.nut" import is_light_dm
 from "%scripts/dagui_library.nut" import *
 from "types" import Table
@@ -287,6 +288,7 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl, bullet = null) {
   let isGraphCompareBulletsWndActive =
     handlersManager.findHandlerClassInScene(get_gui_handler("GraphCompareBulletsWnd")) != null
   let tooltipId = bullet != null && baseArmorPiercing != 0 && !isGraphCompareBulletsWndActive
+      && (!isInFlight() || isRespawnScreen()) 
     ? getTooltipType("PENETRATION_GRAPH").getTooltipId(bullet)
     : null
 
