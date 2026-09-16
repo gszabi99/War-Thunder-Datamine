@@ -38,7 +38,6 @@ gameModeBlock {
     inactiveColor:t='yes'
   <</inactiveColor>>
 
-  on_click:t='<<onClick>>'
   <<#onHover>>
     on_hover:t='<<onHover>>'
   <</onHover>>
@@ -48,10 +47,14 @@ gameModeBlock {
   <</isCurrentGameMode>>
   <<^isConsoleBtn>>
     behavior:t='posNavigator'
-    navigatorShortcuts:t='active'
+    navigatorShortcuts:t='yes'
     move-only-hover:t='yes'
+    on_select:t='<<onClick>>'
   <</isConsoleBtn>>
-  behavior:t='button'
+  <<#isConsoleBtn>>
+    behavior:t='button'
+    on_click:t='<<onClick>>'
+  <</isConsoleBtn>>
   background-color:t='@white'
   background-repeat:t='expand'
   background-image:t='#ui/gameuiskin#item'

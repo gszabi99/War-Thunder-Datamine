@@ -307,10 +307,12 @@ return [
     id = "ID_COUNTERMEASURE_CHAFF_HELICOPTER"
     checkAssign = false
   }
-  {
-    id = "ID_COUNTERMEASURE_TOWED_DECOY_HELICOPTER"
-    checkAssign = false
-  }
+  
+
+
+
+
+
   {
     id = "ID_FLARES_SERIES_HELICOPTER"
     checkAssign = false

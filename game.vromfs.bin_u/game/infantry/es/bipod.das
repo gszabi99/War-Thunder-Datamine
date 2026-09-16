@@ -194,18 +194,20 @@ def bipod_hand_effector(info : ParallelUpdateFrameDelayed;
     if lClavicleAttachEffector != null
       lClavicleAttachEffector.weight = 0.
   elif get_gun_tm(human_weap__currentGunEid, gunTm)
+    let rClavicleWeight = get_float(human_weap__currentGunEid, "gun__bipodRClavicleAttachWeight") ?? 1.
+    let lClavicleWeight = get_float(human_weap__currentGunEid, "gun__bipodLClavicleAttachWeight") ?? 1.
     if rClavicleAttachEffector != null
       var rClavicleWtm = gunTm * bipod__rClavicleGunRelTm
       rClavicleWtm[3] -= geomtree_calc_optimal_wofs(transform[3])
 
-      rClavicleAttachEffector.weight = 1.
+      rClavicleAttachEffector.weight = rClavicleWeight
       rClavicleAttachEffector.position = rClavicleWtm[3]
       rClavicleAttachEffector.wtm = rClavicleWtm
     if lClavicleAttachEffector != null
       var clavicleWtm = gunTm * bipod__lClavicleGunRelTm
       clavicleWtm[3] -= geomtree_calc_optimal_wofs(transform[3])
 
-      lClavicleAttachEffector.weight = 1.
+      lClavicleAttachEffector.weight = lClavicleWeight
       lClavicleAttachEffector.position = clavicleWtm[3]
       lClavicleAttachEffector.wtm = clavicleWtm
 

@@ -262,12 +262,15 @@
       "uncageBeforeLaunch": true,
       "warmUpTime": 0.3,
       "workTime": 10.0,
+      "breakLockMaxTime": 240.0,
+      "inertialNavigation": true,
+      "indicateOnHud": false,
       "lockAfterLaunch": false,
       "reacquireTarget": true,
       "useTargetVel": false,
       "lockTimeOut": 0.0,
       "disableTOFInHud": true,
-      "breakLockMaxTime": 240.0,
+      "inertialNavigationDriftSpeed": 0.05,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
         "aircraftAsTarget": false,
@@ -276,12 +279,6 @@
         "targetSignatureType": "radarIntercept",
         "active": false,
         "prolongationTimeMax": 7.5,
-        "multipathEffect": [
-          0.0,
-          1.0,
-          27.5,
-          0.0
-        ],
         "band": 8,
         "useTargetId": true,
         "sideLobesAttenuation": -20.0,
@@ -290,6 +287,12 @@
         "rateMax": 10.0,
         "angleGateRate": 5.0,
         "designationSourceType": "esm",
+        "multipathEffect": [
+          0.0,
+          1.0,
+          0.5,
+          0.0
+        ],
         "transmitter": {
           "power": 200.0,
           "antenna": {

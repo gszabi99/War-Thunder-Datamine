@@ -1,6 +1,7 @@
 import "%sqStdLibs/helpers/u.nut" as u
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
 from "dagor.localize" import doesLocTextExist
+from "dagor.workcycle" import resetTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
@@ -19,6 +20,9 @@ let { openSlotbarPresetsListEditWnd } = require("%scripts/slotbar/slotbarPresets
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 
 const MAX_AUTO_TABS_WIDTH_K = 3
+
+const PRESET_PREVIEW_DELAY_SEC = 0.3
+const PRESET_PREVIEW_TIMER_ID = "timer_preset_preview"
 
 let autoAbbrTypes = {
   max = { gmShowType = "full", name = true }
@@ -61,6 +65,7 @@ let SlotbarPresetsList = class {
   }
 
   function destroy() {
+    clearTimer(PRESET_PREVIEW_TIMER_ID)
     if (!this.isValid())
       return
     this.scene.getScene().replaceContentFromText(this.scene, "", 0, null)
@@ -244,6 +249,11 @@ let SlotbarPresetsList = class {
     if (isCurrentPreset)
       return
     this.hoveredPresetIdx = presetIdx
+    let cb = Callback(@() this.previewHoveredPreset(), this)
+    resetTimeout(PRESET_PREVIEW_DELAY_SEC, @() cb(), PRESET_PREVIEW_TIMER_ID)
+  }
+
+  function previewHoveredPreset() {
     this.slotbarWidgetHandler?.previewPreset(this.hoveredPresetIdx)
   }
 
@@ -251,6 +261,7 @@ let SlotbarPresetsList = class {
     let presetIdx = obj.presetIdx.tointeger()
     if (this.hoveredPresetIdx != presetIdx)
       return
+    clearTimer(PRESET_PREVIEW_TIMER_ID)
     this.hoveredPresetIdx = -1
     this.slotbarWidgetHandler?.previewPreset(null)
   }

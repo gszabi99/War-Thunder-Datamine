@@ -221,17 +221,17 @@ function getInfoWndPosition(initiatorObjBounds, modalInfoObjBounds, preferredSid
   return ",".join(infoWndPos)
 }
 
-function createInfoHolder(initiatorObj) {
-  initiatorObj.getScene().createElementByObject(initiatorObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
+function createInfoHolder(initiatorObj, handler) {
+  initiatorObj.getScene().createElementByObject(initiatorObj, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", handler)
   return {
     infoWnd = initiatorObj.findObject("modalInfoHolder")
   }
 }
 
-function createInfoHolderModal(initiatorObj) {
+function createInfoHolderModal(initiatorObj, handler) {
   let guiScene = initiatorObj.getScene()
   let infoWndHolder = guiScene.loadModal("", "%gui/modalInfo/modalInfoHolderContent.blk", "tdiv", handlerClass())
-  guiScene.createElementByObject(infoWndHolder, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", null)
+  guiScene.createElementByObject(infoWndHolder, MODAL_INFO_HOLDER_PATH, "modalInfoHolder", handler)
   return {
     infoWnd = infoWndHolder.findObject("modalInfoHolder")
     infoWndHolder
@@ -318,8 +318,8 @@ function addModalInfo(initiatorObj, tooltipNest, handler, tooltipType, id, param
   let infosPlaceBounds = createInfoPlaceBounds()
   let needModalWindow = isUseGamePad()
   let { infoWnd, infoWndHolder = null } = needModalWindow
-    ? createInfoHolderModal(tooltipNest)
-    : createInfoHolder(tooltipNest)
+    ? createInfoHolderModal(tooltipNest, handler)
+    : createInfoHolder(tooltipNest, handler)
 
   let prefSide = params?.modalPreferredSide ?? tooltipType.modalPreferredSide
   let maxHeight = prefSide != "center" ? null

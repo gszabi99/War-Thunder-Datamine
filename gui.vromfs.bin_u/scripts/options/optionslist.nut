@@ -319,7 +319,9 @@ let getMainOptions = function() {
       [USEROPT_GAMEPAD_ENGINE_DEADZONE, "spinner"],
       [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION, "spinner", isPlatformSony],
       [USEROPT_USE_CONTROLLER_LIGHT, "spinner", isPlatformSony && hasFeature("ControllerLight")],
-      [USEROPT_ENABLE_HUMAN_AIM_ASSIST, "spinner", showConsoleButtons.get()],
+
+
+
       ["options/header/replaysAndSpectatorMode", null, hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],
       [USEROPT_AUTOSAVE_REPLAYS, "spinner", !isInFlight() && hasFeature("ClientReplay")],
       [USEROPT_HUE_SPECTATOR_ALLY, "spinner", hasFeature("ClientReplay") || hasFeature("ServerReplay") || hasFeature("Spectator")],

@@ -374,7 +374,7 @@ addPromoAction("content_pack", @(_handler, params, _obj) checkPackageAndAskDownl
   @(params) hasFeature("Packages") && !havePackage(params?[0] ?? ""))
 
 addListenersWithoutEnv({
-  function onEventNewSceneLoaded(_p) {
+  NewSceneLoaded = function(_) {
     if (!needCheckLangPack.get())
       return
 

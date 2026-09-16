@@ -114,7 +114,9 @@ let aircraft_controls_wizard_config = [
     "ID_FLARES"
     "ID_COUNTERMEASURES_FLARES"
     "ID_COUNTERMEASURES_CHAFF"
-    "ID_COUNTERMEASURES_TOWED_DECOY"
+    
+
+
     "ID_FUEL_TANKS"
     "ID_AIR_DROP"
     "ID_SENSOR_SWITCH"

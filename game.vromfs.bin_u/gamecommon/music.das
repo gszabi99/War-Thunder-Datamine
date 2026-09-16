@@ -29,36 +29,11 @@ enum BattleState
   ACTION
   TOP_TIER
 
-let NUM_COUNTRIES = 21
-let NUM_OPERATOR_COUNTRIES = 3
-
-let country_names = fixed_array<string>("australia",
-                                  "britain",
-                                  "germany",
-                                  "italy",
-                                  "japan",
-                                  "usa",
-                                  "ussr",
-                                  "china",
-                                  "france",
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "", 
-                                  "sweden",
-                                  "israel")
-
 let operator_country_names = fixed_array<string>("south_africa",
-                                  "hungary",
-                                  "thailand",
-                                  "benelux",
-                                  "finland")
+                                                 "hungary",
+                                                 "thailand",
+                                                 "belgium",
+                                                 "finland")
 
 [es(tag=sound, on_event=(EventEntityCreated, EventComponentsAppear))]
 def music_init_es(evt : Event;
@@ -223,15 +198,22 @@ def get_music_state_from_battle_state(unit : Unit?;
   return GameMusicState.MUSIC_STATE_CALM
 
 
+def get_country_name(id : int) : string
+  let tag = get_country_tag(id)
+  if tag == ""
+    return ""
+  return tag |> replace("country_", "")
+
 def make_hangar_operator_event_name(id : int) : string
-  if id < 0 || id >= NUM_OPERATOR_COUNTRIES
+  if id < 0 || id >= length(operator_country_names)
     return ""
   return operator_country_names[id] + "_main_theme"
 
 def make_hangar_event_name(id : int) : string
-  if id < 0 || id >= NUM_COUNTRIES
+  let country = get_country_name(id)
+  if country == ""
     return ""
-  return country_names[id] + "_main_theme"
+  return country + "_main_theme"
 
 def get_hangar_event_name_by_hero_type(hero_type : int) : string
   if hero_type == int(UnitType.UT_Ship) || hero_type == int(UnitType.UT_Submarine)
@@ -243,14 +225,15 @@ def get_hangar_event_name_by_hero_type(hero_type : int) : string
 
 def make_win_loose_event_name(id : int;
                               win : bool) : string
-  if id < 0 || id >= NUM_COUNTRIES
+  let country = get_country_name(id)
+  if country == ""
     return ""
   let theme = win ? "_victory_theme" : "_defeat_theme"
-  return country_names[id] + theme
+  return country + theme
 
 def make_win_loose_operator_event_name(id : int;
                                        win : bool) : string
-  if id < 0 || id >= NUM_OPERATOR_COUNTRIES
+  if id < 0 || id >= length(operator_country_names)
     return ""
   let theme = win ? "_victory_theme" : "_defeat_theme"
   return operator_country_names[id] + theme
@@ -309,8 +292,9 @@ def music_es(info : ParallelUpdateFrameDelayed;
   var musicState = GameMusicState.MUSIC_STATE_CALM
   var hangarCountryId = -1
   var hangarTypeChanged = false
+  let MAX_COUNTRIES_POSSIBLE = 256
   if gameState == GameState.HANGAR
-    hangarCountryId = music__operatorCountryId >= 0 ? NUM_COUNTRIES : get_current_country_id(music__curHangarCountry_id)
+    hangarCountryId = music__operatorCountryId >= 0 ? MAX_COUNTRIES_POSSIBLE + music__operatorCountryId : get_current_country_id(music__curHangarCountry_id)
     musicState = GameMusicState.MUSIC_STATE_HANGAR
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (unitType : int)
       if music__curUnitType != unitType

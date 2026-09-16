@@ -25,27 +25,18 @@
     "thrustDeviation": 0.01,
     "caliber": 0.3,
     "length": 3.333,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "CxK": 1.2,
-    "CyK": 5.0,
-    "CyMaxAoA": 1.8,
+    "CxK": 1.15,
     "wingAreaMult": 1.2,
-    "distFromCmToStab": 0.02,
+    "finsAoaHor": 0.15,
+    "finsAoaVer": 0.15,
+    "distFromCmToStab": 0.15,
     "mass": 330.0,
     "massEnd": 282.0,
     "massEnd1": 250.0,
-    "timeFire": [
-      2.5,
-      6.0
-    ],
-    "force": [
-      43200.0,
-      12000.0
-    ],
+    "timeFire": 2.5,
+    "timeFire1": 6.0,
+    "force": 43200.0,
+    "force1": 12000.0,
     "timeLife": 30.0,
     "startSpeed": 0.0,
     "machMax": 2.0,
@@ -53,18 +44,8 @@
     "maxDistance": 12000.0,
     "minDistance": 600.0,
     "operatedDist": 12000.0,
-    "rollStabilization": true,
-    "operated": true,
-    "operationTimer": 0.01,
-    "maxLateralAcceleration": 6.0,
-    "autoAimingInArcade": false,
-    "autoLeveling": false,
-    "autoAiming": false,
-    "autoAimingFirstPerson": false,
-    "controlSensitivity": 0.2,
-    "aimCorrectionVelMin": 500.0,
-    "aimSensitivity": 22.1,
-    "maxAxisValues": 1.0,
+    "guidanceType": "saclos",
+    "launchZoneDistance": 100.0,
     "explosiveType": "comp_b",
     "explosiveMass": 65.0,
     "warheadMass": 105.0,
@@ -115,6 +96,71 @@
       0.0,
       0.0
     ],
+    "guidance": {
+      "launchSector": 8.0,
+      "controlConeFov": 25.0,
+      "breakLockMaxTime": 5.0,
+      "designationSourceType": [
+        "crosshair",
+        "camera"
+      ],
+      "timeTableCorrection": [
+        0.546,
+        0.696
+      ],
+      "lineOfSightAutopilot": {
+        "timeOut": 0.75,
+        "crossDistToReqCrossVelMult": 4.0,
+        "reqCrossVelRationMax": 0.75,
+        "velDiffToReqAccelMult": 5.5,
+        "accelControl": {
+          "reqAccelMax": 5.0,
+          "baseIndSpeed": 1800.0,
+          "accelControlProp": 0.0491,
+          "accelControlIntg": 0.0,
+          "accelControlDiff": 0.0019,
+          "accelControlIntgLim": 0.0
+        }
+      },
+      "table0": {
+        "altitude": 100.0,
+        "fighterMach": [
+          0.1,
+          0.8
+        ],
+        "targetMach": [
+          0.1,
+          0.1
+        ],
+        "targetMach2Mult": -1.0,
+        "rangeMin": [
+          2000.0,
+          2000.0,
+          2000.0,
+          2000.0
+        ],
+        "rangeMax": [
+          12000.0,
+          12000.0,
+          12000.0,
+          12000.0
+        ],
+        "rangeMaxAltDiff": [
+          0.0,
+          0.0
+        ],
+        "timeMax": [
+          39.0998,
+          34.4521,
+          26.4759,
+          23.9913
+        ],
+        "timeMaxAltDiff": [
+          0.0,
+          0.0
+        ]
+      }
+    },
     "cumulativeDamage": {
       "armorPower": 1000.0,
       "distance": 9.5,

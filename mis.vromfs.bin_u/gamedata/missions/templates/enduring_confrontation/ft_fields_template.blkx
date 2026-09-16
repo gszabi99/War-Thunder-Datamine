@@ -44,9 +44,6 @@
             "value": "zapuskaem proverku razreshena li razvedka aerodromov"
           },
           {
-            "value": "zapuskaem generaciyu aerodromov"
-          },
-          {
             "value": ""
           }
         ],
@@ -113,9 +110,6 @@
           },
           {
             "target": "ft_is_detect_alowed"
-          },
-          {
-            "target": "ft_airfields_generate_start"
           }
         ],
         "unitPutToSleep": {
@@ -139,6 +133,461 @@
         }
       },
       "else_actions": {}
+    },
+    "ft_matching_routine": {
+      "isCategory": true,
+      "is_enabled": true,
+      "ft_matching_0_3_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "ft_balance_level",
+              "value": 4,
+              "comparasion_func": "less"
+            },
+            {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "ft_matching_4_7_check",
+              "ft_matching_8_11_check",
+              "ft_matching_12_16_check",
+              "ft_matching_17_20_check",
+              "ft_matching_21_50_check"
+            ]
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "kolichestvo hp, remonitruemoe za tik"
+            },
+            {
+              "value": "start airfield generation"
+            }
+          ],
+          "varSetReal": [
+            {
+              "value": 12000.0,
+              "var": "ft_airfield_module_hp"
+            },
+            {
+              "value": 24000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            },
+            {
+              "value": 300.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_airfields_generate_start"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_matching_4_7_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "ft_balance_level",
+              "value": 3,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "ft_balance_level",
+              "value": 8,
+              "comparasion_func": "less"
+            },
+            {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "ft_matching_0_3_check",
+              "ft_matching_8_11_check",
+              "ft_matching_12_16_check",
+              "ft_matching_17_20_check",
+              "ft_matching_21_50_check"
+            ]
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "kolichestvo hp, remonitruemoe za tik"
+            },
+            {
+              "value": "start airfield generation"
+            }
+          ],
+          "varSetReal": [
+            {
+              "value": 34000.0,
+              "var": "ft_airfield_module_hp"
+            },
+            {
+              "value": 68000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            },
+            {
+              "value": 850.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_airfields_generate_start"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_matching_8_11_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "ft_balance_level",
+              "value": 7,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "ft_balance_level",
+              "value": 12,
+              "comparasion_func": "less"
+            },
+            {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "ft_matching_0_3_check",
+              "ft_matching_4_7_check",
+              "ft_matching_12_16_check",
+              "ft_matching_17_20_check",
+              "ft_matching_21_50_check"
+            ]
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "kolichestvo hp, remonitruemoe za tik"
+            },
+            {
+              "value": "start airfield generation"
+            }
+          ],
+          "varSetReal": [
+            {
+              "value": 48000.0,
+              "var": "ft_airfield_module_hp"
+            },
+            {
+              "value": 96000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            },
+            {
+              "value": 1200.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_airfields_generate_start"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_matching_12_16_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "ft_balance_level",
+              "value": 11,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "ft_balance_level",
+              "value": 17,
+              "comparasion_func": "less"
+            },
+            {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "ft_matching_0_3_check",
+              "ft_matching_4_7_check",
+              "ft_matching_8_11_check",
+              "ft_matching_17_20_check",
+              "ft_matching_21_50_check"
+            ]
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "kolichestvo hp, remonitruemoe za tik"
+            },
+            {
+              "value": "start airfield generation"
+            }
+          ],
+          "varSetReal": [
+            {
+              "value": 100000.0,
+              "var": "ft_airfield_module_hp"
+            },
+            {
+              "value": 200000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            },
+            {
+              "value": 2500.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_airfields_generate_start"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_matching_17_20_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "ft_balance_level",
+              "value": 16,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "ft_balance_level",
+              "value": 21,
+              "comparasion_func": "less"
+            },
+            {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "ft_matching_0_3_check",
+              "ft_matching_4_7_check",
+              "ft_matching_8_11_check",
+              "ft_matching_12_16_check",
+              "ft_matching_21_50_check"
+            ]
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "kolichestvo hp, remonitruemoe za tik"
+            },
+            {
+              "value": "start airfield generation"
+            }
+          ],
+          "varSetReal": [
+            {
+              "value": 120000.0,
+              "var": "ft_airfield_module_hp"
+            },
+            {
+              "value": 240000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            },
+            {
+              "value": 3000.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_airfields_generate_start"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_matching_21_50_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "varCompareInt": [
+            {
+              "var_value": "ft_balance_level",
+              "value": 20,
+              "comparasion_func": "more"
+            },
+            {
+              "var_value": "ft_balance_level_forced",
+              "value": 0,
+              "comparasion_func": "equal"
+            }
+          ]
+        },
+        "actions": {
+          "triggerDisable": {
+            "target": [
+              "ft_matching_0_3_check",
+              "ft_matching_4_7_check",
+              "ft_matching_8_11_check",
+              "ft_matching_12_16_check",
+              "ft_matching_17_20_check"
+            ]
+          },
+          "comment": [
+            {
+              "value": ""
+            },
+            {
+              "value": "kolichestvo hp, remonitruemoe za tik"
+            },
+            {
+              "value": "start airfield generation"
+            }
+          ],
+          "varSetReal": [
+            {
+              "value": 160000.0,
+              "var": "ft_airfield_module_hp"
+            },
+            {
+              "value": 280000.0,
+              "var": "ft_airfield_module_spawn_hp"
+            },
+            {
+              "value": 4000.0,
+              "var": "ft_damage_restore_base_hp"
+            }
+          ],
+          "triggerEnable": {
+            "target": "ft_airfields_generate_start"
+          }
+        },
+        "else_actions": {}
+      },
+      "ft_matching_force_check": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 0.0
+          }
+        },
+        "conditions": {
+          "varCompareInt": {
+            "var_value": "ft_balance_level_forced",
+            "value": 0,
+            "comparasion_func": "more"
+          }
+        },
+        "actions": {
+          "varSetInt": [
+            {
+              "value": 0,
+              "var": "ft_balance_level",
+              "input_var": "ft_balance_level_forced"
+            },
+            {
+              "value": 0,
+              "var": "ft_balance_level_forced"
+            }
+          ]
+        },
+        "else_actions": {}
+      }
     },
     "ft_airfields_generate_start": {
       "is_enabled": false,
@@ -4401,425 +4850,6 @@
             "target": "ft_generate_t2_airfield_rotator"
           }
         }
-      }
-    },
-    "ft_matching_routine": {
-      "isCategory": true,
-      "is_enabled": true,
-      "ft_matching_0_3_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "ft_balance_level",
-              "value": 4,
-              "comparasion_func": "less"
-            },
-            {
-              "var_value": "ft_balance_level_forced",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          ]
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": [
-              "ft_matching_4_7_check",
-              "ft_matching_8_11_check",
-              "ft_matching_12_16_check",
-              "ft_matching_17_20_check",
-              "ft_matching_21_50_check"
-            ]
-          },
-          "comment": [
-            {
-              "value": ""
-            },
-            {
-              "value": "kolichestvo hp, remonitruemoe za tik"
-            }
-          ],
-          "varSetReal": [
-            {
-              "value": 12000.0,
-              "var": "ft_airfield_module_hp"
-            },
-            {
-              "value": 24000.0,
-              "var": "ft_airfield_module_spawn_hp"
-            },
-            {
-              "value": 300.0,
-              "var": "ft_damage_restore_base_hp"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "ft_matching_4_7_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "ft_balance_level",
-              "value": 3,
-              "comparasion_func": "more"
-            },
-            {
-              "var_value": "ft_balance_level",
-              "value": 8,
-              "comparasion_func": "less"
-            },
-            {
-              "var_value": "ft_balance_level_forced",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          ]
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": [
-              "ft_matching_0_3_check",
-              "ft_matching_8_11_check",
-              "ft_matching_12_16_check",
-              "ft_matching_17_20_check",
-              "ft_matching_21_50_check"
-            ]
-          },
-          "comment": [
-            {
-              "value": ""
-            },
-            {
-              "value": "kolichestvo hp, remonitruemoe za tik"
-            }
-          ],
-          "varSetReal": [
-            {
-              "value": 34000.0,
-              "var": "ft_airfield_module_hp"
-            },
-            {
-              "value": 68000.0,
-              "var": "ft_airfield_module_spawn_hp"
-            },
-            {
-              "value": 850.0,
-              "var": "ft_damage_restore_base_hp"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "ft_matching_8_11_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "ft_balance_level",
-              "value": 7,
-              "comparasion_func": "more"
-            },
-            {
-              "var_value": "ft_balance_level",
-              "value": 12,
-              "comparasion_func": "less"
-            },
-            {
-              "var_value": "ft_balance_level_forced",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          ]
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": [
-              "ft_matching_0_3_check",
-              "ft_matching_4_7_check",
-              "ft_matching_12_16_check",
-              "ft_matching_17_20_check",
-              "ft_matching_21_50_check"
-            ]
-          },
-          "comment": [
-            {
-              "value": ""
-            },
-            {
-              "value": "kolichestvo hp, remonitruemoe za tik"
-            }
-          ],
-          "varSetReal": [
-            {
-              "value": 48000.0,
-              "var": "ft_airfield_module_hp"
-            },
-            {
-              "value": 96000.0,
-              "var": "ft_airfield_module_spawn_hp"
-            },
-            {
-              "value": 1200.0,
-              "var": "ft_damage_restore_base_hp"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "ft_matching_12_16_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "ft_balance_level",
-              "value": 11,
-              "comparasion_func": "more"
-            },
-            {
-              "var_value": "ft_balance_level",
-              "value": 17,
-              "comparasion_func": "less"
-            },
-            {
-              "var_value": "ft_balance_level_forced",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          ]
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": [
-              "ft_matching_0_3_check",
-              "ft_matching_4_7_check",
-              "ft_matching_8_11_check",
-              "ft_matching_17_20_check",
-              "ft_matching_21_50_check"
-            ]
-          },
-          "comment": [
-            {
-              "value": ""
-            },
-            {
-              "value": "kolichestvo hp, remonitruemoe za tik"
-            }
-          ],
-          "varSetReal": [
-            {
-              "value": 100000.0,
-              "var": "ft_airfield_module_hp"
-            },
-            {
-              "value": 200000.0,
-              "var": "ft_airfield_module_spawn_hp"
-            },
-            {
-              "value": 2500.0,
-              "var": "ft_damage_restore_base_hp"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "ft_matching_17_20_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "ft_balance_level",
-              "value": 16,
-              "comparasion_func": "more"
-            },
-            {
-              "var_value": "ft_balance_level",
-              "value": 21,
-              "comparasion_func": "less"
-            },
-            {
-              "var_value": "ft_balance_level_forced",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          ]
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": [
-              "ft_matching_0_3_check",
-              "ft_matching_4_7_check",
-              "ft_matching_8_11_check",
-              "ft_matching_12_16_check",
-              "ft_matching_21_50_check"
-            ]
-          },
-          "comment": [
-            {
-              "value": ""
-            },
-            {
-              "value": "kolichestvo hp, remonitruemoe za tik"
-            }
-          ],
-          "varSetReal": [
-            {
-              "value": 120000.0,
-              "var": "ft_airfield_module_hp"
-            },
-            {
-              "value": 240000.0,
-              "var": "ft_airfield_module_spawn_hp"
-            },
-            {
-              "value": 3000.0,
-              "var": "ft_damage_restore_base_hp"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "ft_matching_21_50_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "initMission": {}
-        },
-        "conditions": {
-          "varCompareInt": [
-            {
-              "var_value": "ft_balance_level",
-              "value": 20,
-              "comparasion_func": "more"
-            },
-            {
-              "var_value": "ft_balance_level_forced",
-              "value": 0,
-              "comparasion_func": "equal"
-            }
-          ]
-        },
-        "actions": {
-          "triggerDisable": {
-            "target": [
-              "ft_matching_0_3_check",
-              "ft_matching_4_7_check",
-              "ft_matching_8_11_check",
-              "ft_matching_12_16_check",
-              "ft_matching_17_20_check"
-            ]
-          },
-          "comment": [
-            {
-              "value": ""
-            },
-            {
-              "value": "kolichestvo hp, remonitruemoe za tik"
-            }
-          ],
-          "varSetReal": [
-            {
-              "value": 160000.0,
-              "var": "ft_airfield_module_hp"
-            },
-            {
-              "value": 280000.0,
-              "var": "ft_airfield_module_spawn_hp"
-            },
-            {
-              "value": 4000.0,
-              "var": "ft_damage_restore_base_hp"
-            }
-          ]
-        },
-        "else_actions": {}
-      },
-      "ft_matching_force_check": {
-        "is_enabled": false,
-        "comments": "",
-        "props": {
-          "actionsType": "PERFORM_ONE_BY_ONE",
-          "conditionsType": "ALL",
-          "enableAfterComplete": false
-        },
-        "events": {
-          "periodicEvent": {
-            "time": 0.0
-          }
-        },
-        "conditions": {
-          "varCompareInt": {
-            "var_value": "ft_balance_level_forced",
-            "value": 0,
-            "comparasion_func": "more"
-          }
-        },
-        "actions": {
-          "varSetInt": [
-            {
-              "value": 0,
-              "var": "ft_balance_level",
-              "input_var": "ft_balance_level_forced"
-            },
-            {
-              "value": 0,
-              "var": "ft_balance_level_forced"
-            }
-          ]
-        },
-        "else_actions": {}
       }
     },
     "ft_objectives_routine": {

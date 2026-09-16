@@ -372,6 +372,7 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
                                      human_net_phys : HumanActor;
                                      var human_net_phys__segPhysStateVersion : int&;
                                      var human_net_phys__segPhysState : float2&;
+                                     var human_net_phys__segPhysStateClimbData : float&;
                                      var human_net_phys__isClimbing : bool&;
                                      var human_net_phys__climbToPos : float3&;
                                      var human_net_phys__states : int&;
@@ -389,6 +390,7 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
     human_net_phys__segPhysStateVersion = segPhysState.syncVersion
     human_net_phys__segPhysState.x = float(segPhysState.currSeg)
     human_net_phys__segPhysState.y = get_sync_time()
+    human_net_phys__segPhysStateClimbData = segPhysState.blendTrajParam
   human_net_phys__isClimbing = human_phys_state_get_isClimbing(currentState)
   human_net_phys__climbToPos = currentState.climbToPos
   human_net_phys__states = int(currentState.states)

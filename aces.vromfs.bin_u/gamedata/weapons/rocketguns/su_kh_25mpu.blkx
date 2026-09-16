@@ -101,16 +101,18 @@
       "uncageBeforeLaunch": true,
       "warmUpTime": 0.3,
       "workTime": 10.0,
-      "lockAfterLaunch": false,
-      "reacquireTarget": true,
-      "useTargetVel": false,
-      "lockTimeOut": 0.0,
-      "disableTOFInHud": true,
       "timeTableCorrection": [
         0.566,
         0.533
       ],
       "breakLockMaxTime": 90.0,
+      "inertialNavigation": true,
+      "indicateOnHud": false,
+      "lockAfterLaunch": false,
+      "reacquireTarget": true,
+      "useTargetVel": false,
+      "lockTimeOut": 0.0,
+      "disableTOFInHud": true,
       "inertialNavigationDriftSpeed": 0.05,
       "radarSeeker": {
         "groundVehiclesAsTarget": true,
@@ -120,12 +122,6 @@
         "targetSignatureType": "radarIntercept",
         "active": false,
         "prolongationTimeMax": 7.5,
-        "multipathEffect": [
-          0.0,
-          1.0,
-          27.5,
-          0.0
-        ],
         "useTargetId": true,
         "sideLobesAttenuation": -20.0,
         "lockAngleMax": 12.0,
@@ -133,6 +129,12 @@
         "rateMax": 12.0,
         "angleGateRate": 10.0,
         "designationSourceType": "esm",
+        "multipathEffect": [
+          0.0,
+          1.0,
+          0.5,
+          0.0
+        ],
         "band": [
           3,
           4,

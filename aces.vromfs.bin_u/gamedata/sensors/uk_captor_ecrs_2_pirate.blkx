@@ -340,28 +340,6 @@
         "width": 20.0
       }
     },
-    "surfaceTwsTrack": {
-      "groundClutter": false,
-      "aircraftAsTarget": false,
-      "groundVehiclesAsTarget": true,
-      "angularAccuracy": 0.0,
-      "distanceAccuracy": 1.0,
-      "absDopplerSpeed": true,
-      "mainBeamDopplerSpeed": true,
-      "distance": {
-        "presents": true,
-        "minValue": 500.0,
-        "maxValue": 150000.0,
-        "width": 15.0
-      },
-      "dopplerSpeed": {
-        "presents": true,
-        "minValue": 1.5,
-        "maxValue": 1000.0,
-        "signalWidthMin": 2.5,
-        "width": 0.0
-      }
-    },
     "surfaceTrack": {
       "groundClutter": false,
       "aircraftAsTarget": false,
@@ -1280,7 +1258,7 @@
         },
         "setGtmTwsTrackSignal": {
           "setSignal": {
-            "signal": "surfaceTwsTrack"
+            "signal": "surfaceTrack"
           }
         },
         "setIrstStandbyMode": {

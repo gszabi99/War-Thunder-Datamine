@@ -2859,7 +2859,7 @@ let RespawnHandler = class (MPStatistics) {
       btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
 
       
-      hint_attention_to_map = !showConsoleButtons.get()
+      hint_attention_to_map = !showConsoleButtons.get() && !this.isRespawn
       hint_btn_move_map     = !showConsoleButtons.get()
     }
     foreach (id, value in buttons)

@@ -447,11 +447,13 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  {
-    id = "ID_COUNTERMEASURES_TOWED_DECOY"
-    checkAssign = false
-    needShowInHelp = true
-  }
+  
+
+
+
+
+
+
   {
     id = "ID_TOGGLE_PERIODIC_FLARES"
     checkAssign = false

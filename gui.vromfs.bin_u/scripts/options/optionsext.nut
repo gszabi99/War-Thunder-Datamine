@@ -1095,13 +1095,15 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
   },
-  [USEROPT_ENABLE_HUMAN_AIM_ASSIST] = function(_optionId, descr, _context) {
-    descr.id = "enableHumanAimAssist"
-    descr.controlType = optionControlType.CHECKBOX
-    descr.controlName <- "switchbox"
-    descr.hint = loc("options/enableHumanAimAssist/tooltip")
-    descr.defaultValue = true
-  },
+
+
+
+
+
+
+
+
+
   [USEROPT_GAMEPAD_ENGINE_DEADZONE] = function(_optionId, descr, _context) {
     descr.id = "gamepadEngDeadZone"
     descr.controlType = optionControlType.CHECKBOX
@@ -4830,7 +4832,9 @@ let optionsSetMap = {
   [USEROPT_GAMEPAD_VIBRATION_ENGINE] = set_useropt_landing_mode,
   [USEROPT_GAMEPAD_ENGINE_DEADZONE] = set_useropt_landing_mode,
   [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION] = set_useropt_landing_mode,
-  [USEROPT_ENABLE_HUMAN_AIM_ASSIST] = set_useropt_landing_mode,
+
+
+
   [USEROPT_FOLLOW_BULLET_CAMERA] = set_useropt_landing_mode,
   [USEROPT_BULLET_FALL_SPOT_SHIP] = set_useropt_landing_mode,
   [USEROPT_AUTO_AIMLOCK_ON_SHOOT] = set_useropt_landing_mode,

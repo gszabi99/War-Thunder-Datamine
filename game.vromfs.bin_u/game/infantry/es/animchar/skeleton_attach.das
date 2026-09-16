@@ -124,7 +124,7 @@ def skeleton_attach_reinit_es(evt : Event;
   if !isSuccess
     logerr("Could not sekeleton attach {getEntityTemplateName(eid)} to {getEntityTemplateName(animchar_attach__attachedTo)}")
 
-[es(tag=gameClient, on_appear, REQUIRE=skeleton_attach__skeletonRemap)]
+[es(tag=gameClient, on_appear, REQUIRE=(skeleton_attach__skeletonRemap, attachedToParent))]
 def skeleton_attach_init_es(evt : Event;
                             eid : EntityId;
                             animchar_attach__attachedTo : EntityId)

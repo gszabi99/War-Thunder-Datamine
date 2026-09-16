@@ -158,6 +158,11 @@
         "armorThickness": 8.0,
         "armorClass": "RHA_tank_modern",
         "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_05_dm": {
+        "armorThickness": 8.0,
+        "armorClass": "RHA_tank_modern",
+        "hidableInXrayViewer": true
       }
     },
     "side_skirts": {
@@ -190,7 +195,7 @@
       "hidableInXrayViewer": true,
       "hidableInViewer": true,
       "createSecondaryShatters": false,
-      "armorThickness": 170.0,
+      "armorThickness": 95.0,
       "genericArmorQuality": 0.2,
       "cumulativeArmorQuality": 1.05,
       "hp": 400.0,
@@ -279,7 +284,7 @@
         "armorThickness": 20.0
       },
       "turret_07_bottom_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 30.0
       },
       "turret_08_side_dm": {
         "armorThickness": 15.0,
@@ -2151,6 +2156,7 @@
         "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
+        "loader_03_dm",
         "radio_station_dm",
         "driver_controls_dm",
         "fire_control_system_dm",
@@ -2541,7 +2547,7 @@
               "dmPart": "composite_armor_turret_03_dm"
             },
             {
-              "dmPart": "gun_mask_03_dm",
+              "dmPart": "turret_top_dm",
               "xrayTextThickness": 120.0
             }
           ]
@@ -2559,7 +2565,7 @@
               "dmPart": "composite_armor_turret_04_dm"
             },
             {
-              "dmPart": "turret_06_bottom_dm",
+              "dmPart": "turret_top_dm",
               "xrayTextThickness": 120.0
             }
           ]
@@ -2578,7 +2584,7 @@
             "dmPart": "composite_armor_turret_02_dm"
           },
           {
-            "dmPart": "gun_mask_02_dm",
+            "dmPart": "turret_top_dm",
             "xrayTextThickness": 320.0
           }
         ]
@@ -2600,7 +2606,7 @@
             ]
           },
           {
-            "dmPart": "gun_mask_02_dm",
+            "dmPart": "turret_top_dm",
             "xrayTextThickness": 290.0
           }
         ]
@@ -2840,7 +2846,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/12_7mm_NSV_t_80_user_cannon.blk",
         "emitter": "bone_mg_aa_v",
         "flash": "emtr_mg_aa_flame",
-        "barrelDP": "gun_barrel_02_dm",
+        "barrelDP": "gun_barrel_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "parkInDeadzone": false,
@@ -4146,7 +4152,7 @@
               "blk": "gameData/Weapons/groundModels_weapons/12_7mm_NSV_t_80_user_cannon.blk",
               "emitter": "bone_mg_aa_v",
               "flash": "emtr_mg_aa_flame",
-              "barrelDP": "gun_barrel_02_dm",
+              "barrelDP": "gun_barrel_01_dm",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "parkInDeadzone": false,
@@ -4507,17 +4513,17 @@
   "default_skin": {
     "replace_tex": {
       "from": "uk_camo_very_dark_drab*",
-      "to": "us_camo_modern_green*"
+      "to": "in_camo_summer_four_color*"
     }
   },
   "skin": [
     {
-      "name": "in_camo_summer_four_color",
-      "nameLocId": "skin/in_camo_summer_four_color",
-      "descLocId": "skin/in_camo_summer_four_color/desc",
+      "name": "us_camo_modern_green",
+      "nameLocId": "skin/us_camo_modern_green",
+      "descLocId": "skin/us_camo_modern_green/desc",
       "replace_tex": {
         "from": "uk_camo_very_dark_drab*",
-        "to": "in_camo_summer_four_color*"
+        "to": "us_camo_modern_green*"
       }
     },
     {

@@ -40,7 +40,7 @@
     "mass": 670.0,
     "timeLife": 250.0,
     "startSpeed": 0.0,
-    "machMax": 0.9,
+    "machMax": 0.93,
     "maxDistance": 70000.0,
     "minDistance": 2000.0,
     "rangeMax": 70000.0,
@@ -50,7 +50,7 @@
     "rollStabilization": true,
     "rollStabilizationDelay": 0.5,
     "explosiveType": "pbxn_3",
-    "explosiveMass": 60.0,
+    "explosiveMass": 43.0,
     "warheadMass": 165.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -88,27 +88,25 @@
       "fireDelay": 0.1,
       "impulse0": {
         "time": 2.5,
-        "force": 27000.0,
+        "force": 26950.0,
         "massLost": 34.0
       },
       "impulse1": {
-        "time": 150.0,
-        "force": 2800.0,
+        "time": 120.0,
+        "force": 3054.5,
         "massLost": 164.0
       }
     },
     "guidance": {
-      "indicateOnHud": false,
-      "inertialNavigation": true,
+      "uncageBeforeLaunch": true,
+      "lockDistance": 15000.0,
       "warmUpTime": 0.3,
       "workTime": 100.0,
-      "uncageBeforeLaunch": true,
+      "indicateOnHud": false,
+      "inertialNavigation": true,
       "lockAfterLaunch": true,
-      "lockDistance": 15000.0,
+      "inertialNavigationDriftSpeed": 0.05,
       "breakLockMaxTime": 170.0,
-      "inertialGuidance": {
-        "inertialNavigationDriftSpeed": 0.05
-      },
       "radarSeeker": {
         "band": 8,
         "active": true,
@@ -213,7 +211,7 @@
     "ballisticsTable": {
       "velocity500m": [
         500.0,
-        305.0
+        317.0
       ]
     },
     "pressureDamage": {

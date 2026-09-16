@@ -288,9 +288,13 @@
       "turret_06_bottom_dm": {
         "armorThickness": 20.0
       },
+      "turret_07_bottom_dm": {
+        "armorThickness": 30.0,
+        "createSecondaryShatters": false
+      },
       "turret_01_front_dm": {
         "armorThickness": 35.0,
-        "createSecondaryShatters": false
+        "hidableInViewer": true
       },
       "turret_03_side_dm": {
         "armorThickness": 35.0
@@ -369,8 +373,7 @@
         "createSecondaryShatters": false
       },
       "turret_04_back_dm": {
-        "armorThickness": 5.0,
-        "armorClass": "RHAHH_tank",
+        "armorThickness": 35.0,
         "createSecondaryShatters": false
       }
     },
@@ -453,8 +456,7 @@
       "hidableInViewer": true,
       "ex_armor_01_dm": {},
       "ex_armor_r_02_dm": {},
-      "ex_armor_l_02_dm": {},
-      "turret_07_bottom_dm": {}
+      "ex_armor_l_02_dm": {}
     },
     "heavy_body_screens": {
       "armorClass": "hull_side_special_armor",
@@ -2157,7 +2159,7 @@
               "xrayTextThickness": 360.0
             },
             {
-              "dmPart": "turret_01_front_dm"
+              "dmPart": "turret_07_bottom_dm"
             },
             {
               "dmPart": "composite_armor_turret_05_dm",
@@ -2266,6 +2268,7 @@
         "loader_dm",
         "loader_01_dm",
         "loader_02_dm",
+        "loader_03_dm",
         "radio_station_dm",
         "driver_controls_dm",
         "fire_control_system_dm",
@@ -2704,7 +2707,7 @@
       "model": "mb_873_ka_501"
     },
     "mechanics": {
-      "steerType": "double_differential",
+      "steerType": "clutch_braking",
       "maxBrakeForce": 300000.0,
       "driveGearRadius": 0.312,
       "mainGearRatio": 4.99,

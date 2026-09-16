@@ -301,11 +301,37 @@ function tryUpdateOptionImage(id) {
   optInfoImg["background-image"] = tryGetOptionImageSrc(id)
 }
 
+function getOptionShownValues(opt) {
+  if ("values" in opt)
+    return opt.values
+  if (opt?.min == null || opt?.max == null)
+    return []
+
+  let values = []
+  for (local value = opt.min; value <= opt.max; value++)
+    values.append(value)
+  return values
+}
+
+function getOptionValueHints(id, opt) {
+  if (!(opt?.hasValueHints ?? false))
+    return []
+
+  let hints = []
+  foreach (value in getOptionShownValues(opt)) {
+    let valueLocKey = $"guiHints/{id}/{value}"
+    if (doesLocTextExist(valueLocKey))
+      hints.append("".concat(loc("ui/hyphen"), loc("ui/space"), value, loc("ui/colon"), loc(valueLocKey)))
+  }
+  return hints
+}
+
 function getOptionInfoView(id) {
   let opt = getOptionDesc(id)
   let title = loc(opt?.titleLocId ?? $"options/{id}")
   let descLocKey = $"guiHints/{id}"
   let description = doesLocTextExist(descLocKey) ? [loc(descLocKey)] : []
+  description.extend(getOptionValueHints(id, opt))
   if (opt?.restart)
     description.append(colorize("warningTextColor", loc("guiHints/restart_required")))
   if (opt?.tooltipExtra)
@@ -1583,6 +1609,9 @@ mShared = {
 
 
 
+
+
+
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     getValueFromConfig = function(blk, desc) {
@@ -2097,6 +2126,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/GI/%s"
   }
   ssaoQuality = { widgetType = "slider" def = 1 min = 1 max = 2 blk = "render/ssaoQuality" restart = false
+    hasValueHints = true
     infoImgPattern = "#ui/images/settings/ssao/%s"
     availableInfoImgVals = [1, 2]
   }

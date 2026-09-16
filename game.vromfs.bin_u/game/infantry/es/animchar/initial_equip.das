@@ -108,7 +108,7 @@ def skeleton_attach_with_remap_parent_reinit_attach_track(evt : Event;
   if !parentFound 
     removeSubTemplate(eid, "base_skeleton_attach")
 
-[es(tag=gameClient, on_appear, after=(skeleton_attach_init_es, skeleton_attach_reinit_es), REQUIRE=skeleton_attach__skeletonRemap)]
+[es(tag=gameClient, on_appear, on_event=CmdInitSkeletonAttach, after=(skeleton_attach_init_es, skeleton_attach_reinit_es), REQUIRE=(skeleton_attach__skeletonRemap, attachedToParent))]
 def skeleton_attach_with_remap_parent_reinit_remap_init(evt : Event;
                                                         attaches_list : EidList;
                                                         var animchar : AnimcharBaseComponent&;

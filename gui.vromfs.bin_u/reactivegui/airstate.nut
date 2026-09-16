@@ -1,6 +1,7 @@
 import "%rGui/interopGen.nut" as interopGen
 from "hudState" import NUM_ENGINES_MAX
 from "%rGui/globals/ui_library.nut" import *
+from "dagor.workcycle" import setTimeout, clearTimer, hasTimer
 
 let { interop } = require("%rGui/globals/interop.nut")
 
@@ -101,6 +102,11 @@ let Trt = []
 let IsEnginesControled = Watched(false)
 let isEngineControled = []
 let ThrottleState = []
+
+const THROTTLE_DEBOUNCE_SEC = 0.05
+let throttlePendingTrt = array(NUM_ENGINES_MAX, 0)
+let throttlePendingMode = array(NUM_ENGINES_MAX, 0)
+let throttleDebounceTimerIds = array(NUM_ENGINES_MAX).map(@(_, i) $"throttleDebounce{i}")
 
 let Rpm = Watched(0)
 let Spd = Watched(0)
@@ -789,10 +795,33 @@ interop.updateEngineAlert <- function (value, index) {
   EngineAlert[index].set(value)
 }
 
+
+
+
 interop.updateEnginesThrottle <- function(mode, trt, state, index) {
-  TrtMode[index].set(mode)
-  Trt[index].set(trt)
   ThrottleState[index].set(state)
+
+  let lastAccepted = Trt[index].get()
+  let timerId = throttleDebounceTimerIds[index]
+  if (trt >= lastAccepted) {
+    clearTimer(timerId)
+    TrtMode[index].set(mode)
+    Trt[index].set(trt)
+    return
+  }
+
+  throttlePendingTrt[index] = trt
+  throttlePendingMode[index] = mode
+  if (hasTimer(timerId))
+    return
+
+  setTimeout(THROTTLE_DEBOUNCE_SEC,
+    function() {
+      TrtMode[index].set(throttlePendingMode[index])
+      Trt[index].set(throttlePendingTrt[index])
+    },
+    timerId
+  )
 }
 
 interop.updateEngineControl <- function(index, is_controlled) {
