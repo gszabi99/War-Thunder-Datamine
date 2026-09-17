@@ -12,10 +12,10 @@
     "mission": {
       "level": "levels/water.bin",
       "type": "singleMission",
-      "restoreType": "attempts",
-      "optionalTakeOff": false,
       "environment": "Day",
-      "weather": "hazy"
+      "weather": "hazy",
+      "restoreType": "attempts",
+      "optionalTakeOff": false
     },
     "spectator_points": {}
   },
@@ -167,6 +167,8 @@
           "func": "more",
           "value": 0,
           "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "all_players_squad",
           "var": "pa_players_count"
         }
@@ -199,6 +201,8 @@
           "func": "less",
           "value": 0,
           "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "all_players_squad",
           "var": "pa_players_count"
         }
@@ -598,6 +602,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": [
             "t1_quest_units_squad",
             "t2_quest_units_squad"
@@ -727,7 +733,9 @@
             "t1_land_damaged",
             "t2_land_damaged",
             "t1_all_land_destroyed",
-            "t2_all_land_destroyed"
+            "t2_all_land_destroyed",
+            "t1_carrier_killed",
+            "t2_carrier_killed"
           ]
         }
       },
@@ -752,6 +760,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t1_quest_units_squad",
           "var": "t1_land_death_counter"
         }
@@ -790,6 +800,8 @@
           "object_marking": 0,
           "func": "more",
           "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_quest_units_squad",
           "var": "t2_land_death_counter"
         }
@@ -828,6 +840,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t1_quest_units_squad"
         }
       },
@@ -857,6 +871,8 @@
           "object_marking": 0,
           "func": "less",
           "value": 1,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
           "object": "t2_quest_units_squad"
         }
       },
@@ -924,6 +940,94 @@
         }
       },
       "else_actions": {}
+    },
+    "t1_carrier_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@t1_carriers_squad_name",
+          "type": "squad"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@t1_carriers_squad_name",
+          "var": "t1_carriers_killed_counter"
+        }
+      },
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "var": "pa_tickets_cost",
+          "team": "A"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "t1_carriers_killed_counter"
+        }
+      },
+      "else_actions": {}
+    },
+    "t2_carrier_killed": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@t2_carriers_squad_name",
+          "type": "squad"
+        },
+        "unitWhenCountMatches": {
+          "object_type": "isKilled",
+          "object_marking": 0,
+          "func": "more",
+          "value": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object": "@t2_carriers_squad_name",
+          "var": "t2_carriers_killed_counter"
+        }
+      },
+      "actions": {
+        "gameMPChangeScore": {
+          "value": -100,
+          "valueSystem": "amount",
+          "var": "pa_tickets_cost",
+          "team": "B"
+        },
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "t2_carriers_killed_counter"
+        }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -940,7 +1044,11 @@
     "subquest_units_t1_name": "",
     "subquest_units_t2_name": "",
     "pa_one_side_mission": false,
-    "pa_div_modifier": 0
+    "pa_div_modifier": 0,
+    "t1_carriers_squad_name": "t1_carriers_squad",
+    "t2_carriers_squad_name": "t2_carriers_squad",
+    "t1_carriers_killed_counter": 0,
+    "t2_carriers_killed_counter": 0
   },
   "dialogs": {},
   "airfields": {},

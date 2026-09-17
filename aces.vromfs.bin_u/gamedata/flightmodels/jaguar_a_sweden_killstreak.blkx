@@ -3354,7 +3354,7 @@
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
-      "preset": "defa_common"
+      "preset": "ltc_common"
     }
   },
   "weapon_presets": {
@@ -3432,67 +3432,148 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "name": "defa_common",
-          "ShowNodes": {
-            "node": [
-              "alkan_ll_5020_l",
-              "alkan_ll_5020_r"
+        "WeaponPreset": [
+          {
+            "name": "defa_common",
+            "ShowNodes": {
+              "node": [
+                "alkan_ll_5020_l",
+                "alkan_ll_5020_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 200.0,
+                "speedPitch": 200.0,
+                "parkInDeadzone": true,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -90.0,
+                    90.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                }
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553_jaguar.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "cannon1_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553_jaguar.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "dm": "cannon2_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              }
             ]
           },
-          "Weapon": [
-            {
-              "dummy": true,
-              "trigger": "gunner0",
-              "triggerGroup": "primary",
-              "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic1_gun",
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "speedYaw": 200.0,
-              "speedPitch": 200.0,
-              "parkInDeadzone": true,
-              "aimForOperatedShell": true,
-              "turret": {
-                "head": "optic1_turret",
-                "gun": "optic1_gun",
-                "mainTurret": true
+          {
+            "name": "ltc_common",
+            "ShowNodes": {
+              "node": [
+                "alkan_ll_5020_l",
+                "alkan_ll_5020_r"
+              ]
+            },
+            "Weapon": [
+              {
+                "dummy": true,
+                "trigger": "gunner0",
+                "triggerGroup": "primary",
+                "blk": "gameData/Weapons/dummy_weapon.blk",
+                "emitter": "optic1_gun",
+                "defaultYaw": 0.0,
+                "defaultPitch": 0.0,
+                "speedYaw": 200.0,
+                "speedPitch": 200.0,
+                "parkInDeadzone": true,
+                "aimForOperatedShell": true,
+                "turret": {
+                  "head": "optic1_turret",
+                  "gun": "optic1_gun",
+                  "mainTurret": true
+                },
+                "limits": {
+                  "yaw": [
+                    -90.0,
+                    90.0
+                  ],
+                  "pitch": [
+                    -90.0,
+                    90.0
+                  ]
+                }
               },
-              "limits": {
-                "yaw": [
-                  -90.0,
-                  90.0
-                ],
-                "pitch": [
-                  -90.0,
-                  90.0
-                ]
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553_jaguar.blk",
+                "emitter": "flare1",
+                "flash": "flare1",
+                "dm": "cannon1_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "cannon",
+                "blk": "gameData/Weapons/cannonDEFA553_jaguar.blk",
+                "emitter": "flare2",
+                "flash": "flare2",
+                "dm": "cannon2_dm",
+                "bullets": 150,
+                "light": false,
+                "spread": 1.2,
+                "traceOffset": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
+                "emitter": "emtr_flare1",
+                "bullets": 72,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 72,
+                "bulletsCartridge": 1,
+                "external": true,
+                "separate": false
               }
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553_jaguar.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "cannon1_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            },
-            {
-              "trigger": "cannon",
-              "blk": "gameData/Weapons/cannonDEFA553_jaguar.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "cannon2_dm",
-              "bullets": 150,
-              "light": false,
-              "spread": 1.2,
-              "traceOffset": 1
-            }
-          ]
-        }
+            ]
+          }
+        ]
       },
       {
         "index": 3,
@@ -3545,42 +3626,6 @@
             }
           }
         ]
-      },
-      {
-        "index": 6,
-        "tier": 9,
-        "order": 6,
-        "WeaponPreset": {
-          "iconType": "ltc",
-          "name": "ltc",
-          "Weapon": {
-            "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
-            "emitter": "emtr_flare1",
-            "bullets": 72,
-            "bulletsCartridge": 1,
-            "external": true,
-            "separate": false
-          }
-        }
-      },
-      {
-        "index": 7,
-        "tier": 3,
-        "order": 7,
-        "WeaponPreset": {
-          "iconType": "ltc",
-          "name": "ltc",
-          "Weapon": {
-            "trigger": "countermeasures",
-            "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_with_chaff.blk",
-            "emitter": "emtr_flare2",
-            "bullets": 72,
-            "bulletsCartridge": 1,
-            "external": true,
-            "separate": false
-          }
-        }
       }
     ]
   },
@@ -3649,13 +3694,7 @@
       "modClass": "armor",
       "invertEnableLogic": false
     },
-    "aden_ground_targets": {},
-    "aden_stealth": {},
-    "aden_belt_pack": {
-      "tier": 1
-    },
     "aden_new_gun": {
-      "reqModification": "aden_belt_pack",
       "tier": 3
     },
     "fr_250kg_type_25c": {
@@ -3665,6 +3704,22 @@
     "fr_400kg_type_21b": {
       "modClass": "weapon",
       "tier": 3
+    },
+    "countermeasures_belt_pack": {
+      "modClass": "armor",
+      "tier": 1,
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "mi-24_EVU",
+      "deactivationIsAllowed": true,
+      "effects": {
+        "commonWeapons": {
+          "Weapon": {
+            "slot": 0,
+            "preset": "defa_common"
+          }
+        }
+      }
     }
   }
 }
