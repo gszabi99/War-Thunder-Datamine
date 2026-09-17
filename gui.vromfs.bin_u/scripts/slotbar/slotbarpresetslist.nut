@@ -22,6 +22,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 const MAX_AUTO_TABS_WIDTH_K = 3
 
 const PRESET_PREVIEW_DELAY_SEC = 0.3
+const PRESET_PREVIEW_RESET_DELAY_SEC = 0.1
 const PRESET_PREVIEW_TIMER_ID = "timer_preset_preview"
 
 let autoAbbrTypes = {
@@ -261,9 +262,9 @@ let SlotbarPresetsList = class {
     let presetIdx = obj.presetIdx.tointeger()
     if (this.hoveredPresetIdx != presetIdx)
       return
-    clearTimer(PRESET_PREVIEW_TIMER_ID)
-    this.hoveredPresetIdx = -1
-    this.slotbarWidgetHandler?.previewPreset(null)
+    this.hoveredPresetIdx = null
+    let cb = Callback(@() this.previewHoveredPreset(), this)
+    resetTimeout(PRESET_PREVIEW_RESET_DELAY_SEC, @() cb(), PRESET_PREVIEW_TIMER_ID)
   }
 
   function tryChangePreset(presetIdx = null) {

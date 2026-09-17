@@ -264,9 +264,10 @@ function getMultipliersTable(blk) {
   if (detailedMultiplierModesList.indexof(blk?.type ?? "") != null) {
     const NUM_MISSION_TYPES = 9
     let forceShowMulModes = blk % "forceShowMulMode"
+    let forceHideMulModes = blk % "forceHideMulMode"
     for (local i = 0; i < NUM_MISSION_TYPES; i++) {
       let mulMode = blk?[$"mulMode{i}"] ?? 1.0
-      if (mulMode != 1.0 || forceShowMulModes.contains(i)) {
+      if ((mulMode != 1.0 || forceShowMulModes.contains(i))&& !forceHideMulModes.contains(i)) {
         mulTable[i] <- mulMode
       }
     }

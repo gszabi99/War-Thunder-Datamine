@@ -304,6 +304,22 @@
         "showWayPoints": true,
         "showDialogs": true,
         "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/templates/land_units_death_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
       }
     ]
   },
@@ -1721,150 +1737,6 @@
       },
       "else_actions": {}
     },
-    "t1_land_damaged": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isKilled",
-          "object_marking": 0,
-          "func": "more",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t1_quest_units_squad",
-          "object_var_value": 0,
-          "var": "t1_land_death_counter"
-        }
-      },
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -100,
-          "valueSystem": "amount",
-          "team": "A"
-        },
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "t1_land_death_counter"
-        }
-      },
-      "else_actions": {}
-    },
-    "t2_land_damaged": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": true
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isKilled",
-          "object_marking": 0,
-          "func": "more",
-          "value": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t2_quest_units_squad",
-          "object_var_value": 0,
-          "var": "t2_land_death_counter"
-        }
-      },
-      "actions": {
-        "gameMPChangeScore": {
-          "value": -100,
-          "valueSystem": "amount",
-          "team": "B"
-        },
-        "varModify": {
-          "operator": "add",
-          "value": 1.0,
-          "var": "t2_land_death_counter"
-        }
-      },
-      "else_actions": {}
-    },
-    "t1_all_land_destroyed": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isActive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t1_quest_units_squad",
-          "object_var_value": 0
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t1_loose"
-        }
-      },
-      "else_actions": {}
-    },
-    "t2_all_land_destroyed": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isActive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t2_quest_units_squad",
-          "object_var_value": 0
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t2_loose"
-        }
-      },
-      "else_actions": {}
-    },
     "t1_lcvp_sq_damaged": {
       "is_enabled": true,
       "comments": "",
@@ -1887,7 +1759,6 @@
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object": "t1_lcvp_sq",
-          "object_var_value": 0,
           "var": "t1_lcvp_death_counter"
         }
       },
@@ -2037,8 +1908,6 @@
   "variables": {
     "timer": 0,
     "players_counter": 0,
-    "t2_land_death_counter": 0,
-    "t1_land_death_counter": 0,
     "t1_lcvp_death_counter": 0,
     "t1_lcvp_airfield_death_counter": 0,
     "t1_cur_lcvp_deaths": 0,
@@ -9761,7 +9630,8 @@
             "t2_artillery_sq",
             "t2_trucks_squad",
             "t2_heavy_units_squad",
-            "t2_bunkers_squad"
+            "t2_bunkers_squad",
+            "t2_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -9793,7 +9663,8 @@
         "props": {
           "squad_members": [
             "t1_tanks_sq",
-            "t1_destroyer_sq"
+            "t1_destroyer_sq",
+            "t1_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }

@@ -549,7 +549,7 @@ let Profile = class (UserCardHandler) {
   function askAboutSaveProfile(cb) {
     this.msgBox("safe_unfinished", loc("msgbox/has_unsaved_items"),
     [
-      ["apply", function() {
+      ["apply", Callback(function() {
         if (this.hasUnpurchasedItems()) {
           this.notifyUserAboutUnpurchasedItems()
           return
@@ -566,7 +566,7 @@ let Profile = class (UserCardHandler) {
         this.needSkipSheetListEvents = true
         this.getSheetList().setValue(selectedSheetIdx)
         this.needSkipSheetListEvents = false
-      }],
+      }, this)],
       ["#mainmenu/btnBack", @() null],
       ["#mainmenu/btnClose", Callback(function() {
         this.onProfileEditCancelBtn()
