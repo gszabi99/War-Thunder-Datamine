@@ -66,6 +66,7 @@ class EveryDayLoginAward (BaseGuiHandlerWT) {
   periodUnit = null
 
   function initScreen() {
+    this.backSceneParams = { eventbusName = "gui_start_mainmenu" }
     let loginGuardState = getLoginGuardState()
     log($"Every Day Login Award: loginGuardState loginStreak={loginGuardState.loginStreak} loginGuard={loginGuardState.loginGuard} period={getStreakGuardPeriod()}")
     debugTableData(loginGuardState)

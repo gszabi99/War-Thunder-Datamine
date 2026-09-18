@@ -103,6 +103,7 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
 
   let total = get_user_logs_count()
   local unlocksNeedsPopupWnd = false
+  local isAlreadyTryShowEveryDayLoginAwardWnd = false
   let popupMask = ("getUserlogsMask" in handler) ? handler.getUserlogsMask() : USERLOG_POPUP.ALL
   local complaintsCount = 0
 
@@ -325,10 +326,12 @@ function checkNewNotificationUserlogs(onStartAwards = false) {
         inventoryRewards.cache[itemDefId].rewardsData.append(blkBody)
       }
     }
-    else if (blk?.type == EULT_CHARD_AWARD
-             && (blk.body?.rewardType ?? "") == "EveryDayLoginAward"
-             && isNewbieInited() && !isMeNewbie()
-             && !isHandlerInScene(get_gui_handler("DebriefingModal"))) {
+    else if (!isAlreadyTryShowEveryDayLoginAwardWnd
+        && blk?.type == EULT_CHARD_AWARD
+        && (blk.body?.rewardType ?? "") == "EveryDayLoginAward"
+        && isNewbieInited() && !isMeNewbie()
+        && handler.getclass() == get_gui_handler("MainMenu")) {
+      isAlreadyTryShowEveryDayLoginAwardWnd = true
       handler.doWhenActive(@() showEveryDayLoginAwardWnd(blk))
     }
     else if (blk?.type == EULT_PUNLOCK_NEW_PROPOSAL) {
