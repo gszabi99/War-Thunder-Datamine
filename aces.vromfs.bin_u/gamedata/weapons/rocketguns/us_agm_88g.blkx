@@ -31,15 +31,21 @@
       0.1
     ],
     "CxK": 1.15,
-    "wingAreaMult": 1.1,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
+    "wingAreaMult": 1.25,
+    "finsAoaHor": 0.2,
+    "finsAoaVer": 0.2,
     "distFromCmToStab": 0.1,
     "mass": 467.0,
+    "extPressureToThrustMult": [
+      101300.0,
+      1.0,
+      16280.0,
+      1.1
+    ],
     "timeLife": 600.0,
     "startSpeed": 0.0,
     "machMax": 4.0,
-    "maxSpeed": 2000.0,
+    "maxSpeed": 1180.0,
     "maxDistance": 300000.0,
     "minDistance": 10000.0,
     "rangeMax": 300000.0,
@@ -88,20 +94,15 @@
     "propulsion0": {
       "fireDelay": 0.5,
       "impulse0": {
-        "time": 4.0,
-        "force": 34500.0,
-        "massLost": 60.0
-      },
-      "impulse1": {
-        "time": 25.0,
-        "force": 6440.0,
-        "massLost": 70.0
+        "time": 12.0,
+        "force": 24150.0,
+        "massLost": 130.0
       }
     },
     "propulsion1": {
       "impulse0": {
-        "time": 50.0,
-        "force": 3220.0,
+        "time": 40.0,
+        "force": 4255.0,
         "massLost": 70.0
       }
     },
@@ -169,11 +170,12 @@
         }
       },
       "guidanceAutopilot": {
+        "timeOut": 0.5,
         "altitudeHoldEnabled": true,
         "useAbsoluteAltitude": true,
         "timeToHitToAltitude0": [
           0.0,
-          20000.0
+          22500.0
         ],
         "altitudeHoldTargetElevation": -25.0,
         "altitudeHoldTargetOmegaMax": 1.75,
@@ -187,16 +189,16 @@
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
         "reqAccelMax": 5.0,
-        "accelControlProp": 0.03962,
-        "accelControlIntg": 0.097222,
-        "accelControlDiff": 0.00374,
+        "accelControlProp": 0.040299,
+        "accelControlIntg": 0.104081,
+        "accelControlDiff": 0.003312,
         "accelControlIntgLim": 1.0
       },
       "propulsionAutopilot": {
         "propulsion0": {},
         "propulsion1": {
-          "startTimeMin": 29.5,
-          "velocityMin": 700.0
+          "startTimeMin": 12.5,
+          "velocityMin": 725.0
         }
       }
     },
