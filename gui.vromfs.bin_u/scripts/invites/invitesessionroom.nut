@@ -16,7 +16,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInSessionRoom, getSessionLobbyRoomId, getSessionLobbyGameMode, isUrlMissionByRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getRoomEvent, getSessionLobbyMissionNameText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
 let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
@@ -83,7 +83,7 @@ let SessionRoom = class (BaseInvite) {
       params.eventName <- colorize(activeColor, events.getEventNameText(event))
     }
     else
-      params.missionName <- room ? colorize(activeColor, getSessionLobbyMissionNameLoc(room)) : ""
+      params.missionName <- room ? colorize(activeColor, getSessionLobbyMissionNameText(room)) : ""
 
     return loc(format(locIdFormat, modeId), params)
   }

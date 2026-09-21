@@ -70,6 +70,15 @@ function getSessionLobbyMissionNameLoc(room = null) {
   return ""
 }
 
+function getSessionLobbyMissionNameText(room) {
+  let url = getMissionUrl(room)
+  if (url == "")
+    return getSessionLobbyMissionNameLoc(room)
+
+  let urlMission =  g_url_missions.findMissionByUrl(url)
+  return urlMission ? urlMission.name : url
+}
+
 function haveLobby() {
   let gm = getSessionLobbyGameMode()
   if (gm == GM_SKIRMISH)
@@ -537,16 +546,10 @@ function getRoomsInfoTbl(roomsList) {
     }
     if ("roomName" in public)
       item.mission <- public.roomName
-    else if (isUrlMissionByRoom(public)) {
-      let url = getMissionUrl(public)
-      let urlMission =  g_url_missions.findMissionByUrl(url)
-      let missionName = urlMission ? urlMission.name : url
-      item.mission <- missionName
-    }
     else {
-      if (!isValidMissionLocName(public))
+      if (!isUrlMissionByRoom(public) && !isValidMissionLocName(public))
         continue
-      item.mission <- getSessionLobbyMissionNameLoc(public)
+      item.mission <- getSessionLobbyMissionNameText(public)
     }
     if ("creator" in public)
       item.name <- getPlayerName(public?.creator ?? "")
@@ -568,6 +571,7 @@ function getMisListType(v_settings = null) {
 return {
   getRoomEvent
   getSessionLobbyMissionNameLoc
+  getSessionLobbyMissionNameText
   haveLobby
   canInvitePlayerToSessionRoom
   needAutoInviteSquadToSessionRoom

@@ -6,14 +6,14 @@ from "%globalScripts/difficultyConsts.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
 let { events } = require("%scripts/events/eventsManager.nut")
-let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO, USEROPT_VERSUS_RESPAWN, USEROPT_IS_BOTS_ALLOWED, USEROPT_ALLOW_EMPTY_TEAMS, USEROPT_CLUSTERS, USEROPT_DISABLE_AIRFIELDS, USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, USEROPT_CONTENT_ALLOWED_PRESET } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
 let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
-let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit, getRoomRequiredCrafts, getRoomMGameMode, getRoomTeamsCountries } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyMissionNameText, getSessionLobbyTimeLimit, getRoomRequiredCrafts,
+  getRoomMGameMode, getRoomTeamsCountries } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
@@ -112,15 +112,10 @@ return function(scene, sessionInfo) {
   let mapNameObj = scene.findObject("session_mapName")
   if (isUserMission(sessionInfo))
     setTextToObj(mapNameObj, "".concat(loc("options/mp_user_mission"), loc("ui/colon")), sessionInfo?.userMissionName)
-  else if (isUrlMissionByRoom(sessionInfo)) {
-    let url = (sessionInfo?.missionURL ?? "")
-    let urlMission =  g_url_missions.findMissionByUrl(url)
-    let missionName = urlMission ? urlMission.name : url
-    setTextToObj(mapNameObj, "".concat(loc("urlMissions/sessionInfoHeader"), loc("ui/colon")), missionName)
-  }
   else {
-    let missionName = getSessionLobbyMissionNameLoc(sessionInfo)
-    setTextToObj(mapNameObj, "".concat(loc("options/mp_mission"), loc("ui/colon")), missionName)
+    let missionName = getSessionLobbyMissionNameText(sessionInfo)
+    let titleText = isUrlMissionByRoom(sessionInfo) ? loc("urlMissions/sessionInfoHeader") : loc("options/mp_mission")
+    setTextToObj(mapNameObj, "".concat(titleText, loc("ui/colon")), missionName)
   }
 
   let pasObj = scene.findObject("session_hasPassword")
