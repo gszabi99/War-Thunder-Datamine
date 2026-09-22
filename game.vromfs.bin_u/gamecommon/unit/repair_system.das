@@ -173,7 +173,12 @@ def repair_system_init_handle_es(evt : CmdInitComponent;
 
   
   
-  set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, !unit.isTransport && unit.isTankFieldRepairAllowed)
+  
+  
+  static_if typeinfo safe_has_property < isTankFieldRepairAllowed > (*unit)
+    set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, !unit.isTransport && unit.isTankFieldRepairAllowed)
+  else
+    set_flag(repair_system_state, RepairState.CAN_AUTO_REPAIR, !unit.isTransport)
   set_flag(repair_system_state, RepairState.REPAIR_PENALTY_WITHOUT_TOOLKIT, false)
 
   if unit.isShip

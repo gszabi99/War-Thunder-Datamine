@@ -188,6 +188,7 @@ class MirageF1Radar : Canvas
 
   def drawTargets()
     Radar`foreach_visible_target() <| $(var target)
+      return if target.targetType != int(RadarTargetType.TYPE_TARGET)
       let distRel = get_radar_hud_has_distance_scale() && target.distanceRel >= 0.0 ? target.distanceRel : 0.5
       let azRel   = get_radar_hud_has_azimuth_scale() ? target.azimuthRel : 0.5
 

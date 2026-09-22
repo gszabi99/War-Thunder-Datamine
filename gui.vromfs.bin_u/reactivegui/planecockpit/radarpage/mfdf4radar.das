@@ -235,7 +235,7 @@ class F4Radar : Canvas
   def drawBSweep()
     var hasLock = false
     Radar`foreach_visible_target() <| $(var target)
-      if target.isSelected
+      if target.targetType == int(RadarTargetType.TYPE_TARGET) && target.isSelected
         hasLock = true
     if hasLock
       return

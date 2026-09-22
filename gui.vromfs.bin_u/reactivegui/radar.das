@@ -519,6 +519,7 @@ struct PolarRadarIndicator : InteractableButton
 
     var foundTarget = false
     Radar`foreach_visible_target() <| $(var target)
+      return if target.targetType != int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -1489,6 +1490,7 @@ struct BScopeSquareIndicator : InteractableButton
 
     var foundTarget = false
     Radar`foreach_visible_target() <| $(var target)
+      return if target.targetType != int(RadarTargetType.TYPE_TARGET)
       var angleRel = 0.5
       var angularWidthRel = 1.
       if hasAzimuthScale
