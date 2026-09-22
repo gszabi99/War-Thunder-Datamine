@@ -458,10 +458,7 @@ local class SelectUnitHandler (BaseGuiHandlerWT) {
         let optionVisible = ((1 << idxItem) & maskStorage) != 0
         if (optionVisible)
           countVisibleOptions++
-        local name = text
-        if (startsWith(name, "#"))
-          name = name.slice(1)
-        name = loc(name, locParams)
+        let name = startsWith(text, "#") ? loc(text.slice(1), locParams) : text
         row.nums.append({
           option_name = name
           option_icon = icon

@@ -103,7 +103,8 @@ let cfgMenuShip = [
     { type = EII_SHIP_DAMAGE_CONTROL, userHandle = @(v) (v >> 3) == 3 },
     EII_LOCK,
   
-    EII_SPEED_BOOSTER,  
+    EII_SPEED_BOOSTER,     
+    EII_UNLIMITED_CONTROL, 
 ]
 
 let cfgMenuSubmarine = [

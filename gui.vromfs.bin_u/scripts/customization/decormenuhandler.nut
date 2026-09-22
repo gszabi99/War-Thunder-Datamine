@@ -10,7 +10,7 @@ let { BaseGuiHandlerWT } = require("%scripts/baseGuiHandlerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getDecorButtonView } = require("%scripts/customization/decorView.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
-let { move_mouse_on_child, findChild } = require("%scripts/sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, findChild, getSelectedChild } = require("%scripts/sqDagui/daguiUtil.nut")
 let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDecorator, getCachedDataByType, getCachedOrderByType } = require("%scripts/customization/decoratorGetters.nut")
@@ -307,7 +307,9 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     if (!isGroupList) {
       let decorId = this.preSelectDecorId ?? this.curSlotDecorId
       let decor = getDecorator(decorId, this.curDecorType, this.curUnit?.unitType.tag)
-      let index = (decor && decor.category == categoryId) ? decor.catIndex : 0
+      let lastIndex = contentListObj.childrenCount() - 1
+      let index = lastIndex < 0 ? -1
+        : clamp((decor && decor.category == categoryId) ? decor.catIndex : 0, 0, lastIndex)
       contentListObj.setValue(index)
     }
     else
@@ -380,13 +382,8 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
     if (headerObj?.isValid())
       headerObj.scrollToView(true)
 
-    let contentListObj = this.getContentObj(categoryObj)
-    if (!contentListObj?.isValid() || contentListObj.childrenCount() == 0)
-      return
-
-    let idx = contentListObj.getValue()
-    let itemObj = contentListObj.getChild(idx == -1 ? 0 : idx)
-    if (itemObj?.isValid())
+    let itemObj = getSelectedChild(this.getContentObj(categoryObj))
+    if (itemObj)
       itemObj.scrollToView()
   }
 

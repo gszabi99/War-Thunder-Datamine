@@ -140,13 +140,15 @@ function guiStartVoicemenu(config) {
     return null
 
   let joyParams = joystickGetCurSettings()
+  let { useMouseForVoiceMessage } = joyParams
   let { menu = [], callbackFunc = null, squadMsg = false, category = ""} = config
   let params = {
     menu
     callbackFunc
     squadMsg
     category
-    mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
+    mouseEnabled = useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage
+    useMouseForSelect = useMouseForVoiceMessage
     axisEnabled  = true
   }
 

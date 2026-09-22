@@ -255,6 +255,8 @@ let SlotbarPresetsList = class {
   }
 
   function previewHoveredPreset() {
+    if ((this.hoveredPresetIdx != null) && !(this.curPresetsData?[this.hoveredPresetIdx].isEnabled ?? false))
+      this.hoveredPresetIdx = null
     this.slotbarWidgetHandler?.previewPreset(this.hoveredPresetIdx)
   }
 

@@ -80,7 +80,6 @@ let wheelMenuHandler = class (BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/wheelMenu/wheelmenu.blk"
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_NONE
-  wndControlsAllowMaskToApply = CtrlsInGui.CTRL_ALLOW_NONE
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_ALLOW_WHEEL_MENU
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
                                    | CtrlsInGui.CTRL_ALLOW_VEHICLE_KEYBOARD
@@ -121,10 +120,6 @@ let wheelMenuHandler = class (BaseGuiHandlerWT) {
     if (!ps4_is_circle_selected_as_enter_button())
       this.wndControlsAllowMaskWhenActive = this.wndControlsAllowMaskWhenActive | CtrlsInGui.CTRL_ALLOW_TACTICAL_MAP
 
-    this.wndControlsAllowMaskToApply = this.mouseEnabled
-      ? this.wndControlsAllowMaskWhenActive ^ CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
-      : this.wndControlsAllowMaskWhenActive
-
     closeCurWheelmenu()
 
     this.guiScene = this.scene.getScene()
@@ -146,8 +141,6 @@ let wheelMenuHandler = class (BaseGuiHandlerWT) {
     showObjById("wheelmenu_bg_shade", this.shouldShadeBackground, this.scene)
 
     g_hud_event_manager.subscribe("LocalPlayerDead", @(_) this.quit(), this)
-
-    this.wndControlsAllowMask = this.wndControlsAllowMaskToApply
   }
 
   function destroyItems(){
@@ -392,7 +385,7 @@ let wheelMenuHandler = class (BaseGuiHandlerWT) {
     this.scene.show(show)
     this.scene.enable(show)
     this.isActive = show
-    this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskToApply : CtrlsInGui.CTRL_ALLOW_FULL)
+    this.switchControlsAllowMask(this.isActive ? this.wndControlsAllowMaskWhenActive : CtrlsInGui.CTRL_ALLOW_FULL)
     setSceneActive(!this.isActive)
     isWheelMenuActive.set(this.isActive)
   }

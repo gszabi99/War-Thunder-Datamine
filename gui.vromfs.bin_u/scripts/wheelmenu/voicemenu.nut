@@ -25,8 +25,12 @@ register_gui_handler("voiceMenuHandler", class (wheelMenuHandler) {
   isActive = true
   squadMsg = false
   category = ""
+  useMouseForSelect = false
 
   function initScreen() {
+    this.wndControlsAllowMaskWhenActive = this.useMouseForSelect
+      ? this.wndControlsAllowMaskWhenActive & ~CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
+      : this.wndControlsAllowMaskWhenActive | CtrlsInGui.CTRL_ALLOW_VEHICLE_MOUSE
     base.initScreen()
     this.updateChannelInfo()
     this.updateFastVoiceMessagesTable()
