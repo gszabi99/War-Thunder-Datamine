@@ -9,7 +9,7 @@ from "mission" import get_game_type, get_cur_game_mode_name, get_game_mode
 from "guiMission" import get_mission_restore_type, get_pilot_name, is_aircraft_delayed, is_aircraft_active, is_aircraft_player, set_tactical_screen_player, get_player_group
   , get_current_mission_desc, is_allow_to_choose_hud_icon_preset, ERT_TACTICAL_CONTROL, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
 from "scriptRespondent" import registerRespondent
-from "guiTacticalMap" import setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
+from "guiTacticalMap" import setAllowMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
   , isPointOfInterestSet, setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset
 from "hudActionBar" import getActionBarUnitName
 from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType, applyMapHudType
@@ -154,6 +154,7 @@ let TacticalMap = class (BaseGuiHandlerWT) {
       showObjById("screen_button_back", useTouchscreen, this.scene)
 
       showObjById("hint_btn_move_map", !showConsoleButtons.get(), this.scene)
+      showObjById("hint_btn_move_map_gamepad", showConsoleButtons.get(), this.scene)
       let isAircraft = this.isCurUnitAircraft()
       let isShowPOiButton = isAircraft && hasSightStabilization()
       let setPointOfInterestObj = showObjById("btn_set_point_of_interest", isShowPOiButton, this.scene)
@@ -520,13 +521,6 @@ let TacticalMap = class (BaseGuiHandlerWT) {
 
       this.onStart(obj)
     }
-
-    function onMoveMapActivate() {
-      setAllowMoveCenter(!isAllowedMoveCenter())
-      let tacticalMapObj = this.scene.findObject("tactical-map")
-      tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
-      tacticalMapObj.permanentMapTool =  isAllowedMoveCenter() ? "PanZoomMap" : "";
-   }
 
    function onForcedSetHudType(obj) {
     let unitName = getActionBarUnitName()

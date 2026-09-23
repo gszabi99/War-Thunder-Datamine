@@ -19,7 +19,7 @@ from "guiSpectator" import onSpectatorMode, switchSpectatorTarget, getSpectatorT
 from "guiMission" import quit_to_debriefing, get_mission_difficulty_int, get_unit_wp_to_respawn, get_mp_respawn_countdown, get_mission_status, get_current_mission_desc, is_allow_to_choose_hud_icon_preset
   , MISSION_STATUS_RUNNING, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY
 from "console" import register_command
-from "guiTacticalMap" import setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
+from "guiTacticalMap" import setAllowMoveCenter, setForcedHudType, getCurHudType, setPointSettingMode, isPointSettingMode, resetPointOfInterest
   , isPointOfInterestSet, setHudIconsPreset, getHudIconsPresetsList, getCurHudIconsPreset, setTacticalMapIconsFilter
 from "hudActionBar" import getActionBarUnitName
 from "%scripts/respawn/tacticalMapHudTypeState.nut" import getCachedMapHudType, setCachedMapHudType, applyMapHudType
@@ -1387,21 +1387,18 @@ let RespawnHandler = class (MPStatistics) {
   function updateTacticalMapHint() {
     local hint = ""
     local hintIcon = showConsoleButtons.get()
-     ? isAllowedMoveCenter() ? gamepadIcons.getTexture("r_shoulder") : gamepadIcons.getTexture("r_trigger")
+     ? gamepadIcons.getTexture("r_trigger")
      : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
     local highlightSquadSpawnPlayerId = -1
     local highlightZoneId = -1
     if (!this.isRespawn) {
-      hint = isAllowedMoveCenter() ? colorize("activeTextColor", loc("hints/move_map_hint"))
-                                   : colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
+      hint = colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
     }
     else {
       let coords = getMouseRelativeCoordsOnObj(this.tmapBtnObj)
       if (!coords)
         hintIcon = ""
-      else if (isAllowedMoveCenter())
-        hint = colorize("activeTextColor", loc("hints/move_map_hint"))
       else if (!this.canChooseRespawnBase) {
         hint = colorize("commonTextColor", loc("guiHints/respawn_base/choice_disabled"))
         hintIcon = ""
@@ -2617,8 +2614,7 @@ let RespawnHandler = class (MPStatistics) {
     this.updateTacticalMapHint()
 
     let tacticalMapObj = this.scene.findObject("tactical-map")
-    tacticalMapObj.cursor = isAllowedMoveCenter() ? "moveArrowCursor"
-      : isPointSettingMode() ? "pointOfInterest"
+    tacticalMapObj.cursor = isPointSettingMode() ? "pointOfInterest"
       : "normal"
   }
 
@@ -2861,6 +2857,7 @@ let RespawnHandler = class (MPStatistics) {
       
       hint_attention_to_map = !showConsoleButtons.get() && !this.isRespawn
       hint_btn_move_map     = !showConsoleButtons.get()
+      hint_btn_move_map_gamepad = showConsoleButtons.get()
     }
     foreach (id, value in buttons)
       showObjById(id, value, this.scene)
@@ -3095,13 +3092,6 @@ let RespawnHandler = class (MPStatistics) {
     if (this.isSpectate && this.onSpectator() && hasAvailableSlots())
       return
 
-    if (isAllowedMoveCenter()) {
-      setAllowMoveCenter(false)
-      let tacticalMapObj = this.scene.findObject("tactical-map")
-      tacticalMapObj.cursor =  "normal"
-      return;
-    }
-
     this.guiScene.performDelayed(this, function() {
       disableFlightMenu(false)
       gui_start_flight_menu()
@@ -3191,12 +3181,6 @@ let RespawnHandler = class (MPStatistics) {
       return
     if (this.isRespawn && this.isSpectate)
       this.switchSpectatorTargetToPrev();
-  }
-
-  function onMoveMapActivate() {
-     setAllowMoveCenter(!isAllowedMoveCenter())
-     let tacticalMapObj = this.scene.findObject("tactical-map")
-     tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
   }
 
   function onForcedSetHudType(_obj) {

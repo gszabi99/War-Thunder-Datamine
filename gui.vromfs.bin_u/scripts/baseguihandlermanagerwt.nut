@@ -45,7 +45,6 @@ dagui_propid_add_name_id("platformId")
 
 local lastScreenHeightForFont = 0
 local lastInFlight = false  
-local hasInitializedFont = false
 local needReloadMainGuiSceneAfterFinishLoading = false
 
 
@@ -193,6 +192,17 @@ function getHandlerControlsAllowMask(handler) {
 
 let reloadDarg = @() reloadDargUiScript(false)
 
+function writeDargFont(font) {
+  return updateExtWatched({
+    fontGenId = font.fontGenId
+    fontSizePx = font.getFontSizePx(screen_width(), screen_height())
+    fontSizeMultiplier = font.sizeMultiplier
+  })
+}
+
+
+writeDargFont(g_font.getCurrent())
+
 let curControlsAllowMask = persist("curControlsAllowMask", @() {val = CtrlsInGui.CTRL_ALLOW_FULL})
 let isCurSceneBgBlurred = persist("isCurSceneBgBlurred", @() {val = false})
 
@@ -283,16 +293,8 @@ handlersManager.__update({
     if (getCurrentFont() != font) {
       this.shouldResetFontsCache = true
       haveChanges = true
-    }
-    if (!hasInitializedFont || getCurrentFont() != font) { 
-      let hasValueChangedInDb = updateExtWatched({
-        fontGenId = font.fontGenId
-        fontSizePx = font.getFontSizePx(screen_width(), screen_height())
-        fontSizeMultiplier = font.sizeMultiplier
-      })
-      if (hasValueChangedInDb)
+      if (writeDargFont(font))
         deferOnce(reloadDarg)
-      hasInitializedFont = true
     }
     setCurrentFont(font)
 

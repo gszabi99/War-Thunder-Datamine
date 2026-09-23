@@ -123,34 +123,6 @@
             }
           },
           {
-            "margin-bottom": "1@blockInterval",
-            "tooltip": "#options/rmbToMoveMap",
-            "Button_text": {
-              "class": "image",
-              "btnName": "RB",
-              "noMargin": "yes",
-              "tooltip": "#options/moveMap",
-              "_on_click": "onMoveMapActivate",
-              "ButtonImg": {},
-              "img": {
-                "background-image": "#ui/gameuiskin#dnd_icon.svg"
-              }
-            },
-            "tdiv": {
-              "id": "hint_btn_move_map",
-              "size": "1@keyboardHintButtonHeight, 1@buttonHeight",
-              "margin-left": "1@blockInterval",
-              "display": "hide",
-              "img": {
-                "size": "0.73h, 1@cIco",
-                "position": "relative",
-                "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                "background-svg-size": "0.73h, 1@cIco",
-                "background-image": "#ui/gameuiskin#mouse_right.avif"
-              }
-            }
-          },
-          {
             "id": "btn_set_point_of_interest",
             "margin-bottom": "1@blockInterval",
             "display": "hide",
@@ -261,6 +233,31 @@
                 "background-image": "#ui/gameuiskin#mouse_center_up_down.avif"
               }
             }
+          },
+          {
+            "tooltip": "#options/rmbToMoveMap",
+            "tacticalMapHintIcon": {
+              "img": {
+                "background-image": "#ui/gameuiskin#dnd_icon.svg"
+              }
+            },
+            "tacticalMapHintInput": [
+              {
+                "id": "hint_btn_move_map",
+                "display": "hide",
+                "img": {
+                  "size": "0.73h, 1@cIco",
+                  "background-svg-size": "0.73h, 1@cIco",
+                  "background-image": "#ui/gameuiskin#mouse_right.avif"
+                }
+              },
+              {
+                "id": "hint_btn_move_map_gamepad",
+                "btnName": "RB",
+                "display": "hide",
+                "ButtonImg": {}
+              }
+            ]
           }
         ]
       }
