@@ -219,6 +219,10 @@ function readNamedChildBlocks(b, names) {
   return res
 }
 
+function getBulletParamsBlk(b) {
+  return b?.rocket ?? b
+}
+
 function getBulletIconImgId(raw) {
   let customIcon = raw?.guiCustomIcon ?? ""
   if (customIcon != "")
@@ -229,26 +233,35 @@ function getBulletIconImgId(raw) {
   return atIdx != null ? bulletType.slice(0, atIdx) : bulletType
 }
 
+function getBulletIconTexture(imgId) {
+  return GUI.get()?.bullet_icons?[imgId]
+}
+
 function makeBulletIconData(raw) {
   let imgId = getBulletIconImgId(raw)
   if (imgId == "")
     return null
 
-  let bulletIcons = GUI.get()?.bullet_icons
-  let texture = bulletIcons?[imgId]
+  let texture = getBulletIconTexture(imgId)
   if (texture != null)
     return { texture }
 
   let caliberMm = 1000.0 * (raw?.caliber ?? 0.0)
   let defaultImgId = isCaliberCannon(caliberMm) ? "default_shell" : "default_ball"
-  let defaultTexture = bulletIcons?[defaultImgId]
+  let defaultTexture = getBulletIconTexture(defaultImgId)
   return defaultTexture == null ? null
     : { texture = defaultTexture, isDefaultTexture = true }
 }
 
-function makeMunitionIconData(wBlk, munitionBlk) {
-  let iconType = munitionBlk?.iconType ?? wBlk?.iconType ?? ""
-  return iconType == "" ? null : { texture = iconType }
+function applyIconOverlays(entry, iconOverlays) {
+  if (iconOverlays == null || !("icon" in entry))
+    return
+
+  let icon = entry.icon
+  if (!("armor" in icon) && "armor" in iconOverlays)
+    icon.armor <- iconOverlays.armor
+  if (!("damage" in icon) && "damage" in iconOverlays)
+    icon.damage <- iconOverlays.damage
 }
 
 let NO_ICON_OVERLAY_BULLET_TYPES = [ "napalm_tank" ]
@@ -331,6 +344,13 @@ function makeBulletIconOverlays(iconParam) {
     res.damage <- damage
 
   return res.len() == 0 ? null : res
+}
+
+function makeIconOverlays(unitName, weaponBlkPath, subName, effectToMod, isBulletBelt, bullets) {
+  if (hasNoIconOverlays(isBulletBelt, bullets))
+    return null
+
+  return makeBulletIconOverlays(getBulletsIconParam(unitName, weaponBlkPath, subName, effectToMod))
 }
 
 function makePenetrationData(data) {
@@ -574,6 +594,24 @@ function readRawBullet(b) {
   }
 
   return out
+}
+
+function makeMunitionIconData(wBlk, munitionBlk) {
+  let iconType = munitionBlk?.iconType ?? wBlk?.iconType ?? ""
+  if (iconType != "")
+    return { texture = iconType }
+
+  let munitionTexture = getBulletIconTexture(getBulletIconImgId(munitionBlk))
+  if (munitionTexture != null)
+    return { texture = munitionTexture }
+
+  foreach (b in wBlk % "bullet") {
+    let icon = makeBulletIconData(readRawBullet(b))
+    if (icon != null)
+      return icon
+  }
+
+  return null
 }
 
 function makeBulletFingerprint(raw, bName) {
@@ -1023,10 +1061,6 @@ function getMunitionRoles(munitionBlk) {
   return res
 }
 
-function getBulletParamsBlk(b) {
-  return b?.rocket ?? b
-}
-
 function hasMissileBullets(wBlk) {
   foreach (b in wBlk % "bullet")
     if (isMissileBulletType(getBulletParamsBlk(b)?.bulletType ?? ""))
@@ -1115,8 +1149,8 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
   if (!availableOnUnit)
     return
 
-  let iconOverlays = hasNoIconOverlays(isBulletBelt, bullets) ? null
-    : makeBulletIconOverlays(getBulletsIconParam(unitName, weaponBlkPath, subName, effectToMod))
+  let iconOverlays = makeIconOverlays(unitName, weaponBlkPath, subName, effectToMod,
+    isBulletBelt, bullets)
   let unitTypeTag = getUnitTypeTag(unitName)
 
   local calcResult = null
@@ -1164,13 +1198,7 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
         db[key].icon <- icon
     }
 
-    if (iconOverlays != null && "icon" in db[key]) {
-      let icon = db[key].icon
-      if (!("armor" in icon) && "armor" in iconOverlays)
-        icon.armor <- iconOverlays.armor
-      if (!("damage" in icon) && "damage" in iconOverlays)
-        icon.damage <- iconOverlays.damage
-    }
+    applyIconOverlays(db[key], iconOverlays)
 
     let modName = (!useDefault && effectToMod != null && subName in effectToMod)
       ? effectToMod[subName]
@@ -1198,7 +1226,7 @@ function addSetToDb(db, unitName, weaponBlkPath, subName, container, availableSe
   }
 }
 
-function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk) {
+function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk, isBulletBelt) {
   if (barrelsDb == null)
     return
 
@@ -1232,6 +1260,9 @@ function addBarrelToDb(barrelsDb, unitName, weaponBlkPath, wBlk) {
   let unitTypeTag = getUnitTypeTag(unitName)
   if (unitTypeTag != "")
     appendOnce(unitTypeTag, barrelsDb[key].unitTypes)
+
+  applyIconOverlays(barrelsDb[key], makeIconOverlays(unitName, weaponBlkPath, "", null,
+    isBulletBelt, wBlk % "bullet"))
 
   if (barrelsDb[key].munition != null) {
     let penetration = calcWeaponPenetration(unitName, weaponBlkPath, barrelsDb[key].munition, wBlk)
@@ -1284,7 +1315,7 @@ function processUnitIntoDb(db, unitName, errors, barrelsDb = null, projectilesDb
           availableSets, projectilesDb, effectToMod, errors, isBulletBelt)
       }
 
-      addBarrelToDb(barrelsDb, unitName, path, wBlk)
+      addBarrelToDb(barrelsDb, unitName, path, wBlk, isBulletBelt)
     } catch (e) {
       errors.append($"unit {unitName} weapon {path}: {e}")
     }
