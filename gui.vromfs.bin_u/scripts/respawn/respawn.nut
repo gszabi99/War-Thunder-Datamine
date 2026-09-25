@@ -173,6 +173,10 @@ function getTotalNuclearYield(unitName, weaponName) {
   return totalNuclearYieldCache[key]
 }
 
+function getUnitWeightKey(unitName, weaponName) {
+  return $"{unitName}#{weaponName}"
+}
+
 function getSelectedWeaponBlockedByGameModeMinRank(unit) {
   if (unit == null)
     return 0
@@ -288,7 +292,7 @@ let RespawnHandler = class (MPStatistics) {
   slotsCostSum = 0 
 
   selectedUnitWeight = 0
-  unitWeightBySlot = {}
+  unitWeightByLoadout = {}
 
   isFirstInit = true
   isFirstUnitOptionsInSession = false
@@ -332,6 +336,7 @@ let RespawnHandler = class (MPStatistics) {
   lastRequestData = null
   lastSpawnUnitName = ""
   requestInProgress = false
+  isSilentRequestPending = false
 
   readyForRespawn = true  
   doRespawnCalled = false
@@ -428,6 +433,7 @@ let RespawnHandler = class (MPStatistics) {
     this.needPlayersTbl = false
     this.isApplyPressed = false
     this.doRespawnCalled = false
+    this.isSilentRequestPending = false
     let wasIsRespawn = this.isRespawn
     this.isRespawn = isRespawnScreen()
     this.needRefreshSlotbarOnReinit = this.isRespawn || wasIsRespawn
@@ -837,12 +843,19 @@ let RespawnHandler = class (MPStatistics) {
   }
 
   function onEventSelectedUnitWeightChanged(p) {
-    this.selectedUnitWeight = p.weight
-    let slotId = respawnWndState.selectedUnitIdInCountry
-    if (slotId != null)
-      this.unitWeightBySlot[slotId] <- p.weight
+    let request = this.lastRequestData
+    if (!request)
+      return
+    this.unitWeightByLoadout[getUnitWeightKey(request.name, request.weapon)] <- p.weight
     let unit = this.getCurSlotUnit()
+    if (!unit)
+      return
+    this.updateSelectedUnitWeight(unit)
     this.updateUnitInfo(unit)
+  }
+
+  function updateSelectedUnitWeight(unit) {
+    this.selectedUnitWeight = this.unitWeightByLoadout?[getUnitWeightKey(unit.name, getLastWeapon(unit.name))] ?? 0
   }
 
   function updateRespawnWhenSquadSpawnsChanged() {
@@ -998,9 +1011,7 @@ let RespawnHandler = class (MPStatistics) {
         if (this.isRespawn)
           setMousePointerInitialPos(this.getSlotbar()?.getCurrentCrewSlot())
 
-        let initUnit = this.getCurSlotUnit()
-        if (initUnit?.isHuman() && this.canChangeAircraft && canRequestAircraftNow())
-          this.requestChangeUnitSilent()
+        this.requestChangeUnitSilent()
       }
       this.updateTacticalMapUnitType()
     }
@@ -1226,14 +1237,13 @@ let RespawnHandler = class (MPStatistics) {
     if (this.slotbarInited)
       this.prevUnitAutoChangeTimeMsec = -1
     respawnWndState.selectedUnitIdInCountry = this.getCurCrew()?.idInCountry ?? -1
-    this.selectedUnitWeight = this.unitWeightBySlot?[respawnWndState.selectedUnitIdInCountry] ?? 0
+    this.updateSelectedUnitWeight(unit)
     this.slotbarInited = true
     this.updateUnitOptions()
     this.updateTacticalMapUnitType()
     this.checkReady()
 
-    if (unit.isHuman() && this.canChangeAircraft && !this.isApplyPressed && canRequestAircraftNow())
-      this.requestChangeUnitSilent()
+    this.requestChangeUnitSilent()
   }
 
   function updateUnitInfo(unit) {
@@ -1254,16 +1264,15 @@ let RespawnHandler = class (MPStatistics) {
       classIconObj.shopItemType = roleText
     }
 
-    let weaponTxt = "{0}{1}{2}".subst(loc("xray/filter/weapon"), loc("ui/colon"),
-      colorize("activeTextColor", getUnitName(unit))
-    )
-    let weightTxt = "{0}{1}{2}".subst(loc("unit/weight"), loc("ui/colon"),
-      colorize("activeTextColor", " ".concat(stdMath.round_by_value(this.selectedUnitWeight, 0.1), loc("measureUnits/kg")))
-    )
-    let speedTxt = "{0}{1}{2}".subst(loc("unit/speed"), loc("ui/colon"),
-      colorize("activeTextColor", getHumanSpeed(this.selectedUnitWeight))
-    )
-    unitInfoNestObj.findObject("unit_info").setValue($"{weaponTxt}\n{weightTxt}\n{speedTxt}")
+    let rows = ["{0}{1}{2}".subst(loc("xray/filter/weapon"), loc("ui/colon"),
+      colorize("activeTextColor", getUnitName(unit)))]
+    if (this.selectedUnitWeight > 0) {
+      rows.append("{0}{1}{2}".subst(loc("unit/weight"), loc("ui/colon"),
+        colorize("activeTextColor", " ".concat(stdMath.round_by_value(this.selectedUnitWeight, 0.1), loc("measureUnits/kg")))))
+      rows.append("{0}{1}{2}".subst(loc("unit/speed"), loc("ui/colon"),
+        colorize("activeTextColor", getHumanSpeed(this.selectedUnitWeight))))
+    }
+    unitInfoNestObj.findObject("unit_info").setValue("\n".join(rows))
   }
 
   function updateWeaponsSelector(isUnitChanged) {
@@ -2151,7 +2160,13 @@ let RespawnHandler = class (MPStatistics) {
   }
 
   function requestChangeUnitSilent() {
-    if (this.requestInProgress)
+    let unit = this.getCurSlotUnit()
+    if (!unit?.isHuman() || !this.canChangeAircraft || this.isApplyPressed) {
+      this.isSilentRequestPending = false
+      return
+    }
+    this.isSilentRequestPending = this.requestInProgress || !canRequestAircraftNow()
+    if (this.isSilentRequestPending)
       return
 
     let requestData = this.getSelectedRequestData(true)
@@ -2567,6 +2582,9 @@ let RespawnHandler = class (MPStatistics) {
     if (this.missionRules.isSpawnDelayEnabled)
       this.updateSlotDelays()
     this.updateRespawnBasesLockState()
+
+    if (this.isSilentRequestPending && canRespawnCaNow())
+      this.requestChangeUnitSilent()
 
     this.updateSpawnScore(false)
     this.updateSpawnRageTokens(false)
@@ -3276,12 +3294,13 @@ let RespawnHandler = class (MPStatistics) {
       this.getSlotbar()?.updateMissionInfoVisibility()
     }
 
+    this.updateSelectedUnitWeight(unit)
+    this.updateUnitInfo(unit)
     this.updateOptions(RespawnOptUpdBit.UNIT_WEAPONS)
     this.slotsCostSum = this.getSlotsSpawnCostSumNoWeapon()
     this.checkReady()
 
-    if (unit.isHuman() && this.canChangeAircraft && !this.isApplyPressed && canRequestAircraftNow())
-      this.requestChangeUnitSilent()
+    this.requestChangeUnitSilent()
   }
 
   function onEventBulletsGroupsChanged(p) {

@@ -46,10 +46,11 @@ def vehicle_seats_enter_exit_kick_client_es(evt : CmdKickFromVehicle;
 [es(tag=netClient)]
 def vehicle_seats_human_force_teleport_client_es(evt : CmdHumanForceTeleport;
                                                  eid : EntityId;
+                                                 human_vehicle__pendingExitLifetime : float;
                                                  var human_net_phys : HumanActor&;
                                                  var human_vehicle__pendingExitTm : float3x4&;
                                                  var human_vehicle__pendingExitUntilTime : float&;
-                                                 human_vehicle__pendingExitLifetime : float)
+                                                 var unit__ref : UnitRef&)
   query(eid) <| $ [es] (var isInVehicle : bool&;
                         var isInVehicleHidden : bool&;
                         var human_anim__vehicleSelected : EntityId&;
@@ -58,9 +59,11 @@ def vehicle_seats_human_force_teleport_client_es(evt : CmdHumanForceTeleport;
     isInVehicleHidden = false
     human_anim__vehicleSelected = INVALID_ENTITY_ID
     human_vehicle__occupiedSeatEid = INVALID_ENTITY_ID
-  if (uint(human_net_phys.role) & uint(NetRole.URF_LOCAL_CONTROL)) != 0u
-    apply_human_teleport_state(human_net_phys, evt.tm)
-  else
+  let hasLocalControl = (uint(human_net_phys.role) & uint(NetRole.URF_LOCAL_CONTROL)) != 0u
+  if !hasLocalControl && unit__ref.unit != null
+    *unit__ref.unit |> teleportToPos(false, evt.tm[3])
+  apply_human_teleport_state(human_net_phys, evt.tm)
+  if !hasLocalControl
     human_vehicle__pendingExitTm = evt.tm
     human_vehicle__pendingExitUntilTime = get_sync_time() + human_vehicle__pendingExitLifetime
 
@@ -124,9 +127,10 @@ def private vehicle_trace_exit_pos(var human_net_phys : HumanActor?; var exitPos
 
   if distance_sq(exit, wishPos) > 1e-6
     
+    let wishSphereCenter = wishPos + float3(0., collRad, 0.)
     var toLocationOutput = ShapeQueryOutput()
-    sphere_cast(exit, wishPos, collRad, toLocationOutput, rayMatId)
-    wishPos = lerp(exit, wishPos, float3(toLocationOutput.t))
+    sphere_cast(exit, wishSphereCenter, collRad, toLocationOutput, rayMatId)
+    wishPos = lerp(exit, wishSphereCenter, float3(toLocationOutput.t)) - float3(0., collRad, 0.)
 
   if length_sq(localCcdPos) > 1e-6
     

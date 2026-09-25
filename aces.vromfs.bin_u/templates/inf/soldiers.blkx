@@ -767,27 +767,27 @@
       "value": [
         [
           15.0,
-          1.4
+          1.263
         ],
         [
           20.0,
-          1.33
+          1.193
         ],
         [
           25.0,
-          1.26
+          1.12
         ],
         [
           30.0,
-          1.175
+          1.094
         ],
         [
           35.0,
-          1.09
+          1.05
         ],
         [
           40.0,
-          1.005
+          1.01
         ],
         [
           45.0,
@@ -803,35 +803,35 @@
       "value": [
         [
           15.0,
-          1.7
-        ],
-        [
-          20.0,
-          1.65
-        ],
-        [
-          25.0,
-          1.6
-        ],
-        [
-          30.0,
-          1.55
-        ],
-        [
-          35.0,
           1.5
         ],
         [
-          40.0,
+          20.0,
           1.45
         ],
         [
-          45.0,
+          25.0,
           1.4
         ],
         [
-          50.0,
+          30.0,
           1.35
+        ],
+        [
+          35.0,
+          1.3
+        ],
+        [
+          40.0,
+          1.25
+        ],
+        [
+          45.0,
+          1.2
+        ],
+        [
+          50.0,
+          1.15
         ]
       ]
     },
@@ -863,23 +863,23 @@
       "value": [
         [
           15.0,
-          1.0
-        ],
-        [
-          20.0,
-          0.95
-        ],
-        [
-          25.0,
           0.9
         ],
         [
+          20.0,
+          0.85
+        ],
+        [
+          25.0,
+          0.8
+        ],
+        [
           30.0,
-          0.84
+          0.78
         ],
         [
           35.0,
-          0.78
+          0.75
         ],
         [
           40.0,
@@ -1043,19 +1043,19 @@
         ],
         [
           20.0,
-          2.5
+          2.7
         ],
         [
           25.0,
-          2.0
+          2.5
         ],
         [
           30.0,
-          1.5
+          2.3
         ],
         [
           40.0,
-          1.2
+          2.0
         ]
       ]
     },
@@ -1825,18 +1825,41 @@
     }
   },
   "segmented_physics_anim_mapping": {
-    "human_anim__segmentedPhysicsAnimations:list<t>": {
-      "anim": [
-        "fly_up",
-        "climb_high",
-        "jump_down",
-        "fly_down",
-        "landing",
-        "knee",
-        "climb_mid"
-      ]
+    "human_anim__segphysFlyDownAnimVarValue": -1,
+    "human_anim__segphysHumanFlags": 0,
+    "human_anim__segphysAnimations:shared:object": {
+      "fly_up:object": {
+        "animVarValue": 0,
+        "weaponDown": true
+      },
+      "climb_high:object": {
+        "animVarValue": 1,
+        "weaponDown": true
+      },
+      "jump_down:object": {
+        "animVarValue": 2,
+        "flyDownAfter": true,
+        "weaponDown": true
+      },
+      "fly_down:object": {
+        "animVarValue": 3,
+        "weaponDown": true
+      },
+      "landing:object": {
+        "animVarValue": 4,
+        "weaponDown": true
+      },
+      "knee:object": {
+        "animVarValue": 5,
+        "weaponDown": true
+      },
+      "climb_mid:object": {
+        "animVarValue": 6,
+        "weaponDown": true
+      }
     },
-    "human_anim__segmentedPhysAnimIdToAnimVarValue:list<i>": {}
+    "human_anim__segphysAnimIdToAnimVarValue:list<i>": {},
+    "human_anim__segphysAnimIdToFlags:list<i>": {}
   },
   "base_equipped_soldier": {
     "_use": [

@@ -37,13 +37,15 @@ function getKillerCardView(messageData, userInfo) {
     return null
   let { playerId = -1, killerProjectileName = "", isDebugData = false, action = "",
     weaponEcsTemplateName = "", offenderHits = "", offenderHp = -1, offenderArmorSegmentsInfo = "",
-    unitType = UT_Unknown
+    unitType = UT_Unknown, unitName = ""
   } = messageData
   let { aircraftName, name, clanTag = "", title = "", aircraft } = isDebugData ? messageData
     : get_mplayer_by_id(playerId)
   let unit = getAircraftByName(aircraftName)
-  if (!unit)
+  if (!unit) {
+    log($"[killerCard] no unit: playerId={playerId} liveKillerUnit='{aircraftName}' killerUnit='{unitName}'")
     return null
+  }
 
   let showCustomItem = weaponEcsTemplateName != ""
   let killedByArtillery = killerProjectileName == "artillery" && action == "artillery"
@@ -65,6 +67,8 @@ function getKillerCardView(messageData, userInfo) {
     .concat(loc("shop/battle_rating"), colorize("@white", format("%.1f", battleRating)))
   let shellNameLoc = killerProjectileName == "" || killedByArtillery ? ""
     : getProjectileNameLoc(killerProjectileName, true, unit)
+
+  log($"[killerCard] playerId={playerId} liveKillerUnit='{aircraftName}' killerUnit='{unitName}' weaponTempl='{weaponEcsTemplateName}' murderWeaponLocId='{murderWeaponLocId}' proj='{killerProjectileName}' shellNameLoc='{shellNameLoc}' action='{action}' killerUnitType={unitType}")
 
   let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 

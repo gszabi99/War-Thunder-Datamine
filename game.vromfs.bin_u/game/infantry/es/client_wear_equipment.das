@@ -13,7 +13,7 @@ def private is_local_wear_item(item_eid : EntityId)
   return has(item_eid, "clientLocalWearItem")
 
 def private local_wear_template(base_template : string)
-  return add_sub_template_name(base_template, "client_local_wear_item")
+  return add_sub_template_name(base_template, "client_local_wear_item+attached_to_parent+base_skeleton_attach")
 
 def private apply_client_wear_hides_flags(item_eid : EntityId;
                                           flags : Array;

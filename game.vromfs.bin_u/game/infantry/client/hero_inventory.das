@@ -89,19 +89,35 @@ def watched_by_player_mod_gun_created(evt : Event;
       addSubTemplate(eid, "watched_by_player_item")
 
 
+def add_watched_by_player_inventory(owner_eid : EntityId;
+                                    itemContainer : EidList;
+                                    human_weap__gunMods : Array;
+                                    human_weap__gunEids : EidList)
+  set_watched_by_player_components(itemContainer, true)
+  set_watched_by_player_components(human_weap__gunEids, true)
+  set_watched_by_player_components(human_weap__gunMods, true)
+  query() <| $ [es] (item__ownerEid : EntityId;
+                     eid aka item_eid : EntityId)
+    if item__ownerEid == owner_eid
+      addSubTemplate(item_eid, "watched_by_player_item")
+
+
 [es(tag=gameClient, on_appear, REQUIRE=watchedByPlr)]
 def watched_by_player_inventory(evt : Event;
                                 eid aka watched_eid : EntityId;
                                 itemContainer : EidList;
                                 human_weap__gunMods : Array;
                                 human_weap__gunEids : EidList)
-  set_watched_by_player_components(itemContainer, true)
-  set_watched_by_player_components(human_weap__gunEids, true)
-  set_watched_by_player_components(human_weap__gunMods, true)
-  query() <| $ [es] (item__ownerEid : EntityId;
-                     eid aka item_eid : EntityId)
-    if item__ownerEid == watched_eid
-      addSubTemplate(item_eid, "watched_by_player_item")
+  add_watched_by_player_inventory(watched_eid, itemContainer, human_weap__gunMods, human_weap__gunEids)
+
+
+[es(tag=gameClient, on_appear, track=vehicle__controlledByDriver, REQUIRE=watchedByPlr)]
+def watched_by_player_vehicle_driver_inventory(evt : Event;
+                                               vehicle__controlledByDriver : EntityId)
+  query(vehicle__controlledByDriver) <| $ [es] (itemContainer : EidList;
+                                                human_weap__gunMods : Array;
+                                                human_weap__gunEids : EidList)
+    add_watched_by_player_inventory(vehicle__controlledByDriver, itemContainer, human_weap__gunMods, human_weap__gunEids)
 
 
 [es(tag=gameClient, on_disappear, REQUIRE=watchedByPlr)]

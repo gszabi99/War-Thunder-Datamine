@@ -18,6 +18,7 @@ require %appGame.infantry.es.hero_common
 require %appGame.infantry.es.team_common
 require PhysMat
 require DagorConsole
+require level
 
 
 
@@ -104,14 +105,13 @@ def play_step_sound_grains(desc : Object;
                            force_start_new : bool;
                            sound_tags : Object;
                            volume : float;
-
                            human_eid : EntityId;
                            pos, up : float3;
                            should_trace_enemy : bool;
                            is_watched_sound : bool;
                            trace_offset_len : float2;
                            cur_biome_id : int;
-                           puddle_depth : float;
+                           cur_water_depth : float;
                            var step_material_id : int&;
                            var step_water_depth : float&;
                            var human_net_phys : HumanActor?;
@@ -130,7 +130,7 @@ def play_step_sound_grains(desc : Object;
                    normalizedUp,
                    trace_offset_len,
                    cur_biome_id,
-                   puddle_depth,
+                   cur_water_depth,
                    step_material_id,
                    step_water_depth,
                    human_net_phys)
@@ -163,6 +163,19 @@ def play_step_sound_grains(desc : Object;
 
     query(human_eid) <| $ [es(REQUIRE_NOT=watchedByPlr)] (wt_enemy_reverb_sound__value : float)
       set_var_optional(step_sound_grains_event, "reverbindoor", wt_enemy_reverb_sound__value)
+
+
+def get_puddle_depth(pos : float3; wetness_to_depth : float4)
+  if wetness_to_depth.w <= 0.
+    return 0.
+  return cvt(get_puddles_wetness(pos), wetness_to_depth.x, wetness_to_depth.y, wetness_to_depth.z, wetness_to_depth.w)
+
+
+def get_step_water_depth(pos : float3; trace_offset : float)
+  var isUnderWater = false
+  let waterLevel = get_water_height(pos, trace_offset, isUnderWater, true)
+  return isUnderWater ? waterLevel - pos.y : 0.
+
 
 def use_generator(enable_for_visible, enable_for_invisible, updatable, visible : bool; move_state : int; stand_state : HUStandState)
   if move_state == int(HUMoveState.EMS_ROTATE_LEFT) || move_state == int(HUMoveState.EMS_ROTATE_RIGHT) || stand_state == HUStandState.ESS_CRAWL
@@ -304,7 +317,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                           var human_steps_sound__stepIdx : uint&;
 
                           sound_biome_puddle_queries__biomeId : int;
-                          sound_biome_puddle_queries__puddleDepth : float)
+                          sound_biome_puddle_queries__puddleDepth : float;
+                          human_steps_sound__puddleWetnessToDepth : float4 = float4(0.7, 1., 0., 0.05))
       if !sound_preset__isLoaded
         return
 
@@ -324,6 +338,8 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
             sound_player_common::play_path(*stepFxPath, sound_tags, is_watched_sound, transform[3], sound_hash(""), sound_event_group)
       
       if desc != null
+        let puddleDepth = max(sound_biome_puddle_queries__puddleDepth, get_puddle_depth(transform[3], human_steps_sound__puddleWetnessToDepth))
+        let curWaterDepth = max(puddleDepth, get_step_water_depth(transform[3], human_steps_sound__traceStepOffsetLen.x))
         let volume = get_step_volume(human_steps_sound__distanceToVolumeFriendly, human_steps_sound__distanceToVolumeEnemy, team, is_watched_sound, listenerPos, transform[3])
         
 
@@ -346,7 +362,7 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                       is_watched_sound,
                       human_steps_sound__traceStepOffsetLen,
                       sound_biome_puddle_queries__biomeId,
-                      sound_biome_puddle_queries__puddleDepth,
+                      curWaterDepth,
                       human_steps_sound__smid,
                       human_steps_sound__waterDepth,
                       human_net_phys,
@@ -364,7 +380,7 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
                       is_watched_sound,
                       human_steps_sound__traceStepOffsetLen,
                       sound_biome_puddle_queries__biomeId,
-                      sound_biome_puddle_queries__puddleDepth,
+                      curWaterDepth,
                       human_steps_sound__smid,
                       human_steps_sound__waterDepth,
                       human_net_phys,

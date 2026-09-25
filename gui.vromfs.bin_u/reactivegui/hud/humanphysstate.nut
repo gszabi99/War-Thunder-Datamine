@@ -1,7 +1,7 @@
 from "%rGui/hud/state/human_phys_es.nut" import isHumanAiming, isHumanHoldBreathShowHint
 from "%rGui/hud/state/human_gun_info_es.nut" import humanCurGunStaticInfo, humanCurGunInfo, humanCurGunModeInfo
 from "%rGui/hud/state/human_bipod_es.nut" import isBipodEnabled, isBipodAdsFocused
-from "%appGlobals/hud/humanPhysState.nut" import canHoldBreath, canScopeChange, canSightChange, canBipodFocus
+from "%appGlobals/hud/humanPhysState.nut" import canHoldBreath, canScopeChange, canSightChange, canBipodFocus, canBoltActionObserve
 from "%rGui/globals/ui_library.nut" import *
 
 let isWeaponHaveAmmo = Computed(@() humanCurGunStaticInfo.get()?.haveAmmo ?? false)
@@ -36,7 +36,16 @@ let showSightChange = keepref(Computed(@()
 let showBipodFocus = keepref(Computed(@()
   isBipodEnabled.get() && !isBipodAdsFocused.get()))
 
+let isBoltActionSniperRifle = Computed(@()
+  humanCurGunStaticInfo.get()?.weapType == "sniper_rifle"
+  && humanCurGunInfo.get()?.firingModesList.indexof("bolt_action") != null)
+
+let showBoltActionObserve = keepref(Computed(@()
+  isAdsActive.get() && isBoltActionSniperRifle.get()
+))
+
 showHoldBrief.subscribe(@(v) canHoldBreath.set(v) )
 showScopeChange.subscribe(@(v) canScopeChange.set(v) )
 showSightChange.subscribe(@(v) canSightChange.set(v) )
 showBipodFocus.subscribe(@(v) canBipodFocus.set(v) )
+showBoltActionObserve.subscribe(@(v) canBoltActionObserve.set(v) )

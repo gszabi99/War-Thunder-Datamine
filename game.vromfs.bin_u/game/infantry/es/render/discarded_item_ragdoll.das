@@ -37,7 +37,8 @@ def discarded_item_spawn_thrown_copy_es(evt : Event;
                                         gun__discardRequestedAtTime : float;
                                         gun__owner : EntityId;
                                         animchar : AnimcharBaseComponent;
-                                        animchar__res : string)
+                                        animchar__res : string;
+                                        placeable_item__additionalHeight : float = 0.)
   if gun__discardRequestedAtTime < 0. || get_sync_time() - gun__discardRequestedAtTime > DISCARDED_ITEM_REQUEST_TIMEOUT
     return
   
@@ -61,6 +62,7 @@ def discarded_item_spawn_thrown_copy_es(evt : Event;
     set(init, "transform", throwTm)
     set(init, "animchar__res", animchar__res)
     set(init, "discarded_item_ragdoll__throwVel", throwVel)
+    set(init, "discarded_item_ragdoll__groundOffset", placeable_item__additionalHeight)
     set(init, "entity_destroyer__destroyAtTime", get_sync_time() + DISCARDED_ITEM_CLEANUP_TIME)
   
   sendEventImmediate(gun__owner, EventOnLootDrop(itemEid = gun_eid))
@@ -72,6 +74,8 @@ def discarded_item_spawn_thrown_copy_es(evt : Event;
 def discarded_item_throw_ragdoll_es(evt : Event;
                                     var transform : float3x4&;
                                     discarded_item_ragdoll__throwVel : float3;
+                                    discarded_item_ragdoll__groundOffset : float;
+                                    var discarded_item_ragdoll__bodyId : int&;
                                     var discarded_item_ragdoll__bodyToRoot : float3x4&;
                                     var ragdoll : PhysRagdoll?;
                                     var animchar : AnimcharBaseComponent;
@@ -80,28 +84,44 @@ def discarded_item_throw_ragdoll_es(evt : Event;
   animchar_set_tm(animchar, transform, true)
   animchar |> animchar_act(0., true)
 
-  *ragdoll |> ragdoll_setOverrideVel(discarded_item_ragdoll__throwVel)
   
-  let interactMask = PhysLayer.EPL_ALL & ~PhysLayer.EPL_CHARACTER
-  *ragdoll |> ragdoll_startRagdoll(int(PhysLayer.EPL_CHARACTER), int(interactMask), animchar.nodeTree)
+  let interactMask = PhysLayer.EPL_ALL & ~(PhysLayer.EPL_CHARACTER | PhysLayer.EPL_KINEMATIC)
+  *ragdoll |> ragdoll_startRagdoll(int(PhysLayer.EPL_CHARACTER), int(interactMask), null)
   
   
   var physSys = ragdoll_getPhysSys(*ragdoll)
   if physSys == null
     drop_item_on_ground(transform)
+    transform[3].y += discarded_item_ragdoll__groundOffset
     animchar_set_tm(animchar, transform, true)
     animchar |> animchar_act(0., true)
     
     animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
     return
 
+  *ragdoll |> ragdoll_setScaleTm(transform)
+
   let throwPos = transform[3]
   let cacheHalf = float3(4., 2.5, 4.)
   update_ri_cache_for_throw(BBox3(throwPos - cacheHalf, throwPos + cacheHalf))
 
+  var heaviestMass = 0.
+  for bodyId in range(physSys.bodyCount)
+    var body = phys_system_instance_getBody(*physSys, bodyId)
+    if body == null
+      continue
+    var mass, ixx, iyy, izz : float
+    phys_body_getMassMatrix(*body, mass, ixx, iyy, izz)
+    if mass <= 0.
+      continue
+    *body |> phys_body_setVelocity(discarded_item_ragdoll__throwVel, true)
+    if mass > heaviestMass
+      heaviestMass = mass
+      discarded_item_ragdoll__bodyId = bodyId
+
   
   
-  var physBody = phys_system_instance_getBody(*physSys, 0)
+  var physBody = phys_system_instance_getBody(*physSys, discarded_item_ragdoll__bodyId)
   if physBody != null
     var bodyTm : float3x4
     phys_body_getTm(*physBody, bodyTm)
@@ -114,6 +134,7 @@ def discarded_item_throw_ragdoll_es(evt : Event;
 
 [es(tag=render, after=before_animchar_update_sync, before=after_animchar_update_sync, REQUIRE=discardedItem)]
 def discarded_item_ragdoll_update_es(info : ParallelUpdateFrameDelayed;
+                                     discarded_item_ragdoll__bodyId : int;
                                      discarded_item_ragdoll__bodyToRoot : float3x4;
                                      var discarded_item_ragdoll__riCacheLastUpdatePos : float3&;
                                      var discarded_item_ragdoll__nextUpdateCacheTime : float&;
@@ -125,7 +146,7 @@ def discarded_item_ragdoll_update_es(info : ParallelUpdateFrameDelayed;
   var physSys = ragdoll_getPhysSys(*ragdoll)
   if physSys == null
     return
-  var physBody = phys_system_instance_getBody(*physSys, 0)
+  var physBody = phys_system_instance_getBody(*physSys, discarded_item_ragdoll__bodyId)
   if physBody != null
     var bodyTm : float3x4
     phys_body_getTm(*physBody, bodyTm)

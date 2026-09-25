@@ -3067,6 +3067,15 @@ NEED_STOP_FOR_RADAR = {
     isVerticalAlignText = true
   }
 
+  BOLT_ACTION_OBSERVE = {
+    hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
+    locId    = "hint/bolt_action_observe"
+    showEvent = "hint:bolt_action_observe_show"
+    hideEvent = "hint:bolt_action_observe_hide"
+    shortcuts = "ID_HUMAN_SHOOT"
+    isVerticalAlignText = true
+  }
+
   HUMAN_CHANGE_GRENADE_SIGHT = {
     hintType = g_hud_hint_types.INFANTRY_CROSSHAIR
     locId    = "hint/change_grenade_launcher_sight"

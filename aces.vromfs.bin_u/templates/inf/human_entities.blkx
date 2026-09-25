@@ -188,7 +188,7 @@
         "type": "torso"
       },
       "Bip01 Spine:object": {
-        "dmgMult": 0.6,
+        "dmgMult": 0.8,
         "dotMult": 0.6,
         "armor": 0.0,
         "type": "torso"
@@ -1278,9 +1278,9 @@
     "_replicated": [
       "isAlive",
       "human_net_phys__segPhysState",
-      "human_net_phys__segPhysStateClimbData",
       "human_net_phys__isClimbing",
       "human_net_phys__climbToPos",
+      "human_net_phys__climbDir",
       "human_net_phys__attachedToLadder",
       "human_net_phys__isSimplifiedPhys",
       "human_phys__jumpStartTime",
@@ -1326,15 +1326,21 @@
     "human_net_phys__segPhysStateVersion": -1,
     "human_net_phys__segPhysStateOld": [
       -1.0,
+      0.0,
       0.0
     ],
     "human_net_phys__segPhysState": [
       -1.0,
+      0.0,
       0.0
     ],
-    "human_net_phys__segPhysStateClimbData": 0.0,
     "human_net_phys__isClimbing": false,
     "human_net_phys__climbToPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "human_net_phys__climbDir": [
       0.0,
       0.0,
       0.0

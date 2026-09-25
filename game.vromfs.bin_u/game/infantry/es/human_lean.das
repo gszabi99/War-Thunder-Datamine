@@ -63,6 +63,13 @@ def calc_max_lean(eid : EntityId; direction : float)
     var out = ShapeQueryOutput()
     sphere_cast_ex(headPos, leanPos, human_lean__traceRad, out, human_lean__leanMatId, traceHandle, LEAN_SPHERE_CAST_MASK)
     res = out.t * direction
+    let startT = safediv(human_lean__traceRad, length(leanPos - headPos))
+    if out.t == 0.0 && startT < 1.0
+      let castStart = lerp(headPos, leanPos, startT)
+      out.t = 1.0
+      sphere_cast_ex(castStart, leanPos, human_lean__traceRad, out, human_lean__leanMatId, traceHandle, LEAN_SPHERE_CAST_MASK)
+      if out.t > 0.0
+        res = lerp(startT, 1.0, out.t) * direction
   return res
 
 

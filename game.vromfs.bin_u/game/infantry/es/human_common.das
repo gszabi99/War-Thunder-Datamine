@@ -5,6 +5,15 @@ require DngHuman
 require DagorMath
 
 
+bitfield SegphysAnimFlags
+  flyDownAfter
+  weaponDown
+
+bitfield SegphysHumanFlags
+  inAirAfter
+  isWeaponDown
+  wasWeaponDown
+
 def move_human_to_wish_pos(var human_net_phys : HumanActor; wishPos : float3)
   assume humanPhys     = human_net_phys.phys
   assume humanCurState = human_net_phys.phys.currentState

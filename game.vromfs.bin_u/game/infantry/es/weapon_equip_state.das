@@ -5,6 +5,7 @@ require DngHuman
 require %game.events
 require DagorMath
 require math.base
+require %appGame.infantry.es.human_common
 require %appGame.infantry.es.human_weap_common
 
 [es(on_appear)]
@@ -61,6 +62,7 @@ def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
                               human_weap__gunMinBackupDist : float = 0.2;
                               human_weap__gunBackupDistFactor : float = 0.5;
                               var human_weap__gunBackupLastTime : float&;
+                              human_anim__segphysHumanFlags : int = 0;
                               human_weap__gunBackupOptTime : float = 0.5;
                               human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
                               human_net_phys__isSimplifiedPhys : bool = false;
@@ -143,8 +145,20 @@ def update_weapon_equip_state(evt : CmdPostPhysUpdate; eid : EntityId;
           wearOff = true
       elif !check_ai_gun_trace(eid, phys)
         wearOff = true
+
+    let segphysHumanFlags = SegphysHumanFlags(human_anim__segphysHumanFlags)
+    if segphysHumanFlags.isWeaponDown
+      wearOff = false
+
     if wearOff
       currentState.gunTraceTimer += evt.dt
-      if currentState.gunTraceTimer > human_weap__gunTraceTime
+      if segphysHumanFlags.wasWeaponDown
+        assume prevWeapEquipState = phys.previousState.weapEquipState
+        prevWeapEquipState.progress = 1.
+        prevWeapEquipState.curState = HUWeaponEquipState.EES_EQUIPING
+        weapEquipState.nextSlot = weapEquipState.curSlot
+        weapEquipState.progress = 1.
+        weapEquipState.curState = HUWeaponEquipState.EES_EQUIPING
+      elif currentState.gunTraceTimer > human_weap__gunTraceTime
         weapEquipState.curState = HUWeaponEquipState.EES_EQUIPED
     currentState.gunBackoffAmount = approach(currentState.gunBackoffAmount, backoff, evt.dt, human_weap__gunBackoffVisc)

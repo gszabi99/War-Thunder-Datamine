@@ -36,12 +36,12 @@ def animchar_server_update_es(info : ParallelUpdateFrameDelayed;
   animchar |> animchar_recalc_wtm()
 
 
-[es(tag=(net, server), track=isInVehicle, REQUIRE=(isInVehicle, animchar__onlyServerUpdate), REQUIRE_NOT=animchar__actOnDemand)]
-def animchar_in_vehicle_server_update_es(info : Event;
-                                         transform : float3x4;
-                                         animchar__updatable : bool;
-                                         var animchar : AnimcharBaseComponent;
-                                         animchar__turnDir = false)
+[es(track=isInVehicle, REQUIRE=(isInVehicle, animchar__onlyServerUpdate))]
+def animchar_in_vehicle_update_es(info : Event;
+                                  transform : float3x4;
+                                  animchar__updatable : bool;
+                                  var animchar : AnimcharBaseComponent;
+                                  animchar__turnDir = false)
   if !animchar__updatable
     return
 

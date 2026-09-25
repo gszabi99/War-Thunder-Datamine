@@ -1,4 +1,4 @@
-from "%appGlobals/hud/humanPhysState.nut" import canHoldBreath, canScopeChange, canSightChange, canBipodFocus
+from "%appGlobals/hud/humanPhysState.nut" import canHoldBreath, canScopeChange, canSightChange, canBipodFocus, canBoltActionObserve
 
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
@@ -27,5 +27,12 @@ canBipodFocus.subscribe(function(v) {
   g_hud_event_manager.onHudEvent(v
     ? "hint:bipod_focus:show"
     : "hint:bipod_focus:hide"
+  )
+})
+
+canBoltActionObserve.subscribe(function(v) {
+  g_hud_event_manager.onHudEvent(v
+    ? "hint:bolt_action_observe_show"
+    : "hint:bolt_action_observe_hide"
   )
 })

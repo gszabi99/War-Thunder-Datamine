@@ -21,6 +21,7 @@ require DagorMathUtils
 
 require %appGame.wt_events
 require %game.events
+require %appGame.infantry.es.human_common
 
 
 [es(on_appear)]
@@ -200,6 +201,7 @@ def updateState(eid : EntityId;
                         human_anim__comboStateFullBodyCrouch : int;
                         human_anim__comboStateDead : int;
                         human_net_phys : HumanActor;
+                        human_anim__segphysHumanFlags : int = 0;
                         human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID)
 
     if (state_flags & uint(HumanAnimStateFlags.Dead)) != 0u
@@ -218,8 +220,10 @@ def updateState(eid : EntityId;
       res.upper = human_anim__comboStateFastClimb
       res.lower = human_anim__comboStateFastClimb
       return
-    if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u
-      if human_net_phys.phys.segPhysState.currSeg >= 0
+
+    let isInAirAfterSegphys = SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
+    if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u || isInAirAfterSegphys
+      if human_net_phys.phys.currentState.segPhysState.currSeg >= 0 || isInAirAfterSegphys
         res.upper = human_anim__comboStateClimbTrajectory
         res.lower = human_anim__comboStateClimbTrajectory
       else
@@ -818,6 +822,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   human_anim__upperStateFastThrow : int;
                   human_anim__upperStateChangeWeapon : int;
                   human_anim__upperStateReload : int;
+                  human_anim__segphysHumanFlags : int = 0;
                   var phys_vars : PhysVars;
                   var animchar__animSpeed : float&;
                   var human_anim__jumpTimer : float&;
@@ -1027,8 +1032,15 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
     phys_vars |> setVar(human_anim__changeDirVarId, prevState.curState == HUWeaponEquipState.EES_EQUIPING ? 1.0 : -1.0)
 
   elif phys.currentState.weapEquipState.curState == HUWeaponEquipState.EES_DOWN
-    let reload = phys_vars |> getVar(human_anim__reloadVarId)
-    stateUpperBody = reload > 0.0 ? HumanStateUpperBody.E_READY : HumanStateUpperBody.E_DOWN
+    if SegphysHumanFlags(human_anim__segphysHumanFlags).wasWeaponDown
+      
+      
+      stateUpperBody = HumanStateUpperBody.E_CHANGE
+      phys_vars |> setVar(human_anim__changeWeaponVarId, 1.0)
+      phys_vars |> setVar(human_anim__changeDirVarId, 1.0)
+    else
+      let reload = phys_vars |> getVar(human_anim__reloadVarId)
+      stateUpperBody = reload > 0.0 ? HumanStateUpperBody.E_READY : HumanStateUpperBody.E_DOWN
 
   if human_inventory__entityToUse != INVALID_ENTITY_ID && info.curTime < human_inventory__entityUseEnd
     query(human_inventory__entityToUse) <| $ [es] (item__healAnimEnumValue : int;
@@ -1049,7 +1061,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   if human_weap__mortarMode
     stateUpperBody = HumanStateUpperBody.E_USE_MORTAR
 
-  if phys.segPhysState.currSeg < 0 && isClimbing
+  if phys.currentState.segPhysState.currSeg < 0 && isClimbing
     let posHt = human_net_phys__climbToPos.y - unitTm[3].y
     var startPt = float2(0.0, 1.0)
     var endPt = float2(0.0, 1.0)
@@ -1409,60 +1421,64 @@ def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
   if finishedChangingWeapon
     phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)
 
+def private human_anim_segphys_get_flags(phys; flagList) : SegphysAnimFlags
+  let currAnimId = human_phys_get_segphys_anim_id(phys, phys.currentState.segPhysState.currSeg)
+  let flags = SegphysAnimFlags(flagList?[currAnimId] ?? 0)
+  return flags
 
-def private human_anim_get_segphys_anim_index(human_anim__segmentedPhysicsAnimations : StringList;
-                                              animation_name : string)
-  for i in range(0, length(human_anim__segmentedPhysicsAnimations))
-    if animation_name == human_anim__segmentedPhysicsAnimations[i]
-      return i
-  return -1
-
-[es(tag=gameClient, on_appear, on_event=EventSegPhysLoaded, after=init_animchar_and_precompute_for_human_es)]
+[es(on_appear, on_event=EventSegPhysLoaded, after=init_animchar_and_precompute_for_human_es)]
 def human_anim_init_segphys_anim_remap_es(evt : Event;
                                           human_net_phys : HumanActor;
-                                          human_anim__segmentedPhysicsAnimations : StringList;
-                                          var human_anim__segmentedPhysAnimIdToAnimVarValue : IntList&)
+                                          @shared_comp human_anim__segphysAnimations : Object;
+                                          var human_anim__segphysFlyDownAnimVarValue : int&;
+                                          var human_anim__segphysAnimIdToAnimVarValue : IntList&;
+                                          var human_anim__segphysAnimIdToFlags : IntList&)
   assume phys = human_net_phys.phys
 
   let animCount = human_phys_get_segphys_num_anims(phys)
-  human_anim__segmentedPhysAnimIdToAnimVarValue |> clear()
+  human_anim__segphysAnimIdToAnimVarValue |> clear()
+  human_anim__segphysAnimIdToFlags |> clear()
   for animId in range(0, animCount)
     let animName = human_phys_get_segphys_anim_name(phys, animId)
-    let animVarValue = human_anim_get_segphys_anim_index(human_anim__segmentedPhysicsAnimations, animName)
-    human_anim__segmentedPhysAnimIdToAnimVarValue |> push(animVarValue)
+    let animObject = get_ecs_object(human_anim__segphysAnimations, animName)
+    human_anim__segphysAnimIdToAnimVarValue |> push(animObject?.animVarValue ?? -1)
 
-def private human_anim_get_segphys_anim_var_value(human_anim__segmentedPhysAnimIdToAnimVarValue : IntList;
-                                                  anim_id : int)
-  if anim_id >= 0 && anim_id < length(human_anim__segmentedPhysAnimIdToAnimVarValue)
-    return human_anim__segmentedPhysAnimIdToAnimVarValue[anim_id]
-  return -1
+    var flags : SegphysAnimFlags
+    flags.flyDownAfter = animObject?.flyDownAfter ?? false
+    flags.weaponDown = animObject?.weaponDown ?? false
+    human_anim__segphysAnimIdToFlags |> push(int(flags))
+  human_anim__segphysFlyDownAnimVarValue = get_ecs_object(human_anim__segphysAnimations, "fly_down")?.animVarValue ?? -1
+
 
 [es(on_event=CmdUnitUpdateTransformComponent, before=human_save_tm)]
 def human_anim_update_climb_animation_es(info : Event;
-                                         var human_net_phys : HumanActor;
+                                         human_net_phys : HumanActor;
                                          human_net_phys__isClimbing : bool;
                                          human_anim__climbStageVarId : int;
                                          human_anim__climbProgressVarId : int;
                                          human_anim__climbTrajBlendParamVarId : int;
-                                         human_anim__segmentedPhysAnimIdToAnimVarValue : IntList;
+                                         human_anim__segphysFlyDownAnimVarValue : int;
+                                         human_anim__segphysAnimIdToAnimVarValue : IntList;
+                                         human_anim__segphysHumanFlags : int;
                                          var phys_vars : PhysVars)
   assume phys = human_net_phys.phys
-  if phys.segPhysState.currSeg >= 0 && human_net_phys__isClimbing
+  assume segPhysState = phys.currentState.segPhysState
+  if segPhysState.currSeg >= 0 && human_net_phys__isClimbing
     let interpK = get_phys_interpk_clamped(phys, get_sync_time())
 
-    phys_vars |> setVar(human_anim__climbTrajBlendParamVarId, phys.segPhysState.blendTrajParam)
+    phys_vars |> setVar(human_anim__climbTrajBlendParamVarId, segPhysState.blendTrajParam)
 
-    let prevAnimId = human_phys_get_segphys_anim_id(phys, phys.segPhysState.prevSeg)
-    let currAnimId = human_phys_get_segphys_anim_id(phys, phys.segPhysState.currSeg)
-    let prevAnimVarValue = human_anim_get_segphys_anim_var_value(human_anim__segmentedPhysAnimIdToAnimVarValue, prevAnimId)
-    let currAnimVarValue = human_anim_get_segphys_anim_var_value(human_anim__segmentedPhysAnimIdToAnimVarValue, currAnimId)
+    let prevAnimId = human_phys_get_segphys_anim_id(phys, segPhysState.prevSeg)
+    let currAnimId = human_phys_get_segphys_anim_id(phys, segPhysState.currSeg)
+    let prevAnimVarValue = human_anim__segphysAnimIdToAnimVarValue?[prevAnimId] ?? -1
+    let currAnimVarValue = human_anim__segphysAnimIdToAnimVarValue?[currAnimId] ?? -1
 
     var transitionK = -1.f
-    if phys.segPhysState.currSeg != phys.segPhysState.prevSeg
-      transitionK = safediv(phys.segPhysState.prevDuration - phys.segPhysState.prevTime, phys.segPhysState.prevDuration - phys.segPhysState.prevTime + phys.segPhysState.currTime)
+    if segPhysState.currSeg != segPhysState.prevSeg
+      transitionK = safediv(segPhysState.prevDuration - segPhysState.prevTime, segPhysState.prevDuration - segPhysState.prevTime + segPhysState.currTime)
 
-    let prevProgress = safediv(phys.segPhysState.prevTime, phys.segPhysState.prevDuration)
-    let currProgress = safediv(phys.segPhysState.currTime, phys.segPhysState.currDuration)
+    let prevProgress = safediv(segPhysState.prevTime, segPhysState.prevDuration)
+    let currProgress = safediv(segPhysState.currTime, segPhysState.currDuration)
 
     if transitionK < 0.f && currAnimVarValue >= 0
       
@@ -1483,19 +1499,45 @@ def human_anim_update_climb_animation_es(info : Event;
         let interpolatedProgress = lerp(0.f, currProgress, interpParam)
         phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
         phys_vars |> setVar(human_anim__climbStageVarId, float(currAnimVarValue))
+  if phys.currentState.segPhysState.currSeg < 0 && SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
+    phys_vars |> setVar(human_anim__climbStageVarId, float(human_anim__segphysFlyDownAnimVarValue))
 
+[es(after=keep_human_net_phys_cur_state_es)]
+def human_anim_update_segphys_flags_es(info : ParallelUpdateFrameDelayed;
+                                       human_net_phys : HumanActor;
+                                       human_net_phys__isOnGround : bool;
+                                       human_anim__segphysAnimIdToFlags : IntList;
+                                       var human_anim__segphysHumanFlags : int&)
+  assume phys = human_net_phys.phys
+  assume weapState = phys.currentState.weapEquipState.curState
+  var flags = SegphysHumanFlags(human_anim__segphysHumanFlags)
+  let currAnimFlags = human_anim_segphys_get_flags(phys, human_anim__segphysAnimIdToFlags)
+  if currAnimFlags.flyDownAfter
+    flags.inAirAfter = true
+  if phys.currentState.segPhysState.currSeg < 0 && human_net_phys__isOnGround
+    flags.inAirAfter = false
+  flags.isWeaponDown = currAnimFlags.weaponDown || flags.inAirAfter
+  if flags.isWeaponDown && weapState == HUWeaponEquipState.EES_DOWN
+    flags.wasWeaponDown = true
+  if weapState == HUWeaponEquipState.EES_EQUIPING || weapState == HUWeaponEquipState.EES_EQUIPED
+    flags.wasWeaponDown = false
+  human_anim__segphysHumanFlags = int(flags)
+
+def private calc_elbow_angle(lean : float; max_lean : float; angles : float3)
+  return (lean < 0.f ? cvt(lean, -max_lean, 0.f, angles.x, angles.y)
+                     : cvt(lean, 0.f, max_lean, angles.y, angles.z))
 
 [es(tag=gameClient, after=human_anim_es)]
-def update_rotate_right_elbow_es(info : ParallelUpdateFrameDelayed;
-                                 human_anim__rotateLeftElbowVarId : int;
-                                 human_anim__rotateRightElbowVarId : int;
-                                 human_anim__leftElbowRotateStand : float3;
-                                 human_anim__rightElbowRotateStand : float3;
-                                 human_anim__leftElbowRotateCrouch : float3;
-                                 human_anim__rightElbowRotateCrouch : float3;
-                                 bipod__enabled : bool;
-                                 human_net_phys : HumanActor;
-                                 var phys_vars : PhysVars)
+def update_elbow_rotation_es(info : ParallelUpdateFrameDelayed;
+                             human_anim__rotateLeftElbowVarId : int;
+                             human_anim__rotateRightElbowVarId : int;
+                             human_anim__leftElbowRotateStand : float3;
+                             human_anim__rightElbowRotateStand : float3;
+                             human_anim__leftElbowRotateCrouch : float3;
+                             human_anim__rightElbowRotateCrouch : float3;
+                             bipod__enabled : bool;
+                             human_net_phys : HumanActor;
+                             var phys_vars : PhysVars)
   assume phys = human_net_phys.phys
   assume previousState = phys.previousState
   assume currentState = phys.currentState
@@ -1508,15 +1550,11 @@ def update_rotate_right_elbow_es(info : ParallelUpdateFrameDelayed;
   let isStanding = currentState.standState == HUStandState.ESS_STAND
   let isCrouching = currentState.standState == HUStandState.ESS_CROUCH
   if isStanding && !bipod__enabled
-    leftElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__leftElbowRotateStand.x, human_anim__leftElbowRotateStand.y)
-                            : cvt(lean, 0.f, phys.leanDegrees, human_anim__leftElbowRotateStand.y, human_anim__leftElbowRotateStand.z))
-    rightElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__rightElbowRotateStand.x, human_anim__rightElbowRotateStand.y)
-                             : cvt(lean, 0.f, phys.leanDegrees, human_anim__rightElbowRotateStand.y, human_anim__rightElbowRotateStand.z))
+    leftElbow = calc_elbow_angle(lean, phys.leanDegrees, human_anim__leftElbowRotateStand)
+    rightElbow = calc_elbow_angle(lean, phys.leanDegrees, human_anim__rightElbowRotateStand)
   elif isCrouching && !bipod__enabled
-    leftElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__leftElbowRotateCrouch.x, human_anim__leftElbowRotateCrouch.y)
-                            : cvt(lean, 0.f, phys.leanDegrees, human_anim__leftElbowRotateCrouch.y, human_anim__leftElbowRotateCrouch.z))
-    rightElbow = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.f, human_anim__rightElbowRotateCrouch.x, human_anim__rightElbowRotateCrouch.y)
-                             : cvt(lean, 0.f, phys.leanDegrees, human_anim__rightElbowRotateCrouch.y, human_anim__rightElbowRotateCrouch.z))
+    leftElbow = calc_elbow_angle(lean, phys.leanDegrees, human_anim__leftElbowRotateCrouch)
+    rightElbow = calc_elbow_angle(lean, phys.leanDegrees, human_anim__rightElbowRotateCrouch)
 
   phys_vars |> setVar(human_anim__rotateLeftElbowVarId, leftElbow)
   phys_vars |> setVar(human_anim__rotateRightElbowVarId, rightElbow)

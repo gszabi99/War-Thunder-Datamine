@@ -39,6 +39,7 @@ let anyItemComps = {
     ["weaponMod", ecs.TYPE_TAG, null],
     ["animchar__res", ecs.TYPE_STRING, ""],
     ["item__weapTemplate", ecs.TYPE_STRING, ""],
+    ["item__weapType", ecs.TYPE_STRING, ""],
     ["gun__maxAmmo", ecs.TYPE_INT, 0],
     ["gun__owner", ecs.TYPE_EID, ecs.INVALID_ENTITY_ID],
     ["item__ownerEid", ecs.TYPE_EID, ecs.INVALID_ENTITY_ID]
@@ -50,6 +51,7 @@ let mkItemDescFromComp = @(eid, comp) {
   haveAmmo = comp["gun__firingModeName"] != ""
   maxAmmo = comp["gun__maxAmmo"]
   iconTemplate = comp["item__weapTemplate"]
+  weapType = comp["item__weapType"]
   animchar = comp["animchar__res"]
   weaponMod = comp["weaponMod"] != null
   ownerEid = comp["gun__owner"]

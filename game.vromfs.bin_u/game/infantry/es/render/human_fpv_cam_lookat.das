@@ -48,8 +48,11 @@ def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed;
     assume prevSt = phys.previousState
 
     human_cam__fpvActive = !human_phys_state_get_isAttached(curSt) && curSt.standState != HUStandState.ESS_DOWNED && !human_ladder__attached && !isInVehicle && !bipod__enabled
-    let wishOffsetMult = human_cam__fpvActive ? 1.0 : 0.0
-    human_cam__offsetMult =  !human_ladder__attached ? move_to_scalar(human_cam__offsetMult, wishOffsetMult, info.dt, bipod__enabled ? 5.0 : 2.0) : 0.f
+    let smoothSegPhysCoefs = human_phys_get_segphys_smooth_cam_coefs(phys)
+    let isSegPhysCamera = human_cam__fpvActive && smoothSegPhysCoefs.x > 0.f
+    let wishOffsetMult = human_cam__fpvActive && !isSegPhysCamera ? 1.0 : 0.0
+    let reachVel = bipod__enabled ? 5.0 : (isSegPhysCamera && smoothSegPhysCoefs.y > 0.f ? smoothSegPhysCoefs.y : 2.0)
+    human_cam__offsetMult =  !human_ladder__attached ? move_to_scalar(human_cam__offsetMult, wishOffsetMult, info.dt, reachVel) : 0.f
     if human_cam__offsetMult <= 0.0
       return
 
@@ -85,7 +88,11 @@ def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed;
 
     
     let rotatedVector = rotate(transform, htOffs + leanOffs + gunAngleOffs - posOffs)
-    camera__look_at = DPoint3(transform[3]) + DPoint3(rotatedVector)
+    let newLookAt = DPoint3(transform[3]) + DPoint3(rotatedVector)
+    if !isSegPhysCamera
+      camera__look_at = newLookAt
+    else
+      camera__look_at = approach(camera__look_at, newLookAt, info.dt, smoothSegPhysCoefs.x)
 
 [es(tag=render, after=camera_set_sync, before=before_camera_sync)]
 def human_fpv_cam_pos(info : UpdateStageInfoAct;

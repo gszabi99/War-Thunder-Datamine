@@ -122,9 +122,6 @@
             "useSearchRadar": true
           }
         ],
-        "wait": {
-          "time": 0.2
-        },
         "playerControls": [
           {
             "setStatus": "disable",
@@ -132,9 +129,15 @@
           },
           {
             "setStatus": "enable",
-            "control": "ID_COLLAPSE_ACTION_BAR"
+            "control": [
+              "ID_COLLAPSE_ACTION_BAR",
+              "ID_LOCK_TARGETING_AT_POINT"
+            ]
           }
-        ]
+        ],
+        "wait": {
+          "time": 0.2
+        }
       },
       "else_actions": {}
     },
@@ -701,40 +704,20 @@
         }
       },
       "actions": {
-        "playHint": [
-          {
-            "hintType": "standard",
-            "name": "",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "showWithMap": false
-          },
-          {
-            "hintType": "standard",
-            "name": "hints/aircraft_countermeasures_flares_irccm/wep",
-            "action": "show",
-            "shouldFadeOut": false,
-            "isOverFade": false,
-            "time": -1.0,
-            "priority": 0,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": [
-              "throttle=min",
-              "throttle_rangeMin"
-            ],
-            "showWithMap": false
-          }
-        ],
+        "playHint": {
+          "hintType": "standard",
+          "name": "",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "showWithMap": false
+        },
         "missionSetTimeSpeed": [
           {
             "speed": 1.0,
@@ -768,6 +751,24 @@
             ]
           }
         ],
+        "__playHint": {
+          "hintType": "standard",
+          "name": "hints/aircraft_countermeasures_flares_irccm/wep",
+          "action": "show",
+          "shouldFadeOut": false,
+          "isOverFade": false,
+          "time": -1.0,
+          "priority": 0,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": [
+            "throttle=min",
+            "throttle_rangeMin"
+          ],
+          "showWithMap": false
+        },
         "triggerEnable": {
           "target": "countermeasures_notch"
         }
@@ -787,13 +788,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerAxisValueReached": {
-          "value": 1.0,
-          "func": "less",
-          "axis": "AXIS_THROTTLE"
-        }
-      },
+      "conditions": {},
       "actions": {
         "playHint": [
           {
@@ -836,7 +831,7 @@
             "realtimeTriggers": true
           }
         ],
-        "unitSetControls": {
+        "__unitSetControls": {
           "controls": "power",
           "value": 0.8,
           "force": true,
@@ -1552,7 +1547,7 @@
       "else_actions": {}
     },
     "power_for_player": {
-      "is_enabled": true,
+      "is_enabled": false,
       "comments": "",
       "props": {
         "actionsType": "PERFORM_ONE_BY_ONE",
@@ -1803,7 +1798,7 @@
         [
           2657.19,
           6090.0,
-          -14237.0
+          -14191.6
         ]
       ],
       "objLayer": 0,
