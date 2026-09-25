@@ -12525,5 +12525,766 @@
         }
       ]
     }
+  },
+  "ppd_40": {
+    "_use": [
+      "main_weap_slots",
+      "ironsights_open_smg"
+    ],
+    "animchar__res": "ppd_40_char",
+    "gun__blk": "gameData/weapons/human_weapons/ppd_40.blk",
+    "item__template": "ppd_40_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/ppd_40.blk",
+    "item__weapTemplate": "ppd_40_gun",
+    "item__name": "items/ppd_40",
+    "item__weapType": "submachine_gun",
+    "item__weight": 3.23,
+    "gun__inertialMass": 3.0,
+    "gun__locName": "PPD 40",
+    "gun__statName": "submachine_gun",
+    "gun__sightsDistance": 0.15,
+    "gun__shotFreq": 15.0,
+    "gun_spread__maxDeltaAngle": 0.22,
+    "gun_deviation__omegaRange": [
+      30.0,
+      90.0
+    ],
+    "gun_deviation__omegaDevInc": [
+      0.07,
+      0.5
+    ],
+    "gun_deviation__movementRange": [
+      2.1,
+      4.0
+    ],
+    "gun_deviation__movementDevInc": [
+      0.0,
+      15.0
+    ],
+    "gun_deviation__onShotDeviationChange": 0.0,
+    "gun_deviation__shotTau": 0.1,
+    "gun_deviation__extraDeviationTau": 0.2,
+    "gun_deviation__maxDeviation": 20.0,
+    "gun__reloadTime": 3.8,
+    "gun__altReloadTime": 3.4,
+    "gun__projectileVelocityMult": 1.19047,
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "gun__ammoHolders:array": {
+      "ammoHolders": "ppsh_drum"
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x25_p_fmj.blk"
+    },
+    "gun__firingModes:array": {
+      "mode:object": [
+        {
+          "modeType": "automatic"
+        },
+        {
+          "modeType": "burst",
+          "burstSize": 1
+        }
+      ]
+    },
+    "gun__firingModeNames:array": {
+      "mode": [
+        "full_auto",
+        "semi_auto"
+      ]
+    },
+    "unit_slot_override:object": {
+      "item__iconScale": 1.4,
+      "item__iconOffset": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "ppd_40_gun": {
+    "_use": [
+      "equipable_gun",
+      "smg_preset",
+      "ppd_40",
+      "smg_rapid_muzzle_preset",
+      "gun_switch_firing_mode_sound",
+      "mgun_gun_aim_sound",
+      "camera_shake_on_shot_high_freq"
+    ],
+    "gun__length": 0.4,
+    "gun__recoilAmount": 0.035,
+    "gun__recoilDirAmount": 0.65,
+    "gun__recoilDir": 0.4,
+    "gun__visualRecoilMult": 3.5,
+    "gun__adsSpeedMult": 0.72,
+    "meleeSoundType": "mgun",
+    "gun__crawlRecoilMult": 0.8,
+    "gun__recoilControlMult": 0.15,
+    "gun__recoilOffsMult": 0.3,
+    "gun__rotationSpringMult": [
+      0.75,
+      0.9,
+      0.9
+    ],
+    "gun_anim_var__tpsGunOffsetAlong": -0.08,
+    "gun_anim_var__tpsGunOffsetAcross": 0.03,
+    "gun_anim_var__tpsGunOffsetUp": -0.14,
+    "gun_anim_var__fpsGunOffsetAlong": -0.05,
+    "gun_anim_var__fpsGunOffsetAcross": 0.04,
+    "gun_anim_var__fpsGunOffsetUp": 0.03,
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.04,
+          0.04
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "options:array": {
+        "suppressor:object": {
+          "suppressor": true,
+          "path": "/weapon/mgun/ppsh/suppressed"
+        },
+        "default:object": {
+          "path": "/weapon/mgun/ppsh"
+        }
+      }
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "reload1:object": {
+        "path": "/weapon/mgun/ppd40/reload1/change_ammo"
+      },
+      "reload2:object": {
+        "path": "/weapon/mgun/ppd40/reload2/change_ammo"
+      },
+      "reload3:object": {
+        "path": "/weapon/mgun/ppd40/reload3/change_ammo"
+      },
+      "drum_drop:object": {
+        "watched": "player/weapon/_common/drum_drop",
+        "type": "matUnderFeet"
+      }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": [
+        {
+          "type": "rest",
+          "recoil": -1.0,
+          "offset": [
+            0.44,
+            -0.03,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": -1.0,
+          "offset": [
+            0.24,
+            -0.12,
+            0.0
+          ]
+        }
+      ]
+    }
+  },
+  "m1_carbine": {
+    "_use": [
+      "main_weap_slots",
+      "ironsights_open_semiauto"
+    ],
+    "animchar__res": "m1_carbine_char",
+    "gun__blk": "gameData/weapons/human_weapons/m1_carbine.blk",
+    "item__template": "m1_carbine_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/m1_carbine.blk",
+    "item__weapTemplate": "m1_carbine_gun",
+    "item__name": "items/m1_carbine",
+    "item__weapType": "semiauto",
+    "item__weight": 2.4,
+    "gun__inertialMass": 3.6,
+    "gun__locName": "M1 Carbine",
+    "gun__statName": "semiauto",
+    "gun__sightsDistance": 0.05,
+    "gun__shotFreq": 7.0,
+    "gun__automaticReload": false,
+    "gun_spread__maxDeltaAngle": 0.28,
+    "gun_deviation__omegaRange": [
+      30.0,
+      90.0
+    ],
+    "gun_deviation__omegaDevInc": [
+      0.07,
+      0.5
+    ],
+    "gun_deviation__movementRange": [
+      2.1,
+      4.0
+    ],
+    "gun_deviation__movementDevInc": [
+      0.0,
+      8.0
+    ],
+    "gun_deviation__onShotDeviationChange": 0.0,
+    "gun_deviation__shotTau": 0.1,
+    "gun_deviation__extraDeviationTau": 0.15,
+    "gun_deviation__maxDeviation": 25.0,
+    "gun__reloadTime": 2.6,
+    "gun__altReloadTime": 2.0,
+    "gun__boltFreq": 7.0,
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "gun__ammoHolders:array": {
+      "ammoHolders": "m1_carbine_magazine"
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x33_m1_fmj.blk"
+    },
+    "gun__firingModes:array": {
+      "mode:object": {
+        "modeType": "burst",
+        "burstSize": 1
+      }
+    },
+    "gun__firingModeNames:array": {
+      "mode": "semi_auto"
+    },
+    "gun_mods__slots:object": {
+      "bayonet:object": {
+        "m1_bayonet": "m1_bayonet",
+        "m1905_bayonet": "m1905_bayonet",
+        "m1917_bayonet": "m1917_bayonet"
+      }
+    },
+    "unit_slot_override:object": {
+      "item__iconScale": 1.1
+    }
+  },
+  "m1_carbine_gun": {
+    "_use": [
+      "equipable_gun",
+      "semiauto_ww2_preset",
+      "m1_carbine",
+      "pistol_muzzle_preset",
+      "rifle_gun_aim_sound"
+    ],
+    "gun_shell_ejection__timeMult": 0.35,
+    "gun__length": 0.4,
+    "gun__recoilAmount": 0.074,
+    "gun__recoilDirAmount": 0.76,
+    "gun__recoilDir": 0.3,
+    "gun__visualRecoilMult": 2.5,
+    "gun_attach__slot": "weapon",
+    "gun__adsSpeedMult": 1.0,
+    "meleeSoundType": "rifle",
+    "gun__recoilControlMult": 0.3,
+    "gun__recoilOffsMult": 0.3,
+    "gun__rotationSpringMult": [
+      1.0,
+      3.7,
+      3.7
+    ],
+    "gun__rotInertia": [
+      0.1,
+      2.0,
+      2.0
+    ],
+    "weapon__aimNodeOffset": 0.3,
+    "gun_anim_var__tpsGunOffsetAlong": -0.06,
+    "gun_anim_var__tpsGunOffsetAcross": 0.015,
+    "gun_anim_var__tpsGunOffsetUp": -0.05,
+    "gun_tilt__tpsAngle": 4.0,
+    "gun_anim_var__fpsGunOffsetAlong": -0.05,
+    "gun_anim_var__fpsGunOffsetAcross": 0.06,
+    "gun_anim_var__fpsGunOffsetUp": -0.015,
+    "gun_tilt__fpsAngle": 4.0,
+    "_group": [
+      {
+        "_tags": "gameClient",
+        "gun_reload_camera_shake__scale": [
+          0.05,
+          0.04
+        ]
+      },
+      {
+        "_tags": "sound",
+        "gun_sound__forceOneshot": true
+      }
+    ],
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "path": "/weapon/rifle/m1a1_carbine"
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "reload1:object": {
+        "path": "/weapon/rifle/m1a1_carbine/reload1/change_ammo"
+      },
+      "reload2:object": {
+        "path": "/weapon/rifle/m1a1_carbine/reload2/change_ammo"
+      },
+      "reload3:object": {
+        "path": "/weapon/rifle/m1a1_carbine/reload3/change_ammo"
+      }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": [
+        {
+          "type": "rest",
+          "recoil": 0.6,
+          "offset": [
+            0.355,
+            0.002,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": 0.6,
+          "offset": [
+            0.155,
+            -0.069,
+            0.0
+          ]
+        }
+      ]
+    }
+  },
+  "rd_44": {
+    "_use": [
+      "main_weap_slots",
+      "ironsights_open_assault_rifle",
+      "lmg_deviation_preset",
+      "gun_sound_mods"
+    ],
+    "animchar__res": "rd_44_char",
+    "gun__blk": "gameData/weapons/human_weapons/rd_44.blk",
+    "item__template": "rd_44_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/rd_44.blk",
+    "item__locDetails": "RoF: 700; 7.62x41;",
+    "item__weapTemplate": "rd_44_gun",
+    "item__name": "items/rd_44",
+    "item__weapType": "machinegun",
+    "item__weight": 7.4,
+    "gun__inertialMass": 8.4,
+    "gun__locName": "RD-44",
+    "gun__statName": "machinegun",
+    "gun__sightsDistance": 0.3,
+    "gun__shotFreq": 11.67,
+    "gun_spread__maxDeltaAngle": 0.091,
+    "gun__reloadTime": 6.0,
+    "gun__altReloadTime": 6.5,
+    "gun__quickReloadTime": 6.0,
+    "gun__inspectTime": 3.0,
+    "gun__projectileVelocityMult": 1.027972,
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "gun__ammoHolders:array": {
+      "ammoHolders": "rpd_magazine"
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/bullets/7.62x41_fmj.blk"
+    },
+    "gun__firingModes:array": {
+      "mode:object": {
+        "modeType": "automatic"
+      }
+    },
+    "gun__firingModeNames:array": {
+      "mode": "full_auto"
+    },
+    "unit_slot_override:object": {
+      "item__iconScale": 1.8,
+      "item__iconOffset": [
+        -0.05,
+        -0.175
+      ]
+    }
+  },
+  "rd_44_gun": {
+    "_use": [
+      "equipable_gun",
+      "mg_ww2_preset",
+      "rd_44",
+      "assault_rifle_rapid_muzzle_break_2_preset",
+      "pkm_gun_tilt",
+      "visual_magazine_fullness",
+      "gun_switch_firing_mode_sound",
+      "mgun_gun_aim_sound"
+    ],
+    "gun_anim_var__tpsGunOffsetAcross": 0.08,
+    "gun_anim_var__tpsGunOffsetAlong": -0.3,
+    "gun_anim_var__tpsGunOffsetUp": -0.29,
+    "gun_tilt__tpsAngle": 5.0,
+    "gun_anim_var__fpsGunOffsetAlong": 0.03,
+    "gun_anim_var__fpsGunOffsetAcross": 0.085,
+    "gun_anim_var__fpsGunOffsetUp": -0.055,
+    "gun_tilt__fpsAngle": 5.0,
+    "gun__length": 0.4,
+    "gun__recoilAmount": 0.035,
+    "gun__recoilControlMult": 0.5,
+    "gun__recoilDirAmount": 0.51,
+    "gun__recoilDir": 0.15,
+    "gun__visualRecoilMult": 6.0,
+    "gun__recoilRiseMult": 0.3,
+    "gun__rotationSpringMult": [
+      0.7,
+      3.0,
+      3.0
+    ],
+    "meleeSoundType": "mgun",
+    "gun__adsSpeedMult": 0.7,
+    "anim_irq__eventNames:object": {
+      "newMagazineShown:object": {
+        "irqName": "ammo_refresh",
+        "irqId": -1
+      }
+    },
+    "anim_irq_to_event_converter": {},
+    "_group": {
+      "_tags": "sound",
+      "gun_sound__forceOneshot": true
+    },
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "path": "/weapon/mgun/rd_44"
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "foley_start:object": {
+        "path": "/weapon/mgun/rd_44/reload_foley_start"
+      },
+      "mag_out:object": {
+        "path": "/weapon/mgun/rd_44/reload_mag_out"
+      },
+      "mag_in:object": {
+        "path": "/weapon/mgun/rd_44/reload_mag_in"
+      },
+      "mag_shutter_out:object": {
+        "path": "/weapon/mgun/rd_44/reload_mag_shutter_out"
+      },
+      "mag_shutter_in:object": {
+        "path": "/weapon/mgun/rd_44/reload_mag_shutter_in"
+      },
+      "shutter_in:object": {
+        "path": "/weapon/mgun/rd_44/reload_shutter_in"
+      },
+      "shutter_out:object": {
+        "path": "/weapon/mgun/rd_44/reload_shutter_out"
+      },
+      "foley_end:object": {
+        "path": "/weapon/mgun/rd_44/reload_foley_end"
+      },
+      "belt_in:object": {
+        "path": "/weapon/mgun/rd_44/reload_belt_in"
+      },
+      "belt_rattle:object": {
+        "path": "/weapon/mgun/rd_44/reload_belt_rattle"
+      },
+      "ammo_drop:object": {
+        "watched": "player/weapon/_common/ammo_box_drop",
+        "type": "matUnderFeet"
+      }
+    },
+    "gun__mountPoints:shared:array": {
+      "point:object": [
+        {
+          "type": "bipod",
+          "recoil": 0.65,
+          "offset": [
+            0.75,
+            0.015,
+            0.0
+          ],
+          "forceOffset": true,
+          "angle": 31.0,
+          "length": 0.34
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.505,
+            0.021,
+            0.0
+          ]
+        },
+        {
+          "type": "rest",
+          "recoil": 0.65,
+          "offset": [
+            0.02,
+            -0.085,
+            0.0
+          ]
+        }
+      ]
+    }
+  },
+  "m72_law": {
+    "_use": [
+      "main_weap_slots",
+      "ironsights_open_launchers",
+      "at_launcher_deviation_preset",
+      "gun_anim_offset_always_in_aim"
+    ],
+    "animchar__res": "m72_law_char",
+    "reload__singleReloadMaxAmmo": 1,
+    "gun__blk": "gameData/weapons/human_weapons/m72_law.blk",
+    "item__template": "m72_law_gun_item",
+    "item__proto": "gameData/weapons/human_weapons/m72_law.blk",
+    "item__locDetails": "66mm",
+    "item__weapTemplate": "m72_law_gun",
+    "item__name": "items/m72_law",
+    "item__weapType": "anti_tank",
+    "item__weight": 2.3,
+    "gun__inertialMass": 3.0,
+    "gun__locName": "M72 LAW",
+    "gun__statName": "launcher",
+    "gun__shotFreq": 0.8,
+    "gun__automaticReload": false,
+    "gun_spread__maxDeltaAngle": 0.05,
+    "gun__reloadTime": 3.2,
+    "gun__showChamberedAmmo": true,
+    "item__id:i": {
+      "value": 0,
+      "_hide": true
+    },
+    "gun__ammoHolders:array": {
+      "ammoHolders": "m72_law_rocket_item"
+    },
+    "gun__shells:array": {
+      "shells": "gameData/weapons/human_weapons/bullets/m72_law_rocket.blk"
+    },
+    "gun__firingModes:array": {
+      "mode:object": {
+        "modeType": "manual"
+      }
+    },
+    "gun__firingModeNames:array": {
+      "mode": "semi_auto"
+    }
+  },
+  "m72_law_gun": {
+    "_use": [
+      "equipable_gun",
+      "launcher_bulky_preset",
+      "m72_law",
+      "reload_wait_bolt_action_finished",
+      "antitank_launcher_muzzle_small_preset",
+      "backblast_base",
+      "camera_shake_on_reload_disposable_launcher"
+    ],
+    "combatBallisticCoef": 0.1,
+    "gun_tilt__tpsAngle": 6.0,
+    "gun_anim_var__fpsGunOffsetAlong": 0.0,
+    "gun_anim_var__fpsGunOffsetAcross": 0.02,
+    "gun_anim_var__fpsGunOffsetUp": 0.08,
+    "gun_tilt__fpsAngle": 6.0,
+    "gun__length": 0.4,
+    "gun__recoilAmount": 0.07,
+    "gun__recoilDir": 3.14159,
+    "gun__recoilDirAmount": 0.67,
+    "gun__recoilControlMult": 0.1,
+    "gun__visualRecoilMult": 1.0,
+    "meleeSoundType": "rifle",
+    "gun__showChamberedAmmo": true,
+    "weap__sprintLerpFactor": 0.75,
+    "weapon__aimSightPresetIndex": -1,
+    "weap__current_sight_preset": 0,
+    "_replicated": [
+      "weap__current_sight_preset",
+      "gun__launchVerticalAngle"
+    ],
+    "gun__launchVerticalAngle": -0.009,
+    "weapon_frontsight_node__nodeIdx": -1,
+    "weapon_rearsight_node__nodeName": "rearsight_aim",
+    "weapon_frontsight_node__nodeName": "frontsight_aim_100",
+    "weapon__aimPointRelativePos": 1.0,
+    "gun__magnification": 3.0,
+    "weapon__aimNodeOffset": -0.03,
+    "slot_attach__posOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "slot_attach__rotTm": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "gun_attach__holsterPosOffset": [
+      -0.2,
+      0.06,
+      -0.2
+    ],
+    "gun_attach__holsterAnimLerpFactor": 12.0,
+    "_group": {
+      "_tags": "render",
+      "weapon_rearsight_node__nodeIdx": -1,
+      "weapon_rearsight_node__nodeTm": {}
+    },
+    "sightPresets:array": {
+      "preset:object": [
+        {
+          "loc": "sight/100m",
+          "distance": 100,
+          "frontsightNode": "frontsight_aim_100",
+          "rearsightNode": "rearsight_aim",
+          "additionalVertAngle": -0.009,
+          "aimNodeOffset": -0.03
+        },
+        {
+          "loc": "sight/150m",
+          "distance": 150,
+          "frontsightNode": "frontsight_aim_150",
+          "rearsightNode": "rearsight_aim",
+          "additionalVertAngle": -0.022,
+          "aimNodeOffset": -0.03
+        },
+        {
+          "loc": "sight/200m",
+          "distance": 200,
+          "frontsightNode": "frontsight_aim_200",
+          "rearsightNode": "rearsight_aim",
+          "additionalVertAngle": -0.028,
+          "aimNodeOffset": -0.03
+        },
+        {
+          "loc": "sight/50m",
+          "distance": 50,
+          "frontsightNode": "frontsight_aim_50",
+          "rearsightNode": "rearsight_aim",
+          "additionalVertAngle": -0.003,
+          "aimNodeOffset": -0.03
+        }
+      ]
+    },
+    "gun_sound__shotPath:shared:object": {
+      "_tags": "sound",
+      "path": "/weapon/antivehicle/m136_at4"
+    },
+    "sound_irqs:shared:object": {
+      "_tags": "sound",
+      "foley_start:object": {
+        "path": "/weapon/antivehicle/m136_at4/reload_foley_start"
+      },
+      "reload1:object": {
+        "path": "/weapon/antivehicle/m136_at4/reload1/change_ammo"
+      },
+      "reload2:object": {
+        "path": "/weapon/antivehicle/m136_at4/reload2/change_ammo"
+      },
+      "reload3:object": {
+        "path": "/weapon/antivehicle/m136_at4/reload3/change_ammo"
+      },
+      "foley_end:object": {
+        "path": "/weapon/antivehicle/m136_at4/reload_foley_end"
+      }
+    }
+  },
+  "m72_law_rocket_shell": {
+    "animchar__res": "m136_at4_ammo_char",
+    "collres__res": "m136_at4_ammo_collision"
+  },
+  "m72_law_default_gun": {
+    "_use": "m72_law_gun"
+  },
+  "rdg_shell": {
+    "_use": "dng_shell",
+    "animchar__res": "grenade_rdg_char",
+    "grenade__rethrownTemplate": "rdg_smoke_grenade_thrown"
+  },
+  "rdg_smoke_grenade": {
+    "_use": [
+      "projectile_with_shell",
+      "grenade_base",
+      "rdg_shell",
+      "grenade_thrower_tilt"
+    ],
+    "item__name": "items/rdg_smoke_grenade",
+    "grenade__selectedWeaponVar": "rdg",
+    "gun_attach__slot": "l_hand",
+    "shell__explosionTimer": 5.0,
+    "animchar__actOnDemand:tag": {}
+  },
+  "rdg_smoke_grenade_thrown": {
+    "_use": "rdg_smoke_grenade",
+    "gun_attach__slot": "l_hand"
+  },
+  "rdg_smoke_grenade_phys": {
+    "_use": [
+      "smoke_grenade_phys_base",
+      "projectile_phys_with_shell",
+      "rdg_shell"
+    ],
+    "shell__rethrowTime": 3.0,
+    "animchar__res": "grenade_rdg_char",
+    "collres__res": "grenade_rdg_collision",
+    "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/rdg_smoke.blk"
+  },
+  "m18_shell": {
+    "_use": "dng_shell",
+    "animchar__res": "m_18_violet_char",
+    "grenade__rethrownTemplate": "m18_smoke_grenade_thrown"
+  },
+  "m18_smoke_grenade": {
+    "_use": [
+      "projectile_with_shell",
+      "grenade_base",
+      "m18_shell",
+      "grenade_thrower_tilt"
+    ],
+    "item__name": "items/m18_smoke_grenade",
+    "grenade__selectedWeaponVar": "m_18_violet",
+    "gun_attach__slot": "l_hand",
+    "shell__explosionTimer": 5.0,
+    "animchar__actOnDemand:tag": {}
+  },
+  "m18_smoke_grenade_thrown": {
+    "_use": "m18_smoke_grenade",
+    "animchar__res": "m_18_violet_active_char",
+    "gun_attach__slot": "l_hand"
+  },
+  "m18_smoke_grenade_phys": {
+    "_use": [
+      "smoke_grenade_phys_base",
+      "projectile_phys_with_shell",
+      "m18_shell"
+    ],
+    "shell__rethrowTime": 3.0,
+    "animchar__res": "m_18_violet_active_char",
+    "collres__res": "m_18_violet_active_collision",
+    "phys_obj_net_phys__blk": "gameData/weapons/human_weapons/grenades/m18_smoke_grenade.blk"
   }
 }
