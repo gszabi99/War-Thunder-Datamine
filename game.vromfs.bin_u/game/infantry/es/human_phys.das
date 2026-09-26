@@ -11,6 +11,7 @@ require WTPhysActor
 require Unit
 require net
 require app
+require %appGame.infantry.es.human_common
 
 [event(broadcast)]
 struct UpdateSimplifiedPhysState {}
@@ -371,7 +372,8 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
                                      active : bool;
                                      human_net_phys : HumanActor;
                                      var human_net_phys__segPhysStateVersion : int&;
-                                     var human_net_phys__segPhysState : float3&;
+                                     var human_net_phys__segPhysState : float2&;
+                                     var human_net_phys__segPhysStateClimbData : float&;
                                      var human_net_phys__isClimbing : bool&;
                                      var human_net_phys__climbToPos : float3&;
                                      var human_net_phys__climbDir : float3&;
@@ -384,13 +386,13 @@ def save_data_on_post_phys_update_es(evt : CmdPostPhysUpdate;
   if !active
     return
   assume currentState = human_net_phys.phys.currentState
-  assume segPhysState = currentState.segPhysState
+  assume segPhysState = get_seg_phys_state(human_net_phys.phys)
 
   if human_net_phys__segPhysStateVersion != segPhysState.syncVersion
     human_net_phys__segPhysStateVersion = segPhysState.syncVersion
     human_net_phys__segPhysState.x = float(segPhysState.currSeg)
     human_net_phys__segPhysState.y = get_sync_time()
-    human_net_phys__segPhysState.z = segPhysState.blendTrajParam
+    human_net_phys__segPhysStateClimbData = segPhysState.blendTrajParam
   human_net_phys__isClimbing = human_phys_state_get_isClimbing(currentState)
   human_net_phys__climbToPos = currentState.climbToPos
   human_net_phys__climbDir = currentState.climbDir

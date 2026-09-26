@@ -41,14 +41,30 @@
     }
   },
   "attachable_chest_vest": {
-    "_use": "attachable_wear",
+    "_use": [
+      "attachable_wear",
+      "node_collapser"
+    ],
+    "animchar_node_collapser__camThreshold": 0.35,
     "item__equipToSlots:array": {
       "slot": "chest_vest"
     },
     "hideFlags:array": {
       "hideFlag": "chest_vest"
     },
-    "bipodDontHideAttach:tag": {}
+    "bipodDontHideAttach:tag": {},
+    "_group": {
+      "_tags": "render",
+      "animchar_node_collapser__nodes:object": {
+        "Bip01 Spine": "Bip01 Pelvis",
+        "Bip01 R UpperArm": "Bip01 Neck",
+        "Bip01 L UpperArm": "Bip01 Neck"
+      },
+      "animchar_node_collapser__thresholds:object": {
+        "Bip01 R UpperArm": 0.1,
+        "Bip01 L UpperArm": 0.1
+      }
+    }
   },
   "equipable_item": {
     "_use": [
@@ -1753,6 +1769,95 @@
       ]
     }
   },
+  "attachable_wear_pasgt_armor_w_webbing_olive_item": {
+    "_use": "attachable_wear_pasgt_armor_w_webbing_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.473,
+          0.44,
+          0.21,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.63,
+          0.57,
+          0.37,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.43,
+          0.4,
+          0.2,
+          1.0
+        ]
+      },
+      "material10:object": {
+        "material_id": 10,
+        "solid_fill_color": [
+          0.48,
+          0.42,
+          0.329,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.473,
+          0.44,
+          0.21,
+          1.0
+        ]
+      },
+      "material12:object": {
+        "material_id": 12,
+        "solid_fill_color": [
+          0.48,
+          0.52,
+          0.329,
+          1.0
+        ]
+      },
+      "material14:object": {
+        "material_id": 14,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.473,
+          0.44,
+          0.21,
+          1.0
+        ]
+      },
+      "material15:object": {
+        "material_id": 15,
+        "solid_fill_color": [
+          0.48,
+          0.42,
+          0.329,
+          1.0
+        ]
+      },
+      "material17:object": {
+        "material_id": 17,
+        "solid_fill_color": [
+          0.54,
+          0.42,
+          0.34,
+          1.0
+        ]
+      }
+    }
+  },
   "attachable_wear_osprey_body_armor_light_item": {
     "_use": "attachable_chest_armor",
     "item__uniqueName": "attachable_wear_osprey_body_armor_light_item",
@@ -2691,6 +2796,94 @@
           0.473,
           0.44,
           0.21,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_ic_webbing_item": {
+    "_use": "attachable_chest_vest",
+    "item__uniqueName": "attachable_wear_ic_webbing_item",
+    "animchar__res": "ic_webbing_char",
+    "collres__res": "ic_webbing_collision",
+    "animchar_fast_phys__res": "ic_webbing_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_ic_webbing_olive_item": {
+    "_use": "attachable_wear_ic_webbing_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.44,
+          0.42,
+          0.28,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.392,
+          0.404,
+          0.29,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.38,
+          0.34,
+          0.18,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_ic_webbing_m69frag_item": {
+    "_use": "attachable_chest_vest",
+    "item__uniqueName": "attachable_wear_ic_webbing_m69frag_item",
+    "animchar__res": "ic_webbing_m69frag_char",
+    "collres__res": "ic_webbing_m69frag_collision",
+    "animchar_fast_phys__res": "ic_webbing_m69frag_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_ic_webbing_m69frag_olive_item": {
+    "_use": "attachable_wear_ic_webbing_m69frag_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.44,
+          0.42,
+          0.28,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.392,
+          0.404,
+          0.29,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.38,
+          0.34,
+          0.18,
           1.0
         ]
       }

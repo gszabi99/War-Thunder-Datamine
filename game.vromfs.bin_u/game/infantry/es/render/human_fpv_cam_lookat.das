@@ -16,6 +16,14 @@ def binded_camera_target_init(evt : Event;
   query(camera__target) <| $ [es] (var bindedCamera : EntityId&)
     bindedCamera = eid
 
+
+
+def private get_segphys_smooth_cam_coefs(phys : HumanPhys) : float2
+  static_if typeinfo(builtin_function_exists @@ < (arg0 : HumanPhys const implicit) : float2 > HumanPhys::human_phys_get_segphys_smooth_cam_coefs)
+    return human_phys_get_segphys_smooth_cam_coefs(phys)
+  else
+    return float2(0.f, -1.f)
+
 [es(tag=render, before=cockpit_camera_offseter, after=after_net_phys_sync)]
 def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed;
                          camera__active : bool;
@@ -48,7 +56,7 @@ def human_fpv_cam_lookat(info : ParallelUpdateFrameDelayed;
     assume prevSt = phys.previousState
 
     human_cam__fpvActive = !human_phys_state_get_isAttached(curSt) && curSt.standState != HUStandState.ESS_DOWNED && !human_ladder__attached && !isInVehicle && !bipod__enabled
-    let smoothSegPhysCoefs = human_phys_get_segphys_smooth_cam_coefs(phys)
+    let smoothSegPhysCoefs = get_segphys_smooth_cam_coefs(phys)
     let isSegPhysCamera = human_cam__fpvActive && smoothSegPhysCoefs.x > 0.f
     let wishOffsetMult = human_cam__fpvActive && !isSegPhysCamera ? 1.0 : 0.0
     let reachVel = bipod__enabled ? 5.0 : (isSegPhysCamera && smoothSegPhysCoefs.y > 0.f ? smoothSegPhysCoefs.y : 2.0)

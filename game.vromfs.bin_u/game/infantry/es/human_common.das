@@ -2,6 +2,7 @@ module human_common shared
 
 require ecs
 require DngHuman
+require HumanPhys
 require DagorMath
 
 
@@ -13,6 +14,15 @@ bitfield SegphysHumanFlags
   inAirAfter
   isWeaponDown
   wasWeaponDown
+
+
+
+def get_seg_phys_state(phys : HumanPhys) : SegmentedHumanPhysicsState const&
+  unsafe
+    static_if typeinfo has_field<segPhysState>(type<HumanPhysState>)
+      return phys.currentState.segPhysState
+    else
+      return phys.segPhysState
 
 def move_human_to_wish_pos(var human_net_phys : HumanActor; wishPos : float3)
   assume humanPhys     = human_net_phys.phys

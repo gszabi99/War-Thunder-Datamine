@@ -223,7 +223,7 @@ def updateState(eid : EntityId;
 
     let isInAirAfterSegphys = SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
     if (state_flags & uint(HumanAnimStateFlags.Climbing)) != 0u || isInAirAfterSegphys
-      if human_net_phys.phys.currentState.segPhysState.currSeg >= 0 || isInAirAfterSegphys
+      if get_seg_phys_state(human_net_phys.phys).currSeg >= 0 || isInAirAfterSegphys
         res.upper = human_anim__comboStateClimbTrajectory
         res.lower = human_anim__comboStateClimbTrajectory
       else
@@ -1061,7 +1061,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   if human_weap__mortarMode
     stateUpperBody = HumanStateUpperBody.E_USE_MORTAR
 
-  if phys.currentState.segPhysState.currSeg < 0 && isClimbing
+  if get_seg_phys_state(phys).currSeg < 0 && isClimbing
     let posHt = human_net_phys__climbToPos.y - unitTm[3].y
     var startPt = float2(0.0, 1.0)
     var endPt = float2(0.0, 1.0)
@@ -1422,7 +1422,7 @@ def human_anim_on_finish_equipping_es(info : ParallelUpdateFrameDelayed;
     phys_vars |> setVar(human_anim__changeWeaponVarId, 0.0)
 
 def private human_anim_segphys_get_flags(phys; flagList) : SegphysAnimFlags
-  let currAnimId = human_phys_get_segphys_anim_id(phys, phys.currentState.segPhysState.currSeg)
+  let currAnimId = human_phys_get_segphys_anim_id(phys, get_seg_phys_state(phys).currSeg)
   let flags = SegphysAnimFlags(flagList?[currAnimId] ?? 0)
   return flags
 
@@ -1462,7 +1462,7 @@ def human_anim_update_climb_animation_es(info : Event;
                                          human_anim__segphysHumanFlags : int;
                                          var phys_vars : PhysVars)
   assume phys = human_net_phys.phys
-  assume segPhysState = phys.currentState.segPhysState
+  assume segPhysState = get_seg_phys_state(phys)
   if segPhysState.currSeg >= 0 && human_net_phys__isClimbing
     let interpK = get_phys_interpk_clamped(phys, get_sync_time())
 
@@ -1499,7 +1499,7 @@ def human_anim_update_climb_animation_es(info : Event;
         let interpolatedProgress = lerp(0.f, currProgress, interpParam)
         phys_vars |> setVar(human_anim__climbProgressVarId, interpolatedProgress)
         phys_vars |> setVar(human_anim__climbStageVarId, float(currAnimVarValue))
-  if phys.currentState.segPhysState.currSeg < 0 && SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
+  if get_seg_phys_state(phys).currSeg < 0 && SegphysHumanFlags(human_anim__segphysHumanFlags).inAirAfter
     phys_vars |> setVar(human_anim__climbStageVarId, float(human_anim__segphysFlyDownAnimVarValue))
 
 [es(after=keep_human_net_phys_cur_state_es)]
@@ -1514,7 +1514,7 @@ def human_anim_update_segphys_flags_es(info : ParallelUpdateFrameDelayed;
   let currAnimFlags = human_anim_segphys_get_flags(phys, human_anim__segphysAnimIdToFlags)
   if currAnimFlags.flyDownAfter
     flags.inAirAfter = true
-  if phys.currentState.segPhysState.currSeg < 0 && human_net_phys__isOnGround
+  if get_seg_phys_state(phys).currSeg < 0 && human_net_phys__isOnGround
     flags.inAirAfter = false
   flags.isWeaponDown = currAnimFlags.weaponDown || flags.inAirAfter
   if flags.isWeaponDown && weapState == HUWeaponEquipState.EES_DOWN

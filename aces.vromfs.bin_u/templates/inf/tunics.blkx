@@ -517,11 +517,30 @@
     "animchar__res": "bdu_m81_jacket_char",
     "collres__res": "bdu_m81_jacket_collision"
   },
-  "attachable_wear_bdu_m81_jacket_woodland_green_item": {
+  "attachable_wear_bdu_m81_jacket_webbing_item": {
     "_use": [
       "attachable_tunic",
-      "attachable_wear_bdu_m81_jacket_item"
+      "hands_collapser_in_sleeves"
     ],
+    "item__uniqueName": "attachable_wear_bdu_m81_jacket_webbing_item",
+    "animchar__res": "bdu_m81_jacket_webbing_char",
+    "collres__res": "bdu_m81_jacket_webbing_collision",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "backpack",
+        "rear_belt_c",
+        "rear_belt_l",
+        "rear_belt_r",
+        "front_belt_l",
+        "front_belt_r"
+      ]
+    }
+  },
+  "attachable_wear_bdu_m81_jacket_woodland_green_item": {
+    "_use": "attachable_wear_bdu_m81_jacket_item",
     "animchar__objTexReplace:object": {
       "multicam_tex_d*": "woodland_green_tex_d*"
     },
@@ -547,10 +566,7 @@
     }
   },
   "attachable_wear_bdu_m81_jacket_dpm_africa_item": {
-    "_use": [
-      "attachable_tunic",
-      "attachable_wear_bdu_m81_jacket_item"
-    ],
+    "_use": "attachable_wear_bdu_m81_jacket_item",
     "animchar__objTexReplace:object": {
       "multicam_tex_d*": "dpm_africa_tex_d*"
     },
@@ -578,30 +594,50 @@
     }
   },
   "attachable_wear_bdu_m81_jacket_nutria_brown_item": {
-    "_use": [
-      "attachable_tunic",
-      "attachable_wear_bdu_m81_jacket_item"
-    ],
+    "_use": "attachable_wear_bdu_m81_jacket_item",
     "camouflage_override:array": {
       "material1:object": {
         "material_id": 1,
         "force_solid_fill": true,
-        "color_multiplier": 3.0,
         "solid_fill_color": [
-          0.408,
-          0.298,
-          0.188,
+          0.517,
+          0.394,
+          0.233,
           1.0
         ]
       },
       "material2:object": {
         "material_id": 2,
         "force_solid_fill": true,
-        "color_multiplier": 3.0,
         "solid_fill_color": [
-          0.508,
-          0.398,
-          0.288,
+          0.46,
+          0.357,
+          0.223,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_bdu_m81_jacket_webbing_nutria_brown_item": {
+    "_use": "attachable_wear_bdu_m81_jacket_webbing_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.517,
+          0.394,
+          0.233,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.46,
+          0.357,
+          0.223,
           1.0
         ]
       }
@@ -1137,8 +1173,18 @@
     "animchar__res": "iraq_jacket_w_pouch_char",
     "collres__res": "iraq_jacket_w_pouch_collision",
     "animchar_fast_phys__res": "iraq_jacket_w_pouch_fastphys",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "animchar_fast_phys": {
       "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": [
+        "rear_belt_c",
+        "rear_belt_l",
+        "rear_belt_r"
+      ]
     }
   },
   "attachable_wear_iraq_jacket_w_pouch_green_item": {
@@ -1336,6 +1382,21 @@
       }
     }
   },
+  "attachable_wear_ag_jacket_gray_item": {
+    "_use": "attachable_wear_ag_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.55,
+          0.49,
+          0.38,
+          1.0
+        ]
+      }
+    }
+  },
   "attachable_wear_ag_jacket_btn_item": {
     "_use": "attachable_wear_ag_jacket_item",
     "animchar__objTexReplace:object": {
@@ -1351,6 +1412,95 @@
           0.0
         ]
       }
+    }
+  },
+  "attachable_wear_ic_jacket_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_ic_jacket_item",
+    "animchar__res": "ic_jacket_char",
+    "collres__res": "ic_jacket_collision"
+  },
+  "attachable_wear_ic_jacket_olive_item": {
+    "_use": "attachable_wear_ic_jacket_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.359,
+          0.367,
+          0.214,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_early_ghillie_tunic_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_early_ghillie_tunic_item",
+    "animchar__res": "early_ghillie_tunic_char",
+    "collres__res": "early_ghillie_tunic_collision",
+    "animchar_fast_phys__res": "early_ghillie_tunic_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_early_ghillie_tunic_woodland_item": {
+    "_use": "attachable_wear_early_ghillie_tunic_item",
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "woodland_green_tex_d*"
+    }
+  },
+  "attachable_wear_early_ghillie_tunic_gray_item": {
+    "_use": "attachable_wear_early_ghillie_tunic_item",
+    "animchar__objTexReplace:object": {
+      "early_ghillie_cards_tex_d*": "early_ghillie_cards_gray_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.55,
+          0.49,
+          0.38,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_early_ghillie_tunic_olive_item": {
+    "_use": "attachable_wear_early_ghillie_tunic_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.359,
+          0.367,
+          0.214,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_desert_ghillie_tunic_item": {
+    "_use": [
+      "attachable_tunic",
+      "hands_collapser_in_sleeves"
+    ],
+    "item__uniqueName": "attachable_wear_desert_ghillie_tunic_item",
+    "animchar__res": "desert_ghillie_tunic_char",
+    "collres__res": "desert_ghillie_tunic_collision",
+    "animchar_fast_phys__res": "desert_ghillie_tunic_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
     }
   }
 }

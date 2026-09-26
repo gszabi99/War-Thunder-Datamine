@@ -165,10 +165,15 @@ def play_step_sound_grains(desc : Object;
       set_var_optional(step_sound_grains_event, "reverbindoor", wt_enemy_reverb_sound__value)
 
 
+[unused_argument(pos)]
 def get_puddle_depth(pos : float3; wetness_to_depth : float4)
   if wetness_to_depth.w <= 0.
     return 0.
-  return cvt(get_puddles_wetness(pos), wetness_to_depth.x, wetness_to_depth.y, wetness_to_depth.z, wetness_to_depth.w)
+  
+  static_if typeinfo(builtin_function_exists @@get_puddles_wetness)
+    return cvt(get_puddles_wetness(pos), wetness_to_depth.x, wetness_to_depth.y, wetness_to_depth.z, wetness_to_depth.w)
+  else
+    return 0.
 
 
 def get_step_water_depth(pos : float3; trace_offset : float)
@@ -297,28 +302,28 @@ def human_steps_sound_update(info : ParallelUpdateFrameDelayed)
     if irqObjIdx == INVALID_IRQ_OBJ_IDX && empty(descId)
       return
 
-    query(eid) <| $ [es] (sound_preset__isLoaded : bool;
-                          sound_tags : Object;
-                          team : int;
+    query(eid) <| $ [es, unused_argument(human_steps_sound__puddleWetnessToDepth)] (sound_preset__isLoaded : bool;
+                                                                                    sound_tags : Object;
+                                                                                    team : int;
 
-                          var sound_event_group : SoundEventGroup&;
-                          human_steps_sound__traceStepOffsetLen : float2;
-                          human_steps_sound__distanceToVolumeFriendly : float4;
-                          human_steps_sound__distanceToVolumeEnemy : float4;
-                          human_steps_sound__prefix = "";
+                                                                                    var sound_event_group : SoundEventGroup&;
+                                                                                    human_steps_sound__traceStepOffsetLen : float2;
+                                                                                    human_steps_sound__distanceToVolumeFriendly : float4;
+                                                                                    human_steps_sound__distanceToVolumeEnemy : float4;
+                                                                                    human_steps_sound__prefix = "";
 
-                          @shared_comp human_steps_sound__path : Object;
-                          @shared_comp human_steps_sound__descs : Object;
-                          @shared_comp human_steps_sound__irqs : Array;
-                          @shared_comp human_steps_sound__stepFx : Object;
+                                                                                    @shared_comp human_steps_sound__path : Object;
+                                                                                    @shared_comp human_steps_sound__descs : Object;
+                                                                                    @shared_comp human_steps_sound__irqs : Array;
+                                                                                    @shared_comp human_steps_sound__stepFx : Object;
 
-                          var human_steps_sound__waterDepth : float&;
-                          var human_steps_sound__smid : int&;
-                          var human_steps_sound__stepIdx : uint&;
+                                                                                    var human_steps_sound__waterDepth : float&;
+                                                                                    var human_steps_sound__smid : int&;
+                                                                                    var human_steps_sound__stepIdx : uint&;
 
-                          sound_biome_puddle_queries__biomeId : int;
-                          sound_biome_puddle_queries__puddleDepth : float;
-                          human_steps_sound__puddleWetnessToDepth : float4 = float4(0.7, 1., 0., 0.05))
+                                                                                    sound_biome_puddle_queries__biomeId : int;
+                                                                                    sound_biome_puddle_queries__puddleDepth : float;
+                                                                                    human_steps_sound__puddleWetnessToDepth : float4 = float4(0.7, 1., 0., 0.05))
       if !sound_preset__isLoaded
         return
 

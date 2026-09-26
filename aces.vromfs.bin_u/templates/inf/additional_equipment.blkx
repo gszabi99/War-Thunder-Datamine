@@ -55,14 +55,18 @@
   },
   "attachable_rear_belt_c": {
     "_use": "attachable_wear",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "item__equipToSlots:array": {
       "slot": "rear_belt_c"
     },
     "hideFlags:array": {
       "hideFlag": "rear_belt_c"
     },
+    "attaches_list:list<eid>": {},
     "skeleton_attach__remapParentSlots:list<t>": {
       "slot": [
+        "tunic",
         "belt",
         "chest_armor"
       ]
@@ -70,14 +74,18 @@
   },
   "attachable_front_belt_l": {
     "_use": "attachable_wear",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "item__equipToSlots:array": {
       "slot": "front_belt_l"
     },
     "hideFlags:array": {
       "hideFlag": "front_belt_l"
     },
+    "attaches_list:list<eid>": {},
     "skeleton_attach__remapParentSlots:list<t>": {
       "slot": [
+        "tunic",
         "belt",
         "chest_armor"
       ]
@@ -85,14 +93,18 @@
   },
   "attachable_front_belt_r": {
     "_use": "attachable_wear",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "item__equipToSlots:array": {
       "slot": "front_belt_r"
     },
     "hideFlags:array": {
       "hideFlag": "front_belt_r"
     },
+    "attaches_list:list<eid>": {},
     "skeleton_attach__remapParentSlots:list<t>": {
       "slot": [
+        "tunic",
         "belt",
         "chest_armor"
       ]
@@ -130,14 +142,18 @@
   },
   "attachable_rear_belt_l": {
     "_use": "attachable_wear",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "item__equipToSlots:array": {
       "slot": "rear_belt_l"
     },
     "hideFlags:array": {
       "hideFlag": "rear_belt_l"
     },
+    "attaches_list:list<eid>": {},
     "skeleton_attach__remapParentSlots:list<t>": {
       "slot": [
+        "tunic",
         "belt",
         "chest_armor"
       ]
@@ -145,14 +161,18 @@
   },
   "attachable_rear_belt_r": {
     "_use": "attachable_wear",
+    "_tracked": "attaches_list",
+    "_skipInitialReplication": "attaches_list",
     "item__equipToSlots:array": {
       "slot": "rear_belt_r"
     },
     "hideFlags:array": {
       "hideFlag": "rear_belt_r"
     },
+    "attaches_list:list<eid>": {},
     "skeleton_attach__remapParentSlots:list<t>": {
       "slot": [
+        "tunic",
         "belt",
         "chest_armor"
       ]
@@ -1386,6 +1406,54 @@
     "animchar_fast_phys__res": "6sh117_flask_br_fastphys",
     "animchar_fast_phys": {
       "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_6sh117_flask_br_olive_item": {
+    "_use": "attachable_wear_6sh117_flask_br_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.316,
+          0.347,
+          0.241,
+          1.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.316,
+          0.347,
+          0.241,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.316,
+          0.347,
+          0.241,
+          1.0
+        ]
+      }
+    }
+  },
+  "attachable_wear_6sh117_flask_br_tan_item": {
+    "_use": "attachable_wear_6sh117_flask_br_item",
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.506,
+          0.455,
+          0.388,
+          1.0
+        ]
+      }
     }
   },
   "attachable_wear_6sh117_flask_bl_item": {
@@ -2666,6 +2734,58 @@
         "rear_belt_r",
         "rear_belt_c"
       ]
+    }
+  },
+  "attachable_wear_sso_backpack_item": {
+    "_use": "attachable_rear_belt_c",
+    "item__uniqueName": "attachable_wear_sso_backpack_item",
+    "animchar__res": "sso_backpack_char",
+    "collres__res": "sso_backpack_collision",
+    "animchar_fast_phys__res": "sso_backpack_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_sso_backpack_brown_item": {
+    "_use": "attachable_wear_sso_backpack_item",
+    "camouflage_override:array": {
+      "material7:object": {
+        "material_id": 7,
+        "force_solid_fill": true,
+        "solid_fill_color": [
+          0.73,
+          0.586,
+          0.41,
+          1.0
+        ]
+      },
+      "material8:object": {
+        "material_id": 8,
+        "solid_fill_color": [
+          0.4,
+          0.3,
+          0.2,
+          1.0
+        ]
+      },
+      "material9:object": {
+        "material_id": 9,
+        "solid_fill_color": [
+          0.51,
+          0.38,
+          0.21,
+          1.0
+        ]
+      },
+      "material11:object": {
+        "material_id": 11,
+        "solid_fill_color": [
+          0.3,
+          0.3,
+          0.2,
+          1.0
+        ]
+      }
     }
   }
 }
