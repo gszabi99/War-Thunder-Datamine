@@ -4426,6 +4426,25 @@
       "tier": 4,
       "modClass": "armor"
     },
+    "frc_mk2": {
+      "tier": 1,
+      "modClass": "weapon"
+    },
+    "fr_matra_t_10": {
+      "tier": 2,
+      "modClass": "weapon",
+      "reqModification": "frc_mk2"
+    },
+    "fr_matra_t_10_150": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_t_10"
+    },
+    "fr_matra_sneb": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_t_10_150"
+    },
     "anm3_universal": {},
     "anm3_ground_targets": {},
     "anm3_stealth": {},
@@ -4435,7 +4454,13 @@
     },
     "anm3_new_gun": {
       "reqModification": "anm3_belt_pack",
-      "tier": 3
+      "tier": 2
+    },
+    "frc_mk3": {
+      "tier": 3,
+      "modClass": "weapon",
+      "reqModification": "fr_matra_t_10_150",
+      "prevModification": "anm3_new_gun"
     },
     "fr_100_gp_standart": {
       "modClass": "weapon",
@@ -4464,30 +4489,6 @@
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "an_mk1"
-    },
-    "frc_mk2": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "fr_matra_t_10": {
-      "tier": 2,
-      "modClass": "weapon",
-      "reqModification": "frc_mk2"
-    },
-    "fr_matra_t_10_150": {
-      "tier": 3,
-      "modClass": "weapon",
-      "reqModification": "fr_matra_t_10"
-    },
-    "frc_mk3": {
-      "tier": 3,
-      "modClass": "weapon",
-      "reqModification": "fr_matra_t_10_150"
-    },
-    "fr_matra_sneb": {
-      "tier": 4,
-      "modClass": "weapon",
-      "reqModification": "fr_matra_t_10_150"
     }
   },
   "cutting": {
