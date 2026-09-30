@@ -355,11 +355,11 @@ function getText(filter = BATTLE_LOG_FILTER.ALL, limit = 0) {
   let lines = []
   for (local i = battleLog.len() - 1; i >= 0 ; i--)
     if (battleLog[i].filters & filter) {
-      lines.insert(0, battleLog[i].message)
+      lines.append(battleLog[i].message)
       if (limit && lines.len() == limit)
         break
     }
-  return "\n".join(lines, true)
+  return "\n".join(lines.reverse(), true)
 }
 
 function getUnitTypeEx(msg, isVictim = false) {

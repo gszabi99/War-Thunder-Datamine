@@ -162,11 +162,9 @@ class DecorMenuHandler (BaseGuiHandlerWT) {
 
     let data = this.generateGroupContent(categoryObj.categoryId, categoryObj.groupId)
     this.guiScene.replaceContentFromText(decorListObj, data, data.len(), this)
-    let decoratorsCount = decorListObj.childrenCount()
-    if (decoratorsCount == 0)
-      return
-    let selectedIndex = decorListObj.getValue()
-    decorListObj.getChild(decoratorsCount <= selectedIndex ? 0 : selectedIndex).selected = "yes"
+    let selectedObj = this.getSelectedObj(decorListObj)
+    if (selectedObj)
+      selectedObj.selected = "yes"
   }
 
   function collapseOpenedCategory() {

@@ -55,12 +55,15 @@ enum CTU_PROGRESS {
 
 
 
+
+
 let CrewTakeUnitProcess = class {
   crew = null
   country = null 
   unit = null
   prevUnit = null
   onFinish = null
+  onCostConfirmCb = null
   isSuccess = false
 
   static PROCESS_TIME_OUT = 45000
@@ -160,7 +163,8 @@ let CrewTakeUnitProcess = class {
 
       let text = warningIfGold(format(loc(locId), this.cost.getTextAccordingToBalance()), this.cost)
       purchaseConfirmation(
-        { id = "need_money", text, callbackYes = this.nextStepCb, callbackNo = this.removeCb },
+        { id = "need_money", text, callbackYes = this.nextStepCb, callbackNo = this.removeCb,
+          onAnswerCb = this.onCostConfirmCb },
         this.cost
       )
     },
@@ -211,7 +215,7 @@ let CrewTakeUnitProcess = class {
     }
   }
 
-  constructor(crewOrCountry, unitToTake = null, callback = null) {
+  constructor(crewOrCountry, unitToTake = null, callback = null, onCostConfirmCb = null) {
     if (!unitToTake && !crewOrCountry)
       return this.remove()
 
@@ -227,6 +231,7 @@ let CrewTakeUnitProcess = class {
       return this.remove()
 
     this.onFinish = callback
+    this.onCostConfirmCb = onCostConfirmCb
     this.activeProcesses.append(this)
 
     this.nextStepCb = Callback(this.nextStep, this)

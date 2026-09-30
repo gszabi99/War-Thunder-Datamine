@@ -2,6 +2,7 @@ import "%sqStdLibs/helpers/u.nut" as u
 from "%scripts/dagui_natives.nut" import get_crew_count, get_crew_slot_cost
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+from "%scripts/tutorials/newbieTutorialBqLog.nut" import sendSlotTutorialBqEvent
 
 let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { SlotbarWidget } = require("%scripts/slotbar/slotbarWidget.nut")
@@ -286,7 +287,17 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
     this.updateSelectedCrewPriceText()
   }
 
+  function sendSelectCrewBqEvent() {
+    sendSlotTutorialBqEvent("selectCrew", {
+      crew = this.getCurCrew()?.id ?? -1
+      slotIndex = this.takeCrewIdInCountry + 1 
+      unit = this.unit.name
+    })
+  }
+
   function startFirstSelectTutorial() {
+    sendSlotTutorialBqEvent("start", { unit = this.unit.name })
+
     let playerBalance = Cost()
     let playerInfo = getProfileInfo()
     playerBalance.wp = playerInfo.balance
@@ -306,6 +317,7 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
             actionType = tutorAction.OBJ_CLICK
             shortcut = GAMEPAD_ENTER_SHORTCUT
             haveArrow = true
+            cb = Callback(@() this.sendSelectCrewBqEvent(), this)
           },
           {
             obj = "btn_set_air"
@@ -324,6 +336,7 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
             actionType = tutorAction.ANY_CLICK
             haveArrow = false
             shortcut = GAMEPAD_ENTER_SHORTCUT
+            cb = Callback(@() this.sendSelectCrewBqEvent(), this)
           },
           {
             obj = "btn_set_air"
@@ -331,6 +344,7 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
             nextActionShortcut = "help/NEXT_ACTION"
             actionType = tutorAction.ANY_CLICK
             shortcut = GAMEPAD_ENTER_SHORTCUT
+            cb = Callback(@() sendSlotTutorialBqEvent("passTrainHint", { unit = this.unit.name }), this)
           }
         ]
     gui_modal_tutor(steps, this)
@@ -367,6 +381,15 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
     this.onApplyCrew(this.getCurCrew())
   }
 
+  function takeUnitInTutorial(crew, onFinishCb) {
+    let unitName = this.unit.name
+    let costWp = this.getTakeAirCost().wp
+    sendSlotTutorialBqEvent("trainCrew", { cost = costWp, unit = unitName })
+    CrewTakeUnitProcess(crew, this.unit, onFinishCb,
+      @(isConfirmed) sendSlotTutorialBqEvent("confirmCrewTrain",
+        { cost = costWp, action = isConfirmed ? "yes" : "no", unit = unitName }))
+  }
+
   function onApplyCrew(crew) {
     let onFinishCb = Callback(this.onTakeProcessFinish, this)
     if (this.isSelectByGroups)
@@ -375,6 +398,8 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
         unit = this.unit
         onFinishCb = onFinishCb
       })
+    else if (this.useFirstSelectTutorial)
+      this.takeUnitInTutorial(crew, onFinishCb)
     else
       CrewTakeUnitProcess(crew, this.unit, onFinishCb)
   }

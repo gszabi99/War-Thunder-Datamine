@@ -75,6 +75,7 @@ local class WeaponsPurchaseProcess {
 
   afterSuccessfullPurchaseCb = null
   onCompleteCb = null
+  onConfirmCb = null
 
   msgLocId = ""
   repairMsgLocId = ""
@@ -90,6 +91,7 @@ local class WeaponsPurchaseProcess {
     this.open = additionalParams?.open ?? false
     this.afterSuccessfullPurchaseCb = additionalParams?.afterSuccessfullPurchaseCb
     this.onCompleteCb = additionalParams?.onFinishCb
+    this.onConfirmCb = additionalParams?.onConfirmCb
 
     this.modItem = additionalParams?.modItem
     if (!u.isEmpty(this.modItem)) {
@@ -123,7 +125,8 @@ local class WeaponsPurchaseProcess {
       onExitFunc = Callback(function() { this.complete() }, this)
     }
 
-    loadHandler(get_gui_handler("MultiplePurchase"), params)
+    if (loadHandler(get_gui_handler("MultiplePurchase"), params) == null)
+      this.complete() 
   }
 
   function complete() {
@@ -166,10 +169,13 @@ local class WeaponsPurchaseProcess {
         this.msgLocParams
       ), price)
 
-    purchaseConfirmation(
-      { id = "mechanic_execute_msg", text, callbackYes, callbackNo, onExitFunc = callbackNo },
+    let isConfirmationShown = purchaseConfirmation(
+      { id = "mechanic_execute_msg", text, callbackYes, callbackNo, onExitFunc = callbackNo,
+        onAnswerCb = this.onConfirmCb },
       price
     )
+    if (!isConfirmationShown)
+      this.complete() 
   }
 
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null) {

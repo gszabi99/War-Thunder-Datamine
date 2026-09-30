@@ -9,6 +9,7 @@ from "guiMission" import get_meta_mission_info_by_name
 from "%scripts/dagui_natives.nut" import save_online_single_job, shop_is_weapon_available, get_auto_buy_modifications, shop_get_unit_excess_exp, set_char_cb, utf8_strlen, shop_set_researchable_unit_module
   , set_auto_buy_modifications, shop_get_researchable_module_name
 from "%globalScripts/gameModeNativeConsts.nut" import *
+from "%scripts/tutorials/newbieTutorialBqLog.nut" import sendModificationTutorialBqEvent
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import *
 from "%scripts/options/optionsConsts.nut" import SAVE_ONLINE_JOB_DIGIT
@@ -557,7 +558,7 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
         nextActionShortcut = "help/OBJ_CLICK"
         actionType = tutorAction.OBJ_CLICK
         shortcut = GAMEPAD_ENTER_SHORTCUT
-        cb = @() this.setModificatonOnResearch(this.items[newIdx], @() this.updateAllItems())
+        cb = @() this.selectNextResearchInNewbieHelp(this.items[newIdx])
       }
     ]
 
@@ -573,11 +574,27 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
           nextActionShortcut = "help/OBJ_CLICK"
           actionType = tutorAction.OBJ_CLICK
           shortcut = GAMEPAD_ENTER_SHORTCUT
-          cb = @() this.checkAndBuyWeaponry(finItem)
+          cb = @() this.buyResearchedModInNewbieHelp(finItem)
         })
     }
 
     gui_modal_tutor(steps, this)
+  }
+
+  function selectNextResearchInNewbieHelp(modItem) {
+    sendModificationTutorialBqEvent("selectNextResearch",
+      { unit = this.airName, modification = modItem.name })
+    this.setModificatonOnResearch(modItem, @() this.updateAllItems())
+  }
+
+  function buyResearchedModInNewbieHelp(modItem) {
+    let unitName = this.airName
+    let modName = modItem.name
+    let costWp = getItemCost(this.air, modItem).wp
+    sendModificationTutorialBqEvent("pressResearchedMod", { unit = unitName, modification = modName })
+    this.checkAndBuyWeaponry(modItem, false,
+      @(isConfirmed) sendModificationTutorialBqEvent("confirmPurchase",
+        { action = isConfirmed ? "yes" : "no", cost = costWp, unit = unitName, modification = modName }))
   }
 
   function fillPage() {
@@ -2070,13 +2087,14 @@ register_gui_handler("WeaponsModalHandler", class (BaseGuiHandlerWT) {
     return isChanged
   }
 
-  function checkAndBuyWeaponry(modItem, open = false) {
+  function checkAndBuyWeaponry(modItem, open = false, onConfirmCb = null) {
     let listObj = this.mainModsObj
     let curValue = this.mainModsObj.getValue()
     this.checkSaveBulletsAndDo(Callback(function() {
       weaponsPurchase(this.air, {
         modItem = modItem,
         open = open,
+        onConfirmCb = onConfirmCb,
         onFinishCb = @() move_mouse_on_child(listObj, curValue)
       })
     }, this))

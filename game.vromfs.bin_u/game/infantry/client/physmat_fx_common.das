@@ -5,6 +5,7 @@ require strings
 require DagorSystem
 require PhysMat
 
+[never_inline]
 def for_each_physmat_data(data : Object; group_prefix : string; cb : block<(pmid : int; data : ChildComponent) : void>)
   let pmidCount = physMatCount()
 

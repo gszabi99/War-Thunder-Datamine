@@ -7,6 +7,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab
 from "%scripts/seen/seenIds.nut" import SEEN
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+from "dagor.localize" import doesLocTextExist
 
 let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { navigationPanel } = require("%scripts/wndWidgets/navigationPanel.nut")
@@ -65,7 +66,7 @@ let tabIdxToSeenId = {
 let getSeenIdByTabIdx = @(idx) tabIdxToSeenId?[idx]
 
 function isEqualItemsLists(curItemsList, newItemsList) {
-  if (curItemsList == null || newItemsList == null)
+  if ((curItemsList ?? []).len() == 0 || (newItemsList ?? []).len() == 0)
     return false
 
   if (curItemsList.len() != newItemsList.len())
@@ -457,7 +458,9 @@ let ItemsList = class (BaseGuiHandlerWT) {
         this.curPage = max(0, ((this.itemsList.len() - 1) / this.itemsPerPage).tointeger())
     }
 
-    if (!this.tabHasChanged && lastPage == this.curPage && isEqualItemsLists(lastItemsList, this.itemsList))
+    if (!this.tabHasChanged
+        && lastPage == this.curPage
+        && isEqualItemsLists(lastItemsList, this.itemsList))
       return
 
     this.fillPage()
@@ -511,9 +514,10 @@ let ItemsList = class (BaseGuiHandlerWT) {
 
     let emptyListObj = this.scene.findObject("empty_items_list")
     if (checkObj(emptyListObj)) {
+      let isInShop = this.curTab == itemsTab.SHOP
       let adviseMarketplace = this.curTab == itemsTab.INVENTORY && this.curSheet.isMarketplace && isMarketplaceEnabled()
-      let itemsInShop = this.curTab == itemsTab.SHOP ? this.itemsList : this.curSheet.getItemsList(itemsTab.SHOP, this.curSubsetId)
-      let adviseShop = hasFeature("ItemsShop") && this.curTab != itemsTab.SHOP
+      let itemsInShop = isInShop ? this.itemsList : this.curSheet.getItemsList(itemsTab.SHOP, this.curSubsetId)
+      let adviseShop = hasFeature("ItemsShop") && !isInShop
         && !this.isInRecyclingTab() && !adviseMarketplace && itemsInShop.len() > 0
 
       emptyListObj.show(data.len() == 0)
@@ -522,21 +526,19 @@ let ItemsList = class (BaseGuiHandlerWT) {
       showObjById("items_shop_to_shop_button", adviseShop, this.scene)
       let emptyListTextObj = this.scene.findObject("empty_items_list_text")
       if (checkObj(emptyListTextObj)) {
-        local caption = loc(this.curSheet.emptyTabLocId, "")
-        if (!caption.len())
-          caption = loc("items/shop/emptyTab/default")
-        if (caption.len() > 0) {
-          let noItemsAdviceLocId =
-              adviseMarketplace ? "items/shop/emptyTab/noItemsAdvice/marketplaceEnabled"
-            : adviseShop        ? "items/shop/emptyTab/noItemsAdvice/shopEnabled"
-            :                     "items/shop/emptyTab/noItemsAdvice/shopDisabled"
-          caption = " ".concat(caption, loc(noItemsAdviceLocId))
+        if (isInShop && itemsInShop.len() == 0)
+          emptyListTextObj.setValue(loc("items/shop/emptyTab/default/loading"))
+        else if (this.isInRecyclingTab())
+          emptyListTextObj.setValue(loc("items/recycling/emptyTab"))
+        else {
+          let { emptyTabLocId } = this.curSheet
+          emptyListTextObj.setValue(" ".concat(
+            loc(doesLocTextExist(emptyTabLocId) ? emptyTabLocId : "items/shop/emptyTab/default"),
+            loc(adviseMarketplace ? "items/shop/emptyTab/noItemsAdvice/marketplaceEnabled"
+              : adviseShop ? "items/shop/emptyTab/noItemsAdvice/shopEnabled"
+              : "items/shop/emptyTab/noItemsAdvice/shopDisabled")
+          ))
         }
-        if (this.isInRecyclingTab())
-          caption = loc("items/recycling/emptyTab")
-        if (itemsInShop)
-          caption = loc("items/shop/emptyTab/default/loading")
-        emptyListTextObj.setValue(caption)
       }
     }
 

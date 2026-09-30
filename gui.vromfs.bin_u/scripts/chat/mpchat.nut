@@ -8,7 +8,7 @@ from "eventbus" import eventbus_send, eventbus_subscribe
 from "chat" import chat_on_text_update, chat_on_send, CHAT_MODE_ALL
 from "mission" import get_mplayer_by_userid
 from "scriptRespondent" import registerRespondent
-from "dagor.workcycle" import defer
+from "dagor.workcycle" import defer, deferOnce
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
@@ -392,7 +392,7 @@ function checkAndPrintDevoiceMsg() {
 }
 
 function updateBattleLog(sceneData) {
-  if (getCurView(sceneData) != mpChatView.BATTLE)
+  if (getCurView(sceneData) != mpChatView.BATTLE || !sceneData.scene.isVisible())
     return
   let limit = (!sceneData.selfHideLog || isVisibleWithCursor(sceneData)) ? 0 : getMaxLogSize()
   let chat_log = sceneData.scene.findObject("chat_log")
@@ -403,6 +403,10 @@ function updateBattleLog(sceneData) {
 function updateContent(sceneData) {
   updateChatLog(sceneData)
   updateBattleLog(sceneData)
+}
+
+function updateAllBattleLogs() {
+  doForAllScenes(updateBattleLog)
 }
 
 function clearInputChat() {
@@ -620,7 +624,7 @@ addListenersWithoutEnv({
   }
 
   MpChatModeChanged = @(_) doForAllScenes(updatePrompt)
-  BattleLogMessage = @(_) doForAllScenes(updateBattleLog)
+  BattleLogMessage = @(_) deferOnce(updateAllBattleLogs)
   WatchedHeroSwitched = @(_) makeChatTextFromLog()
   MpChatLogUpdated = @(_) makeChatTextFromLog()
   ContactsBlockStatusUpdated = @(_) makeChatTextFromLog()

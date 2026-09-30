@@ -639,9 +639,9 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
 
     let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
     this.guiScene.applyPendingChanges(true) 
-    for (local i = 0; i < this.maxRank; i++) {
+    for (local i = 0; i < this.animData.ranksHeights.len(); i++) {
       let rankTable = this.getRankTable(tableObj, i)
-      if (rankTable == null || !rankTable.isVisible())
+      if (!rankTable.isVisible())
         continue
       let isCollapsed = armyRankCollapsedData?[$"{i}"] ?? false
       let collapseParams = {needCollapse = isCollapsed,
@@ -2552,11 +2552,15 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     if (!needForceUpdate && isCollapsed == needCollapse)
       return
 
+    
+    let height = this.animData.ranksHeights?[containerIndex]
+    if (height == null)
+      return
+
     rankTable.isCollapsed = needCollapse ? "yes" : "no"
     let expandBtn = rankTable.findObject($"expandbtn_{containerIndex}")
     expandBtn["tooltip"] = loc(needCollapse ? "mainmenu/btnExpand" : "mainmenu/btnCollapse")
 
-    let height = this.animData.ranksHeights[containerIndex]
     let collapseHeight = floor(this.animData.cellHeight*0.75).tostring()
 
     expandBtn.isCollapsed = needCollapse ? "yes" : "no"

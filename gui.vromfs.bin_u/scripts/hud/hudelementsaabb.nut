@@ -71,7 +71,8 @@ function getTwsRadarAabb() {
 }
 
 function getDamagePannelAabb() {
-  return dmPanelStatesAabb.get()
+  let aabbState = dmPanelStatesAabb.get()
+  return aabbState?.visible ? aabbState : null
 }
 
 function getAircraftInstrumentsAabb() {

@@ -153,7 +153,8 @@ function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
       onSuccessCb()
   }
 
-  addTask(taskId, progBox, onTaskSuccess, onErrorCb)
+  if (!addTask(taskId, progBox, onTaskSuccess, onErrorCb))
+    onErrorCb?() 
 }
 
 function repairNoMsgBox(unit, onSuccessCb = null, onErrorCb = null) {

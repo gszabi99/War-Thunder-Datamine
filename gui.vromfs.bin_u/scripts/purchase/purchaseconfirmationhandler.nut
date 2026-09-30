@@ -21,6 +21,7 @@ local purchaseConfirmationHandler = class (BaseGuiHandlerWT) {
   callbackYes = null
   callbackNo = null
   onExitFunc = null
+  onAnswerCb = null
   customButtons = null
 
   function initScreen() {
@@ -62,12 +63,14 @@ local purchaseConfirmationHandler = class (BaseGuiHandlerWT) {
   }
 
   function onButtonYes() {
+    this.onAnswerCb?(true)
     if(this.callbackYes != null)
       this.callbackYes()
     base.goBack()
   }
 
   function onButtonNo() {
+    this.onAnswerCb?(false)
     if(this.callbackNo != null)
       this.callbackNo()
     base.goBack()
@@ -133,9 +136,14 @@ function purchaseConfirmation(params, cost = null) {
   let { mustShowConfirmationWnd = false } = params
   if (cost && !mustShowConfirmationWnd && !needPurchaseConfirmation(cost)) {
     params?.callbackYes()
-    return
+    return true
   }
-  handlersManager.loadHandler(purchaseConfirmationHandler, params)
+  let handler = handlersManager.loadHandler(purchaseConfirmationHandler, params)
+  if (handler != null && handler.id != (params?.id ?? "")) {
+    logerr($"purchaseConfirmation: skip '{params?.id}' - confirmation '{handler.id}' is already shown")
+    return false
+  }
+  return handler != null
 }
 
 return {
