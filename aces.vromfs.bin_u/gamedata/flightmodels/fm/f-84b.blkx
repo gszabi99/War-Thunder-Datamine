@@ -1,4 +1,5 @@
 {
+  "IgnoreErrors": true,
   "AileronEffectiveSpeed": 530.0,
   "RudderEffectiveSpeed": 600.0,
   "ElevatorsEffectiveSpeed": [
@@ -128,8 +129,7 @@
   "CockpitOpenedDoorBreakSpeed": -1.0,
   "DisableRendinstCollision": false,
   "CollisionObjectsContinuousCollisionMoveMin": -1.0,
-  "SpawnSpeed": -1.0,
-  "IgnoreErrors": true,
+  "SpawnSpeed": 612.412,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": true,
@@ -180,6 +180,11 @@
       1.0
     ],
     "chuteCx": 0.0,
+    "chutePos": [
+      -0.2,
+      0.0,
+      0.0
+    ],
     "FlapsAxis": {
       "Retracted": {
         "Presents": true,
@@ -463,7 +468,7 @@
         0.65,
         0.8
       ],
-      "FlowInertia": 0.05,
+      "FlowInertia": 0.0500036,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 2.92,
@@ -535,7 +540,7 @@
         1.1,
         0.0
       ],
-      "FlowInertia": 0.06,
+      "FlowInertia": 0.0600044,
       "SlipStreamDistance": 4.24,
       "Areas": {
         "Main": 2.46,
@@ -1258,7 +1263,7 @@
       ],
       "Direction2": [
         -90.0,
-        -0.0
+        2.50423e-8
       ],
       "ThrustRatio": 1.0,
       "ThrustMax": 2147440000.0,
@@ -1402,14 +1407,6 @@
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 4,
-      "tank7_capacity": 0.0,
-      "tank7_system": 0,
-      "tank7_external": true,
-      "tank7_priority": 0,
-      "tank8_capacity": 0.0,
-      "tank8_system": 0,
-      "tank8_external": true,
-      "tank8_priority": 0,
       "engine1_dm": 814.0
     },
     "PartsWithSurface": {
@@ -1483,7 +1480,7 @@
   },
   "Gear": {
     "SinkFactor": 200.0,
-    "SinkRateMult": 1.11,
+    "SinkRateMult": 1.2299,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": -0.4,
@@ -1506,7 +1503,7 @@
     ],
     "StrutL": {
       "SpringHeight": 0.25,
-      "SpringCoeff": 90000.0,
+      "SpringCoeff": 140000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRestitutionCoeff": 100000.0,
@@ -1526,7 +1523,7 @@
     },
     "StrutR": {
       "SpringHeight": 0.25,
-      "SpringCoeff": 90000.0,
+      "SpringCoeff": 140000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRestitutionCoeff": 100000.0,
@@ -1546,7 +1543,7 @@
     },
     "StrutC": {
       "SpringHeight": 0.24,
-      "SpringCoeff": 50000.0,
+      "SpringCoeff": 150000.0,
       "SpringDampCoeff": 1.0,
       "SpringDampForceMaxMult": 1.0,
       "WheelRestitutionCoeff": 100000.0,
@@ -1918,6 +1915,7 @@
         -2147440000.0,
         2147440000.0
       ],
+      "UseAoAGLimits": false,
       "AoaLimits": [
         -2147440000.0,
         2147440000.0
@@ -1936,7 +1934,6 @@
         0.0
       ],
       "AoAAntiHangRateDecline": -10.0,
-      "UseAoAGLimits": false,
       "LoadFactorFilterSmoothCoeff": 0.0,
       "LoadFactorLimiterStrengthMax": 1.0,
       "RatePID": {
@@ -2145,6 +2142,30 @@
       "OverridenRollLim": 30.0,
       "PitchMax": 0.0,
       "PitchLim": 20.0,
+      "RateMaxLoadFactorMax": [
+        -2147440000.0,
+        2147440000.0
+      ],
+      "AoaLimits": [
+        -2147440000.0,
+        2147440000.0
+      ],
+      "AoaLimitsMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMargin": 5.0,
+      "AoaLimiterPushBackRateMult": [
+        0.0,
+        0.0
+      ],
+      "AoAAntiHangRateDecline": -10.0,
+      "LoadFactorFilterSmoothCoeff": 0.0,
+      "LoadFactorLimiterStrengthMax": 1.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,
         0.0,

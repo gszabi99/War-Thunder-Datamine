@@ -1000,7 +1000,8 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
         let projectedLength = dot(phys.currentState.gunDir, leftP - rightP) 
         let compensation = cvt(projectedLength, gun_anim_length_compensation__handDistanceMin, gun_anim_length_compensation__handDistanceMax, gun_anim_length_compensation__spineRotationMin, gun_anim_length_compensation__spineRotationMax)
         let bodyAngleCoeff = cvt(abs(bodyAngles.x), 0.0, deg_to_rad(60.0), 0.0, 1.0)
-        gunLengthCompensationValue = compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff)
+        let pitchCoeff = cvt(pitch, 0.0, HALF_PI, 0.0, 1.0)
+        gunLengthCompensationValue = compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff) * (1.0 - pitchCoeff)
     phys_vars |> setVar(human_anim__gunLengthCompensationVarId, gunLengthCompensationValue)
 
   var stateUpperBody = HumanStateUpperBody.E_READY
@@ -1384,10 +1385,14 @@ def human_death_anim_update_ragdoll_power(info : ParallelUpdateFrameDelayed;
 
 [es(tag=gameClient, after=human_anim_es)]
 def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
+                                      eid : EntityId;
+                                      controlledHero : Tag const?;
+                                      transform : float3x4;
                                       human_anim__leanSpineRotateVarId : int;
                                       human_anim__leanSpineRotateAnglesStand : float3;
                                       human_anim__leanSpineRotateAnglesCrouch : float3;
                                       human_net_phys : HumanActor;
+                                      human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
                                       var phys_vars : PhysVars)
   assume phys = human_net_phys.phys
 
@@ -1405,7 +1410,11 @@ def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
     leanSpineRotate = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.0, human_anim__leanSpineRotateAnglesCrouch.x, human_anim__leanSpineRotateAnglesCrouch.y)
                                    : cvt(lean, 0.f, phys.leanDegrees, human_anim__leanSpineRotateAnglesCrouch.y, human_anim__leanSpineRotateAnglesCrouch.z))
 
-  phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanSpineRotate)
+  var pitch : float
+  calc_shoot_pitch(human_net_phys, eid, info.curTime, transform, pitch, controlledHero != null)
+  let rocketLauncherCoeff = has(human_weap__currentGunEid, "launcherTag") ? 1.0 : 0.0
+  let pitchCoeff = clamp(2.f * pitch / PI, 0.0, 1.0)
+  phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanSpineRotate * (1.0 - pitchCoeff) * (1.0 - rocketLauncherCoeff))
 
 
 [es(before=human_anim_es)]
