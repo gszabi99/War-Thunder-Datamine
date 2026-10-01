@@ -5260,6 +5260,72 @@
       }
     },
     {
+      "id": "2026_10_01_infantry_cbt_3_5_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "cbt_human_lowrank_rb",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-01 09:00:00",
+            "endDate": "2026-10-04 13:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2026_10_01_china_day",
+      "locId": "unlocks/group/china_day",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2026_10_01_china_day_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "china_day",
+      "costGold": 199,
+      "visibleDaysAfter": 1.0,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 100500000,
+        "chardType": "char_static_progress",
+        "num": 3000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-01 09:00:00",
+            "endDate": "2026-10-08 09:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_09_18_us_acc_emblem",
       "locId": "decals/us_acc_emblem",
       "locDescId": "gift_decal_trophy/desc",
@@ -154963,6 +155029,891 @@
             "type": "timeRange",
             "beginDate": "2026-09-03 11:00:00",
             "endDate": "2026-09-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_sw_patria_bmp_3_coupon",
+      "type": "inventory",
+      "userLogId": "50382",
+      "chapter": "2026_10_tank",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 8,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_sw_patria_bmp_3_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215194",
+      "chapter": "2026_10_tank",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 600000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-01 11:00:00",
+            "endDate": "2026-10-19 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2026_10_tank_trophy_1",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2026_10_tank_decal_trophy_1",
+      "locId": "item/gift_2026_10_tank_decal_trophy",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2026_10_tank_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "icon": "!https://static-ggc.gaijin.net/decals/2026_10_tank_event_decals.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2026_10_tank_trophy_2",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2026_10_tank_decal_trophy_2",
+      "locId": "item/gift_2026_10_tank_decal_trophy",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2026_10_tank_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "icon": "!https://static-ggc.gaijin.net/decals/2026_10_tank_event_decals.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2026_10_tank_trophy_3",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 5,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "2026_10_tank_event_loading_screen_trophy_gift",
+      "locId": "item/2026_10_tank_event_loading_screen_trophy_gift",
+      "locDescId": "gift_loading_screen_trophy/desc",
+      "type": "achievement",
+      "chapter": "2026_10_tank",
+      "icon": "!https://static-ggc.gaijin.net/loading_screen/patria_bmp_3.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2026_10_tank_trophy_4",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "2026_10_tank_event_skin_trophy_gift",
+      "locDescId": "gift_skin_trophy/desc",
+      "userLogId": "2026_10_tank_event_skin_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "icon": "!https://static-ggc.gaijin.net/items/item_skin.png",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 9,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "2026_10_tank_event_modifications_trophy_gift",
+      "locDescId": "gift_modifications_trophy/desc",
+      "userLogId": "2026_10_tank_event_modifications_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2026_10_tank",
+      "icon": "!https://static-ggc.gaijin.net/chests/box_ground.png",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 9,
+        "unlock": [
+          "01_10_2026_tank_stage",
+          "03_10_2026_tank_stage",
+          "05_10_2026_tank_stage",
+          "07_10_2026_tank_stage",
+          "09_10_2026_tank_stage",
+          "11_10_2026_tank_stage",
+          "13_10_2026_tank_stage",
+          "15_10_2026_tank_stage",
+          "17_10_2026_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "17_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_9/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-17 11:00:00",
+            "endDate": "2026-10-19 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "15_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_8/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-15 11:00:00",
+            "endDate": "2026-10-17 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "13_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_7/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-13 11:00:00",
+            "endDate": "2026-10-15 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "11_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_6/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-11 11:00:00",
+            "endDate": "2026-10-13 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "09_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_5/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-09 11:00:00",
+            "endDate": "2026-10-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "07_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_4/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-07 11:00:00",
+            "endDate": "2026-10-09 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "05_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_3/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-05 11:00:00",
+            "endDate": "2026-10-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "03_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_2/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-03 11:00:00",
+            "endDate": "2026-10-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "01_10_2026_tank_stage",
+      "locId": "marathon_tank_stage_1/name",
+      "chapter": "2026_10_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-01 11:00:00",
+            "endDate": "2026-10-03 11:30:00"
           }
         ]
       }
