@@ -170,9 +170,18 @@ def select_tank_column_target(army : int; fromPos : float3) : EntityId
 
 def is_tank_column_target_valid(target : EntityId; army : int) : bool
   var isValid = false
-  for_each_tank_column_target(army) <| $(eid : EntityId; _pos : float3)
-    if eid == target
-      isValid = true
+  query(target) <| $ [es(REQUIRE=equip_factory__maxUnitsCount)] (unit__ref : UnitRef; team : int)
+    isValid = !unit__ref.unit.isDelayed && team != army
+  query(target) <| $ [es(REQUIRE=strongpoint__radius)] (team : int;
+                                                        units_spawn_on_init__units : EidList;
+                                                        units_spawn_on_init__positions : TMatrixList)
+    var freeSlots = (units_spawn_on_init__positions |> length()) - (units_spawn_on_init__units |> length())
+    for garrisonEid in units_spawn_on_init__units
+      if garrisonEid == INVALID_ENTITY_ID || !is_garrison_unit_alive(garrisonEid)
+        ++freeSlots
+    isValid = team != army || freeSlots > 0
+  query(target) <| $ [es(REQUIRE=airfield__nuclearEscalationField)] (team : int)
+    isValid = team != army
   return isValid
 
 def resolve_column_drive(isTargetValid : bool;
@@ -287,7 +296,7 @@ def equip_storage_repair_update_es(act : UpdateStageInfoAct;
           if restore_unit_by_timer__restoreAtTime > 0.
             restore_unit_by_timer__restoreAtTime = get_sync_time() + equip_storage__repairTime
 
-[es(tag=server, on_appear, REQUIRE=unit_tag__gm)]
+[es(tag=server, on_appear, REQUIRE=unit_tag__ground_vehicle)]
 def on_column_unit_appear_es(evt : Event;
                              eid : EntityId;
                              var unit__ref : UnitRef&)
@@ -304,8 +313,19 @@ def on_column_unit_appear_es(evt : Event;
       return true
     return false
 
+def erase_from_column_rosters(eid : EntityId)
+  query() <| $ [es] (var equip_factory__columnUnits : EidList&)
+    let idx = find_index(equip_factory__columnUnits, eid)
+    if idx != -1
+      equip_factory__columnUnits |> erase(idx)
+  query() <| $ [es] (var units_column__units : EidList&)
+    let idx = find_index(units_column__units, eid)
+    if idx != -1
+      units_column__units |> erase(idx)
+
 let arrivedDistSq = 20. * 20.
 let arrivedDist = 20.
+let finalApproachDist = 100.
 [es(tag=server, REQUIRE_NOT=spg_units_column, after=tank_column_capture_check_es)]
 def units_column_update_es(act : UpdateStageInfoAct;
                            eid : EntityId;
@@ -331,8 +351,8 @@ def units_column_update_es(act : UpdateStageInfoAct;
     if columnArmy >= 0
       break
   var shouldDriveToTarget = false
+  var isColumnTargetValid = false
   if isSupplyColumn
-    var isColumnTargetValid = false
     query(units_column__target) <| $ [es] (unit__ref aka supply_target_unit__ref : UnitRef;
                                            equip_storage__current aka supply_target_equip_storage__current : float;
                                            equip_storage__capacity aka supply_target_equip_storage__capacity : float)
@@ -351,19 +371,28 @@ def units_column_update_es(act : UpdateStageInfoAct;
     units_column__retargetCheckTimer -= act.dt
     if units_column__retargetCheckTimer <= 0.
       units_column__retargetCheckTimer = columnRetargetCheckInterval
-      let isColumnTargetValid = is_tank_column_target_valid(units_column__target, columnArmy)
+      isColumnTargetValid = is_tank_column_target_valid(units_column__target, columnArmy)
       var newTarget = INVALID_ENTITY_ID
       if !isColumnTargetValid
         newTarget = select_tank_column_target(columnArmy, columnPos)
       shouldDriveToTarget = resolve_column_drive(isColumnTargetValid, newTarget, units_column__target, units_column__isHaltedWaiting, units_column__units)
-  if shouldDriveToTarget
-    units_column__isHaltedWaiting = false
+    isColumnTargetValid = !units_column__isHaltedWaiting 
+  if shouldDriveToTarget || isColumnTargetValid
+    if shouldDriveToTarget
+      units_column__isHaltedWaiting = false
     let driveTargetTm = get_TMatrix(units_column__target, "transform")
     if driveTargetTm != null && *driveTargetTm != IDENT_TM
       for unitEid in units_column__units
         query(unitEid) <| $ [es] (var unit__ref aka driving_unit__ref : UnitRef&)
           if !driving_unit__ref.unit.isDelayed && driving_unit__ref.unit.isAlive
-            set_destination_way_point(driving_unit__ref.unit, "USE_SPLINE", *driveTargetTm, columnTanksSpeed)
+            var gm = driving_unit__ref.unit |> as_gm()
+            let isHaltedNotImmobilized = get_move_sys_state(driving_unit__ref.unit) == int(MoveSysState.ST_HALT) && !gm.moveSys.inactive
+            let distToDriveTarget = length(driving_unit__ref.unit.pos - (*driveTargetTm)[3])
+            let isNotAtTarget = distToDriveTarget > arrivedDist
+            let shouldReDrive = shouldDriveToTarget || (isHaltedNotImmobilized && isNotAtTarget)
+            if shouldReDrive
+              let isFinalApproach = !shouldDriveToTarget && distToDriveTarget < finalApproachDist
+              set_destination_way_point(driving_unit__ref.unit, isFinalApproach ? "MOVE_TO_STRAIGHT" : "USE_SPLINE", *driveTargetTm, columnTanksSpeed)
   var targetTm = IDENT_TM
   if isSupplyColumn
     query(units_column__target) <| $ [es] (unit__ref aka target_unit__ref : UnitRef; var equip_storage__current : float&;
@@ -423,26 +452,14 @@ def units_column_update_es(act : UpdateStageInfoAct;
             *column_unit__ref.unit |> teleportToPos(false, tm[3])
             column_unit__ref.unit |> setOrientation(tm[0], tm[1]);
     for arrivedEid in arrivedUnits
-      let idx = find_index(units_column__units, arrivedEid)
-      if idx != -1
-        units_column__units |> erase(idx)
+      erase_from_column_rosters(arrivedEid)
 
-def erase_from_column_rosters(eid : EntityId)
-  query() <| $ [es] (var equip_factory__columnUnits : EidList&)
-    let idx = find_index(equip_factory__columnUnits, eid)
-    if idx != -1
-      equip_factory__columnUnits |> erase(idx)
-  query() <| $ [es] (var units_column__units : EidList&)
-    let idx = find_index(units_column__units, eid)
-    if idx != -1
-      units_column__units |> erase(idx)
-
-[es(tag=server, on_event=EventOnUnitDead, REQUIRE=unit_tag__gm)]
+[es(tag=server, on_event=EventOnUnitDead, REQUIRE=unit_tag__ground_vehicle)]
 def on_column_unit_dead_es(evt : Event;
                            eid : EntityId)
   erase_from_column_rosters(eid)
 
-[es(tag=server, on_disappear, REQUIRE=unit_tag__gm)]
+[es(tag=server, on_disappear, REQUIRE=unit_tag__ground_vehicle)]
 def on_column_unit_disappear_es(evt : Event;
                                 eid : EntityId)
   erase_from_column_rosters(eid)
@@ -555,10 +572,11 @@ def tank_storage_update_es(act : UpdateStageInfoAct;
             let count = obj.count ?? 1
             for _k in range(0, count)
               let unitEid = create_unit(templateName, obj, unitTransform, storage_unit__ref.unit.army, !isSpg, 0.1, obj?.death_substract_tickets ?? 5, isSpg)
-              equip_factory__columnUnits |> push(unitEid)
-              columnUnits |> push(unitEid)
-              unitTransform[3] += unitTransform[2] * 10.
-              ++j
+              if unitEid != INVALID_ENTITY_ID
+                equip_factory__columnUnits |> push(unitEid)
+                columnUnits |> push(unitEid)
+                unitTransform[3] += unitTransform[2] * 10.
+                ++j
         if columnUnits |> length() > 0
           tank_factory__spawnPoints -= tank_factory__spawnThreshold
           createEntity(isSpg ? "spg_units_column" : "units_column") <| $(init)
@@ -855,8 +873,15 @@ def spg_units_column_update_es(act : UpdateStageInfoAct;
     spg_units_column__readyToFire = false
   var deadUnit = INVALID_ENTITY_ID
   var blockedByAlly = false
+  var isColumnFiring = false
+  for unitEid in units_column__units
+    query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (unit__ref : UnitRef)
+      if !unit__ref.unit.isDelayed && unit__ref.unit.isAlive
+        var gm = unit__ref.unit |> as_gm()
+        if gm.isShooting || gm.hasMissilesInFlight
+          isColumnFiring = true
   for unitEid, i in units_column__units, range(units_column__units |> length())
-    query(unitEid) <| $ [es(REQUIRE=unit_tag__gm)] (var unit__ref aka column_unit__ref : UnitRef&)
+    query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (var unit__ref aka column_unit__ref : UnitRef&)
       if column_unit__ref.unit.isDelayed || !column_unit__ref.unit.isAlive
         deadUnit = unitEid
         return
@@ -868,14 +893,20 @@ def spg_units_column_update_es(act : UpdateStageInfoAct;
       elif state == int(MoveSysState.ST_HALT) && length_sq(targetPos) > 0.
         var targetTm = IDENT_TM
         targetTm[3] = targetPos
-        set_destination_way_point(column_unit__ref.unit, "USE_SPLINE", targetTm, columnTanksSpeed)
+        let isFinalApproach = length(column_unit__ref.unit.pos - targetPos) < finalApproachDist
+        set_destination_way_point(column_unit__ref.unit, isFinalApproach ? "MOVE_TO_STRAIGHT" : "USE_SPLINE", targetTm, columnTanksSpeed)
+      var gm = column_unit__ref.unit |> as_gm()
+      if isColumnFiring
+        (*gm) |> set_move_speed_k_timer()
+      let isPassableWhileFiring = fireNow || state == int(MoveSysState.ST_HALT) || isColumnFiring
+      if gm.moveSys != null
+        gm.moveSys.isObstacle = !isPassableWhileFiring
       if spg_units_column__changeStateTimer < 0.
         if !blockedByAlly
           query() <| $ [es(REQUIRE=unit_tag__fortification)] (var unit__ref aka fort_unit__ref : UnitRef&)
             if (!fort_unit__ref.unit.isDelayed && fort_unit__ref.unit.isAlive &&
              fort_unit__ref.unit.army == column_unit__ref.unit.army && length_sq(fort_unit__ref.unit.pos - column_unit__ref.unit.pos) < distSqToAlly)
               blockedByAlly = true
-        var gm = column_unit__ref.unit |> as_gm()
         (*gm) |> set_fire_type(blockedByAlly ? GroundModelFireType.FT_DONT_AIM : GroundModelFireType.FT_FIRE_ANY, true)
         if length_sq(targetPos) > 0.
           let canFire = !blockedByAlly && length_sq(targetPos - column_unit__ref.unit.pos) <= spg_units_column__fireDist * spg_units_column__fireDist

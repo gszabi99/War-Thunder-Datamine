@@ -2587,7 +2587,7 @@
           {
             "iconType": "bombs_large",
             "name": "1000lb",
-            "reqModification": "frc_mk2",
+            "reqModification": "flbc_mk2",
             "ShowNodes": {
               "node": "pylon_6"
             },
@@ -2609,7 +2609,7 @@
         "WeaponPreset": {
           "iconType": "missile_air_to_air",
           "name": "aim9b",
-          "reqModification": "flbc_mk2",
+          "reqModification": "us_aim_9b",
           "ShowNodes": {
             "node": [
               "pylon_7",
@@ -2633,7 +2633,7 @@
         "WeaponPreset": {
           "iconType": "missile_air_to_air",
           "name": "aim9b",
-          "reqModification": "flbc_mk2",
+          "reqModification": "us_aim_9b",
           "ShowNodes": {
             "node": [
               "pylon_8",
@@ -2702,7 +2702,7 @@
           {
             "iconType": "bombs_large",
             "name": "1000lb",
-            "reqModification": "frc_mk2",
+            "reqModification": "flbc_mk2",
             "ShowNodes": {
               "node": "pylon_9"
             },
@@ -3071,18 +3071,23 @@
       "tier": 3
     },
     "frc_mk2": {
-      "tier": 2,
+      "tier": 1,
       "modClass": "weapon"
     },
     "us_750lb_m117": {
-      "tier": 3,
+      "tier": 2,
       "modClass": "weapon",
       "reqModification": "frc_mk2"
     },
     "flbc_mk2": {
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon",
       "reqModification": "us_750lb_m117"
+    },
+    "us_aim_9b": {
+      "prevModification": "flbc_mk2",
+      "tier": 4,
+      "modClass": "weapon"
     }
   },
   "default_skin": {
