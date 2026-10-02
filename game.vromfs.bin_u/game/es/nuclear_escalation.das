@@ -873,13 +873,16 @@ def spg_units_column_update_es(act : UpdateStageInfoAct;
     spg_units_column__readyToFire = false
   var deadUnit = INVALID_ENTITY_ID
   var blockedByAlly = false
-  var isColumnFiring = false
+  var _isColumnFiring_ = false
   for unitEid in units_column__units
-    query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (unit__ref : UnitRef)
-      if !unit__ref.unit.isDelayed && unit__ref.unit.isAlive
-        var gm = unit__ref.unit |> as_gm()
-        if gm.isShooting || gm.hasMissilesInFlight
-          isColumnFiring = true
+    
+    
+    static_if typeinfo has_field<isObstacle>(type<GroundMoveSystem>)
+      query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (unit__ref : UnitRef)
+        if !unit__ref.unit.isDelayed && unit__ref.unit.isAlive
+          var gm = unit__ref.unit |> as_gm()
+          if gm.isShooting || gm.hasMissilesInFlight
+            _isColumnFiring_ = true
   for unitEid, i in units_column__units, range(units_column__units |> length())
     query(unitEid) <| $ [es(REQUIRE=unit_tag__ground_vehicle)] (var unit__ref aka column_unit__ref : UnitRef&)
       if column_unit__ref.unit.isDelayed || !column_unit__ref.unit.isAlive
@@ -896,11 +899,14 @@ def spg_units_column_update_es(act : UpdateStageInfoAct;
         let isFinalApproach = length(column_unit__ref.unit.pos - targetPos) < finalApproachDist
         set_destination_way_point(column_unit__ref.unit, isFinalApproach ? "MOVE_TO_STRAIGHT" : "USE_SPLINE", targetTm, columnTanksSpeed)
       var gm = column_unit__ref.unit |> as_gm()
-      if isColumnFiring
-        (*gm) |> set_move_speed_k_timer()
-      let isPassableWhileFiring = fireNow || state == int(MoveSysState.ST_HALT) || isColumnFiring
-      if gm.moveSys != null
-        gm.moveSys.isObstacle = !isPassableWhileFiring
+      
+      
+      static_if typeinfo has_field<isObstacle>(type<GroundMoveSystem>)
+        if _isColumnFiring_
+          (*gm) |> set_move_speed_k_timer()
+        let isPassableWhileFiring = fireNow || state == int(MoveSysState.ST_HALT) || _isColumnFiring_
+        if gm.moveSys != null
+          gm.moveSys.isObstacle = !isPassableWhileFiring
       if spg_units_column__changeStateTimer < 0.
         if !blockedByAlly
           query() <| $ [es(REQUIRE=unit_tag__fortification)] (var unit__ref aka fort_unit__ref : UnitRef&)

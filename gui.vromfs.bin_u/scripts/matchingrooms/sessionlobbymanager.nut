@@ -56,7 +56,9 @@ let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { isRemoteMissionVar, is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
-let { USEROPT_SESSION_PASSWORD, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_SESSION_PASSWORD, USEROPT_DISPLAY_MY_REAL_CLAN, USEROPT_DISPLAY_MY_REAL_NICK,
+  USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY
+} = require("%scripts/options/optionsExtNames.nut")
 let { registerOption, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 let { needActualizeQueueData, actualizeQueueData, queueProfileJwt } = require("%scripts/queue/queueBattleData.nut")
@@ -1189,6 +1191,7 @@ eventbus_subscribe("notify_session_start", function notify_session_start(...) {
     gm = get_game_mode()
     sessionId = sessionId
     missionsComplete = getMissionsComplete()
+    userOptQueueJip = get_option_in_mode(USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY).value
   })
   switchStatus(lobbyStates.JOINING_SESSION)
 })
