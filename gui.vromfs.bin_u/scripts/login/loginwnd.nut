@@ -227,9 +227,7 @@ let LoginWndHandler = class (BaseGuiHandler) {
     }
 
     select_editbox(this.scene.findObject(this.tabFocusArray[ lp.login != "" ? 1 : 0 ]))
-
-
-
+    this.fillLoginForm()
   }
 
   function fillLoginForm() {
@@ -702,8 +700,10 @@ let LoginWndHandler = class (BaseGuiHandler) {
 
       bqSendNoAuth("auth:not_found:guest")
       saveLocalSharedSettings(GUEST_LOGIN_SAVE_ID, null)
-      if (this.loginHelpShowState == LoginHelpShowState.HIDED)
+      if (this.loginHelpShowState == LoginHelpShowState.HIDED) {
         this.showLoginHelp()
+        this.isGuestLogin = false
+      }
       else
         this.onGuestAuthorization()
     }
