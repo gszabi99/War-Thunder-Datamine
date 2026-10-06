@@ -12,7 +12,7 @@ from "%rGui/airSight.nut" import gunDirection, fixedGunsDirection, helicopterCCR
 from "%rGui/airHudComponents.nut" import radarElement, twsElement
 from "%rGui/airHudLeftPanel.nut" import leftPanel
 from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
-from "%rGui/globals/panelIds.nut" import PNL_ID_ILS, PNL_ID_MFD
+from "%globalScripts/panelIds.nut" import PNL_ID_ILS, PNL_ID_MFD
 from "%rGui/radar.nut" import radarHud, radarIndication
 from "%rGui/options/options.nut" import isHeliPilotHudDisabled
 from "%rGui/planeHmd.nut" import planeHmdElem

@@ -1,20 +1,16 @@
 import "%globalScripts/wordHyphenation.nut" as wordHyphenation
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%appGlobals/curCircuitOverride.nut" import getCurCircuitOverride
-from "dagor.localize" import getLocTextForLang
 from "sqEulaUtils" import setAgreedEulaVersion
 from "dagor.workcycle" import defer
 from "%sqstd/globalState.nut" import hardPersistWatched
 from "dagor.fs" import read_text_from_file, file_exists
-from "%scripts/dagui_natives.nut" import ps4_get_region
 from "%scripts/dagui_library.nut" import *
-from "%globalScripts/sceRegionConsts.nut" import *
 
 let { BaseGuiHandler } = require("%scripts/sqDagui/framework/baseGuiHandler.nut")
 let { register_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let exitGamePlatform = require("%scripts/utils/exitGamePlatform.nut")
 let { fillUserNick } = require("%scripts/firstChoice/firstChoice.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
@@ -75,22 +71,8 @@ let EulaWndHandler = class (BaseGuiHandler) {
     fillUserNick(this.scene.findObject("usernick_place"))
     let textObj = this.scene.findObject("eulaText")
     textObj["punctuation-exception"] = "-.,'\"():/\\@"
+
     local eulaText = loadAndProcessText()
-    if (isPlatformSony) {
-      local regionTextRootMainPart = "scee"
-      if (ps4_get_region() == SCE_REGION_SCEA)
-        regionTextRootMainPart = "scea"
-
-      let locId = $"sony/{regionTextRootMainPart}"
-      let legalLocText = loc(locId, "")
-      if (legalLocText == "") {
-        log($"Cannot find '{locId}' text.")
-        eulaText = "\n\n".concat(eulaText, getLocTextForLang(locId, "English"))
-      }
-      else
-        eulaText = "\n\n".concat(eulaText, legalLocText)
-    }
-
     textObj.setValue(eulaText)
     let hasOneOkBtn = this.isForView || this.isNewEulaVersion
     showObjById("acceptNewEulaVersion", hasOneOkBtn, this.scene)

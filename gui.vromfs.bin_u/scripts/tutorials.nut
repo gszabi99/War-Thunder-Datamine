@@ -10,6 +10,7 @@ let hasRunTutorialDialog = @() needShowTutorial("unitTypeChoice", 1) || !reqFirs
 
 function checkTutorialOnStart() {
   let unit = getShowedUnit()
+  let needAutoStartTutorial = !hasRunTutorialDialog()
   foreach (tutorial in checkTutorialsList) {
     let { id, isNeedAskInMainmenu = false, requiresFeature = null } = tutorial
     if (!isNeedAskInMainmenu)
@@ -18,8 +19,7 @@ function checkTutorialOnStart() {
     if (requiresFeature != null && !hasFeature(requiresFeature))
       continue
 
-    let hasDialog = hasRunTutorialDialog()
-    if (tutorial.suitableForUnit(unit) && tryOpenNextTutorialHandler(id, true, hasDialog))
+    if (tutorial.suitableForUnit(unit) && tryOpenNextTutorialHandler(id, true, needAutoStartTutorial))
       return
   }
 }

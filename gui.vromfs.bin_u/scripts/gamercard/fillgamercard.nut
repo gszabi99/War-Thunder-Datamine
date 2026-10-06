@@ -1,4 +1,4 @@
-import "%sqStdLibs/helpers/u.nut" as u
+from "%sqStdLibs/helpers/u.nut" import isEmpty
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%sqstd/platform.nut" import is_gdk
 from "string" import format
@@ -31,6 +31,109 @@ let { serverMessageUpdateScene } = require("%scripts/hud/serverMessages.nut")
 let updateDiscountNotifications = require("%scripts/discounts/updateDiscountNotifications.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 
+let defaultFillGamercardObj = @(obj, val, _params) obj.setValue((val ?? "").tostring())
+
+let fillGamercardObjByKey = {
+  function frame(obj, val, _params) {
+    obj.show(val != "")
+    if (val != "")
+      obj["background-image"] = $"!ui/images/avatar_frames/{val}.avif"
+  }
+
+  country = @(obj, val, _params) obj["background-image"] = getCountryIcon(val)
+
+  function rankProgress(obj, val, params) {
+    let { cfg, isGamercard } = params
+    let value = val?.tointeger() ?? 0
+    let isProgressVisible = !isGamercard || value >= 0
+    obj.show(isProgressVisible)
+    if (!isProgressVisible)
+      return
+
+    obj.setValue(value != -1 ? value : 1000)
+    let expTable = getCurExpTable(cfg)
+    obj.tooltip = expTable
+      ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
+      : "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
+  }
+
+  function prestige(obj, val, params) {
+    let { prefix, getObj } = params
+    if (val == null)
+      return
+
+    obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
+    let titleObj = getObj($"{prefix}prestige_title")
+    if (!(titleObj?.isValid() ?? false))
+      return
+    let prestigeTitle = val > 0 ? loc($"rank/prestige{val}") : ""
+    titleObj.setValue(prestigeTitle)
+  }
+
+  function exp(obj, val, params) {
+    let { cfg } = params
+    let expTable = getCurExpTable(cfg)
+    obj.setValue(expTable
+      ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
+      : "")
+    obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(val))
+  }
+
+  function clanTag(obj, val, params) {
+    let { prefix } = params
+    let clanTagName = checkClanTagForDirtyWords(val?.tostring() ?? "")
+    let btnText = obj.findObject($"{prefix}clanTag_name")
+    if (btnText?.isValid() ?? false)
+      btnText.setValue(clanTagName)
+    else
+      obj.setValue(clanTagName)
+  }
+
+  function gold(obj, val, _params) {
+    let moneyInst = Cost(0, val)
+    let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
+    let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
+    obj.getParent().tooltip = tooltipText
+    obj.setValue(moneyInst.toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
+  }
+
+  function balance(obj, val, _params) {
+    let moneyInst = Cost(val)
+    let valStr = moneyInst.toStringWithParams({ isWpAlwaysShown = true })
+    let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
+      loc("mainmenu/warpoints"),
+      getCurrentBonusesText(boosterEffectType.WP))
+    let buttonObj = obj.getParent()
+    buttonObj.tooltip = tooltipText
+    buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false) ? "yes" : "no"
+    buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true) ? "yes" : "no"
+    obj.setValue(moneyInst.toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
+  }
+
+  function free_exp(obj, val, _params) {
+    let valStr = Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
+    let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
+      loc("currency/freeResearchPoints/desc"),
+      getCurrentBonusesText(boosterEffectType.RP))
+    obj.tooltip = tooltipText
+    obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false) ? "yes" : "no"
+    obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true) ? "yes" : "no"
+  }
+
+  function name(obj, val, params) {
+    local valStr
+    if (isEmpty(val))
+      valStr = loc("mainmenu/pleaseSignIn")
+    else {
+      let { cfg } = params
+      let customNick = getCustomNick(cfg)
+      valStr = customNick == null ? getPlayerName(val)
+        : $"{getPlayerName(val)}{loc("ui/parentheses/space", { text = customNick })}"
+    }
+    obj.setValue(valStr)
+  }
+}
+
 function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = true) {
   if (!checkObj(scene)) {
     scene = getLastGamercardScene()
@@ -57,101 +160,14 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
     cfg = getProfileInfo()
 
   let getObj = @(id) scene.findObject(id)
-  local showClanTag = false
+  let params = { cfg, isGamercard, prefix, getObj }
   foreach (name, val in cfg) {
     let obj = getObj($"{prefix}{name}")
-    if (checkObj(obj)) {
-      if (name == "frame") {
-        obj.show(val != "")
-        if (val != "")
-          obj["background-image"] = $"!ui/images/avatar_frames/{val}.avif"
-      }
-      if (name == "country")
-        obj["background-image"] = getCountryIcon(val)
-      else if (name == "rankProgress") {
-        let value = val?.tointeger() ?? 0
-        let isProgressVisible = !isGamercard || value >= 0
-        if (isProgressVisible)
-          obj.setValue(value != -1 ? value : 1000)
-        obj.show(isProgressVisible)
+    if (!(obj?.isValid() ?? false))
+      continue
 
-        let expTable = getCurExpTable(cfg)
-        obj.tooltip = expTable
-          ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
-          : "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
-      }
-      else if (name ==  "prestige") {
-        if (val != null)
-          obj["background-image"] = $"#ui/gameuiskin#prestige{val}"
-        let titleObj = getObj($"{prefix}prestige_title")
-        if (titleObj) {
-          let prestigeTitle = (val ?? 0) > 0 ? loc($"rank/prestige{val}") : ""
-          titleObj.setValue(prestigeTitle)
-        }
-      }
-      else if (name == "exp") {
-        let expTable = getCurExpTable(cfg)
-        obj.setValue(expTable
-          ? nbsp.concat(decimalFormat(expTable.exp), "/", decimalFormat(expTable.rankExp))
-          : "")
-        obj.tooltip = "".concat(loc("ugm/total"), loc("ui/colon"), decimalFormat(cfg.exp))
-      }
-      else if (name == "clanTag") {
-        showClanTag = hasFeature("Clans") && val != ""
-        let clanTagName = checkClanTagForDirtyWords(val?.tostring() ?? "")
-        let btnText = obj.findObject($"{prefix}{name}_name")
-        if (checkObj(btnText))
-          btnText.setValue(clanTagName)
-        else
-          obj.setValue(clanTagName)
-      }
-      else if (name == "gold") {
-        let moneyInst = Cost(0, val)
-        let valStr = moneyInst.toStringWithParams({ isGoldAlwaysShown = true })
-
-        let tooltipText = "\n".concat(colorize("activeTextColor", valStr), loc("mainmenu/gold"))
-        obj.getParent().tooltip = tooltipText
-
-        obj.setValue(moneyInst.toStringWithParams({ isGoldAlwaysShown = true, needIcon = false }))
-      }
-      else if (name == "balance") {
-        let moneyInst = Cost(val)
-        let valStr = moneyInst.toStringWithParams({ isWpAlwaysShown = true })
-        let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
-          loc("mainmenu/warpoints"),
-          getCurrentBonusesText(boosterEffectType.WP))
-
-        let buttonObj = obj.getParent()
-        buttonObj.tooltip = tooltipText
-        buttonObj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.WP, false) ? "yes" : "no"
-        buttonObj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.WP, true) ? "yes" : "no"
-
-        obj.setValue(moneyInst.toStringWithParams({ isWpAlwaysShown = true, needIcon = false }))
-      }
-      else if (name == "free_exp") {
-        let valStr = Balance(0, 0, val).toStringWithParams({ isFrpAlwaysShown = true })
-        let tooltipText = "\n".concat(colorize("activeTextColor", valStr),
-          loc("currency/freeResearchPoints/desc"),
-          getCurrentBonusesText(boosterEffectType.RP))
-
-        obj.tooltip = tooltipText
-        obj.showBonusCommon = haveActiveBonusesByEffectType(boosterEffectType.RP, false) ? "yes" : "no"
-        obj.showBonusPersonal = haveActiveBonusesByEffectType(boosterEffectType.RP, true) ? "yes" : "no"
-      }
-      else if (name == "name") {
-        local valStr
-        if (u.isEmpty(val))
-          valStr = loc("mainmenu/pleaseSignIn")
-        else {
-          let customNick = getCustomNick(cfg)
-          valStr = customNick == null ? getPlayerName(val)
-            : $"{getPlayerName(val)}{loc("ui/parentheses/space", { text = customNick })}"
-        }
-        obj.setValue(valStr)
-      }
-      else
-        obj.setValue((val ?? "").tostring())
-    }
+    let fillFunction = fillGamercardObjByKey?[name] ?? defaultFillGamercardObj
+    fillFunction(obj, val, params)
   }
 
   if (!isGamercard)
@@ -224,6 +240,7 @@ function fillGamercard(cfg = null, prefix = "gc_", scene = null, save_scene = tr
   let canHaveFriends = hasFeature("Friends")
   let is_in_menu = isInMenu.get()
   let skipNavigation = getObj("gamercard_div")?["gamercardSkipNavigation"] ?? "no"
+  let showClanTag = hasFeature("Clans") && (cfg?.clanTag ?? "") != ""
 
   let buttonsShowTable = {
     gc_clanTag = showClanTag

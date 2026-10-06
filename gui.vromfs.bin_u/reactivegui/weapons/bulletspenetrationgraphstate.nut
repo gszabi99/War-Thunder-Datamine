@@ -3,7 +3,9 @@ from "%rGui/globals/ui_library.nut" import *
 
 let bulletsPenetrationGraphParams = Watched({
   graphParams = []
+  graphPos = [0, 0]
   graphSize = [0, 0]
+  hasPanel = false
 })
 
 

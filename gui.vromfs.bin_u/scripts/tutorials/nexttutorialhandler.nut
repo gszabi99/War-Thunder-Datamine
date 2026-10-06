@@ -1,3 +1,4 @@
+from "dagor.workcycle" import defer
 import "%sqStdLibs/helpers/u.nut" as u
 import "%sqstd/math.nut" as stdMath
 from "chard" import save_profile
@@ -162,7 +163,7 @@ function getSuitableTutorialData(checkId, checkSkip = true) {
 let isTutorialIdxSkiped = @(idx, checkSkip = true)
   checkSkip ? stdMath.is_bit_set(loadLocalByAccount(skipTutorialBitmaskId, 0), idx) : false
 
-function tryOpenNextTutorialHandler(checkId, checkSkip = true, hasDialog = true) {
+function tryOpenNextTutorialHandler(checkId, checkSkip = true, needAutoStartTutorial = false) {
   if (cantRunNextTutorial())
     return false
 
@@ -173,14 +174,13 @@ function tryOpenNextTutorialHandler(checkId, checkSkip = true, hasDialog = true)
   if (isTutorialIdxSkiped(idx, checkSkip))
     return false
 
-  if (hasDialog)
-    handlersManager.loadHandler(NextTutorialHandler, {
-      tutorialMission = mData.mission
-      rewardMarkup = getTutorialRewardMarkup(mData)
-      checkIdx = idx
-    })
-  else
-    autoRunTutorial(idx, mData.mission)
+  handlersManager.loadHandler(NextTutorialHandler, {
+    tutorialMission = mData.mission
+    rewardMarkup = getTutorialRewardMarkup(mData)
+    checkIdx = idx
+  })
+  if (needAutoStartTutorial)
+    defer(@() autoRunTutorial(idx, mData.mission))
 
   return true
 }

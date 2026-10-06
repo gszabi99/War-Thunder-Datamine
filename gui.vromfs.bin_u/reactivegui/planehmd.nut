@@ -14,7 +14,7 @@ from "%rGui/utils/builders.nut" import createScriptComponent
 from "%rGui/rocketAamAimState.nut" import HmdVisibleAAM, HmdFovMult
 from "%rGui/radarState.nut" import HmdSensorVisible
 from "%rGui/planeState/planeToolsState.nut" import HmdVisible, HmdBlockIls, HmdBrightnessMult
-from "%rGui/globals/panelIds.nut" import PNL_ID_HMD, PNL_ID_INVALID
+from "%globalScripts/panelIds.nut" import PNL_ID_HMD, PNL_ID_INVALID
 from "%rGui/style/screenState.nut" import isInVr
 from "hudState" import setHeadMountedSystemPanelId
 from "dagor.math" import IPoint2, Point2, Point3

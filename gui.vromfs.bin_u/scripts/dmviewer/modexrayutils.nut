@@ -10,13 +10,13 @@ from "chardResearch" import shopIsModificationEnabled
 from "%scripts/dagui_library.nut" import *
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/debugTools/dbgXrayMode.nut" import isDebugXrayModeActive
+from "%scripts/weaponry/weaponryPresets.nut" import getUnitWeapons, getPresetWeapons
 
 let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon, getLastWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getUnitWeapons, getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponXrayDescText, getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getFmFile } = require("%scripts/unit/unitParams.nut")
@@ -183,6 +183,27 @@ function getUnitWeaponsList(commonData) {
   return unitDataCache.weaponBlkList
 }
 
+function getInstalledSlotPresets(commonData) {
+  let { unitBlk, unit = null } = commonData
+  if (unit == null)
+    return null
+
+  let selectedPresetName = getLastWeapon(unit.name)
+  let selectedPreset = unit.getWeapons().findvalue(@(w) w.name == selectedPresetName)
+  if (selectedPreset == null)
+    return null
+
+  let res = {}
+  foreach (weapon in getPresetWeapons(unitBlk, selectedPreset, unit.name)) {
+    if (weapon?.slot == null || weapon?.presetId == null)
+      continue
+    if (weapon.slot not in res)
+      res[weapon.slot] <- {}
+    res[weapon.slot][weapon.presetId] <- true
+  }
+  return res
+}
+
 function getCrewSkillsBase(commonData) {
   let { unitDataCache, unit, difficulty } = commonData
   if ("crewSkillsBase" not in unitDataCache)
@@ -301,6 +322,7 @@ let xrayCommonGetters = {
   isModAvailableOrFree
   getUnitFmBlk
   getUnitWeaponsList
+  getInstalledSlotPresets
   getAircraftFuelTankPartInfo
   getWeaponInfoText
   makeWeaponInfoData

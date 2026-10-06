@@ -8,7 +8,7 @@ import "%rGui/tankHud.nut" as tankHud
 import "%rGui/infantryDroneHud.nut" as infantryDroneHud
 import "%rGui/wwMap/wwMap.nut" as wwMap
 import "%rGui/weapons/bulletsGraphPanel.nut" as bulletsGraph
-import "%rGui/weapons/bulletsPenetrationGraphPanel.nut" as bulletsPenetrationGraph
+from "%rGui/weapons/bulletsPenetrationGraphPanel.nut" import bulletsPenetrationGraphWidget
 from "%rGui/hudState.nut" import isPlayingReplay, unitType
 from "%rGui/helicopterHud.nut" import helicopterHud
 from "%rGui/infantryHud.nut" import infantryHud
@@ -98,7 +98,7 @@ let widgetsMap = {
   [DargWidgets.TANK_SIGHT_SETTINGS] = @() tankSightPreview,
   [DargWidgets.WORLDWAR_MAP] = wwMap,
   [DargWidgets.BULLETS_GRAPH] = @() bulletsGraph,
-  [DargWidgets.BULLETS_PENETRATION] = @() bulletsPenetrationGraph,
+  [DargWidgets.BULLETS_PENETRATION] = @() bulletsPenetrationGraphWidget,
 }
 
 

@@ -109,6 +109,8 @@ presetTab {
       margin-left:t='2.5@blockInterval'
       presetIdx:t='<<idx>>'
       on_click:t='onConfirmRenamePreset'
+      on_hover:t='onPresetEditBtnHover'
+      on_unhover:t='onPresetEditBtnUnhover'
       icon {
         background-image:t='#ui/gameuiskin#preset_add_confirm.svg'
       }
@@ -118,6 +120,8 @@ presetTab {
       margin-left:t='1.5@blockInterval'
       presetIdx:t='<<idx>>'
       on_click:t='onCancelEditPreset'
+      on_hover:t='onPresetEditBtnHover'
+      on_unhover:t='onPresetEditBtnUnhover'
       icon {
         background-image:t='#ui/gameuiskin#preset_add_cancel.svg'
       }
@@ -132,7 +136,6 @@ presetTab {
       text:t=''
       presetIdx:t='<<idx>>'
       on_cancel_edit:t='onCancelEditPreset'
-      on_unhover:t='onEditBoxUnhover'
       on_activate:t='onConfirmRenamePreset'
     }
   }

@@ -343,7 +343,6 @@ options.addTypes({
       this.values = []
       this.items = []
       let bulletSetData = []
-      let bulletNamesSet = []
 
       if (unit == null) {
         this.value = null
@@ -356,6 +355,7 @@ options.addTypes({
       let isTooltipOnHold = showConsoleButtons.get()
 
       
+      let bulletNamesSet = []
       for (local bulletSetIdx = 0; bulletSetIdx < getLastFakeBulletsIndex(unit); bulletSetIdx++) {
         let gunIdx = getLinkedGunIdx(bulletSetIdx, groupsCount, unit.unitType.bulletSetsQuantity,
           unit, null, false)
@@ -402,12 +402,14 @@ options.addTypes({
                 loc($"{bulletName}/name/short"))
               let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
+              let explosiveMass = bulletsSet.bulletDataByType[bulletName]?.explosiveMass ?? 0
               
               isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType
                 && p.mass == bulletParams.mass && p.speed == bulletParams.speed
-                && p.armorPiercing[0][0] == bulletParams.armorPiercing[0][0])
+                && p.armorPiercing[0][0] == bulletParams.armorPiercing[0][0]
+                && p.explosiveMass == explosiveMass)
               if (!isDub)
-                bulletSetData.append(bulletParams)
+                bulletSetData.append(bulletParams.__merge({ explosiveMass }))
               
               if (isInArray(locName, bulletNamesSet))
                 locName = "".concat(loc($"{bulletName}/name/short"), bulletsList.items[i].text)
@@ -468,6 +470,7 @@ options.addTypes({
       }
 
       
+      let blkPathesSet = []
       const secondaryWeaponBullets = [
         { shellType = "rocket" }
         { shellType = "bullet" }
@@ -494,16 +497,15 @@ options.addTypes({
               break
           }
         }
+        if (!curBlk || blkPathesSet.contains(weaponBlkPath))
+          continue
+        blkPathesSet.append(weaponBlkPath)
 
         let isBullet = curType == "bullet"
         let isRocket = curType == "rocket"
         let isGuidedBomb = curType == "bomb"
         let shellName = getWeaponNameByBlkPath(weaponBlkPath)
-        let locName = utf8Capitalize(loc("weapons/{0}".subst(shellName)))
-        if (!curBlk || isInArray(locName, bulletNamesSet))
-          continue
-
-        bulletNamesSet.append(locName)
+        let locName = utf8Capitalize(loc("weapons/{0}/short".subst(shellName)))
 
         local bSet
         if (isBullet)

@@ -9,7 +9,7 @@ let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut"
 let { getFakeBulletsModByName, getModificationName, isModificationIsShell } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip, validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip, getInfantryWeaponParamToDesc, getInfantryArmorParamToDesc } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
-let { setPendingPenetrationGraph, clearPenetrationGraphWidget } = require("%scripts/weaponry/penetrationGraphWidgetState.nut")
+let { getPenetrationGraphPanelId, setPendingPenetrationGraph, clearPenetrationGraphWidget } = require("%scripts/weaponry/penetrationGraphWidgetState.nut")
 let { requestTooltipPenetrationGraphData } = require("%scripts/weaponry/penetrationGraphDataRequest.nut")
 
 const INFO_DELAY = 2.0
@@ -288,6 +288,7 @@ let tooltipTypes = {
 
       let data = handyman.renderCached("%gui/weaponry/penetrationGraphTooltip.tpl", {
         bulletNameTxt = " ".concat(loc("mainmenu/shellPenetration"), bulletNameTxt)
+        graphPanelId = getPenetrationGraphPanelId()
       })
       let guiScene = obj.getScene()
       guiScene.replaceContentFromText(obj, data, data.len(), handler)

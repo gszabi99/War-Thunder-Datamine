@@ -18,5 +18,6 @@ weaponTooltipBlock {
     id:t='graph_nest'
     size:t='pw, fh'
     behaviour:t='darg'
+    <<#graphPanelId>>panel:t='<<graphPanelId>>'<</graphPanelId>>
   }
 }

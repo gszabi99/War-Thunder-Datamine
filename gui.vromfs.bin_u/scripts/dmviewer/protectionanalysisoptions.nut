@@ -404,7 +404,6 @@ options.addTypes({
       this.values = []
       this.items = []
       let bulletSetData = []
-      let bulletNamesSet = []
 
       local curGunIdx = -1
       local selectedIndex = 0
@@ -412,6 +411,7 @@ options.addTypes({
 
       let isTooltipOnHold = showConsoleButtons.get()
       
+      let bulletNamesSet = []
       for (local bulletSetIdx = 0; bulletSetIdx < getLastFakeBulletsIndex(unit); bulletSetIdx++) {
         let gunIdx = getLinkedGunIdx(bulletSetIdx, groupsCount, unit.unitType.bulletSetsQuantity,
           unit, null, false)
@@ -454,12 +454,14 @@ options.addTypes({
                 loc($"{bulletName}/name/short"))
               let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
+              let explosiveMass = bulletsSet.bulletDataByType[bulletName]?.explosiveMass ?? 0
               
               isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType
                 && p.mass == bulletParams.mass && p.speed == bulletParams.speed
-                && p.armorPiercing[0][0] == bulletParams.armorPiercing[0][0])
+                && p.armorPiercing[0][0] == bulletParams.armorPiercing[0][0]
+                && p.explosiveMass == explosiveMass)
               if (!isDub)
-                bulletSetData.append(bulletParams)
+                bulletSetData.append(bulletParams.__merge({ explosiveMass }))
               
               if (isInArray(locName, bulletNamesSet))
                 locName = "".concat(loc($"{bulletName}/name/short"), bulletsList.items[i].text)
@@ -471,8 +473,11 @@ options.addTypes({
               continue
 
             local bSet
+            
+            local ammoName = bulletName
             if (isBulletBelt) {
               let bData = bulletsSet.bulletDataByType[bulletName]
+              ammoName = bData.bulletName ?? ammoName
               bSet = bulletsSet.__merge({
                 bullets = [bulletName]
                 bulletAnimations = bData.bulletAnimations
@@ -483,7 +488,7 @@ options.addTypes({
             bulletNamesSet.append(locName)
             let btName = bulletName ?? ""
             this.values.append({
-              bulletName = btName
+              bulletName = ammoName ?? ""
               weaponBlkName = weaponBlkName
               bulletParams = bulletParams
             })
@@ -494,7 +499,7 @@ options.addTypes({
               : MODIFICATION.getTooltipId(bulletsSet?.supportUnitName ?? unit.name, value,
                 { hasPlayerInfo = false })
 
-            if (btName == options.targetAmmo)
+            if (ammoName == options.targetAmmo || btName == options.targetAmmo)
               selectedIndex = this.values.len() - 1
 
             this.items.append({
@@ -512,6 +517,7 @@ options.addTypes({
       }
 
       
+      let blkPathesSet = []
       let specialBulletTypes = [ "rocket", "bullet" ]
       if(hasFeature("ProtectionAnalysisShowTorpedoes"))
         specialBulletTypes.append("torpedo")
@@ -540,13 +546,14 @@ options.addTypes({
             break
           }
 
+        if (!curBlk || blkPathesSet.contains(weaponBlkPath))
+          continue
+        blkPathesSet.append(weaponBlkPath)
+
         let isBullet = curType == "bullet"
         let isRocket = curType == "rocket"
-        let locName = utf8Capitalize(loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))))
-        if (!curBlk || isInArray(locName, bulletNamesSet))
-          continue
+        let locName = utf8Capitalize(loc("weapons/{0}/short".subst(getWeaponNameByBlkPath(weaponBlkPath))))
 
-        bulletNamesSet.append(locName)
         let bulletParams = calculate_tank_bullet_parameters(unit.name, weaponBlkPath, true, false)?[0]
         let btName = isBullet ? curBlk.bulletType
           : isRocket ? (curBlk?.bulletName ?? curBlk?.weaponName ?? "") : ""

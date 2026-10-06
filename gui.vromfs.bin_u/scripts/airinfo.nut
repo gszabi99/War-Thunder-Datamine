@@ -12,7 +12,7 @@ from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_ai
   , get_name_by_gamemode, wp_get_cost, clan_get_exp, get_global_stats_blk, shop_time_until_repair, is_era_available, shop_get_full_repair_time_by_mode
 from "%globalScripts/unitTypeConsts.nut" import *
 from "%scripts/dagui_library.nut" import *
-from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES_ORDER
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "%scripts/debugTools/dbgShop.nut" import getUnitDebugBattleRatingsText
 from "types" import Table
@@ -630,23 +630,19 @@ function fillUnitInfo(unit, show, holderObj = null, handler = null, params = nul
       .setValue(hasDebugBrText ? debugBrText : format("%.1f", battleRating))
   }
 
-  let battleRatingByBattleTypeTable = {}
+  let brByTypeTexts = []
   if (!hasDebugBrText)
-    foreach (battleTypeIter in BATTLE_TYPES) {
+    foreach (battleTypeIter in BATTLE_TYPES_ORDER) {
       let battleRatingByBattleType = unit.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
       let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) 
       if (battleRatingByBattleType != battleRating && !isShipHardcore)
-        battleRatingByBattleTypeTable[battleTypeIter] <- battleRatingByBattleType
+        brByTypeTexts.append($"{getFontIconByBattleType(battleTypeIter)} {format("%.1f", battleRatingByBattleType)}")
     }
-  let hasBattleRatingByTypes = battleRatingByBattleTypeTable.len() > 0
+  let hasBattleRatingByTypes = brByTypeTexts.len() > 0
   let brByTypeObj = showObjById("aircraft-battle_rating-value_by_battle_types", hasBattleRatingByTypes, brObj)
   if (hasBattleRatingByTypes) {
-    local battleRatingByBattleTypesStrArr = []
-    battleRatingByBattleTypeTable.each(@(bRating, bType) battleRatingByBattleTypesStrArr.append(
-      $"{getFontIconByBattleType(bType)} {format("%.1f", bRating)}")
-    )
     let battleRatingByBattleTypesStr = loc("ui/parentheses/space",
-      { text = loc("ui/vertical_bar").join(battleRatingByBattleTypesStrArr, true)}
+      { text = loc("ui/vertical_bar").join(brByTypeTexts, true)}
     )
     brByTypeObj.setValue(battleRatingByBattleTypesStr)
   }

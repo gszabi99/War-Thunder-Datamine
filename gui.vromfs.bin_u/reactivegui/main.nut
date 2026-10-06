@@ -7,6 +7,7 @@ from "%rGui/globals/ui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "frp" import warn_on_deprecated_methods, set_slow_subscriber_threshold_usec
 from "dagor.system" import DBGLEVEL
+from "%rGui/weapons/bulletsPenetrationGraphPanel.nut" import bulletsPenetrationGraphPanel
 warn_on_deprecated_methods(DBGLEVEL > 0)
 set_slow_subscriber_threshold_usec(1000000) 
 
@@ -31,6 +32,7 @@ return {
   size = FLEX
   children = [
     widgets
+    bulletsPenetrationGraphPanel
     modalWindowsComponent
     tooltipComp
     inspectorRoot

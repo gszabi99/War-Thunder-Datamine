@@ -348,8 +348,10 @@ class TopMenu (BaseGuiHandlerWT) {
   function updateOnShopWndAnim(isVisible) {
     let isShow = topMenuShopActive.get()
     this.updateSceneShade()
-    if (isVisible)
+    if (isVisible) {
+      showObjById("notifications_block", !isShow, this.scene)
       broadcastEvent("ShopWndVisible", { isShopShow = isShow })
+    }
     broadcastEvent("ShopWndAnimation", { isShow = isShow, isVisible = isVisible })
   }
 

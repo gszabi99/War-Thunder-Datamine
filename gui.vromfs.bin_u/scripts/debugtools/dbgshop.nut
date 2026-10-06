@@ -3,7 +3,7 @@ from "%sqStdLibs/helpers/subscriptions.nut" import broadcastEvent
 from "%appGlobals/ranks_common_shared.nut" import isUnitSpecial
 from "string" import format
 from "%scripts/dagui_library.nut" import *
-from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES, BATTLE_TYPES_ORDER
 from "%scripts/unit/unitInfoTexts.nut" import getFontIconByBattleType
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -54,9 +54,8 @@ function getUnitAllBattleRatingsText(unit) {
 }
 
 function getUnitBattleRatingsByBattleTypeText(unit, diff) {
-  const battleTypesOrder = [BATTLE_TYPES.AIR, BATTLE_TYPES.TANK, BATTLE_TYPES.SHIP]
   let brTexts = []
-  foreach (battleType in battleTypesOrder) {
+  foreach (battleType in BATTLE_TYPES_ORDER) {
     if (battleType == BATTLE_TYPES.SHIP && diff == g_difficulty.SIMULATOR) 
       continue
     brTexts.append(" ".concat(getFontIconByBattleType(battleType),

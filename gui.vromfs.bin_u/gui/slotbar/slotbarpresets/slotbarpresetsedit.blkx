@@ -80,6 +80,8 @@
               {
                 "margin-left": "2.5@blockInterval",
                 "on_click": "onConfirmAddingNewPreset",
+                "on_hover": "onPresetEditBtnHover",
+                "on_unhover": "onPresetEditBtnUnhover",
                 "icon": {
                   "background-image": "#ui/gameuiskin#preset_add_confirm.svg"
                 }
@@ -87,6 +89,8 @@
               {
                 "margin-left": "1.5@blockInterval",
                 "on_click": "onCancelAddingNewPreset",
+                "on_hover": "onPresetEditBtnHover",
+                "on_unhover": "onPresetEditBtnUnhover",
                 "icon": {
                   "background-image": "#ui/gameuiskin#preset_add_cancel.svg"
                 }
@@ -100,7 +104,6 @@
               "max-len": "16",
               "text": "",
               "on_cancel_edit": "onAddNewPresetEditCancelEdit",
-              "on_unhover": "onEditBoxUnhover",
               "on_activate": "onConfirmAddingNewPreset"
             }
           }

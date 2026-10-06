@@ -1,5 +1,5 @@
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
-from "%globalScripts/modeXrayLib.nut" import getPartType, getRadarSensorType, getPartLocNameByBlkFile, findBlockByNameWithParamValue, mkRwrTexts, mkMlwsTexts, findParamValue, getUnitSensorsList
+from "%globalScripts/modeXrayLib.nut" import getPartType, getRadarSensorType, getPartLocNameByBlkFile, findBlockByNameWithParamValue, mkRwrTexts, mkMlwsTexts, findParamValue, getUnitSensorsList, isHumanPlayerSensor
 from "math" import abs, sin, PI
 from "string" import format
 from "%sqstd/datablock.nut" import blkOptFromPath
@@ -97,7 +97,7 @@ function findUnitSystemsInSensors(unit, unitType) {
 
   foreach (sensor in sensors % "sensor") {
     let sensorBlkName = sensor?.blk
-    if (sensorBlkName == null)
+    if (sensorBlkName == null || !isHumanPlayerSensor(sensor))
       continue
 
     let sensorBlk = blkOptFromPath(sensorBlkName)
@@ -306,13 +306,12 @@ function findAirSystems(unit, unitBlk, unitType) {
       continue
     let sensorPropsBlk = blkOptFromPath(sensorFilePath)
     local sensorType = sensorPropsBlk?.type ?? ""
-    let sensorName = sensorPropsBlk?.name ?? ""
+    let sensorName = getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)
 
-    if (sensorType == "radar" && sensorName != "Auto tracker" && sensorBlk?.dmPart != null)
+    if (sensorType == "radar" && (sensorPropsBlk?.name ?? "") != "Auto tracker" && sensorBlk?.dmPart != null)
       unitSystemsCache[unit.name].append({
         name = "armor_class/radar"
         ttype = "UNIT_DM_TOOLTIP"
-        sensorName
         count = 1
         params = { unitId = unit.name, dmPart = sensorBlk.dmPart }
       })
@@ -329,13 +328,12 @@ function findAirSystems(unit, unitBlk, unitType) {
 
     else if (sensorType == "irst") {
       unitSystemsCache[unit.name].append({ name = $"avionics_sensor_{sensorType}", ttype = "UNIT_SIMPLE_TOOLTIP",
-          params = { unitId = unit.name, text = getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk) } })
+          params = { unitId = unit.name, text = sensorName } })
     }
     else if (sensorType == "rwr") {
-      let title = getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)
       let desc = mkRwrTexts(commonData, sensorPropsBlk, "")
       unitSystemsCache[unit.name].append({ name = $"avionics_sensor_{sensorType}", ttype = "UNIT_SIMPLE_TOOLTIP",
-        params = { unitId = unit.name, title, shortDesc = loc("avionics_sensor_rwr/desc"),
+        params = { unitId = unit.name, title = sensorName, shortDesc = loc("avionics_sensor_rwr/desc"),
           text = newLine.join(desc) } })
 
       if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
@@ -347,7 +345,7 @@ function findAirSystems(unit, unitBlk, unitType) {
         }
     }
     else if (sensorType == "mlws") {
-      let desc = [getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)]
+      let desc = [sensorName]
       desc.extend(mkMlwsTexts(commonData, sensorPropsBlk, "  "))
       unitSystemsCache[unit.name].append({ name = $"avionics_sensor_{sensorType}", ttype = "UNIT_SIMPLE_TOOLTIP",
         params = { unitId = unit.name, text = newLine.join(desc) } })

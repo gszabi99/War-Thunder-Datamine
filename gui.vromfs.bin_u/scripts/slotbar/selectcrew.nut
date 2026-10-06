@@ -30,7 +30,6 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 
 
 const CREWS_COUNT_TO_USE_REPLACE_HINT = 3
@@ -43,8 +42,6 @@ function getObjPosInSafeArea(obj) {
   local border = safeArea.map(@(value, idx) (screen[idx] * (1.0 - value) / 2).tointeger())
   return pos.map(@(val, idx) clamp(val, border[idx], screen[idx] - border[idx] - size[idx]))
 }
-
-let useNewUnitSetLogic = @() userIdInt64.get() % 2 != 0
 
 
 register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
@@ -307,51 +304,30 @@ register_gui_handler("SelectCrew", class (BaseGuiHandlerWT) {
     showObjById("btn_set_cancel", !this.restrictCancel, this.scene)
 
     this.guiScene.applyPendingChanges(false)
-    let steps = useNewUnitSetLogic()
-      ? [
-          {
-            obj = this.getSlotbar().getCurrentCrewSlot()
-            text = loc("hints/tutorial/selectCrew/choose", {
-              unitName = colorize("activeTextColor", getUnitName(this.unit))
-            })
-            actionType = tutorAction.OBJ_CLICK
-            shortcut = GAMEPAD_ENTER_SHORTCUT
-            haveArrow = true
-            cb = Callback(@() this.sendSelectCrewBqEvent(), this)
-          },
-          {
-            obj = "btn_set_air"
-            text = loc("hints/tutorial/selectCrew/confirm")
-            actionType = tutorAction.OBJ_CLICK
-            shortcut = GAMEPAD_ENTER_SHORTCUT
-            haveArrow = true
-            cb = Callback(@() this.onApplyCrew(this.getCurCrew()), this)
-          }
-        ]
-      : [
-          {
-            obj = this.getSlotbar() && this.getSlotbar().getBoxOfUnits()
-            text = loc("help/takeAircraft", { unitName = getUnitName(this.unit) })
-            nextActionShortcut = "help/NEXT_ACTION"
-            actionType = tutorAction.ANY_CLICK
-            haveArrow = false
-            shortcut = GAMEPAD_ENTER_SHORTCUT
-            cb = Callback(@() this.sendSelectCrewBqEvent(), this)
-          },
-          {
-            obj = "btn_set_air"
-            text = loc("help/pressOnReady")
-            nextActionShortcut = "help/NEXT_ACTION"
-            actionType = tutorAction.ANY_CLICK
-            shortcut = GAMEPAD_ENTER_SHORTCUT
-            cb = Callback(@() sendSlotTutorialBqEvent("passTrainHint", { unit = this.unit.name }), this)
-          }
-        ]
-    gui_modal_tutor(steps, this)
+    gui_modal_tutor([
+      {
+        obj = this.getSlotbar().getCurrentCrewSlot()
+        text = loc("hints/tutorial/selectCrew/choose", {
+          unitName = colorize("activeTextColor", getUnitName(this.unit))
+        })
+        actionType = tutorAction.OBJ_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+        haveArrow = true
+        cb = Callback(@() this.sendSelectCrewBqEvent(), this)
+      },
+      {
+        obj = "btn_set_air"
+        text = loc("hints/tutorial/selectCrew/confirm")
+        actionType = tutorAction.OBJ_CLICK
+        shortcut = GAMEPAD_ENTER_SHORTCUT
+        haveArrow = true
+        cb = Callback(@() this.onApplyCrew(this.getCurCrew()), this)
+      }
+    ], this)
   }
 
   function getCrewSlotToReplace() {
-    if (this.useFirstSelectTutorial || !useNewUnitSetLogic() || this.getCurCrew() != null)
+    if (this.useFirstSelectTutorial || this.getCurCrew() != null)
       return null
 
     let countryCrews = getCrewsListByCountry(this.country)

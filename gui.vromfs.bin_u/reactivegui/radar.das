@@ -792,7 +792,12 @@ struct PolarRadarIndicator : InteractableButton
 
       let color = is_color_or_white(data.lineColor)
 
-      let anglesInternalGrid = anglesInternal.y > anglesInternal.x ? anglesInternal : anglesExternal
+      // constraint: the scan range stays inverted (min > max) when no radar transceiver fills it
+      let hasScanRange = anglesInternal.y > anglesInternal.x
+      let isScanMinInsideLimitsAboveEps = anglesInternal.x - anglesExternal.x > 2.0 * FLT_EPSILON
+      let isScanMaxInsideLimitsAboveEps = anglesExternal.y - anglesInternal.y > 2.0 * FLT_EPSILON
+      let isScanNarrower = hasScanRange && (isScanMinInsideLimitsAboveEps || isScanMaxInsideLimitsAboveEps)
+      let anglesInternalGrid = isScanNarrower ? anglesInternal : anglesExternal
       let isFullCircle = (anglesInternalGrid.y - anglesInternalGrid.x) >= PI2 - 2.0 * FLT_EPSILON
       let distMinRel = max(0., get_radar_hud_distance_min() / max(get_radar_hud_distance_max(), 1.0))
       if get_radar_hud_has_distance_scale()

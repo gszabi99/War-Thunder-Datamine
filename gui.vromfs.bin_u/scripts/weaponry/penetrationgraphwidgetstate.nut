@@ -1,5 +1,7 @@
 from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "eventbus" import eventbus_send
+from "gameplayBinding" import isInFlight
+from "%globalScripts/panelIds.nut" import PNL_ID_BULLETS_PENETRATION
 from "%scripts/dagui_library.nut" import *
 
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -12,20 +14,21 @@ local activeObj = null
 local pendingObj = null
 local pendingHandler = null
 
+let getPenetrationGraphPanelId = @() isInFlight() ? PNL_ID_BULLETS_PENETRATION : null
+
 function setPenetrationGraphWidget(handler, show) {
   
   
   if (penetrationGraphHandler?.isValid())
     penetrationGraphHandler.widgetsList = (penetrationGraphHandler.widgetsList ?? [])
-      .filter(@(w) w.placeholderId != PENETRATION_GRAPH_NEST_ID)
+      .filter(@(w) w?.widgetId != DargWidgets.BULLETS_PENETRATION)
   penetrationGraphHandler = null
 
   if (show && handler?.isValid()) {
     handler.widgetsList = (handler.widgetsList ?? [])
-      .filter(@(w) w.placeholderId != PENETRATION_GRAPH_NEST_ID)
+      .filter(@(w) w?.widgetId != DargWidgets.BULLETS_PENETRATION)
     handler.widgetsList.append({
       widgetId = DargWidgets.BULLETS_PENETRATION
-      placeholderId = PENETRATION_GRAPH_NEST_ID
     })
     penetrationGraphHandler = handler
   }
@@ -38,14 +41,15 @@ function updatePendingPenetrationGraph(obj, handler) {
 
   let graphObj = obj.findObject(PENETRATION_GRAPH_NEST_ID)
   activeObj = obj
+  activeObj.getScene().applyPendingChanges(false)
+  let hasPanel = getPenetrationGraphPanelId() != null
   
   
   eventbus_send("update_bullets_penetration_graph_state", {
-    graphData = { graphSize = graphObj.getSize() }
+    graphData = { graphPos = graphObj.getPosRC(), graphSize = graphObj.getSize(), hasPanel }
   })
-
-  activeObj.getScene().applyPendingChanges(false)
-  setPenetrationGraphWidget(handler, true)
+  if (!hasPanel)
+    setPenetrationGraphWidget(handler, true)
 }
 
 function clearPenetrationGraphWidget() {
@@ -53,7 +57,7 @@ function clearPenetrationGraphWidget() {
   setPenetrationGraphWidget(null, false)
   clearActivePenetrationGraphRequest()
   eventbus_send("update_bullets_penetration_graph_state", {
-    graphData = { graphParams = [], graphSize = [0, 0] }
+    graphData = { graphParams = [], hasPanel = false }
   })
 }
 
@@ -86,6 +90,7 @@ addListenersWithoutEnv({
 })
 
 return {
+  getPenetrationGraphPanelId
   setPendingPenetrationGraph
   clearPenetrationGraphWidget
 }

@@ -1704,12 +1704,17 @@ function isWeaponPresetModsAvailable(unitName, slotPresetBlk, isModAvailableOrFr
   return true
 }
 
+
+let isHumanPlayerSensor = @(sensorBlk) sensorBlk?.human ?? true
+
 function getUnitSensorsList(commonData) {
   let { unitDataCache } = commonData
   if ("sensorBlkList" not in unitDataCache) {
     let { unitBlk, unitName, findAnyModEffectValueBlk, isModAvailableOrFree,
-      isDebugBatchExportProcess
+      isDebugBatchExportProcess, getInstalledSlotPresets = null
     } = commonData
+    let installedSlotPresets = isDebugBatchExportProcess || getInstalledSlotPresets == null ? null
+      : getInstalledSlotPresets(commonData)
     let sensorBlkList = []
     if (unitBlk != null) {
       local sensorsBlk = findAnyModEffectValueBlk(commonData, "sensors")
@@ -1727,13 +1732,16 @@ function getUnitSensorsList(commonData) {
         foreach (slotBlk in unitBlk.WeaponSlots % "WeaponSlot")
           foreach (slotPresetBlk in (slotBlk % "WeaponPreset"))
             if (slotPresetBlk?.sensors != null) {
+              if (installedSlotPresets != null && slotBlk?.tier != null
+                  && !(installedSlotPresets?[slotBlk.index][slotPresetBlk.name] ?? false))
+                continue
               if (isDebugBatchExportProcess ||
                 isWeaponPresetModsAvailable(unitName, slotPresetBlk, isModAvailableOrFree))
                   for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
                     appendEqualOnce(sensorBlkList, slotPresetBlk.sensors.getBlock(b))
             }
     }
-    unitDataCache.sensorBlkList <- sensorBlkList
+    unitDataCache.sensorBlkList <- sensorBlkList.filter(isHumanPlayerSensor)
   }
   return unitDataCache.sensorBlkList
 }
@@ -2866,6 +2874,7 @@ return {
   findBlockByNameWithParamValue
   findParamValue
   getUnitSensorsList
+  isHumanPlayerSensor
   mkRwrTexts
   mkMlwsTexts
   getPartPressureCompartmentDesc

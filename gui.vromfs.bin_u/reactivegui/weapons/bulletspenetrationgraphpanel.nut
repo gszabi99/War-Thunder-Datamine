@@ -1,4 +1,6 @@
+from "dagor.math" import IPoint2
 from "%rGui/globals/ui_library.nut" import *
+from "%globalScripts/panelIds.nut" import PNL_ID_BULLETS_PENETRATION
 from "%rGui/weapons/bulletsPenetrationGraphState.nut" import bulletsPenetrationGraphParams
 from "%rGui/weapons/bulletsGraphComp.nut" import mkBulletsArmorPiercingGraph, graphGridColor, graphGridLineThickness, mkGraphLine
 
@@ -46,7 +48,7 @@ function mkLegendBlock(graphParams) {
 }
 
 function graphComp() {
-  let { graphParams, graphSize } = bulletsPenetrationGraphParams.get()
+  let { graphParams, graphPos, graphSize } = bulletsPenetrationGraphParams.get()
   let hasData = graphParams.len() > 0
   let graphAreaHeight = max(graphSize[1] - legendBlockHeight - graphGridLineThickness, 0)
   let graphAreaSize = [graphSize[0], graphAreaHeight]
@@ -60,10 +62,35 @@ function graphComp() {
   ]
   return {
     watch = bulletsPenetrationGraphParams
+    size = graphSize
+    pos = graphPos
     flow = FLOW_VERTICAL
-    size = FLEX
     children
   }
 }
 
-return graphComp
+
+let graphPanel = {
+  canvasSize = IPoint2(sw(100), sh(100))
+  size = FLEX
+  children = graphComp
+}
+
+let panelHost = {
+  size = const [0, 0]
+  onAttach = @() gui_scene.addPanel(PNL_ID_BULLETS_PENETRATION, graphPanel)
+  onDetach = @() gui_scene.removePanel(PNL_ID_BULLETS_PENETRATION)
+}
+
+let hasGraphPanel = Computed(@() bulletsPenetrationGraphParams.get().hasPanel)
+
+let bulletsPenetrationGraphPanel = @() {
+  watch = hasGraphPanel
+  size = const [0, 0]
+  children = hasGraphPanel.get() ? panelHost : null
+}
+
+return {
+  bulletsPenetrationGraphPanel
+  bulletsPenetrationGraphWidget = graphComp
+}

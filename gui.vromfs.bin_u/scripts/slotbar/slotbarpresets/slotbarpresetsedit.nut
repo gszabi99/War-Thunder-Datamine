@@ -124,6 +124,13 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
     addNewPresetEditBox.setValue(this.newPresetDefaultName)
   }
 
+  onPresetEditBtnHover = @(obj) obj.select()
+
+  function onPresetEditBtnUnhover(obj) {
+    if (obj.isFocused())
+      obj.deSelect()
+  }
+
   function onConfirmAddingNewPreset() {
     let addNewPresetEditBox = this.getAddNewPresetEditBox()
     let newPresetName = addNewPresetEditBox.getValue().strip()
@@ -388,9 +395,6 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
     this.updateObjectsPositions()
   }
 
-  function onEditBoxUnhover(obj) {
-    obj.deSelect()
-  }
 }
 register_gui_handler("SlotbarPresetsListEdit", SlotbarPresetsListEdit)
 

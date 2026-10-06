@@ -21,7 +21,7 @@ from "%rGui/twsState.nut" import IsMlwsLwsHudVisible, IsTwsDamaged
 from "%rGui/options/options.nut" import crosshairColorOpt
 from "%rGui/radarComponent.nut" import maxLabelWidth, maxLabelHeight
 from "%rGui/hud/actionBarTopPanel.nut" import actionBarTopPanel
-from "%rGui/globals/panelIds.nut" import PNL_ID_ILS, PNL_ID_MFD
+from "%globalScripts/panelIds.nut" import PNL_ID_ILS, PNL_ID_MFD
 from "%rGui/radar.nut" import radarHud, radarIndication
 from "%rGui/hudState.nut" import isPlayingReplay, isSpectatorMode
 from "%rGui/radarState.nut" import isCollapsedRadarInReplay, IsRadarDamaged, ViewMode

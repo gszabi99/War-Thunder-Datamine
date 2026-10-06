@@ -200,35 +200,27 @@
     },
     "dural2_nb_wing": {
       "wing1_l_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wing1_r_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wing2_l_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wing2_r_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wing_l_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wing_r_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wingcontrol_l_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       },
       "wingcontrol_r_dm": {
-        "genericDamageMult": 0.4,
         "hp": 1000.0
       }
     },
@@ -1187,6 +1179,29 @@
             "flame": 0.2
           },
           {
+            "damageType": "explosion",
+            "damage": 30.0,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 110.0,
+            "flame": 0.5,
+            "cut": 0.03
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "cut": 0.07
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "cut": 0.1
+          },
+          {
             "damageType": "shatter",
             "flame": 0.2
           },
@@ -1283,6 +1298,29 @@
           {
             "tailcontrol_dm": 0.001,
             "flame": 0.2
+          },
+          {
+            "damageType": "explosion",
+            "damage": 30.0,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 110.0,
+            "flame": 0.5,
+            "cut": 0.03
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "cut": 0.07
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "cut": 0.1
           },
           {
             "damageType": "shatter",
@@ -1739,6 +1777,18 @@
             "smoke": 0.2
           },
           {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "smoke": 0.35
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "smoke": 0.4
+          },
+          {
             "damageType": "shatter",
             "flame": 0.2,
             "smoke": 0.15
@@ -1812,6 +1862,18 @@
           {
             "flame": 0.2,
             "smoke": 0.2
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "smoke": 0.35
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "smoke": 0.4
           },
           {
             "damageType": "shatter",
@@ -1900,6 +1962,18 @@
           {
             "flame": 0.2,
             "smoke": 0.2
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "smoke": 0.35
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "smoke": 0.4
           },
           {
             "damageType": "shatter",
@@ -2752,6 +2826,31 @@
         "name": "spar1_l_dm",
         "onHit": [
           {
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
+          },
+          {
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.02
+          },
+          {
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.06
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
             "damageType": "shatter",
             "damage": 8.0
           },
@@ -2762,21 +2861,31 @@
         ],
         "onKill": [
           {
-            "cut": 4.7,
+            "cut": 1.0,
             "nothing": 90.0
           },
           {
-            "damage": 50.0,
+            "damage": 10.0,
             "cut": 5.0,
-            "nothing": 80.0
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "cut": 10.0,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 8.0,
+            "nothing": 55.0
           },
           {
-            "damage": 200.0,
+            "damage": 19.0,
+            "cut": 12.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 18.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 55.0,
             "cut": 1.0
           }
         ]
@@ -2785,6 +2894,31 @@
         "name": "spar1_r_dm",
         "onHit": [
           {
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
+          },
+          {
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.02
+          },
+          {
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.06
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
             "damageType": "shatter",
             "damage": 8.0
           },
@@ -2795,21 +2929,31 @@
         ],
         "onKill": [
           {
-            "cut": 4.7,
+            "cut": 1.0,
             "nothing": 90.0
           },
           {
-            "damage": 50.0,
+            "damage": 10.0,
             "cut": 5.0,
-            "nothing": 80.0
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "cut": 10.0,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 8.0,
+            "nothing": 55.0
           },
           {
-            "damage": 200.0,
+            "damage": 19.0,
+            "cut": 12.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 18.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 55.0,
             "cut": 1.0
           }
         ]
@@ -2818,6 +2962,31 @@
         "name": "spar2_l_dm",
         "onHit": [
           {
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
+          },
+          {
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.02
+          },
+          {
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.06
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
             "damageType": "shatter",
             "damage": 8.0
           },
@@ -2828,21 +2997,31 @@
         ],
         "onKill": [
           {
-            "cut": 4.7,
+            "cut": 1.0,
             "nothing": 90.0
           },
           {
-            "damage": 50.0,
+            "damage": 10.0,
             "cut": 5.0,
-            "nothing": 80.0
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "cut": 10.0,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 8.0,
+            "nothing": 55.0
           },
           {
-            "damage": 200.0,
+            "damage": 19.0,
+            "cut": 12.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 18.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 55.0,
             "cut": 1.0
           }
         ]
@@ -2851,6 +3030,31 @@
         "name": "spar2_r_dm",
         "onHit": [
           {
+            "damageType": "generic",
+            "damage": 10.0,
+            "cut": 0.012
+          },
+          {
+            "damageType": "generic",
+            "damage": 17.0,
+            "cut": 0.04
+          },
+          {
+            "damageType": "generic",
+            "damage": 19.0,
+            "cut": 0.02
+          },
+          {
+            "damageType": "generic",
+            "damage": 21.0,
+            "cut": 0.06
+          },
+          {
+            "damageType": "generic",
+            "damage": 55.0,
+            "cut": 0.12
+          },
+          {
             "damageType": "shatter",
             "damage": 8.0
           },
@@ -2861,21 +3065,31 @@
         ],
         "onKill": [
           {
-            "cut": 4.7,
+            "cut": 1.0,
             "nothing": 90.0
           },
           {
-            "damage": 50.0,
+            "damage": 10.0,
             "cut": 5.0,
-            "nothing": 80.0
+            "nothing": 60.0
           },
           {
-            "damage": 80.0,
-            "cut": 10.0,
-            "nothing": 70.0
+            "damage": 17.0,
+            "cut": 8.0,
+            "nothing": 55.0
           },
           {
-            "damage": 200.0,
+            "damage": 19.0,
+            "cut": 12.0,
+            "nothing": 55.0
+          },
+          {
+            "damage": 21.0,
+            "cut": 18.0,
+            "nothing": 50.0
+          },
+          {
+            "damage": 55.0,
             "cut": 1.0
           }
         ]
@@ -3008,6 +3222,29 @@
             "flame": 0.2
           },
           {
+            "damageType": "explosion",
+            "damage": 30.0,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 110.0,
+            "flame": 0.5,
+            "cut": 0.03
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "cut": 0.07
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "cut": 0.1
+          },
+          {
             "damageType": "shatter",
             "flame": 0.2
           },
@@ -3094,6 +3331,29 @@
             "flame": 0.2
           },
           {
+            "damageType": "explosion",
+            "damage": 30.0,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 110.0,
+            "flame": 0.5,
+            "cut": 0.03
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "cut": 0.07
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "cut": 0.1
+          },
+          {
             "damageType": "shatter",
             "flame": 0.2
           },
@@ -3177,6 +3437,29 @@
         "onHit": [
           {
             "flame": 0.2
+          },
+          {
+            "damageType": "explosion",
+            "damage": 30.0,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 110.0,
+            "flame": 0.5,
+            "cut": 0.02
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "flame": 0.6,
+            "cut": 0.05
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "flame": 0.6,
+            "cut": 0.08
           },
           {
             "damageType": "shatter",
@@ -3338,6 +3621,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -3441,6 +3728,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -3544,6 +3835,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -3647,6 +3942,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -3750,6 +4049,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -3853,6 +4156,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -3956,6 +4263,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -4059,6 +4370,10 @@
             "damage": 20.0,
             "fire": 0.4,
             "leak": 0.3
+          },
+          {
+            "damageType": "fire",
+            "expl": 0.001
           }
         ],
         "onKill": [
@@ -4132,6 +4447,50 @@
           {
             "damageType": "generic",
             "damage": 110.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
             "smoke": 0.5,
             "flame": 0.6,
             "part": {
@@ -4260,6 +4619,50 @@
             }
           },
           {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
             "damageType": "shatter",
             "smoke": 0.1,
             "flame": 0.2
@@ -4372,6 +4775,50 @@
           {
             "damageType": "generic",
             "damage": 110.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
             "smoke": 0.5,
             "flame": 0.6,
             "part": {
@@ -4500,6 +4947,50 @@
             }
           },
           {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
             "damageType": "shatter",
             "smoke": 0.1,
             "flame": 0.2
@@ -4612,6 +5103,50 @@
           {
             "damageType": "generic",
             "damage": 110.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
             "smoke": 0.5,
             "flame": 0.6,
             "part": {
@@ -4740,6 +5275,50 @@
             }
           },
           {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
             "damageType": "shatter",
             "smoke": 0.1,
             "flame": 0.2
@@ -4859,6 +5438,50 @@
             }
           },
           {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
             "damageType": "shatter",
             "smoke": 0.1,
             "flame": 0.2
@@ -4970,6 +5593,50 @@
           {
             "damageType": "generic",
             "damage": 110.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.15,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 20.0,
+            "smoke": 0.2,
+            "flame": 0.3
+          },
+          {
+            "damageType": "explosion",
+            "damage": 70.0,
+            "smoke": 0.3,
+            "flame": 0.4
+          },
+          {
+            "damageType": "explosion",
+            "damage": 130.0,
+            "smoke": 0.4,
+            "flame": 0.5
+          },
+          {
+            "damageType": "explosion",
+            "damage": 250.0,
+            "smoke": 0.5,
+            "flame": 0.6
+          },
+          {
+            "damageType": "explosion",
+            "damage": 350.0,
+            "smoke": 0.5,
+            "flame": 0.6,
+            "part": {
+              "ratio": 0.1,
+              "canCut": true
+            }
+          },
+          {
+            "damageType": "explosion",
+            "damage": 450.0,
             "smoke": 0.5,
             "flame": 0.6,
             "part": {
