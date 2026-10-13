@@ -21,7 +21,7 @@ let { verifyContact } = require("%scripts/contacts/contactsManager.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { invite } = require("%scripts/social/psnSessionManager/getPsnSessionManagerApi.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning, isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { hasChat, hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
+let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -186,7 +186,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   actions.append(
     {
       text = loc("contacts/message")
-      show = !isMe && ps4_is_chat_enabled() && hasChat.get() && !u.isEmpty(name) && hasMenuChatPrivate.get()
+      show = !isMe && ps4_is_chat_enabled() && hasMenuChat.get() && !u.isEmpty(name) && hasMenuChatPrivate.get()
       isVisualDisabled = !canChat || isBlock || isProfileMuted
       action = function() {
         if (isBlock)

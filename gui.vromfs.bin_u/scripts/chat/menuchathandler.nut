@@ -41,7 +41,7 @@ let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, checkChatEnableWithPlayer, isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
+let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan } = require("%scripts/user/matchingFeature.nut")
 let { add_user, remove_user, is_muted } = require("%scripts/chat/xboxVoice.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -2743,8 +2743,8 @@ let MenuChatHandler = class (BaseGuiHandlerWT) {
   }
 
   function joinCustomObjRoom(sceneObj, roomId, password, ownerHandler) {
-    if (!hasMenuChatMPlobby.get()) {
-      sceneObj.show(hasMenuChatMPlobby.get())
+    if (!g_chat_room_type.MP_LOBBY.isVisible()) {
+      sceneObj.show(false)
       return
     }
     let prevRoom = this.findCustomRoomByObj(sceneObj)

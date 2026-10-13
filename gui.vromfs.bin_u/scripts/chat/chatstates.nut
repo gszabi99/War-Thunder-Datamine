@@ -1,5 +1,6 @@
 from "%appGlobals/login/loginState.nut" import isLoggedIn
 from "%sqstd/platform.nut" import is_gdk
+from "%sqStdLibs/helpers/subscriptions.nut" import addListenersWithoutEnv
 from "%scripts/dagui_natives.nut" import ps4_show_chat_restriction, gchat_is_voice_enabled, gchat_is_enabled, ps4_is_chat_enabled
 from "%scripts/dagui_library.nut" import *
 
@@ -11,6 +12,8 @@ let { check_communications_privilege, check_crossnetwork_communications_permissi
 let { getContactByName } = require("%scripts/contacts/contactsListState.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
+let hasChatCharPermission = Watched(hasFeature("Chat"))
+
 function getXboxChatEnableStatus() {
   if (!is_gdk || !isLoggedIn.get())
     return CommunicationState.Allowed
@@ -18,7 +21,7 @@ function getXboxChatEnableStatus() {
 }
 
 function isChatEnabled(needOverlayMessage = false) {
-  if (!gchat_is_enabled())
+  if (!hasChatCharPermission.get() || !gchat_is_enabled())
     return false
 
   if (!ps4_is_chat_enabled()) {
@@ -94,7 +97,11 @@ function canUseVoice() {
   return hasFeature("Voice") && gchat_is_voice_enabled()
 }
 
-let hasMenuChat = Computed(@() hasChat.get() && !isGuestLogin.get())
+let hasMenuChat = Computed(@() hasChat.get() && hasChatCharPermission.get() && !isGuestLogin.get())
+
+addListenersWithoutEnv({
+  ProfileUpdated             = @(_) hasChatCharPermission.set(hasFeature("Chat"))
+})
 
 return {
   getXboxChatEnableStatus = getXboxChatEnableStatus
@@ -105,4 +112,5 @@ return {
   isCrossNetworkMessageAllowed = isCrossNetworkMessageAllowed
   chatStatesCanUseVoice = canUseVoice
   hasMenuChat
+  hasChatCharPermission
 }

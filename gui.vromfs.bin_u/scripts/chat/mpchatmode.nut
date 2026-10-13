@@ -4,6 +4,7 @@ from "chat" import CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRI
 from "%scripts/dagui_natives.nut" import is_steam_big_picture
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/missions/missionStateShared.nut" import isModeWithTeams
+from "%scripts/chat/chatStates.nut" import hasChatCharPermission
 
 let { isInSquad } = require("%scripts/squads/squadState.nut")
 let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
@@ -42,7 +43,7 @@ enumsAddTypes(g_mp_chat_mode, {
     sortOrder = mpChatModeSort.ALL
     textColor = "@chatTextAllColor"
 
-    isEnabled = @() hasBattleChatModeAll.get()
+    isEnabled = @() hasBattleChatModeAll.get() && hasChatCharPermission.get()
   }
 
   TEAM = {
@@ -52,7 +53,7 @@ enumsAddTypes(g_mp_chat_mode, {
     textColor = "@chatTextTeamColor"
 
     isEnabled = @() hasBattleChatModeTeam.get() && !isPlayerDedicatedSpectator()
-      && isModeWithTeams()
+      && isModeWithTeams() && hasChatCharPermission.get()
   }
 
   SQUAD = {
@@ -62,7 +63,7 @@ enumsAddTypes(g_mp_chat_mode, {
     textColor = "@chatTextSquadColor"
 
     isEnabled = @() hasBattleChatModeSquad.get() && isInSquad(true)
-      && !isPlayerDedicatedSpectator()
+      && !isPlayerDedicatedSpectator() && hasChatCharPermission.get()
   }
 
   PRIVATE = { 

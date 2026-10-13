@@ -1,7 +1,7 @@
 from "%sqStdLibs/helpers/subscriptions.nut" import add_event_listener
 from "string" import format
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/chat/chatStates.nut" import hasMenuChat
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
@@ -54,7 +54,7 @@ let ChatRoom = class (BaseInvite) {
   }
 
   function isValid() {
-    return this.roomId != "" && this.roomType.isAllowed()
+    return this.roomId != "" && hasMenuChat.get() && this.roomType.isAllowed()
   }
 
   function haveRestrictions() {
@@ -93,7 +93,7 @@ let ChatRoom = class (BaseInvite) {
   }
 
   function accept() {
-    if (menuChatHandler.get() == null)
+    if (!this.isValid() || menuChatHandler.get() == null)
       return
 
     menuChatHandler.get().popupAcceptInvite(this.roomId)

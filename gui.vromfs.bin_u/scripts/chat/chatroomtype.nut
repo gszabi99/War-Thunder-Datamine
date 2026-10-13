@@ -4,11 +4,10 @@ from "%sqstd/string.nut" import startsWith, slice
 from "%globalScripts/externalPlayerListConsts.nut" import *
 from "%scripts/dagui_natives.nut" import ps4_is_ugc_enabled, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-
+from "%scripts/chat/chatStates.nut" import isCrossNetworkMessageAllowed, checkChatEnableWithPlayer, hasChatCharPermission
 let { g_squad_manager } = require("%scripts/squads/squadManager.nut")
 let { get_gui_handler } = require("%scripts/sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isCrossNetworkMessageAllowed, checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { SQUAD_ROOM_PREFIX, mkSquadRoomId } = require("%scripts/chat/squadChatRoom.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatSystem, hasMenuChatMPlobby } = require("%scripts/user/matchingFeature.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
@@ -207,7 +206,7 @@ enumsAddTypes(g_chat_room_type, {
     havePlayersList = false
     isErrorPopupAllowed = false
     isHaveOwner = false
-    isVisible = @() hasMenuChatMPlobby.get()
+    isVisible = @() hasMenuChatMPlobby.get() && hasChatCharPermission.get()
   }
 
   GLOBAL = {
