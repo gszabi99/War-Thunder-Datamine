@@ -2187,6 +2187,7 @@ mSettings = {
     def = false
     enabled = @() is_windows && (platformId == "win64" || is_dev_version()) && !getGuiValue("compatibilityMode")
       && (!isInFlight() || isVrModeAllowedInEvent(getRoomEvent()))
+      && getGuiValue("rayTracing", "off") == "off"
     onChanged = "vrModeClick"
   }
   vrMirror = { widgetType = "list" def = "left" blk = "video/vreye" restart = false values = [ "left", "right", "both" ]
@@ -2203,7 +2204,8 @@ mSettings = {
   }
   riGpuObjects = { widgetType = "checkbox" def = true blk = "graphics/riGpuObjects" restart = false
   }
-  rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false enabled = hasRT
+  rayTracing = { widgetType = "list" def = "off" blk = "graphics/bvhMode" restart = false
+    enabled = @() hasRT() && !getGuiValue("enableVr", false)
     values = has_enough_vram_for_rt() ? ["off", "low", "medium", "high", "ultra", "custom"] : ["off"]
     onChanged = "rayTracingClick"
     infoImgPattern = "#ui/images/settings/rtQuality/%s"
