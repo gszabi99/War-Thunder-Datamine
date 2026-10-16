@@ -2708,6 +2708,13 @@
   "vulkan": {
     "enableBindless": true,
     "vendor": {
+      "default": {
+        "driverProps": {
+          "swapchain": {
+            "recreteWhenImageAcquired": true
+          }
+        }
+      },
       "AMD": {
         "driverProps": {
           "extensions": {
