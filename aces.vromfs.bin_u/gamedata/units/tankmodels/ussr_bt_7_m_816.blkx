@@ -45,9 +45,6 @@
   "fireFx": "ground_model_fire",
   "arcadeTurnPowerMult": 1.1,
   "arcadePowerMult": 1.2,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
-  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -90,10 +87,10 @@
         "armorThickness": 10.0
       },
       "ex_decor_body_r_04_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "ex_decor_body_l_04_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "ex_decor_body_r_01_dm": {
         "armorClass": "tank_structural_steel",
@@ -714,6 +711,12 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "timber": {
+      "armorClass": "wood",
+      "armorThickness": 100.0,
+      "ex_decor_03_dm": {},
+      "ex_decor_04_dm": {}
     }
   },
   "attachables": {
@@ -2947,77 +2950,6 @@
     "45mm_AP_1942_ammo_pack": {},
     "45mm_ussr_AP_1942": {}
   },
-  "user_skin": {
-    "name": "bt_7",
-    "replace_tex": {
-      "from": "ussr_camo_green*"
-    }
-  },
-  "skin": [
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter*"
-      }
-    },
-    {
-      "name": "forest",
-      "nameLocId": "skin/ussr_camo_forest_01",
-      "descLocId": "skin/ussr_camo_forest_01/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_01*"
-      }
-    },
-    {
-      "name": "ussr_camo_czechoslovak_yellow_green",
-      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
-      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_czechoslovak_yellow_green*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_syrian_green_brown_yellow",
-      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
-      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
-      }
-    },
-    {
-      "name": "ussr_camo_desert_yellow_brown",
-      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
-      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_desert_yellow_brown*"
-      }
-    },
-    {
-      "name": "ussr_camo_winter_lines",
-      "nameLocId": "skin/ussr_camo_winter_lines",
-      "descLocId": "skin/ussr_camo_winter_lines/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_winter_lines*"
-      }
-    },
-    {
-      "name": "ussr_camo_forest_black",
-      "nameLocId": "skin/ussr_camo_forest_black",
-      "descLocId": "skin/ussr_camo_forest_black/desc",
-      "replace_tex": {
-        "from": "ussr_camo_green*",
-        "to": "ussr_camo_forest_black*"
-      }
-    }
-  ],
   "ammoStowages": {
     "ammo1": {
       "removeLoadedAmmo": true,
@@ -3068,10 +3000,71 @@
     }
   },
   "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "ussr_camo_green*",
+      "to": "ussr_camo_forest_01*"
+    },
     "set_tex": {
       "from": "bt_7m_turret_c*",
       "to": "bt_7m_skin_turret_c*",
       "param": "camo_skin_tex"
     }
-  }
+  },
+  "skin": [
+    {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_winter*"
+      }
+    },
+    {
+      "name": "ussr_camo_czechoslovak_yellow_green",
+      "nameLocId": "skin/ussr_camo_czechoslovak_yellow_green",
+      "descLocId": "skin/ussr_camo_czechoslovak_yellow_green/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_czechoslovak_yellow_green*"
+      }
+    },
+    {
+      "name": "ussr_camo_desert_syrian_green_brown_yellow",
+      "nameLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow",
+      "descLocId": "skin/ussr_camo_desert_syrian_green_brown_yellow/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_desert_syrian_green_brown_yellow*"
+      }
+    },
+    {
+      "name": "ussr_camo_desert_yellow_brown",
+      "nameLocId": "skin/ussr_camo_desert_yellow_brown",
+      "descLocId": "skin/ussr_camo_desert_yellow_brown/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_desert_yellow_brown*"
+      }
+    },
+    {
+      "name": "ussr_camo_winter_lines",
+      "nameLocId": "skin/ussr_camo_winter_lines",
+      "descLocId": "skin/ussr_camo_winter_lines/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_winter_lines*"
+      }
+    },
+    {
+      "name": "ussr_camo_forest_black",
+      "nameLocId": "skin/ussr_camo_forest_black",
+      "descLocId": "skin/ussr_camo_forest_black/desc",
+      "replace_tex": {
+        "from": "ussr_camo_green*",
+        "to": "ussr_camo_forest_black*"
+      }
+    }
+  ]
 }

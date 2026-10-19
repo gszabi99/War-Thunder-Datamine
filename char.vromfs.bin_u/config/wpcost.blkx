@@ -724706,10 +724706,7 @@
     "speed": 50.0,
     "showOnlyWhenBought": true,
     "commonWeaponImage": "!#ui/gameuiskin#tank_cannon.avif",
-    "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-    "customImage": "!#ui/unitskin#image_in_progress.ddsx",
     "crewTotalCount": 3,
-    "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
     "gift": "msi_notebook",
     "turretSpeed": [
       16.0,
@@ -1161301,6 +1161298,282 @@
     "Shop": {
       "hullMaterial": "steel",
       "hullThickness": 6.0,
+      "superstructureMaterial": "steel",
+      "superstructureThickness": 4.0
+    }
+  },
+  "germ_s_700_s_706": {
+    "value": 0,
+    "reqExp": 26000,
+    "trainCost": 10000,
+    "train2Cost": 115000,
+    "train3Cost_gold": 500,
+    "train3Cost_exp": 640000,
+    "repairTimeHrsArcade": 5.25,
+    "repairTimeHrsHistorical": 10.5,
+    "repairTimeHrsSimulation": 0.0,
+    "repairTimeHrsNoCrewArcade": 346.5,
+    "repairTimeHrsNoCrewHistorical": 357.0,
+    "repairTimeHrsNoCrewSimulation": 0.0,
+    "repairCostArcade": 743,
+    "repairCostHistorical": 951,
+    "repairCostSimulation": 0,
+    "repairCostPerMinArcade": 227,
+    "repairCostPerMinHistorical": 217,
+    "repairCostPerMinSimulation": 0,
+    "repairCostFullUpgradedArcade": 743,
+    "repairCostFullUpgradedHistorical": 951,
+    "battleTimeAwardArcade": 1200,
+    "battleTimeAwardHistorical": 1500,
+    "battleTimeAwardSimulation": 0,
+    "avgAwardArcade": 5824,
+    "avgAwardHistorical": 7725,
+    "avgAwardSimulation": 0,
+    "rewardMulArcade": 1.74,
+    "rewardMulHistorical": 2.93,
+    "rewardMulSimulation": 1.0,
+    "expMul": 1.42,
+    "battleTimeArcade": 34.27,
+    "battleTimeHistorical": 38.56,
+    "battleTimeSimulation": 0.0,
+    "rank": 3,
+    "economicRankArcade": 5,
+    "economicRankHistorical": 5,
+    "economicRankSimulation": 5,
+    "country": "country_germany",
+    "unitClass": "exp_torpedo_boat",
+    "unitMoveType": "fast_ship",
+    "showOnlyWhenBought": true,
+    "commonWeaponImage": "!#ui/gameuiskin#ship_type_boat.avif",
+    "minCrewMemberAliveCount": 9,
+    "crewTotalCount": 31,
+    "breachRepairSpeed": 15.0,
+    "gift": "msi_notebook",
+    "event": "battlepass_season25",
+    "economicRank": 9,
+    "purchaseTrophyGift": "purchase_gift_trophy_spare_10",
+    "shipMainCaliberReloadTime_30mm_38_mk103_1942_naval_user_cannon": 8.5,
+    "shipMainCaliberMaxAngle_30mm_38_mk103_1942_naval_user_cannon": 0.09,
+    "shipAuxCaliberReloadTime_20mm_65_c38_zwilling_naval_user_cannon": 4.0,
+    "shipAuxMaxAngle_20mm_65_c38_zwilling_naval_user_cannon": 0.08,
+    "shipAuxCaliberReloadTime_20mm_65_c38_vierling_naval_user_cannon": 6.0,
+    "shipAuxMaxAngle_20mm_65_c38_vierling_naval_user_cannon": 0.08,
+    "shipAntiAirCaliberReloadTime_7_92mm_mg34_1934_naval_user_machinegun": 8.0,
+    "shipAntiAirMaxAngle_7_92mm_mg34_1934_naval_user_machinegun": 0.1,
+    "needBuyToOpenNextInTier1": 1,
+    "needBuyToOpenNextInTier2": 3,
+    "needBuyToOpenNextInTier3": 2,
+    "needBuyToOpenNextInTier4": 2,
+    "extinguisherMinTime": 10.0,
+    "costGold": 1450,
+    "freeRepairs": 30,
+    "maxDmPartRepairTimeSec": 30,
+    "weapons": {
+      "germ_s_700_s_706_torpedoes": {
+        "image": "!#ui/gameuiskin#torpedo.avif",
+        "value": 50,
+        "maxCount": 30,
+        "validIfBought": true,
+        "reqModification": "ship_torpedoes",
+        "weaponmask": 16
+      },
+      "germ_s_700_s_706_depth_charges": {
+        "image": "!#ui/gameuiskin#depth_charge.avif",
+        "value": 60,
+        "maxCount": 30,
+        "validIfBought": true,
+        "hasDepthCharge": true,
+        "reqModification": "ship_depth_charge",
+        "weaponmask": 8
+      },
+      "germ_s_700_s_706_torpedoes_depth_charges": {
+        "image": "!#ui/gameuiskin#ship_torpedo_dc.avif",
+        "value": 110,
+        "maxCount": 30,
+        "validIfBought": true,
+        "hasDepthCharge": true,
+        "reqModification": "ship_depth_charge",
+        "weaponmask": 24
+      },
+      "germ_s_700_s_706_default": {
+        "image": "!#ui/gameuiskin#pilons.avif",
+        "value": 0
+      }
+    },
+    "modifications": {
+      "ship_tool_kit": {
+        "tier": 1,
+        "value": 0,
+        "costGold": 0
+      },
+      "manual_ship_extinguisher": {
+        "tier": 2,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_ship_pumps": {
+        "tier": 4,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_main_caliber_turrets": {
+        "prevModification": "new_aux_caliber_turrets",
+        "tier": 3,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_aux_caliber_turrets": {
+        "prevModification": "new_aa_caliber_turrets",
+        "tier": 2,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_ship_hull": {
+        "tier": 1,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_ship_rudder": {
+        "prevModification": "new_ship_hull",
+        "tier": 2,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_ship_screw": {
+        "tier": 3,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_ship_engine": {
+        "prevModification": "new_ship_screw",
+        "tier": 4,
+        "value": 0,
+        "costGold": 0
+      },
+      "ship_smoke_screen_system_mod": {
+        "tier": 2,
+        "value": 0,
+        "costGold": 0
+      },
+      "30mm_mk_103_38_universal": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 0,
+        "caliber": 0.03,
+        "ammoCount": 30
+      },
+      "30mm_mk_103_38_AP_navy_ammo_pack": {
+        "tier": 1,
+        "value": 0,
+        "costGold": 0
+      },
+      "30mm_mk_103_38_AP_navy": {
+        "reqModification": "30mm_mk_103_38_AP_navy_ammo_pack",
+        "tier": 0,
+        "value": 4,
+        "costGold": 0,
+        "maxCount": 100,
+        "validIfBought": true,
+        "ammoCount": 30
+      },
+      "30mm_mk_103_38_APCR_navy_ammo_pack": {
+        "prevModification": "30mm_mk_103_38_AP_navy_ammo_pack",
+        "tier": 2,
+        "value": 0,
+        "costGold": 0
+      },
+      "30mm_mk_103_38_APCR_navy": {
+        "reqModification": "30mm_mk_103_38_APCR_navy_ammo_pack",
+        "tier": 0,
+        "value": 4,
+        "costGold": 0,
+        "maxCount": 100,
+        "validIfBought": true,
+        "ammoCount": 30
+      },
+      "20mm_ger_c38_universal": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 0,
+        "caliber": 0.02,
+        "ammoCount": 160
+      },
+      "20mm_ger_c38_navy_he": {
+        "reqModification": "20mm_ger_c38_navy_he_ammo_pack",
+        "tier": 0,
+        "value": 14,
+        "costGold": 0,
+        "maxCount": 1500,
+        "validIfBought": true,
+        "ammoCount": 160
+      },
+      "20mm_ger_c38_navy_he_ammo_pack": {
+        "tier": 1,
+        "value": 0,
+        "costGold": 0
+      },
+      "20mm_ger_c38_navy_ap": {
+        "reqModification": "20mm_ger_c38_navy_ap_ammo_pack",
+        "tier": 0,
+        "value": 14,
+        "costGold": 0,
+        "maxCount": 1500,
+        "validIfBought": true,
+        "ammoCount": 160
+      },
+      "20mm_ger_c38_navy_ap_ammo_pack": {
+        "prevModification": "20mm_ger_c38_navy_he_ammo_pack",
+        "tier": 2,
+        "value": 0,
+        "costGold": 0
+      },
+      "ship_torpedoes": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 0
+      },
+      "new_aa_caliber_turrets": {
+        "tier": 1,
+        "value": 0,
+        "costGold": 0
+      },
+      "ship_main_caliber_support": {
+        "prevModification": "new_main_caliber_turrets",
+        "tier": 4,
+        "value": 0,
+        "costGold": 0
+      },
+      "torpedoes_movement_mode": {
+        "prevModification": "30mm_mk_103_38_APCR_navy_ammo_pack",
+        "tier": 4,
+        "value": 0,
+        "costGold": 0
+      },
+      "ship_depth_charge": {
+        "prevModification": "20mm_ger_c38_navy_ap_ammo_pack",
+        "tier": 3,
+        "value": 0,
+        "costGold": 0
+      },
+      "premExpMul": {
+        "tier": 0,
+        "value": 0,
+        "costGold": 0
+      },
+      "allowPremDecals": {
+        "tier": 0,
+        "reqExp": 97000,
+        "value": 0,
+        "costGold": 0
+      }
+    },
+    "spare": {
+      "value": 0,
+      "costGold": 60
+    },
+    "Shop": {
+      "hullMaterial": "ship_wood",
+      "hullThickness": 40.0,
       "superstructureMaterial": "steel",
       "superstructureThickness": 4.0
     }
