@@ -8,7 +8,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDaguiObjAabb, select_editbox } = require("%scripts/sqDagui/daguiUtil.nut")
-let { getPresetsDataByCountry } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
+let { getPresetsDataByCountry, isShowModes, isShowTitles, isShowRatings, isAbbreviateModes,
+  isAutoAbbreviation, getAbbreviationModeName
+} = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
 let { getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getDefaultPresetName } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
@@ -16,6 +18,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { canEraseSlotbarPreset, canCreateSlotbarPreset, createSlotbarPreset, copySlotbarPreset, eraseSlotbarPreset,
   moveSlotbarPreset, renameSlotbarPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+
 
 const MAX_NEW_PRESET_NAME_LEN = 16
 
@@ -62,16 +65,27 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
     let dragDisabled = this.presets.len() > 1 ? "no" : "yes"
     let isGamepadMode = showConsoleButtons.get()
 
-    let presets = this.presets.map(@(preset, idx) {
-      idx = idx.tostring()
-      presetName = preset.title
-      presetGameMode = getGameModeById(preset.gameModeId)?.getText() ?? ""
-      presetBR = preset.br
-      isPresetSelected = currentPresetIdx == idx ? "yes" : "no"
-      dragDisabled
-      cantRemovePreset = !canEraseSlotbarPreset()
-      state = "ready"
-      isGamepadMode
+    let isAutoAbbr = isAutoAbbreviation()
+    let isShowBRInTab = isAutoAbbr || isShowRatings()
+    let isShowNameInTab = isAutoAbbr || isShowTitles()
+    let isShowGMInTab = isAutoAbbr || isShowModes()
+    let useAbbreviate = !isAutoAbbr && isAbbreviateModes()
+
+    let presets = this.presets.map(function(preset, idx) {
+      let gm = getGameModeById(preset.gameModeId)
+      return {
+        idx = idx.tostring()
+        presetName = isShowNameInTab ? preset.title : ""
+        presetGameMode = !isShowGMInTab ? ""
+          : useAbbreviate ? getAbbreviationModeName(gm)
+          : (gm?.getText() ?? "")
+        presetBR = isShowBRInTab ? preset.br : ""
+        isPresetSelected = currentPresetIdx == idx ? "yes" : "no"
+        dragDisabled
+        cantRemovePreset = !canEraseSlotbarPreset()
+        state = "ready"
+        isGamepadMode
+      }
     })
 
     let data = handyman.renderCached("%gui/slotbar/slotbarPresets/presetEditItem.tpl", { presets })
@@ -135,8 +149,10 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
     let addNewPresetEditBox = this.getAddNewPresetEditBox()
     let newPresetName = addNewPresetEditBox.getValue().strip()
 
-    if (canCreateSlotbarPreset())
-      createSlotbarPreset(newPresetName == "" ? null : newPresetName)
+    if (canCreateSlotbarPreset()) {
+      let cb = Callback(@(idx) this.ownerWeak?.tryChangePreset(idx), this)
+      createSlotbarPreset(newPresetName == "" ? null : newPresetName, cb)
+    }
     else
       this.showNotAllowedMessage()
 
@@ -313,8 +329,11 @@ let SlotbarPresetsListEdit = class (BaseGuiHandlerWT) {
   }
 
   function onCopyPreset(obj) {
-    if (canCreateSlotbarPreset())
-      copySlotbarPreset(this.presets[obj.presetIdx.tointeger()])
+    if (canCreateSlotbarPreset()) {
+      let prIdx = obj.presetIdx.tointeger()
+      let cb = Callback(@(idx) this.ownerWeak?.tryChangePreset(idx), this)
+      copySlotbarPreset(this.presets[prIdx], prIdx + 1, cb)
+    }
     else
       this.showNotAllowedMessage()
   }

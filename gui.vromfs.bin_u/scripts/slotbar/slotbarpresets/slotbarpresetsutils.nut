@@ -4,6 +4,8 @@ from "%appGlobals/ranks_common_shared.nut" import calcBattleRatingFromRank
 from "%sqstd/datablock.nut" import convertBlk
 from "string" import format
 from "%scripts/dagui_library.nut" import *
+from "dagor.localize" import doesLocTextExist
+from "%sqstd/underscore.nut" import deep_clone
 
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { calculateBR } = require("%scripts/slotbar/slotbarPresets/calcRanks.nut")
@@ -12,13 +14,13 @@ let { getCrafts } = require("%scripts/battleRating.nut")
 let { getMyCrewUnitsState, getPresetsListFromSlotbar } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 
-local initSettings = [
+let initSettings = freeze([
   { id = "enable_auto_abbreviation" }
   { id = "modes_abbreviation" }
   { id = "show_modes", depended = true }
   { id = "show_ratings", depended = true }
   { id = "show_titles", depended = true, selected = true }
-]
+])
 
 local settings = null
 
@@ -27,12 +29,12 @@ function getPresetsSettings() {
     return settings
 
   let data = loadLocalAccountSettings("slotbarPresetsSettings")
-  settings = data != null ? convertBlk(data).array : initSettings
+  settings = data != null ? convertBlk(data).array : deep_clone(initSettings)
   return settings
 }
 
 function setPresetsSetting(id, value) {
-  let val = settings.findvalue(@(v) v.id == id)
+  let val = getPresetsSettings().findvalue(@(v) v.id == id)
   if (val != null && val?.selected != value) {
     val.selected <- value
     saveLocalAccountSettings("slotbarPresetsSettings", settings)
@@ -100,6 +102,18 @@ function getPresetsDataByCountry(country) {
   return res
 }
 
+function getAbbreviationModeName(gm) {
+  let { id = null, defAbbreviateLocId = null } = gm
+  if (id == null)
+    return ""
+
+  let abbrLocId = $"slotbarPresetsAbreviaton/{id}"
+  if (doesLocTextExist(abbrLocId))
+    return loc(abbrLocId)
+
+  return doesLocTextExist(defAbbreviateLocId) ? loc(defAbbreviateLocId) : ""
+}
+
 addListenersWithoutEnv({
   LoginComplete = @(_p) settings = null
 })
@@ -117,4 +131,5 @@ return {
 
   getPresetsDataByCountry
   getGameModeIdByUnits
+  getAbbreviationModeName
 }

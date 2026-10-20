@@ -9,13 +9,8 @@ let { handlerType } = require("%scripts/sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPresetsSettings, setPresetsSetting } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
 
-local settings = null
-
 function getDependedSettings() {
-  if (settings == null)
-    settings = getPresetsSettings()
-
-  return settings.reduce(function(res, value) {
+  return getPresetsSettings().reduce(function(res, value) {
     if (value?.depended == true)
       res.append(value.id)
     return res
@@ -39,10 +34,7 @@ let SlotbarPresetSettings = class (BaseGuiHandlerWT) {
   }
 
   function fillSettings() {
-    if (settings == null)
-      settings = getPresetsSettings()
-
-    let checkbox = settings.map(function(value) {
+    let checkbox = getPresetsSettings().map(function(value) {
       let { id, selected = false } = value
       let tooltipLocKey = $"presets/filter/{id}/tooltip"
       return {

@@ -537,8 +537,8 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     if (this.curPresetIdx == null || !this.isCustomPresetsEditAvailable())
       return []
 
-    let canCopyCurPreset = this.presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM
-      && this.presets[this.curPresetIdx].isEnabled
+    let isCopyActionShown = this.presets[this.curPresetIdx].isEnabled
+    let isLimitReached = this.isPresetsLimitReached()
     let canEditCurPreset = isCustomPreset(this.presets[this.curPresetIdx])
 
     return [
@@ -554,8 +554,10 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
       }
       { 
         text = loc("gblk/saveError/copy")
-        show = canCopyCurPreset
-        action = @() this.onPresetCopy()
+        show = isCopyActionShown
+        isVisualDisabled = isLimitReached
+        tooltip = isLimitReached ? this.getPresetsLimitText() : ""
+        action = @() isLimitReached ? this.showPresetsLimitMsg() : this.onPresetCopy()
       }
       { 
         text = loc("msgbox/btn_delete")
@@ -597,8 +599,12 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     let isAvailable = this.isCustomPresetsEditAvailable()
     let wndObj = this.scene.findObject("presetsModalWnd")
 
-    showObjById("newPresetBtn", isAvailable
-      && this.presets.filter(isCustomPreset).len() < MAX_PRESETS_NUM, wndObj)
+    let isLimitReached = this.isPresetsLimitReached()
+    let newPresetBtnObj = showObjById("newPresetBtn", isAvailable, wndObj)
+    if (newPresetBtnObj?.isValid()) {
+      newPresetBtnObj.inactiveColor = isLimitReached ? "yes" : "no"
+      newPresetBtnObj.tooltip = isLimitReached ? this.getPresetsLimitText() : ""
+    }
 
     if (this.curPresetIdx == null || this.presets?[this.curPresetIdx] == null) {
       showObjById("actionBtn", false, wndObj)
@@ -613,10 +619,10 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     let isVisibleActionsButton = actions.len() > 0
     let bObj = showObjById("openPresetMenuBtn", isVisibleActionsButton, wndObj)
     if (isVisibleActionsButton) {
-      if (actions.len() == 1)
-        bObj.setValue(actions[0].text)
-      else
-        bObj.setValue(loc("msgbox/presetActions"))
+      let single = actions.len() == 1 ? actions[0] : null
+      bObj.setValue(single?.text ?? loc("msgbox/presetActions"))
+      bObj.inactiveColor = (single?.isVisualDisabled ?? false) ? "yes" : "no"
+      bObj.tooltip = single?.tooltip ?? ""
     }
 
     let idx = this.curPresetIdx
@@ -874,7 +880,17 @@ let weaponryPresetsWnd = class (BaseGuiHandlerWT) {
     getCustomWeaponryPresetView(this.unit, newPreset, this.favoriteArr, this.availableWeapons))
 
   function onPresetNew() {
-    this.editNewPreset(getDefaultCustomPresetParams(this.customIdx))
+    if (this.isPresetsLimitReached())
+      this.showPresetsLimitMsg()
+    else
+      this.editNewPreset(getDefaultCustomPresetParams(this.customIdx))
+  }
+
+  isPresetsLimitReached = @() this.presets.filter(isCustomPreset).len() >= MAX_PRESETS_NUM
+  getPresetsLimitText = @() loc("weaponry/customPresetsLimit", { num = MAX_PRESETS_NUM })
+
+  function showPresetsLimitMsg() {
+    this.msgBox("custom_presets_limit", this.getPresetsLimitText(), [["ok"]], "ok")
   }
 
   function onPresetCopy() {

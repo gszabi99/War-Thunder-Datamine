@@ -436,6 +436,7 @@ let ItemsList = class (BaseGuiHandlerWT) {
   function applyFilters(resetPage = true) {
     this.scene.findObject("recycling_controls").show(this.isInRecyclingTab())
 
+    let lastItemsPerPage = this.itemsPerPage
     this.initItemsListSizeOnce()
 
     let lastPage = this.curPage
@@ -460,6 +461,7 @@ let ItemsList = class (BaseGuiHandlerWT) {
 
     if (!this.tabHasChanged
         && lastPage == this.curPage
+        && lastItemsPerPage == this.itemsPerPage
         && isEqualItemsLists(lastItemsList, this.itemsList))
       return
 

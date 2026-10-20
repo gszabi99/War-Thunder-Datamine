@@ -14,16 +14,15 @@
       shopCollapsedButton {
         id:t='title_expand_btn'
         position:t='absolute'
-        width:t='16@sf/@pf'
-        pos:t='0.9@modArrowWidth - w/2, (ph-h)/2'
+        pos:t='0.9@modArrowWidth - 8@sf/@pf, (ph-h)/2'
+        padding-left:t='16@sf/@pf + 4@sf/@pf'
         isCollapsed:t='no'
-        isCollapseAllBtn:t='yes'
-        text:t=''
+        font:t='@fontSmall'
+        text:t='#mainmenu/btnCollapseAll'
         on_click:t = 'onExpandAllBtn'
 
-        img {
-          position:t='relative'
-          size:t='16@sf/@pf, w'
+        shopCollapsedBtnIcon {
+          img {}
         }
       }
     <</hasExpandBtn>>

@@ -21,14 +21,14 @@ return freeze([
       : null
   }
 
-
-
-
-
-
-
-
-
+  {
+    id = "hangar_halloween"
+    locId = "options/hangar_halloween"
+    beginDate = "10-27 00:00:00"
+    endDate = "11-01 00:00:00"
+    customPath = is_xboxone ? "config/hangar_halloween_xboxone.blk"
+      : null
+  }
 
   {
     id = "hangar_winter"

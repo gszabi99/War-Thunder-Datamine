@@ -1,6 +1,5 @@
 import "%sqStdLibs/helpers/u.nut" as u
 from "%sqStdLibs/helpers/subscriptions.nut" import subscribe_handler
-from "dagor.localize" import doesLocTextExist
 from "dagor.workcycle" import resetTimeout, clearTimer
 from "%scripts/dagui_library.nut" import *
 
@@ -14,7 +13,9 @@ let { openSlotbarPresetSettings } = require("%scripts/slotbar/slotbarPresets/slo
 let { MAX_COUNTRY_PRESETS_AMOUNT, canLoadSlotbarPreset, loadSlotbarPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 let { getCurrentPresetIdx } = require("%scripts/slotbar/slotbarPresetsState.nut")
 let { getGameModeById } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { isShowModes, isShowTitles, isShowRatings, isAbbreviateModes, isAutoAbbreviation, getPresetsDataByCountry } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
+let { isShowModes, isShowTitles, isShowRatings, isAbbreviateModes, isAutoAbbreviation,
+  getPresetsDataByCountry, getAbbreviationModeName
+} = require("%scripts/slotbar/slotbarPresets/slotbarPresetsUtils.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { openSlotbarPresetsListEditWnd } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsEdit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -146,18 +147,6 @@ let SlotbarPresetsList = class {
     }
   }
 
-  function getAbbreviationModeName(gm) {
-    let { id = null, defAbbreviateLocId = null } = gm
-    if (id == null)
-      return ""
-
-    let abbrLocId = $"slotbarPresetsAbreviaton/{id}"
-    if (doesLocTextExist(abbrLocId))
-      return loc(abbrLocId)
-
-    return doesLocTextExist(defAbbreviateLocId) ? loc(defAbbreviateLocId) : ""
-  }
-
   function createPresetTitleData(presetData, autoAbbrData = autoAbbrTypes.none) {
     let autoAbbr = autoAbbrData != autoAbbrTypes.none
 
@@ -168,7 +157,7 @@ let SlotbarPresetsList = class {
     let gm = getGameModeById(presetData.gameModeId)
 
     let modeName = !isShowGMInTab ? ""
-      : isAbbreviateGMInTab ? this.getAbbreviationModeName(gm)
+      : isAbbreviateGMInTab ? getAbbreviationModeName(gm)
       : (gm?.getText() ?? "")
 
     return {
@@ -342,19 +331,7 @@ let SlotbarPresetsList = class {
     return null
   }
 
-  function getPresetsButtonObj() {
-    if (this.scene == null)
-      return null
-    let obj = this.scene.findObject("btnPresets")
-    if (checkObj(obj))
-      return obj
-    return null
-  }
-
   
-
-
-
   function getListChildByPresetIdx(presetIdx) {
     let listObj = this.getListObj()
     if (listObj == null)

@@ -628,7 +628,7 @@ let SlotbarWidget = class (BaseGuiHandlerWT) {
          if (needUpdateCountriesMarkup)
            break
       }
-    else {
+    if (needUpdateCountriesMarkup) {
       let countriesData = handyman.renderCached("%gui/slotbar/slotbarCountryItem.tpl", countriesView)
       this.guiScene.replaceContentFromText(this.headerObj, countriesData, countriesData.len(), this)
     }

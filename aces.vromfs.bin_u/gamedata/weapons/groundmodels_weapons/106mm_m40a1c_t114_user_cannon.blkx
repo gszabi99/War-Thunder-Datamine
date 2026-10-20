@@ -19,7 +19,6 @@
   "bEnablePause": false,
   "bullets": -1,
   "bulletsCluster": 1,
-  "useSingleIconForBullet": true,
   "fxType": "muzzle_ground_100mm_recoilless",
   "fxGroundDust": "dust_ground_wave_dirt_big",
   "fxGrassDust": "dust_ground_wave_grass_big",
@@ -27,27 +26,29 @@
   "fxSnowDust": "dust_ground_wave_snow_big",
   "fxConcreteDust": "dust_ground_wave_asphalt_big",
   "fxWaterShockWave": "dust_waterwave_big",
+  "shouldCollideWithRendinsts": true,
+  "sound_path": "tanks/weapon_tanks/cannons",
+  "sound_pathStudio": "ground/weapon/cannons",
+  "sound": "106mm_M40A1C",
+  "sfxReloadBullet": "grd_cannon_m40a1_reload",
+  "fxMultipleSpawn": true,
+  "isBulletBelt": false,
+  "notUseDefaultBulletInGui": true,
+  "useSingleIconForBullet": true,
   "fxTypeEjector": "smoke_gunpowder_gun_early",
   "ejectionFxSpeedRange": [
     15.0,
     40.0
   ],
-  "shouldCollideWithRendinsts": true,
-  "sound_path": "tanks/weapon_tanks/cannons",
-  "sound_pathStudio": "ground/weapon/cannons",
-  "sound": "106mm_M40A1C",
   "sound_inside": "106mm_M40A1C_interior",
-  "sfxReloadBullet": "grd_cannon_m40a1_reload",
-  "fxMultipleSpawn": true,
-  "isBulletBelt": false,
-  "notUseDefaultBulletInGui": true,
   "bullet": {
     "bulletCount": 25,
-    "mass": 10.0,
+    "mass": 7.96,
     "explosiveType": "comp_b",
     "explosiveMass": 1.26,
-    "caliber": 0.106,
-    "speed": 502.0,
+    "caliber": 0.105,
+    "speed": 502.92,
+    "Cx": 0.45,
     "maxDistance": 7000.0,
     "normalizationPreset": "heat",
     "ricochetPreset": "heat_fs",
@@ -156,12 +157,6 @@
         10000.0
       ]
     },
-    "cumulativeDamage": {
-      "armorPower": 433.0,
-      "distance": 4.5,
-      "damage": 200.0,
-      "onHitChanceMultFire": 25.0
-    },
     "damage": {
       "explosive": {
         "radius": 0.15,
@@ -260,6 +255,12 @@
     },
     "shatterDamage": {
       "breachConeAngle": 45.0
+    },
+    "cumulativeDamage": {
+      "armorPower": 433.0,
+      "distance": 4.5,
+      "damage": 200.0,
+      "onHitChanceMultFire": 25.0
     },
     "visual": {
       "range_percent_of_ammo": [
@@ -668,11 +669,12 @@
   "106mm_M344A1_HEAT": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 10.0,
+      "mass": 7.96,
       "explosiveType": "comp_b",
       "explosiveMass": 1.26,
-      "caliber": 0.106,
-      "speed": 502.0,
+      "caliber": 0.105,
+      "speed": 502.92,
+      "Cx": 0.45,
       "maxDistance": 7000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "heat_fs",
@@ -781,12 +783,6 @@
           10000.0
         ]
       },
-      "cumulativeDamage": {
-        "armorPower": 433.0,
-        "distance": 4.5,
-        "damage": 200.0,
-        "onHitChanceMultFire": 25.0
-      },
       "damage": {
         "explosive": {
           "radius": 0.15,
@@ -885,6 +881,12 @@
       },
       "shatterDamage": {
         "breachConeAngle": 45.0
+      },
+      "cumulativeDamage": {
+        "armorPower": 433.0,
+        "distance": 4.5,
+        "damage": 200.0,
+        "onHitChanceMultFire": 25.0
       },
       "visual": {
         "range_percent_of_ammo": [
@@ -1294,12 +1296,12 @@
   "106mm_M361A1_HESH": {
     "bullet": {
       "bulletCount": 25,
-      "mass": 10.0,
+      "mass": 7.95,
       "explosiveType": "comp_a",
       "explosiveMass": 3.5,
-      "caliber": 0.106,
-      "speed": 498.0,
-      "Cx": 0.7,
+      "caliber": 0.105,
+      "speed": 498.348,
+      "Cx": 0.45,
       "maxDistance": 10000.0,
       "normalizationPreset": "heat",
       "ricochetPreset": "hesh",

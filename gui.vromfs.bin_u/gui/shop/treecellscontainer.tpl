@@ -66,6 +66,15 @@ shopRankTable {
     height:t='ph'
   }
 
+  shopCollapsedExpandArea {
+    id:t='collapsed_expand_area'
+    containerIndex:t='<<containerId>>'
+    display:t='hide'
+    on_click:t='onCollapsedExpandAreaClick'
+
+    slotHoverHighlight {}
+  }
+
   tdiv {
     id:t='collapsed_icons'
     height:t='ph'
@@ -197,16 +206,16 @@ shopRankTable {
   }
 
   shopCollapsedButton {
-    position:t='absolute'
     id:t='expandbtn_<<containerId>>'
+    position:t='absolute'
     left:t="0.9@modArrowWidth - 8@sf/@pf"
-    padding-right:t='16@sf/@pf + h * 0.2'
+    padding-left:t='16@sf/@pf + 4@sf/@pf'
+    font:t='@fontNormal'
     isNavInContainerBtn:t='yes'
     on_click:t='onExpandBtnClick'
 
-    img {
-      position:t='relative'
-      size:t='16@sf/@pf, w * 0.615'
+    shopCollapsedBtnIcon {
+      img {}
     }
   }
 }

@@ -353,6 +353,8 @@ function exchangeSeveralRecipes(initialExchanges, processingExchanges = null, re
     recipe.generatorId,
     amount.tointeger(),
     function(res) {
+      
+      markInventoryUpdate()
       resultItems.extend(res)
       self(initialExchanges, processingExchanges, resultItems)
     }

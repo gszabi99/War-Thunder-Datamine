@@ -319,7 +319,9 @@ let Decorator = class {
 
   function updateFromItemdef(itemDef) {
     this.rarity = itemRarity.get(itemDef?.item_quality, itemDef?.name_color)
-    this.tags = itemDef?.tags
+    
+    this.tags = this.getIsLive() ? copyParamsToTable(itemDef?.tags, { usergenerated = true })
+      : itemDef?.tags
   }
 
   function setCouponItemdefId(itemdefId) {

@@ -1088,6 +1088,9 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
       let arrow = container.findObject("shop_arrow")
       arrow.show(needDrawArrow)
       tierText.setValue(needDrawTier ? loc("shop/age/num", {num = get_roman_numeral(rank)}) : "")
+      rankTable.findObject("collapsed_expand_area")["tooltip"] = needDrawTier
+        ? loc("shop/expandRankVehicles", { rank = get_roman_numeral(rank) })
+        : loc("mainmenu/btnExpand")
       if (!needDrawArrow && !needDrawTier)
         continue
 
@@ -2492,6 +2495,10 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     this.toggleCellsContainer(containerIndex)
   }
 
+  function onCollapsedExpandAreaClick(obj) {
+    this.toggleCellsContainer(to_integer_safe(obj["containerIndex"]))
+  }
+
   function onExpandAllBtn(obj) {
     let needCollapse = obj.isCollapsed == "no"
     this.collapseAllCellsContainers(needCollapse)
@@ -2501,7 +2508,7 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     let expandAllBtn = this.scene.findObject("title_expand_btn")
     if (expandAllBtn) {
       expandAllBtn.isCollapsed = needCollapse ? "yes" : "no"
-      expandAllBtn["tooltip"] = loc(needCollapse ? "mainmenu/btnExpandAll" : "mainmenu/btnCollapseAll")
+      expandAllBtn.setValue(loc(needCollapse ? "mainmenu/btnExpandAll" : "mainmenu/btnCollapseAll"))
     }
   }
 
@@ -2568,6 +2575,7 @@ let ShopMenuHandler = class (BaseGuiHandlerWT) {
     rankTable["height-base"] = needCollapse ? height : collapseHeight
     rankTable["height-end"] = needCollapse ? collapseHeight : height
     rankTable.findObject("collapsed_icons").show(needCollapse)
+    rankTable.findObject("collapsed_expand_area").show(needCollapse)
 
     if (isInstant)
       rankTable.height = $"{needCollapse ? collapseHeight : height }*sh/100.0"

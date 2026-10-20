@@ -140,13 +140,13 @@ let mdash = loc("ui/mdash")
 let bullet = loc("ui/bullet")
 let space = loc("ui/space", " ")
 
-let unitsDeg = loc("measureUnits/deg")
-let unitsSec = loc("measureUnits/seconds")
-let unitsDegPerSec = loc("measureUnits/deg_per_sec")
-let unitsRoundsPerMin = loc("measureUnits/rounds_per_min")
-let unitsMm = loc("measureUnits/mm")
-let unitsPcs = loc("measureUnits/pcs")
-let unitsPercent = loc("measureUnits/percent")
+let getUnitsDeg = @() loc("measureUnits/deg")
+let getUnitsSec = @() loc("measureUnits/seconds")
+let getUnitsDegPerSec = @() loc("measureUnits/deg_per_sec")
+let getUnitsRoundsPerMin = @() loc("measureUnits/rounds_per_min")
+let getUnitsMm = @() loc("measureUnits/mm")
+let getUnitsPcs = @() loc("measureUnits/pcs")
+let getUnitsPercent = @() loc("measureUnits/percent")
 
 let getSign = @(n) n < 0 ? -1 : 1
 
@@ -281,10 +281,10 @@ function mkAnglesRangeText(rawX, rawY, isNegativeZeroForX = false, needToRound =
   let xStr = (needToRound || rawX == 0) ? format("%d", x) : format("%.1f", x)
   let yStr = (needToRound || rawY == 0) ? format("%d", y) : format("%.1f", y)
   if (x + y == 0)
-    return $"±{yStr}{unitsDeg}"
+    return $"±{yStr}{getUnitsDeg()}"
   let signX = isNegativeZeroForX && x == 0 ? "-" : (x >= 0 ? "+" : "")
   let signY = y >= 0 ? "+" : ""
-  return $"{signX}{xStr}{unitsDeg}/{signY}{yStr}{unitsDeg}"
+  return $"{signX}{xStr}{getUnitsDeg()}/{signY}{yStr}{getUnitsDeg()}"
 }
 
 
@@ -722,7 +722,7 @@ function getLowBatteryGuidanceSpeedDesc(weaponInfoBlk, axisParam, commonData) {
     if (lowBatterySpeed) {
       let lowBatteryLocKey = $"xray/turnTurretSpeed/lowBattery/{axisParam.axisName == "x" ? "yaw" : "pitch"}"
       desc.append("".concat(loc(lowBatteryLocKey, ""), colon,
-        format("%.1f", lowBatterySpeed), unitsDegPerSec))
+        format("%.1f", lowBatterySpeed), getUnitsDegPerSec()))
     }
   }
   return desc
@@ -817,11 +817,11 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
 
       if (speed != 0) {
         let speedTxt = format("%.1f", speed)
-        let res = { value = "".concat(loc($"crewSkillParameter/{a.modifName}"), colon, speedTxt, unitsDegPerSec) }
+        let res = { value = "".concat(loc($"crewSkillParameter/{a.modifName}"), colon, speedTxt, getUnitsDegPerSec()) }
         if (simUnitType == S_TANK) {
           let topVal = a.getTankTopVal(commonData) * speedMul
           if (topVal > speed)
-            res.topValue <- "".concat(format("%.1f", topVal), unitsDegPerSec)
+            res.topValue <- "".concat(format("%.1f", topVal), getUnitsDegPerSec())
         }
         if (isDevOnlyTurretInfo)
           res.isDevParam <- true
@@ -1099,9 +1099,9 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
 
   let desc = []
   if (firstStageShotFreq) {
-    let res = { value = " ".concat(loc("shop/shotFreq/firstStage"), round(firstStageShotFreq), unitsRoundsPerMin) }
+    let res = { value = " ".concat(loc("shop/shotFreq/firstStage"), round(firstStageShotFreq), getUnitsRoundsPerMin()) }
     if (firstStageShotFreq < firstStageShotFreqTop)
-      res.topValue <- " ".concat(round(firstStageShotFreqTop), unitsRoundsPerMin)
+      res.topValue <- " ".concat(round(firstStageShotFreqTop), getUnitsRoundsPerMin())
     desc.append(res)
   }
 
@@ -1112,18 +1112,18 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
     shotFreqRPMTop = round_by_value(shotFreqRPMTop, shotFreqRPMTop > 600 ? 10
       : shotFreqRPMTop < 10 ? 0.1
       : 1)
-    let res = { value = " ".concat(loc("shop/shotFreq"), shotFreqRPM, unitsRoundsPerMin) }
+    let res = { value = " ".concat(loc("shop/shotFreq"), shotFreqRPM, getUnitsRoundsPerMin()) }
     if (shotFreqRPM < shotFreqRPMTop)
-      res.topValue <- " ".concat(shotFreqRPMTop, unitsRoundsPerMin)
+      res.topValue <- " ".concat(shotFreqRPMTop, getUnitsRoundsPerMin())
     desc.append(res)
   }
   if (reloadTimeS) {
     reloadTimeS = round_by_value(reloadTimeS, 0.1)
     topValue = round_by_value(topValue, 0.1)
     let reloadTimeSTxt = (reloadTimeS % 1) ? format("%.1f", reloadTimeS) : format("%d", reloadTimeS)
-    let res = { value = " ".concat(loc("shop/reloadTime"), reloadTimeSTxt, unitsSec) }
+    let res = { value = " ".concat(loc("shop/reloadTime"), reloadTimeSTxt, getUnitsSec()) }
     if (topValue != 0 && topValue < reloadTimeS)
-      res.topValue <- " ".concat(topValue, unitsSec)
+      res.topValue <- " ".concat(topValue, getUnitsSec())
     desc.append(res)
   }
   return desc
@@ -1165,11 +1165,11 @@ function getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData) {
     let replenishmentTime = ammoStowage?.replenishmentTime ?? 0
     if (replenishmentDelay)
       desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_delay", ""), colon,
-        toStr_secTrimmed(replenishmentDelay), unitsSec)
+        toStr_secTrimmed(replenishmentDelay), getUnitsSec())
         isDevParam = true })
     if (replenishmentTime)
       desc.append({ value = "".concat(loc("xray/ammo/first_stage/replenish_time", ""), colon,
-        toStr_secTrimmed(replenishmentTime), unitsSec)
+        toStr_secTrimmed(replenishmentTime), getUnitsSec())
         isDevParam = true })
 
     let reloadTime = getProp_tankReloadTime(commonData)
@@ -1179,11 +1179,11 @@ function getWeaponAmmoReserveReplenishDesc(weaponInfoBlk, commonData) {
       let reserveTopValue = round_by_value(getProp_tankReloadTimeTop(commonData) * reloadTimeMult, 0.1)
       let res = {
         value = "".concat(loc("xray/ammo/first_stage/reload_time_when_empty", ""), colon,
-          toStr_secTrimmed(reserveReloadTime), unitsSec)
+          toStr_secTrimmed(reserveReloadTime), getUnitsSec())
         isDevParam = true
       }
       if (reserveTopValue != 0 && reserveTopValue < reserveReloadTime)
-        res.topValue <- " ".concat(toStr_secTrimmed(reserveTopValue), unitsSec)
+        res.topValue <- " ".concat(toStr_secTrimmed(reserveTopValue), getUnitsSec())
       desc.append(res)
     }
   }
@@ -1562,7 +1562,7 @@ function mkAmmoDesc(partType, params, commonData) {
   if (stowageInfo.firstStageCount) {
     local txt = loc(isShipOrBoat ? "xray/ammo/first_stage_ship" : "xray/ammo/first_stage")
     if (simUnitType == S_TANK)
-      txt = "".concat(txt, comma, stowageInfo.firstStageCount, " ", unitsPcs)
+      txt = "".concat(txt, comma, stowageInfo.firstStageCount, " ", getUnitsPcs())
     desc.append(txt)
   }
   if (stowageInfo.isAutoLoad)
@@ -1628,7 +1628,7 @@ function mkTankArmorPartDesc(partType, params, commonData) {
   let partName = params.name
   let desc = []
   local partLocId = partType
-  let strUnits = "".concat(nbsp, unitsMm)
+  let strUnits = "".concat(nbsp, getUnitsMm())
   let info = getModernArmorParamsByDmPartName(partName, commonData)
 
   if (info.titleLoc != "")
@@ -1684,7 +1684,7 @@ function mkCoalBunkerDesc(_partType, _params, commonData) {
   let coalToSteelMul = armorClassToSteel?["ships_coal_bunker"] ?? 0
   if (coalToSteelMul != 0)
     desc.append(loc("shop/armorThicknessEquivalent/coal_bunker",
-      { thickness = "".concat(round(coalToSteelMul * 1000).tostring(), " ", unitsMm) }))
+      { thickness = "".concat(round(coalToSteelMul * 1000).tostring(), " ", getUnitsMm()) }))
   return { desc }
 }
 
@@ -2020,8 +2020,8 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
 
   if (isSearchRadar)
     desc.append("".concat(indent, loc("radar_search_zone_max"), colon,
-      round(searchZoneAzimuthWidth), unitsDeg, loc("ui/multiply"),
-      round(searchZoneElevationWidth), unitsDeg))
+      round(searchZoneAzimuthWidth), getUnitsDeg(), loc("ui/multiply"),
+      round(searchZoneElevationWidth), getUnitsDeg()))
 
   if (airSearch) {
     local airSearchIndent = ""
@@ -2112,7 +2112,7 @@ function mkApsTexts(infoBlk) {
       mkAnglesRangeText(verAngles.x, verAngles.y)))
   if (reloadTime)
     desc.append("".concat(loc("xray/aps/reloadTime"), colon,
-      reloadTime, " ", unitsSec))
+      reloadTime, " ", getUnitsSec()))
   if (reactionTime)
     desc.append("".concat(loc("xray/aps/reactionTime"), colon,
       reactionTime * 1000, " ", loc("measureUnits/milliseconds")))
@@ -2121,7 +2121,7 @@ function mkApsTexts(infoBlk) {
       $"{targetSpeed.x}-{targetSpeed.y}", " ", loc("measureUnits/metersPerSecond_climbSpeed")))
   if (shotCount)
     desc.append("".concat(loc("xray/aps/shotCount"), colon,
-      shotCount, " ", unitsPcs))
+      shotCount, " ", getUnitsPcs()))
   return desc
 }
 
@@ -2244,7 +2244,7 @@ function getOpticsParams(zoomOutFov, zoomInFov) {
     fovOutIn.remove(0)
   }
   let zoomTexts = zoom.map(@(v) format("%.1fx", v))
-  let fovTexts = fovOutIn.map(@(fov) "".concat(round(fov), unitsDeg))
+  let fovTexts = fovOutIn.map(@(fov) "".concat(round(fov), getUnitsDeg()))
   return {
     zoom = mdash.join(zoomTexts, true)
     fov  = mdash.join(fovTexts,  true)
@@ -2554,11 +2554,11 @@ function mkCountermeasureDesc(_partType, params, commonData) {
             a %= 360
             if (a >= 180)
               a -= 360
-            return "".concat(a >= 0 ? "+" : "", a, unitsDeg)
+            return "".concat(a >= 0 ? "+" : "", a, getUnitsDeg())
           })
           comment = loc("ui/parentheses/space", { text = "/".join(angles) })
         }
-        desc.append("".concat(loc(cfg.label), colon, sector, unitsDeg, comment))
+        desc.append("".concat(loc(cfg.label), colon, sector, getUnitsDeg(), comment))
       }
       break
     }
@@ -2650,17 +2650,17 @@ function mkFireDirecirOrRangefinderDesc(_partType, params, commonData) {
       let shipDistancePrecisionErrorMul = getMul_shipDistancePrecisionError(commonData)
       let accuracy = getFireControlAccuracyPercent(fcBlk, shipDistancePrecisionErrorMul)
       if (accuracy != -1)
-        desc.append("".concat(loc("xray/fire_control/accuracy"), " ", accuracy, unitsPercent))
+        desc.append("".concat(loc("xray/fire_control/accuracy"), " ", accuracy, getUnitsPercent()))
 
       
       let lockTime = fcBlk?.targetLockTime
       if (lockTime)
-        desc.append("".concat(loc("xray/fire_control/lock_time"), " ", lockTime, unitsSec))
+        desc.append("".concat(loc("xray/fire_control/lock_time"), " ", lockTime, getUnitsSec()))
 
       
       let calcTime = fcBlk?.calcTime
       if (calcTime)
-        desc.append("".concat(loc("xray/fire_control/calc_time"), " ", calcTime, unitsSec))
+        desc.append("".concat(loc("xray/fire_control/calc_time"), " ", calcTime, getUnitsSec()))
     }
   }
   return { desc }

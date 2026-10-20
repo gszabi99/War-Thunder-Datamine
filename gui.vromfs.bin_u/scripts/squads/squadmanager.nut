@@ -1444,7 +1444,7 @@ g_squad_manager = {
   }
 
   function onEventLobbyStatusChange(_params) {
-    if (!isInSessionRoom.get())
+    if (!isInSessionRoom.get() && !isAnyQueuesActive())
       g_squad_manager.setReadyFlag(false)
 
     g_squad_manager.updateMyMemberData()

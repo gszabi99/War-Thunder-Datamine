@@ -178,46 +178,56 @@ function saveCountryPreset(countryId = null, shouldSaveProfile = true) {
   return true
 }
 
-function createSlotbarPreset(newPresetName = null) {
+function createSlotbarPreset(newPresetName, cb) {
   if (!canCreateSlotbarPreset())
-    return false
+    return
+
   let countryId = profileCountrySq.get()
-  slotbarPresetsByCountry[countryId].append(createEmptyPreset(countryId, slotbarPresetsByCountry[countryId].len(), newPresetName))
+  let presetIdx = slotbarPresetsByCountry[countryId].len()
+  slotbarPresetsByCountry[countryId].append(createEmptyPreset(countryId, presetIdx, newPresetName))
+
   saveCountryPreset(countryId)
-  broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresetsByCountry[countryId].len() - 1 })
-  return true
+  cb(presetIdx)
+  broadcastEvent("SlotbarPresetsChanged")
 }
 
-function copySlotbarPreset(fromPreset) {
+function copySlotbarPreset(fromPreset, presetIdx, cb) {
   if (!canCreateSlotbarPreset())
-    return false
+    return
+
   let countryId = profileCountrySq.get()
   let newPreset = deep_clone(fromPreset).__update({ title = $"{fromPreset.title} *" })
-  slotbarPresetsByCountry[countryId].append(newPreset)
+
+  slotbarPresetsByCountry[countryId].insert(presetIdx, newPreset)
+  if (presetIdx <= slotbarPresetsSeletected[countryId])
+    slotbarPresetsSeletected[countryId]++
+
   saveCountryPreset(countryId)
-  broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresetsByCountry[countryId].len() - 1 })
-  return true
+  cb(presetIdx)
+  broadcastEvent("SlotbarPresetsChanged")
 }
 
 function eraseSlotbarPreset(idx) {
   if (!canEraseSlotbarPreset())
-    return false
+    return
+
   let countryId = profileCountrySq.get()
   if (idx == slotbarPresetsSeletected[countryId])
     return
+
   slotbarPresetsByCountry[countryId].remove(idx)
   if (slotbarPresetsSeletected[countryId] != null && slotbarPresetsSeletected[countryId] > idx)
     slotbarPresetsSeletected[countryId]--
   saveCountryPreset(countryId)
-  broadcastEvent("SlotbarPresetsChanged", { showPreset = min(idx, slotbarPresetsByCountry[countryId].len() - 1) })
-  return true
+  broadcastEvent("SlotbarPresetsChanged")
 }
 
 function moveSlotbarPreset(idx, offset) {
   let countryId = profileCountrySq.get()
   let newIdx = clamp(idx + offset, 0, slotbarPresetsByCountry[countryId].len() - 1)
   if (newIdx == idx)
-    return false
+    return
+
   slotbarPresetsByCountry[countryId].insert(newIdx, slotbarPresetsByCountry[countryId].remove(idx))
   if (slotbarPresetsSeletected[countryId] != null) {
     if (slotbarPresetsSeletected[countryId] == idx)
@@ -228,8 +238,7 @@ function moveSlotbarPreset(idx, offset) {
       slotbarPresetsSeletected[countryId] += (offset > 0 ? -1 : 1)
   }
   saveCountryPreset(countryId)
-  broadcastEvent("SlotbarPresetsChanged", { showPreset = newIdx })
-  return true
+  broadcastEvent("SlotbarPresetsChanged")
 }
 
 function onChangePresetName(idx, newName, countryId) {
@@ -239,7 +248,7 @@ function onChangePresetName(idx, newName, countryId) {
 
   slotbarPresetsByCountry[countryId][idx].title <- newName
   saveCountryPreset(countryId)
-  broadcastEvent("SlotbarPresetsChanged", { showPreset = idx })
+  broadcastEvent("SlotbarPresetsChanged")
   return true
 }
 

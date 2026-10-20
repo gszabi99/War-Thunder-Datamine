@@ -16,8 +16,6 @@ let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { getCurrentSlotbarPreset } = require("%scripts/slotbar/slotbarPresetsHelpers.nut")
 let { getSlotbarPresetsList } = require("%scripts/slotbar/slotbarPresetsList.nut")
 let { slotbarPresetsByCountry, slotbarPresetsSeletected } = require("%scripts/slotbar/slotbarPresetsState.nut")
-let { openSlotbarPresetsListEditWnd, closeSlotbarPresetsListEditWnd } = require("%scripts/slotbar/slotbarPresets/slotbarPresetsEdit.nut")
-let { loadSlotbarPreset } = require("%scripts/slotbar/slotbarPresets.nut")
 
 let SlotbarPresetsTutorial = class {
   
@@ -51,10 +49,6 @@ let SlotbarPresetsTutorial = class {
   validPresetIndex = -1
 
   
-  chooseSlotbarPresetHandler = null
-  chooseSlotbarPresetIndex = -1
-
-  
   crewIdInCountry = -1 
 
   currentTutorial = null
@@ -68,48 +62,35 @@ let SlotbarPresetsTutorial = class {
     this.currentGameModeId = getCurrentGameModeId()
     if (this.preset == null)
       return false
+
     let currentPresetIndex = slotbarPresetsSeletected?[this.currentCountry] ?? -1
     this.validPresetIndex = this.getPresetIndex(this.preset)
-    if (currentPresetIndex == this.validPresetIndex)
+    if (currentPresetIndex == this.validPresetIndex) {
       if (this.isNewUnitTypeToBattleTutorial)
         return this.startOpenGameModeSelectStep()
       else
         return this.startUnitSelectStep()
+    }
+
     this.presetsList = getSlotbarPresetsList(this.currentHandler)
     if (this.presetsList == null)
       return false
+
     let presetObj = this.presetsList.getListChildByPresetIdx(this.validPresetIndex)
-    local steps
-    if (presetObj && presetObj.isVisible()) { 
-      this.currentStepsName = "selectPreset"
-      steps = [{
-        obj = [presetObj]
-        text = this.createMessageWhithUnitType()
-        actionType = tutorAction.OBJ_CLICK
-        shortcut = SHORTCUT.GAMEPAD_X
-        cb = Callback(this.onSlotbarPresetSelect, this)
-        keepEnv = true
-      }]
-    }
-    else {
-      let presetsButtonObj = this.presetsList.getPresetsButtonObj()
-      if (presetsButtonObj == null)
-        return false
-      this.currentStepsName = "openSlotbarPresetWnd"
-      steps = [{
-        obj = [presetsButtonObj]
-        text = loc("slotbarPresetsTutorial/openWindow")
-        actionType = tutorAction.OBJ_CLICK
-        shortcut = SHORTCUT.GAMEPAD_X
-        cb = Callback(this.onChooseSlotbarPresetWnd_Open, this)
-        keepEnv = true
-      }]
-    }
-    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
+    if (presetObj == null)
+      return false
 
-    
+    this.currentStepsName = "selectPreset"
+    this.currentTutorial = gui_modal_tutor([{
+      obj = [presetObj]
+      text = this.createMessageWhithUnitType()
+      actionType = tutorAction.OBJ_CLICK
+      shortcut = SHORTCUT.GAMEPAD_X
+      cb = Callback(this.onSlotbarPresetSelect, this)
+      keepEnv = true
+    }], this.currentHandler, true)
+
     saveLocalByAccount("tutor/slotbar_presets_tutorial_counter", this.getCounter() + 1)
-
     return true
   }
 
@@ -120,41 +101,6 @@ let SlotbarPresetsTutorial = class {
     let listObj = this.presetsList.getListObj()
     if (listObj != null)
       listObj.setValue(this.validPresetIndex)
-  }
-
-  function onChooseSlotbarPresetWnd_Open() {
-    if (this.checkCurrentTutorialCanceled())
-      return
-    this.chooseSlotbarPresetHandler = openSlotbarPresetsListEditWnd(this.presetsList.getPresetsButtonObj(), this.currentHandler)
-    this.chooseSlotbarPresetIndex = u.find_in_array(slotbarPresetsByCountry[this.currentCountry], this.preset)
-    if (this.chooseSlotbarPresetIndex == -1)
-      return
-    let itemsListObj = this.chooseSlotbarPresetHandler.scene.findObject("presetsList")
-    let presetObj = itemsListObj.getChild(this.chooseSlotbarPresetIndex)
-    if (!checkObj(presetObj))
-      return
-    let applyButtonObj = this.chooseSlotbarPresetHandler.scene.findObject("btnClose")
-    if (!checkObj(applyButtonObj))
-      return
-    let steps = [{
-      obj = [presetObj]
-      text = $"{this.createMessageWhithUnitType()}{"\n"}{loc("slotbarPresetsTutorial/autoChangePreset")}"
-      actionType = tutorAction.OBJ_CLICK
-      shortcut = SHORTCUT.GAMEPAD_X
-      cb = Callback(this.onChooseSlotbarPresetWnd_Select, this)
-      keepEnv = true
-    }]
-    this.currentStepsName = "applySlotbarPresetWnd"
-    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
-  }
-
-  function onChooseSlotbarPresetWnd_Select() {
-    if (this.checkCurrentTutorialCanceled(false))
-      return
-
-    subscriptions.add_event_listener("SlotbarPresetLoaded", this.onEventSlotbarPresetLoaded, this)
-    loadSlotbarPreset(this.chooseSlotbarPresetIndex)
-    closeSlotbarPresetsListEditWnd()
   }
 
   function onEventSlotbarPresetLoaded(_params) {
@@ -366,17 +312,9 @@ let SlotbarPresetsTutorial = class {
     this.startPressToBattleButtonStep()
   }
 
-  
-
-
-
-
-
-
-  function checkCurrentTutorialCanceled(removeCurrentTutorial = true) {
+  function checkCurrentTutorialCanceled() {
     let canceled = (this.currentTutorial?.canceled ?? false)
-    if (removeCurrentTutorial)
-      this.currentTutorial = null
+    this.currentTutorial = null
     if (canceled) {
       this.sendLastStepsNameToBigQuery()
       if (this.onComplete != null)

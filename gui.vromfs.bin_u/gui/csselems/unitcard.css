@@ -1644,7 +1644,6 @@ slotsHeader > img {
 shopCollapsedButton {
   re-type:text;
   color:@commonTextColor;
-  font:@fontNormal;
   behaviour:button;
   snd_click:click;
   shortcut-on-hover:yes;
@@ -1655,32 +1654,41 @@ shopCollapsedButton {
   height:1@modBlockTierNumHeight;
 }
 
-shopCollapsedButton > img {
-  background-image:#ui/gameuiskin#shop_collapse_btn.svg;
-  background-repeat:expand;
-  background-color:@commonTextColor;
-  rotation:0;
-  top:11@sf/@pf;
-  left:pw + ph * 0.2;
-  background-svg-size:16@sf/@pf, 10@sf/@pf;
-}
-
 shopCollapsedButton[text=""] {
-  padding-right:0;
+  padding-left:0;
   width:16@sf/@pf;
 }
 
-shopCollapsedButton[text=""] > img {
-  left:(pw-w)/2;
+shopCollapsedBtnIcon {
+  position:absolute;
+  pos:0, (ph-h)/2;
+  size:16@sf/@pf, 16@sf/@pf;
+  bgcolor:@buttonColor;
+  border:yes;
+  border-color:@extraInfoBlockBorderColor;
+  border-offset:@dp;
+  css-hier-invalidate:yes;
 }
 
+shopCollapsedBtnIcon > img {
+  size:pw, ph;
+  background-image:#ui/gameuiskin#slot_unfold.svg;
+  background-svg-size:pw, ph;
+  background-repeat:expand;
+  background-color:@buttonFontColor;
+  rotation:180;
+}
 
 shopCollapsedButton:hover {
   color:#FFFFFF;
 }
 
-shopCollapsedButton:hover > img {
-  background-color:#FFFFFF;
+shopCollapsedButton:hover > shopCollapsedBtnIcon {
+  bgcolor:@buttonColorHover;
+}
+
+shopCollapsedButton:hover > shopCollapsedBtnIcon > img {
+  background-color:@buttonFontColorHover;
 }
 
 shopCollapsedButton[isRed=yes] {
@@ -1691,26 +1699,12 @@ shopCollapsedButton[isRed=yes]:hover {
   color:#CC0006;
 }
 
-shopCollapsedButton[isRed=yes] > img {
-  background-color:#970307;
-}
-
-shopCollapsedButton[isRed=yes]:hover > img {
-  background-color:#CC0006;
-}
-
-shopCollapsedButton[isCollapsed=yes] > img {
-  rotation:180;
+shopCollapsedButton[isCollapsed=yes] > shopCollapsedBtnIcon > img {
+  rotation:0;
 }
 
 [show_console_buttons=yes] shopCollapsedButton:hover {
   needFocusBorder:yes;
-}
-
-shopCollapsedButton[isCollapseAllBtn=yes] > img {
-  background-image:#ui/gameuiskin#shop_collapse_all_btn.svg;
-  background-svg-size:16@sf/@pf, 16@sf/@pf;
-  top:(ph-h)/2;
 }
 
 [swap_ab=yes] shopCollapsedButton {
@@ -1756,6 +1750,31 @@ shopCollapsedDiscountIcon {
 
 shopRankTable[isCollapsed=yes] markerContainer {
   display:hide;
+}
+
+shopCollapsedExpandArea {
+  position:absolute;
+  size:pw, ph;
+  behaviour:button;
+  snd_click:click;
+  shortcut-on-hover:yes;
+  shortcutActivate: "J:A | J:RT | Space";
+  skip-navigation:yes;
+  css-hier-invalidate:yes;
+}
+
+[swap_ab=yes] shopCollapsedExpandArea {
+  shortcutActivate:"J:B | J:RT | Space";
+}
+
+shopCollapsedExpandArea > slotHoverHighlight {
+  pos:0, ph-h;
+  size:pw, ph/4;
+  foreground-svg-size:256@sf/@pf, 64@sf/@pf;
+}
+
+shopCollapsedExpandArea:hover > slotHoverHighlight {
+  display:show;
 }
 
 shopTopUnitBonus {

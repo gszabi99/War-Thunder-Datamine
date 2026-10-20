@@ -35,6 +35,9 @@ function needChooseClanUnitResearch() {
 function isHaveNonApprovedClanUnitResearches() {
   if (!isInMenu.get() || isAnyQueuesActive())
     return false
+  
+  if (hasFeature("AutoFlushClanExp") && clan_get_researching_unit() != "")
+    return false
 
   return needChooseClanUnitResearch()
 }
