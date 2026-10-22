@@ -16,7 +16,7 @@ let eventsState = require("%scripts/events/eventsState.nut")
 let { getEventDiffCode, getLastPlayedEvent, isEventsLoaded } = eventsState
 let getEventById = eventsState.getEvent 
 let { checkUnitRelevanceForEvent, getAvailableCountriesByEvent, getEDiffByEvent, isUnitAllowedForEvent, isUnitTypeAvailable, isUnitTypeRequired } = require("%scripts/events/eventTeamsInfo.nut")
-let { getEventNameText, getNameLocOldStyle } = require("%scripts/events/eventTexts.nut")
+let { getEventNameText, getAbbrLocKey } = require("%scripts/events/eventTexts.nut")
 let { diffCodeCompare, getEventPreviewVideoName, getEventTileImageName, getEventsForGcDrawer, getEventsVisibleInEventsWindowCount, isEventDisplayWide, isEventEnableOnDebug } = require("%scripts/events/eventDisplay.nut")
 let { eventChaptersManager } = require("%scripts/events/eventsChapter.nut")
 let { getLeaderGameModeId, isInSquad, isNotAloneOnline, isSquadLeader, isSquadMember } = require("%scripts/squads/squadState.nut")
@@ -531,7 +531,7 @@ function createEventGameMode(event, isTempGameMode = false) {
     unitTypes = null
     reqUnitTypes = null
     inactiveColor = null
-    defAbbreviateLocId = $"{getNameLocOldStyle(event, getEventEconomicName(event))}/abbr"
+    defAbbreviateLocId = getAbbrLocKey(event, getEventEconomicName(event))
   }
   gameMode.unitTypes = getUnitTypesByGameMode(gameMode, false)
   let reqUnitTypes = getUnitTypesByGameMode(gameMode, false, true)
