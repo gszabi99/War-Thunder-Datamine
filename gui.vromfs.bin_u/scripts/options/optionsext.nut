@@ -716,9 +716,11 @@ function fillXrayFilterDescr(optionId, descr, filters) {
   descr.value = value > 0 ? 0 : prevValue
 }
 
+let fuelHours = @(fuelMass, consumptionPerHour) consumptionPerHour > 0.0 ? fuelMass / consumptionPerHour : 0.0
+
 function getFuelParams(aircraftName) {
   if(!aircraftName)
-    return { maxFuel = 1.0, fuelConsumptionPerHour = 100.0 }
+    return { maxFuel = 1.0, fuelConsumptionPerHour = 100.0, dockedMaxFuel = 0.0, dockedFuelConsumptionPerHour = 0.0 }
 
   let maxFuel = get_aircraft_max_fuel(aircraftName)
   let difOpt = get_option(USEROPT_DIFFICULTY)
@@ -728,7 +730,10 @@ function getFuelParams(aircraftName) {
   let modOpt = get_option(USEROPT_MODIFICATIONS)
   let useModifications = get_game_mode() == GM_TEST_FLIGHT || get_game_mode() == GM_BUILDER ? modOpt.values[modOpt.value] : true
   let fuelConsumptionPerHour = get_aircraft_fuel_consumption(aircraftName, difficulty, useModifications)
-  return { maxFuel, fuelConsumptionPerHour }
+  let dockedPlane = get_unittags_blk()?[aircraftName].bombPlane ?? ""
+  let dockedMaxFuel = dockedPlane == "" ? 0.0 : get_aircraft_max_fuel(dockedPlane)
+  let dockedFuelConsumptionPerHour = dockedPlane == "" ? 0.0 : get_aircraft_fuel_consumption(dockedPlane, difficulty, useModifications)
+  return { maxFuel, fuelConsumptionPerHour, dockedMaxFuel, dockedFuelConsumptionPerHour }
 }
 
 let optionsMap = {
@@ -3004,7 +3009,8 @@ let optionsMap = {
     descr.optionCb = "onLoadFuelChange"
 
     let unitName = unitNameForWeapons.get()
-    let { maxFuel, fuelConsumptionPerHour } = getFuelParams(unitName)
+    let { maxFuel, fuelConsumptionPerHour, dockedMaxFuel, dockedFuelConsumptionPerHour } = getFuelParams(unitName)
+    let dockedHours = fuelHours(dockedMaxFuel, dockedFuelConsumptionPerHour)
     local minutes = [0, 20.0, 30.0, 45.0, 60.0, 1000000.0]
     local isFuelFixed = false
     if (unitName) {
@@ -3056,7 +3062,7 @@ let optionsMap = {
         foundMax = true
       }
 
-      let timeStr = time.hoursToString(timeInHours)
+      let timeStr = time.hoursToString(timeInHours + dockedHours)
       if (text.len())
         text = "".concat(text, loc("ui/parentheses/space", { text = timeStr }))
       else
@@ -3088,10 +3094,11 @@ let optionsMap = {
     descr.optionCb = "onLoadFuelCustomChange"
     let unitName = unitNameForWeapons.get()
     descr.value = get_unit_option(unitName, USEROPT_FUEL_AMOUNT_CUSTOM)
-    let { maxFuel, fuelConsumptionPerHour } = getFuelParams(unitName)
+    let { maxFuel, fuelConsumptionPerHour, dockedMaxFuel, dockedFuelConsumptionPerHour } = getFuelParams(unitName)
 
     descr.getValueLocText = function(val) {
-      let timeInHours = fuelConsumptionPerHour > 0.0 ? maxFuel * (val / 1000000.0) / fuelConsumptionPerHour : 0.0
+      let timeInHours = fuelHours(maxFuel * (val / 1000000.0), fuelConsumptionPerHour)
+        + fuelHours(dockedMaxFuel, dockedFuelConsumptionPerHour)
       let timeStr = time.hoursToString(timeInHours)
       return $"{val / 10000}% ({timeStr})"
     }

@@ -169,6 +169,17 @@ function applyXrayFilter(objId, _tName, value) {
     : (xrayFilterOption.value & ~xrayFilterOption.values[idx])
   set_option(optionId, optionValue, xrayFilterOption)
 }
+
+function mkUnitXrayData(unit, unitBlk) {
+  return {
+    unit
+    simUnitType = getSimpleUnitType(unit)
+    unitBlk
+    unitDataCache = {}
+    xrayRemap = (unitBlk?.xray ?? {}).map(@(v) v)
+  }
+}
+
 let dmViewerStorage = persist("dmViewerStorage", @() {
   view_mode = DM_VIEWER_NONE
   _currentViewMode = DM_VIEWER_NONE
@@ -213,6 +224,7 @@ dmViewer = {
   armorClassToSteel = null
 
   xrayDescriptionCache = {}
+  dockedUnitsXrayData = {}
   isDebugBatchExportProcess = false
   isSecondaryModsValid = false
 
@@ -275,7 +287,20 @@ dmViewer = {
   function resetXrayCache() {
     this.xrayDescriptionCache.clear()
     this.unitDataCache.clear()
+    this.dockedUnitsXrayData.clear()
     this.prevHintParams.clear()
+  }
+
+  function getUnitXrayData(unitName) {
+    if (unitName == null || unitName == this.unit?.name)
+      return this
+    if (unitName not in this.dockedUnitsXrayData) {
+      let unit = getAircraftByName(unitName)
+      if (unit == null)
+        return this
+      this.dockedUnitsXrayData[unitName] <- mkUnitXrayData(unit, getFullUnitBlk(unitName))
+    }
+    return this.dockedUnitsXrayData[unitName]
   }
 
   function getHangarUnit() {
@@ -311,12 +336,11 @@ dmViewer = {
     this.unit = getAircraftByName(unitId)
     if (! this.unit)
       return
-    this.simUnitType = getSimpleUnitType(this.unit)
     this.ediff = getCurrentGameModeEdiff()
     this.difficulty = get_difficulty_by_ediff(this.ediff)
     this.crew = getCrewByAir(this.unit)
     this.loadUnitBlk()
-    this.xrayRemap = (this.unitBlk?.xray ?? {}).map(@(v) v)
+    this.__update(mkUnitXrayData(this.unit, this.unitBlk))
     this.armorClassToSteel = this.collectArmorClassToSteelMuls()
     this.clearHint()
     this.updateSecondaryMods()
@@ -576,12 +600,12 @@ dmViewer = {
     return null
   }
 
-  function getDmPartAnimationSrc(partType) {
-    let foundUnitAnim = this.findDmPartAnimationInBlk(partType, this.unitBlk?.viewer_xray_animations)
+  function getDmPartAnimationSrc(partType, unit, unitBlk) {
+    let foundUnitAnim = this.findDmPartAnimationInBlk(partType, unitBlk?.viewer_xray_animations)
     if (foundUnitAnim)
       return foundUnitAnim
 
-    let gameParamsXrayKey = this.unit.isAir() ? "armorPartNamesAir" : "armorPartNamesGround"
+    let gameParamsXrayKey = unit.isAir() ? "armorPartNamesAir" : "armorPartNamesGround"
     let gameParamsXrayBlk = get_game_params_blk()[gameParamsXrayKey].viewer_xray
 
     return this.findDmPartAnimationInBlk(partType, gameParamsXrayBlk)
@@ -605,12 +629,14 @@ dmViewer = {
     local needUpdateContent = false
 
     let partName = params?.name ?? ""
-    let partType = this.isDmModeValidForXrayView() ? getPartType(partName, this.xrayRemap) : partName
+    let unitXrayData = this.getUnitXrayData(params?.unit_name)
+    let partType = this.isDmModeValidForXrayView() ? getPartType(partName, unitXrayData.xrayRemap) : partName
 
     if (this.isDmModeValidForXrayView() || (params?.weapon_item_desc ?? false)) {
       
       let prev = this.prevHintParams
       needUpdateContent = ((params?.name ?? true) != (prev?.name ?? false))
+        || params?.unit_name != prev?.unit_name
         || (partType == "armor"
           && armorHintParams.findindex(@(key) params?[key] != prev?[key]) != null)
     }
@@ -641,15 +667,16 @@ dmViewer = {
     let handler = handlersManager.getActiveBaseHandler()
     local info = { title = "", desc = [] }
     let isUseCache = this.isDmModeValidForXrayView() && !dmViewerStorage.isDebugMode && partType != "armor"
+    let cacheKey = $"{unitXrayData.unit?.name}/{partName}"
 
-    if (isUseCache && (partName in this.xrayDescriptionCache))
-      info = this.xrayDescriptionCache[partName]
+    if (isUseCache && (cacheKey in this.xrayDescriptionCache))
+      info = this.xrayDescriptionCache[cacheKey]
     else {
       info = this.getPartTooltipInfo(partType, params)
       info.title = info.title.replace(" ", nbsp)
 
       if (isUseCache)
-        this.xrayDescriptionCache[partName] <- info
+        this.xrayDescriptionCache[cacheKey] <- info
     }
 
     obj.findObject("dmviewer_title").setValue(info.title)
@@ -714,31 +741,32 @@ dmViewer = {
     }
 
     let viewMode = params?.viewMode ?? dmViewerStorage.view_mode
+    let { unit, simUnitType, unitBlk, unitDataCache, xrayRemap } = this.getUnitXrayData(params?.unit_name)
 
     if (partType == null) {
       let partName = params?.name ?? ""
-      partType = this.isDmModeValidForXrayView(viewMode) ? getPartType(partName, this.xrayRemap) : partName
+      partType = this.isDmModeValidForXrayView(viewMode) ? getPartType(partName, xrayRemap) : partName
     }
 
     if (partType == "")
       return res
 
     local partLocId = partType
-    let { overrideTitle = "", hideDescription = false } = this.unitBlk?.xrayOverride[params.name]
+    let { overrideTitle = "", hideDescription = false } = unitBlk?.xrayOverride[params.name]
 
     if (params?.weapon_item_desc ?? false)
       return this.getDescriptionWeaponItem(params)
     else if (viewMode == DM_VIEWER_ARMOR || (this.isDmModeValidForXrayView(viewMode) && partType == "armor"))
       res.desc = this.getDescriptionInArmorMode(params)
     else if (this.isDmModeValidForXrayView(viewMode)) {
-      let supportPlaneName = this.unitBlk?.supportPlane.supportPlaneClass
+      let supportPlaneName = unitBlk?.supportPlane.supportPlaneClass
       let supportPlane = supportPlaneName ? getAircraftByName(supportPlaneName) : null
       let descData = getDescriptionInXrayMode(partType, params, {
-        unit = this.unit
-        unitName = this.unit?.name ?? ""
-        simUnitType = this.simUnitType
-        unitBlk = this.unitBlk
-        unitDataCache = this.unitDataCache
+        unit
+        unitName = unit?.name ?? ""
+        simUnitType
+        unitBlk
+        unitDataCache
         crewId = this.crew?.id ?? -1
         ediff = this.ediff
         difficulty = this.difficulty
@@ -751,12 +779,12 @@ dmViewer = {
       partLocId = descData.partLocId
       if (!hideDescription && hasFeature("XRayDescription"))
         res.desc = descData.desc
-      res.animation = this.getDmPartAnimationSrc(params.name)
+      res.animation = this.getDmPartAnimationSrc(params.name, unit, unitBlk)
       res.__update(this.getExtendedHintInfo(partType, params))
     }
 
     let titleLocId = overrideTitle != "" ? overrideTitle : partLocId
-    res.title = getPartNameLocText(titleLocId, this.simUnitType)
+    res.title = getPartNameLocText(titleLocId, simUnitType)
     res.shortDesc = getPartNameDescLocText(titleLocId)
 
     return res

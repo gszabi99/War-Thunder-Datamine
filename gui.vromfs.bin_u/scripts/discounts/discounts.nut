@@ -50,6 +50,7 @@ function clearDiscountsList() {
     entitlements = {},
     entitlementUnits = {},
     airList = {},
+    skippedUnitsList = {},
   })
 }
 
@@ -201,12 +202,16 @@ updateDiscountData = function(isSilentUpdate = false) {
           giftUnits[air.name] <- 0
         continue
       }
-      if (!canBuyUnitEvenNotInShop(air))
-        continue
       let path = ["aircrafts", air.name]
       let discount = getDiscountByPath(path, pBlk)
-      if (discount > 0)
-        discountsList.airList[air.name] <- discount
+      if (discount == 0)
+        continue
+
+      if (!canBuyUnitEvenNotInShop(air)) {
+        discountsList.skippedUnitsList[air.name] <- true
+        continue
+      }
+      discountsList.airList[air.name] <- discount
     }
   }
 
@@ -305,6 +310,17 @@ addListenersWithoutEnv({
     updateDiscountData()
     
     deferOnce(pushDiscountsUpdateEvent)
+  }
+
+  function ProfileUpdated(_) {
+    foreach (unitName, _ in discountsList.skippedUnitsList) {
+      let unit = getAircraftByName(unitName)
+      if (unit != null && canBuyUnitEvenNotInShop(unit)) {
+        updateDiscountData(true)
+        deferOnce(pushDiscountsUpdateEvent)
+        return
+      }
+    }
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 

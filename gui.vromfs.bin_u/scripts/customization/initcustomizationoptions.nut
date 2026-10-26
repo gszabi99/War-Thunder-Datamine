@@ -77,8 +77,10 @@ function fillUserSkin(_optionId, descr, _context) {
         })
 
         descr.values.append(table.name)
-        if (setValue != null && setValue == table.name)
+        if (setValue != null && setValue == table.name) {
           descr.value = i + 1
+          on_user_skin_profile_changed(unitName, setValue)
+        }
       }
     }
     if (descr.value == null) {
