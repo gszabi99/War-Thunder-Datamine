@@ -175,10 +175,9 @@ function hud_killer_card_debug() {
       isKill = true
       action = "kill"
       victimPlayerId = get_local_mplayer().id
-      unitName = "Name"
+      unitName = "ussr_destroyer_7y"
       name = "Name"
-      aircraftName = "ussr_destroyer_7y"
-      aircraft = "ussr_destroyer_7y_shop"
+      aircraftName = "ussr_cruiser_kirov"
       unitType = "ship"
       unitNameLoc = "Killer unit"
       victimUnitName = "name"
@@ -208,8 +207,7 @@ function hud_human_killer_card_debug() {
       name = "WWWWWWWWWWWWWWWW"
       clanTag = "^WWWWW^"
       unitType = 14
-      aircraftName = "m16a4"
-      aircraft = "m16a4_shop"
+      aircraftName = "ak_15"
       unitNameLoc = "Killer unit"
       victimUnitName = "ak_74m"
       victimUnitType = 14
@@ -274,7 +272,6 @@ function hud_human_artillery_killer_card_debug() {
       victimUnitName = "mac_11"
       withVictimPlayerName = true
       aircraftName = "m16a4"
-      aircraft = "m16a4_shop"
       isDebugData = true
       name = "WWWWWWWWWWWWWWWW"
       clanTag = "^WWWWW^"

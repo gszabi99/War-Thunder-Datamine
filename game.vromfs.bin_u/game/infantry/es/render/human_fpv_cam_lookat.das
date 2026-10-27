@@ -18,12 +18,17 @@ def binded_camera_target_init(evt : Event;
 
 
 
+def private to_cam_coefs(coefs : float3) : float3
+  return coefs
+
+def private to_cam_coefs(coefs : float2) : float3
+  return float3(coefs.x, coefs.y, 0.5f)
+
 def private get_segphys_smooth_cam_coefs(phys : HumanPhys) : float3
   static_if typeinfo(builtin_function_exists @@ < (arg0 : HumanPhys const implicit) : float3 > HumanPhys::human_phys_get_segphys_smooth_cam_coefs)
-    return human_phys_get_segphys_smooth_cam_coefs(phys)
+    return to_cam_coefs(human_phys_get_segphys_smooth_cam_coefs(phys))
   static_elif typeinfo(builtin_function_exists @@ < (arg0 : HumanPhys const implicit) : float2 > HumanPhys::human_phys_get_segphys_smooth_cam_coefs)
-    let coefs = human_phys_get_segphys_smooth_cam_coefs(phys)
-    return float3(coefs.x, coefs.y, 0.5f)
+    return to_cam_coefs(human_phys_get_segphys_smooth_cam_coefs(phys))
   else
     return float3(0.f, -1.f, 0.5f)
 

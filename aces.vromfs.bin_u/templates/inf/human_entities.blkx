@@ -508,10 +508,32 @@
     },
     "human_weap__aimInertiaBuff:list<p2>": {}
   },
+  "human_weap_breath": {
+    "human_weap__breathScale": 0.2,
+    "human_weap__breathDelay": 0.0,
+    "human_weap__breathPeak": 0.6,
+    "human_weap__breathCoef1": 2.7,
+    "human_weap__breathCoef2": 1.5,
+    "human_weap__breathCoef3": 2.15,
+    "human_weap__breathCoef4": 3.0,
+    "human_weap__breathNoiseScale": [
+      0.27,
+      0.15
+    ],
+    "human_weap__breathNoiseFreq": [
+      1.5,
+      1.0
+    ],
+    "human_weap__breathNoiseOffset": [
+      17.21,
+      13.19
+    ]
+  },
   "base_human_weap": {
     "_use": [
       "base_human_weap_inertia",
-      "human_melee"
+      "human_melee",
+      "human_weap_breath"
     ],
     "_tracked": [
       "human_weap__grenadeThrower",
@@ -1204,35 +1226,47 @@
       65.0,
       35.0
     ],
-    "camera__moveTiltScales": [
+    "camera__moveTilt_maxOffset": [
       1.0,
-      0.75,
-      0.85
+      2.0,
+      3.0
     ],
-    "camera__moveTiltAngles": [
-      0.05,
-      0.85
+    "camera__moveTilt_enterTime": [
+      0.03,
+      0.06,
+      0.09
     ],
-    "camera__moveTiltVelTau": 0.15,
-    "camera__moveTiltAccTau": 0.15,
-    "camera__moveTiltAccCoef": 0.1,
-    "camera__moveTiltCurrHas": false,
-    "camera__moveTiltCurrPos": [
-      0.0,
+    "camera__moveTilt_leaveTime": [
+      0.02,
+      5.0,
+      5.0
+    ],
+    "camera__moveTilt_enterCoef": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "camera__moveTilt_leaveCoef": [
+      2.0,
+      2.0,
+      2.0
+    ],
+    "camera__moveTilt_currDests": [
       0.0,
       0.0
     ],
-    "camera__moveTiltCurrVel": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "camera__moveTiltCurrDir": [
-      0.0,
+    "camera__moveTilt_currTimes": [
       0.0,
       0.0
     ],
-    "camera__moveTiltCurrAng": 0.0,
+    "camera__moveTilt_currDLast": [
+      0.0,
+      0.0
+    ],
+    "camera__moveTilt_currDispl": [
+      0.0,
+      0.0
+    ],
     "_group": {
       "_track": true,
       "dead_camera__hitHead": false,

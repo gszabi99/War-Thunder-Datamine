@@ -5,6 +5,7 @@ from "json" import parse_json
 from "dagor.localize" import doesLocTextExist
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import UT_Unknown, UT_Human
+from "%globalScripts/templates.nut" import getTemplateCompValue
 
 let { events } = require("%scripts/events/eventsManager.nut")
 let { getUnitTooltipImage, genUnitTooltipWeaponIcon } = require("%scripts/unit/unitInfoTexts.nut")
@@ -39,9 +40,10 @@ function getKillerCardView(messageData, userInfo) {
     weaponEcsTemplateName = "", offenderHits = "", offenderHp = -1, offenderArmorSegmentsInfo = "",
     unitType = UT_Unknown, unitName = ""
   } = messageData
-  let { aircraftName, name, clanTag = "", title = "", aircraft } = isDebugData ? messageData
+  let { aircraftName = "", name, clanTag = "", title = "" } = isDebugData ? messageData
     : get_mplayer_by_id(playerId)
-  let unit = getAircraftByName(aircraftName)
+  let killerUnitName = unitName != "" ? unitName : aircraftName
+  let unit = getAircraftByName(killerUnitName)
   if (!unit) {
     log($"[killerCard] no unit: playerId={playerId} liveKillerUnit='{aircraftName}' killerUnit='{unitName}'")
     return null
@@ -53,9 +55,13 @@ function getKillerCardView(messageData, userInfo) {
     : showCustomItem ? genUnitTooltipWeaponIcon(weaponEcsTemplateName)
     : getUnitTooltipImage(unit)
 
-  let weaponEcsTemplateNameCutted = cutPostfix(weaponEcsTemplateName, "_gun", "")
-  let murderWeaponLocId = !showCustomItem ? aircraft
+  let weaponEcsTemplateNameCutted = cutPostfix(weaponEcsTemplateName, "_gun", weaponEcsTemplateName)
+  let launchedUnitName = showCustomItem
+    ? (getTemplateCompValue(weaponEcsTemplateName, "drone_launcher__droneTemplate") ?? "")
+    : ""
+  let murderWeaponLocId = !showCustomItem ? $"{killerUnitName}_shop"
     : killedByArtillery ? "actionBarItem/artillery_target"
+    : launchedUnitName != "" ? $"{launchedUnitName}_shop"
     : doesLocTextExist(weaponEcsTemplateNameCutted) ? weaponEcsTemplateNameCutted
     : $"{weaponEcsTemplateNameCutted}_shop"
 

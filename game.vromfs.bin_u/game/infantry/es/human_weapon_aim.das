@@ -29,6 +29,20 @@ def get_aim_optic_magnification(gun_eid : EntityId; gun_mod_eids : EidList) : fl
   return get_float(gun_eid, "gun__magnification") ?? 1.5
 
 
+def private half_wave(t, p, q : float) : float
+  let a = pow(t, p)
+  let b = pow(1.f - t, q)
+  return a / (a + b)
+
+def private breath_wave(t, d, a, p1, q1, q2, p2 : float) : float
+  if t <= d
+    return 0.f
+  elif t <= a
+    return half_wave((t - d) / (a - d), p1, q1)
+  else
+    return half_wave((1.f - t) / (1.f - a), p2, q2)
+
+
 [es(REQUIRE_NOT=(deadEntity, menuSoldier))]
 def human_weapon_aim(evt : CmdPostPhysUpdate;
                      isDowned : bool;
@@ -53,6 +67,16 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
                      human_weap__weaponShakeSpeedMult = 2.0f;
                      human_weap__weaponShakeSpeedPow = -0.1f;
                      human_weap__weaponShakeDefaultWeight = 1.0f;
+                     human_weap__breathScale = 0.2f;
+                     human_weap__breathDelay = 0.f;
+                     human_weap__breathPeak = 0.6f;
+                     human_weap__breathCoef1 = 2.7f;
+                     human_weap__breathCoef2 = 1.5f;
+                     human_weap__breathCoef3 = 2.15f;
+                     human_weap__breathCoef4 = 3.f;
+                     human_weap__breathNoiseScale = float2(0.27f, 0.15f);
+                     human_weap__breathNoiseFreq = float2(1.5f, 1.f);
+                     human_weap__breathNoiseOffset = float2(17.21f, 13.19f);
                      human_weap__magnificationCoeffs = float4(1.0, 1.0, 10.0, 0.5))
   assume currentState = human_net_phys.phys.currentState
   assume appliedCT = human_net_phys.phys.appliedCT
@@ -112,8 +136,20 @@ def human_weapon_aim(evt : CmdPostPhysUpdate;
     let magnification = get_aim_optic_magnification(human_weap__currentGunEid, human_weap__currentGunModEids)
     breathFovMult = cvt(magnification, human_weap__magnificationCoeffs.x, human_weap__magnificationCoeffs.z, human_weap__magnificationCoeffs.y, human_weap__magnificationCoeffs.w)
 
-  currentState.breathOffset.x = 0.67 * perlin_noise1(1.5 * timeMult * currentState.breathTime + 17.21) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
-  currentState.breathOffset.y = perlin_noise1(timeMult * currentState.breathTime + 13.19) * shakeMagnitude * holdBreathSpeedMult * breathFovMult
+  let t = timeMult * currentState.breathTime
+  let breathWave = breath_wave(
+    fract(t),
+    human_weap__breathDelay,
+    human_weap__breathPeak,
+    human_weap__breathCoef1,
+    human_weap__breathCoef2,
+    human_weap__breathCoef3,
+    human_weap__breathCoef4)
+  let noiseX = human_weap__breathNoiseScale.x * perlin_noise1(human_weap__breathNoiseFreq.x * t + human_weap__breathNoiseOffset.x)
+  let noiseY = human_weap__breathNoiseScale.y * perlin_noise1(human_weap__breathNoiseFreq.y * t + human_weap__breathNoiseOffset.y)
+  let mult = shakeMagnitude * holdBreathSpeedMult * breathFovMult
+  currentState.breathOffset.x = noiseX * mult
+  currentState.breathOffset.y = (human_weap__breathScale * breathWave + noiseY) * mult
 
   let handShakeMagnitude = currentState.handsShakeMagnitude
   currentState.handsShakeTime += evt.dt * currentState.handsShakeSpeedMult

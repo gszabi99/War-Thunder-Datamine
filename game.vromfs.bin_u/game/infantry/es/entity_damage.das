@@ -158,6 +158,21 @@ def handoff_vehicle_control_to_dying_driver(victim : EntityId)
   sendEventImmediate(playerEid, CmdPlayerSetControlledUnit(toEid = victim))
 
 
+def make_credited_offender_data(offender : EntityId; proj_props_id : PropsId)
+  var creditedOffender = offender
+  var launcherTemplate = ""
+  query(offender) <| $ [es(REQUIRE=isDrone)] (drone__owner : EntityId;
+                                              drone__launcherEid : EntityId)
+    if get_unit(drone__owner) == null
+      return
+    creditedOffender = drone__owner
+    launcherTemplate = getEntityTemplateName(drone__launcherEid)
+  var offenderData = OffenderData(creditedOffender, proj_props_id)
+  if !empty(launcherTemplate)
+    offenderData.setWeaponEcsTemplateName(split_template(launcherTemplate)[0])
+  return offenderData
+
+
 def apply_damage(data : ApplyDamageData)
   apply_damage(data.victim, OffenderData(), data.offender, data.pos, data.projPropsId, data.damageToHp,
     data.damageToArmor, data.armorSegmentEid, data.damageType, data.collNodeId, data.offenderGunEid,
@@ -240,7 +255,8 @@ def apply_damage(victim : EntityId;
     else
       hitr = HitResult.HIT_RES_KILLED
 
-    var offender_data = offender_data_ex.isEmpty ? OffenderData(offender, proj_props_id) : offender_data_ex
+    var offender_data = offender_data_ex.isEmpty ? make_credited_offender_data(offender, proj_props_id) : offender_data_ex
+    let creditedOffender = offender_data.eid
     if damage_type == DamageType.DM_COLLISION && offender != INVALID_ENTITY_ID && offender != victim
       offender_data.dmgTypeForUnlock = UnlockDmgType.UNL_DMG_TYPE_GENERIC
       offender_data.setDmgInitiatorWeaponName("ran_over")
@@ -286,14 +302,14 @@ def apply_damage(victim : EntityId;
       elif damage_type == DamageType.DM_HOLD_BREATH
         deathReasonByDamageType = UnitDeathReasonInner.DR_HUMAN_DROWN
       
-      if offender != victim
-        query(offender) <| $ [es] (hitpoints__hp : float;
-                                   hitpoints__maxHp : float;
-                                   dm_parts__armorItemEids : EidList)
+      if creditedOffender != victim
+        query(creditedOffender) <| $ [es] (hitpoints__hp : float;
+                                           hitpoints__maxHp : float;
+                                           dm_parts__armorItemEids : EidList)
           offender_data.setOffenderHp(safediv(hitpoints__hp, hitpoints__maxHp))
           fill_offender_armor_info(offender_data, dm_parts__armorItemEids)
       if deathReasonByDamageType != UnitDeathReasonInner.DR_UNKNOWN
-        *victim_unit |> trySetDeathInfoByKiller(deathReasonByDamageType, offender)
+        *victim_unit |> trySetDeathInfoByKiller(deathReasonByDamageType, creditedOffender)
     if hitr != HitResult.HIT_RES_NONE && victim_unit != null
       
       if offender != victim && offender != INVALID_ENTITY_ID && damage_type != DamageType.DM_BLEEDING
@@ -356,7 +372,7 @@ def apply_damage(victim : EntityId;
 
     if offender != INVALID_ENTITY_ID
       hitpoints__lastHitPos = hit_pos
-      if hitpoints__lastOffender.eid != offender || proj_props_id.valid
+      if hitpoints__lastOffender.eid != creditedOffender || proj_props_id.valid
         hitpoints__lastOffender = offender_data
 
     let curTime = get_sync_time()
@@ -473,8 +489,8 @@ def on_entity_hit_notify(evt : EventNotifyServerOnHitEntity;
                                 piercingShift = evt.piercingShift,
                                 startPos = evt.startPos,
                                 startVel = evt.startVel)
-    var isStopped = false
-    if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isStopped, false, evt.atTime)
+    var isFriendly = false
+    if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isFriendly, false, evt.atTime)
       return
     using() <| $(var kpp : KineticProjectileParams)
       var newPiercingShift = 0.0 
@@ -839,6 +855,14 @@ def should_projectile_damage_entity(offender_team : int;
   return !is_teams_friendly(victim_team, offender_team) || victim_allow_friendly_damage
 
 
+def can_offender_pierce_hp_entity(offender : EntityId;
+                                  gun_eid : EntityId)
+  if has(gun_eid, "gun__canPierceHPEntity")
+    return true
+  let unitType = get_int(offender, "unitType") ?? int(UnitType.UT_Human)
+  return unitType != int(UnitType.UT_Human) && unitType != int(UnitType.UT_InfTroop)
+
+
 def calc_piercing_through_entity(damage : float;
                                  distance : float;
                                  piercing_shift : float;
@@ -861,10 +885,10 @@ def calc_piercing_through_entity(damage : float;
 def precheck_entity_hit(victim : EntityId;
                         offender : EntityId;
                         coll_node_id : int;
-                        var is_stopped : bool&;
+                        var is_friendly : bool&;
                         is_self_damage_allowed : bool = false;
                         offender_hit_at_time : float = -1.0)
-  is_stopped = false
+  is_friendly = false
   let isSelfDamage = victim == offender
 
   if !is_self_damage_allowed && isSelfDamage
@@ -885,13 +909,13 @@ def precheck_entity_hit(victim : EntityId;
     if !isAlive
       return
 
+    if dm_parts__bulletTransparent?[coll_node_id] ?? false
+      return
+
     let offenderTeam = get_int(offender, "team") ?? TEAM_UNASSIGNED
 
     if !isSelfDamage && !should_projectile_damage_entity(offenderTeam, victim_team, allow_friendly_damage != null)
-      is_stopped = true
-      return
-
-    if dm_parts__bulletTransparent?[coll_node_id] ?? false
+      is_friendly = true
       return
 
     isSuccessful = true
@@ -999,7 +1023,7 @@ def calc_entity_hit_damage(hit_data : EntityHitData;
         damage_debug_msg("damage: {damageToArmor}")
 
     
-    let canPierceHPEntity = has(gunEid, "gun__canPierceHPEntity")
+    let canPierceHPEntity = can_offender_pierce_hp_entity(offenderEid, gunEid)
     if canPierceHPEntity && calc_piercing_through_entity(damageToHp, distance, piercingShiftAfterArmor, penetrationMult, projPropsId, hitpoints__fleshArmor, kinetic_proj_params, new_piercing_shift)
       impactResult = ImpactResult.PENETRATE
     if outputDebug && canPierceHPEntity
@@ -1221,14 +1245,8 @@ def on_entity_hit(var evt : EventOnHitEntity&;
 
   let collNodeCount = uint(collres_get_nodesCount(collres))
 
-  var isStopped = false
-  if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isStopped)
-    if isStopped
-      if uint(collNodeId) < collNodeCount
-        sendEvent(hitData.victim, EventOnPhysImpulse(atTime = get_sync_time(), nodeId = collNodeId, pos = pos, impulse = vel * mass))
-      evt.impactRes = int(ImpactResult.STOP)
-      if !is_dedicated()
-        evt.hitMatId = get_hit_armor_mat_id(hitData.victim, collNodeId, dir)
+  var isFriendly = false
+  if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isFriendly) && !isFriendly
     return
 
   if uint(collNodeId) < collNodeCount
@@ -1245,11 +1263,23 @@ def on_entity_hit(var evt : EventOnHitEntity&;
         evt.hitMatId = get_hit_armor_mat_id(hitData.victim, collNodeId, dir)
       return
 
+    if isFriendly && !can_offender_pierce_hp_entity(offender, gunEid)
+      evt.impactRes = int(ImpactResult.STOP)
+      if !is_dedicated()
+        evt.hitMatId = get_hit_armor_mat_id(hitData.victim, collNodeId, dir)
+      return
+
     var dotDamageToHp = 0.0
     var applyDamageData = ApplyDamageData()
     using() <| $(var kpp : KineticProjectileParams)
       evt.impactRes = int(calc_entity_hit_damage(hitData, evt.newPiercingShift, kpp, evt.hitMatId, dotDamageToHp, applyDamageData))
-    if authority
+    if isFriendly
+      if applyDamageData.outputDebug
+        damage_debug_msg("---FRIENDLY HIT---")
+        damage_debug_msg("damage not applied")
+      if !is_dedicated() && evt.hitMatId < 0
+        evt.hitMatId = get_int(hitData.victim, "entity__hitFxMaterialId") ?? -1
+    elif authority
       apply_dot_damage(hitData.victim, dotDamageToHp)
       apply_damage(applyDamageData)
     else
@@ -1334,8 +1364,8 @@ def on_shatter_entity_hit(var evt : EventShatterHitEntity&;
                                        dir = evt.dir,
                                        collNodeId = evt.collNodeId,
                                        penetration = evt.penetration)
-    var isStopped = false
-    if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isStopped,  true)
+    var isFriendly = false
+    if !precheck_entity_hit(hitData.victim, hitData.offender, hitData.collNodeId, isFriendly,  true)
       return
 
     calc_and_apply_entity_shatter_hit_damage(hitData, evt.penetrationMin, evt.penetrationMax, evt.damageMin, evt.damageMax, evt.damageScale, evt.penetratedArmor)

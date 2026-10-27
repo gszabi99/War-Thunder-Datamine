@@ -353,7 +353,12 @@ def update_movement(dt : float;
     if app == null
       return
     let isMissionEnded = app.isMissionSuccessful || app.isMissionFailed
-    let blockMove = is_control_suspended() || isMissionEnded
+    var isControlSuspended = false
+    static_if typeinfo(builtin_function_exists @@ < () : bool > is_control_suspended)
+      isControlSuspended = is_control_suspended()
+    else
+      isControlSuspended = *app |> checkInFlightMenu(true)
+    let blockMove = isControlSuspended || isMissionEnded
     move = !blockMove ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_WALK, true)), -1.0lf, 1.0lf) : 0.lf
     strafe = !blockMove ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_STRAFE, true)), -1.0lf, 1.0lf) : 0.lf
     apply_inertia(human_input__moveInputInertia, human_input__moveInputAccum, move, strafe)
@@ -1037,60 +1042,88 @@ def human_sprint_strafe(info : UpdateStageUpdateInput;
   phys.producedCT |> human_control_state_set_walk_dir(newWalkDir)
 
 
+def private calc_easing_dynamic(t : float; k : float)
+  if k <= 1.0
+    return t + k * t * (1 - t) * (k > 0 ? (2 - t) : (1 + t))
+  let s = k - 1.0
+  let sCurve = t * t * (3 - 2 * t)
+  let easeOut = t * (2 - t)
+  return easeOut + s * (sCurve - easeOut)
+
+def private tick_calc_easing_dynamic(from : float; to : float; var time_ref : float&; dt : float; duration : float; k : float)
+  time_ref += dt
+  if time_ref > duration
+    time_ref = duration
+  let t = safediv(time_ref, duration)
+  return from + (to - from) * calc_easing_dynamic(t, k)
+
 [es(tag=input, REQUIRE=hero, after=human_input_es, before=shooter_cam_rotate_es)]
 def human_cam_move_tilt_shake_es(info : UpdateStageInfoAct;
-                                 camera__moveTiltAngles : float2;
-                                 camera__moveTiltVelTau : float = 0.1;
-                                 camera__moveTiltAccTau : float = 0.1;
-                                 camera__moveTiltAccCoef : float = 10.0f;
-                                 human_net_phys__velocity : float3;
                                  transform : float3x4;
-                                 var camera__moveTiltCurrHas : bool&;
-                                 var camera__moveTiltCurrPos : float3&;
-                                 var camera__moveTiltCurrVel : float3&;
-                                 var camera__moveTiltCurrDir : float3&;
-                                 var camera__moveTiltCurrAng : float&;
-                                 let camera__moveTiltMaxMove : float = 5.f;
+                                 human_net_phys__velocity : float3;
+                                 camera__moveTilt_maxOffset : float3;
+                                 camera__moveTilt_enterTime : float3;
+                                 camera__moveTilt_enterCoef : float3;
+                                 camera__moveTilt_leaveTime : float3;
+                                 camera__moveTilt_leaveCoef : float3;
+                                 var camera__moveTilt_currDests : float2&;
+                                 var camera__moveTilt_currTimes : float2&;
+                                 var camera__moveTilt_currDLast : float2&;
+                                 var camera__moveTilt_currDispl : float2&;
                                  human_net_phys__isClimbing : bool = false;
                                  human_net_phys__isInAir : bool = false;
                                  isTpsView : bool = false)
-  if human_net_phys__isClimbing || human_net_phys__isInAir || isTpsView
-    camera__moveTiltCurrAng = 0.0
-    camera__moveTiltCurrVel = float3()
-    camera__moveTiltCurrDir = float3()
-    camera__moveTiltCurrHas = false
-    return
+  var reset = true
+  if !human_net_phys__isClimbing && !human_net_phys__isInAir && !isTpsView
+    let joyParams = get_current_joy_param()
+    if joyParams != null && joyParams.cameraShakeToogleForHuman
+      var srcVel = length_sq(human_net_phys__velocity) > 0.001 ? normalize(human_net_phys__velocity) : float3()
+      let velDir = normalize(srcVel)
+      let leftProj = dot(velDir, transform[2])
+      let forwProj = dot(velDir, transform[0])
+      let isForw = forwProj > 0.01
+      let isBack = forwProj < -0.01
+      let isLeft = leftProj > 0.01
+      let isRight = leftProj < -0.01
+      let nowDestY = isForw ? 1.0 : isBack ? -1.0 : 0.0
+      let nowDestX = isLeft ? 1.0 : isRight ? -1.0 : 0.0
 
-  let joyParams = get_current_joy_param()
-  if joyParams != null && joyParams.cameraShakeToogleForHuman
-    let delta = transform[3] - camera__moveTiltCurrPos
-    var dirVel = delta * safeinv(info.dt)
-    camera__moveTiltCurrPos = transform[3]
-    if !camera__moveTiltCurrHas || length_sq(delta) > square(camera__moveTiltMaxMove)
-      camera__moveTiltCurrHas = true
-      dirVel = float3()
-    dirVel = lerp(human_net_phys__velocity, dirVel, 0.25)
+      assume currDests = camera__moveTilt_currDests
+      assume currTimes = camera__moveTilt_currTimes
+      assume currDLast = camera__moveTilt_currDLast
+      assume currDispl = camera__moveTilt_currDispl
 
-    let newVel = approach(camera__moveTiltCurrVel, dirVel, info.dt, camera__moveTiltVelTau)
-    let accel = (newVel - camera__moveTiltCurrVel) * safediv(camera__moveTiltAccCoef, info.dt)
+      if currDests.y != nowDestY
+        currDests.y = nowDestY
+        currDLast.y = currDispl.y
+        currTimes.y = 0.0
 
-    camera__moveTiltCurrVel = newVel
-    camera__moveTiltCurrDir = approach(camera__moveTiltCurrDir, accel, info.dt, camera__moveTiltAccTau)
+      if currDests.x != nowDestX
+        currDests.x = nowDestX
+        currDLast.x = currDispl.x
+        currTimes.x = 0.0
 
-    let tiltAngleMin = deg_to_rad(camera__moveTiltAngles.x)
-    let tiltAngleMax = deg_to_rad(camera__moveTiltAngles.y)
+      if currDests.y > 0.0
+        let yLen = camera__moveTilt_maxOffset.x
+        camera__moveTilt_currDispl.y = tick_calc_easing_dynamic(currDLast.y, currDests.y * yLen, currTimes.y, info.dt, camera__moveTilt_enterTime.x, camera__moveTilt_enterCoef.x)
+      elif currDests.y < 0.0
+        let yLen = camera__moveTilt_maxOffset.z
+        camera__moveTilt_currDispl.y = tick_calc_easing_dynamic(currDLast.y, currDests.y * yLen, currTimes.y, info.dt, camera__moveTilt_enterTime.z, camera__moveTilt_enterCoef.z)
+      elif currDLast.y > 0.0
+        camera__moveTilt_currDispl.y = tick_calc_easing_dynamic(currDLast.y, 0.0, currTimes.y, info.dt, camera__moveTilt_leaveTime.x, camera__moveTilt_leaveCoef.x)
+      else
+        camera__moveTilt_currDispl.y = tick_calc_easing_dynamic(currDLast.y, 0.0, currTimes.y, info.dt, camera__moveTilt_leaveTime.z, camera__moveTilt_leaveCoef.z)
 
-    let dirFactor = clamp(length(camera__moveTiltCurrDir), 0.f, 1.f)
-    var targetAng = dirFactor * tiltAngleMax
+      if currDests.x != 0.0
+        let xLen = camera__moveTilt_maxOffset.y
+        camera__moveTilt_currDispl.x = tick_calc_easing_dynamic(currDLast.x, currDests.x * xLen, currTimes.x, info.dt, camera__moveTilt_enterTime.y, camera__moveTilt_enterCoef.y)
+      else
+        camera__moveTilt_currDispl.x = tick_calc_easing_dynamic(currDLast.x, 0.0, currTimes.x, info.dt, camera__moveTilt_leaveTime.y, camera__moveTilt_leaveCoef.y)
 
-    let hasMotion = length_sq(human_net_phys__velocity) > 0.001
-    if hasMotion && targetAng < tiltAngleMin
-      targetAng = tiltAngleMin
+      reset = false
 
-    targetAng = clamp(targetAng, -tiltAngleMax, tiltAngleMax)
-    camera__moveTiltCurrAng = targetAng
-  else
-    camera__moveTiltCurrAng = 0.0
-    camera__moveTiltCurrVel = float3()
-    camera__moveTiltCurrDir = float3()
-    camera__moveTiltCurrHas = false
+  if reset
+    camera__moveTilt_currDests = float2()
+    camera__moveTilt_currTimes = float2()
+    camera__moveTilt_currDLast = float2()
+    camera__moveTilt_currDispl = float2()
