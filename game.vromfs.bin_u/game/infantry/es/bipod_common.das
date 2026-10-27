@@ -714,7 +714,24 @@ def solve_bipod_placing(eid : EntityId; full_check : bool)
                         var bipod__placeRecoilMult : float&;
                         var bipod__placeIsRest : bool&;
                         human_cam__calculatedOffset : DPoint3 const?;
-                        human_cam__offsetMult : float = 1.0)
+                        human_cam__offsetMult : float = 1.0;
+                        human_weap__gunMods : Array;
+                        human_weap__currentGunSlot : int;
+                        active : bool)
+    if !active
+      bipod__placeable = false
+      return
+
+    var isWeapModMode = false
+    let gunModEids = human_weap__gunMods?[human_weap__currentGunSlot] ?as EidList
+    if gunModEids != null
+      for gunMod in *gunModEids
+        query(gunMod) <| $ [es] (weapon_mod__wantActiveState : bool; weapon_mod__active : bool)
+          isWeapModMode = weapon_mod__wantActiveState || weapon_mod__active
+    if isWeapModMode
+      bipod__placeable = false
+      return
+
     let isInAir = (uint(human_net_phys.phys.currentState.isInAirHistory) & 1u) != 0u
     let isCrawl = human_input__standState == int(HumanPhysControlType.HCT_CRAWL)
 

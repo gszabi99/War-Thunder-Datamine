@@ -51,7 +51,10 @@ def shooter_cam_rotate_es(info : UpdateStageInfoAct;
                                    camera__isRotateInGlobal = false;
                                    camera__relative_roll_angle = 0.f; 
                                    camera__relative_angle = float2(0.f, 0.f);
-                                   camera__lookDir = float3(1.f, 0.f, 0.f))
+                                   camera__lookDir = float3(1.f, 0.f, 0.f);
+                                   camera__moveTiltScales = float3(1.f, 0.5f, 1.f);
+                                   camera__moveTiltCurrDir = float3(0.f, 0.f, 0.f);
+                                   camera__moveTiltCurrAng = 0.f)
     var wishQ = dir_to_quat(camera__lookDir)
     if length_sq(camera__relative_angle) > 0.f
       var relativeQuat : quat
@@ -69,6 +72,19 @@ def shooter_cam_rotate_es(info : UpdateStageInfoAct;
     camera_transform[0] = dir0
     camera_transform[2] = dir2
     camera_transform[1] = normalize(cross(dir2, dir0)) 
+
+    if abs(camera__moveTiltCurrAng) > 0.0001
+      let tiltDir = normalize(camera__moveTiltCurrDir)
+      let tiltVec = cross(tiltDir, transform[1])
+      if length_sq(tiltVec) > 0.0001
+        let scales = camera__moveTiltScales
+        let forwCoef = dot(tiltDir, transform[0])
+        let scaleFactor = forwCoef > 0.0 ? lerp(scales.y, scales.x, forwCoef) : lerp(scales.y, scales.z, -forwCoef)
+        let tiltAng = camera__moveTiltCurrAng * scaleFactor
+        camera_transform[1] = quat(normalize(tiltVec), tiltAng) * camera_transform[1]
+        camera_transform[0] = normalize(cross(camera_transform[1], dir2))
+        camera_transform[2] = normalize(cross(camera_transform[0], camera_transform[1]))
+
 
 [es(tag=render, on_appear)]
 def init_new_camera_for_unit(evt : Event;

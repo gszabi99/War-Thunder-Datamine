@@ -17,6 +17,11 @@ def human_weap_camera_in_action_es(act : UpdateStageInfoAct;
     human_weap__cameraTransitionOnActionProgress += action__running ? change : -change
     human_weap__cameraTransitionOnActionProgress = saturate(human_weap__cameraTransitionOnActionProgress)
 
+[es(tag=render, REQUIRE=watchedPlayerItem, before=human_gun_lookat_camera_es)]
+def weapon_sight_node_switch_progress_es(info : UpdateStageInfoAct;
+                                         var weapon_sight_node__switchProgress : float&)
+  weapon_sight_node__switchProgress = move_to(weapon_sight_node__switchProgress, 1.0, info.dt, 4.0)
+
 [es(tag=render, REQUIRE=watchedHero, after=(camera_set_sync, human_fpv_cam_pos), before=before_camera_sync,
      after=animchar_cam_target_es, after=animchar_cam_target_with_offset_es)]
 def human_gun_lookat_camera_es(info : UpdateStageInfoAct;
@@ -49,7 +54,10 @@ def human_gun_lookat_camera_es(info : UpdateStageInfoAct;
                                      weapon__aimPointRelativePos : float = 0.0;
                                      weapon__aimNodeOffset : float = 0.0;
                                      weapon_frontsight_node__nodeIdx : int const?;
-                                     weapon_rearsight_node__nodeIdx : int const?)
+                                     weapon_rearsight_node__nodeIdx : int const?;
+                                     weapon_sight_node__prevFrontsightNodeIdx : int = -1;
+                                     weapon_sight_node__prevRearsightNodeIdx : int = -1;
+                                     weapon_sight_node__switchProgress : float = 1.0)
       let wofsF = *animchar.nodeTree |> geomtree_getWtmOfs()
       let wofs = DPoint3(wofsF)
       var aimTm : float3x4
@@ -64,8 +72,16 @@ def human_gun_lookat_camera_es(info : UpdateStageInfoAct;
         if weaponFrontsightNodeIdx < 0 || weaponRearsightNodeIdx < 0
           return
 
-        let fsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(weaponFrontsightNodeIdx)
-        let rsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(weaponRearsightNodeIdx)
+        var fsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(weaponFrontsightNodeIdx)
+        var rsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(weaponRearsightNodeIdx)
+        if weapon_sight_node__switchProgress < 1.0
+          let switchK = smoothstep(0.0, 1.0, weapon_sight_node__switchProgress)
+          if weapon_sight_node__prevFrontsightNodeIdx >= 0
+            let prevFsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(weapon_sight_node__prevFrontsightNodeIdx)
+            fsPos = lerp(prevFsPos, fsPos, float3(switchK))
+          if weapon_sight_node__prevRearsightNodeIdx >= 0
+            let prevRsPos = *animchar.nodeTree |> geomtree_getNodeWposRel(weapon_sight_node__prevRearsightNodeIdx)
+            rsPos = lerp(prevRsPos, rsPos, float3(switchK))
         var frontSightTm : float3x4
         *animchar.nodeTree |> geomtree_getNodeWtmRelScalar(0, frontSightTm)
         frontSightTm[3] = fsPos

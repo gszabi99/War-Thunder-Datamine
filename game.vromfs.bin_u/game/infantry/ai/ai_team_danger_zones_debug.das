@@ -18,20 +18,23 @@ enum NavZonesDebugFlags
   None     = 0
   Turret   = 1 << 0
   Death    = 1 << 1
+  Blocker  = 1 << 2
 
-[console_cmd(name="ai.debug_nav_zones", hint="all, none, turret, death")]
+[console_cmd(name="ai.debug_nav_zones", hint="all, none, turret, death, blocker")]
 def ai_nav_zones_toggle_debug(option : string)
   var flags : int = 0
   if option == "none"
     flags = 0
   elif option == "all"
-    flags = int(NavZonesDebugFlags.Turret) | int(NavZonesDebugFlags.Death)
+    flags = int(NavZonesDebugFlags.Turret) | int(NavZonesDebugFlags.Death) | int(NavZonesDebugFlags.Blocker)
   elif option == "turret"
     flags = int(NavZonesDebugFlags.Turret)
   elif option == "death"
     flags = int(NavZonesDebugFlags.Death)
+  elif option == "blocker"
+    flags = int(NavZonesDebugFlags.Blocker)
   else
-    console_print("Unknown option '{option}'. Valid options are: all, none, turret, death.")
+    console_print("Unknown option '{option}'. Valid options are: all, none, turret, death, blocker.")
     return
 
   var debugEid = INVALID_ENTITY_ID
@@ -348,3 +351,20 @@ def ai_nav_zones_draw_debug(info : ParallelUpdateFrameDelayed;
                      death_danger_zones__areaFadeTime,
                      float2(1.8, 3.5),
                      color)
+
+  if (nav_zones_debug__modeFlags & int(NavZonesDebugFlags.Blocker)) != 0
+    query() <| $ [es] (team__id : int;
+                       path_blocker__positions : Point3List&;
+                       path_blocker__types : IntList&;
+                       path_blocker__radius : float;
+                       path_blocker__radius2 : float;
+                       path_blocker__heights : float2)
+      let color1 = team__id == 1 ? E3DCOLOR(0xFF00FFFF) : E3DCOLOR(0xFFFFFF00)
+      let color2 = team__id == 1 ? E3DCOLOR(0xFF0055FF) : E3DCOLOR(0xFFFF5500)
+      for areaPos, areaType in path_blocker__positions, path_blocker__types
+        let color = areaType == 1 ? color1 : color2
+        let areaRadius = areaType == 1 ? path_blocker__radius : path_blocker__radius2
+        draw_debug_circle_buffered(areaPos + float3(0., 0.0, 0.), float3(0, 1, 0), areaRadius, color, 16, 1)
+        draw_debug_circle_buffered(areaPos + float3(0., path_blocker__heights.x, 0.), float3(0, 1, 0), areaRadius, color, 16, 1)
+        draw_debug_circle_buffered(areaPos + float3(0., path_blocker__heights.y, 0.), float3(0, 1, 0), areaRadius, color, 16, 1)
+        draw_debug_sphere_buffered(areaPos, 0.1, color, 1)

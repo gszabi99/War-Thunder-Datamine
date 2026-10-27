@@ -1,10 +1,13 @@
 require ecs
+require ecs.safe
 require math
 require net
 
 require %appGame.wt_events
+require %game.events
 require DagorSystem
 require DagorMath
+require math.base
 require AnimV20
 require PhysVars
 require GeomNodeTree
@@ -88,10 +91,12 @@ def apply_sight_preset(parentGunEid : EntityId; presetsEid : EntityId; curSightE
                                weapon__aimSightPresetIndex : int const?;
                                var weap__current_sight_preset : int&;
                                var gun__launchVerticalAngle : float&;
-                               var phys_vars : PhysVars&;
                                var weapon__aimNodeOffset : float&;
                                var weapon_frontsight_node__nodeIdx : int&;
-                               var weapon_rearsight_node__nodeIdx : int&)
+                               var weapon_rearsight_node__nodeIdx : int&;
+                               var weapon_sight_node__prevFrontsightNodeIdx : int?;
+                               var weapon_sight_node__prevRearsightNodeIdx : int?;
+                               var weapon_sight_node__switchProgress : float?)
     let sightPresetsCount = sightPresets |> length()
     if sightPresetsCount <= 0
       logerr("no sight presets in {presetsEid} ({getEntityTemplateName(presetsEid)}) gun")
@@ -122,10 +127,11 @@ def apply_sight_preset(parentGunEid : EntityId; presetsEid : EntityId; curSightE
     if aimOffset != null
       weapon__aimNodeOffset = *aimOffset
 
-    let useAnimIndex = preset |> get_float("useAnimNodeIndex")
-    if useAnimIndex != null && weapon__aimSightPresetIndex != null
-      setVar(phys_vars, *weapon__aimSightPresetIndex, *useAnimIndex)
+    if (preset |> get_float("useAnimNodeIndex")) != null && weapon__aimSightPresetIndex != null
       return
+
+    let prevFrontsightNodeIdx = weapon_frontsight_node__nodeIdx
+    let prevRearsightNodeIdx = weapon_rearsight_node__nodeIdx
 
     let frontsightNodeName = preset |> get_string("frontsightNode", "")
     if frontsightNodeName != ""
@@ -136,6 +142,14 @@ def apply_sight_preset(parentGunEid : EntityId; presetsEid : EntityId; curSightE
     if rearsightNodeName != ""
       let nodeIdx = find_weapon_sight_node_idx(presetsEid, animchar, rearsightNodeName)
       weapon_rearsight_node__nodeIdx = nodeIdx
+
+    let isNodeChanged = (weapon_frontsight_node__nodeIdx != prevFrontsightNodeIdx ||
+                         weapon_rearsight_node__nodeIdx != prevRearsightNodeIdx)
+    if (isNodeChanged && weapon_sight_node__prevFrontsightNodeIdx != null &&
+        weapon_sight_node__prevRearsightNodeIdx != null && weapon_sight_node__switchProgress != null)
+      *weapon_sight_node__prevFrontsightNodeIdx = prevFrontsightNodeIdx
+      *weapon_sight_node__prevRearsightNodeIdx = prevRearsightNodeIdx
+      *weapon_sight_node__switchProgress = 0.0
 
 
 [es]
@@ -196,3 +210,22 @@ def init_gun_launch_vertical_angle_es(evt : Event;
 def set_gun_launch_vertical_angle_es(evt : CmdSetGunLaunchVerticalAngle)
   query(evt.gunEid) <| $ [es] (var gun__launchVerticalAngle : float&)
     gun__launchVerticalAngle = evt.angle
+
+
+[es(tag=gameClient, before=(anim_phys_updater_es, anim_phys_updater_demand_updatable_es), REQUIRE=watchedPlayerItem)]
+def interpolate_sight_preset_index_es(info : ParallelUpdateFrameDelayed;
+                                      sightPresets : Array;
+                                      weap__current_sight_preset : int;
+                                      weapon__aimSightPresetIndex : int;
+                                      var phys_vars : PhysVars&)
+  let presetsCount = length(sightPresets)
+  if weapon__aimSightPresetIndex < 0 || presetsCount == 0
+    return
+  let preset = sightPresets[clamp(weap__current_sight_preset, 0, presetsCount - 1)] as Object
+  let target = preset?.useAnimNodeIndex ?? -1.0
+  if target < 0.0
+    return
+  let curValue = getVar(phys_vars, weapon__aimSightPresetIndex)
+  if abs(curValue - target) < 1e-4
+    return
+  setVar(phys_vars, weapon__aimSightPresetIndex, approach(curValue, target, info.dt, 0.1))

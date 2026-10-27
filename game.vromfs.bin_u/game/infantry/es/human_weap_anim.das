@@ -1,4 +1,5 @@
 require ecs
+require math.base
 require PhysVars
 require HumanPhys
 require DaWeapons
@@ -252,3 +253,47 @@ def human_weap_aim_state_var_es(info : ParallelUpdateFrameDelayed;
   human_weap_anim__aimStateValue += info.dt * sign * speed
   human_weap_anim__aimStateValue = clamp(human_weap_anim__aimStateValue, 0.0, 1.0)
   phys_vars |> setVar(human_weap_anim__aimStateVarId, human_weap_anim__aimStateValue)
+
+
+[es(tag=gameClient, before=human_gun_phys_vars_es, after=human_anim_es)]
+def gun_anim_update_extra_offsets(info : ParallelUpdateFrameDelayed;
+                                  animchar__updatable : bool;
+                                  animchar__visible : bool;
+                                  animchar__accumDt = -1.f;
+                                  animchar__dtThreshold = 0.f;
+                                  human_net_phys : HumanActor;
+                                  human_anim__isFpv : bool;
+                                  human_anim__pitch : float;
+                                  human_weap__currentGunEid : EntityId)
+  if !animchar__updatable || (!animchar__visible && ((animchar__accumDt + info.dt) < animchar__dtThreshold))
+    return
+
+  assume phys = human_net_phys.phys
+  assume previousState = phys.previousState
+  assume currentState = phys.currentState
+
+  query(human_weap__currentGunEid) <| $ [es] (gun_anim__tpsLeanRightLookUpGunOffsetAlongExtra : float;
+                                              gun_anim__tpsLeanRightLookUpGunOffsetAcrossExtra : float;
+                                              gun_anim__tpsLeanRightLookUpGunOffsetUpExtra : float;
+                                              var gun_anim_var__tpsGunOffsetAlongExtra : float&;
+                                              var gun_anim_var__tpsGunOffsetAcrossExtra : float&;
+                                              var gun_anim_var__tpsGunOffsetUpExtra : float&)
+    var offsetAlong = 0.f
+    var offsetAcross = 0.f
+    var offsetUp = 0.f
+
+    if !human_anim__isFpv
+      let interpK = get_phys_interpk_clamped(phys, info.curTime)
+      let lean = lerp(previousState.leanPosition, currentState.leanPosition, interpK)
+      let leanCoeff = cvt(lean, 0.0, phys.leanDegrees, 0.0, 1.0)
+      let pitchCoeff = clamp(human_anim__pitch / HALF_PI, 0.0, 1.0)
+      let coeff = leanCoeff * pitchCoeff
+
+      offsetAlong = coeff * gun_anim__tpsLeanRightLookUpGunOffsetAlongExtra
+      offsetAcross = coeff * gun_anim__tpsLeanRightLookUpGunOffsetAcrossExtra
+      offsetUp = coeff * gun_anim__tpsLeanRightLookUpGunOffsetUpExtra
+
+    gun_anim_var__tpsGunOffsetAlongExtra = offsetAlong
+    gun_anim_var__tpsGunOffsetAcrossExtra = offsetAcross
+    gun_anim_var__tpsGunOffsetUpExtra = offsetUp
+

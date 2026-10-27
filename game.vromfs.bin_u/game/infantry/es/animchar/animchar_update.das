@@ -13,7 +13,8 @@ def animchar_es(info : ParallelUpdateFrameDelayed)
 
 
 
-[es(tag=(net, server), REQUIRE=animchar__onlyServerUpdate, REQUIRE_NOT=animchar__actOnDemand)]
+[es(tag=(net, server), after=before_animchar_update_sync, before=after_animchar_update_sync,
+    REQUIRE=animchar__onlyServerUpdate, REQUIRE_NOT=animchar__actOnDemand)]
 def animchar_server_update_es(info : ParallelUpdateFrameDelayed;
                               transform : float3x4;
                               animchar__updatable : bool;

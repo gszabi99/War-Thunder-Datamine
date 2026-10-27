@@ -124,8 +124,8 @@
   "speedCollisionHardness": 0.1,
   "crawlStepSpeed": 0.5,
   "stepAccel": 4.0,
-  "crawlArmsOffset": 0.31,
-  "crawlLegsOffset": -0.49,
+  "crawlArmsOffset": 0.47,
+  "crawlLegsOffset": -0.27,
   "maxObstacleDownReach": 0.45,
   "forceDownReachDists": [
     0.1,
@@ -165,11 +165,6 @@
   "customClassIco": "!#ui/gameuiskin#infantry_ico.svg",
   "supportUnitClass": "structures/ussr_122mm_m30",
   "supportUnitTag": "artillery",
-  "helmetProtectionTemplate": "rank3_helmet_medium_class_3a_protection",
-  "bodyProtectionTemplate": "rank3_body_armor_medium_class_3_protection",
-  "commonSkinPreset": "appearanceArmor03",
-  "armorDefaultLangId": "modification/bulletproof_vest_medium",
-  "armorDefaultIcon": "!#ui/gameuiskin#medium_armor.avif",
   "cockpit": {
     "headPos": [
       0.0,
@@ -777,17 +772,13 @@
   },
   "modifications": {
     "scope_leupold_mark_4_variable": {},
-    "shotgun_mossberg_590": {},
-    "at_laucher_at_4": {},
-    "mpads_stinger": {},
-    "strike_drone": {},
-    "fpv_drone": {},
-    "stun_grenade": {},
     "smoke_grenade": {},
     "explosive_charge": {},
-    "bulletproof_vest_light": {},
-    "bulletproof_vest_light_ghillie": {},
-    "sidearms_pistol_beretta_m9": {},
+    "helmet_steel": {},
+    "ghillie_suit": {
+      "reqModification": "helmet_steel",
+      "tier": 2
+    },
     "human_medkit": {}
   },
   "WeaponSlots": {
@@ -795,47 +786,6 @@
       {
         "index": 2,
         "WeaponPreset": [
-          {
-            "name": "usa_recon_drone",
-            "ecsTemplate": "uav_inf_recon_drone_item"
-          },
-          {
-            "name": "usa_kamikaze_drone",
-            "ecsTemplate": "ussr_uav_inf_strike_drone_item",
-            "reqModification": "strike_drone"
-          },
-          {
-            "name": "usa_fpv_drone",
-            "ecsTemplate": "uav_inf_fpv_strike_drone_item",
-            "reqModification": "fpv_drone"
-          },
-          {
-            "name": "mossberg_590",
-            "ecsTemplate": "mossberg_590_gun",
-            "inventoryItemEcsTemplate": "mossberg_590_magazine",
-            "inventoryItemNum": 5,
-            "reqModification": "shotgun_mossberg_590"
-          },
-          {
-            "name": "pslr_1_default",
-            "ecsTemplate": "pslr_1_default_gun",
-            "inventoryItemEcsTemplate": "rpg_7_pg_7vl_rocket_item",
-            "inventoryItemNum": 4
-          },
-          {
-            "name": "m136_at4",
-            "ecsTemplate": "m136_at4_gun",
-            "inventoryItemEcsTemplate": "m136_at4_rocket_item",
-            "inventoryItemNum": 4,
-            "reqModification": "at_laucher_at_4"
-          },
-          {
-            "name": "mpads_stinger",
-            "ecsTemplate": "mpads_fim_92e_stinger_gun",
-            "inventoryItemEcsTemplate": "fim_92e_stinger_missile_item",
-            "inventoryItemNum": 2,
-            "reqModification": "mpads_stinger"
-          },
           {
             "name": "medic_box",
             "ecsTemplate": "medic_box_item"
@@ -854,6 +804,11 @@
         "index": 4,
         "WeaponPreset": [
           {
+            "name": "frag_grenade_heavy",
+            "inventoryItemEcsTemplate": "m67_grenade_item",
+            "inventoryItemNum": 6
+          },
+          {
             "name": "frag_grenade",
             "inventoryItemEcsTemplate": "m67_grenade_item",
             "inventoryItemNum": 4
@@ -870,21 +825,15 @@
           },
           {
             "name": "smoke_grenade",
-            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemEcsTemplate": "m18_smoke_grenade_item",
             "inventoryItemNum": 2,
             "reqModification": "smoke_grenade"
           },
           {
             "name": "smoke_grenade_light",
-            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
+            "inventoryItemEcsTemplate": "m18_smoke_grenade_item",
             "inventoryItemNum": 1,
             "reqModification": "smoke_grenade"
-          },
-          {
-            "name": "stun_grenade",
-            "inventoryItemEcsTemplate": "rdg1_smoke_grenade_item",
-            "inventoryItemNum": 6,
-            "reqModification": "stun_grenade"
           }
         ]
       }
@@ -894,11 +843,11 @@
     "preset": [
       {
         "name": "m110a1_sdmr_default",
-        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_sniper_preset_1.blk"
+        "blk": "gamedata/units/humans/weaponPresets/presets_coldwar/usa_class_sniper_preset_1.blk"
       },
       {
         "name": "m110a1_sdmr_preset_2",
-        "blk": "gameData/units/humans/weaponPresets/presetsSolo/usa_class_specop_preset_5.blk"
+        "blk": "gamedata/units/humans/weaponPresets/presets_coldwar/usa_class_sniper_preset_2.blk"
       }
     ]
   }

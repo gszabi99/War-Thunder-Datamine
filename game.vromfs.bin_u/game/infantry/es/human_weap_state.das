@@ -89,24 +89,16 @@ def human_weap_throw_on_equip(evt : CmdPostPhysUpdate;
     human_weap__throwOnEquip = false
 
 
-[es(tag=server, REQUIRE=grenadeThrowViaRethrowEnabled, track=human_weap__throwMode)]
-def human_weap_grenade_throw_via_rethrow_track_throw_mode_es(evt : Event;
-                                                             human_weap__throwMode : bool;
-                                                             var human_weap__grenadeThrowModeServer : bool&)
-  human_weap__grenadeThrowModeServer = human_weap__throwMode
-
-
 [es(REQUIRE=grenadeThrowViaRethrowEnabled)]
 def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
                                          eid : EntityId;
                                          human_net_phys : HumanActor;
                                          human_net_phys__isClimbing : bool;
                                          human_weap__throwMode : bool;
-                                         human_weap__grenadeThrowModeServer : bool;
                                          human_weap__grenadeThrowServerConfirmed : bool;
                                          var human_weap__grenadeThrowViaRethrow : bool&;
                                          human_weap__grenadeThrower : EntityId)
-  if human_net_phys__isClimbing || human_weap__throwMode || human_weap__grenadeThrowModeServer || !human_weap__grenadeThrowServerConfirmed
+  if human_net_phys__isClimbing || human_weap__throwMode || !human_weap__grenadeThrowServerConfirmed
     return
 
   assume phys = human_net_phys.phys
@@ -122,19 +114,9 @@ def human_weap_grenade_throw_via_rethrow(evt : RequestQuickThrowGrenade;
     human_weap__inspectEndTime = -1.0
 
   query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
-    if grenade_thrower__projectileEntity == INVALID_ENTITY_ID
-      if reload_impl(eid, human_weap__grenadeThrower, ReloadAmmoMode.INFINITE)
-        let grenadeEid = reload_projectile(eid, human_weap__grenadeThrower)
-        addSubTemplate(grenadeEid, "grenade_thrown_via_rethrow") <| $(var init)
-          set(init, "grenade_thrown_via_rethrow__ownerEid", eid)
-    else
+    if (grenade_thrower__projectileEntity != INVALID_ENTITY_ID ||
+        reload_impl(eid, human_weap__grenadeThrower, ReloadAmmoMode.INFINITE))
       human_weap__grenadeThrowViaRethrow = true
-
-
-[es(on_appear, REQUIRE=grenadeThrownViaRethrow)]
-def human_weap_grenade_throw_via_rethrow_grenade_appeared(evt : Event; grenade_thrown_via_rethrow__ownerEid : EntityId)
-  query(grenade_thrown_via_rethrow__ownerEid) <| $ [es] (var human_weap__grenadeThrowViaRethrow : bool&)
-    human_weap__grenadeThrowViaRethrow = true
 
 
 [es(on_event=EventEntityDied, REQUIRE=grenadeThrowViaRethrowEnabled)]

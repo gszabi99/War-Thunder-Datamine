@@ -89,6 +89,7 @@ let
   BIPOD_MAX_AWAY_DIST_OFF           = 1.80
   BIPOD_MAX_AWAY_DIST_OFF_Y_MOUNT   = 0.70
   BIPOD_MAX_AWAY_DIST_OFF_Y_WEAPON  = 0.45
+  BIPOD_MAX_AWAY_DIST_OFF_NORMAL_CRAWL = 0.35
 
   BIPOD_MAX_AWAY_DIST_SQ     = square(BIPOD_MAX_AWAY_DIST)
   BIPOD_MAX_AWAY_DIST_OFF_SQ = square(BIPOD_MAX_AWAY_DIST_OFF)
@@ -353,6 +354,11 @@ def bipod_human_pre_phys_act_es(evt : CmdPrePhysUpdate;
     gunTm[3] += float3(*human_cam__calculatedOffset * human_cam__offsetMult)
 
   let weaponAnchorWorldPos = gunTm * bipod__anchorOffset
+
+  if bipod__isCrawl && bipod__validateTimer < 0.
+    if abs(dot(worldMountPos - weaponAnchorWorldPos, bipod__anchorNormal)) > BIPOD_MAX_AWAY_DIST_OFF_NORMAL_CRAWL
+      bipod__enabled = false
+      return
 
   let curPos = float3(human_net_phys.phys.currentState.location.P)
   let offset = -(humanItm * weaponAnchorWorldPos)

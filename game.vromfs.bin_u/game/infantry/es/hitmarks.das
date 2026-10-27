@@ -25,13 +25,17 @@ def gun_hitmark_position_init_es(evt : Event;
                                  var gun_scope_hitmark__nodeId : int&)
   gun_scope_hitmark__nodeId = *animchar.nodeTree |> geomtree_findNodeIndex(gun_scope_hitmark__NodeName)
 
-[es(tag=gameClient, no_order, REQUIRE=hero)]
+[es(tag=gameClient, REQUIRE=hero, after=shooter_cam_updated_tm)]
 def human_hitmark_position_update_es(evt : UpdateStageInfoAct;
+                                     transform : float3x4;
                                      camera__aimPosition : float;
-                                     human_weap__currentGunEid : EntityId)
+                                     human_weap__currentGunEid : EntityId;
+                                     camera__moveTilt_currDispl : float2 = float2())
   if camera__aimPosition < 1.0
     set_hitmark_position(float3())
   else
+    
+    let moveTiltOffs = transform[0] * camera__moveTilt_currDispl.y * 0.01 + transform[2] * camera__moveTilt_currDispl.x * 0.01
     
     
     let isScopeFound = find_query() <| $ [es(REQUIRE=gunScope)] (eid aka scope_eid : EntityId; animchar_attach__attachedTo : EntityId)
@@ -39,7 +43,7 @@ def human_hitmark_position_update_es(evt : UpdateStageInfoAct;
         query(scope_eid) <| $ [es] (gun_scope_hitmark__nodeId : int; animchar : AnimcharBaseComponent)
           if gun_scope_hitmark__nodeId >= 0
             let pos = *animchar.nodeTree |> geomtree_getNodeWpos(gun_scope_hitmark__nodeId)
-            set_hitmark_position(pos)
+            set_hitmark_position(pos + moveTiltOffs)
         return true
       return false
 
@@ -48,4 +52,4 @@ def human_hitmark_position_update_es(evt : UpdateStageInfoAct;
       query(human_weap__currentGunEid) <| $ [es] (weapon_frontsight_node__nodeIdx : int; animchar : AnimcharBaseComponent)
         if weapon_frontsight_node__nodeIdx >= 0
           let pos = *animchar.nodeTree |> geomtree_getNodeWpos(weapon_frontsight_node__nodeIdx)
-          set_hitmark_position(pos)
+          set_hitmark_position(pos + moveTiltOffs)

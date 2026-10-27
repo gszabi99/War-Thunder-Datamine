@@ -353,7 +353,7 @@ def update_movement(dt : float;
     if app == null
       return
     let isMissionEnded = app.isMissionSuccessful || app.isMissionFailed
-    let blockMove = (*app |> checkInFlightMenu(true)) || isMissionEnded
+    let blockMove = is_control_suspended() || isMissionEnded
     move = !blockMove ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_WALK, true)), -1.0lf, 1.0lf) : 0.lf
     strafe = !blockMove ? clamp(double(get_axis_value(Axis.AXIS_HUMAN_STRAFE, true)), -1.0lf, 1.0lf) : 0.lf
     apply_inertia(human_input__moveInputInertia, human_input__moveInputAccum, move, strafe)
@@ -1036,3 +1036,61 @@ def human_sprint_strafe(info : UpdateStageUpdateInput;
   let newWalkDir = float2(walkDir.x, double_sprint__currentStrafe)
   phys.producedCT |> human_control_state_set_walk_dir(newWalkDir)
 
+
+[es(tag=input, REQUIRE=hero, after=human_input_es, before=shooter_cam_rotate_es)]
+def human_cam_move_tilt_shake_es(info : UpdateStageInfoAct;
+                                 camera__moveTiltAngles : float2;
+                                 camera__moveTiltVelTau : float = 0.1;
+                                 camera__moveTiltAccTau : float = 0.1;
+                                 camera__moveTiltAccCoef : float = 10.0f;
+                                 human_net_phys__velocity : float3;
+                                 transform : float3x4;
+                                 var camera__moveTiltCurrHas : bool&;
+                                 var camera__moveTiltCurrPos : float3&;
+                                 var camera__moveTiltCurrVel : float3&;
+                                 var camera__moveTiltCurrDir : float3&;
+                                 var camera__moveTiltCurrAng : float&;
+                                 let camera__moveTiltMaxMove : float = 5.f;
+                                 human_net_phys__isClimbing : bool = false;
+                                 human_net_phys__isInAir : bool = false;
+                                 isTpsView : bool = false)
+  if human_net_phys__isClimbing || human_net_phys__isInAir || isTpsView
+    camera__moveTiltCurrAng = 0.0
+    camera__moveTiltCurrVel = float3()
+    camera__moveTiltCurrDir = float3()
+    camera__moveTiltCurrHas = false
+    return
+
+  let joyParams = get_current_joy_param()
+  if joyParams != null && joyParams.cameraShakeToogleForHuman
+    let delta = transform[3] - camera__moveTiltCurrPos
+    var dirVel = delta * safeinv(info.dt)
+    camera__moveTiltCurrPos = transform[3]
+    if !camera__moveTiltCurrHas || length_sq(delta) > square(camera__moveTiltMaxMove)
+      camera__moveTiltCurrHas = true
+      dirVel = float3()
+    dirVel = lerp(human_net_phys__velocity, dirVel, 0.25)
+
+    let newVel = approach(camera__moveTiltCurrVel, dirVel, info.dt, camera__moveTiltVelTau)
+    let accel = (newVel - camera__moveTiltCurrVel) * safediv(camera__moveTiltAccCoef, info.dt)
+
+    camera__moveTiltCurrVel = newVel
+    camera__moveTiltCurrDir = approach(camera__moveTiltCurrDir, accel, info.dt, camera__moveTiltAccTau)
+
+    let tiltAngleMin = deg_to_rad(camera__moveTiltAngles.x)
+    let tiltAngleMax = deg_to_rad(camera__moveTiltAngles.y)
+
+    let dirFactor = clamp(length(camera__moveTiltCurrDir), 0.f, 1.f)
+    var targetAng = dirFactor * tiltAngleMax
+
+    let hasMotion = length_sq(human_net_phys__velocity) > 0.001
+    if hasMotion && targetAng < tiltAngleMin
+      targetAng = tiltAngleMin
+
+    targetAng = clamp(targetAng, -tiltAngleMax, tiltAngleMax)
+    camera__moveTiltCurrAng = targetAng
+  else
+    camera__moveTiltCurrAng = 0.0
+    camera__moveTiltCurrVel = float3()
+    camera__moveTiltCurrDir = float3()
+    camera__moveTiltCurrHas = false

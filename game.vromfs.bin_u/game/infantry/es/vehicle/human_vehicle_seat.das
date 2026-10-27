@@ -289,6 +289,8 @@ def seated_human_bake_post_pausable_animchar_es(act : UpdateStageInfoAct;
                                                 var animchar_node_wtm : AnimcharNodesMat44;
                                                 var animchar_render__root_pos : vec4f&;
                                                 attaches_list : EidList const? = null;
+                                                human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
+                                                human_vehicle__isHoldingGunPassenger : bool = false;
                                                 animchar__turnDir = false)
   if !isInVehicle
     return
@@ -303,7 +305,10 @@ def seated_human_bake_post_pausable_animchar_es(act : UpdateStageInfoAct;
   var attachIds : array<int>
   if attaches_list != null
     assemble_seat_slot_attaches(animchar, *attaches_list, attachIds)
-  animchar |> animchar_act(0.f, true)
+  if !!human_weap__currentGunEid && human_vehicle__isHoldingGunPassenger
+    instant_gun_animchar_anim_update(human_weap__currentGunEid, animchar)
+  else
+    animchar |> animchar_act(0.f, true)
   animchar |> animchar_copy_nodes(animchar_node_wtm, animchar_render__root_pos)
   release_seat_slot_attaches(animchar, attachIds)
 

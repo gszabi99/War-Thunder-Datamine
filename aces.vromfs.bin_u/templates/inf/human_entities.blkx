@@ -531,8 +531,7 @@
       "radioMode__startTime",
       "radioMode__endTime",
       "human_weap__mortarMode",
-      "human_weap__currentScope",
-      "human_weap__grenadeThrowModeServer"
+      "human_weap__currentScope"
     ],
     "trajectory__startNodeName": "Bip01 Spine1",
     "trajectory__startNodeIdx": -1,
@@ -772,7 +771,6 @@
       "human_weap__reserveAmmoPropIds",
       "human_weap__currentScope",
       "human_weap__gunEquipAIForce",
-      "human_weap__grenadeThrowModeServer",
       "human_weap__grenadeThrowServerConfirmed"
     ],
     "human_inventory__capacity": 25.0,
@@ -825,7 +823,6 @@
     "human_weap__gunEquipAIState": 0,
     "human_weap__gunEquipAIForce": true,
     "human_weap__grenadeThrowViaRethrow": false,
-    "human_weap__grenadeThrowModeServer": false,
     "human_weap__grenadeThrowServerConfirmed": true,
     "human_weap__grenadeThrower:eid": {},
     "precomp_weapon_pos": {},
@@ -1167,6 +1164,14 @@
       0.0,
       0.0
     ],
+    "camera__prevGunAimOffset": [
+      0.0,
+      0.0
+    ],
+    "camera__appliedSightTurn": [
+      0.0,
+      0.0
+    ],
     "camera__lookDir": [
       1.0,
       0.0,
@@ -1195,6 +1200,39 @@
       1.0,
       0.0
     ],
+    "vehicle_passenger_camera__maxAngleDeg": [
+      65.0,
+      35.0
+    ],
+    "camera__moveTiltScales": [
+      1.0,
+      0.75,
+      0.85
+    ],
+    "camera__moveTiltAngles": [
+      0.05,
+      0.85
+    ],
+    "camera__moveTiltVelTau": 0.15,
+    "camera__moveTiltAccTau": 0.15,
+    "camera__moveTiltAccCoef": 0.1,
+    "camera__moveTiltCurrHas": false,
+    "camera__moveTiltCurrPos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__moveTiltCurrVel": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__moveTiltCurrDir": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "camera__moveTiltCurrAng": 0.0,
     "_group": {
       "_track": true,
       "dead_camera__hitHead": false,
@@ -1747,6 +1785,7 @@
     "human_anim__isFpvVarId": -1,
     "human_anim__isBayonetAttachedVarId": -1,
     "human_anim__previousHeight": 1.0,
+    "human_anim__pitch": 0.0,
     "human_anim__lastUpdatedDedHeight": -1.0,
     "human_anim__diffToUpdateHeight": 0.2,
     "human_anim__jumpTimer": 0.0,
@@ -1879,6 +1918,7 @@
     "human_anim__comboStateCrawlAim": -1,
     "human_anim__comboStateCrawlFireReady": -1,
     "human_anim__comboStateCrawlChangeWeapons": -1,
+    "human_anim__comboStateCrawlWeaponDown": -1,
     "human_anim__comboStateAttackedState": -1,
     "human_anim__comboStateSwimStill": -1,
     "human_anim__comboStateSwimStillUnderwater": -1,

@@ -185,6 +185,13 @@ def human_use_action_hud_es(evt : Event;
     elif useActionAvailable == int(HumanAction.ACTION_CLOSE_WINDOW)
       hud_notify_script("hint:human_use_close_window:show", eventData)
 
+[es(tag=(render, gameClient), on_disappear, REQUIRE=(watchedByPlr, useActionAvailable, human_use_object__vehicleSeatEid), REQUIRE_NOT=isReplayObserved)]
+def human_use_action_hud_hide_es(evt : Event)
+  using() <| $(var eventData : DataBlock)
+    hud_notify_script("hint:human_use_action:hide", eventData)
+    hud_notify_script("hint:human_enter_driver_seat:hide", eventData)
+    hud_notify_script("hint:human_enter_passenger_seat:hide", eventData)
+
 [es(tag=gameClient, on_appear, REQUIRE=hero, REQUIRE_NOT=isReplayObserved, track=human_use_object__selectedBuilding, before=ui_useful_box_ammo_count_changed_es)]
 def ui_useful_box_hint_es(evt : Event;
                           human_use_object__selectedBuilding : EntityId;
@@ -210,6 +217,11 @@ def ui_useful_box_hint_es(evt : Event;
           hud_notify_script("hint:resupply/ammo_box_refill:show", eventData)
         else
           hud_notify_script("hint:resupply/medkit_box_refill:show", eventData)
+
+[es(tag=gameClient, on_disappear, REQUIRE=(hero, human_use_object__selectedBuilding, team), REQUIRE_NOT=isReplayObserved)]
+def ui_useful_box_hint_hide_es(evt : Event)
+  using() <| $(var eventData : DataBlock)
+    hud_notify_script("hint:resupply/useful_box:hide", eventData)
 
 
 [es(tag=gameClient, on_appear, track=useful_box__useCount)]
@@ -247,6 +259,11 @@ def human_burning_tip_show_es(evt : Event;
     else
       hud_notify_script("hint:burning_tip:hide", eventData)
 
+[es(tag=gameClient, on_disappear, REQUIRE=(watchedByPlr, burning__isBurning, burning__isPuttingOut), REQUIRE_NOT=isReplayObserved)]
+def human_burning_tip_hide_es(evt : Event)
+  using() <| $(var eventData : DataBlock)
+    hud_notify_script("hint:burning_tip:hide", eventData)
+
 [es(tag=gameClient, REQUIRE=watchedByPlr, REQUIRE_NOT=isReplayObserved, on_appear, track=(grenade_rethrow__grenadeEid))]
 def grenade_rethrow_tip_show_es(evt : Event;
                                 eid : EntityId;
@@ -258,6 +275,11 @@ def grenade_rethrow_tip_show_es(evt : Event;
           hud_notify_script("hint:human_throw_back:show", eventData)
     else
       hud_notify_script("hint:human_throw_back:hide", eventData)
+
+[es(tag=gameClient, on_disappear, REQUIRE=(watchedByPlr, grenade_rethrow__grenadeEid), REQUIRE_NOT=isReplayObserved)]
+def grenade_rethrow_tip_hide_es(evt : Event)
+  using() <| $(var eventData : DataBlock)
+    hud_notify_script("hint:human_throw_back:hide", eventData)
 
 def notify_take_driver_seat_tip(can_take_driver_seat : bool)
   using() <| $(var eventData : DataBlock)
@@ -282,6 +304,11 @@ def human_take_driver_seat_tip_show_es(evt : Event;
                                                     isAlive aka vehicle_isAlive : bool = true)
         canTakeDriverSeat = vehicle_isAlive && !vehicle__controlledByDriver
   notify_take_driver_seat_tip(canTakeDriverSeat)
+
+
+[es(tag=gameClient, on_disappear, REQUIRE=(hero, isAlive, human_vehicle__occupiedSeatEid, human_anim__vehicleSelected), REQUIRE_NOT=isReplayObserved)]
+def human_take_driver_seat_tip_hide_es(evt : Event)
+  notify_take_driver_seat_tip(false)
 
 
 [es(tag=gameClient, REQUIRE=(vehicle__controlledByDriver, heroVehicle), on_appear, track=(vehicle__controlledByDriver, isAlive))]

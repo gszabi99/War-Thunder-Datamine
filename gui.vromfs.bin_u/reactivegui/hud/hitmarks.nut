@@ -224,6 +224,7 @@ let hitMarkArmor = {
 function mkHitMarks() {
   return {
     watch = [hitMarkEid, useHitMark]
+    size = FLEX
     behavior = (useHitMark.get() && hitMarkEid.get() != ecs.INVALID_ENTITY_ID) ? Projection : null
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER

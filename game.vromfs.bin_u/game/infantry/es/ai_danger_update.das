@@ -412,11 +412,12 @@ def ai_danger_trace_targets(act : UpdateStageInfoAct; eid : EntityId; isAlive : 
               
 
         ++numTracesDone
+        let MAX_SEE_THRU_SMOKE_DISTANCE = 3.5
         let shootRayMat = get_shoot_ray_mat(human_attached_gun__attachedGunEid, human_weap__currentGunEid)
         collides = (rayhit_normalized_lmesh(lmeshTracePos, dir, danger.distance) ||
                     rayhit_normalized(fromPos, dir, danger.distance, flags, shootRayMat) ||
                     traceTransparencyRayRIGenNormalized(fromPos, dir, danger.distance, 0.01) ||
-                    rayhit_smoke_occluders(fromPos, corrTargetPos))
+                    (t > MAX_SEE_THRU_SMOKE_DISTANCE && rayhit_smoke_occluders(fromPos, corrTargetPos)))
         collides ||= rayhit_entities_in_grid(ecs_hash("vehicles"), fromPos, dir, t, danger.eid)
         if !collides
           find_entity_in_grid(ecs_hash("humans"), fromPos, dir, t, 0.0, GridEntCheck.BOUNDING) <| $(objEid : EntityId)

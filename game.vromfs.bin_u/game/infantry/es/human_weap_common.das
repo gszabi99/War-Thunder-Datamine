@@ -421,6 +421,12 @@ def clear_throw_mode(human_eid : EntityId;
     switch_to_first_weap_with_ammo(human_weap__gunEids, phys)
 
 
+def get_shell_template_name(shell_id : PropsId) : string
+  var res = ""
+  shell_entity_get_props(shell_id) <| $(entProps : ShellEntityTypeProps)
+    res = entProps.templName
+  return res
+
 def reload_projectile(eid, gun_eid : EntityId) : EntityId
   var shellEid = INVALID_ENTITY_ID
   query(gun_eid) <| $ [es] (gun__shell_prop_ids : PropsIdList;
@@ -434,22 +440,21 @@ def reload_projectile(eid, gun_eid : EntityId) : EntityId
       
         
     if gun__curShellId != null
-      shell_entity_get_props(*gun__curShellId) <| $(entProps : ShellEntityTypeProps)
-        let entPropsTemplName = entProps.templName
-        if !empty(entPropsTemplName) && grenade_thrower__projectileEntity == INVALID_ENTITY_ID
-          shellEid = create_shell_entity(entPropsTemplName,
-                                          IDENT_TM,
-                                          float3(0.f),
-                                          eid,
-                                          *gun__curShellId,
-                                          gun__propsId,
-                                           get_sync_time(),
-                                           0.f,
-                                           false,
-                                           !is_server(),
-                                          INVALID_ENTITY_ID)
-          human_gun_attached = false
-          grenade_thrower__projectileEntity = shellEid
+      let entPropsTemplName = get_shell_template_name(*gun__curShellId)
+      if !empty(entPropsTemplName) && grenade_thrower__projectileEntity == INVALID_ENTITY_ID
+        shellEid = create_shell_entity(entPropsTemplName,
+                                        IDENT_TM,
+                                        float3(0.f),
+                                        eid,
+                                        *gun__curShellId,
+                                        gun__propsId,
+                                         get_sync_time(),
+                                         0.f,
+                                         false,
+                                         !is_server(),
+                                        INVALID_ENTITY_ID)
+        human_gun_attached = false
+        grenade_thrower__projectileEntity = shellEid
 
   return shellEid
 
@@ -628,6 +633,40 @@ def throw_grenade_away(eid : EntityId;
             human_weap__localProjectileEid = grenade_thrower__projectileEntity
   return res
 
+def throw_new_grenade(eid : EntityId;
+                      grenade_thrower_eid : EntityId;
+                      at_time : float)
+  var res = false
+  query(grenade_thrower_eid) <| $ [es] (gun__curShellId : PropsId;
+                                        gun__propsId : PropsId;
+                                        var human_gun_attached : bool&;
+                                        var grenade_thrower__projectileEntity : EntityId&)
+    let shellTemplName = get_shell_template_name(gun__curShellId)
+    let shellTemplate = getTemplateByName(shellTemplName)
+    if shellTemplate == null
+      return
+    let rethrownTemplName = getTemplateComponent(*shellTemplate, "grenade__rethrownTemplate") ?? ""
+    let templName = rethrownTemplName == "" ? shellTemplName : rethrownTemplName
+    let hudMarkerTemplate = getTemplateComponent(*shellTemplate, "shell__hudMarkerTemplate") ?? ""
+    let explosionTimer = get_float(getTemplateComponent(*shellTemplate, "shell__explosionTimer")) ?? 0.0
+    res = true
+
+    human_gun_attached = false
+
+    let templateName = hudMarkerTemplate != "" ? add_sub_template_name(templName, hudMarkerTemplate) : templName
+    let explTime = explosionTimer > 0.0 ? at_time + explosionTimer : 0.0
+    grenade_thrower__projectileEntity = create_shell_entity(templateName, IDENT_TM, float3(),
+                                                            eid, gun__curShellId,
+                                                            gun__propsId,  get_sync_time(),
+                                                            explTime,  true,  !is_server(),
+                                                            INVALID_ENTITY_ID)
+
+    if !is_server()
+      query(eid) <| $ [es] (var human_weap__localProjectileEid : EntityId&)
+        destroyEntity(human_weap__localProjectileEid)
+        human_weap__localProjectileEid = grenade_thrower__projectileEntity
+  return res
+
 def human_weap_gun_update(var human_net_phys : HumanActor;
                           human_weap__gunEids : EidList;
                           var human_weap__throwMode : bool&;
@@ -670,11 +709,13 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
   if ((ct |> is_control_bit_set(HumanPhysControlType.HCT_THROW_BACK) || grenadeThrowViaRethrow) &&
       ctx.isForReal && !human_weap__throwMode && (allowShootingNoAttach || grenadeThrowViaRethrow))
     var grenadeEid = INVALID_ENTITY_ID
+    var throwNewGrenade = false
 
     if grenadeThrowViaRethrow
       query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
         grenadeEid = grenade_thrower__projectileEntity
         reloadGrenade = true
+        throwNewGrenade = grenadeEid == INVALID_ENTITY_ID
         query(grenadeEid) <| $ [es] (shell__explosionTimer : float; var shell__explTime : float&)
           shell__explTime = ctx.atTime + shell__explosionTimer
     else
@@ -682,11 +723,13 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
         grenadeEid = find_rethrowable_grenade(ctx.eid)
       elif grenade_rethrow__grenadeEid != null
         grenadeEid = *grenade_rethrow__grenadeEid
-    if grenadeEid != INVALID_ENTITY_ID
+    if throwNewGrenade
+      human_weap__throwMode = throw_new_grenade(ctx.eid, human_weap__grenadeThrower, ctx.atTime)
+    elif grenadeEid != INVALID_ENTITY_ID
       human_weap__throwMode = throw_grenade_away(ctx.eid, grenadeEid, human_weap__grenadeThrower)
-      if is_server() && human_weap__throwMode
-        query(ctx.eid) <| $ [es] (var human_weap__grenadeThrowServerConfirmed : bool&)
-          human_weap__grenadeThrowServerConfirmed = false
+    if is_server() && human_weap__throwMode
+      query(ctx.eid) <| $ [es] (var human_weap__grenadeThrowServerConfirmed : bool&)
+        human_weap__grenadeThrowServerConfirmed = false
     if is_server() && !human_weap__throwMode
       send_net_event(ctx.eid, HumanWeapThrowBackAbort())
 
@@ -746,7 +789,7 @@ def human_weap_gun_update(var human_net_phys : HumanActor;
       
       let projectileEid = reload_projectile(ctx.eid, human_weap__grenadeThrower)
 
-      if !is_server()
+      if !is_server() && projectileEid != INVALID_ENTITY_ID
         
         query(ctx.eid) <| $ [es] (var human_weap__localProjectileEid : EntityId&)
           destroyEntity(human_weap__localProjectileEid)
@@ -1023,6 +1066,7 @@ def human_weap_can_reload(human_eid : EntityId; gun_eid : EntityId) : bool
                               human_weap__isReloading : bool = false;
                               human_weap__canOperate : bool = true;
                               burning__isBurning : bool = false;
+                              human_net_phys__isClimbing : bool = false;
                               human_attached_gun__attachedGunEid : EntityId = INVALID_ENTITY_ID;
                               human_inventory__entityToUse : EntityId = INVALID_ENTITY_ID)
     assume currentState = human_net_phys.phys.currentState
@@ -1038,6 +1082,7 @@ def human_weap_can_reload(human_eid : EntityId; gun_eid : EntityId) : bool
                  !isCrawlMoving &&
                  !human_weap__isReloading &&
                  !burning__isBurning &&
+                 !human_net_phys__isClimbing &&
                  (eqState == HUWeaponEquipState.EES_EQUIPED || eqState == HUWeaponEquipState.EES_DOWN || isAttachedToGun) &&
                  !isBlockedByBoltAction && (human_weap__weapModActivateStartTime < 0.) &&
                  !usingItem &&

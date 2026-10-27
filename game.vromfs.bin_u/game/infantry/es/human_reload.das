@@ -474,7 +474,9 @@ def human_weap_reload_es(info : ParallelUpdateFrameDelayed;
                          var human_weap__reloadAtTime : float&;
                          var human_weap__reloadStartTime : float&;
                          var human_weap__reloadFinishTime : float&;
-                         var human_weap__reloadDelayTime : float&)
+                         var human_weap__reloadDelayTime : float&;
+                         var human_anim__heroReloadStartTime : float&;
+                         var human_anim__heroReloadEndTime : float&)
   let canReloadGun = human_weap_can_reload(eid, human_weap__currentGunEid)
   if !canReloadGun && human_weap__reloadFinishTime > info.curTime
     human_weap__reloadDelayTime += info.dt
@@ -482,23 +484,31 @@ def human_weap_reload_es(info : ParallelUpdateFrameDelayed;
     human_weap__reloadAtTime = human_weap__reloadAtTime + human_weap__reloadDelayTime
     human_weap__reloadStartTime = human_weap__reloadStartTime + human_weap__reloadDelayTime
     human_weap__reloadFinishTime = human_weap__reloadFinishTime + human_weap__reloadDelayTime
+    human_anim__heroReloadStartTime = human_anim__heroReloadStartTime + human_weap__reloadDelayTime
+    human_anim__heroReloadEndTime = human_anim__heroReloadEndTime + human_weap__reloadDelayTime
     human_weap__reloadDelayTime = canReloadGun ? 0.0 : info.dt
 
 
 [es(REQUIRE_NOT=deadEntity)]
-def human_weap_reset_inspect_es(evt : CmdPostPhysUpdate;
-                                human_net_phys : HumanActor;
-                                var human_weap__inspectStartTime : float&;
-                                var human_weap__inspectEndTime : float&)
-  var canInspect = true
+def human_weap_interrupt_on_crawl_move_es(evt : CmdPostPhysUpdate;
+                                          eid : EntityId;
+                                          human_net_phys : HumanActor;
+                                          human_weap__reloadAtTime : float;
+                                          var human_weap__inspectStartTime : float&;
+                                          var human_weap__inspectEndTime : float&;
+                                          human_weap__isReloading : bool = false)
   assume currentState = human_net_phys.phys.currentState
-  assume mvState = currentState.moveState
-  let isCrawlMoving = currentState.isCrawl && mvState != HUMoveState.EMS_STAND
-  canInspect = !isCrawlMoving
+  let isCrawlMoving = currentState.isCrawl && currentState.moveState != HUMoveState.EMS_STAND
+  if !isCrawlMoving
+    return
 
-  if !canInspect && human_weap__inspectEndTime > get_sync_time()
+  let curTime = get_sync_time()
+  if human_weap__inspectEndTime > curTime
     human_weap__inspectStartTime = -1.0
     human_weap__inspectEndTime = -1.0
+
+  if evt.isForReal && (human_weap__reloadAtTime > curTime || human_weap__isReloading)
+    sendEvent(eid, CmdInterruptReloadImmediately())
 
 
 

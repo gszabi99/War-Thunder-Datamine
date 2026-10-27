@@ -249,6 +249,9 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
                                                      gun_anim_var__tpsGunOffsetAlong : float = 0.0;
                                                      gun_anim_var__tpsGunOffsetAcross : float = 0.0;
                                                      gun_anim_var__tpsGunOffsetUp : float = 0.0;
+                                                     gun_anim_var__tpsGunOffsetAlongExtra : float = 0.f;
+                                                     gun_anim_var__tpsGunOffsetAcrossExtra : float = 0.f;
+                                                     gun_anim_var__tpsGunOffsetUpExtra : float = 0.f;
                                                      gun_anim_var__fpsReyeOffsetFwd0 : float const?;
                                                      gun_anim_var__fpsGunOffsetAlong : float const?;
                                                      gun_anim_var__fpsGunOffsetAcross : float const?;
@@ -269,10 +272,13 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
     assume isInSprint = human_net_phys__curMoveState == int(HUMoveState.EMS_SPRINT)
     let isTpsViewOnSoldier = !human_anim__isFpv || isTpsView
     if !isAim && !(isCrawl) && isTpsViewOnSoldier && !bipod__enabled && gunAnimOffsetAlwaysInAim == null
+      let offsetAlong = gun_anim_var__tpsGunOffsetAlong + gun_anim_var__tpsGunOffsetAlongExtra
+      let offsetAcross = gun_anim_var__tpsGunOffsetAcross + gun_anim_var__tpsGunOffsetAcrossExtra
+      let offsetUp = gun_anim_var__tpsGunOffsetUp + gun_anim_var__tpsGunOffsetUpExtra
       phys_vars |> approach_var(reye_offset__fwd0Id, gun_anim_var__tpsReyeOffsetFwd0, info.dt, gun_offset__tau)
-      phys_vars |> approach_var(gun_offset__alongId, gun_anim_var__tpsGunOffsetAlong, info.dt, gun_offset__tau)
-      phys_vars |> approach_var(gun_offset__acrossId, gun_anim_var__tpsGunOffsetAcross, info.dt, gun_offset__tau)
-      phys_vars |> approach_var(gun_offset__upId, gun_anim_var__tpsGunOffsetUp, info.dt, gun_offset__tau)
+      phys_vars |> approach_var(gun_offset__alongId, offsetAlong, info.dt, gun_offset__tau)
+      phys_vars |> approach_var(gun_offset__acrossId, offsetAcross, info.dt, gun_offset__tau)
+      phys_vars |> approach_var(gun_offset__upId, offsetUp, info.dt, gun_offset__tau)
       return
 
     if !isTpsViewOnSoldier
@@ -307,10 +313,13 @@ def human_gun_phys_vars_es(info : ParallelUpdateFrameDelayed;
       phys_vars |> approach_var(gun_offset__upId, offset.y, info.dt, gun_offset__tau)
       return
 
+    let offsetAlong = gun_anim_var__defGunOffsetAlong + gun_anim_var__tpsGunOffsetAlongExtra
+    let offsetAcross = gun_anim_var__defGunOffsetAcross + gun_anim_var__tpsGunOffsetAcrossExtra
+    let offsetUp = gun_anim_var__defGunOffsetUp + gun_anim_var__tpsGunOffsetUpExtra
     phys_vars |> approach_var(reye_offset__fwd0Id, gun_anim_var__defReyeOffsetFwd0, info.dt, gun_offset__tau)
-    phys_vars |> approach_var(gun_offset__acrossId, gun_anim_var__defGunOffsetAcross, info.dt, gun_offset__tau)
-    phys_vars |> approach_var(gun_offset__alongId, gun_anim_var__defGunOffsetAlong, info.dt, gun_offset__tau)
-    phys_vars |> approach_var(gun_offset__upId, gun_anim_var__defGunOffsetUp, info.dt, gun_offset__tau)
+    phys_vars |> approach_var(gun_offset__alongId, offsetAlong, info.dt, gun_offset__tau)
+    phys_vars |> approach_var(gun_offset__acrossId, offsetAcross, info.dt, gun_offset__tau)
+    phys_vars |> approach_var(gun_offset__upId, offsetUp, info.dt, gun_offset__tau)
 
 
 def private update_gun_collision_links(var human_net_phys : HumanActor&;

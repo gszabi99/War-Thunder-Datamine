@@ -1518,6 +1518,25 @@
                           "act": "L25"
                         }
                       ],
+                      "success": [
+                        {
+                          "orderedSelector": {
+                            "isOnNavmesh": {
+                              "minPolys": 10,
+                              "maxDepth": 3
+                            },
+                            "isInAir": {},
+                            "subTree": {
+                              "treeName": "move.returnToNavmesh"
+                            }
+                          }
+                        },
+                        {
+                          "setSquadGoal": {
+                            "resetAction": true
+                          }
+                        }
+                      ],
                       "changeStance": {
                         "stanceName": "stand",
                         "maxStanceParam": "maxStance",
@@ -1645,11 +1664,6 @@
                           0.0,
                           0.0
                         ]
-                      },
-                      "success": {
-                        "setSquadGoal": {
-                          "resetAction": true
-                        }
                       },
                       "recalculateTree": {}
                     }
@@ -1784,6 +1798,18 @@
                             "wait": true
                           }
                         ],
+                        "success": {
+                          "orderedSelector": {
+                            "isOnNavmesh": {
+                              "minPolys": 10,
+                              "maxDepth": 3
+                            },
+                            "isInAir": {},
+                            "subTree": {
+                              "treeName": "move.returnToNavmesh"
+                            }
+                          }
+                        },
                         "orderedSelector": [
                           {
                             "callTree": {
@@ -2179,6 +2205,18 @@
           {
             "setDebugSym": {
               "act": "L77"
+            },
+            "success": {
+              "orderedSelector": {
+                "isOnNavmesh": {
+                  "minPolys": 10,
+                  "maxDepth": 3
+                },
+                "isInAir": {},
+                "subTree": {
+                  "treeName": "move.returnToNavmesh"
+                }
+              }
             },
             "callTree": {
               "treeName": "soldier.find_safe_pos_to_reload_and_get_there2"

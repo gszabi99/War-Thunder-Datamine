@@ -12,27 +12,72 @@ require WTInput
 require %game.events
 require %appGame.infantry.es.human_weap_common
 
+def private is_aiming_through_subsidiary_sight(gun_eid : EntityId) : bool
+  var res = false
+  query(gun_eid) <| $ [es] (gun_anim__weapModEid : EntityId; weap__sightEid : EntityId)
+    if !gun_anim__weapModEid || weap__sightEid != gun_anim__weapModEid
+      return
+    query(gun_anim__weapModEid) <| $ [es(REQUIRE=sightPresets)] (weapon_mod__active : bool)
+      res = weapon_mod__active
+  return res
+
+[es(on_event=(EventUnitRespawn, EventUnitSpawned))]
+def human_look_dir_camera_reset_sight_turn_es(evt : Event;
+                                              camera__gunAimOffset : float2;
+                                              var camera__prevGunAimOffset : float2&;
+                                              var camera__appliedSightTurn : float2&)
+  camera__prevGunAimOffset = camera__gunAimOffset
+  camera__appliedSightTurn = float2(0.0, 0.0)
+
 [es(after=after_net_phys_sync)]
 def human_look_dir_camera_es(info : ParallelUpdateFrameDelayed;
                              camera__active : bool;
                              camera__target : EntityId)
   if !camera__active
     return
-  query(camera__target) <| $ [es(REQUIRE_NOT=deadEntity)] (human_net_phys : HumanActor;
-                                                           camera__gunAimOffset : float2;
+  query(camera__target) <| $ [es(REQUIRE_NOT=deadEntity)] (var human_net_phys : HumanActor;
+                                                           var camera__prevGunAimOffset : float2&;
+                                                           var camera__appliedSightTurn : float2&;
                                                            var camera__shootOffset : float2&;
                                                            var camera__prevLookDir : float3&;
                                                            var camera__lookDir : float3&;
+                                                           var human_input__aimAngle : float2?;
+                                                           var human_input__oldAimAngle : float2?;
+                                                           human_input__currentVertLookAngleLimit : float2 const?;
+                                                           camera__gunAimOffset : float2;
+                                                           human_weap__currentGunEid : EntityId = INVALID_ENTITY_ID;
                                                            camera__shootOffsetTau : float = 0.05f;
                                                            camera__breathOffsetAimMult : float = 0.7;
                                                            isInVehicle : bool = false;
                                                            bipod__enabled : bool = false)
-    if isInVehicle
-      return
-    camera__prevLookDir = camera__lookDir
+    let sightTurn = camera__gunAimOffset - camera__prevGunAimOffset
+    camera__prevGunAimOffset = camera__gunAimOffset
 
     assume ct = human_net_phys.phys.producedCT
     let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)
+    let aimPosition = lerp(human_net_phys.phys.previousState.aimPosition, human_net_phys.phys.currentState.aimPosition, interpK)
+
+    
+    if (human_net_phys.isLocalControl && human_input__aimAngle != null && human_input__oldAimAngle != null
+        && human_input__currentVertLookAngleLimit != null)
+      let isCompensating = !isInVehicle && aimPosition >= 1.0 && is_aiming_through_subsidiary_sight(human_weap__currentGunEid)
+      var turn = isCompensating ? sightTurn : -camera__appliedSightTurn
+      if turn.x != 0.0 || turn.y != 0.0
+        let aim = *human_input__aimAngle
+        let limit = deg_to_rad(*human_input__currentVertLookAngleLimit)
+        let lo = min(max(limit.x, -SAFE_HALF_PI), aim.y)
+        let hi = max(min(limit.y, SAFE_HALF_PI), aim.y)
+        turn.y = aim.y - clamp(aim.y - turn.y, lo, hi)
+        *human_input__aimAngle -= turn
+        *human_input__oldAimAngle -= turn
+        let lookDir = angles_to_dir(dir_to_angles(ct.wishLookDir) - turn)
+        human_net_phys.phys.producedCT |> human_control_state_set_wish_look_dir(lookDir)
+        camera__shootOffset += turn
+        camera__appliedSightTurn += turn
+
+    if isInVehicle
+      return
+    camera__prevLookDir = camera__lookDir
 
     var ang : float2
     if (int(human_net_phys.role) & int(NetRole.URF_LOCAL_CONTROL)) != 0
@@ -50,7 +95,6 @@ def human_look_dir_camera_es(info : ParallelUpdateFrameDelayed;
 
     
     
-    let aimPosition = lerp(human_net_phys.phys.previousState.aimPosition, human_net_phys.phys.currentState.aimPosition, interpK)
     if aimPosition > 0.0 && camera__breathOffsetAimMult > 0.0 && !bipod__enabled
       let breathOffset = lerp(human_net_phys.phys.previousState.breathOffset, human_net_phys.phys.currentState.breathOffset, float2(interpK))
       ang += breathOffset * aimPosition * camera__breathOffsetAimMult

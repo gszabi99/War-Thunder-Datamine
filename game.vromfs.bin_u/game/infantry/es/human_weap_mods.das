@@ -72,7 +72,8 @@ def human_weap_mod_activate(eid : EntityId;
                             slot_id : int;
                             activate : bool;
                             var human_weap__weapModActivateStartTime : float&;
-                            var human_weap__weapModActivateFinishTime : float&)
+                            var human_weap__weapModActivateFinishTime : float&;
+                            var bipod__enabled : bool?)
   verify(is_server())
 
   if slot_id < 0 || slot_id >= length(human_weap__gunMods) || isDowned
@@ -96,6 +97,8 @@ def human_weap_mod_activate(eid : EntityId;
         ramrodGun != null && gun__ammo == 0 && gun__totalAmmo == 0)
         return
       weapon_mod__wantActiveState = activate
+      if activate && bipod__enabled != null
+        *bipod__enabled = false
       if human_weap__weapModActivateFinishTime > 0.
         human_weap__weapModActivateStartTime = human_weap__weapModActivateFinishTime - curTime
       else
@@ -163,12 +166,14 @@ def human_weap_mod_activate_server_es(evt : CmdWeapModActivate;
                                       human_weap__gunMods : Array;
                                       human_weap__reloadFinishTime : float;
                                       var human_weap__weapModActivateStartTime : float&;
-                                      var human_weap__weapModActivateFinishTime : float&)
+                                      var human_weap__weapModActivateFinishTime : float&;
+                                      var bipod__enabled : bool?)
   human_weap_mod_activate(eid, isDowned, human_weap__gunEids, human_weap__gunMods,
                           human_weap__reloadFinishTime,
                           evt.slotId, evt.activate,
                           human_weap__weapModActivateStartTime,
-                          human_weap__weapModActivateFinishTime)
+                          human_weap__weapModActivateFinishTime,
+                          bipod__enabled)
 
 
 [es(tag=netClient)]
@@ -184,12 +189,14 @@ def human_weap_mod_activate_req_es(evt : HumanRequestModActivate;
                                    human_weap__gunMods : Array;
                                    human_weap__reloadFinishTime : float;
                                    var human_weap__weapModActivateStartTime : float&;
-                                   var human_weap__weapModActivateFinishTime : float&)
+                                   var human_weap__weapModActivateFinishTime : float&;
+                                   var bipod__enabled : bool?)
   human_weap_mod_activate(eid, isDowned, human_weap__gunEids, human_weap__gunMods,
                           human_weap__reloadFinishTime,
                           evt.slotId, evt.activate,
                           human_weap__weapModActivateStartTime,
-                          human_weap__weapModActivateFinishTime)
+                          human_weap__weapModActivateFinishTime,
+                          bipod__enabled)
 
 
 [es(REQUIRE=watchedByPlr, after=after_net_phys_sync, REQUIRE_NOT=deadEntity)]

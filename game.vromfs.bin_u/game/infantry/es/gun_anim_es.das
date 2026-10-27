@@ -46,6 +46,7 @@ def gun_anim_init_es(evt : Event;
                      var gun_anim__magazineSelectedVarId : int&;
                      var gun_anim__barrelSelectedVarId : int&;
                      var gun_anim__bipodEnabledId : int&;
+                     var gun_anim__rootScaleBoltActionId : int&;
                      var gun_anim__singleReloadStates : IntList;
                      var gun_anim__reloadStyles : IntList;
                      var gun_anim__reloadStates : IntList;
@@ -68,6 +69,7 @@ def gun_anim_init_es(evt : Event;
   gun_anim__magazineSelectedVarId = registerVar(phys_vars, "magazine_selected", 0.f)
   gun_anim__barrelSelectedVarId = registerVar(phys_vars, "barrel_selected", 0.f)
   gun_anim__bipodEnabledId = registerVar(phys_vars, "bipod_enabled", 0.f)
+  gun_anim__rootScaleBoltActionId = registerVar(phys_vars, "weapon_root_scale_boltaction", 1.f)
 
   let reload_count = typeinfo enum_length(type<GunSingleReloadState>)
   resize(gun_anim__singleReloadStates, reload_count)
@@ -264,3 +266,18 @@ def gun_anim_update_ads_position(info : ParallelUpdateFrameDelayed;
     let interpK = get_phys_interpk_clamped(human_net_phys.phys, info.curTime)
     let aimPosition = lerp(human_net_phys.phys.previousState.aimPosition, human_net_phys.phys.currentState.aimPosition, interpK)
     setVar(phys_vars, gun_anim__adsPositionVarId, aimPosition)
+
+[es(tag=render)]
+def gun_anim_bolt_action_root_scale_es(info : ParallelUpdateFrameDelayed;
+                                       human_weap__currentGunEid : EntityId;
+                                       human_anim__isFpv : bool;
+                                       bipod__enabled : bool = false;
+                                       animchar__visible : bool = true)
+  if !animchar__visible
+    return
+  query(human_weap__currentGunEid) <| $ [es] (gun_anim__rootScaleBoltActionId : int;
+                                              gun_anim_var__rootScaleBoltAction : float;
+                                              var phys_vars : PhysVars)
+    let useScale = human_anim__isFpv && bipod__enabled
+    let value = useScale ? saturate(gun_anim_var__rootScaleBoltAction) : 1.f
+    phys_vars |> setVar(gun_anim__rootScaleBoltActionId, value)

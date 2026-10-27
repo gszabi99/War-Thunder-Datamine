@@ -151,10 +151,6 @@
     "ammo_holder__templateName": "m433_grenade_item",
     "ammo_holder__ammoCount": 1
   },
-  "grenade_thrown_via_rethrow": {
-    "grenadeThrownViaRethrow:tag": {},
-    "grenade_thrown_via_rethrow__ownerEid:eid": {}
-  },
   "grenade_thrower": {
     "_use": [
       "dng_gun",
@@ -199,6 +195,7 @@
     "grenade_throw__throwProgressTime": 0.52,
     "grenade_throw__fastThrowCookProgressTime": 0.3,
     "grenade_throw__fastThrowProgressTime": 0.52,
+    "grenade_throw__attachWaitTimeout": 1.0,
     "shell__autoThrowCountdown": 0.0,
     "item__id:i": {
       "value": 0,
@@ -219,7 +216,8 @@
         "gameData/weapons/human_weapons/grenades/m67_grenade.blk",
         "gameData/weapons/human_weapons/grenades/m84_grenade.blk",
         "gameData/weapons/human_weapons/grenades/rdg_smoke.blk",
-        "gameData/weapons/human_weapons/grenades/m18_smoke_grenade.blk"
+        "gameData/weapons/human_weapons/grenades/m18_smoke_grenade.blk",
+        "gameData/weapons/grenade_geballte_ladung.blk"
       ]
     },
     "xrayActivator:tag": {},
@@ -765,14 +763,14 @@
       "geballte_ladung_shell",
       "grenade_base"
     ],
-    "grenade__selectedWeaponVar": "grenade_geballte_ladung"
+    "grenade__selectedWeaponVar": "geballte_ladung"
   },
   "grenade_base": {
     "gun__visible": true,
     "_tracked": "gun__visible",
-    "gun_attach__slot": "l_hand",
+    "gun_attach__slot": "weapon",
     "gun_attach__mainSlotId": -1,
-    "gun_attach__alternativeSlot": "r_hand",
+    "gun_attach__alternativeSlot": "l_hand",
     "gun_attach__altSlotId": -1,
     "grenade__throwProgressVarId": -1,
     "grenade__selectedWeaponVar": "grenade_m24",
@@ -881,7 +879,6 @@
       "m24_shell"
     ],
     "item__name": "items/m24_grenade",
-    "gun_attach__slot": "l_hand",
     "animchar__actOnDemand:tag": {}
   },
   "geballte_ladung_grenade": {
@@ -890,7 +887,6 @@
       "geballte_ladung_grenade_base"
     ],
     "item__name": "items/geballte_ladung",
-    "gun_attach__slot": "l_hand",
     "animchar__actOnDemand:tag": {}
   },
   "projectile_phys": {

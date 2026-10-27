@@ -148,7 +148,7 @@
       "grenade": "grenade_thrower"
     },
     "inventory__itemCreateTemplates:object": {
-      "akm_47_magazine": 8,
+      "akm_47_magazine": 7,
       "medkit_item": 1
     },
     "_group": {
@@ -232,7 +232,7 @@
       "grenade": "grenade_thrower"
     },
     "inventory__itemCreateTemplates:object": {
-      "sig_xm5_magazine": 8,
+      "sig_xm5_magazine": 7,
       "medkit_item": 1
     },
     "_group": {
@@ -791,7 +791,7 @@
       "grenade": "grenade_thrower"
     },
     "inventory__itemCreateTemplates:object": {
-      "ab_46_magazine": 8,
+      "ab_46_magazine": 7,
       "medkit_item": 1
     },
     "_group": {
@@ -1328,6 +1328,534 @@
       "human_weap__template_deps_list:list<t>": {
         "tmpl": [
           "m1903a4_springfield_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "ussr_as_44_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/ussr_as_44",
+    "unit_crew__template": "ussr_as_44_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "as_44_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "as_44_magazine": 7,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "as_44_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "ussr_ak_47_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/ussr_ak_47",
+    "unit_crew__template": "ussr_ak_47_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "ak_47_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "akm_47_magazine": 7,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "ak_47_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "ussr_akm_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/ussr_akm",
+    "unit_crew__template": "ussr_akm_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "akm_47_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "akm_47_magazine": 7,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "akm_47_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "ussr_ppsh_41_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/ussr_ppsh_41",
+    "unit_crew__template": "ussr_ppsh_41_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "ppsh_41_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "pps_magazine": 6,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "ppsh_41_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "ussr_rpk_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/ussr_rpk",
+    "unit_crew__template": "ussr_rpk_unit",
+    "unit_crew__count": 1,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "rpk_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "rpk_75_round_magazine": 4,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "rpk_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "ussr_avs_36_sniper_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/ussr_avs_36_sniper",
+    "unit_crew__template": "ussr_avs_36_sniper_unit",
+    "unit_crew__count": 0,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "avs_36_sniper_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "avs_36_magazine": 4,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "avs_36_sniper_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "us_m16_ar_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/us_m16_ar",
+    "unit_crew__template": "us_m16_ar_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "m16_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m16_magazine": 12,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "m16_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "us_m16a2_ar_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/us_m16a2_ar",
+    "unit_crew__template": "us_m16a2_ar_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "m16a2_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m4_magazine": 8,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "m16a2_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "us_xm177e1_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/us_xm177e1",
+    "unit_crew__template": "us_xm177e1_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "xm177e1_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m16_magazine": 12,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "xm177e1_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "us_m1921_28_thompson_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/us_m1921_28_thompson",
+    "unit_crew__template": "us_m1921_28_thompson_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "m1921_28_thompson_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m1928a_thompson_magazine": 7,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "m1921_28_thompson_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "us_m1919a6_browning_mg_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/us_m1919a6_browning_mg",
+    "unit_crew__template": "us_m1919a6_browning_mg_unit",
+    "unit_crew__count": 2,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "browning_m1919a6_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "browning_m1919a6_magazine": 2,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "browning_m1919a6_gun",
+          "knife_weapon",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "us_m21_dmr_unit": {
+    "_use": "base_equipped_soldier",
+    "unit__className": "humans/us_m21_dmr",
+    "unit_crew__template": "us_m21_dmr_unit",
+    "unit_crew__count": 0,
+    "human_equipment__wearTemplates:object": {
+      "face": "attachable_wear_s_male_head_16_item",
+      "helmet": "attachable_wear_ihps_helmet_item",
+      "helmet_cover_attachment": "ihps_helmet_cover_item",
+      "helmet_left_attachment": "helmet_flashlight_black_item",
+      "helmet_headset_attachment": "m3_tactical_headsets_u_helmet_item",
+      "scarf": "attachable_wear_shemagh_black_item",
+      "backpack": "attachable_wear_modular_assault_pack_w_gloves_item",
+      "hands": "attachable_wear_hands_long_mech_tattoo_w_watches_item",
+      "gloves": "attachable_wear_gloves_fingerless_item",
+      "tunic": "attachable_wear_g3_jacket_rolled_sleeves_item",
+      "chest_armor": "attachable_wear_lbx_armatus2_w_pouches_item",
+      "pants": "attachable_wear_g3_pants_item",
+      "holster_on_leg": "attachable_wear_holster_on_leg_item",
+      "boots": "attachable_wear_zephyr_gtx_hi_tf_item"
+    },
+    "human_weap__weapTemplates:object": {
+      "primary": "m21_sws_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "knife_weapon",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "m14_magazine": 3,
+      "medkit_item": 1
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "m21_sws_gun",
           "knife_weapon",
           "grenade_thrower"
         ]

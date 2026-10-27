@@ -123,14 +123,3 @@ def base_menu_animchar_set_weapon_selected(info : ParallelUpdateFrameDelayed;
     if gun__propsId.valid
       set_phys_selected_weapon_var_from_props(phys_vars, gun__propsId, gunEid,
                                               human_anim__selectedWeaponVarId, "base_menu_animchar_set_weapon_selected")
-
-
-[es(tag=gameClient, on_appear)]
-def gun_anim_length_compensation_init(evt : Event;
-                                      animchar : AnimcharBaseComponent;
-                                      gun_anim_length_compensation__lHandNode : string;
-                                      gun_anim_length_compensation__rHandNode : string;
-                                      var gun_anim_length_compensation__lHandNodeId : int&;
-                                      var gun_anim_length_compensation__rHandNodeId : int&)
-  gun_anim_length_compensation__lHandNodeId = *animchar.nodeTree |> geomtree_findNodeIndex(gun_anim_length_compensation__lHandNode)
-  gun_anim_length_compensation__rHandNodeId = *animchar.nodeTree |> geomtree_findNodeIndex(gun_anim_length_compensation__rHandNode)

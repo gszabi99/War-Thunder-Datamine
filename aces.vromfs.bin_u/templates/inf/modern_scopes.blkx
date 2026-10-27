@@ -2202,5 +2202,158 @@
       "item_scope",
       "scope_ksvk_12_7_base"
     ]
+  },
+  "scope_pe_avs_36_base": {
+    "animchar__res": "avs_36_scope_char",
+    "collres__res": "avs_36_scope_collision",
+    "item__template": "scope_pe_avs_36_item",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_pe_avs_36",
+    "item__proto": "scope_pe_avs_36",
+    "item__locDetails": "",
+    "item__weight": 0.45,
+    "item__volume": 0.5,
+    "item__name": "items/scope_pe_avs_36",
+    "gunmod__type": "optics_small_ratio",
+    "gunAttachable:tag": {}
+  },
+  "scope_pe_avs_36": {
+    "_use": [
+      "scope_optical_gunmod",
+      "scope_pe_avs_36_base"
+    ],
+    "gunmod__deviationMult": 0.3,
+    "gunmod__zoomFactor": 5.25,
+    "gunmod__camShiftMin": 0.28,
+    "gunmod__camShiftMax": 0.28,
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      15.0,
+      0.06,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      6.0,
+      0.98,
+      8.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.02,
+        0.45,
+        0.45,
+        0.45,
+        -0.15
+      ]
+    }
+  },
+  "scope_pe_avs_36_item": {
+    "_use": [
+      "item_scope",
+      "scope_pe_avs_36_base"
+    ]
+  },
+  "scope_art_variable_base": {
+    "animchar__res": "m21_sws_ar_tel_scope_char",
+    "collres__res": "m21_sws_ar_tel_scope_collision",
+    "item__template": "scope_art_variable_item",
+    "item__proto": "scope_art_variable",
+    "item__name": "items/scope_art_variable",
+    "item__locDetails": "",
+    "gunAttachable__slotName": "scope",
+    "gunAttachable__gunSlotName": "scope",
+    "gunAttachable__slotTag": "scope_art_variable",
+    "item__weight": 0.43,
+    "item__volume": 0.5,
+    "gunmod__type": "optics_sniper_zoom",
+    "gunAttachable:tag": {}
+  },
+  "scope_art_variable": {
+    "_use": [
+      "scope_optical_gunmod",
+      "scope_art_variable_base"
+    ],
+    "gunmod__variableScope": true,
+    "gunmod__zoomFactor": 1.5,
+    "gunmod__camShiftMin": 0.15,
+    "gunmod__camShiftMax": 0.15,
+    "gunmod__currentZoomIndex": 0,
+    "_replicated": "gunmod__currentZoomIndex",
+    "gunmod__zoomAnimationTime": 0.0,
+    "gunmod__zoomAnimationViscocity": 0.3,
+    "gunmod__previousZoomFactor": 5.0,
+    "gunmod__deviationMult": 0.5,
+    "gunmod__camFovMin": 28.0,
+    "gunmod__camFovMax": 19.0,
+    "gunmod__focusPlaneShift": 0.5,
+    "gunmod__distortionParams": [
+      0.02,
+      0.1,
+      0.07
+    ],
+    "gunmod__closeLensShadingParams": [
+      15.0,
+      22.5,
+      1.0,
+      100.0
+    ],
+    "gunmod__farLensShadingParams": [
+      4.0,
+      0.93,
+      2.0
+    ],
+    "gun_attachable_mod_params__adderNames:list<t>": {
+      "name": [
+        "gun_anim_var__fpsGunOffsetUp",
+        "gun__mass",
+        "gun__inertialMass",
+        "item__weight",
+        "gun__adsSpeedMult"
+      ]
+    },
+    "gun_attachable_mod_params__adderValues:list<r>": {
+      "val": [
+        -0.04,
+        0.65,
+        0.65,
+        0.65,
+        -0.15
+      ]
+    },
+    "_group": {
+      "_tags": "gameClient",
+      "gunmod__previousCamShiftMin": 0.25,
+      "gunmod__previousCamShiftMax": 0.25
+    },
+    "gunmod__variableZoomOptions:array": {
+      "gunmod__variableZoom:object": [
+        {
+          "gunmod__zoomFactor": 3.0,
+          "gunmod__camShiftMin": 0.22,
+          "gunmod__camShiftMax": 0.22
+        },
+        {
+          "gunmod__zoomFactor": 9.0,
+          "gunmod__camShiftMin": 0.4,
+          "gunmod__camShiftMax": 0.4
+        }
+      ]
+    }
+  },
+  "scope_art_variable_item": {
+    "_use": [
+      "item_scope",
+      "scope_art_variable_base"
+    ]
   }
 }

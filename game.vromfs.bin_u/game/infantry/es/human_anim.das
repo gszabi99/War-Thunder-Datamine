@@ -65,6 +65,7 @@ def init_human_anim_states(evt : Event;
                            var human_anim__comboStateCrawlAim : int&;
                            var human_anim__comboStateCrawlFireReady : int&;
                            var human_anim__comboStateCrawlChangeWeapons : int&;
+                           var human_anim__comboStateCrawlWeaponDown : int&;
                            var human_anim__comboStateAttackedState : int&;
                            var human_anim__comboStateSwimStill : int&;
                            var human_anim__comboStateSwimStillUnderwater : int&;
@@ -121,6 +122,7 @@ def init_human_anim_states(evt : Event;
   human_anim__comboStateCrawlAim = animGraph |> anim_graph_getStateIdx("crawl_aim")
   human_anim__comboStateCrawlFireReady = animGraph |> anim_graph_getStateIdx("crawl_fireready")
   human_anim__comboStateCrawlChangeWeapons = animGraph |> anim_graph_getStateIdx("crawlChangeWeapons")
+  human_anim__comboStateCrawlWeaponDown = animGraph |> anim_graph_getStateIdx("crawl_weapon_down")
   human_anim__comboStateAttackedState = animGraph |> anim_graph_getStateIdx("sm_bitten")
   human_anim__comboStateSwimStill = animGraph |> anim_graph_getStateIdx("swim_still")
   human_anim__comboStateSwimStillUnderwater = animGraph |> anim_graph_getStateIdx("swim_still_underwater")
@@ -185,6 +187,7 @@ def updateState(eid : EntityId;
                         human_anim__comboStateCrawlAim : int;
                         human_anim__comboStateCrawlFireReady : int;
                         human_anim__comboStateCrawlChangeWeapons : int;
+                        human_anim__comboStateCrawlWeaponDown : int;
                         human_anim__comboStateAttackedState : int;
                         human_anim__comboStateSwimStill : int;
                         human_anim__comboStateSwimStillUnderwater : int;
@@ -310,7 +313,7 @@ def updateState(eid : EntityId;
     elif state_upper_body == HumanStateUpperBody.E_RELOAD
       upperStateIdx = state_pos == HumanStatePos.E_CROUCH && human_anim__upperStateReloadCrouch >= 0 ? human_anim__upperStateReloadCrouch : human_anim__upperStateReload
     elif state_upper_body == HumanStateUpperBody.E_DOWN
-      upperStateIdx = state_pos != HumanStatePos.E_CRAWL ? human_anim__upperStateGunDown : human_anim__upperStateFireReady
+      upperStateIdx = state_pos != HumanStatePos.E_CRAWL ? human_anim__upperStateGunDown : human_anim__comboStateCrawlWeaponDown
     elif state_upper_body == HumanStateUpperBody.E_FAST_THROW
       upperStateIdx = human_anim__upperStateFastThrow
     elif state_upper_body == HumanStateUpperBody.E_THROW
@@ -708,6 +711,17 @@ def init_human_idle_upper_anim_state(evt : Event;
 def human_anim_idling_state(evt : Event; agent_dangers__hasTraceableDangers : bool; var human_anim__isIdling : bool&)
   human_anim__isIdling = !agent_dangers__hasTraceableDangers
 
+[es(tag=gameClient, on_appear)]
+def human_anim_length_compensation_init(evt : Event;
+                                        animchar : AnimcharBaseComponent;
+                                        human_anim_gun_length_compensation__lHandNode : string;
+                                        human_anim_gun_length_compensation__rHandNode : string;
+                                        var human_anim_gun_length_compensation__lHandNodeId : int&;
+                                        var human_anim_gun_length_compensation__rHandNodeId : int&)
+  human_anim_gun_length_compensation__lHandNodeId = *animchar.nodeTree |> geomtree_findNodeIndex(human_anim_gun_length_compensation__lHandNode)
+  human_anim_gun_length_compensation__rHandNodeId = *animchar.nodeTree |> geomtree_findNodeIndex(human_anim_gun_length_compensation__rHandNode)
+
+
 [es(REQUIRE_NOT=(animchar__actOnDemand, menuSoldier, animchar__lockAnimStateChange), after=human_weap_update_es, parallel_for=1)]
 def human_anim_es(info : ParallelUpdateFrameDelayed;
                   ragdoll : PhysRagdoll const?;
@@ -722,6 +736,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
                   isAlive : bool = true; 
                   stunTimer : float = -1.; 
                   human_anim__isFpv : bool = false;
+                  var human_anim__pitch : float&;
                   human_anim__gunPitchVarId : int;
                   human_anim__leanVarId : int;
                   human_anim__standHeightVarId : int;
@@ -830,8 +845,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
   if !animchar__updatable || (!animchar__visible && ((animchar__accumDt + info.dt) < animchar__dtThreshold))
     return
 
-  var pitch : float
-  calc_shoot_pitch(human_net_phys, eid, info.curTime, transform, pitch, controlledHero != null)
+  calc_shoot_pitch(human_net_phys, eid, info.curTime, transform, human_anim__pitch, controlledHero != null)
 
   let dt = info.dt
   let curTime = get_sync_time()
@@ -876,7 +890,7 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
 
   animHeight = approach(human_anim__previousHeight, animHeight, dt, bipod__enabled ? human_anim__bipodHeightViscosity : human_anim__heightViscosity)
 
-  phys_vars |> setVar(human_anim__gunPitchVarId, rad_to_deg(pitch))
+  phys_vars |> setVar(human_anim__gunPitchVarId, rad_to_deg(human_anim__pitch))
 
   phys_vars |> setVar(human_anim__bipodVarId, bipod__enabled ? 1. : 0.)
   phys_vars |> setVar(human_anim__leanVarId, lean)
@@ -985,23 +999,43 @@ def human_anim_es(info : ParallelUpdateFrameDelayed;
 
   if human_anim__gunLengthCompensationVarId != -1
     var gunLengthCompensationValue = 0.0
-    query(human_weap__currentGunEid) <| $ [es] (animchar : AnimcharBaseComponent;
-                                                gun_anim_length_compensation__lHandNodeId : int;
-                                                gun_anim_length_compensation__rHandNodeId : int;
-                                                gun_anim_length_compensation__handDistanceMin : float;
-                                                gun_anim_length_compensation__handDistanceMax : float;
-                                                gun_anim_length_compensation__spineRotationMin : float;
-                                                gun_anim_length_compensation__spineRotationMax : float)
-      if gun_anim_length_compensation__lHandNodeId != -1 && gun_anim_length_compensation__rHandNodeId != -1
-        let lean01 = cvt(lean, -45.0, 0.0, 1.0, 0.0)
+    query(eid) <| $ [es] (animchar : AnimcharBaseComponent;
+                          human_anim_gun_length_compensation__lHandNodeId : int;
+                          human_anim_gun_length_compensation__rHandNodeId : int;
+                          human_anim_gun_length_compensation__handDistanceMin : float;
+                          human_anim_gun_length_compensation__handDistanceMax : float;
+                          human_anim_gun_length_compensation__spineRotationMin : float;
+                          human_anim_gun_length_compensation__spineRotationMax : float)
 
-        let leftP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__lHandNodeId)
-        let rightP = *animchar.nodeTree |> geomtree_getNodeWpos(gun_anim_length_compensation__rHandNodeId)
+      if human_anim_gun_length_compensation__lHandNodeId != -1 && human_anim_gun_length_compensation__rHandNodeId != -1
+        var handDistMin = human_anim_gun_length_compensation__handDistanceMin
+        var handDistMax = human_anim_gun_length_compensation__handDistanceMax
+        var spineRotMin = human_anim_gun_length_compensation__spineRotationMin
+        var spineRotMax = human_anim_gun_length_compensation__spineRotationMax
+
+        query(human_weap__currentGunEid) <| $ [es] (human_anim_gun_length_compensation__handDistanceMin : float const?;
+                                                    human_anim_gun_length_compensation__handDistanceMax : float const?;
+                                                    human_anim_gun_length_compensation__spineRotationMin : float const?;
+                                                    human_anim_gun_length_compensation__spineRotationMax : float const?)
+          if human_anim_gun_length_compensation__handDistanceMin != null
+            handDistMin = *human_anim_gun_length_compensation__handDistanceMin
+          if human_anim_gun_length_compensation__handDistanceMax != null
+            handDistMax = *human_anim_gun_length_compensation__handDistanceMax
+          if human_anim_gun_length_compensation__spineRotationMin != null
+            spineRotMin = *human_anim_gun_length_compensation__spineRotationMin
+          if human_anim_gun_length_compensation__spineRotationMax != null
+            spineRotMax = *human_anim_gun_length_compensation__spineRotationMax
+
+        let leftP = *animchar.nodeTree |> geomtree_getNodeWpos(human_anim_gun_length_compensation__lHandNodeId)
+        let rightP = *animchar.nodeTree |> geomtree_getNodeWpos(human_anim_gun_length_compensation__rHandNodeId)
         let projectedLength = dot(phys.currentState.gunDir, leftP - rightP) 
-        let compensation = cvt(projectedLength, gun_anim_length_compensation__handDistanceMin, gun_anim_length_compensation__handDistanceMax, gun_anim_length_compensation__spineRotationMin, gun_anim_length_compensation__spineRotationMax)
+        let compensation = cvt(projectedLength, handDistMin, handDistMax, spineRotMin, spineRotMax)
+
+        let leanCoeff = cvt(lean, -45.0, 0.0, 1.0, 0.0)
         let bodyAngleCoeff = cvt(abs(bodyAngles.x), 0.0, deg_to_rad(60.0), 0.0, 1.0)
-        let pitchCoeff = cvt(pitch, 0.0, HALF_PI, 0.0, 1.0)
-        gunLengthCompensationValue = compensation * (1.0 - lean01) * (1.0 - bodyAngleCoeff) * (1.0 - pitchCoeff)
+        let pitchCoeff = cvt(human_anim__pitch, 0.0, HALF_PI, 0.0, 1.0)
+
+        gunLengthCompensationValue = compensation * (1.0 - leanCoeff) * (1.0 - bodyAngleCoeff) * (1.0 - pitchCoeff)
     phys_vars |> setVar(human_anim__gunLengthCompensationVarId, gunLengthCompensationValue)
 
   var stateUpperBody = HumanStateUpperBody.E_READY
@@ -1385,9 +1419,7 @@ def human_death_anim_update_ragdoll_power(info : ParallelUpdateFrameDelayed;
 
 [es(tag=gameClient, after=human_anim_es)]
 def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
-                                      eid : EntityId;
-                                      controlledHero : Tag const?;
-                                      transform : float3x4;
+                                      human_anim__pitch : float;
                                       human_anim__leanSpineRotateVarId : int;
                                       human_anim__leanSpineRotateAnglesStand : float3;
                                       human_anim__leanSpineRotateAnglesCrouch : float3;
@@ -1410,10 +1442,8 @@ def human_spine_rotate_on_lean_update(info : ParallelUpdateFrameDelayed;
     leanSpineRotate = (lean < 0.f ? cvt(lean, -phys.leanDegrees, 0.0, human_anim__leanSpineRotateAnglesCrouch.x, human_anim__leanSpineRotateAnglesCrouch.y)
                                    : cvt(lean, 0.f, phys.leanDegrees, human_anim__leanSpineRotateAnglesCrouch.y, human_anim__leanSpineRotateAnglesCrouch.z))
 
-  var pitch : float
-  calc_shoot_pitch(human_net_phys, eid, info.curTime, transform, pitch, controlledHero != null)
   let rocketLauncherCoeff = has(human_weap__currentGunEid, "launcherTag") ? 1.0 : 0.0
-  let pitchCoeff = clamp(2.f * pitch / PI, 0.0, 1.0)
+  let pitchCoeff = clamp(human_anim__pitch / HALF_PI, 0.0, 1.0)
   phys_vars |> setVar(human_anim__leanSpineRotateVarId, leanSpineRotate * (1.0 - pitchCoeff) * (1.0 - rocketLauncherCoeff))
 
 

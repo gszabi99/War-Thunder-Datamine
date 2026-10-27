@@ -12,7 +12,7 @@ struct RenderEventUI
   
   persp : Driver3dPerspective
 
-[es(tag=render, REQUIRE=hero)]
+[es(tag=render, REQUIRE=hero, REQUIRE_NOT=isReplayObserved)]
 def bipod_draw_placeable_marker(evt : RenderEventUI;
                                 bipod__placeableMarker : EntityId)
   if !!bipod__placeableMarker

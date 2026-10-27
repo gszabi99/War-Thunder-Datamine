@@ -1824,6 +1824,19 @@
       ]
     }
   },
+  "gun_length_compensation_settings": {
+    "human_anim_gun_length_compensation__handDistanceMin": 0.0,
+    "human_anim_gun_length_compensation__handDistanceMax": 1.0,
+    "human_anim_gun_length_compensation__spineRotationMin": 0.0,
+    "human_anim_gun_length_compensation__spineRotationMax": 1.0
+  },
+  "gun_length_compensation": {
+    "_use": "gun_length_compensation_settings",
+    "human_anim_gun_length_compensation__lHandNode": "Bip01 L Hand",
+    "human_anim_gun_length_compensation__rHandNode": "Bip01 R Hand",
+    "human_anim_gun_length_compensation__lHandNodeId": -1,
+    "human_anim_gun_length_compensation__rHandNodeId": -1
+  },
   "segmented_physics_anim_mapping": {
     "human_anim__segphysFlyDownAnimVarValue": -1,
     "human_anim__segphysHumanFlags": 0,
@@ -1877,6 +1890,7 @@
       "soldier_mm_component",
       "human_lean",
       "aim_assist_target",
+      "gun_length_compensation",
       "segmented_physics_anim_mapping"
     ],
     "entity__recreateToOnDeath": "dead_base_equipped_soldier",
@@ -2495,7 +2509,7 @@
   "human_melee_charge": {
     "human_melee_charge__canStart": false,
     "human_melee_charge__isOnCooldown": false,
-    "human_melee_charge__chargeEndTime": 0.0,
+    "human_melee_charge__chargeEndTime": -100.0,
     "human_melee_charge__isActive": false,
     "human_melee_charge__isChargeOrAttack": false,
     "human_melee_charge__zoom": 1.0,

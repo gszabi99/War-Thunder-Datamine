@@ -171,7 +171,6 @@ local Writer = class {
   static curlyRe  = regexp(@"\s*\}")
   static tagRe    = regexp(@"#|\^|\/|>|\{|&|=|!|@|?")
   static escapeRe = regexp(@"[\-\[\]{}()*+?.,\\\^$|#\s]")
-  static nonSpaceRe = regexp(@"\S")
 
   constructor() {
     this.cache = {}
@@ -322,10 +321,6 @@ local Writer = class {
     return "".join(buffer)
   }
 
-  function isWhitespace(string) {
-    return !this.nonSpaceRe.match(string)
-  }
-
   function escapeRegExp(string) {
     local start = 0
     local matches = []
@@ -371,27 +366,34 @@ local Writer = class {
     local nonSpace = false  
     local scanError = false
 
-    local start, tType, value, chr, token, openSection
+    local start, tType, value, token, openSection
     while (!scanner.eos()) {
       start = scanner.pos
 
       
       value = scanner.scanUntil(tagRes[0])
       if (value != "") {
-        for (local i = 0; i < value.len(); ++i) {
-
-          chr = value.slice(i, i + 1)
-
-          if (this.isWhitespace(chr))
-            spaces.append(tokens.len())
-          else
-            nonSpace = true
-
-          tokens.append(["text", chr, start, start + 1])
-          start += 1
+        let valueLen = value.len()
+        local lineStart = 0
+        while (lineStart < valueLen) {
+          let nlIdx = value.indexof("\n", lineStart)
+          let lineEnd = nlIdx == null ? valueLen : nlIdx + 1
+          let chunk = value.slice(lineStart, lineEnd)
 
           
-          if (chr == "\n") {
+          if (nlIdx == null || hasTag) {
+            if (this.whiteRe.match(chunk))
+              spaces.append(tokens.len())
+            else
+              nonSpace = true
+          }
+
+          tokens.append(["text", chunk, start, start + chunk.len()])
+          start += chunk.len()
+          lineStart = lineEnd
+
+          
+          if (nlIdx != null) {
             
             
             if (hasTag && !nonSpace) {

@@ -3218,10 +3218,10 @@ class TryFindPathAroundToAttack : BehNodeAdapter
 
       var pos1 = destPos + dirVec * blockRadius * 2.0
       var pos2 = midsPos
-      pos1.y += blockHeights.x
-      pos2.y += blockHeights.x
       let areaHeight = -blockHeights.x + blockHeights.y
-      let areaRadiusHeight = float2(blockRadius, areaHeight)
+      let areaRadiusHeight = float2(blockRadius, areaHeight * 0.5)
+      pos1.y += blockHeights.x + areaHeight * 0.5
+      pos2.y += blockHeights.x + areaHeight * 0.5
       walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, blockAreaId1, pos1, areaRadiusHeight, blockWeight, blockWeight, true)
       walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, blockAreaId2, pos2, areaRadiusHeight, blockWeight, blockWeight, true)
       let gotPath = find_path_full(fromPos, destPos, extents, stepSize, pathSlope, maxPartial, reachDist, reachHeight, findThruBlocked, walker_custom_nav, path)
@@ -3313,11 +3313,16 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
     find_query() <| $ [es] (team__id : int;
                             path_blocker__maxEntries : int;
                             path_blocker__distRange : float2;
+                            path_blocker__distRange2 : float2;
+                            path_blocker__preGoalDist : float;
                             path_blocker__radius : float;
+                            path_blocker__radius2 : float;
                             path_blocker__heights : float2;
                             path_blocker__weight : float;
+                            path_blocker__weight2 : float;
                             var path_blocker__areaIds : IntList&;
                             var path_blocker__positions : Point3List&;
+                            var path_blocker__types : IntList&;
                             var walker_custom_nav : CustomNav?)
       if team__id != agentTeam
         return false
@@ -3325,26 +3330,39 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
       if empty(path_blocker__areaIds)
         path_blocker__areaIds |> reserve(path_blocker__maxEntries)
         path_blocker__positions |> reserve(path_blocker__maxEntries)
+        path_blocker__types |> reserve(path_blocker__maxEntries)
         for _i in range(path_blocker__maxEntries)
           path_blocker__areaIds |> push(walker_agent_nav_allocAreaId())
 
       var useBlockers = false
-      query(agentSquad) <| $ [es] (var squadAI_tactical__usedSpawnBlockers : bool&; var squadAI_tactical__usedSpawnPoint : float3&; squadAI_tactical__usedSpawnMaxDist : float = 30.0)
-        if !squadAI_tactical__usedSpawnBlockers || distance_sq(agentPos, squadAI_tactical__usedSpawnPoint) < square(squadAI_tactical__usedSpawnMaxDist)
-          if !squadAI_tactical__usedSpawnBlockers
-            squadAI_tactical__usedSpawnBlockers = true
-            squadAI_tactical__usedSpawnPoint = agentPos
+      var addSpawnBlocker = true
+      query(agentSquad) <| $ [es] (var squadAI_tactical__usedHomeBlockers : bool&;
+                                   var squadAI_tactical__usedHomePoint : float3&;
+                                   squadAI_tactical__usedHomeMaxDist : float = 30.0;
+                                   squadAI_tactical__goalFarDist : float = 50.0)
+        if squadAI_tactical__usedHomeBlockers && distance_sq(agentPos, destPos) > square(squadAI_tactical__goalFarDist)
+          squadAI_tactical__usedHomeBlockers = false
+          if (get_int(agentEid, "agent_dangers__homeSpawns") ?? 0) <= 0 && distance_sq(agentPos, squadAI_tactical__usedHomePoint) > square(squadAI_tactical__usedHomeMaxDist)
+            addSpawnBlocker = false
+        if !squadAI_tactical__usedHomeBlockers || distance_sq(agentPos, squadAI_tactical__usedHomePoint) < square(squadAI_tactical__usedHomeMaxDist)
+          if !squadAI_tactical__usedHomeBlockers
+            squadAI_tactical__usedHomeBlockers = true
+            squadAI_tactical__usedHomePoint = agentPos
           useBlockers = true
 
       let numBlockers = length(path_blocker__positions)
       let areaHeight = -path_blocker__heights.x + path_blocker__heights.y
       if useBlockers && walker_custom_nav != null && numBlockers > 0
-        let areaRadiusHeight = float2(path_blocker__radius, areaHeight)
         for i in range(numBlockers)
-          var pos = path_blocker__positions[i]
-          pos.y += path_blocker__heights.x
-          walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, path_blocker__areaIds[i], pos, areaRadiusHeight, path_blocker__weight, path_blocker__weight, true)
-          
+          let blockerType = path_blocker__types[i]
+          if blockerType > 0
+            let areaRadius = blockerType == 1 ? path_blocker__radius : path_blocker__radius2
+            let areaRadiusHeight = float2(areaRadius, areaHeight * 0.5)
+            var pos = path_blocker__positions[i]
+            pos.y += path_blocker__heights.x + areaHeight * 0.5
+            let areaWeight = blockerType == 1 ? path_blocker__weight : path_blocker__weight2
+            walker_custom_nav_areaUpdateCylinder(*walker_custom_nav, path_blocker__areaIds[i], pos, areaRadiusHeight, areaWeight, areaWeight, true)
+            
 
       let tooFarSearchDist = 150.0
       let tooFar = distance_sq(fromPos, destPos) > square(tooFarSearchDist)
@@ -3363,19 +3381,44 @@ class TryFindSquadPathToGoalPoint : BehNodeAdapter
       pathFound = (findPathRes || allowPartialAsLastChance) && pathLen > 1
 
       if useBlockers && pathFound && walker_custom_nav != null
-        let targetDist = rnd_float(path_blocker__distRange.x, path_blocker__distRange.y)
         var accDist = 0.0
+        var nearTries = 10
+        var goalDist = 0.0
+        for i in range(1, pathLen)
+          goalDist += distance(path[i - 1], path[i])
+        let targetDistRange = addSpawnBlocker ? path_blocker__distRange : path_blocker__distRange2
+        let targetDist = rnd_float(targetDistRange.x, min(targetDistRange.y, max(0.0, goalDist - 0.01)))
+        goalDist = max(0.0, goalDist - path_blocker__preGoalDist)
         for i in range(1, pathLen)
           let segLen = distance(path[i - 1], path[i])
-          if segLen < 0.001
-            continue
-          if accDist + segLen >= targetDist
-            let t = (targetDist - accDist) / segLen
-            let blockerPos = lerp(path[i - 1], path[i], t)
-            if length(path_blocker__positions) >= path_blocker__maxEntries
-              path_blocker__positions |> erase(0)
-            path_blocker__positions |> push(blockerPos)
-            break
+          if segLen > 0.001 && accDist + segLen >= targetDist && accDist + segLen < goalDist
+            let ratio = clamp(safediv(targetDist - accDist, segLen), 0.0, 1.0)
+            let blockerPos = lerp(path[i - 1], path[i], ratio)
+            var tooNear = false
+            for j in iter_range(path_blocker__positions)
+              let blockerType = path_blocker__types[j]
+              if blockerType > 0
+                let tooNearRadius = (blockerType == 1 ? path_blocker__radius : path_blocker__radius2) * 1.5
+                if distance_sq(blockerPos, path_blocker__positions[j]) < square(tooNearRadius)
+                  tooNear = true
+                  --nearTries
+            if nearTries <= 0
+              break
+            if !tooNear
+              if length(path_blocker__positions) >= path_blocker__maxEntries
+                var delIdx = 0
+                for j in iter_range(path_blocker__positions)
+                  if path_blocker__types[j] < 2
+                    delIdx = j
+                    break
+                path_blocker__positions |> erase(delIdx)
+                path_blocker__types |> erase(delIdx)
+              let blockerType = addSpawnBlocker ? 1 : 2
+              path_blocker__positions |> push(blockerPos)
+              path_blocker__types |> push(blockerType)
+              query(agentEid) <| $ [es] (var agent_dangers__homeSpawns : int&)
+                agent_dangers__homeSpawns -= 1
+              break
           accDist += segLen
 
       return true

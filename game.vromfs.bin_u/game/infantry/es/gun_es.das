@@ -9,6 +9,8 @@ require DagorMath
 require DaWeaponProps
 require BallisticsProps
 require PropsManager
+require DngHuman
+require WTPhysActor
 require %game.events
 
 require %appGame.wt_events
@@ -44,7 +46,10 @@ def private gun_launch(ld : LaunchDesc; gun_eid : EntityId;  offender_eid : Enti
     if !empty(physTemplName)
       ok = true
       
-      if !is_dedicated() || !isGrenadeThrower
+      var isLocallyControlled = true
+      query(offender_eid) <| $ [es] (human_net_phys : HumanActor)
+        isLocallyControlled = (uint(human_net_phys.role) & uint(NetRole.URF_LOCAL_CONTROL)) != 0u
+      if !is_dedicated() || !isGrenadeThrower || isLocallyControlled
         sendEventImmediate(offender_eid, CmdLaunchShell(launchDesc = ld, gunEid = gun_eid))
       if !is_server() && isGrenadeThrower
         send_net_event(offender_eid, CmdThrowGrenadeFromClient(gunEid = gun_eid,

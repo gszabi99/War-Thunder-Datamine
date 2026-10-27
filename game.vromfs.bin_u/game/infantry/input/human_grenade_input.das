@@ -43,7 +43,7 @@ def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
                                             eid : EntityId;
                                             human_weap__currentGunEid : EntityId;
                                             human_weap__throwMode : bool;
-                                            human_weap__grenadeThrowModeServer : bool;
+                                            human_weap__grenadeThrowServerConfirmed : bool;
                                             input__enabled : bool = true;
                                             isInVehicle : bool = false;
                                             itemContainer : EidList)
@@ -53,7 +53,7 @@ def human_grenade_input_action_triggered_es(evt : EventOnKeyDown;
     return
   if isInVehicle
     return
-  if human_weap__throwMode || human_weap__grenadeThrowModeServer
+  if human_weap__throwMode || !human_weap__grenadeThrowServerConfirmed
     return
   if has(human_weap__currentGunEid, "disableQuickThrow")
     using() <| $(var eventData : DataBlock)
@@ -108,9 +108,9 @@ def set_human_weap_throw_pos_local_es(info : UpdateStageUpdateInput;
                                       var human_weap__throwPosLocal : float3&)
   if human_weap__throwMode
     query(human_weap__grenadeThrower) <| $ [es] (grenade_thrower__projectileEntity : EntityId)
-      query(grenade_thrower__projectileEntity) <| $ [es] (gun_attach__mainSlotId : int)
-        if gun_attach__mainSlotId != -1
+      query(grenade_thrower__projectileEntity) <| $ [es] (slot_attach__slotId : int)
+        if slot_attach__slotId != -1
           let physTransform = human_net_phys.phys.currentState.location |> location_makeTM()
           let wofs = geomtree_getWtmOfs(*animchar.nodeTree)
-          let slotNodeWtm = animchar_getSlotNodeWtm(animchar, gun_attach__mainSlotId)
+          let slotNodeWtm = animchar_getSlotNodeWtm(animchar, slot_attach__slotId)
           human_weap__throwPosLocal = inverse(physTransform) * (float3x4(*slotNodeWtm)[3] + wofs)

@@ -28,6 +28,7 @@ def grenade_thrower_phys_es(evt : CmdWeapPhysUpdate;
                             grenade_throw__fastThrowCookProgressTime : float;
                             grenade_throw__fastThrowProgressTime : float;
                             grenade_thrower__projectileEntity : EntityId = INVALID_ENTITY_ID;
+                            grenade_throw__attachWaitTimeout : float = 1.0;
                             var grenade_thrower : GrenadeThrower&)
   let isForReal = evt.isForReal
   if !isForReal
@@ -66,7 +67,10 @@ def grenade_thrower_phys_es(evt : CmdWeapPhysUpdate;
         
         
         verify(grenade_thrower.throwProgress <= 0.5)
-        if !gctrl.shoot 
+        let waitForAttach = (!human_gun_attached &&
+                             doesEntityExist(grenade_thrower__projectileEntity) &&
+                             atTime < grenade_thrower.stateEnd + grenade_throw__attachWaitTimeout)
+        if !gctrl.shoot && !waitForAttach 
           
           grenade_thrower.state = GrenadeThrowState.GTS_THROW
           grenade_thrower.stateStart = atTime

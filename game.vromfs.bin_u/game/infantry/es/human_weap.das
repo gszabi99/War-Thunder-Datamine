@@ -544,7 +544,8 @@ def replace_local_projectile_es(evt : Event;
   
 
   
-  query(shell__owner) <| $ [es] (var human_weap__localProjectileEid : EntityId&)
+  query(shell__owner) <| $ [es] (var human_weap__localProjectileEid : EntityId&;
+                                 human_weap__grenadeThrower : EntityId = INVALID_ENTITY_ID)
     let serverProjectileEid = eid
 
     
@@ -563,6 +564,12 @@ def replace_local_projectile_es(evt : Event;
 
     query(human_weap__localProjectileEid) <| $ [es] (gun__visible aka local_gun__visible : bool)
       server_gun__visible = local_gun__visible
+
+    
+    
+    query(human_weap__grenadeThrower) <| $ [es] (var grenade_thrower__projectileEntity : EntityId&)
+      if grenade_thrower__projectileEntity == human_weap__localProjectileEid
+        grenade_thrower__projectileEntity = serverProjectileEid
 
     
     destroyEntity(human_weap__localProjectileEid)
