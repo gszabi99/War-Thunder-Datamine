@@ -819,7 +819,7 @@ let RespawnHandler = class (MPStatistics) {
   function updateFullListBases() {
     let localTeam = get_mp_local_team()
     this.fullListBases = getFullRespawnBasesList()
-      .filter(@(v) v.team == localTeam && is_respawnbase_selectable(v.id))
+      .filter(@(v) respawnBases.isBaseForTeam(v.team, localTeam) && is_respawnbase_selectable(v.id))
   }
 
   function updateRespawnWhenChangedMissionRespawnBasesStatus() {

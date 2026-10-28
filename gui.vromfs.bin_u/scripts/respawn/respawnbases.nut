@@ -14,6 +14,7 @@ from "%scripts/clientState/localProfile.nut" import saveLocalAccountSettings, lo
 from "%scripts/missions/missionType.nut" import isShipBattle
 from "%scripts/dagui_natives.nut" import get_slot_delay
 from "blkGetters" import get_current_mission_info_cached
+from "%globalScripts/mpTeamConsts.nut" import MP_TEAM_NEUTRAL
 
 const SAVED_RESPAWN_BASE_ID = "respawns"
 
@@ -21,6 +22,9 @@ local savedRespawnBases = null
 
 let isPerBaseDelayRow = @(spawn) !spawn.isSquadRespawnBase && !spawn.isZoneRespawnBase
   && spawn.isAvailable && spawn.canSelect
+
+
+let isBaseForTeam = @(baseTeam, localTeam) baseTeam == localTeam || baseTeam == MP_TEAM_NEUTRAL
 
 local respawnBases = {
   MAP_ID_NOTHING = -1
@@ -67,7 +71,7 @@ local respawnBases = {
     local hasSavedBase = false
     foreach (rbConfig in rbs) {
       let { id, team } = rbConfig
-      if (team != localTeam || !is_respawnbase_selectable(id))
+      if (!isBaseForTeam(team, localTeam) || !is_respawnbase_selectable(id))
         continue
       availableBases.append(rbConfig)
       hasSavedBase = hasSavedBase || id == savedBaseForSlot
@@ -178,5 +182,6 @@ subscribe_handler(respawnBases, g_listener_priority.DEFAULT_HANDLER)
 eventbus_subscribe("on_sign_out", @(_) savedRespawnBases = null)
 
 respawnBases.isPerBaseDelayRow <- isPerBaseDelayRow
+respawnBases.isBaseForTeam <- isBaseForTeam
 
 return respawnBases
