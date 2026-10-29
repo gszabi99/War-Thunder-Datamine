@@ -5260,6 +5260,33 @@
       }
     },
     {
+      "id": "2026_10_29_infantry_cbt_3_6_poll",
+      "type": "achievement",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": "cbt_human_midrank_rb",
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2026-10-29 09:00:00",
+            "endDate": "2026-11-01 13:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2026_10_27_boo_decal",
       "locId": "decals/boo_decal",
       "locDescId": "gift_decal_trophy/desc",

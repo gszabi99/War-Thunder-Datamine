@@ -1766,16 +1766,16 @@
       "groundRicochetPreset": "apds_fs_ground",
       "secondaryShattersPreset": "apds_fs_long",
       "bulletType": "apds_fs_long_tank",
-      "slopeEffectPreset": "apds_fs_tungsten_l10_l15_tank",
+      "slopeEffectPreset": "apds_fs_long",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
       "shellAnimation": "video/shells_animations/apfsds_modern.ivf",
-      "bulletName": "120mm_l23",
       "gbufferModelName": "tank_shell_apdsfs_ld_13",
       "penetratorModelName": "tank_shell_apdsfs_ld_13_deform",
+      "bulletName": "120mm_l23a1",
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -2239,59 +2239,12 @@
           10000.0
         ]
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          410.0,
-          10.0
-        ],
-        "ArmorPower100m": [
-          408.0,
-          100.0
-        ],
-        "ArmorPower500m": [
-          405.0,
-          500.0
-        ],
-        "ArmorPower1000m": [
-          400.0,
-          1000.0
-        ],
-        "ArmorPower1500m": [
-          390.0,
-          1500.0
-        ],
-        "ArmorPower2000m": [
-          380.0,
-          2000.0
-        ],
-        "ArmorPower2500m": [
-          360.0,
-          2500.0
-        ],
-        "ArmorPower3000m": [
-          350.0,
-          3000.0
-        ],
-        "ArmorPower3500m": [
-          320.0,
-          3500.0
-        ],
-        "ArmorPower4000m": [
-          310.0,
-          4000.0
-        ],
-        "ArmorPower4500m": [
-          300.0,
-          4500.0
-        ],
-        "ArmorPower10000m": [
-          50.0,
-          10000.0
-        ],
-        "ArmorPower20000m": [
-          0.0,
-          20000.0
-        ]
+      "damage": {
+        "kinetic": {
+          "lanzOdermattMaterial": "tungsten",
+          "lanzOdermattWorkingLength": 410.0,
+          "lanzOdermattDensity": 17500.0
+        }
       },
       "visual": {
         "range_percent_of_ammo": [

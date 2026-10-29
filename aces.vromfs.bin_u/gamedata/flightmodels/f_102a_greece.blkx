@@ -2287,6 +2287,10 @@
         "blk": "gameData/FlightModels/weaponPresets/f_102a_late_aim_4f.blk"
       },
       {
+        "name": "f_102a_late_aim_26b",
+        "blk": "gamedata/flightModels/weaponPresets/f_102a_late_aim_26b.blk"
+      },
+      {
         "name": "f_102a_late_ffar",
         "blk": "gameData/FlightModels/weaponPresets/f_102a_late_ffar.blk"
       }
@@ -2326,28 +2330,59 @@
         "index": 1,
         "tier": 9,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "ptb",
-          "name": "ptb_slot1",
-          "showInWeaponMenu": true,
-          "ShowNodes": {
-            "node": "pylon1"
+        "WeaponPreset": [
+          {
+            "iconType": "multibarrel_box",
+            "name": "suu_11a_gunpod_slot1",
+            "ShowNodes": {
+              "node": [
+                "pylon_ter9a_l",
+                "us_xm_18_l",
+                "us_xm_18_barrel1",
+                "flare1"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "gun1_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "gun1_dm",
+              "shell": "emtr_shellrejection1",
+              "bullets": 1500,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true,
+              "rotationAnimScale": "gun_rotate_01:CRS"
+            }
           },
-          "ShowDmParts": {
-            "node": "tank7_dm"
-          },
-          "Weapon": {
-            "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/us_215gal_drop_tank_1.blk",
-            "emitter": "us_215gal_drop_tank1",
-            "bullets": 1,
-            "external": true
-          },
-          "DependentWeaponPreset": {
-            "slot": 7,
-            "preset": "ptb_slot7"
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "ShowDmParts": {
+              "node": "tank7_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_215gal_drop_tank_1.blk",
+              "emitter": "us_215gal_drop_tank1",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "ptb_slot7"
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
@@ -2660,6 +2695,45 @@
                 "order": 8
               }
             ]
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special",
+            "name": "aim_26b_slot4",
+            "reqModification": "us_aim_26b",
+            "Weapon": {
+              "trigger": "aam",
+              "separate": true,
+              "external": false,
+              "blk": "gamedata/weapons/rocketGuns/us_aim_26b.blk",
+              "emitter": "us_aim_4_missile_3",
+              "bullets": 1,
+              "order": 4
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_midrange_special_group",
+            "name": "aim_26b_x2_slot4",
+            "reqModification": "us_aim_26b",
+            "Weapon": [
+              {
+                "trigger": "aam",
+                "separate": true,
+                "external": false,
+                "blk": "gamedata/weapons/rocketGuns/us_aim_26b.blk",
+                "emitter": "us_aim_4_missile_3",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "aam",
+                "separate": true,
+                "external": false,
+                "blk": "gamedata/weapons/rocketGuns/us_aim_26b.blk",
+                "emitter": "us_aim_4_missile_4",
+                "bullets": 1,
+                "order": 8
+              }
+            ]
           }
         ]
       },
@@ -2895,28 +2969,59 @@
         "index": 7,
         "tier": 3,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "ptb",
-          "name": "ptb_slot7",
-          "showInWeaponMenu": true,
-          "ShowNodes": {
-            "node": "pylon2"
+        "WeaponPreset": [
+          {
+            "iconType": "multibarrel_box",
+            "name": "suu_11a_gunpod_slot7",
+            "ShowNodes": {
+              "node": [
+                "pylon_ter9a_r",
+                "us_xm_18_r",
+                "us_xm_18_barrel2",
+                "flare2"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "gun2_dm"
+            },
+            "Weapon": {
+              "trigger": "additional gun",
+              "blk": "gamedata/weapons/gunM134_Minigun.blk",
+              "emitter": "flare2",
+              "flash": "flare2",
+              "dm": "gun2_dm",
+              "shell": "emtr_shellrejection2",
+              "bullets": 1500,
+              "spread": 1.5,
+              "traceOffset": 1,
+              "counterIndex": 1,
+              "external": true,
+              "rotationAnimScale": "gun_rotate_01:CRS"
+            }
           },
-          "ShowDmParts": {
-            "node": "tank8_dm"
-          },
-          "Weapon": {
-            "trigger": "fuel tanks",
-            "blk": "gameData/Weapons/drop_tank/us_215gal_drop_tank_2.blk",
-            "emitter": "us_215gal_drop_tank2",
-            "bullets": 1,
-            "external": true
-          },
-          "DependentWeaponPreset": {
-            "slot": 1,
-            "preset": "ptb_slot1"
+          {
+            "iconType": "ptb",
+            "name": "ptb_slot7",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/us_215gal_drop_tank_2.blk",
+              "emitter": "us_215gal_drop_tank2",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 1,
+              "preset": "ptb_slot1"
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -3528,6 +3633,9 @@
       "tier": 2,
       "modClass": "armor"
     },
+    "M163_Minigun_new_gun": {
+      "tier": 1
+    },
     "us_f8u_ffar": {
       "tier": 1,
       "modClass": "weapon"
@@ -3539,6 +3647,11 @@
     "us_aim_4f": {
       "reqModification": "us_aim_4g",
       "tier": 3,
+      "modClass": "weapon"
+    },
+    "us_aim_26b": {
+      "reqModification": "us_aim_4f",
+      "tier": 4,
       "modClass": "weapon"
     }
   },

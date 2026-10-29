@@ -39,19 +39,20 @@ return freeze([
       : null
   }
 
-
-
-
-
-
-
+  {
+    id = "hangar_14_years"
+    locId = "options/hangar_birthday"
+    beginDate = "11-01 00:00:00"
+    endDate = "11-06 00:00:00"
+  }
 
   {
     id = "hangar_lunar_ny"
     locId = "options/hangar_lunar_ny"
-    beginDate = "02-16 00:00:00"
-    endDate = "02-22 00:00:00"
+    beginDate = "02-06 00:00:00"
+    endDate = "02-16 00:00:00"
   }
+
 
 
 
